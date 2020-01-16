@@ -70,7 +70,7 @@ export default {
       thumbnailGeneration: true,
       restrictions: {
         maxFileSize: false,
-        allowedFileTypes: ['image/*', 'application/pdf'],
+        allowedFileTypes: ['image/*', 'application/pdf', 'text/csv'],
       },
       meta: {
         modelId: this.modelId,
@@ -108,7 +108,8 @@ export default {
       });
     }
     uppy.use(Tus, {
-      endpoint: 'http://upload.micado.csi.it:1080/files', // use your tus endpoint here
+//      endpoint: 'http://upload.micado.csi.it:1080/files', // use your tus endpoint here
+      endpoint: 'http://158.102.29.31:1080/files', // use your tus endpoint here
       resume: true,
       headers: {"Upload-Metadata":"gioppo"},
       autoRetry: true,
