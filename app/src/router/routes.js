@@ -9,7 +9,7 @@ const routes = [
   },
   {
     path: '/documents',
-//    meta: { auth: true },
+    //    meta: { auth: true },
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('components/Documents.vue') }
@@ -17,15 +17,15 @@ const routes = [
   },
   {
     path: '/dashboard',
-  //    meta: { auth: true },
+    //    meta: { auth: true },
     component: () => import('layouts/MyLayout.vue'),
     children: [
-      { path: '', component: () => import('components/Dashboard.vue') }
+      { path: '', component: () => import('components/dashboard/home.vue') }
     ]
   },
   {
     path: '/flow',
-//    meta: { auth: true },
+    //    meta: { auth: true },
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('components/Flow.vue') }
@@ -33,7 +33,7 @@ const routes = [
   },
   {
     path: '/map',
-//    meta: { auth: true },
+    //    meta: { auth: true },
     component: () => import('layouts/MyLayout.vue'),
     children: [
       { path: '', component: () => import('components/Map.vue') }
