@@ -23,6 +23,7 @@
     "quasar": "^1.0.0",
     "uppy": "^1.6.0",
     "validator": "^11.1.0",
+    "vue-form-json-schema": "^2.5.0",
     "vue-friendly-iframe": "^0.16.0",
     "vue-i18n": "^7.3.3",
     "vue-mermaid": "0.0.10",

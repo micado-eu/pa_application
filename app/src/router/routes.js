@@ -38,6 +38,14 @@ const routes = [
     children: [
       { path: '', component: () => import('components/Map.vue') }
     ]
+  },
+  {
+    path: '/requestmediation',
+    //    meta: { auth: true },
+    component: () => import('layouts/MyLayout.vue'),
+    children: [
+      { path: '', component: () => import('pages/MediationRequest.vue') }
+    ]
   }
 ]
 
