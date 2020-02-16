@@ -59,13 +59,13 @@ export default {
         setTimeout(() => {
           resolve([
             {
-              component: "input",
+              component: "q-input",
               model: "firstName",
               fieldOptions: {
                 class: ["form-control"],
                 on: ["input"],
                 attrs: {
-                  placeholder: "Please enter your first name"
+                  label: "Please enter your first name"
                 }
               }
             }
