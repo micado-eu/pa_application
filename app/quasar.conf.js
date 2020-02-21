@@ -73,7 +73,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
       // showProgress: false,
       // gzip: true,
       // analyze: true,
@@ -85,6 +85,7 @@ module.exports = function (ctx) {
       },
       chainWebpack (chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/mock' );
+        chain.resolve.alias.set('api-features-client', 'src/api/features/server');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock' );
       }
     },
