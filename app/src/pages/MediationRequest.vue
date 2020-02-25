@@ -4,6 +4,7 @@
       v-if="this.loaded"
       v-model="model"
       :schema="schema"
+      :options="options"
       :ui-schema="uiSchema"
       v-on:state-change="onChangeState"
       v-on:validated="onValidated"
@@ -16,12 +17,9 @@
       <button class="btn btn-primary" @click="getForm">Reload form</button>
     </div>
 
-    <hr>
 
 
-    <h4>Valid</h4>
-    <div>{{ valid }}</div>
-    <div>{{ model }}</div>
+
   </div>
 </template>
 
@@ -42,6 +40,9 @@ export default {
       state: {},
       valid: false,
       schema: {},
+      options: {
+        castToSchemaType: true
+      },
       uiSchema: [],
       loaded: false,
       delay: 5000
@@ -60,12 +61,119 @@ export default {
           resolve([
             {
               component: "q-input",
-              model: "firstName",
+              model: "customer",
               fieldOptions: {
                 class: ["form-control"],
                 on: ["input"],
                 attrs: {
-                  label: "Please enter your first name"
+                  label: "Customer"
+                }
+              }
+            },
+            {
+              "component": "div",
+              "fieldOptions": {
+                "attrs": {
+                  "for": "first-name"
+                },
+                "class": [
+                  "font-weight-bold"
+                ],
+                "domProps": {
+                  "innerHTML": "Requiring Entity"
+                }
+              }
+            },
+            {
+              "component": "hr",
+              "fieldOptions": {
+                "attrs": {
+                  "color": "teal"
+                }
+              }
+            },
+            {
+              "component": "q-checkbox",
+              "model": "auth_entity",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "Authorized entity?"
+                }
+              }
+            },
+            {
+              "component": "q-input",
+              "model": "department",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "Department",
+                }
+              }
+            },
+            {
+              "component": "q-input",
+              "model": "requester",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "Requester",
+                }
+              }
+            },
+            {
+              "component": "q-input",
+              "model": "date_request",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "Date of request",
+                  "type":"date"
+                }
+              }
+            },
+            {
+              "component": "q-input",
+              "model": "email",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "e-mail",
+                  "type":"email"
+                }
+              }
+            },
+            {
+              "component": "q-input",
+              "model": "phone",
+              "fieldOptions": {
+                on: ["input"],
+                "attrs": {
+                  "label": "Requester's phone",
+                  "type":"tel"
+                }
+              }
+            },
+            {
+              "component": "div",
+              "fieldOptions": {
+                "attrs": {
+                  "for": "first-name"
+                },
+                "class": [
+                  "font-weight-bold"
+                ],
+                "domProps": {
+                  "innerHTML": "Required service"
+                }
+              }
+            },
+            {
+              "component": "hr",
+              "fieldOptions": {
+                "attrs": {
+                  "color": "teal"
                 }
               }
             }
@@ -78,10 +186,29 @@ export default {
         setTimeout(() => {
           resolve({
             type: "object",
-            required: ["firstName"],
+            required: ["customer", "auth_entity", "department", "requester", "date_request", "email", "phone"],
             properties: {
-              firstName: {
+              customer: {
                 type: "string"
+              },
+              "auth_entity": {
+                "type": "boolean",
+                const: true
+              },
+              "department": {
+                "type": "string"
+              },
+              "requester": {
+                "type": "string"
+              },
+              "date_request": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "phone": {
+                "type": "string"
               }
             }
           });
@@ -92,7 +219,9 @@ export default {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve({
-            firstName: "Tobias"
+            customer: "ASP Bologna",
+            auth_entity: true,
+            date_request: ""
           });
         }, this.delay);
       });
