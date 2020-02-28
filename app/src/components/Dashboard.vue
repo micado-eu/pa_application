@@ -6,8 +6,8 @@
 
 import jwt from "jsonwebtoken"
 
-var METABASE_SITE_URL = "http://dashboard.micado.csi.it";
-var METABASE_SECRET_KEY = "648bd0c2bbb4084e20e3c4eab03f548f9c3d73f7620a4f2b914790b3fdc70619";
+var METABASE_SITE_URL = "https://dashboard.micadoproject.eu";
+var METABASE_SECRET_KEY = "c7e367daa5adb50b8d6a522e4eb5f79572331fc74840fcfd2ca04ebe2e6879c8";
 
 var payload = {
   resource: { dashboard: 1 },

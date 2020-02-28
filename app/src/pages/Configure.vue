@@ -15,7 +15,6 @@
     </q-card-section>
    </q-card>
 
-    {{features}}
   </q-page>
 </template>
 
