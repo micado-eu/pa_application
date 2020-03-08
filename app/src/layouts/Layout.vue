@@ -77,6 +77,7 @@ export default {
       navs: [
         {label:'menu.dashboard', icon: 'school', to: '/dashboard', description: 'example of dashboard'},
         {label:'menu.configure', icon: 'description', to: '/configure', description: 'configure the features of the applications'},
+        {label:'menu.editor', icon: 'description', to: '/editor', description: 'sample of editor with glossary integration'},
   //      {label:'menu.assistant', icon: 'question_answer', to: '/chatbot', description: 'Micado Assistant'},
 //        {label:'menu.processes', icon: 'timeline', to: '/flows', description: 'flow description of processes'},
 //        {label:'menu.notifications', icon: 'mail_outline', to: '/notifications', description: 'messages from PA'},

@@ -8,6 +8,7 @@ const routes = [
 //      { path: '/services', component: () => import('pages/Services.vue') },
 //      { path: '/flows', component: () => import('pages/Flow.vue') },
 //      { path: '/notifications', component: () => import('components/Notifications.vue') },
+      { path: '/editor', component: () => import('pages/Editor.vue') },
       { path: '/dashboard', component: () => import('components/Dashboard.vue') },
       { path: '/requestmediation', component: () => import('pages/MediationRequest.vue') },
 //      { path: '/tasks', component: () => import('pages/Tasks.vue') },

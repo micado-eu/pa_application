@@ -1,0 +1,34 @@
+[
+  {
+    "id":"@residence_permit",
+    "title":"Residence permit1111",
+    "text":"A residence permit (less commonly residency permit) is a document or card required in some regions, allowing a foreign national to reside in a country for a fixed or indefinite length of time. These may be permits for temporary residency, or permanent residency. The exact rules vary between regions. In some cases (e.g. the UK) a temporary residence permit is required to extend a stay past some threshold, and can be an intermediate step to applying for permanent residency. Residency status may be granted for a number of reasons and the criteria for acceptance as a resident may change over time.",
+    "feature":"FEATURE2",
+      "tags":["residence", "permit", "document"]
+
+  },
+  {
+    "id":"@rental_agreement",
+    "title":"Rental agreement",
+    "text": "A rental agreement is a contract of rental, usually written, between the owner of a property and a renter who desires to have temporary possession of the property; it is distinguished from a lease, which is more typically for a fixed term. As a minimum, the agreement identifies the parties, the property, the term of the rental, and the amount of rent for the term. The owner of the property may be referred to as the lessor and the renter as the lessee.There is typically an implied, explicit, or written rental agreement or contract involved to specify the terms of the rental, which are regulated and managed under contract law. Examples include letting out real estate (real property) for the purpose of housing tenure (where the tenant rents a residence to live in), parking space for a vehicle(s), storage space, whole or portions of properties for business, agricultural, institutional, or government use, or other reasons. ",
+    "feature":"FEATURE1",
+    "tags":["location", "agreement", "housing"]
+  },
+  {
+    "id":"@employment_contract",
+    "title":"Employment contract",
+    "text":"An employment contract is a signed agreement between an individual employee and an employer or a labor union. It establishes both the rights and responsibilities of the two parties: the worker and the company.",
+    "feature":"FF4",
+    "tags":["emplyment", "contract", "job", "work"]
+
+  },
+  {
+    "id":"@emergency_room",
+    "title":"Emergency room",
+    "text":"The emergency room is the room or department in a hospital where people who have severe injuries or sudden illnesses are taken for emergency treatment. The abbreviation ER is often used. ",
+    "feature":"FF1",
+    "tags":["health", "injury", "emergency", "doctor"]
+
+  }
+
+]

@@ -11,6 +11,9 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@ckeditor/ckeditor5-build-classic": "^17.0.0",
+    "@ckeditor/ckeditor5-mention": "^17.0.0",
+    "@ckeditor/ckeditor5-vue": "^1.0.1",
     "@quasar/extras": "^1.0.0",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
@@ -26,6 +29,7 @@
     "vue-form-json-schema": "^2.5.0",
     "vue-friendly-iframe": "^0.16.0",
     "vue-i18n": "^7.3.3",
+    "vue-markdown": "^2.2.4",
     "vue-mermaid": "0.0.10",
     "vue2-leaflet": "^2.2.1",
     "vuelidate": "^0.7.4"
