@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated>
+    <q-header elevated class="bg-accent">
       <q-toolbar>
         <q-btn
           flat
@@ -31,13 +31,21 @@
       show-if-above
       :breakpoint="767"
       bordered
-      content-class="bg-green-4"
+      content-class="bg-accent text-white"
 
     >
       <auth-menu />
-      <q-list>
+      <q-list dark>
         <q-item-label header>{{ $t('menu.title') }}</q-item-label>
-          <q-item clickable exact v-for="(nav, index) in navs" :to="nav.to" :key="nav.label" >
+          <q-item
+           clickable
+           exact
+           dark
+           active
+           active-class="my-menu-link"
+           v-for="(nav, index) in navs"
+           :to="nav.to"
+           :key="nav.label" >
             <q-item-section avatar>
               <q-icon :name="nav.icon" />
             </q-item-section>
@@ -97,6 +105,10 @@ export default {
     .q-footer {
       display: none;
     }
+     .my-menu-link{
+    color: white;
+    background: #0b91ce;
+  }
   }
 
 </style>

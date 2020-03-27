@@ -46,15 +46,15 @@ module.exports = function (ctx) {
       all: 'auto',
       config: {
         brand: {
-          primary: '#02e37e',
-          secondary: '#26A69A',
-          accent: '#9C27B0',
+          primary: '#efefef',
+          secondary: '#0b91ce',
+          accent: '#0f3a5d',
 
-          dark: '#1d1d1d',
+          dark: '#0d0d0d',
 
           positive: '#21BA45',
           negative: '#C10015',
-          info: '#31CCEC',
+          info: '#ff7c44',
           warning: '#F2C037'
         }
       },
