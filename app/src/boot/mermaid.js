@@ -20,3 +20,11 @@ Icon.Default.mergeOptions({
 import VueFriendlyIframe from 'vue-friendly-iframe';
 
 Vue.component('vue-friendly-iframe', VueFriendlyIframe);
+
+import VueFormJsonSchema from 'vue-form-json-schema';
+
+Vue.component('vue-form-json-schema', VueFormJsonSchema);
+
+import CKEditor from '@ckeditor/ckeditor5-vue';
+
+Vue.use( CKEditor );

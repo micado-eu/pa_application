@@ -85,7 +85,7 @@ export default {
           name: "Configure services",
           caption: "Configure services shown to migrants",
           icon: "question_answer",
-          to: "/chatbot",
+          to: "/requestmediation",
           href: null,
           target: null
         },

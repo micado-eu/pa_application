@@ -1,0 +1,8 @@
+language: node_js
+node_js:
+  - 10
+before_install: cd app
+install:
+  - npm install
+script:
+  - QENV=test;NODE_ENV=test;quasar test --unit jest

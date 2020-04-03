@@ -3,7 +3,9 @@ import Vuex from 'vuex'
 
 // import example from './module-example'
 import documents from './documents'
+import features from './features'
 import flows from './flows'
+import glossary from './glossary'
 
 Vue.use(Vuex)
 
@@ -17,6 +19,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       // example
       documents,
+      features,
+      glossary,
       flows
     },
 

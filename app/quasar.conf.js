@@ -27,7 +27,7 @@ module.exports = function (ctx) {
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      'roboto-font', // optional, you are not bound to it
+      //'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
 
@@ -46,15 +46,15 @@ module.exports = function (ctx) {
       all: 'auto',
       config: {
         brand: {
-          primary: '#02e37e',
-          secondary: '#26A69A',
-          accent: '#9C27B0',
+          primary: '#efefef',
+          secondary: '#0b91ce',
+          accent: '#0f3a5d',
 
-          dark: '#1d1d1d',
+          dark: '#0d0d0d',
 
           positive: '#21BA45',
           negative: '#C10015',
-          info: '#31CCEC',
+          info: '#ff7c44',
           warning: '#F2C037'
         }
       },
@@ -73,7 +73,8 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       scopeHoisting: true,
-      // vueRouterMode: 'history',
+      vueRouterMode: 'history',
+      vueCompiler: true,
       // showProgress: false,
       // gzip: true,
       // analyze: true,
@@ -85,6 +86,8 @@ module.exports = function (ctx) {
       },
       chainWebpack (chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/mock' );
+        chain.resolve.alias.set('api-features-client', 'src/api/features/server');
+        chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock' );
       }
     },
