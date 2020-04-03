@@ -1,2 +1,1 @@
-docker-compose-local.yaml
-package-lock.json
+docker-compose.local.yaml
