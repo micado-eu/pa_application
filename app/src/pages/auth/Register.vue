@@ -58,7 +58,7 @@
           <q-btn
             :label="$t('auth.register.register')"
             :loading="loading"
-            color="info"
+            color="accent"
             type="submit"
           />
         </q-card-actions>

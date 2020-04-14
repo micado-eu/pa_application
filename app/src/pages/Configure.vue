@@ -11,7 +11,7 @@
       color="yellow"
       type="toggle"
     />
-        <q-btn color="info" glossy label="Save" @click="saveFeatures"/>
+        <q-btn color="accent" glossy label="Save" @click="saveFeatures"/>
     </q-card-section>
    </q-card>
 
