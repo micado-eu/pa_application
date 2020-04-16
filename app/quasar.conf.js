@@ -10,7 +10,8 @@ module.exports = function (ctx) {
       'i18n',
       'auth',
       'mermaid',
-      'axios'
+      'axios',
+      'loadData'
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
@@ -86,9 +87,10 @@ module.exports = function (ctx) {
       },
       chainWebpack (chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/mock' );
-        chain.resolve.alias.set('api-features-client', 'src/api/features/server');
+        chain.resolve.alias.set('api-features-client', 'src/api/features/mock');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock' );
+        chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/mock' );
       }
     },
 
