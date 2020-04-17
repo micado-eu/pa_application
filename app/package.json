@@ -29,6 +29,7 @@
     "validator": "^11.1.0",
     "vue-form-json-schema": "^2.5.0",
     "vue-friendly-iframe": "^0.16.0",
+    "vue-hotspot": "^2.0.1",
     "vue-i18n": "^7.3.3",
     "vue-markdown": "^2.2.4",
     "vue-mermaid": "0.0.10",
