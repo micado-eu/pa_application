@@ -1,4 +1,6 @@
-import statistics from './data/statistics'
+import timeseries from './data/timeseries'
+import origin from './data/origin'
+
 
 const fetch = (mockData, time = 0) => {
   return new Promise((resolve) => {
@@ -9,7 +11,10 @@ const fetch = (mockData, time = 0) => {
 }
 
 export default {
-  fetchStatistics () {
-    return fetch(statistics, 1000) // wait 1s before returning posts
+  fetchStatistics() {
+    return Promise.all([fetch(timeseries, 1000), fetch(origin, 1000)])
+      .then((res) => {
+        return { timeseries: res[0], origin: res[1] };
+      });
   }
 }

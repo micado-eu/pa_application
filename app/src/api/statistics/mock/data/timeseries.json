@@ -1,0 +1,434 @@
+{
+    "situation_view_id": "11",
+    "situation_view_name": "Mediterranean Situation",
+    "situation_view_description": "Persecution, conflict and poverty forced over 1 million people to flee to Europe in 2015. Many came seeking safety for themselves and their families, risking their lives and facing a treacherous journey",
+    "data": {
+      "timeseries": [
+        {
+          "month": 1,
+          "year": 2014,
+          "unix_timestamp": 1390867200,
+          "individuals": 955
+        },
+        {
+          "month": 2,
+          "year": 2014,
+          "unix_timestamp": 1393545600,
+          "individuals": 1001
+        },
+        {
+          "month": 3,
+          "year": 2014,
+          "unix_timestamp": 1395964800,
+          "individuals": 1501
+        },
+        {
+          "month": 4,
+          "year": 2014,
+          "unix_timestamp": 1398643200,
+          "individuals": 1257
+        },
+        {
+          "month": 5,
+          "year": 2014,
+          "unix_timestamp": 1401235200,
+          "individuals": 1703
+        },
+        {
+          "month": 6,
+          "year": 2014,
+          "unix_timestamp": 1403913600,
+          "individuals": 3198
+        },
+        {
+          "month": 7,
+          "year": 2014,
+          "unix_timestamp": 1406505600,
+          "individuals": 3927
+        },
+        {
+          "month": 8,
+          "year": 2014,
+          "unix_timestamp": 1409184000,
+          "individuals": 6742
+        },
+        {
+          "month": 9,
+          "year": 2014,
+          "unix_timestamp": 1411862400,
+          "individuals": 7454
+        },
+        {
+          "month": 10,
+          "year": 2014,
+          "unix_timestamp": 1414454400,
+          "individuals": 7432
+        },
+        {
+          "month": 11,
+          "year": 2014,
+          "unix_timestamp": 1417132800,
+          "individuals": 3812
+        },
+        {
+          "month": 12,
+          "year": 2014,
+          "unix_timestamp": 1419724800,
+          "individuals": 2056
+        },
+        {
+          "month": 1,
+          "year": 2015,
+          "unix_timestamp": 1422403200,
+          "individuals": 1694
+        },
+        {
+          "month": 2,
+          "year": 2015,
+          "unix_timestamp": 1425081600,
+          "individuals": 2873
+        },
+        {
+          "month": 3,
+          "year": 2015,
+          "unix_timestamp": 1427500800,
+          "individuals": 7874
+        },
+        {
+          "month": 4,
+          "year": 2015,
+          "unix_timestamp": 1430179200,
+          "individuals": 13556
+        },
+        {
+          "month": 5,
+          "year": 2015,
+          "unix_timestamp": 1432771200,
+          "individuals": 17889
+        },
+        {
+          "month": 6,
+          "year": 2015,
+          "unix_timestamp": 1435449600,
+          "individuals": 31318
+        },
+        {
+          "month": 7,
+          "year": 2015,
+          "unix_timestamp": 1438041600,
+          "individuals": 54899
+        },
+        {
+          "month": 8,
+          "year": 2015,
+          "unix_timestamp": 1440720000,
+          "individuals": 107843
+        },
+        {
+          "month": 9,
+          "year": 2015,
+          "unix_timestamp": 1443398400,
+          "individuals": 147123
+        },
+        {
+          "month": 10,
+          "year": 2015,
+          "unix_timestamp": 1445990400,
+          "individuals": 211663
+        },
+        {
+          "month": 11,
+          "year": 2015,
+          "unix_timestamp": 1448668800,
+          "individuals": 151249
+        },
+        {
+          "month": 12,
+          "year": 2015,
+          "unix_timestamp": 1451260800,
+          "individuals": 108742
+        },
+        {
+          "month": 1,
+          "year": 2016,
+          "unix_timestamp": 1453939200,
+          "individuals": 67415
+        },
+        {
+          "month": 2,
+          "year": 2016,
+          "unix_timestamp": 1456617600,
+          "individuals": 57066
+        },
+        {
+          "month": 3,
+          "year": 2016,
+          "unix_timestamp": 1459123200,
+          "individuals": 26971
+        },
+        {
+          "month": 4,
+          "year": 2016,
+          "unix_timestamp": 1461801600,
+          "individuals": 3650
+        },
+        {
+          "month": 5,
+          "year": 2016,
+          "unix_timestamp": 1464393600,
+          "individuals": 1721
+        },
+        {
+          "month": 6,
+          "year": 2016,
+          "unix_timestamp": 1467072000,
+          "individuals": 1554
+        },
+        {
+          "month": 7,
+          "year": 2016,
+          "unix_timestamp": 1469664000,
+          "individuals": 1920
+        },
+        {
+          "month": 8,
+          "year": 2016,
+          "unix_timestamp": 1472342400,
+          "individuals": 3447
+        },
+        {
+          "month": 9,
+          "year": 2016,
+          "unix_timestamp": 1475020800,
+          "individuals": 3080
+        },
+        {
+          "month": 10,
+          "year": 2016,
+          "unix_timestamp": 1477612800,
+          "individuals": 2970
+        },
+        {
+          "month": 11,
+          "year": 2016,
+          "unix_timestamp": 1480291200,
+          "individuals": 1991
+        },
+        {
+          "month": 12,
+          "year": 2016,
+          "unix_timestamp": 1482883200,
+          "individuals": 1665
+        },
+        {
+          "month": 1,
+          "year": 2017,
+          "unix_timestamp": 1485561600,
+          "individuals": 1393
+        },
+        {
+          "month": 2,
+          "year": 2017,
+          "unix_timestamp": 1488240000,
+          "individuals": 1089
+        },
+        {
+          "month": 3,
+          "year": 2017,
+          "unix_timestamp": 1490659200,
+          "individuals": 1526
+        },
+        {
+          "month": 4,
+          "year": 2017,
+          "unix_timestamp": 1493337600,
+          "individuals": 1156
+        },
+        {
+          "month": 5,
+          "year": 2017,
+          "unix_timestamp": 1495929600,
+          "individuals": 2110
+        },
+        {
+          "month": 6,
+          "year": 2017,
+          "unix_timestamp": 1498608000,
+          "individuals": 2012
+        },
+        {
+          "month": 7,
+          "year": 2017,
+          "unix_timestamp": 1501200000,
+          "individuals": 2249
+        },
+        {
+          "month": 8,
+          "year": 2017,
+          "unix_timestamp": 1503878400,
+          "individuals": 3584
+        },
+        {
+          "month": 9,
+          "year": 2017,
+          "unix_timestamp": 1506556800,
+          "individuals": 4886
+        },
+        {
+          "month": 10,
+          "year": 2017,
+          "unix_timestamp": 1509148800,
+          "individuals": 4134
+        },
+        {
+          "month": 11,
+          "year": 2017,
+          "unix_timestamp": 1511827200,
+          "individuals": 3215
+        },
+        {
+          "month": 12,
+          "year": 2017,
+          "unix_timestamp": 1514419200,
+          "individuals": 2364
+        },
+        {
+          "month": 1,
+          "year": 2018,
+          "unix_timestamp": 1517097600,
+          "individuals": 2164
+        },
+        {
+          "month": 2,
+          "year": 2018,
+          "unix_timestamp": 1519776000,
+          "individuals": 1800
+        },
+        {
+          "month": 3,
+          "year": 2018,
+          "unix_timestamp": 1522195200,
+          "individuals": 3944
+        },
+        {
+          "month": 4,
+          "year": 2018,
+          "unix_timestamp": 1524873600,
+          "individuals": 6854
+        },
+        {
+          "month": 5,
+          "year": 2018,
+          "unix_timestamp": 1527465600,
+          "individuals": 4734
+        },
+        {
+          "month": 6,
+          "year": 2018,
+          "unix_timestamp": 1530144000,
+          "individuals": 3665
+        },
+        {
+          "month": 7,
+          "year": 2018,
+          "unix_timestamp": 1532736000,
+          "individuals": 4144
+        },
+        {
+          "month": 8,
+          "year": 2018,
+          "unix_timestamp": 1535414400,
+          "individuals": 4320
+        },
+        {
+          "month": 9,
+          "year": 2018,
+          "unix_timestamp": 1538092800,
+          "individuals": 5662
+        },
+        {
+          "month": 10,
+          "year": 2018,
+          "unix_timestamp": 1540684800,
+          "individuals": 6048
+        },
+        {
+          "month": 11,
+          "year": 2018,
+          "unix_timestamp": 1543363200,
+          "individuals": 3203
+        },
+        {
+          "month": 12,
+          "year": 2018,
+          "unix_timestamp": 1545955200,
+          "individuals": 3970
+        },
+        {
+          "month": 1,
+          "year": 2019,
+          "unix_timestamp": 1548633600,
+          "individuals": 2652
+        },
+        {
+          "month": 2,
+          "year": 2019,
+          "unix_timestamp": 1551312000,
+          "individuals": 2316
+        },
+        {
+          "month": 3,
+          "year": 2019,
+          "unix_timestamp": 1553731200,
+          "individuals": 3159
+        },
+        {
+          "month": 4,
+          "year": 2019,
+          "unix_timestamp": 1556409600,
+          "individuals": 3020
+        },
+        {
+          "month": 5,
+          "year": 2019,
+          "unix_timestamp": 1559001600,
+          "individuals": 3198
+        },
+        {
+          "month": 6,
+          "year": 2019,
+          "unix_timestamp": 1561680000,
+          "individuals": 4059
+        },
+        {
+          "month": 7,
+          "year": 2019,
+          "unix_timestamp": 1564272000,
+          "individuals": 2708
+        }
+      ],
+      "geoMasterId": {
+        "id": 640,
+        "name": "Greece",
+        "lat": 39,
+        "lon": 22,
+        "adm": "Country"
+      }
+    },
+    "title_language_ar": "",
+    "title_language_en": "Sea and land arrivals monthly",
+    "title_language_es": "",
+    "title_language_fr": "",
+    "subtitle_language_ar": "",
+    "subtitle_language_en": "",
+    "subtitle_language_es": "",
+    "subtitle_language_fr": "",
+    "limit": "",
+    "color": "#3c8dbc",
+    "frequency": "month",
+    "chartType": "column",
+    "async": "1",
+    "enable_json": "1",
+    "enable_csv": "1",
+    "currentSeries": 1
+  }

@@ -2,8 +2,13 @@
 export function someMutation (state) {
 }
 */
-export function setStatistics (state, statistics) {
-    if(statistics){
-      state.statistics = statistics
-    }
+export function setTimeseries(state, timeseries) {
+  if (timeseries) {
+    state.timeseries = timeseries
   }
+}
+export function setOrigin(state, origin) {
+  if (origin) {
+    state.origin = origin
+  }
+}

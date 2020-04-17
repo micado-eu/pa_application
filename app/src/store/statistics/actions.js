@@ -6,5 +6,8 @@ export function someAction (context) {
 export function fetchStatistics(state, data) {
   return client
     .fetchStatistics()
-    .then(statistics => state.commit('setStatistics', statistics))
+    .then(res => {
+      state.commit('setTimeseries', res.timeseries)
+      state.commit('setOrigin', res.origin)
+    })
 }
