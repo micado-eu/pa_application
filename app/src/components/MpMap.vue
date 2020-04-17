@@ -1,8 +1,16 @@
 <template>
-  <div class="mock-body">
-    <div class="mock-content">
-      <div class="map-background">
-        <div id="map"></div>
+  <div class="row">
+    <div class="col-12">
+      <lineChart :lineData="timeseries" :timeColumn="'unix_timestamp'" :valueColumn="'individuals'" />
+    </div>
+    <div class="col-2">one sixth</div>
+    <div class="col-auto">auto size based on content and available space</div>
+    <div class="col">fills remaining available space</div>
+    <div class="mock-body col">
+      <div class="mock-content">
+        <div class="map-background">
+          <div id="map"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -18,9 +26,18 @@ import * as mpapi from "masterportalAPI";
 import services from "../api/map/config/services.json";
 import portalConfig from "../api/map/config/portal.json";
 import localGeoJSON from "../api/map/config/localGeoJSON.js";
+import lineChart from "./migration_monitor/lineChart";
 
 export default {
   name: "MpMap",
+  components: {
+    lineChart
+  },
+  computed: {
+    timeseries: function() {
+      return this.$store.state.statistics.timeseries.data.timeseries;
+    }
+  },
   mounted: function() {
     const hamburgServicesUrl =
       "http://geoportal-hamburg.de/lgv-config/services-internet.json";
