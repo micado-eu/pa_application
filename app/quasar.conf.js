@@ -90,6 +90,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-features-client', 'src/api/features/mock');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock' );
+        chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/mock' );
         chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/mock' );
       }
     },
