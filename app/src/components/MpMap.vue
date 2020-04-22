@@ -1,15 +1,25 @@
 <template>
-  <div class="row">
-    <div class="col-12">
-      <lineChart :lineData="timeseries" :timeColumn="'unix_timestamp'" :valueColumn="'individuals'" />
+  <div>
+    <div class="row justify-center" id="row1">
+      <div class="col-10" id="container1">
+        <lineChart
+          id="chart1"
+          :lineData="timeseries"
+          :timeColumn="'unix_timestamp'"
+          :valueColumn="'individuals'"
+        />
+      </div>
     </div>
-    <div class="col-2">one sixth</div>
-    <div class="col-auto">auto size based on content and available space</div>
-    <div class="col">fills remaining available space</div>
-    <div class="mock-body col">
-      <div class="mock-content">
-        <div class="map-background">
-          <div id="map"></div>
+    <div class="row justify-center" id="row1">
+      <div class="col-5" id="chart2">chart2</div>
+      <div class="col-5" id="chart3">chart3</div>
+    </div>
+    <div class="row justify-center">
+      <div class="mock-body col-10">
+        <div class="mock-content">
+          <div class="map-background">
+            <div id="map"></div>
+          </div>
         </div>
       </div>
     </div>
@@ -77,24 +87,59 @@ export default {
 </script>
 
 <style>
-.mock-body {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
+
 .mock-content {
   padding: 1em;
   color: black;
-  background: #e0e0e0;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
+  background: white;
+  /* display: flex; */
+  /* flex-direction: column; */
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
 }
-.content-mock {
-  padding: 0.2em;
-}
+
 /* Not part of MPAPI, but really nice if no background image is configured. */
 .map-background {
   background: #22222222;
 }
+#row1 {
+  height: 400px;
+}
+#row2 {
+  height: 400px;
+}
+#chart1 {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  /* margin-top: 5%;
+  margin-left: 5%; */
+  background: white;
+  border-radius: 5px;
+}
+#chart2 {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  /* margin-top: 5%;
+  margin-left: 5%; */
+  background: white;
+  border-radius: 5px;
+}
+#chart3 {
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  /* margin-top: 5%;
+  margin-left: 5%; */
+  background: white;
+  border-radius: 5px;
+}
+
 </style>

@@ -17,10 +17,10 @@ export default {
     this.svgAxisX = select(this.$el)
       .append("g")
       .call(this.axisX.tickSize(2))
-      .attr("stroke", "white");
-    // use post-selection to change axis color
-    this.svgAxisX.select("path").style('stroke','white');
-    this.svgAxisX.selectAll("line").style('stroke','white');
+    //   .attr("stroke", "white");
+    // // use post-selection to change axis color
+    // this.svgAxisX.select("path").style('stroke','white');
+    // this.svgAxisX.selectAll("line").style('stroke','white');
   }
 };
 </script>

@@ -3,7 +3,7 @@
 </template>
 
 <script>
-import { select, axisLeft, ScaleLinear } from "d3";
+import { select, axisLeft } from "d3";
 
 export default {
   name: "ChartAxisLeft",
@@ -17,9 +17,9 @@ export default {
     this.svgAxisY = select(this.$el)
       .append("g")
       .call(this.axisY.tickSize(2))
-      .attr("stroke", "white");
-    this.svgAxisY.select("path").style("stroke", "white");
-    this.svgAxisY.selectAll("line").style("stroke", "white");
+    //   .attr("stroke", "white");
+    // this.svgAxisY.select("path").style("stroke", "white");
+    // this.svgAxisY.selectAll("line").style("stroke", "white");
   }
 };
 </script>

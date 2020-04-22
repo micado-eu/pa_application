@@ -8,15 +8,17 @@
         :cx="scaleX(new Date(d[timeColumn]*1000))"
         :cy="scaleY(d[valueColumn])"
         :r="2"
-        fill="white"
+        fill="#3490DC"
       />
     </g>
     <ChartAxisBottom
       :scaleX="scaleX"
+      :key = "axisBottomKey"
       :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"
     />
     <ChartAxisLeft
       :scaleY="scaleY"
+      :key = "axisLeftKey"
       :transform="'translate(' + margin.left + ', ' + margin.top + ')'"
     />
   </svg>
@@ -55,9 +57,10 @@ export default {
         right: 20,
         bottom: 50
       },
-      width: 1200,
-      height: 300,
-      line: ""
+      width: '100%',
+      height: '100%',
+      axisBottomKey: 'axisBottom',
+      axisLeftKey: 'axisLeft'
     };
   },
   computed: {
@@ -82,24 +85,25 @@ export default {
     }
   },
   methods: {
-    // scaleX: function(data) {
-    //   console.log('scaleX');
-    //   const scale = scaleTime()
-    //     .domain(extent(this.lineData, d => new Date(d[this.timeColumn] * 1000)))
-    //     .range([0, this.width - this.margin.left - this.margin.right]);
-    //   return scale(data);
-    // }
   },
-  mounted: function() {}
+  mounted: function() {
+    const client = this.$el.getBoundingClientRect();
+    console.log("rect: ",this.$el.getBoundingClientRect());
+    this.width = client.width;
+    this.height = client.height;
+    // force axes to update according to the size
+    this.axisBottomKey = 'axisBottomReady';
+    this.axisLeftKey = 'axisLeftReady';
+  }
 };
 </script>
 <style scoped>
 svg {
-  background-color: #f47166;
+  background-color: null;
 }
 path {
   fill: none;
-  stroke: #ecbc3a;
+  stroke: #99E6B4;
   stroke-width: 3px;
 }
 </style>
