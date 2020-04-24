@@ -13,12 +13,12 @@
     </g>
     <ChartAxisBottom
       :scaleX="scaleX"
-      :key = "axisBottomKey"
+      :key="xid"
       :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"
     />
     <ChartAxisLeft
       :scaleY="scaleY"
-      :key = "axisLeftKey"
+      :key="yid"
       :transform="'translate(' + margin.left + ', ' + margin.top + ')'"
     />
   </svg>
@@ -57,10 +57,11 @@ export default {
         right: 20,
         bottom: 50
       },
-      width: '100%',
-      height: '100%',
-      axisBottomKey: 'axisBottom',
-      axisLeftKey: 'axisLeft'
+      width: "100%",
+      height: "100%",
+      xid: "x0",
+      yid: "y0",
+      timeout: false
     };
   },
   computed: {
@@ -85,25 +86,48 @@ export default {
     }
   },
   methods: {
+    updateGraph: function() {
+      const client = this.$el.getBoundingClientRect();
+      this.width = client.width - 20;
+      this.height = client.height;
+      // force axes to update according to the size
+      this.xid = this.xid === "x_0" ? "x_1" : "x_0";
+      this.yid = this.yid === "y_0" ? "y_1" : "y_0";
+    },
+    onResize: function() {
+      // clear the timeout
+      clearTimeout(this.timeout);
+      // start timing for event "completion"
+      this.timeout = setTimeout(this.updateGraph, 250);
+    }
   },
   mounted: function() {
-    const client = this.$el.getBoundingClientRect();
-    console.log("rect: ",this.$el.getBoundingClientRect());
-    this.width = client.width;
-    this.height = client.height;
-    // force axes to update according to the size
-    this.axisBottomKey = 'axisBottomReady';
-    this.axisLeftKey = 'axisLeftReady';
+    // window.resize event listener
+    window.addEventListener("resize", this.onResize);
+    this.updateGraph();
+  },
+  beforeDestroy: function() {
+    window.removeEventListener("resize", this.onResize);
   }
 };
 </script>
 <style scoped>
 svg {
-  background-color: null;
+  /* background-color: null; */
+  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
+    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
+    0 100px 80px rgba(0, 0, 0, 0.12);
+  border-radius: 5px;
+}
+div {
+  /* margin-top: 5%;
+  margin-left: 5%; */
+  background: white;
 }
 path {
   fill: none;
-  stroke: #99E6B4;
+  stroke: #99e6b4;
   stroke-width: 3px;
 }
 </style>

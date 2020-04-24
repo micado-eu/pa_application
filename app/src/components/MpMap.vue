@@ -1,21 +1,29 @@
 <template>
   <div>
-    <div class="row justify-center" id="row1">
-      <div class="col-10" id="container1">
-        <lineChart
-          id="chart1"
-          :lineData="timeseries"
-          :timeColumn="'unix_timestamp'"
-          :valueColumn="'individuals'"
-        />
-      </div>
+    <div class="row justify-center" id="row">
+      <lineChart
+        id="chart1"
+        :lineData="timeseries"
+        :timeColumn="'unix_timestamp'"
+        :valueColumn="'individuals'"
+      />
     </div>
-    <div class="row justify-center" id="row1">
-      <div class="col-5" id="chart2">chart2</div>
-      <div class="col-5" id="chart3">chart3</div>
+    <div id="row">
+      <pieChart
+        id="chart2"
+        :pieData="origins"
+        :labelColumn="'pop_origin_name'"
+        :valueColumn="'individuals'"
+      />
+      <lineChart
+        id="chart3"
+        :lineData="timeseries"
+        :timeColumn="'unix_timestamp'"
+        :valueColumn="'individuals'"
+      />
     </div>
-    <div class="row justify-center">
-      <div class="mock-body col-10">
+    <div id="map-row">
+      <div class="mock-body">
         <div class="mock-content">
           <div class="map-background">
             <div id="map"></div>
@@ -37,15 +45,20 @@ import services from "../api/map/config/services.json";
 import portalConfig from "../api/map/config/portal.json";
 import localGeoJSON from "../api/map/config/localGeoJSON.js";
 import lineChart from "./migration_monitor/lineChart";
+import pieChart from "./migration_monitor/pieChart";
 
 export default {
   name: "MpMap",
   components: {
-    lineChart
+    lineChart,
+    pieChart
   },
   computed: {
     timeseries: function() {
       return this.$store.state.statistics.timeseries.data.timeseries;
+    },
+    origins:function(){
+      return this.$store.state.statistics.origin.data;
     }
   },
   mounted: function() {
@@ -87,7 +100,9 @@ export default {
 </script>
 
 <style>
-
+.mock-body {
+  flex: 1;
+}
 .mock-content {
   padding: 1em;
   color: black;
@@ -105,33 +120,43 @@ export default {
 .map-background {
   background: #22222222;
 }
-#row1 {
+#row {
   height: 400px;
+  display: flex;
+  margin: auto;
+  width: 90%;
+  margin-top: 20px;
 }
-#row2 {
-  height: 400px;
+#map-row {
+  display: flex;
+  margin: auto;
+  width: 90%;
+  margin-top: 20px;
 }
 #chart1 {
+  flex: 1;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 6.7px 5.3px rgba(29, 21, 21, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
-  /* margin-top: 5%;
-  margin-left: 5%; */
-  background: white;
-  border-radius: 5px;
 }
 #chart2 {
+  flex: 1;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
+    0 6.7px 5.3px rgba(29, 21, 21, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
   /* margin-top: 5%;
   margin-left: 5%; */
+  margin-right: 10px;
+
   background: white;
   border-radius: 5px;
 }
 #chart3 {
+  flex: 1;
+  margin-left: 10px;
+
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
@@ -141,5 +166,4 @@ export default {
   background: white;
   border-radius: 5px;
 }
-
 </style>
