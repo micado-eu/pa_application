@@ -9,5 +9,6 @@ export function fetchStatistics(state, data) {
     .then(res => {
       state.commit('setTimeseries', res.timeseries)
       state.commit('setOrigin', res.origin)
+      state.commit('setMigrants', res.migrants)
     })
 }

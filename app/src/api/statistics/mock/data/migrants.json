@@ -1,0 +1,384 @@
+{
+  "data": {
+    "migrants": [
+      {
+        "month": 1,
+        "year": 2015,
+        "unix_timestamp": 1422403200,
+        "AsylbLG3": 10493,
+        "AsylbLG2": 2417
+      },
+      {
+        "month": 2,
+        "year": 2015,
+        "unix_timestamp": 1425081600,
+        "AsylbLG3": 11248,
+        "AsylbLG2": 2396
+      },
+      {
+        "month": 3,
+        "year": 2015,
+        "unix_timestamp": 1427500800,
+        "AsylbLG3": 8536,
+        "AsylbLG2": 3824
+      },
+      {
+        "month": 4,
+        "year": 2015,
+        "unix_timestamp": 1430179200,
+        "AsylbLG3": 8323,
+        "AsylbLG2": 3240
+      },
+      {
+        "month": 5,
+        "year": 2015,
+        "unix_timestamp": 1432771200,
+        "AsylbLG3": 8731,
+        "AsylbLG2": 3276
+      },
+      {
+        "month": 6,
+        "year": 2015,
+        "unix_timestamp": 1435449600,
+        "AsylbLG3": 8813,
+        "AsylbLG2": 3325
+      },
+      {
+        "month": 7,
+        "year": 2015,
+        "unix_timestamp": 1438041600,
+        "AsylbLG3": 8857,
+        "AsylbLG2": 3452
+      },
+      {
+        "month": 8,
+        "year": 2015,
+        "unix_timestamp": 1440720000,
+        "AsylbLG3": 9401,
+        "AsylbLG2": 3539
+      },
+      {
+        "month": 9,
+        "year": 2015,
+        "unix_timestamp": 1443398400,
+        "AsylbLG3": 10244,
+        "AsylbLG2": 3578
+      },
+      {
+        "month": 10,
+        "year": 2015,
+        "unix_timestamp": 1445990400,
+        "AsylbLG3": 11951,
+        "AsylbLG2": 3730
+      },
+      {
+        "month": 11,
+        "year": 2015,
+        "unix_timestamp": 1448668800,
+        "AsylbLG3": 13645,
+        "AsylbLG2": 3782
+      },
+      {
+        "month": 12,
+        "year": 2015,
+        "unix_timestamp": 1451260800,
+        "AsylbLG3": 15839,
+        "AsylbLG2": 3878
+      },
+      {
+        "month": 1,
+        "year": 2016,
+        "unix_timestamp": 1453939200,
+        "AsylbLG3": 18561,
+        "AsylbLG2": 3990
+      },
+      {
+        "month": 2,
+        "year": 2016,
+        "unix_timestamp": 1456617600,
+        "AsylbLG3": 21140,
+        "AsylbLG2": 4151
+      },
+      {
+        "month": 3,
+        "year": 2016,
+        "unix_timestamp": 1459123200,
+        "AsylbLG3": 20946,
+        "AsylbLG2": 4340
+      },
+      {
+        "month": 4,
+        "year": 2016,
+        "unix_timestamp": 1461801600,
+        "AsylbLG3": 20166,
+        "AsylbLG2": 4461
+      },
+      {
+        "month": 5,
+        "year": 2016,
+        "unix_timestamp": 1464393600,
+        "AsylbLG3": 18840,
+        "AsylbLG2": 4699
+      },
+      {
+        "month": 6,
+        "year": 2016,
+        "unix_timestamp": 1467072000,
+        "AsylbLG3": 17961,
+        "AsylbLG2": 4829
+      },
+      {
+        "month": 7,
+        "year": 2016,
+        "unix_timestamp": 1469664000,
+        "AsylbLG3": 17261,
+        "AsylbLG2": 4913
+      },
+      {
+        "month": 8,
+        "year": 2016,
+        "unix_timestamp": 1472342400,
+        "AsylbLG3": 16769,
+        "AsylbLG2": 4960
+      },
+      {
+        "month": 9,
+        "year": 2016,
+        "unix_timestamp": 1475020800,
+        "AsylbLG3": 15815,
+        "AsylbLG2": 5052
+      },
+      {
+        "month": 10,
+        "year": 2016,
+        "unix_timestamp": 1477612800,
+        "AsylbLG3": 14710,
+        "AsylbLG2": 5361
+      },
+      {
+        "month": 11,
+        "year": 2016,
+        "unix_timestamp": 1480291200,
+        "AsylbLG3": 12982,
+        "AsylbLG2": 5701
+      },
+      {
+        "month": 12,
+        "year": 2016,
+        "unix_timestamp": 1482883200,
+        "AsylbLG3": 11213,
+        "AsylbLG2": 6359
+      },
+      {
+        "month": 1,
+        "year": 2017,
+        "unix_timestamp": 1485561600,
+        "AsylbLG3": 9434,
+        "AsylbLG2": 7383
+      },
+      {
+        "month": 2,
+        "year": 2017,
+        "unix_timestamp": 1488240000,
+        "AsylbLG3": 7688,
+        "AsylbLG2": 8159
+      },
+      {
+        "month": 3,
+        "year": 2017,
+        "unix_timestamp": 1490659200,
+        "AsylbLG3": 6361,
+        "AsylbLG2": 8701
+      },
+      {
+        "month": 4,
+        "year": 2017,
+        "unix_timestamp": 1493337600,
+        "AsylbLG3": 5504,
+        "AsylbLG2": 8795
+      },
+      {
+        "month": 5,
+        "year": 2017,
+        "unix_timestamp": 1495929600,
+        "AsylbLG3": 4815,
+        "AsylbLG2": 8870
+      },
+      {
+        "month": 6,
+        "year": 2017,
+        "unix_timestamp": 1498608000,
+        "AsylbLG3": 4381,
+        "AsylbLG2": 8793
+      },
+      {
+        "month": 7,
+        "year": 2017,
+        "unix_timestamp": 1501200000,
+        "AsylbLG3": 4188,
+        "AsylbLG2": 8652
+      },
+      {
+        "month": 8,
+        "year": 2017,
+        "unix_timestamp": 1503878400,
+        "AsylbLG3": 4074,
+        "AsylbLG2": 8399
+      },
+      {
+        "month": 9,
+        "year": 2017,
+        "unix_timestamp": 1506556800,
+        "AsylbLG3": 3880,
+        "AsylbLG2": 8285
+      },
+      {
+        "month": 10,
+        "year": 2017,
+        "unix_timestamp": 1509148800,
+        "AsylbLG3": 3800,
+        "AsylbLG2": 8302
+      },
+      {
+        "month": 11,
+        "year": 2017,
+        "unix_timestamp": 1511827200,
+        "AsylbLG3": 3770,
+        "AsylbLG2": 8231
+      },
+      {
+        "month": 12,
+        "year": 2017,
+        "unix_timestamp": 1514419200,
+        "AsylbLG3": 3738,
+        "AsylbLG2": 8107
+      },
+      {
+        "month": 1,
+        "year": 2018,
+        "unix_timestamp": 1517097600,
+        "AsylbLG3": 3700,
+        "AsylbLG2": 8132
+      },
+      {
+        "month": 2,
+        "year": 2018,
+        "unix_timestamp": 1519776000,
+        "AsylbLG3": 3675,
+        "AsylbLG2": 8066
+      },
+      {
+        "month": 3,
+        "year": 2018,
+        "unix_timestamp": 1522195200,
+        "AsylbLG3": 3704,
+        "AsylbLG2": 8099
+      },
+      {
+        "month": 4,
+        "year": 2018,
+        "unix_timestamp": 1524873600,
+        "AsylbLG3": 3678,
+        "AsylbLG2": 8004
+      },
+      {
+        "month": 5,
+        "year": 2018,
+        "unix_timestamp": 1527465600,
+        "AsylbLG3": 3670,
+        "AsylbLG2": 7859
+      },
+      {
+        "month": 6,
+        "year": 2018,
+        "unix_timestamp": 1530144000,
+        "AsylbLG3": 3697,
+        "AsylbLG2": 7859
+      },
+      {
+        "month": 7,
+        "year": 2018,
+        "unix_timestamp": 1532736000,
+        "AsylbLG3": 3684,
+        "AsylbLG2": 7822
+      },
+      {
+        "month": 8,
+        "year": 2018,
+        "unix_timestamp": 1535414400,
+        "AsylbLG3": 3670,
+        "AsylbLG2": 7764
+      },
+      {
+        "month": 9,
+        "year": 2018,
+        "unix_timestamp": 1538092800,
+        "AsylbLG3": 3738,
+        "AsylbLG2": 7665
+      },
+      {
+        "month": 10,
+        "year": 2018,
+        "unix_timestamp": 1540684800,
+        "AsylbLG3": 3706,
+        "AsylbLG2": 7519
+      },
+      {
+        "month": 11,
+        "year": 2018,
+        "unix_timestamp": 1543363200,
+        "AsylbLG3": 3746,
+        "AsylbLG2": 7512
+      },
+      {
+        "month": 12,
+        "year": 2018,
+        "unix_timestamp": 1545955200,
+        "AsylbLG3": 3744,
+        "AsylbLG2": 7495
+      },
+      {
+        "month": 1,
+        "year": 2019,
+        "unix_timestamp": 1548633600,
+        "AsylbLG3": 3851,
+        "AsylbLG2": 7549
+      },
+      {
+        "month": 2,
+        "year": 2019,
+        "unix_timestamp": 1551312000,
+        "AsylbLG3": 3878,
+        "AsylbLG2": 7560
+      },
+      {
+        "month": 3,
+        "year": 2019,
+        "unix_timestamp": 1553731200,
+        "AsylbLG3": 3859,
+        "AsylbLG2": 7558
+      },
+      {
+        "month": 4,
+        "year": 2019,
+        "unix_timestamp": 1556409600,
+        "AsylbLG3": 3815,
+        "AsylbLG2": 7554
+      },
+      {
+        "month": 5,
+        "year": 2019,
+        "unix_timestamp": 1559001600,
+        "AsylbLG3": 3784,
+        "AsylbLG2": 7485
+      },
+      {
+        "month": 6,
+        "year": 2019,
+        "unix_timestamp": 1561680000,
+        "AsylbLG3": 3772,
+        "AsylbLG2": 7442
+      }
+    ]
+  }
+}

@@ -1,5 +1,7 @@
 import timeseries from './data/timeseries'
 import origin from './data/origin'
+import migrants from './data/migrants'
+
 
 
 const fetch = (mockData, time = 0) => {
@@ -12,9 +14,9 @@ const fetch = (mockData, time = 0) => {
 
 export default {
   fetchStatistics() {
-    return Promise.all([fetch(timeseries, 1000), fetch(origin, 1000)])
+    return Promise.all([fetch(timeseries, 1000), fetch(origin, 1000), fetch(migrants, 1000)])
       .then((res) => {
-        return { timeseries: res[0], origin: res[1] };
+        return { timeseries: res[0], origin: res[1], migrants: res[2] };
       });
   }
 }

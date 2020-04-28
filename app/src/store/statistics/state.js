@@ -1,4 +1,5 @@
 export default {
   timeseries: {},
-  origin: {}
+  origin: {},
+  migrants: {}
 }
