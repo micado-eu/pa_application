@@ -1,25 +1,67 @@
 <template>
   <div>
-    <div class="row justify-center" id="row">
+    <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>Refugee influx - Mediterranean Situation</h6>
+          <p><strong>description: </strong>Persecution, conflict and poverty forced over 1 million people to flee to Europe in 2015. Many came seeking safety for themselves and their families, risking their lives and facing a treacherous journey</p>
+          <p><strong>data provider: </strong>EU</p>
+          <p><strong>updated time: </strong>2019.07</p>
+        </div>
+      </div>
       <lineChart
-        id="chart1"
+        class="chart"
         :lineData="timeseries"
         :timeColumn="'unix_timestamp'"
         :valueColumn="'individuals'"
       />
     </div>
     <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>Demographic composition</h6>
+          <p><strong>description: </strong></p>
+          <p><strong>data provider: </strong>EU</p>
+          <p><strong>updated time: </strong>2019.07</p>
+        </div>
+      </div>
       <pieChart
-        id="chart2"
+        class="chart"
         :pieData="origins"
         :labelColumn="'pop_origin_name'"
         :valueColumn="'individuals'"
       />
-      <lineChart
-        id="chart3"
-        :lineData="timeseries"
+    </div>
+    <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>Personen § 3 AsylbLG</h6>
+          <p><strong>description: </strong></p>
+          <p><strong>data provider: </strong>EU</p>
+          <p><strong>updated time: </strong>2019.07</p>
+        </div>
+      </div>
+      <barChart
+        class="chart"
+        :lineData="migrants"
         :timeColumn="'unix_timestamp'"
-        :valueColumn="'individuals'"
+        :valueColumn="'AsylbLG3'"
+      />
+    </div>
+        <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>Personen § 2 AsylbLG</h6>
+          <p><strong>description: </strong></p>
+          <p><strong>data provider: </strong>EU</p>
+          <p><strong>updated time: </strong>2019.07</p>
+        </div>
+      </div>
+      <barChart
+        class="chart"
+        :lineData="migrants"
+        :timeColumn="'unix_timestamp'"
+        :valueColumn="'AsylbLG2'"
       />
     </div>
     <div id="map-row">
@@ -46,19 +88,24 @@ import portalConfig from "../api/map/config/portal.json";
 import localGeoJSON from "../api/map/config/localGeoJSON.js";
 import lineChart from "./migration_monitor/lineChart";
 import pieChart from "./migration_monitor/pieChart";
+import barChart from "./migration_monitor/barChart";
 
 export default {
   name: "MpMap",
   components: {
     lineChart,
-    pieChart
+    pieChart,
+    barChart
   },
   computed: {
     timeseries: function() {
       return this.$store.state.statistics.timeseries.data.timeseries;
     },
-    origins:function(){
+    origins: function() {
       return this.$store.state.statistics.origin.data;
+    },
+    migrants: function() {
+      return this.$store.state.statistics.migrants.data.migrants;
     }
   },
   mounted: function() {
@@ -109,10 +156,7 @@ export default {
   background: white;
   /* display: flex; */
   /* flex-direction: column; */
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.56);
   border-radius: 5px;
 }
 
@@ -126,6 +170,8 @@ export default {
   margin: auto;
   width: 90%;
   margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.56);
 }
 #map-row {
   display: flex;
@@ -133,37 +179,13 @@ export default {
   width: 90%;
   margin-top: 20px;
 }
-#chart1 {
-  flex: 1;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(29, 21, 21, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
+.chart {
+  flex: 9;
 }
-#chart2 {
-  flex: 1;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(29, 21, 21, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
-  /* margin-top: 5%;
-  margin-left: 5%; */
-  margin-right: 10px;
-
-  background: white;
-  border-radius: 5px;
+.info {
+  flex: 3;
 }
-#chart3 {
-  flex: 1;
-  margin-left: 10px;
-
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
-  /* margin-top: 5%;
-  margin-left: 5%; */
-  background: white;
-  border-radius: 5px;
+.info-content {
+  margin: 50px;
 }
 </style>

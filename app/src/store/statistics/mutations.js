@@ -12,3 +12,9 @@ export function setOrigin(state, origin) {
     state.origin = origin
   }
 }
+
+export function setMigrants(state, migrants) {
+  if (migrants) {
+    state.migrants = migrants
+  }
+}
