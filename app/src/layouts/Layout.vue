@@ -96,7 +96,9 @@ export default {
 //        {label:'menu.tasks', icon: 'assignment', to: '/tasks', description: "Tasks for your integration"},
 //        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
 //        {label:'menu.settings', icon: 'settings_applications', to: '/settings', description: "configure the application"},
-        {label:'menu.mediation', icon: 'book', to: '/requestmediation', description: "request a mediation to NGO"}
+        {label:'menu.mediation', icon: 'book', to: '/requestmediation', description: "request a mediation to NGO"},
+        // TODO: Placeholder until it's added to settings with proper wireframe
+        {label:'menu.activelanguages', icon: 'description', to: '/activelanguages', description: "select active languages"}
 
       ]
     }

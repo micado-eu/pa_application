@@ -10,6 +10,7 @@ export default {
     tasks: 'Tasks',
     speech: 'Speaking',
     settings: 'Settings',
-    glossary: 'Glossary'
+    glossary: 'Glossary',
+    activelanguages: 'Change active languages'
   }
 }

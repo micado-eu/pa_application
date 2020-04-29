@@ -8,6 +8,7 @@ import flows from './flows'
 import glossary from './glossary'
 import statistics from './statistics'
 import document_type from './document_type'
+import language from './language'
 
 
 Vue.use(Vuex)
@@ -26,7 +27,8 @@ export default function (/* { ssrContext } */) {
       glossary,
       flows,
       statistics,
-      document_type
+      document_type,
+      language
     },
 
     // enable strict mode (adds overhead!)

@@ -1,0 +1,22 @@
+[
+    {
+        "iso_code": "en-us",
+        "name": "English",
+        "active": true
+    },
+    {
+        "iso_code": "de",
+        "name": "Deutsch",
+        "active": true
+    },
+    {
+        "iso_code": "ar",
+        "name": "عربي",
+        "active": false
+    },
+    {
+        "iso_code": "it",
+        "name": "Italiano",
+        "active": false
+    }
+]

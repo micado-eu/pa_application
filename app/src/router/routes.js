@@ -24,7 +24,8 @@ const routes = [
 //      { path: '/certificates', component: () => import('pages/Certificates.vue'), props: true, name: 'certificates' },
       { path: '/map', component: () => import('components/Map.vue') },
       { path: '/mpmap', component: MpMap },
-      { path: '/configure', component: () => import('pages/Configure.vue') }
+      { path: '/configure', component: () => import('pages/Configure.vue') },
+      { path: '/activelanguages', component: () => import('components/ActiveLanguageSelector.vue')}
     ]
   }
 ]/*
