@@ -66,10 +66,10 @@
     <q-btn color="red" label="Back" style="width:150px" to="/processmanager"/>
     </div>
     <div class=" q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Save changes" style="width:150px" to="/document_type"/>
+    <q-btn color="red" label="Save changes" style="width:150px" />
     </div>
     <div class="q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Manage steps" style="width:150px" :to="this.id + '/steps'"/>
+    <q-btn color="red" label="Manage steps" :disable="this.disabled" style="width:150px" :to="this.id + '/steps'"/>
     </div>
     </div>
 </div>
@@ -116,11 +116,23 @@ export default {
             console.log("id route" + this.id)
             return this.processes[i]
           }
+          else{
+            return this.edit
+          }
         }
       }
       else{
         return this.edit
       }
+    }, 
+    disabled() {
+      if(this.id != null){
+        return false
+      }
+      else{
+        return true
+      }
+
     }
     
    },

@@ -2,6 +2,10 @@
   <div class="container" >
   <div style="text-align:center">
   <h3>{{this.title}}</h3>
+
+   <div class="q-pa-md" style="text-align:center">
+   <q-btn color="accent" label="Add Step"  to="steps/new" />
+  </div>
   </div>
     <q-list  >
         <Step v-for="step in steps"

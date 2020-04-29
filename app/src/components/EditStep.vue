@@ -121,7 +121,15 @@ export default {
         "How to get driver licence recognized",
         "How to get access to public funded housing",
         "How to enroll children to school"
-      ]
+      ],
+      edit: {
+        title:"",
+        location:"",
+        cost:"",
+        required_documents:[],
+        linked_processes:[],
+        description:""
+      }
   }
   },
    computed: {
@@ -138,6 +146,9 @@ export default {
             console.log("id route" + this.id)
             this.title= this.processes[i].title
             return this.processes[i].steps[j]
+          }
+          else{
+            return this.edit
           }
         }
       }

@@ -5,7 +5,7 @@
    <q-input items-center filled v-model="search" label="Search" />
   </div>
   <div class="q-gutter-md q-pa-md  col-5 justify-center items-center" style="text-align:center">
-   <q-btn color="accent" label="Add Process"  />
+   <q-btn color="accent" label="Add Process"  to="processmanager/edit" />
   </div>
   </div>
     <q-list  >

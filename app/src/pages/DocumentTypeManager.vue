@@ -1,12 +1,13 @@
   <template>
   <div>
-   <div class="q-pa-md">
+   <div style="padding-top:37px; padding-bottom:37px">
     <div class="q-gutter-md justify-center" style="text-align:center">
-   <q-btn size="lg" push color="accent" label="Add Document" to="/adddocument" />
+   <q-btn size="lg" push rounded color="info" style="width:750px; color: secondary" label="Add Document" to="/adddocument" />
   </div>
   </div>
-    <div class="container">
-    <q-list  >
+    <div style="text-align:center">
+    <div style=" display: inline-block" >
+    <q-list >
         <ListItem v-for="document_type in document_types"
          :key="document_type.id"
          :Title="document_type.type"
@@ -14,6 +15,7 @@
           Image="statics/placeholder.jpg">
         </ListItem>
     </q-list>
+    </div>
     </div>
   </div>
 </template>

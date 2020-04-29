@@ -6,7 +6,7 @@
         <h5 style="text-align:left"> Document type </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined v-model="text"  />
+        <q-input rounded standout outlined v-model="text" />
       </div>
     </div>
     <div class=" q-pa-xsm row" style="text-align:center">
@@ -98,6 +98,16 @@ export default {
 
   data (){
     return {
+      id:this.$route.params.id,
+      edit: {
+        type:"",
+        description:"", 
+        image:"", 
+        issuer:"", 
+        validable:false, 
+        validity:"",
+        icon:""
+      },
       checked: true,
       hotimage: false,
       myimage: null,
@@ -115,6 +125,24 @@ export default {
         opacity: 0.9
       }
     }
+  },
+  computed: {
+    document_types () {
+      return this.$store.state.document_type.document_type
+    },
+      the_document_type(){
+      if(this.id != null){
+        for(var i = 0; i< this.document_types.length; i++){
+          if(this.document_types[i].id == this.id){
+            return this.document_types[i]
+          }
+          else{
+            return this.edit
+          }
+        }
+      }
+    }
+     
   },
   methods: {
       getFiles(files){
@@ -152,7 +180,15 @@ export default {
         // Do something after delete
         console.log('Do something after delete ...')
       }
-    }
+    }, 
+     created () {
+    this.loading = true
+    console.log(this.$store);
+    this.$store.dispatch('document_type/fetchDocument_type')
+      .then(document_types => {
+        this.loading = false
+      })  
+  }
  
 }
 </script>

@@ -1,34 +1,75 @@
 <template>
-
+<div style=" padding-bottom:20px">
   <q-item
-    style=" border-width:3px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px"
+    style="max-width: 750px;padding-top:0px"
   >
-  <q-item-section class="col-2" style="max-width:30%">
-        <img style="max-width:150px" :src="this.Image">
-      </q-item-section>
+    <q-item-section
+    class="col-2"
+    style="width:96px;height:64px">
+        <img 
+        style="width:64px;height:64px;margin-top:20px" 
+        :src="this.Image">
+    </q-item-section>
  
     
-    <div class="col-8">
-    <div class="row">
-    <q-item style="border-radius: 2.00rem; max-width : 100%">
-      <q-item-section class="col" style="font-size:30px">{{ this.Title }}</q-item-section>
-    </q-item>
+    <div
+    class="col-9"
+    style="height:64px">
+      <div 
+      class="row" 
+      style="height:32px;vertical-align:text-top">
+        <q-item style="padding-top:0px;">
+          <q-item-section 
+          class="col" 
+          style="font-size:15px; font-weight:600;">
+          {{ this.Title }}
+          </q-item-section>
+        </q-item>
     </div>
-    <div class="row">
-    <q-item style="border-radius: 2.00rem;">
-      <q-item-section class="col" >{{ this.Text }}</q-item-section>
-    </q-item>
+    <div 
+    class="row" 
+    style="height:32px; text-align:left">
+      <q-item 
+      style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 22px;max-height: 42px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;font-size:13px;padding-top:0px;">
+        <q-item-section 
+        class="col">
+        {{ this.Text }}
+        </q-item-section>
+      </q-item>
     </div>
     </div>
-    <div class="q-pa-md col-2">
-    <div class=" q-pa-md row">
-      <q-btn color="accent" label="Edit" style="width:100px" to="/placeholder"/>
+    <div
+    class="col-2" style="text-align:center;">
+      <div 
+      class="row" 
+      style="padding-bottom:3.5px; display: inline-block">
+        <q-btn
+        class="q-px-md q-py-s"
+        color="accent"
+        style="font-size:13px;font-weight:600;width:70px;"
+        rounded 
+        label="Edit"
+        no-caps
+        to="/placeholder"/>
+      </div>
+      <div 
+      class="row" 
+      style="padding-top:3.5px;  display: inline-block">
+        <q-btn
+        class="q-px-md q-py-s"
+        color="info"
+        style="font-size:13px;font-weight:600;width:70px;"
+        rounded
+        label="Delete"
+        no-caps
+        to="/placeholder"/>
+      </div>
+     
     </div>
-    <div class=" q-pa-md row">
-      <q-btn color="red" label="Delete" style="width:100px" to="/placeholder"/>
-    </div>
-    </div>
+    
   </q-item>
+  <hr style="margin:0px">
+  </div>
 </template>
 
 <script>
@@ -47,5 +88,9 @@ div >>> .q-item {
   &:hover {
     color: blue;
   }
+}
+.button{
+  font-size:26px;
+  font-weight:600;
 }
 </style>
