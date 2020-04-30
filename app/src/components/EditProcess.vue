@@ -111,9 +111,6 @@ export default {
       if(this.id != null){
         for(var i = 0; i< this.processes.length; i++){
           if(this.processes[i].id == this.id){
-            console.log("id processo" + this.processes[i].id)
-            console.log(this.processes[i])
-            console.log("id route" + this.id)
             return this.processes[i]
           }
           else{

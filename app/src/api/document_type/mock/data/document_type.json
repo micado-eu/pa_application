@@ -6,7 +6,8 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"house"
+    "icon":"house",
+    "model":""
   },
   {
     "id":2,
@@ -15,7 +16,8 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"house"
+    "icon":"house",
+    "model":""
   },
   {
     "id":3,
@@ -24,7 +26,8 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"health"
+    "icon":"health",
+    "model":""
   },
   {
     "id":4,
@@ -33,7 +36,8 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"edu"
+    "icon":"edu",
+    "model":""
   },
   {
     "id":5,
@@ -42,7 +46,8 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"work"
+    "icon":"work",
+    "model":""
   },
   {
     "id":6,
@@ -51,6 +56,7 @@
     "validity": "31/12/2020",
     "issuer": "Municipality of Bologna",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra nulla feugiat, elementum lectus nec, dignissim mi. Cras in gravida magna, sollicitudin malesuada ligula. Praesent et volutpat purus. Duis pulvinar turpis eu libero feugiat hendrerit. Pellentesque porta fermentum ante, sed mattis enim auctor vitae. Phasellus sodales mi non dolor sodales rhoncus. Nullam pellentesque eu massa non maximus. Praesent et eros nunc.",
-    "icon":"edu"
+    "icon":"edu",
+    "model":""
   }
 ]

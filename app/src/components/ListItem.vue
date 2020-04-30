@@ -47,10 +47,11 @@
         class="q-px-md q-py-s"
         color="accent"
         style="font-size:13px;font-weight:600;width:70px;"
+        unelevated
         rounded 
         label="Edit"
         no-caps
-        to="/placeholder"/>
+        :to="'adddocument/' + this.Link"/>
       </div>
       <div 
       class="row" 
@@ -59,10 +60,12 @@
         class="q-px-md q-py-s"
         color="info"
         style="font-size:13px;font-weight:600;width:70px;"
+        unelevated
         rounded
+        @click="remove_doc($event)"
         label="Delete"
         no-caps
-        to="/placeholder"/>
+        />
       </div>
      
     </div>
@@ -78,6 +81,13 @@ export default {
   props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link"],
   data() {
     return {};
+  }, 
+  methods: {
+    remove_doc(event){
+      let target = event.currentTarget
+      this.$emit('remove', target)
+
+    }
   }
 };
 </script>

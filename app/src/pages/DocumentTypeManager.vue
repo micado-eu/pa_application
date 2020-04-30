@@ -2,7 +2,7 @@
   <div>
    <div style="padding-top:37px; padding-bottom:37px">
     <div class="q-gutter-md justify-center" style="text-align:center">
-   <q-btn size="lg" push rounded color="info" style="width:750px; color: secondary" label="Add Document" to="/adddocument" />
+   <q-btn size="lg" unelevated rounded color="info" style="width:750px; color: secondary" label="Add Document" to="/adddocument" />
   </div>
   </div>
     <div style="text-align:center">
@@ -12,7 +12,9 @@
          :key="document_type.id"
          :Title="document_type.type"
          :Text="document_type.description"
-          Image="statics/placeholder.jpg">
+          Image="statics/placeholder.jpg"
+         :Link="document_type.id"
+         @remove="deleteDocument">
         </ListItem>
     </q-list>
     </div>
@@ -43,6 +45,12 @@ export default {
       return this.$store.state.document_type.document_type
     },
      
+  },
+
+  methods: {
+    deleteDocument(value) {
+      this.$store.dispatch('document_type/deleteDocument', value)
+    }
   },
 
 

@@ -9,3 +9,8 @@ export function fetchDocument_type (state, data) {
         .fetchDocument_type()
         .then(document_type => state.commit('setDocument_type', document_type))
     }
+
+/*export function deleteDocument({commit}, document_type) {
+  
+  commit(delete_document_type, document_type.id)
+} */
