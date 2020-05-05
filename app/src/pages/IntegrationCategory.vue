@@ -1,5 +1,5 @@
 <template>
-  <div class="q-pa-md" style="max-width: 350px">
+  <div class="q-pa-md">
     <q-list bordered separator>
       <q-item
         clickable
@@ -17,11 +17,20 @@
           <q-btn
             color="secondary"
             label="Edit"
-            @click="editIntegrationCategory(a_integration_category.id)"
+            @click="editIntegrationCategory(a_integration_category)"
           />
         </q-item-section>
       </q-item>
     </q-list>
+    <q-card class="my-card">
+      <q-card-section>
+        <q-btn color="secondary" label="Add" @click="newIntegrationCategory()"/>
+      </q-card-section>
+      <q-card-section :hidden="hideForm">
+        <q-input v-model="int_cat_shell.title" label="Standard"/>
+        <q-btn color="secondary" label="Save" @click="saveIntegrationCategory()"/>
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
@@ -29,7 +38,9 @@
 export default {
   data() {
     return {
-      step: 1
+      int_cat_shell: { id: -1, title: "" },
+      hideForm: true,
+      isNew: false
     };
   },
   computed: {
@@ -40,13 +51,44 @@ export default {
   methods: {
     deleteIntegrationCategory(index) {
       console.log(index);
-      this.$store.commit(
+      this.$store.dispatch(
         "integration_category/deleteIntegrationCategory",
         index
       );
     },
-    editIntegrationCategory(index){
-
+    saveIntegrationCategory() {
+      if (this.isNew) {
+        // we are adding a new instance
+        this.$store
+          .dispatch(
+            "integration_category/saveCategoryTypeElement",
+            this.int_cat_shell
+          )
+          .then(int_cat => {
+            console.log("saved");
+          });
+      } else {
+        // we are updating the exsisting
+        this.$store
+          .dispatch(
+            "integration_category/editCategoryTypeElement",
+            this.int_cat_shell
+          )
+          .then(int_cat => {
+            console.log("updated");
+          });
+      }
+      this.hideForm = true;
+      this.int_cat_shell = { id: -1, title: "" };
+    },
+    newIntegrationCategory() {
+      this.isNew = true;
+      this.hideForm = false;
+    },
+    editIntegrationCategory(integration_category) {
+      this.isNew = false;
+      this.hideForm = false;
+      this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
     }
   },
   //store.commit('increment', 10)
