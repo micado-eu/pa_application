@@ -1,0 +1,20 @@
+[
+  {
+    "id":1,
+    "title":"Courses",
+    "description": "lorem ipsum",
+    "category_type": 2
+  },
+  {
+    "id":2,
+    "title":"Housing",
+    "description": "lorem ipsum",
+    "category_type": 2
+  },
+  {
+    "id":3,
+    "title":"Other",
+    "description": "lorem ipsum",
+    "category_type": 1
+  }
+]

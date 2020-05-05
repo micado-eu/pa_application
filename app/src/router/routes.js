@@ -12,6 +12,7 @@ const routes = [
       { path: '/editor', component: () => import('pages/Editor.vue') },
       { path: '/document_type', component: () => import('pages/DocumentTypeManager.vue') },
       { path: '/integration_category', component: () => import('pages/IntegrationCategory.vue') },
+      { path: '/integration_type', component: () => import('pages/IntegrationType.vue') },
       { path: '/adddocument', component: () => import('pages/AddDocument.vue') },
       { path: '/adddocument/:id', component: () => import('pages/AddDocument.vue'), props: true, name:document },
       { path: '/processmanager', component: () => import('pages/ProcessManager.vue') },
