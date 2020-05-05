@@ -54,7 +54,7 @@ export default {
           console.log(filt)
           return filt.id == value
         })  
-      this.$store.commit('document_type/deleteDoc', filteredDocuments[0])
+      this.$store.commit('document_type/deleteDocumentType', filteredDocuments[0])
     }
   },
 

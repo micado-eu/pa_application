@@ -174,11 +174,11 @@ export default {
       },
       saveData (value) {
         if(this.is_new){
-          this.$store.commit('document_type/addDocumentStore', value)
+          this.$store.dispatch('document_type/saveDocumentType', value)
           console.log(this.$store.state.document_type)
         }
         else{
-          this.$store.commit('document_type/updateStore', value);
+          this.$store.dispatch('document_type/editDocumentType', value);
       console.log(value)
       console.log(this.document_types)
       console.log(this.$store.state.document_type)

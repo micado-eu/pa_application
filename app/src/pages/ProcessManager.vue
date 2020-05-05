@@ -1,14 +1,23 @@
   <template>
   <div class="container" >
-  <div class="q-gutter-md row items-start">
-   <div class="q-gutter-md q-pa-md  col-6 justify-center items-center" >
-   <q-input items-center filled v-model="search" label="Search" />
+    
+  <div style="text-align:center;">
+   <div class="col" style="display:inline-block;padding-right:20px;padding-left:20px">
+   <q-input style="border-radius:10px; width:590px;font-size:18px" dense items-center filled v-model="search" label="Search" >
+   <template v-slot:append>
+          <q-avatar>
+            <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+          </q-avatar>
+        </template>
+    </q-input>
   </div>
-  <div class="q-gutter-md q-pa-md  col-5 justify-center items-center" style="text-align:center">
-   <q-btn color="accent" label="Add Process"  to="processmanager/edit" />
+  <div class="col" style="display:inline-block;text-align:right;width:135px">
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Process" no-caps size="15px" to="processmanager/edit" />
   </div>
   </div>
-    <q-list  >
+  
+  <div style="text-align:center;">
+    <q-list style="display:inline-block;width:750px" >
         <Process v-for="process in filteredProcesses"
          :key="process.id"
          :Title="process.title"
@@ -18,6 +27,7 @@
          Path="processmanager">
         </Process>
     </q-list>
+    </div>
   </div>
 </template>
 
