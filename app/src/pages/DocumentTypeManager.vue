@@ -49,7 +49,12 @@ export default {
 
   methods: {
     deleteDocument(value) {
-      this.$store.dispatch('document_type/deleteDocument', value)
+      var filteredDocuments = this.document_types.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          return filt.id == value
+        })  
+      this.$store.commit('document_type/deleteDoc', filteredDocuments[0])
     }
   },
 

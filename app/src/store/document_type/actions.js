@@ -10,7 +10,7 @@ export function fetchDocument_type (state, data) {
         .then(document_type => state.commit('setDocument_type', document_type))
     }
 
-/*export function deleteDocument({commit}, document_type) {
+export function updateDoc({commit}, document_type) {
   
-  commit(delete_document_type, document_type.id)
-} */
+  commit('updateDoc', document_type.id)
+} 

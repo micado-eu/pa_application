@@ -1,7 +1,7 @@
 <template>
 <div style=" padding-bottom:20px">
   <q-item
-    style="max-width: 750px;padding-top:0px"
+    style="width: 750px;padding-top:0px"
   >
     <q-item-section
     class="col-2"
@@ -78,14 +78,15 @@
 <script>
 export default {
   // name: 'ComponentName',
-  props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link"],
+  props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link", "ID"],
   data() {
     return {};
   }, 
   methods: {
     remove_doc(event){
-      let target = event.currentTarget
-      this.$emit('remove', target)
+      let target = event.currentTarget.id
+      console.log(this.Link)
+      this.$emit('remove', this.Link)
 
     }
   }

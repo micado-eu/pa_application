@@ -6,13 +6,12 @@
         <h5 style="text-align:left;font-size:18px"> Document icon </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-file 
+       <q-file 
     >
      <template v-slot:append>
             <q-icon name="attachment" />
           </template>
-  </q-file>
-    </q-dialog>
+  </q-file> 
       </div>
     </div>
     <div class="row" style="padding-bottom:15px;padding-right:45px" >
@@ -20,7 +19,7 @@
         <h5 style="text-align:left;font-size:18px"> Document type description </h5>
       </div>
       <div class="col-8" style="display: block;">
-        <q-input type="textarea" bg-color="grey-3" rounded standout outlined v-model="the_document_type.description" />
+        <q-input type="textarea" bg-color="grey-3" rounded standout outlined v-model="edit_document.description"  />
       </div>
     </div>
     <div class=" q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -28,7 +27,7 @@
         <h5 style="text-align:left;font-size:18px"> Document type  </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input bg-color="grey-3" dense rounded standout outlined v-model="the_document_type.type"  />
+        <q-input bg-color="grey-3" dense rounded standout outlined v-model="edit_document.type"  />
       </div>
     </div>
     
@@ -37,7 +36,7 @@
         <h5 style="text-align:left;font-size:18px"> Document Issuer </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input dense bg-color="grey-3" rounded standout outlined v-model="the_document_type.issuer"  />
+        <q-input dense bg-color="grey-3" rounded standout outlined v-model="edit_document.issuer"  />
       </div>
     </div>
     
@@ -46,7 +45,7 @@
         <h5 style="text-align:left;font-size:18px"> Valididty duration </h5>
       </div>
       <div class="col-1" style="margin-top:25px;display: block;">
-        <q-input dense bg-color="grey-3" rounded standout outlined v-model="the_document_type.validity"  />
+        <q-input dense bg-color="grey-3" rounded standout outlined v-model="edit_document.validity"  />
       </div>
       <div class="col-2" style="margin: auto;display: block;">
       <h5 style="text-align:left;font-size:18px"> Days </h5>
@@ -55,7 +54,7 @@
         <h5 style="text-align:left;font-size:18px"> Validable?</h5>
       </div>
       <div class="col-1" style="margin: auto;display: block;">
-        <q-checkbox color="accent" v-model="the_document_type.validable" clickable @click="the_document_type.validable=!the_document_type.validable"/>
+        <q-checkbox color="accent" v-model="edit_document.validable" clickable @click="edit_document.validable=!edit_document.validable"/>
       </div>
     </div>
     <div class=" q-pa-xsm row" style="text-align:center;padding-right:45px">
@@ -63,7 +62,7 @@
         <h5 style="text-align:left;font-size:18px"> Document model </h5>
       </div>
       <div class="col-6" style="margin: auto;display: block;">
-        <q-file  @input="getFiles" bg-color="grey-3" dense rounded standout outlined v-model="the_document_type.model">
+        <q-file  @input="getFiles" bg-color="grey-3" dense rounded standout outlined >
          
         </q-file>
         </div>
@@ -91,7 +90,7 @@
     <q-btn color="accent" unelevated rounded label="Cancel" style="width:100px" to="/document_type"/>
     </div>
     <div class=" q-pa-md col-6" style="text-align:left">
-    <q-btn color="info" unelevated rounded label="Save/Update" style="width:150px" to="/document_type"/>
+    <q-btn color="info" unelevated rounded label="Save/Update" style="width:150px" @click="saveData(edit_document)" to="/document_type"/>
     </div>
     </div>
 </div>
@@ -99,6 +98,8 @@
 
 <script>
 import VueHotspot from 'vue-hotspot'
+import axios from 'axios'
+import https from 'https';
 
 export default {
   name: 'PageIndex',
@@ -107,17 +108,8 @@ export default {
   data (){
     return {
       id:this.$route.params.id,
-      new: {
-        type:"",
-        description:"", 
-        image:"", 
-        issuer:"", 
-        validable:false, 
-        validity:"",
-        icon:"", 
-        model:""
-      },
-       edit: {
+      is_new: true, 
+      edit_document: {
         type:"",
         description:"", 
         image:"", 
@@ -146,25 +138,11 @@ export default {
     }
   },
   computed: {
-    document_types () {
+    document_types : {
+      get (){
       return this.$store.state.document_type.document_type
-    },
-
-    the_document_type(){
-      if(this.id != null){
-        for(var i = 0; i< this.document_types.length; i++){
-          if(this.document_types[i].id == this.id){
-             this.edit = this.document_types[i] 
-            return this.edit
-          }
-        }
-      }
-      else{
-            console.log(this.edit)
-            return this.new
       }
     }
-     
   },
   methods: {
       getFiles(files){
@@ -194,14 +172,51 @@ export default {
           console.log(fileInfo)
         }
       },
-      saveData (data) {
-        // Do something with the list of hotspots
-        console.log(data)
+      saveData (value) {
+        if(this.is_new){
+          this.$store.commit('document_type/addDocumentStore', value)
+          console.log(this.$store.state.document_type)
+        }
+        else{
+          this.$store.commit('document_type/updateStore', value);
+      console.log(value)
+      console.log(this.document_types)
+      console.log(this.$store.state.document_type)
+          
+      const agent = new https.Agent({
+        rejectUnauthorized: false
+      });
+
+      axios
+      .post('https://api.micadoproject.eu/db/v01/placeholder',
+           {
+             "id": this.id,
+             "features": this.edit_document
+           },
+           {
+//             httpsAgent: agent ,
+             headers: {
+                        Prefer: 'resolution=merge-duplicates',
+                        "Content-Type": 'application/json',
+                        Authorization: 'Bearer ' + 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsIng1dCI6IlpqUm1ZVE13TlRKak9XVTVNbUl6TWpnek5ESTNZMkl5TW1JeVkyRXpNamRoWmpWaU1qYzBaZz09In0.eyJhdWQiOiJodHRwOlwvXC9vcmcud3NvMi5hcGltZ3RcL2dhdGV3YXkiLCJzdWIiOiJhZG1pbkBjYXJib24uc3VwZXIiLCJhcHBsaWNhdGlvbiI6eyJvd25lciI6ImFkbWluIiwidGllciI6IlVubGltaXRlZCIsIm5hbWUiOiJNaWdyYW50QXBwbGljYXRpb24iLCJpZCI6MSwidXVpZCI6bnVsbH0sInNjb3BlIjoiYW1fYXBwbGljYXRpb25fc2NvcGUgZGVmYXVsdCIsImlzcyI6Imh0dHBzOlwvXC9nYXRld2F5Lm1pY2Fkb3Byb2plY3QuZXU6NDQzXC9vYXV0aDJcL3Rva2VuIiwidGllckluZm8iOnsiQnJvbnplIjp7InN0b3BPblF1b3RhUmVhY2giOnRydWUsInNwaWtlQXJyZXN0TGltaXQiOjAsInNwaWtlQXJyZXN0VW5pdCI6bnVsbH19LCJrZXl0eXBlIjoiUFJPRFVDVElPTiIsInN1YnNjcmliZWRBUElzIjpbeyJzdWJzY3JpYmVyVGVuYW50RG9tYWluIjoiY2FyYm9uLnN1cGVyIiwibmFtZSI6IlBvc3RnUkVTVEFQSSIsImNvbnRleHQiOiJcL2RiXC92MDEiLCJwdWJsaXNoZXIiOiJhZG1pbiIsInZlcnNpb24iOiJ2MDEiLCJzdWJzY3JpcHRpb25UaWVyIjoiQnJvbnplIn1dLCJjb25zdW1lcktleSI6InZabFNMbTFnYzVOMzIxbnRIN2Ztd2tONTNvVWEiLCJleHAiOjM3MzAyOTc0MzgsImlhdCI6MTU4MjgxMzc5MSwianRpIjoiYmYyMjBiYjMtNjY3MC00OTA5LWI4OTctOTY2ZDVhZDdhN2M0In0.GORnM7Hfflrv8iNFbBOZoLg7475tnLaXwY2f88My_qVCAupJxqPihM901E5GNQUsL2I7PW9_ymbCPJki0FuaIhdXk4ovso11ghjWDkVH9fUoMm_FElNynOlWp7gPDwtXbS5sNI2nZHflvUmc9IYG70XJG6tWhg4hI8bW0sNr03gkQOjQzbUqSqHb__J_oLJye1IGi657oJUtXnVLSDfRHOKl7w8SATrSiR_K57SkT4xGmpLqYGmbXsoWFJT-FHe1-WVrGBvwk2kqZfjgjDUoUedrDR0F9T_YrVIuPtruGqR4gJGWBuXPciOSHYsGu12Oxg3zC1FwoptN0NA2AZ-oTg' //the token is a variable which holds the token
+                       }
+           })
+      .then(
+        console.log(this.edit_document)
+      ).catch(function (err) {
+
+        // Run into big problems when I get an error
+        console.log("Got an error calling API manager: ", err);
+        response => []
+      })
+      console.log("posted")
+        }
       },
       afterDelete () {
         // Do something after delete
         console.log('Do something after delete ...')
       }
+      
     }, 
      created () {
     this.loading = true
@@ -209,7 +224,27 @@ export default {
     this.$store.dispatch('document_type/fetchDocument_type')
       .then(document_types => {
         this.loading = false
-      })  
+        
+       
+       
+        
+      })
+      if(this.id != null){
+         console.log("ciso ")
+        this.is_new=false
+        console.log("hello")
+         var filteredDocuments = this.document_types.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          console.log(filt.id == this.id)
+          return filt.id == this.id
+        
+         })  
+         this.edit_document = Object.assign({},filteredDocuments[0]);
+        console.log(this.edit_document)
+         
+    }
+      
   }
  
 }
