@@ -10,7 +10,7 @@ export function fetchIntegrationType(state, data) {
     .then(integration_type => state.commit('setIntegrationType', integration_type))
 }
 
-export function editCategoryTypeElement(state, integration_type_element) {
+export function editIntegrationTypeElement(state, integration_type_element) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(integration_type_element)
   return client
@@ -18,7 +18,7 @@ export function editCategoryTypeElement(state, integration_type_element) {
     .then(integration_type_return => state.commit('editIntegrationTypeElement', integration_type_return))
 }
 
-export function saveCategoryTypeElement(state, integration_type_element) {
+export function saveIntegrationTypeElement(state, integration_type_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(integration_type_element)
   return client
@@ -26,7 +26,7 @@ export function saveCategoryTypeElement(state, integration_type_element) {
     .then(integration_type_return => state.commit('saveIntegrationTypeElement', integration_type_return))
 }
 
-export function deleteCategoryTypeElement(state, integration_type_element) {
+export function deleteIntegrationTypeElement(state, integration_type_element) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(integration_type_element)
   return client

@@ -31,5 +31,15 @@ export default {
         resolve(integration_category)
       }, 0)
     })
+  },
+  deleteIntegrationCategory(integration_category) {
+    console.log("fake call to save to DB")
+    console.log(integration_category)
+    // create fake id here
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(integration_category)
+      }, 0)
+    })
   }
 }

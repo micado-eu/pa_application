@@ -24,7 +24,8 @@
          :Tag_1="process.user_tags"
          :Tag_2="process.topic_tags"
          :Link="process.id"
-         Path="processmanager">
+         Path="processmanager"
+         @remove="deleteProcess">
         </Process>
     </q-list>
     </div>
@@ -67,6 +68,16 @@ export default {
               return true;
             }})
         } 
+    }
+  },
+  methods: {
+     deleteProcess(value) {
+      var deletedProcess = this.processes.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          return filt.id == value
+        })  
+      this.$store.commit('flows/deleteProcess', deletedProcess[0])
     }
   },
 

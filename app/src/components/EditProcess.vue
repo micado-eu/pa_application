@@ -6,7 +6,7 @@
         <h5 style="text-align:left"> Process Name </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined :value="the_process.title" />
+        <q-input rounded standout outlined v-model="edit_process.title" />
       </div>
     </div>
     
@@ -17,7 +17,7 @@
         <h5 style="text-align:left"> Process description </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined :value="the_process.text"  />
+        <q-input rounded standout outlined v-model="edit_process.text"  />
       </div>
     </div>
 
@@ -30,10 +30,10 @@
       <div class=" q-pa-md col-4">
      <q-select
         filled
-        :value="the_process.user_tags"
+        
         clearable
         
-        v-model="the_process.user_tags"
+        v-model="edit_process.user_tags"
         multiple
         :options="u_tags"
         
@@ -45,10 +45,10 @@
       <div class="q-pa-md col-4">
      <q-select
         filled
-        :value="the_process.topic_tags"
+        
         clearable
        
-        v-model="the_process.topic_tags"
+        v-model="edit_process.topic_tags"
         multiple
         :options="t_tags"
         
@@ -66,7 +66,7 @@
     <q-btn color="red" label="Back" style="width:150px" to="/processmanager"/>
     </div>
     <div class=" q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Save changes" style="width:150px" />
+    <q-btn color="red" label="Save changes" style="width:150px" @click="saveProcess(edit_process)"/>
     </div>
     <div class="q-pa-md col-4" style="text-align:center">
     <q-btn color="red" label="Manage steps" :disable="this.disabled" style="width:150px" :to="this.id + '/steps'"/>
@@ -85,7 +85,8 @@ export default {
   data (){
     return {
       id: this.$route.params.id,
-      edit: {
+      is_new: true,
+      edit_process: {
         title:"",
         text:"", 
         user_tags:[],
@@ -107,21 +108,6 @@ export default {
      processes() {
       return this.$store.state.flows.flows
     }, 
-    the_process(){
-      if(this.id != null){
-        for(var i = 0; i< this.processes.length; i++){
-          if(this.processes[i].id == this.id){
-            return this.processes[i]
-          }
-          else{
-            return this.edit
-          }
-        }
-      }
-      else{
-        return this.edit
-      }
-    }, 
     disabled() {
       if(this.id != null){
         return false
@@ -133,6 +119,22 @@ export default {
     }
     
    },
+   methods: {
+     saveProcess(value) {
+        if(this.is_new){
+          this.$store.dispatch('flows/saveProcess', value)
+          console.log(this.$store.state.flows)
+          console.log(this.edit_process.id)
+          //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
+        }
+        else{
+          this.$store.dispatch('flows/editProcess', value);
+      console.log(value)
+      console.log(this.processes)
+      console.log(this.$store.state.flows)
+     }
+   }
+   },
   created () {
     this.loading = true
     console.log(this.$store);
@@ -141,6 +143,21 @@ export default {
         console.log(flows)
         this.loading = false
       })
+      if(this.id != null){
+         console.log("ciso ")
+        this.is_new=false
+        console.log("hello")
+         var filteredProcesses = this.processes.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          console.log(filt.id == this.id)
+          return filt.id == this.id
+        
+         })  
+         this.edit_process = Object.assign({},filteredProcesses[0]);
+        console.log(this.edit_process)
+         
+    }
   },
  
 }

@@ -26,6 +26,14 @@ export function saveCategoryTypeElement(state, integration_category_element) {
     .then(integration_category_return => state.commit('saveCategoryTypeElement', integration_category_return))
 }
 
+export function deleteIntegrationCategory(state, integration_category_element) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(integration_category_element)
+  return client
+    .deleteIntegrationCategory(integration_category_element)
+    .then(integration_category_return => state.commit('deleteIntegrationCategory', integration_category_return))
+}
+
 
 /*export function deleteDocument({commit}, document_type) {
 

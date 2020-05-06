@@ -5,7 +5,10 @@
     "text":"Administratives flows",
     "button":"consult flows",
     "link": "#/flows",
-    "topic_tags":["tag2", "tag3"], 
+    "topic_tags":[
+      {"label":"tag2", "value":"tag2"},
+      {"label":"tag3", "value":"tag3"}
+    ], 
     "user_tags":[],
     "steps":[
       {
@@ -73,7 +76,9 @@
     "button":"Go to app",
     "link": "#",
     "topic_tags":[], 
-    "user_tags":["tag6"],
+    "user_tags":[
+      {"label":"tag6", "value":"tag6"}
+    ], 
     "steps":[
       {
         "id":"d",
@@ -135,8 +140,13 @@
     "text":"This could be another link to external application",
     "button":"go somewhere",
     "link": "#",
-    "topic_tags":["tag1", "tag2"], 
-    "user_tags":["tag5"],
+    "topic_tags":[
+      {"label":"tag1", "value":"tag1"},
+      {"label":"tag2", "value":"tag2"}
+    ],  
+    "user_tags":[
+      {"label":"tag5", "value":"tag5"}
+    ], 
     "steps":[
       {
       "id":"f",
@@ -162,8 +172,13 @@
     "text":"This could be an explanation of the workflow to enroll the child done by us using some flow diagram description, generic for many processes and pilots",
     "button":"Go to flow",
     "link": "#/eduflow",
-    "topic_tags":["tag1", "tag2"], 
-    "user_tags":["tag5"],
+    "topic_tags":[
+      {"label":"tag1", "value":"tag1"},
+      {"label":"tag2", "value":"tag2"}
+    ], 
+    "user_tags":[
+      {"label":"tag5", "value":"tag5"}
+    ], 
     "steps":[
       {
       "id":"g",
@@ -211,8 +226,13 @@
     "text":"You are studying in the city and need to renew your residence permit",
     "button":"go somewhere",
     "link": "#",
-    "topic_tags":["tag1", "tag3"], 
-    "user_tags":["tag4"],
+    "topic_tags":[
+      {"label":"tag1", "value":"tag1"},
+      {"label":"tag3", "value":"tag3"}
+    ],  
+    "user_tags":[
+      {"label":"tag4", "value":"tag4"}
+    ],  
     "graph":[{"data":{"id":"a" }},
              {"data":{"id": "b" }},
              {"data": { "id": "ab", "source": "a", "target": "b" }}
@@ -226,7 +246,11 @@
     "text":"You found a job and need to renew your residence permit",
     "button":"go for it2",
     "link": "#",
-    "topic_tags":["tag1", "tag2", "tag3"], 
+    "topic_tags":[
+      {"label":"tag1", "value":"tag1"},
+      {"label":"tag2", "value":"tag2"},
+      {"label":"tag3", "value":"tag3"}
+    ],  
     "user_tags":[],
     "steps":[
       {
