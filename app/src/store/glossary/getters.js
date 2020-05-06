@@ -1,4 +1,3 @@
-/*
-export function someGetter (state) {
+export function glossary (state) {
+    return state.glossary
 }
-*/
