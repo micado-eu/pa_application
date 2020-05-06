@@ -10,6 +10,7 @@ import glossary from './glossary'
 import statistics from './statistics'
 import document_type from './document_type'
 import integration_category from './integration_category'
+import user_type from './user_type'
 import integration_type from './integration_type'
 import language from './language'
 
@@ -33,6 +34,7 @@ export default function (/* { ssrContext } */) {
       statistics,
       document_type,
       integration_category,
+      user_type,
       integration_type,
       language
     },

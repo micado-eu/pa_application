@@ -10,6 +10,7 @@
     "integrationtype": "Manage integration types",
     "map": "Map",
     "topic": "Manage topics",
+    "user_type": "Manage user types",
     "editor": "Sample editor",
     "glossary": "Glossary",
     "activelanguages": "Change active languages"
