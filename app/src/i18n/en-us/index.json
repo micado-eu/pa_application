@@ -1,0 +1,16 @@
+{
+  "menu": {
+    "title": "My Tools",
+    "dashboard": "Dashboard",
+    "documenttype": "Mmanage document types",
+    "configure": "Configuration",
+    "processmanager": "Manage processes",
+    "mediation": "Request a mediation",
+    "integrationcategory": "Manage integration categories",
+    "integrationtype": "Manage integration types",
+    "map": "Map",
+    "editor": "Sample editor",
+    "glossary": "Glossary",
+    "activelanguages": "Change active languages"
+  }
+}
