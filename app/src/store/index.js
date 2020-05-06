@@ -5,6 +5,7 @@ import Vuex from 'vuex'
 import documents from './documents'
 import features from './features'
 import flows from './flows'
+import topic from './topic'
 import glossary from './glossary'
 import statistics from './statistics'
 import document_type from './document_type'
@@ -28,6 +29,7 @@ export default function (/* { ssrContext } */) {
       features,
       glossary,
       flows,
+      topic,
       statistics,
       document_type,
       integration_category,

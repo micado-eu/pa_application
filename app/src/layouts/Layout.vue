@@ -90,6 +90,7 @@ export default {
         {label:'menu.documenttype', icon: 'description', to: '/document_type', description: 'Manage document types'},
         {label:'menu.integrationcategory', icon: 'description', to: '/integration_category', description: 'Manage integration categories'},
         {label:'menu.integrationtype', icon: 'description', to: '/integration_type', description: 'Manage integration types'},
+        {label:'menu.topic', icon: 'description', to: '/topic', description: 'Manage topics'},
         {label:'menu.processmanager', icon: 'description', to: '/processmanager', description: 'Manage processes'},
   //      {label:'menu.assistant', icon: 'question_answer', to: '/chatbot', description: 'Micado Assistant'},
 //        {label:'menu.processes', icon: 'timeline', to: '/flows', description: 'flow description of processes'},

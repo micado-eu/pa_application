@@ -8,7 +8,7 @@
         :key="a_integration_category.id"
       >
         <q-item-section>{{a_integration_category.title}}</q-item-section>
-        <q-item-actions class="col-5 flex flex-center">
+        <q-item-section class="col-5 flex flex-center">
           <q-btn
             color="negative"
             label="Delete"
@@ -21,7 +21,7 @@
             size="xs"
             @click="editIntegrationCategory(a_integration_category)"
           />
-        </q-item-actions>
+        </q-item-section>
       </q-item>
     </q-list>
     <q-card class="my-card">
