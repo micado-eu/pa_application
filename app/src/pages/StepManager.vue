@@ -1,19 +1,24 @@
   <template>
   <div class="container" >
-  <div style="text-align:center">
-  <h3>{{this.title}}</h3>
-
-   <div class="q-pa-md" style="text-align:center">
-   <q-btn color="accent" label="Add Step"  to="steps/new" />
+   <div style="text-align:center;">
+   <div class="col" style="display:inline-block;text-align:left;width:600px">
+   <h5> Manage Steps </h5>
+  </div>
+  <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add step" no-caps size="15px" to="/edit_step/" />
   </div>
   </div>
-    <q-list  >
-        <Step v-for="step in steps"
+    <div style="text-align:center;">
+    <q-list style="display:inline-block;width:750px" >
+        <Step v-for="step in filteredSteps"
          :key="step.id"
          :Title="step.title"
-         :Link="step.id">
+         :Link="step.id"
+         @remove="deleteStep"
+         :Back="id">
         </Step>
     </q-list>
+    </div>
   </div>
 </template>
 
@@ -33,7 +38,7 @@ export default {
   data () {
     return {
       id:this.$route.params.id,
-      title: ""
+      step_list:[]
     }
   },
 
@@ -42,19 +47,29 @@ export default {
       return this.$store.state.flows.flows
     },
     steps() {
-      if(this.id != null){
-        for(var i = 0; i< this.processes.length; i++){
-          if(this.processes[i].id == this.id){
-            console.log("id processo" + this.processes[i].id)
-            console.log(this.processes[i])
-            console.log("id route" + this.id)
-            this.title= this.processes[i].title
-            return this.processes[i].steps
-          }
-        }
-      }
+      return this.$store.state.steps.steps
+    },
+     filteredSteps() {
+         console.log("hello")
+         return this.steps.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          console.log(typeof(this.id))
+         console.log(filt.process_id)
+          return filt.process_id.includes(this.id)
+        })  
+         
+     }
+  },
+  methods: {
+    deleteStep(value) {
+      var deletedSteps = this.steps.filter((filt) => {
+          console.log("in fil")
+          console.log(filt.id == value)
+          return filt.id == value
+        })  
+      this.$store.dispatch('steps/deleteSteps', deletedSteps[0].id)
     }
-     
   },
 
 
@@ -64,6 +79,11 @@ export default {
     console.log(this.$store);
     this.$store.dispatch('flows/fetchFlows')
       .then(processes => {
+        this.loading = false
+      })  
+    console.log(this.$store);
+    this.$store.dispatch('steps/fetchSteps')
+      .then(steps => {
         this.loading = false
       })  
   }

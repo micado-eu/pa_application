@@ -6,8 +6,8 @@
     "button":"consult flows",
     "link": "#/flows",
     "topic_tags":[
-      {"label":"tag2", "value":"tag2"},
-      {"label":"tag3", "value":"tag3"}
+      {"label":"Health", "value":2},
+      {"label":"Education", "value":3}
     ], 
     "user_tags":[],
     "steps":[
@@ -77,7 +77,7 @@
     "link": "#",
     "topic_tags":[], 
     "user_tags":[
-      {"label":"tag6", "value":"tag6"}
+      {"label":"Migrant", "value":1}
     ], 
     "steps":[
       {
@@ -141,11 +141,11 @@
     "button":"go somewhere",
     "link": "#",
     "topic_tags":[
-      {"label":"tag1", "value":"tag1"},
-      {"label":"tag2", "value":"tag2"}
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2}
     ],  
     "user_tags":[
-      {"label":"tag5", "value":"tag5"}
+      {"label":"Asylu Seeker", "value":2}
     ], 
     "steps":[
       {
@@ -173,11 +173,11 @@
     "button":"Go to flow",
     "link": "#/eduflow",
     "topic_tags":[
-      {"label":"tag1", "value":"tag1"},
-      {"label":"tag2", "value":"tag2"}
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2}
     ], 
     "user_tags":[
-      {"label":"tag5", "value":"tag5"}
+      {"label":"Asylum Seeker", "value":2}
     ], 
     "steps":[
       {
@@ -227,11 +227,11 @@
     "button":"go somewhere",
     "link": "#",
     "topic_tags":[
-      {"label":"tag1", "value":"tag1"},
-      {"label":"tag3", "value":"tag3"}
+      {"label":"Housing", "value":1},
+      {"label":"Education", "value":3}
     ],  
     "user_tags":[
-      {"label":"tag4", "value":"tag4"}
+      {"label":"Refugee", "value":3}
     ],  
     "graph":[{"data":{"id":"a" }},
              {"data":{"id": "b" }},
@@ -247,9 +247,9 @@
     "button":"go for it2",
     "link": "#",
     "topic_tags":[
-      {"label":"tag1", "value":"tag1"},
-      {"label":"tag2", "value":"tag2"},
-      {"label":"tag3", "value":"tag3"}
+      {"label":"Housing", "value":1},
+      {"label":"Health", "value":2},
+      {"label":"Education", "value":3}
     ],  
     "user_tags":[],
     "steps":[

@@ -13,7 +13,7 @@ import integration_category from './integration_category'
 import user_type from './user_type'
 import integration_type from './integration_type'
 import language from './language'
-
+import steps from './steps'
 
 Vue.use(Vuex)
 
@@ -36,7 +36,8 @@ export default function (/* { ssrContext } */) {
       integration_category,
       user_type,
       integration_type,
-      language
+      language, 
+      steps
     },
 
     // enable strict mode (adds overhead!)

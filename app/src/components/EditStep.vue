@@ -6,7 +6,7 @@
         <h5 style="text-align:left"> Step Name </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined :value="the_step.title" />
+        <q-input rounded standout outlined v-model="edit_step.title" />
       </div>
     </div>
     
@@ -17,7 +17,7 @@
         <h5 style="text-align:left"> Step location </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined :value="the_step.location"  />
+        <q-input rounded standout outlined v-model="edit_step.location"  />
       </div>
     </div>
 
@@ -26,7 +26,7 @@
         <h5 style="text-align:left"> Step cost </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined :value="the_step.cost"  />
+        <q-input rounded standout outlined v-model="edit_step.cost"  />
       </div>
     </div>
 
@@ -37,10 +37,9 @@
       <div class=" q-pa-md col-8">
      <q-select
         filled
-        :value="the_step.required_documents"
         clearable
         
-        v-model="the_step.required_documents"
+        v-model="edit_step.required_documents"
         multiple
         :options="documents_list"
         
@@ -57,10 +56,10 @@
       <div class=" q-pa-md col-8">
      <q-select
         filled
-        :value="the_step.linked_processes"
+        
         clearable
         
-        v-model="the_step.linked_processes"
+        v-model="edit_step.linked_processes"
         multiple
         :options="processes_list"
         
@@ -77,7 +76,7 @@
         <h5 style="text-align:left"> Step description </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input  type="textarea" filled :value="the_step.description"  />
+        <q-input  type="textarea" filled v-model="edit_step.description"  />
       </div>
     </div>
 
@@ -89,10 +88,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn color="red" label="Save" style="width:150px" />
+    <q-btn color="red" label="Save" @click="saveStep(edit_step)" style="width:150px" />
     </div>
     <div class="q-pa-md col-6" style="text-align:left">
-    <q-btn color="red" label="Back" style="width:150px"/>
+    <q-btn color="red" label="Back"  style="width:150px"/>
     </div>
     </div>
 </div>
@@ -108,6 +107,7 @@ export default {
   data (){
     return {
       id: this.$route.params.id, 
+      is_new: true,
       documents_list: [
         "document_1",
         "document_2",
@@ -122,47 +122,63 @@ export default {
         "How to get access to public funded housing",
         "How to enroll children to school"
       ],
-      edit: {
+      edit_step: {
         title:"",
         location:"",
         cost:"",
         required_documents:[],
         linked_processes:[],
-        description:""
+        description:"", 
+        process_id:[]
       }
   }
   },
-   computed: {
-     processes () {
-      return this.$store.state.flows.flows
-    },
-    the_step() {
-      if(this.id != null){
-        for(var i = 0; i< this.processes.length; i++){
-          for(var j = 0; j< this.processes[i].steps.length; j++){
-          if(this.processes[i].steps[j].id == this.id){
-            console.log("id processo" + this.processes[i].id)
-            console.log(this.processes[i])
-            console.log("id route" + this.id)
-            this.title= this.processes[i].title
-            return this.processes[i].steps[j]
-          }
-          else{
-            return this.edit
-          }
+   methods: {
+     saveStep(value) {
+        if(this.is_new){
+          this.$store.dispatch('steps/saveSteps', value)
+          console.log("I am the store")
+          console.log(this.$store.state.steps)
+          console.log(this.edit_step.id)
+          //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
         }
-      }
-      }
+        else{
+          console.log(this.is_new)
+          this.$store.dispatch('steps/editSteps', value);
+      console.log(value)
+      console.log(this.steps)
+      console.log("I am the store")
+      console.log(this.$store.state.steps)
+     }
+   }
+   },
+   computed: {
+     steps () {
+      return this.$store.state.steps.steps
     }
 },
  created () {
     this.loading = true
     console.log(this.$store);
-    this.$store.dispatch('flows/fetchFlows')
-      .then(flows => {
-        console.log(flows)
+    this.$store.dispatch('steps/fetchSteps')
+      .then(steps => {
+        console.log(steps)
         this.loading = false
       })
+       if(this.id != null){
+        this.is_new = false
+        console.log("hello")
+         var filteredStep = this.steps.filter((filt) => {
+          console.log("in fil")
+          console.log(filt)
+          console.log(filt.id == this.id)
+          return filt.id == this.id
+         
+         })  
+         this.edit_step = Object.assign({},filteredStep[0]);
+        console.log(this.edit_step)
+          console.log(" I am the param id" + this.id)
+    }
   },
 }
 </script>

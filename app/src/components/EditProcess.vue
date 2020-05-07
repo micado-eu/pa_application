@@ -1,59 +1,57 @@
 <template>
-<div>
-  <div class=" q-pa-lg" style=" border-width:3px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px">
+<div style="text-align:center; padding-top:40px">
+  <div class="" style=" display:inline-block; width:750px;border-width:2px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px">
     <div class=" q-pa-xsm row" style="text-align:center">
-      <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Process Name </h5>
+      <div class="col-4" style="padding-left:40px">
+        <h5 style="text-align:left;font-size:15px;"> Process Name </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined v-model="edit_process.title" />
+      <div class="col-8" style="margin: auto;display: block;padding-right:40px">
+        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_process.title" />
       </div>
     </div>
     
    
     
     <div class=" q-pa-xsm row" >
-      <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Process description </h5>
+      <div class="col-4" style="padding-left:40px">
+        <h5 style="text-align:left;font-size:15px; margin:0"> Process description </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded standout outlined v-model="edit_process.text"  />
+      <div class="col-8" style="margin: auto;display: block;padding-right:40px">
+        <q-input rounded dense type="textarea" bg-color="grey-3" standout outlined v-model="edit_process.text"  />
       </div>
     </div>
 
 
 
     <div class=" q-pa-xsm row" style="text-align:center">
-      <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Process tags </h5>
+      <div class=" col-4" style="padding-left:40px">
+        <h5 style="text-align:left;font-size:15px"> Process tags </h5>
       </div>
-      <div class=" q-pa-md col-4">
+      <div class="col-4" style="padding-left:0px; padding-top:15px">
      <q-select
         filled
-        
+        dense
         clearable
         
         v-model="edit_process.user_tags"
         multiple
-        :options="u_tags"
+        :options="this.u_tags"
         
         label="User Tags"
-        style="width: 250px"
+        style="width: 200px"
       />
       </div>
       
-      <div class="q-pa-md col-4">
+      <div class="col-4" style="padding-right:45px; padding-top:15px">
      <q-select
         filled
-        
+        dense
         clearable
-       
         v-model="edit_process.topic_tags"
         multiple
-        :options="t_tags"
-        
+        :options="this.t_tags"
         label="Topic Tags"
-        style="width: 250px"
+        style="width: 200px"
       />
       </div>
       </div >
@@ -61,15 +59,14 @@
     
    
   </div>
-  <div class="row">
-    <div class="q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Back" style="width:150px" to="/processmanager"/>
-    </div>
-    <div class=" q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Save changes" style="width:150px" @click="saveProcess(edit_process)"/>
-    </div>
-    <div class="q-pa-md col-4" style="text-align:center">
-    <q-btn color="red" label="Manage steps" :disable="this.disabled" style="width:150px" :to="this.id + '/steps'"/>
+  <div  style="text-align:center">
+    <div class="q-pa-md q-gutter-md col-4" style="display:inline-block">
+    <q-btn color="secondary" no-caps rounded label="Manage steps" :disable="this.disabled" style="width:150px" :to="this.id + '/steps'"/>
+    
+    <q-btn color="info" no-caps rounded label="Save changes" style="width:150px" @click="saveProcess(edit_process)"/>
+    
+    
+    <q-btn color="accent" no-caps rounded label="Back" style="width:150px" to="/processmanager"/>
     </div>
     </div>
 </div>
@@ -93,20 +90,22 @@ export default {
         topic_tags:[]
       },
        u_tags: [
-        { label: 'tag4', value: 'tag4'},
-        { label: 'tag5', value: 'tag5'},
-        { label: 'tag6', value: 'tag6'},
+        
       ],
       t_tags: [
-        { label: 'tag1', value: 'tag1'},
-        { label: 'tag2', value: 'tag2'},
-        { label: 'tag3', value: 'tag3'},
+        
       ],
     }
   },
     computed:{
      processes() {
       return this.$store.state.flows.flows
+    }, 
+    topic() {
+      return this.$store.state.topic.topic
+    }, 
+    user() {
+      return this.$store.state.user_type.user_type
     }, 
     disabled() {
       if(this.id != null){
@@ -129,6 +128,7 @@ export default {
         }
         else{
           this.$store.dispatch('flows/editProcess', value);
+          console.log(this.is_new)
       console.log(value)
       console.log(this.processes)
       console.log(this.$store.state.flows)
@@ -143,6 +143,24 @@ export default {
         console.log(flows)
         this.loading = false
       })
+      this.$store.dispatch('topic/fetchTopic')
+      .then(topic => {
+        console.log(topic)
+        this.loading = false
+      })
+      this.$store.dispatch('user_type/fetchUserType')
+      .then(user_type => {
+        console.log(user_type)
+        this.loading = false
+      })
+      for ( var i = 0; i<this.topic.length; i++){
+        var the_topic = {label: this.topic[i].topic, value:this.topic[i].id}
+        this.t_tags.push(the_topic)
+      }
+       for ( var j = 0; j<this.user.length; j++){
+        var the_user = {label: this.user[j].user_type, value:this.user[j].id}
+        this.u_tags.push(the_user)
+      }
       if(this.id != null){
          console.log("ciso ")
         this.is_new=false

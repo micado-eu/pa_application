@@ -1,22 +1,21 @@
 <template>
 
   <q-item
-    style=" border-width:3px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px"
+    style="padding-top:0px; padding-bottom:0px; padding-left:0px"
   >
     <div>
-      <div class="row">
-        <div class=" q-pa-md col" style="width:1000px">
-          <div style="font-size:20px">{{ this.Title }}</div>
-        </div>
-      <div class=" q-pa-md  col" style="width:1000px">
-        <q-chip v-for="tag in Tag_1" :label="tag" :key="tag"></q-chip>
-        <q-chip v-for="tag in Tag_2" :label="tag" :key="tag"></q-chip>
-      </div>
+    <div class="row">
+    <div class="col" style="width:750px; padding-bottom:0px; padding-left:0px; padding-top:0px">
+     <div style="font-size:20px; text-align:left; font-size:18px">{{ this.Title }}</div>
     </div>
-    <div class="q-pa-md q-gutter-sm row">
-      <q-btn color="accent" label="Edit" :to="'steps/' + this.Link" />
-      <q-btn color="accent" label="Delete" />
+    
+     <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
+      <q-btn size="11px" no-caps style="width:70px;" rounded color="info" label="Edit" :to="'/edit_step/' + this.Link" />
+      <q-btn size="11px" no-caps style="width:70px" rounded color="accent" label="Delete" @click="remove_step($event)" />
     </div>
+    
+    </div>
+    <hr style="margin:5px">
     </div>
   </q-item>
 </template>
@@ -27,6 +26,14 @@ export default {
   props: ["Title",  "Tag_1", "Tag_2", "Link"], 
   data() {
     return {};
+  }, 
+  methods:{
+    remove_step(event){
+      let target = event.currentTarget.id
+      console.log(typeof(this.Link))
+      this.$emit('remove', this.Link)
+
+    }
   }
 };
 </script>
