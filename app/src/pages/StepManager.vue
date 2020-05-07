@@ -26,9 +26,9 @@
 <script>
 import Step from 'components/Step'
 
-
 export default {
   //name: 'DocumentType',
+  
   props: {
     msg: String
   },

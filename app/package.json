@@ -28,6 +28,7 @@
     "tiptap-extensions": "^1.29.1",
     "uppy": "^1.6.0",
     "validator": "^11.1.0",
+    "vue-cytoscape": "^1.0.8",
     "vue-form-json-schema": "^2.5.0",
     "vue-friendly-iframe": "^0.16.0",
     "vue-hotspot": "^2.0.1",
