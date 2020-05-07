@@ -77,6 +77,13 @@
         No glossary items found
       </div>
     </div>
+    <div v-if="!loading">
+      <q-btn
+        unelevated
+        label="Save"
+        @click="emitEditorContent()"
+      />
+    </div>
   </div>
 </template>
 
@@ -114,6 +121,9 @@ export default {
       this.editor.focus()
       this.showSuggestionsData = false
     },
+    emitEditorContent () {
+      this.$emit('editorSave', this.editor.getJSON())
+    }
   },
   data () {
     return {
