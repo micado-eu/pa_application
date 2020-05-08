@@ -106,7 +106,6 @@
       </editor-menu-bar>
       <editor-content
         class="editor__content"
-        :style="style"
         :editor="editor"
       />
     </div>
@@ -215,19 +214,6 @@ export default {
     showSuggestions () {
       return this.showSuggestionsData
     },
-    style() {
-      let styles = ""
-      if (this.width) {
-        styles += "width: " + this.width + ";"
-      }
-      if (this.height) {
-        styles += "height: " + this.height + ";"
-      }
-      if (this.overflow) {
-        styles += "overflow: " + this.overflow + ";"
-      }
-      return styles
-    }
   },
   created () {
     this.loading = true
@@ -302,6 +288,5 @@ export default {
 <style lang="scss">
   .ProseMirror {
     border: 1px solid $primary;
-    overflow: auto;
   }
 </style>
