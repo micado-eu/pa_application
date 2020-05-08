@@ -29,6 +29,27 @@
             @click="commands.italic"
           />
           <q-btn
+            :outline="isActive.strike()"
+            :unelevated="!isActive.strike()"
+            rounded
+            label="Strike"
+            @click="commands.strike"
+          />
+          <q-btn
+            :outline="isActive.underline()"
+            :unelevated="!isActive.underline()"
+            rounded
+            label="Underline"
+            @click="commands.underline"
+          />
+          <q-btn
+            :outline="isActive.paragraph()"
+            :unelevated="!isActive.paragraph()"
+            rounded
+            label="Paragraph"
+            @click="commands.paragraph"
+          />
+          <q-btn
             :outline="isActive.heading({ level: 1 })"
             :unelevated="!isActive.heading({ level: 1 })"
             rounded
@@ -49,10 +70,43 @@
             label="H3"
             @click="commands.heading({ level: 3 })"
           />
+          <q-btn
+            :outline="isActive.ordered_list()"
+            :unelevated="!isActive.ordered_list()"
+            rounded
+            label="Ordered list"
+            @click="commands.ordered_list"
+          />
+          <q-btn
+            :outline="isActive.blockquote()"
+            :unelevated="!isActive.blockquote()"
+            rounded
+            label="Blockquote"
+            @click="commands.blockquote"
+          />
+          <q-btn
+            unelevated
+            rounded
+            label="Horizontal rule"
+            @click="commands.horizontal_rule"
+          />
+          <q-btn
+            unelevated
+            rounded
+            label="Undo"
+            @click="commands.undo"
+          />
+          <q-btn
+            unelevated
+            rounded
+            label="Redo"
+            @click="commands.redo"
+          />
         </div>
       </editor-menu-bar>
       <editor-content
         class="editor__content"
+        :style="style"
         :editor="editor"
       />
     </div>
@@ -80,6 +134,7 @@
     <div v-if="!loading">
       <q-btn
         unelevated
+        rounded
         label="Save"
         @click="emitEditorContent()"
       />
@@ -92,6 +147,17 @@ import { mapGetters, mapActions } from "vuex"
 import Fuse from 'fuse.js'
 import { Editor, EditorContent, EditorMenuBar } from "tiptap"
 import {
+  Blockquote,
+  HorizontalRule,
+  OrderedList,
+  BulletList,
+  ListItem,
+  TodoItem,
+  TodoList,
+  Link,
+  Strike,
+  Underline,
+  History,
   HardBreak,
   Heading,
   Bold,
@@ -102,6 +168,11 @@ import {
 
 export default {
   name: "GlossaryEditor",
+  props: {
+    width: String,
+    height: String,
+    overflow: String
+  },
   components: {
     EditorContent,
     EditorMenuBar
@@ -144,6 +215,19 @@ export default {
     showSuggestions () {
       return this.showSuggestionsData
     },
+    style() {
+      let styles = ""
+      if (this.width) {
+        styles += "width: " + this.width + ";"
+      }
+      if (this.height) {
+        styles += "height: " + this.height + ";"
+      }
+      if (this.overflow) {
+        styles += "overflow: " + this.overflow + ";"
+      }
+      return styles
+    }
   },
   created () {
     this.loading = true
@@ -194,7 +278,18 @@ export default {
               },
             }),
             new Bold(),
-            new Italic()
+            new Italic(),
+            new Blockquote(),
+            new BulletList(),
+            new HorizontalRule(),
+            new ListItem(),
+            new OrderedList(),
+            new TodoItem(),
+            new TodoList(),
+            new Link(),
+            new Strike(),
+            new Underline(),
+            new History(),
           ],
           content: `
           `
@@ -204,8 +299,9 @@ export default {
   }
 }
 </script>
-<style>
-.editor-component {
-  border: 1px solid black;
-}
+<style lang="scss">
+  .ProseMirror {
+    border: 1px solid $primary;
+    overflow: auto;
+  }
 </style>
