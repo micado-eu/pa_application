@@ -1,6 +1,6 @@
   <template>
   <div class="container" >
-   <div style="text-align:center;">
+   <div >
    <div class="col" style="display:inline-block;text-align:left;width:600px">
    <h5> Manage Steps </h5>
   </div>
@@ -8,7 +8,7 @@
    <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add step" no-caps size="15px" to="/edit_step/" />
   </div>
   </div>
-    <div style="text-align:center;">
+    <div >
     <q-list style="display:inline-block;width:750px" >
         <Step v-for="step in filteredSteps"
          :key="step.id"
