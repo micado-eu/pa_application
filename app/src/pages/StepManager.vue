@@ -18,6 +18,15 @@
          :Back="id">
         </Step>
     </q-list>
+    <cytoscape ref="flow_cyt" :config="configcy" v-on:mousedown="addNode" v-on:cxttapstart="updateNode" :preConfig="preConfig" :afterCreated="afterCreated">
+          <cy-element
+            v-for="def in testdata"
+            :key="`${def.data.id}`"
+            :definition="def"
+            v-on:mousedown="deleteNode($event, def)"
+          />
+
+        </cytoscape>
     </div>
   </div>
 </template>
@@ -25,6 +34,8 @@
 
 <script>
 import Step from 'components/Step'
+//import { Core, EventObject } from 'cytoscape'
+import configcy from '../configs/cytoscapeConfig'
 
 export default {
   //name: 'DocumentType',
@@ -38,6 +49,11 @@ export default {
   data () {
     return {
       id:this.$route.params.id,
+        configcy,
+        testdata: [{"data":{"id":"a","data":{"id":"n", "data": {"longitude":41, "latitude": 7, "documents":[{"id":1,"type":"adoc"}]} } }},
+             {"data":{"id": "b","data":{"id":"n", "data": {"longitude":41, "latitude": 7, "documents":[{"id":1,"type":"adoc"}]} } }},
+             {"data": { "id": "ab", "source": "a", "target": "b" }}
+           ],
       step_list:[]
     }
   },
@@ -69,6 +85,39 @@ export default {
           return filt.id == value
         })  
       this.$store.dispatch('steps/deleteSteps', deletedSteps[0].id)
+    },
+    preConfig(cytoscape) {
+    //console.log(config);
+
+    //console.log(this.configCyto);
+//    console.log(this.configcyt);
+//    console.log(configcyt);
+      console.log("calling pre-config", cytoscape);
+    },
+        addNode(event) {
+      console.log(event.target);
+  //    if (event.target === this.$refs.cyRef.instance)
+        console.log("adding node", event.target);
+    },
+    updateNode(event) {
+      console.log("right click node", event);
+    },
+        deleteNode(event, node) {
+      console.log("node clicked", node);
+      if(node.group === 'nodes'){
+        console.log(node.data.id);
+        console.log(node.data.data.longitude);
+//        this.$store.commit("flows/setNodePanelVisible", "");
+
+//        this.$store.commit("flows/setDocuments", node.data.data.documents);
+
+      }
+
+    },
+    afterCreated(cy) {
+      // cy: this is the cytoscape instance
+      console.log("after created", cy);
+      cy.resize();
     }
   },
 
