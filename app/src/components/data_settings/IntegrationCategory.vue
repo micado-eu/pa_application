@@ -1,5 +1,8 @@
 <template>
-  <div class="q-pa-md">
+  <div :id="$options.name" class="q-pa-md">
+    <router-link :to="'#'+$options.name">
+      <h5 @click="onClickTitle()">{{$options.name}}</h5>
+    </router-link>
     <q-list bordered separator>
       <q-item
         clickable
@@ -26,12 +29,12 @@
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newIntegrationCategory()" :disable="hideAdd"/>
+        <q-btn color="secondary" label="Add" @click="newIntegrationCategory()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input v-model="int_cat_shell.title" label="Standard"/>
-        <q-btn color="secondary" label="Save" @click="saveIntegrationCategory()"/>
-        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationCategory()"/>
+        <q-input v-model="int_cat_shell.title" label="Standard" />
+        <q-btn color="secondary" label="Save" @click="saveIntegrationCategory()" />
+        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
   </div>
@@ -39,6 +42,7 @@
 
 <script>
 export default {
+  name: "IntegrationCategory",
   data() {
     return {
       int_cat_shell: { id: -1, title: "" },
@@ -53,6 +57,9 @@ export default {
     }
   },
   methods: {
+    onClickTitle: function() {
+      this.$emit("scroll", "#" + this.$options.name);
+    },
     deleteIntegrationCategory(index) {
       console.log(index);
       this.$store.dispatch(
@@ -113,3 +120,9 @@ export default {
   }
 };
 </script>
+<style scoped>
+a {
+  text-decoration: none;
+  color: #000000;
+}
+</style>

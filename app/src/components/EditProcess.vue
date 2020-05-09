@@ -66,7 +66,7 @@
     <q-btn color="info" no-caps rounded label="Save changes" style="width:150px" @click="saveProcess(edit_process)"/>
     
     
-    <q-btn color="accent" no-caps rounded label="Back" style="width:150px" to="/processmanager"/>
+    <q-btn color="accent" no-caps rounded label="Back" style="width:150px" to="/guided_process_editor"/>
     </div>
     </div>
 </div>

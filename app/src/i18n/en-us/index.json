@@ -1,18 +1,15 @@
 {
   "menu": {
     "title": "My Tools",
-    "dashboard": "Dashboard",
-    "documenttype": "Mmanage document types",
-    "configure": "Configuration",
-    "processmanager": "Manage processes",
-    "mediation": "Request a mediation",
-    "integrationcategory": "Manage integration categories",
-    "integrationtype": "Manage integration types",
-    "map": "Map",
-    "topic": "Manage topics",
-    "user_type": "Manage user types",
-    "editor": "Sample editor",
-    "glossary": "Glossary",
-    "activelanguages": "Change active languages"
+    "home": "home",
+    "usage": "Usage Monitor",
+    "situation": "Migration situation Monitor",
+    "setting": "App settings",
+    "process": "Guided processes",
+    "ngo": "NGO users",
+    "migrant": "Migrant users",
+    "info": "General information",
+    "data": "Data settings",
+    "glossary": "Glossary"
   }
 }

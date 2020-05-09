@@ -77,10 +77,7 @@
 </template>
 
 <script>
-/**
- * this is a map view rendered using Masterportal API (https://bitbucket.org/geowerkstatt-hamburg/masterportalapi/src/master/)
- * documentation and examples are available in the corresponding node_module folder
- */
+
 import { Style, Stroke, Fill } from "ol/style.js";
 import * as mpapi from "masterportalAPI";
 import services from "../api/map/config/services.json";
@@ -91,7 +88,7 @@ import pieChart from "./migration_monitor/pieChart";
 import barChart from "./migration_monitor/barChart";
 
 export default {
-  name: "MpMap",
+  name: "MigrationSituation",
   components: {
     lineChart,
     pieChart,

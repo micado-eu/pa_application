@@ -1,34 +1,31 @@
 <template>
   <div class="documents">
-    <q-list >
+    <q-list>
       <q-item v-for="doc in documents" :key="doc.id">
-      <q-item-section avatar>
+        <q-item-section avatar>
           <q-avatar rounded>
-          <img :src="doc.image">
+            <img :src="doc.image" />
           </q-avatar>
         </q-item-section>
         <q-item-section>
-        <q-item-label>{{doc.title}}</q-item-label>
-        <q-item-label caption >Emitted by:{{doc.emitter}} - lasting up to: {{doc.expire_date}}</q-item-label>
+          <q-item-label>{{doc.title}}</q-item-label>
+          <q-item-label caption>Emitted by:{{doc.emitter}} - lasting up to: {{doc.expire_date}}</q-item-label>
         </q-item-section>
-        </q-item>
+      </q-item>
     </q-list>
-    Upload new documents
-
+Upload new documents
     <div class="ThumbnailContainer" v-if="collection === 'thumbnail'">
       <button id="open-thumbnail-modal" class="button">Select file</button>
-
     </div>
     <div id="DashboardContainer" v-else></div>
-    </div>
   </div>
 </template>
 
 <script>
-import Uppy from '@uppy/core'
-import Dashboard from '@uppy/dashboard'
-import XHRUpload from '@uppy/xhr-upload'
-import Tus from '@uppy/tus'
+import Uppy from "@uppy/core";
+import Dashboard from "@uppy/dashboard";
+import XHRUpload from "@uppy/xhr-upload";
+import Tus from "@uppy/tus";
 
 //const Uppy = require('@uppy/core');
 //const Dashboard = require('@uppy/dashboard');
@@ -36,31 +33,30 @@ import Tus from '@uppy/tus'
 //const Tus = require('@uppy/tus')
 
 export default {
-  name: 'Documents',
+  name: "Documents",
   props: {
     msg: String
   },
   data() {
-      return {
+    return {
       files: {},
-      mainProps: { width: 50, height: 50, class: 'm1' }
-      }
-    },
-  computed: {
-  uppyId() {
-    return `${this.modelId}-${this.collection}`;
+      mainProps: { width: 50, height: 50, class: "m1" }
+    };
   },
+  computed: {
+    uppyId() {
+      return `${this.modelId}-${this.collection}`;
+    },
     documents() {
-      return this.$store.state.documents.documents
+      return this.$store.state.documents.documents;
     }
   },
-  created () {
-    this.loading = true
+  created() {
+    this.loading = true;
     console.log(this.$store);
-    this.$store.dispatch('documents/fetchDocuments')
-      .then(documents => {
-        this.loading = false
-      })
+    this.$store.dispatch("documents/fetchDocuments").then(documents => {
+      this.loading = false;
+    });
   },
   mounted() {
     const uppy = Uppy({
@@ -70,51 +66,67 @@ export default {
       thumbnailGeneration: true,
       restrictions: {
         maxFileSize: false,
-        allowedFileTypes: ['image/*', 'application/pdf', 'text/csv'],
+        allowedFileTypes: ["image/*", "application/pdf", "text/csv"]
       },
       meta: {
         modelId: this.modelId,
-        collection: this.collection,
+        collection: this.collection
       },
       onBeforeFileAdded: () => {
         Promise.resolve();
       },
-      onBeforeUpload: (files) => {
+      onBeforeUpload: files => {
         this.files = files;
         Promise.resolve();
-      },
+      }
     });
-    if (this.collection === 'thumbnail') {
+    if (this.collection === "thumbnail") {
       uppy.use(Dashboard, {
-        trigger: '#open-thumbnail-modal',
+        trigger: "#open-thumbnail-modal",
         metaFields: [
-          { id: 'owner', name: 'Owner', placeholder: 'name of the photographer/owner' },
-          { id: 'caption', name: 'Caption', placeholder: 'describe what the image is about' },
-          { id: 'order', name: 'Order', placeholder: 'order' },
-        ],
+          {
+            id: "owner",
+            name: "Owner",
+            placeholder: "name of the photographer/owner"
+          },
+          {
+            id: "caption",
+            name: "Caption",
+            placeholder: "describe what the image is about"
+          },
+          { id: "order", name: "Order", placeholder: "order" }
+        ]
       });
     } else {
       uppy.use(Dashboard, {
         inline: true,
-        target: '#DashboardContainer',
+        target: "#DashboardContainer",
         replaceTargetContent: true,
-        note: 'Images and PDF only.',
+        note: "Images and PDF only.",
         maxHeight: 500,
         metaFields: [
-          { id: 'owner', name: 'Owner', placeholder: 'name of the photographer/owner' },
-          { id: 'caption', name: 'Caption', placeholder: 'describe what the image is about' },
-          { id: 'order', name: 'Order', placeholder: 'order' },
-        ],
+          {
+            id: "owner",
+            name: "Owner",
+            placeholder: "name of the photographer/owner"
+          },
+          {
+            id: "caption",
+            name: "Caption",
+            placeholder: "describe what the image is about"
+          },
+          { id: "order", name: "Order", placeholder: "order" }
+        ]
       });
     }
     uppy.use(Tus, {
-//      endpoint: 'http://upload.micado.csi.it:1080/files', // use your tus endpoint here
-      endpoint: 'http://158.102.29.31:1080/files', // use your tus endpoint here
+      //      endpoint: 'http://upload.micado.csi.it:1080/files', // use your tus endpoint here
+      endpoint: "http://158.102.29.31:1080/files", // use your tus endpoint here
       resume: true,
-      headers: {"Upload-Metadata":"gioppo"},
+      headers: { "Upload-Metadata": "gioppo" },
       autoRetry: true,
       retryDelays: [0, 1000, 3000, 5000]
-    })
+    });
     /*
     uppy.use(XHRUpload, {
       endpoint: this.endpoint,
@@ -134,8 +146,8 @@ export default {
     */
     uppy.run();
   },
-  methods: {},
-}
+  methods: {}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

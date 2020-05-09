@@ -11,18 +11,21 @@
           aria-label="Menu"
         />
 
-        <q-toolbar-title>
-          Micado App
-        </q-toolbar-title>
-
+        <q-toolbar-title>Micado App</q-toolbar-title>
 
         <div>Micado v0.1</div>
       </q-toolbar>
     </q-header>
 
-    <q-footer >
+    <q-footer>
       <q-tabs>
-        <q-route-tab  v-for="(nav, index) in navs" :to="nav.to" :key="nav.label" :label="$t( nav.label )" :icon="nav.icon"  />
+        <q-route-tab
+          v-for="(nav) in navs"
+          :to="nav.to"
+          :key="nav.label"
+          :label="$t( nav.label )"
+          :icon="nav.icon"
+        />
       </q-tabs>
     </q-footer>
 
@@ -32,32 +35,32 @@
       :breakpoint="767"
       bordered
       content-class="bg-accent text-white"
-
     >
       <auth-menu />
       <q-list dark>
         <q-item-label header>{{ $t('menu.title') }}</q-item-label>
-          <q-item
-           clickable
-           exact
-           dark
-           active
-           active-class="my-menu-link"
-           v-for="(nav, index) in navs"
-           :to="nav.to"
-           :key="nav.label" >
-            <q-item-section avatar>
-              <q-icon :name="nav.icon" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{ $t( nav.label) }}</q-item-label>
-              <q-item-label caption>{{ nav.description }}</q-item-label>
-            </q-item-section>
-          </q-item>
-          <div class="row justify-center full-height full-width text-center">
+        <q-item
+          clickable
+          exact
+          dark
+          active
+          active-class="my-menu-link"
+          v-for="(nav) in navs"
+          :to="nav.to"
+          :key="nav.label"
+        >
+          <q-item-section avatar>
+            <q-icon :name="nav.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t( nav.label) }}</q-item-label>
+            <q-item-label caption>{{ nav.description }}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <br />
+        <div class="row justify-center full-height full-width text-center">
           <img alt="Powered by Micado" src="~assets/powered_Micado_white.png" />
         </div>
-
       </q-list>
     </q-drawer>
 
@@ -68,60 +71,98 @@
 </template>
 
 <script>
-import AuthMenu from './auth/AuthMenu'
+import AuthMenu from "./auth/AuthMenu";
 //import ListenToggle from 'components/ListenToggle'
 
 export default {
-  name: 'Layout',
+  name: "Layout",
 
   components: {
     AuthMenu
   },
 
-
-  data () {
+  data() {
     return {
       leftDrawerOpen: false,
       navs: [
-        {label:'menu.map', icon: 'map', to: '/mpmap', description: "Migration monitor"},
-        {label:'menu.dashboard', icon: 'school', to: '/dashboard', description: 'dashboard'},
-        {label:'menu.configure', icon: 'description', to: '/configure', description: 'configure the features of the applications'},
-        {label:'menu.editor', icon: 'description', to: '/editor', description: 'sample of editor with glossary integration'},
-        {label:'menu.documenttype', icon: 'description', to: '/document_type', description: 'Manage document types'},
-        {label:'menu.integrationcategory', icon: 'description', to: '/integration_category', description: 'Manage integration categories'},
-        {label:'menu.integrationtype', icon: 'description', to: '/integration_type', description: 'Manage integration types'},
-        {label:'menu.topic', icon: 'description', to: '/topic', description: 'Manage topics'},
-        {label:'menu.user_type', icon: 'description', to: '/user_type', description: 'Manage use types'},
-        {label:'menu.processmanager', icon: 'description', to: '/processmanager', description: 'Manage processes'},
-  //      {label:'menu.assistant', icon: 'question_answer', to: '/chatbot', description: 'Micado Assistant'},
-//        {label:'menu.processes', icon: 'timeline', to: '/flows', description: 'flow description of processes'},
-//        {label:'menu.notifications', icon: 'mail_outline', to: '/notifications', description: 'messages from PA'},
-//        {label:'menu.search', icon: 'search', to: '/map', description: "PA's services around you"},
-//        {label:'menu.tasks', icon: 'assignment', to: '/tasks', description: "Tasks for your integration"},
-//        {label:'menu.speech', icon: 'record_voice_over', to: '/speech', description: "I'll listen to you"},
-//        {label:'menu.settings', icon: 'settings_applications', to: '/settings', description: "configure the application"},
-        {label:'menu.mediation', icon: 'book', to: '/requestmediation', description: "request a mediation to NGO"},
-        // TODO: Placeholder until it's added to settings with proper wireframe
-        {label:'menu.activelanguages', icon: 'description', to: '/activelanguages', description: "select active languages"}
+        {
+          label: "menu.home",
+          icon: "home",
+          to: "/",
+          description: ""
+        },
 
+        {
+          label: "menu.migrant",
+          icon: "face",
+          to: "/migrant",
+          description: "manage migrant accounts"
+        },
+        {
+          label: "menu.ngo",
+          icon: "business",
+          to: "/ngo",
+          description: "manage NGO accounts"
+        },
+        {
+          label: "menu.process",
+          icon: "linear_scale",
+          to: "/guided_process_editor",
+          description: "Edit guided processes information"
+        },
+        {
+          label: "menu.info",
+          icon: "description",
+          to: "/info",
+          description: "Edit general information posts"
+        },
+        {
+          label: "menu.situation",
+          icon: "dvr",
+          to: "/situation",
+          description: "Dashboard and charts of migration situation"
+        },
+        {
+          label: "menu.usage",
+          icon: "bar_chart",
+          to: "/dashboard",
+          description: "Dashboard and charts of the MICADO app usage"
+        },
+        {
+          label: "menu.glossary",
+          icon: "sort_by_alpha",
+          to: "/glossary",
+          description: "sample of editor with glossary integration"
+        },
+        {
+          label: "menu.data",
+          icon: "storage",
+          to: "/data_settings",
+          description: "Manage MICADO data structure"
+        },
+        {
+          label: "menu.setting",
+          icon: "settings",
+          to: "/app_settings",
+          description: "Manage MICADO application"
+        }
       ]
-    }
+    };
   }
-}
+};
 </script>
 
 <style>
-  @media screen and (min-width: 768px) {
-    .q-footer {
-      display: none;
-    }
-     .my-menu-link{
+@media screen and (min-width: 768px) {
+  .q-footer {
+    display: none;
+  }
+  .my-menu-link {
     color: white;
     background: #0b91ce;
-    }
-    body {
-    font-family: 'Nunito', sans-serif;
-    }
   }
-
+  body {
+    font-family: "Nunito", sans-serif;
+  }
+}
 </style>

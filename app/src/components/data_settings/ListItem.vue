@@ -77,7 +77,7 @@
 
 <script>
 export default {
-  // name: 'ComponentName',
+  name: 'ListItem',
   props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link", "ID"],
   data() {
     return {};

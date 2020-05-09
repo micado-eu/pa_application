@@ -1,25 +1,26 @@
 <template>
   <div class="q-pa-md">
+    <h5>{{$options.name}}</h5>
     <q-list bordered separator>
       <q-item clickable v-ripple v-for="a_topic in topic" :key="a_topic.id">
         <q-item-section>
-          <q-img :src="a_topic.icon" spinner-color="white" style="height: 40px; max-width: 40px"/>
+          <q-img :src="a_topic.icon" spinner-color="white" style="height: 40px; max-width: 40px" />
         </q-item-section>
         <q-item-section class="col-5 flex flex-left">{{a_topic.topic}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
-          <q-btn color="negative" label="Delete" size="xs" @click="deleteTopic(a_topic.id)"/>
-          <q-btn color="secondary" label="Edit" size="xs" @click="editTopic(a_topic)"/>
+          <q-btn color="negative" label="Delete" size="xs" @click="deleteTopic(a_topic.id)" />
+          <q-btn color="secondary" label="Edit" size="xs" @click="editTopic(a_topic)" />
         </q-item-section>
       </q-item>
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newTopic()" :disable="hideAdd"/>
+        <q-btn color="secondary" label="Add" @click="newTopic()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input v-model="int_topic_shell.topic" label="Topic"/>
-        <q-btn color="secondary" label="Save" @click="saveTopic()"/>
-        <q-btn color="secondary" label="Cancel" @click="cancelTopic()"/>
+        <q-input v-model="int_topic_shell.topic" label="Topic" />
+        <q-btn color="secondary" label="Save" @click="saveTopic()" />
+        <q-btn color="secondary" label="Cancel" @click="cancelTopic()" />
       </q-card-section>
     </q-card>
   </div>
@@ -27,6 +28,7 @@
 
 <script>
 export default {
+  name: "TopicType",
   data() {
     return {
       int_topic_shell: { id: -1, topic: "", icon: "" },

@@ -1,5 +1,6 @@
 <template>
   <div class="q-pa-md">
+    <h5>{{$options.name}}</h5>
     <q-list bordered separator>
       <q-item
         clickable
@@ -26,11 +27,11 @@
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newIntegrationType()" :disable="hideAdd"/>
+        <q-btn color="secondary" label="Add" @click="newIntegrationType()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input v-model="int_type_shell.title" label="Title"/>
-        <q-input v-model="int_type_shell.description" filled type="textarea" label="Description"/>
+        <q-input v-model="int_type_shell.title" label="Title" />
+        <q-input v-model="int_type_shell.description" filled type="textarea" label="Description" />
         <div class="q-gutter-sm">
           <q-option-group
             :options="normalizedOptions"
@@ -39,8 +40,8 @@
             v-model="int_type_shell.category_type"
           />
         </div>
-        <q-btn color="secondary" label="Save" @click="saveIntegrationType()"/>
-        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationType()"/>
+        <q-btn color="secondary" label="Save" @click="saveIntegrationType()" />
+        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationType()" />
       </q-card-section>
     </q-card>
   </div>
@@ -48,6 +49,7 @@
 
 <script>
 export default {
+  name: "IntegrationType",
   data() {
     return {
       int_type_shell: { id: -1, title: "", description: "", category_type: 2 },

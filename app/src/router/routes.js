@@ -1,38 +1,52 @@
-import MpMap from '../components/MpMap.vue'
+import MigrationSituation from '../components/MigrationSituation.vue'
+import DataSettings from '../components/DataSettings.vue'
+import Settings from '../components/Settings.vue'
+import RequestMediation from '../components/ngo_user_management/MediationRequest.vue'
+import ProcessEditor from '../components/ProcessEditor.vue'
+import GlossaryEditor from '../components/GlossaryEditor.vue'
+import AddDocument from '../components/data_settings/AddDocument'
+import MigrantManager from '../components/MigrantManager'
+import NgoManager from '../components/NgoManager'
+import InfoEditor from '../components/InfoEditor'
+
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+// import DataSettings from '../components/DataSettings.vue'
+
 const routes = [
   {
     path: '/',
     component: () => import('layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-//      { path: '/documents', component: () => import('pages/Documents.vue') },
-//      { path: '/services', component: () => import('pages/Services.vue') },
-//      { path: '/flows', component: () => import('pages/Flow.vue') },
-//      { path: '/notifications', component: () => import('components/Notifications.vue') },
-      { path: '/editor', component: () => import('pages/EditorTestPage.vue') },
-      { path: '/document_type', component: () => import('pages/DocumentTypeManager.vue') },
-      { path: '/integration_category', component: () => import('pages/IntegrationCategory.vue') },
-      { path: '/integration_type', component: () => import('pages/IntegrationType.vue') },
-      { path: '/topic', component: () => import('pages/Topic.vue') },
-      { path: '/user_type', component: () => import('pages/UserType.vue') },
-      { path: '/adddocument', component: () => import('pages/AddDocument.vue') },
-      { path: '/adddocument/:id', component: () => import('pages/AddDocument.vue'), props: true, name:document },
-      { path: '/processmanager', component: () => import('pages/ProcessManager.vue') },
-      { path: '/processmanager/edit/:id', component: () => import('components/EditProcess.vue'), props: true, name:process },
-      { path: '/processmanager/edit/', component: () => import('components/EditProcess.vue'), props: true, name:process },
-      { path: '/processmanager/edit/:id/steps', component: () => import('pages/StepManager.vue'), props: true, name:process },
-      { path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name:process },
-      { path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name:process },
+      { path: '/data_settings', component: DataSettings },
+      { path: '/app_settings', component: Settings },
+
+      { path: '/migrant', component: MigrantManager },
+      { path: '/ngo', component: NgoManager },
+      { path: '/info', component: InfoEditor },
+
+
+      { path: '/adddocument', component: AddDocument },
+      { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
+      { path: '/guided_process_editor', component: ProcessEditor },
+
+      { path: '/guided_process_editor/edit/:id', component: () => import('components/EditProcess.vue'), props: true, name: process },
+      { path: '/guided_process_editor/edit/', component: () => import('components/EditProcess.vue'), props: true, name: process },
+      { path: '/guided_process_editor/edit/:id/steps', component: () => import('pages/StepManager.vue'), props: true, name: process },
+
+      { path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process },
+      { path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name: process },
+
       { path: '/dashboard', component: () => import('components/Dashboard.vue') },
-      { path: '/requestmediation', component: () => import('pages/MediationRequest.vue') },
-//      { path: '/tasks', component: () => import('pages/Tasks.vue') },
-//      { path: '/chatbot', component: () => import('pages/Chatbot.vue') },
-//      { path: '/settings', component: () => import('pages/Settings.vue') },
-//      { path: '/certificates', component: () => import('pages/Certificates.vue'), props: true, name: 'certificates' },
       { path: '/map', component: () => import('components/Map.vue') },
-      { path: '/mpmap', component: MpMap },
-      { path: '/configure', component: () => import('pages/Configure.vue') },
-      { path: '/activelanguages', component: () => import('components/ActiveLanguageSelector.vue')}
+      { path: '/situation', component: MigrationSituation },
+      { path: '/ngo/requestmediation', component: RequestMediation },
+      { path: '/glossary', component: GlossaryEditor }
     ]
   }
 ]/*

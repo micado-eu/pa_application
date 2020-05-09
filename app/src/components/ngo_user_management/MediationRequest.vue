@@ -16,16 +16,12 @@
     <div v-if="this.loaded" class="text-center mt-2">
       <button class="btn btn-primary" @click="getForm">Reload form</button>
     </div>
-
-
-
-
   </div>
 </template>
 
 <script>
 // Import VueFormJsonSchema
-import VueFormJsonSchema from 'vue-form-json-schema/dist/vue-form-json-schema.esm.js';
+import VueFormJsonSchema from "vue-form-json-schema/dist/vue-form-json-schema.esm.js";
 // We use a component to display JSON in a pretty way
 // it is NOT included NOR required by VueFormJsonSchema
 
@@ -71,109 +67,105 @@ export default {
               }
             },
             {
-              "component": "div",
-              "fieldOptions": {
-                "attrs": {
-                  "for": "first-name"
+              component: "div",
+              fieldOptions: {
+                attrs: {
+                  for: "first-name"
                 },
-                "class": [
-                  "font-weight-bold"
-                ],
-                "domProps": {
-                  "innerHTML": "Requiring Entity"
+                class: ["font-weight-bold"],
+                domProps: {
+                  innerHTML: "Requiring Entity"
                 }
               }
             },
             {
-              "component": "hr",
-              "fieldOptions": {
-                "attrs": {
-                  "color": "teal"
+              component: "hr",
+              fieldOptions: {
+                attrs: {
+                  color: "teal"
                 }
               }
             },
             {
-              "component": "q-checkbox",
-              "model": "auth_entity",
-              "fieldOptions": {
+              component: "q-checkbox",
+              model: "auth_entity",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "Authorized entity?"
+                attrs: {
+                  label: "Authorized entity?"
                 }
               }
             },
             {
-              "component": "q-input",
-              "model": "department",
-              "fieldOptions": {
+              component: "q-input",
+              model: "department",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "Department",
+                attrs: {
+                  label: "Department"
                 }
               }
             },
             {
-              "component": "q-input",
-              "model": "requester",
-              "fieldOptions": {
+              component: "q-input",
+              model: "requester",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "Requester",
+                attrs: {
+                  label: "Requester"
                 }
               }
             },
             {
-              "component": "q-input",
-              "model": "date_request",
-              "fieldOptions": {
+              component: "q-input",
+              model: "date_request",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "Date of request",
-                  "type":"date"
+                attrs: {
+                  label: "Date of request",
+                  type: "date"
                 }
               }
             },
             {
-              "component": "q-input",
-              "model": "email",
-              "fieldOptions": {
+              component: "q-input",
+              model: "email",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "e-mail",
-                  "type":"email"
+                attrs: {
+                  label: "e-mail",
+                  type: "email"
                 }
               }
             },
             {
-              "component": "q-input",
-              "model": "phone",
-              "fieldOptions": {
+              component: "q-input",
+              model: "phone",
+              fieldOptions: {
                 on: ["input"],
-                "attrs": {
-                  "label": "Requester's phone",
-                  "type":"tel"
+                attrs: {
+                  label: "Requester's phone",
+                  type: "tel"
                 }
               }
             },
             {
-              "component": "div",
-              "fieldOptions": {
-                "attrs": {
-                  "for": "first-name"
+              component: "div",
+              fieldOptions: {
+                attrs: {
+                  for: "first-name"
                 },
-                "class": [
-                  "font-weight-bold"
-                ],
-                "domProps": {
-                  "innerHTML": "Required service"
+                class: ["font-weight-bold"],
+                domProps: {
+                  innerHTML: "Required service"
                 }
               }
             },
             {
-              "component": "hr",
-              "fieldOptions": {
-                "attrs": {
-                  "color": "teal"
+              component: "hr",
+              fieldOptions: {
+                attrs: {
+                  color: "teal"
                 }
               }
             }
@@ -186,29 +178,37 @@ export default {
         setTimeout(() => {
           resolve({
             type: "object",
-            required: ["customer", "auth_entity", "department", "requester", "date_request", "email", "phone"],
+            required: [
+              "customer",
+              "auth_entity",
+              "department",
+              "requester",
+              "date_request",
+              "email",
+              "phone"
+            ],
             properties: {
               customer: {
                 type: "string"
               },
-              "auth_entity": {
-                "type": "boolean",
+              auth_entity: {
+                type: "boolean",
                 const: true
               },
-              "department": {
-                "type": "string"
+              department: {
+                type: "string"
               },
-              "requester": {
-                "type": "string"
+              requester: {
+                type: "string"
               },
-              "date_request": {
-                "type": "string"
+              date_request: {
+                type: "string"
               },
-              "email": {
-                "type": "string"
+              email: {
+                type: "string"
               },
-              "phone": {
-                "type": "string"
+              phone: {
+                type: "string"
               }
             }
           });

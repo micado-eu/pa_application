@@ -1,10 +1,8 @@
 <template>
-  <q-page padding>
-    <div
-      class="q-gutter-lg row"
-      v-for="i in Math.ceil(languages.length / 4)"
-      v-bind:key="i"
-    >
+  <div class="q-pa-md">
+    <h5>{{$options.name}}</h5>
+
+    <div class="q-gutter-lg row" v-for="i in Math.ceil(languages.length / 4)" v-bind:key="i">
       <div
         class="q-gutter-xs col"
         v-for="language in languages.slice((i - 1) * 4, i * 4)"
@@ -21,32 +19,32 @@
           style="color: #0F3A5D;"
           v-bind:label="language.name"
           no-caps
-        >
-        </q-btn>
+        ></q-btn>
       </div>
     </div>
-  </q-page>
+  </div>
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex";
 export default {
+  name: "LanguageSettings",
   computed: {
-    ...mapGetters('language', ['languages'])
+    ...mapGetters("language", ["languages"])
   },
   methods: {
     ...mapActions("language", ["fetchLanguages", "setLanguageActive"]),
-    setActive (language) {
+    setActive(language) {
       let newLanguage = {
         iso_code: language.iso_code,
         name: language.name,
         active: !language.active
-      }
-      this.setLanguageActive(newLanguage)
+      };
+      this.setLanguageActive(newLanguage);
     }
   },
-  created () {
-    this.fetchLanguages()
+  created() {
+    this.fetchLanguages();
   }
-}
+};
 </script>

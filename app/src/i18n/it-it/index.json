@@ -1,16 +1,15 @@
 {
   "menu": {
-    "title": "",
-    "dashboard": "",
-    "documenttype": "",
-    "configure": "",
-    "processmanager": "",
-    "mediation": "",
-    "integrationcategory": "",
-    "integrationtype": "",
-    "map": "",
-    "editor": "",
-    "glossary": "",
-    "activelanguages": ""
+    "title": "My Tools",
+    "home": "home",
+    "usage": "Usage Monitor",
+    "situation": "Migration situation Monitor",
+    "setting": "App settings",
+    "process": "Guided processes",
+    "ngo": "NGO users",
+    "migrant": "Migrant users",
+    "info": "General information",
+    "data": "Data settings",
+    "glossary": "Glossary"
   }
 }

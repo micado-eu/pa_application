@@ -17,7 +17,7 @@
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
       <q-btn size="11px" no-caps style="width:70px;" rounded color="info" label="Edit" :to="this.Path +'/edit/' + this.Link" />
-      <q-btn size="11px" no-caps style="width:70px" rounded color="secondary" label="Manage" :to="'processmanager/edit/' + this.Link + '/steps'" />
+      <q-btn size="11px" no-caps style="width:70px" rounded color="secondary" label="Manage" :to="'guided_process_editor/edit/' + this.Link + '/steps'" />
       <q-btn size="11px" no-caps style="width:70px" rounded color="accent" label="Delete" @click="remove_process($event)" />
       
       </div>
@@ -29,7 +29,7 @@
 
 <script>
 export default {
-  // name: 'ComponentName',
+  name: 'Process',
   props: ["Title",  "Tag_1", "Tag_2", "Link", "Path"], 
   data() {
     return {};

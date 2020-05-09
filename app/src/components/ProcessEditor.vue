@@ -12,7 +12,7 @@
     </q-input>
   </div>
   <div class="col" style="display:inline-block;text-align:right;width:135px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Process" no-caps size="15px" to="processmanager/edit" />
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Process" no-caps size="15px" to="guided_process_editor/edit" />
   </div>
   </div>
   
@@ -24,7 +24,7 @@
          :Tag_1="process.user_tags"
          :Tag_2="process.topic_tags"
          :Link="process.id"
-         Path="processmanager"
+         Path="guided_process_editor"
          @remove="deleteProcess">
         </Process>
     </q-list>
@@ -34,7 +34,7 @@
 
 
 <script>
-import Process from 'components/Process'
+import Process from './guided_process_editor/Process'
 
 
 export default {
