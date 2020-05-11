@@ -26,7 +26,6 @@ export default {
     console.log(steps)
     // create fake id here
     steps.id = 999
-    steps.process_id = ["1"]
     return new Promise((resolve) => {
       setTimeout(() => {
         resolve(steps)

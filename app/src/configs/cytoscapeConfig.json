@@ -4,7 +4,7 @@
       "selector": "node",
       "style": {
         "background-color": "#666",
-        "label": "data(id)"
+        "label": "data(title)"
       }
     }, {
       "selector": "edge",

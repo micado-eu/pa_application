@@ -7,7 +7,7 @@
   "required_documents":[], 
   "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
   "next_step": "step X",
-  "process_id":[ "4"], 
+  "process_id":["1", "4"], 
   "description": "This is a placeholder description"
   },
   {
@@ -29,7 +29,7 @@
     "required_documents":[], 
     "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
     "next_step": "step X",
-    "process_id":["3","6"],
+    "process_id":["1","3","6"],
     "description": "This is a placeholder description"
   },
   {
@@ -40,7 +40,7 @@
     "required_documents":["Work contract"], 
     "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
     "next_step": "step X",
-    "process_id":["6"],
+    "process_id":["1","6"],
     "description": "This is a placeholder description"
   },
   {
@@ -51,7 +51,7 @@
     "required_documents":["Fiscal document"], 
     "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
     "next_step": "step X",
-    "process_id":["5"],
+    "process_id":["1","5"],
     "description": "This is a placeholder description"
   }
     
