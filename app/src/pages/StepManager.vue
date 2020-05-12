@@ -11,7 +11,7 @@
     <div >
     <q-card class="my-card">
       <q-card-section>
-<cytoscape ref="cyRef" :config="configcy"  v-on:cxttapstart="updateNode" :preConfig="preConfig" :afterCreated="afterCreated">
+<cytoscape ref="cyRef" :config="configcy"  v-on:cxttapstart="updateNode($event, def)" :preConfig="preConfig" :afterCreated="afterCreated">
           <cy-element
             v-for="def in testdata"
             :key="`${def.data.id}`"
@@ -128,6 +128,7 @@
 import Step from 'components/Step'
 //import { Core, EventObject } from 'cytoscape'
 import configcy from '../configs/cytoscapeConfig'
+import edgeHandles from 'cytoscape-edgehandles'
 
 export default {
   //name: 'DocumentType',
@@ -193,19 +194,19 @@ export default {
         })  
       this.$store.dispatch('steps/deleteSteps', deletedSteps[0].id)
     },
-    preConfig(cytoscape) {
-    //console.log(config);
+  preConfig(cytoscape) {
+    console.log("calling pre-config");
 
-    //console.log(this.configCyto);
-//    console.log(this.configcyt);
-//    console.log(configcyt);
-      console.log("calling pre-config", cytoscape);
-    },
-
+    // register edgehandles extension
+    if (typeof cytoscape('core', 'edgehandles') !== 'function') {
+      cytoscape.use(edgeHandles)
+    }
+},
 
     editStep(event, node) {
       console.log("editing")
       this.editing = true
+      this.cy.edgehandles();
       console.log("I am the new data label" + node.data.title)
       var current_node_id = node.data.id
       var selected_step = this.testdata.filter((filt) => {
@@ -285,8 +286,9 @@ export default {
           console.log("adding node", event.target);
           },
 
-    updateNode(event) {
+    updateNode(event, node) {
       console.log("right click node", event)
+      console.log(node)
     },
         
     deleteNode(event, node) {
@@ -298,15 +300,17 @@ export default {
     },
     afterCreated(cy) {
       // cy: this is the cytoscape instance
+      
       console.log("after created", cy);
       this.cy = cy;
       console.log(this.testdata)
+       
       cy.resize();
       //console.log("i'm here")
       
-    }, 
+    },
 
-    
+
   },
 
 
@@ -344,7 +348,7 @@ export default {
             description:filteredSteps[i].description, 
             process_id:filteredSteps[i].process_id, 
             },
-          position: { x: next_x, y:next_y} }
+          position: { x: filteredSteps[i].horizontal, y:filteredSteps[i].vertical} }
          this.testdata.push(step_nodes)
       }
         this.loading = false

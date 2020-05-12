@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueMermaid from "vue-mermaid"
 import VueCytoscape from 'vue-cytoscape'
+import VueEdgeHandles from 'cytoscape-edgehandles'
 
 Vue.use(VueCytoscape)
 Vue.use(VueMermaid);

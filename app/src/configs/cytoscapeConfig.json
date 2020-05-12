@@ -14,7 +14,56 @@
         "target-arrow-color": "#000",
         "target-arrow-shape": "triangle"
       }
+    },
+    {
+      "selector": ".eh-handle",
+      "style": {
+        "background-color": "red",
+        "width": 12,
+        "height": 12,
+        "shape": "ellipse",
+        "overlay-opacity": 0,
+        "border-width": 12,
+        "border-opacity": 0
+      }
+    }, {
+      "selector": ".eh-hover",
+      "style": {
+        "background-color": "red"
+      }
+    }, {
+      "selector": ".eh-source",
+      "style": {
+        "border-width": 2,
+        "border-color": "red"
+      }
+    }, {
+      "selector": ".eh-target",
+      "style": {
+        "border-width": 2,
+        "border-color": "red"
+      }
+    }, {
+      "selector": ".eh-preview",
+      "style": {
+        "label": "",
+        "background-color": "red",
+        "line-color": "red",
+        "target-arrow-color": "red",
+        "source-arrow-color": "red"
+      }
+    },
+      {
+        "selector": ".eh-ghost-edge",
+        "style": {
+          "label": "",
+          "background-color": "red",
+          "line-color": "red",
+          "target-arrow-color": "red",
+          "source-arrow-color": "red"
     }
+  }
+
   ],
   "layout": {
     "name": "cose",

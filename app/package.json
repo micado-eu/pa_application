@@ -17,6 +17,7 @@
     "@uppy/tus": "^1.5.0",
     "axios": "^0.18.0",
     "axios-jsonp": "^1.0.4",
+    "cytoscape-edgehandles": "^3.6.0",
     "d3": "^5.15.1",
     "fuse.js": "^5.2.3",
     "jsonapi-vuex": "^3.1.1",
