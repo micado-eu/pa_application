@@ -206,7 +206,7 @@ export default {
     editStep(event, node) {
       console.log("editing")
       this.editing = true
-      this.cy.edgehandles();
+      
       console.log("I am the new data label" + node.data.title)
       var current_node_id = node.data.id
       var selected_step = this.testdata.filter((filt) => {
@@ -237,6 +237,20 @@ export default {
           console.log(this.$store.state.steps)
           //console.log(this.edit_step.id)
           //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
+           let elements = {
+          nodes: this.cy.elements().nodes().jsons(),
+          edges: this.cy.elements().edges().jsons()
+        }
+        console.log("these are pre- nodes and edges")
+        console.log(elements)
+        for(let i = 0; i < elements.nodes.length; i++){
+          console.log(elements.nodes[i].classes)
+          if(elements.nodes[i].classes == "eh-handle"){
+            elements.nodes.splice(i, 1)
+          }
+        }
+        console.log("these are nodes and edges")
+        console.log(elements)
           this.editing = false
         }
         else{
@@ -246,6 +260,20 @@ export default {
         //console.log(this.steps)
         console.log("I am the store")
         console.log(this.$store.state.steps)
+        let elements = {
+          nodes: this.cy.elements().nodes().jsons(),
+          edges: this.cy.elements().edges().jsons()
+        }
+        console.log("these are pre- nodes and edges")
+        console.log(elements)
+        for(let i = 0; i < elements.nodes.length; i++){
+          console.log(elements.nodes[i].classes)
+          if(elements.nodes[i].classes == "eh-handle"){
+            elements.nodes.splice(i, 1)
+          }
+        }
+        console.log("these are nodes and edges")
+        console.log(elements)
         this.editing = false
      }
    },
@@ -304,7 +332,7 @@ export default {
       console.log("after created", cy);
       this.cy = cy;
       console.log(this.testdata)
-       
+       this.cy.edgehandles();
       cy.resize();
       //console.log("i'm here")
       
