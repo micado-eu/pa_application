@@ -167,11 +167,6 @@ import {
 
 export default {
   name: "GlossaryEditor",
-  props: {
-    width: String,
-    height: String,
-    overflow: String
-  },
   components: {
     EditorContent,
     EditorMenuBar
@@ -277,8 +272,7 @@ export default {
             new Underline(),
             new History(),
           ],
-          content: `
-          `
+          content: ""
         }),
           this.loading = false
       })
