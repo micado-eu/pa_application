@@ -1,8 +1,13 @@
 <template>
-  <editor-content
-    class="editor__content"
-    :editor="editor"
-  />
+  <div padding>
+    <editor-content
+      class="editor__content"
+      :editor="editor"
+    />
+    <div v-show="currentDescription">
+      <span>{{currentDescription}}</span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -38,17 +43,36 @@ export default {
   },
   data () {
     return {
-      editor: null
+      editor: null,
+      currentDescriptionContent: ""
+    }
+  },
+  computed: {
+    ...mapGetters('glossary', ['glossary', 'glossaryElemByTitle']),
+    currentDescription() {
+      return this.currentDescriptionContent
     }
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
     setContent(content) {
       this.editor.setContent(content)
+    },
+    setCurrentDescription(description) {
+      this.currentDescriptionContent = description
+    },
+    setGlossaryClickEvents() {
+      var glossaryElemByTitleFunc = this.glossaryElemByTitle
+      var currentDescriptionSetter = this.setCurrentDescription
+      document.addEventListener("click", function (e){
+        if (e.target && e.target.classList.contains("mention")) {
+          var glossaryElemTitle = e.srcElement.innerText.substring(1)
+          var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
+          console.log(glossaryElem.description)
+          currentDescriptionSetter(glossaryElem.description)
+        }
+      })
     }
-  },
-  computed: {
-    ...mapGetters('glossary', ['glossary']),
   },
   created () {
     this.fetchGlossary().then(() => {
@@ -73,12 +97,17 @@ export default {
           new Strike(),
           new Underline(),
         ],
-        content: this.content
+        content: ""
       })
+      this.setContent(this.content)
+      this.setGlossaryClickEvents()
     })
   }
 }
 </script>
 
-<style>
+<style lang="scss">
+  .mention {
+    border: 1px solid $primary;
+  }
 </style>

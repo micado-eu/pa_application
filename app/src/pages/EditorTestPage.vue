@@ -1,9 +1,12 @@
 <template>
   <q-page padding>
+    <span>Editor: </span>
     <glossary-editor
       class="glossaryeditor"
       v-on:editorSave="doSomething($event)"
     />
+    <hr/>
+    <span>Viewer:</span>
     <glossary-editor-viewer
       class="glossaryeditor"
       ref="viewer"
@@ -25,7 +28,18 @@ export default {
             "content": [
               {
                 "type": "text",
-                "text": "This is a demo"
+                "text": "This is a demo with a glossary mention "
+              },
+              {
+                "type": "mention",
+                "attrs": {
+                  "id": 2,
+                  "label": "Rental agreement"
+                }
+              },
+              {
+                "type": "text",
+                "text": " "
               }
             ],
             "type": "paragraph"
@@ -43,7 +57,7 @@ export default {
                   }
                 ],
                 "type": "text",
-                "text": "this is another demo"
+                "text": "This is another demo with a glossary term"
               }
             ]
           }

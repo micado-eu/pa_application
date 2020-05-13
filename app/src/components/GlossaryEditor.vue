@@ -283,4 +283,8 @@ export default {
   .ProseMirror {
     border: 1px solid $primary;
   }
+
+  .mention {
+    border: 1px solid $primary;
+  }
 </style>
