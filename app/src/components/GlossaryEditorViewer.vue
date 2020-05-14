@@ -58,8 +58,36 @@ export default {
     setContent(content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription(description) {
-      this.currentDescriptionContent = description
+    setCurrentDescription(descriptionJSON) {
+      // Gets JSON description and transforms it to plain text
+      // Create an invisible editor to transform the JSON into HTML for parsing
+      var editorInterpreter = new Editor({
+        editable: false,
+        extensions: [
+          new HardBreak(),
+          new Heading({ levels: [1, 2, 3] }),
+          new Mention({
+            items: () => this.glossary,
+          }),
+          new Bold(),
+          new Italic(),
+          new Blockquote(),
+          new BulletList(),
+          new HorizontalRule(),
+          new ListItem(),
+          new OrderedList(),
+          new TodoItem(),
+          new TodoList(),
+          new Link(),
+          new Strike(),
+          new Underline(),
+        ],
+        content: descriptionJSON
+      })
+      var doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html');
+      var plainDescription = doc.body.textContent || "";
+      this.currentDescriptionContent = plainDescription
+      editorInterpreter.destroy()
     },
     setGlossaryClickEvents() {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
@@ -68,7 +96,6 @@ export default {
         if (e.target && e.target.classList.contains("mention")) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
-          console.log(glossaryElem.description)
           currentDescriptionSetter(glossaryElem.description)
         }
       })
