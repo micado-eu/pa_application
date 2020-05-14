@@ -4,9 +4,7 @@
       class="editor__content"
       :editor="editor"
     />
-    <div v-show="currentDescription">
-      <span>{{currentDescription}}</span>
-    </div>
+    <q-tooltip v-model="showTooltip" :target="targetElement" ref="descriptionTooltip">{{currentDescription}}</q-tooltip>
   </div>
 </template>
 
@@ -44,7 +42,9 @@ export default {
   data () {
     return {
       editor: null,
-      currentDescriptionContent: ""
+      currentDescriptionContent: "",
+      targetElement: false,
+      showTooltip: false,
     }
   },
   computed: {
@@ -58,7 +58,7 @@ export default {
     setContent(content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription(descriptionJSON) {
+    setCurrentDescription(descriptionJSON, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       var editorInterpreter = new Editor({
@@ -86,17 +86,18 @@ export default {
       })
       var doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html');
       var plainDescription = doc.body.textContent || "";
+      this.targetElement = element
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     },
     setGlossaryClickEvents() {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
       var currentDescriptionSetter = this.setCurrentDescription
-      document.addEventListener("click", function (e){
+      document.addEventListener("mouseover", function (e){
         if (e.target && e.target.classList.contains("mention")) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
-          currentDescriptionSetter(glossaryElem.description)
+          currentDescriptionSetter(glossaryElem.description, e.target)
         }
       })
     }
