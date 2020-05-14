@@ -7,6 +7,9 @@
   <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
    <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add step" no-caps size="15px" @click="addNode" />
   </div>
+  <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Save Graph" no-caps size="15px" @click="saveGraph" />
+  </div>
   </div>
     <div >
     <q-card class="my-card">
@@ -30,7 +33,7 @@
         <h5 style="text-align:left"> Step Name </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.title" />
+        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.title" />
       </div>
     </div>
     
@@ -41,7 +44,7 @@
         <h5 style="text-align:left"> Step location </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.location"  />
+        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.location"  />
       </div>
     </div>
 
@@ -50,7 +53,7 @@
         <h5 style="text-align:left"> Step cost </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;">
-        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.cost"  />
+        <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.cost"  />
       </div>
     </div>
 
@@ -63,7 +66,7 @@
         filled
         clearable
         
-        v-model="edit_step.required_documents"
+        v-model="edit_step.data.required_documents"
         multiple
         :options="documents_list"
         
@@ -83,7 +86,7 @@
         
         clearable
         
-        v-model="edit_step.linked_processes"
+        v-model="edit_step.data.linked_processes"
         multiple
         :options="processes_list"
         
@@ -144,11 +147,13 @@ export default {
       id:this.$route.params.id,
         configcy,
         is_new: false,
-        testdata: [
+        graph_id: null, 
+        testdata3: [
              
            ],
+           testdata:[],
            editing: false,
-      step_list:[],
+      selected_node:"",
        documents_list: [
         "document_1",
         "document_2",
@@ -164,6 +169,7 @@ export default {
         "How to enroll children to school"
       ],
       edit_step: {
+        data:{
         title:"",
         location:"",
         cost:"",
@@ -171,10 +177,15 @@ export default {
         linked_processes:[],
         description:"", 
         process_id:[]
-      }
+        },
+        group:"", 
+        position:{}
+      },
     }
+    },
     
-  },
+    
+  
 
   computed: {
      processes () {
@@ -182,6 +193,9 @@ export default {
     },
     steps() {
       return this.$store.state.steps.steps
+    },
+     graphs() {
+      return this.$store.state.graphs.graphs
     },
     
   },
@@ -204,78 +218,117 @@ export default {
 },
 
     editStep(event, node) {
+      
       console.log("editing")
       this.editing = true
-      
-      console.log("I am the new data label" + node.data.title)
-      var current_node_id = node.data.id
-      var selected_step = this.testdata.filter((filt) => {
-          //console.log("in fil")
-          //console.log(filt)
-          //console.log(typeof(current_node_id))
-          //console.log(typeof(this.testdata[0].data.id))
-          //console.log(filt.data.id == current_node_id)
-          return filt.data.id == current_node_id
-        }) 
-        console.log(selected_step) 
-    if(selected_step[0].data.title =="new step"){
-      this.is_new = true
-      this.edit_step = selected_step[0].data
-      console.log("i'm new")
-    }
-    else {
+      console.log(node)
+    
       console.log("I'm old")
       this.is_new = false
-      this.edit_step = selected_step[0].data
-    }
+      this.edit_step =  JSON.parse(JSON.stringify(node))
+      console.log("this is edit step")
+
+      console.log(this.edit_step)
+    
     },
 
     saveStep(value) {
-        if(this.is_new){
-          this.$store.dispatch('steps/saveSteps', value)
-          console.log("I am the store")
-          console.log(this.$store.state.steps)
-          //console.log(this.edit_step.id)
-          //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
-           let elements = {
-          nodes: this.cy.elements().nodes().jsons(),
-          edges: this.cy.elements().edges().jsons()
-        }
-        console.log("these are pre- nodes and edges")
-        console.log(elements)
-        for(let i = 0; i < elements.nodes.length; i++){
-          console.log(elements.nodes[i].classes)
-          if(elements.nodes[i].classes == "eh-handle"){
-            elements.nodes.splice(i, 1)
-          }
-        }
-        console.log("these are nodes and edges")
-        console.log(elements)
-          this.editing = false
-        }
-        else{
-          console.log(this.is_new)
-          this.$store.dispatch('steps/editSteps', value);
-        //console.log(value)
-        //console.log(this.steps)
-        console.log("I am the store")
-        console.log(this.$store.state.steps)
-        let elements = {
-          nodes: this.cy.elements().nodes().jsons(),
-          edges: this.cy.elements().edges().jsons()
-        }
-        console.log("these are pre- nodes and edges")
-        console.log(elements)
-        for(let i = 0; i < elements.nodes.length; i++){
-          console.log(elements.nodes[i].classes)
-          if(elements.nodes[i].classes == "eh-handle"){
-            elements.nodes.splice(i, 1)
-          }
-        }
-        console.log("these are nodes and edges")
-        console.log(elements)
-        this.editing = false
+       console.log(value)
+       console.log("value above")
+          let my_elements = []
+     var nodes = this.cy.elements().nodes().jsons()
+     var edges = this.cy.elements().edges().jsons()
+     for( let i = 0; i< nodes.length; i++){
+       my_elements.push(nodes[i])
      }
+     for( let i = 0; i< edges.length; i++){
+       my_elements.push(edges[i])
+     }
+     for(let i = 0; i < my_elements.length; i++){
+          console.log(my_elements[i].classes)
+          if(my_elements[i].classes == "eh-handle"){
+            my_elements.splice(i, 1)
+          }
+        }
+     var index = my_elements.findIndex(item => item.data.id == value.data.id)
+     console.log("this is the index")
+     console.log(index)
+     my_elements.splice(index, 1, value)
+
+      var data_index = this.testdata.findIndex(item => item.data.id == value.data.id)
+      console.log("this is the index")
+     console.log(index)
+     this.testdata.splice(data_index, 1, value)
+
+     
+        console.log("these are the elements")
+        console.log(my_elements)
+    if(this.graph_id != null){
+         var edit_graph = {
+           id_graph: this.graph_id, 
+           elements:my_elements,
+           graph_process: this.id
+         }
+          this.$store.dispatch('graphs/editGraphs', edit_graph)
+          console.log("I am the store")
+          console.log(this.$store.state.graphs)
+     }
+     else{
+       var edit_graph ={
+           id_graph: 999, 
+           elements:my_elements,
+           graph_process: this.id
+         }
+          this.$store.dispatch('graphs/saveGraphs', edit_graph)
+          console.log("I am the store")
+          console.log(this.$store.state.graphs)
+     }
+          
+
+        this.editing = false
+     
+   },
+   saveGraph() {
+     let my_elements = []
+     var nodes = this.cy.elements().nodes().jsons()
+     var edges = this.cy.elements().edges().jsons()
+     for( let i = 0; i< nodes.length; i++){
+       my_elements.push(nodes[i])
+     }
+     for( let i = 0; i< edges.length; i++){
+       my_elements.push(edges[i])
+     }
+
+
+     for(let i = 0; i < my_elements.length; i++){
+          console.log(my_elements[i].classes)
+          if(my_elements[i].classes == "eh-handle"){
+            my_elements.splice(i, 1)
+          }
+        }
+     console.log("this are the elements")
+     console.log(my_elements)
+     if(this.graph_id != null){
+         var edit_graph ={
+           id_graph: this.graph_id, 
+           elements:my_elements,
+           graph_process: this.id
+         }
+          this.$store.dispatch('graphs/editGraphs', edit_graph)
+          console.log("I am the store")
+          console.log(this.$store.state.graphs)
+     }
+     else{
+       var edit_graph ={
+           id_graph: 999, 
+           elements:my_elements,
+           graph_process: this.id
+         }
+          this.$store.dispatch('graphs/saveGraphs', edit_graph)
+          console.log("I am the store")
+          console.log(this.$store.state.graphs)
+     }
+          
    },
 
 
@@ -333,6 +386,7 @@ export default {
       this.cy = cy;
       console.log(this.testdata)
        this.cy.edgehandles();
+       //cy.layout({ name: 'cose' }).run();
       cy.resize();
       //console.log("i'm here")
       
@@ -350,34 +404,31 @@ export default {
       .then(processes => {
         this.loading = false
       })  
-    console.log(this.$store);
+      console.log(this.$store);
     this.$store.dispatch('steps/fetchSteps')
       .then(steps => {
-           var filteredSteps =  this.steps.filter((filt) => {
+        this.loading = false
+      }) 
+    console.log(this.$store);
+    this.$store.dispatch('graphs/fetchGraphs')
+      .then(graphs => {
+          var filteredGraphs =  this.graphs.filter((filt) => {
           //console.log("in fil")
           //console.log(filt)
           //console.log(typeof(this.id))
          //console.log(filt.process_id)
-          return filt.process_id.includes(this.id)
+          return filt.graph_process == this.id
         })  
-        console.log(filteredSteps)
-        for(var i = 0; i<filteredSteps.length;i++){
-         var next_x = 200
-         var next_y = 200 + 50 * i
-         var step_nodes = {
-           group: 'nodes',
-          data:{
-            id:filteredSteps[i].id, 
-            title:filteredSteps[i].title,
-            location: filteredSteps[i].location,
-            cost:filteredSteps[i].cost,
-            required_documents:filteredSteps[i].required_documents,
-            linked_processes:filteredSteps[i].linked_processes,
-            description:filteredSteps[i].description, 
-            process_id:filteredSteps[i].process_id, 
-            },
-          position: { x: filteredSteps[i].horizontal, y:filteredSteps[i].vertical} }
-         this.testdata.push(step_nodes)
+        console.log(filteredGraphs)
+        var my_graph = filteredGraphs[0]
+        if(my_graph != null){
+        this.graph_id = my_graph.id_graph
+      
+        console.log("this is the graph id" + this.graph_id)
+        console.log(my_graph)
+        for(var i = 0; i < my_graph.elements.length;i++){
+         this.testdata.push(my_graph.elements[i])
+      }
       }
         this.loading = false
       })  
