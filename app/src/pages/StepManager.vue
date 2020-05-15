@@ -10,9 +10,6 @@
   <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
    <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Save Graph" no-caps size="15px" @click="saveGraph" />
   </div>
-  <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Debug" no-caps size="15px" @click="logger" />
-  </div>
   </div>
     <div >
     <q-card class="my-card">
@@ -215,30 +212,7 @@ export default {
     if (typeof cytoscape('core', 'edgehandles') !== 'function') {
       cytoscape.use(edgeHandles)
     }
-},
-   logger(){
-     console.log("nodes")
-     console.log( this.cy.elements().nodes().jsons())
-     console.log("edges")
-     console.log( this.cy.elements().edges().jsons())
-     console.log("testadata")
-     console.log(this.testdata)
-     /*this.cy.add({
-            group: 'edges',
-            data: { 
-              id:99, 
-             source:2, 
-             target:3}
-          })*/
-          this.testdata.push({
-            group: 'edges',
-            data: { 
-              id:99, 
-             source:2, 
-             target:3}
-          })
-    
-   },
+    },
 
     editStep(event, node) {
       console.log(node)
