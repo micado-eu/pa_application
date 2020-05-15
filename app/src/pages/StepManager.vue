@@ -10,17 +10,20 @@
   <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
    <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Save Graph" no-caps size="15px" @click="saveGraph" />
   </div>
+  <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Debug" no-caps size="15px" @click="logger" />
+  </div>
   </div>
     <div >
     <q-card class="my-card">
       <q-card-section>
-<cytoscape ref="cyRef" :config="configcy"  v-on:cxttapstart="updateNode($event, def)" :preConfig="preConfig" :afterCreated="afterCreated">
+<cytoscape ref="cyRef" :config="configcy" :preConfig="preConfig" :afterCreated="afterCreated">
           <cy-element
             v-for="def in testdata"
             :key="`${def.data.id}`"
             :definition="def"
-            
-            v-on:mousedown="editStep($event, def)"
+            v-on:click="editStep($event, def)"
+            v-on:cxttapstart="deleteNode($event, def)"
           />
 
         </cytoscape>  
@@ -148,9 +151,6 @@ export default {
         configcy,
         is_new: false,
         graph_id: null, 
-        testdata3: [
-             
-           ],
            testdata:[],
            editing: false,
       selected_node:"",
@@ -216,12 +216,36 @@ export default {
       cytoscape.use(edgeHandles)
     }
 },
+   logger(){
+     console.log("nodes")
+     console.log( this.cy.elements().nodes().jsons())
+     console.log("edges")
+     console.log( this.cy.elements().edges().jsons())
+     console.log("testadata")
+     console.log(this.testdata)
+     /*this.cy.add({
+            group: 'edges',
+            data: { 
+              id:99, 
+             source:2, 
+             target:3}
+          })*/
+          this.testdata.push({
+            group: 'edges',
+            data: { 
+              id:99, 
+             source:2, 
+             target:3}
+          })
+    
+   },
 
     editStep(event, node) {
-      
+      console.log(node)
+      if(node.group == "nodes"){
       console.log("editing")
       this.editing = true
-      console.log(node)
+      
     
       console.log("I'm old")
       this.is_new = false
@@ -230,9 +254,10 @@ export default {
 
       console.log(this.edit_step)
     
-    },
+    }},
 
     saveStep(value) {
+     
        console.log(value)
        console.log("value above")
           let my_elements = []
@@ -289,6 +314,34 @@ export default {
      
    },
    saveGraph() {
+      /*console.log("initial test data")
+          console.log(this.testdata)
+          var edges = this.cy.elements().edges().jsons()
+          console.log(edges)
+          for (let i = 0; i< edges.length; i++)
+          {
+            var filteredData = this.testdata.filter((filt) => {
+              console.log(filt.data.id == edges[i].data.id)
+              return filt.data.id == edges[i].data.id
+            })
+            console.log("I am filtered data")
+            console.log(filteredData)
+            if(filteredData.length != 0){
+              console.log("i'm in")
+             var index = edges.findIndex(item => item.data.id == filteredData[0].data.id)
+            console.log("this is the index")
+              console.log(index)
+              edges.splice(index, 1)
+              console.log("edges")
+              console.log(edges)
+          }
+          }
+          
+          for(let j = 0; j < edges.length; j++){
+            this.testdata.push(edges[j])
+          }
+          console.log("middle test data")
+          console.log(this.testdata)*/
      let my_elements = []
      var nodes = this.cy.elements().nodes().jsons()
      var edges = this.cy.elements().edges().jsons()
@@ -333,9 +386,7 @@ export default {
 
 
         addNode(event, cy) {
-          console.log(event.target);
-  //      if (event.target === this.$refs.cyRef.instance)
-          console.log("adding", this.cy);
+         
           this.cy.add({
             group: 'nodes',
             data: { 
@@ -349,7 +400,6 @@ export default {
               process_id:[this.id] },
             position: { x: 300, y: 250 }, 
           })
-          console.log(this.cy.data())
           this.testdata.push({
             group: 'nodes',
             data: { 
@@ -363,20 +413,32 @@ export default {
               process_id:[this.id] },
             position: { x: 250, y: 250 }, 
           })
+          console.log("final test data")
           console.log(this.testdata)
+          console.log(this.cy.elements().edges().jsons())
           console.log("adding node", event.target);
           },
 
-    updateNode(event, node) {
+    /*updateNode(event, node) {
       console.log("right click node", event)
       console.log(node)
-    },
+    },*/
         
-    deleteNode(event, node) {
+    deleteNode(event, node, cy) {
+      
+      console.log("these are the testdata")
+      
+      console.log(this.cy.elements().edges().jsons())
+      console.log(this.testdata)
       console.log("node clicked", node);
-      if(node.group === 'nodes'){
-        console.log(node.data.id)
-      }
+       console.log("removed")
+       var data_index = this.testdata.findIndex(item => item.data.id == node.data.id)
+      console.log("this is the index")
+     console.log(data_index)
+     this.testdata.splice(data_index, 1)
+       console.log(this.cy.elements().nodes().jsons())
+      console.log(this.cy.elements().edges().jsons())
+      console.log(this.testdata)
 
     },
     afterCreated(cy) {
