@@ -171,6 +171,12 @@ export default {
     EditorContent,
     EditorMenuBar
   },
+  props: {
+    content: {
+      type: String | Object,
+      default: ""
+    }
+  },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
     // we have to replace our suggestion text with a mention
@@ -272,7 +278,7 @@ export default {
             new Underline(),
             new History(),
           ],
-          content: ""
+          content: this.content
         }),
           this.loading = false
       })

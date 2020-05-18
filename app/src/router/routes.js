@@ -8,6 +8,7 @@ import AddDocument from '../components/data_settings/AddDocument'
 import MigrantManager from '../components/MigrantManager'
 import NgoManager from '../components/NgoManager'
 import InfoEditor from '../components/InfoEditor'
+import GlossaryNewPage from '../pages/GlossaryNewPage'
 
 // import DataSettings from '../components/DataSettings.vue'
 // import DataSettings from '../components/DataSettings.vue'
@@ -46,7 +47,8 @@ const routes = [
       { path: '/map', component: () => import('components/Map.vue') },
       { path: '/situation', component: MigrationSituation },
       { path: '/ngo/requestmediation', component: RequestMediation },
-      { path: '/glossary', component: EditorTestPage }
+      { path: '/glossary', component: EditorTestPage },
+      { path: '/glossary/new', component: GlossaryNewPage }
     ]
   }
 ]/*

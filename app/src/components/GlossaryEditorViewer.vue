@@ -1,10 +1,18 @@
 <template>
-  <div padding>
+  <div
+    padding
+    :id="this._uid"
+  >
     <editor-content
       class="editor__content"
       :editor="editor"
     />
-    <q-tooltip v-model="showTooltip" :target="targetElement" ref="descriptionTooltip">{{currentDescription}}</q-tooltip>
+    <q-tooltip
+      class="desc_tooltip"
+      v-model="showTooltip"
+      :target="targetElement"
+      ref="descriptionTooltip"
+    >{{currentDescription}}</q-tooltip>
   </div>
 </template>
 
@@ -34,7 +42,7 @@ export default {
     EditorContent
   },
   props: {
-    content:{
+    content: {
       type: String | Object,
       default: ""
     }
@@ -49,16 +57,16 @@ export default {
   },
   computed: {
     ...mapGetters('glossary', ['glossary', 'glossaryElemByTitle']),
-    currentDescription() {
+    currentDescription () {
       return this.currentDescriptionContent
     }
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
-    setContent(content) {
+    setContent (content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription(descriptionJSON, element) {
+    setCurrentDescription (descriptionJSON, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       var editorInterpreter = new Editor({
@@ -90,14 +98,27 @@ export default {
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     },
-    setGlossaryClickEvents() {
+    setGlossaryClickEvents () {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
       var currentDescriptionSetter = this.setCurrentDescription
-      document.addEventListener("mouseover", function (e){
-        if (e.target && e.target.classList.contains("mention")) {
+      var uid = this._uid
+      document.addEventListener("mouseover", function (e) {
+        var componentDiv = document.getElementById(uid)
+        var isParentOfDiv = componentDiv.contains(e.target)
+        if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
           currentDescriptionSetter(glossaryElem.description, e.target)
+        }
+      })
+      var router = this.$router
+      document.addEventListener("click", function (e) {
+        var componentDiv = document.getElementById(uid)
+        var isParentOfDiv = componentDiv.contains(e.target)
+        if (e.target && (e.target.classList.contains("mention") || e.target.classList.contains("desc_tooltip")) && isParentOfDiv) {
+          var glossaryElemTitle = e.srcElement.innerText.substring(1)
+          var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
+          router.push({ path: '/glossary', query: { id: glossaryElem.id } })
         }
       })
     }
@@ -135,7 +156,7 @@ export default {
 </script>
 
 <style lang="scss">
-  .mention {
-    border: 1px solid $primary;
-  }
+.mention {
+  border: 1px solid $primary;
+}
 </style>
