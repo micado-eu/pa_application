@@ -15,6 +15,8 @@ import integration_type from './integration_type'
 import language from './language'
 import steps from './steps'
 import graphs from './graphs'
+import user from './user'
+import intervention_plan from './intervention_plan'
 
 Vue.use(Vuex)
 
@@ -39,7 +41,9 @@ export default function (/* { ssrContext } */) {
       integration_type,
       language, 
       steps,
-      graphs
+      graphs,
+      user,
+      intervention_plan
     },
 
     // enable strict mode (adds overhead!)

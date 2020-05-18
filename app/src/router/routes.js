@@ -28,6 +28,7 @@ const routes = [
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
+      { path: '/migrant/:id', component: () => import('components/UserIntegration.vue') , props: true, name: process },
       { path: '/ngo', component: NgoManager },
       { path: '/info', component: InfoEditor },
 
