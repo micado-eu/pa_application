@@ -5,7 +5,7 @@
     <h4 > {{this.filteredUsers[0].username}} </h4>
     </div>
 <div class="col" style="display:inline-block;text-align:right;width:135px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Plan" no-caps size="15px" />
+   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Plan" no-caps size="15px" :to="this.id + '/add'" />
   </div>
   </div>
 <div style="">
@@ -24,17 +24,29 @@
         <q-card>
           <q-card-section>
             {{intervention.description}}
+            <div >
+            Required documents: {{intervention.linked_processes_id.join(', ')}}
+            </div>
            <div class="q-pa-md q-gutter-sm  col" style="padding-left:0px; text-align:left">
             <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :id="intervention.id" label="Edit action" @click="editIntervention($event)" :disable="hideAdd" />
-            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="accent" label="Validate"  />
+            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
             <q-card-section :hidden="hideForm">
-        <q-input v-model="edit_action.intervention_title" label="Title" />
-        <q-input v-model="edit_action.description" filled type="textarea" label="Description" />
+        <q-input style="padding-top:10px" v-model="edit_action.intervention_title" label="Title" />
+        <q-input  style="padding-top:10px" v-model="edit_action.description" filled type="textarea" label="Description" />
+        <q-select  style="padding-top:10px"
+        filled
+        clearable
+        v-model="edit_action.linked_processes_id"
+        multiple
+        :options="processes_list"
+        label="linked processes"
+        
+      />
         <div class="q-gutter-sm">
          
         </div>
-        <q-btn color="secondary" label="Save" :id="intervention_plan.id" @click="saveIntervention($event)" />
-        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationType()" />
+        <q-btn  style="margin-top:15px" color="secondary" label="Save" :id="intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="cancelIntegrationType()" />
       </q-card-section>
            </div>
           </q-card-section>
@@ -64,12 +76,20 @@ export default {
       hideForm: true,
       hideAdd: false,
       isNew: false,
+       processes_list:[
+        "How to certify education degree",
+        "Renewal of residence permit for working reasons", 
+        "How to get driver licence recognized",
+        "How to get access to public funded housing",
+        "How to enroll children to school"
+      ],
       id: this.$route.params.id,
       edit_action:{
         intervention_title:"",
         description:""
       }, 
-      selected_plan:null
+      selected_plan:null,
+      validation:null
 
       
     }
@@ -105,6 +125,7 @@ export default {
       var targetId = event.currentTarget.id
       var editing = this.filteredplans.filter((filt) => {
         return filt.id == targetId
+        
       })
       this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
       console.log(this.selected_plan.actions)
@@ -113,9 +134,30 @@ export default {
         this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
       this.hideForm = true
       this.hideAdd = false;
-      }
-     
-    ,
+      },
+      validateIntervention(event){
+     /* var targetId = event.currentTarget.id
+      for(let i = 0; i < this.filteredplans.length; i++){
+      var validating = this.filteredplans[i].actions.filter((filt) => {
+        console.log(filt)
+        console.log(targetId)
+        console.log(filt.id == targetId)
+        return filt.id == targetId
+      })
+      if(validating.length == 1){
+        console.log("in if")
+        
+        this.validation=JSON.parse(JSON.stringify(validating[0]))
+        
+      }}
+     console.log(this.validation)
+      var index = this.validation.actions.findIndex(item => item.id == targetId)
+      this.validation.actions[index].validated = true
+        this.$store.dispatch('intervention_plan/editInterventionPlan', this.validation)
+console.log("validated")
+console.log(this.$store.state.intervention_plan)
+        
+      */},
     editIntervention(event) {
       this.isNew = true;
       this.hideForm = false;

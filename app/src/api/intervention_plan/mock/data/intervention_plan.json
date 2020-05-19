@@ -9,21 +9,21 @@
         "id":"a",
         "intervention_title": "Attend a language course",
         "description":"Learning the language is a fundamental step that you need to perform in order to get integrated in the community",
-        "linked_processes_id":[1],
+        "linked_processes_id":["How to certify education degree","Renewal of residence permit for working reasons"],
         "validated":true
       },
       {
         "id":"b",
         "intervention_title": "Find a job",
         "description":"In order to be part of the community you have to find a job. A good starting point would be looking on the internet or at the employment exchange",
-        "linked_processes_id":[3,5],
+        "linked_processes_id":["How to get driver licence recognized","How to get access to public funded housing"],
         "validated":false
       },
       {
         "id":"c",
         "intervention_title": "Find a house",
         "description":"Finding a house is important",
-        "linked_processes_id":[2],
+        "linked_processes_id":[ "How to enroll children to school"],
         "validated":false
       }
     ]
@@ -38,21 +38,21 @@
         "id":"d",
         "intervention_title": "This is a placeholder title",
         "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget nibh nulla. Vivamus lorem mi, laoreet eu mauris quis, semper semper lectus. Sed quis massa neque. Phasellus viverra magna ut nisi tempor interdum. In nunc arcu, blandit sit amet tempor vitae, lacinia sed sem. Cras euismod varius nunc, et gravida justo vulputate sed. Sed ac euismod ex. Vestibulum nec tellus non ligula faucibus mattis.",
-        "linked_processes_id":[4],
+        "linked_processes_id":[ "How to get driver licence recognized"],
         "validated":false
       },
       {
         "id":"e",
         "intervention_title": "This is a placeholder title",
         "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget nibh nulla. Vivamus lorem mi, laoreet eu mauris quis, semper semper lectus. Sed quis massa neque. Phasellus viverra magna ut nisi tempor interdum. In nunc arcu, blandit sit amet tempor vitae, lacinia sed sem. Cras euismod varius nunc, et gravida justo vulputate sed. Sed ac euismod ex. Vestibulum nec tellus non ligula faucibus mattis.",
-        "linked_processes_id":[5],
+        "linked_processes_id":["How to get access to public funded housing"],
         "validated":true
       },
       {
         "id":"f",
         "intervention_title": "This is a placeholder title",
         "description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eget nibh nulla. Vivamus lorem mi, laoreet eu mauris quis, semper semper lectus. Sed quis massa neque. Phasellus viverra magna ut nisi tempor interdum. In nunc arcu, blandit sit amet tempor vitae, lacinia sed sem. Cras euismod varius nunc, et gravida justo vulputate sed. Sed ac euismod ex. Vestibulum nec tellus non ligula faucibus mattis.",
-        "linked_processes_id":[1],
+        "linked_processes_id":["Renewal of residence permit for working reasons", "How to get driver licence recognized"],
         "validated":true
       }
     ]
