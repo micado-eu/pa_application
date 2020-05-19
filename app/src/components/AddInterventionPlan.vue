@@ -22,7 +22,7 @@
             label="Edit"
             size="xs"
             :id="an_action.intervention_title"
-            @click="editIntegrationType($event)"
+            @click="editAction($event)"
           />
         </q-item-section>
       </q-item>
@@ -101,6 +101,15 @@ export default {
    
   },
   methods: {
+    editAction(event){
+      let targetId = event.currentTarget.id
+      var editing = this.plan.actions.filter((filt) => {
+        return filt.intervention_title == targetId
+      })
+      this.action = JSON.parse(JSON.stringify(editing[0]))
+      this.isNew = false;
+      this.hideForm = false;
+    },
     deleteAction(event) {
       var targetId = event.currentTarget.id
      var index = this.plan.actions.findIndex(item => item.intervention_title == targetId)

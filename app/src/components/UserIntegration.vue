@@ -1,7 +1,7 @@
 <template>
 <div style="padding-left:25px">
-  <div style="">
-   <div class="col" style="display:inline-block;padding-right:20px;padding-left:20px">
+  <div style="text-align:center">
+   <div class="col" style="padding-right:20px;padding-left:20px">
     <h4 > {{this.filteredUsers[0].username}} </h4>
     </div>
 <div class="col" style="display:inline-block;text-align:right;width:135px">
@@ -9,7 +9,7 @@
   </div>
   </div>
 <div style="">
- <div class="q-pa-md" style="width:750px; display:inline-block" v-for="intervention_plan in filteredplans" 
+ <div class="q-pa-md" style="width:800px; display:inline-block" v-for="intervention_plan in filteredplans" 
     :key="intervention_plan.id">
     <q-list bordered >
       <h4 style="padding-top:20px; padding-bottom:20px; margin-top:0px; margin-bottom:0px; padding-left:5px; background-color:#0f3a5d; color:white"> {{intervention_plan.title}} </h4>
@@ -24,11 +24,11 @@
         <q-card>
           <q-card-section>
             {{intervention.description}}
-            <div >
-            Required documents: {{intervention.linked_processes_id.join(', ')}}
+            <div  >
+            Required documents: {{intervention.linked_processes_id}}
             </div>
            <div class="q-pa-md q-gutter-sm  col" style="padding-left:0px; text-align:left">
-            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :id="intervention.id" label="Edit action" @click="editIntervention($event)" :disable="hideAdd" />
+            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
             <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
             <q-card-section :hidden="hideForm">
         <q-input style="padding-top:10px" v-model="edit_action.intervention_title" label="Title" />
@@ -46,7 +46,7 @@
          
         </div>
         <q-btn  style="margin-top:15px" color="secondary" label="Save" :id="intervention_plan.id" @click="saveIntervention($event)" />
-        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="cancelIntegrationType()" />
+        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="cancelIntervention()" />
       </q-card-section>
            </div>
           </q-card-section>
@@ -55,7 +55,6 @@
       </q-expansion-item>
       
       <q-separator />
-      </Intervention>
       </q-list>
       
     <br>
@@ -74,7 +73,6 @@ export default {
   data (){
     return {
       hideForm: true,
-      hideAdd: false,
       isNew: false,
        processes_list:[
         "How to certify education degree",
@@ -133,7 +131,6 @@ export default {
       this.selected_plan.actions.splice(index, 1, this.edit_action)
         this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
       this.hideForm = true
-      this.hideAdd = false;
       },
       validateIntervention(event){
      /* var targetId = event.currentTarget.id
@@ -161,7 +158,6 @@ console.log(this.$store.state.intervention_plan)
     editIntervention(event) {
       this.isNew = true;
       this.hideForm = false;
-      this.hideAdd = true;
        var targetId= event.currentTarget.id
       for(let i = 0; i < this.filteredplans.length; i++){
       var editing = this.filteredplans[i].actions.filter((filt) => {
@@ -179,6 +175,10 @@ console.log(this.$store.state.intervention_plan)
       }
       console.log(this.edit_action)
      
+    },
+    cancelIntervention() {
+       this.isNew = false;
+      this.hideForm = true;
     }
     },
   created () {
