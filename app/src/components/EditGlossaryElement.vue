@@ -1,14 +1,16 @@
 <template>
   <div padding>
-    <span>Title: </span>
+    <span>Title:</span>
     <q-input
-      color="primary"
+      color="accent"
       outlined
       label="Title"
+      label-color="accent"
       v-model="internalTitle"
     />
-    <span>Description: </span>
+    <span>Description:</span>
     <glossary-editor
+      class="desc-editor"
       :content="description"
       v-on:editorSave="saveGlossaryItem($event)"
     />
@@ -43,5 +45,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
+  .desc-editor {
+    border: 1px solid $primary;
+    border-radius: 10px;
+  }
 </style>

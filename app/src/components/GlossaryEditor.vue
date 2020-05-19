@@ -134,6 +134,7 @@
       <q-btn
         unelevated
         rounded
+        no-caps
         label="Save"
         @click="emitEditorContent()"
       />
