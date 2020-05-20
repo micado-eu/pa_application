@@ -26,7 +26,8 @@
         "linked_processes_id":[ "How to enroll children to school"],
         "validated":false
       }
-    ]
+    ], 
+    "isNew":false
   },
   {
     "id":2,
@@ -55,7 +56,8 @@
         "linked_processes_id":["Renewal of residence permit for working reasons", "How to get driver licence recognized"],
         "validated":true
       }
-    ]
+    ],
+    "isNew":false
   }
   
 ]

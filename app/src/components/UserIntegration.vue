@@ -61,8 +61,8 @@
       
       <q-separator />
       </q-list>
-       <q-btn  style="margin-top:15px" color="secondary" label="Add intervention" :disable="hideAdd" @click="addIntervention()" />
-         <q-card-section :hidden="!isNew">
+       <q-btn  style="margin-top:15px" color="secondary" label="Add intervention" :disable="hideAdd" @click="button_id =intervention_plan.id; addIntervention()" />
+         <q-card-section :hidden="intervention_plan.id != button_id">
         <q-input style="padding-top:10px" v-model="edit_action.intervention_title" label="Title" />
         <q-input  style="padding-top:10px" v-model="edit_action.description" filled type="textarea" label="Description" />
         <q-select  style="padding-top:10px"
@@ -97,6 +97,7 @@ export default {
     return {
       hideForm: true,
       isNew: false,
+      button_id:null, 
       hideAdd:false, 
        processes_list:[
         "How to certify education degree",
@@ -161,6 +162,7 @@ export default {
        console.log(this.$store.state.intervention_plan)
        this.isNew = false
        this.hideAdd = false
+       this.button_id = null
        console.log(this.isNew)
 
       }
@@ -200,6 +202,7 @@ export default {
 
 
     editIntervention(event) {
+      this.button_id = null
       this.hideAdd = true
       this.hideForm = false;
        var targetId= event.currentTarget.id
@@ -224,6 +227,7 @@ export default {
        this.isNew = false;
       this.hideForm = true;
       this.hideAdd = false
+      this.button_id = null
     }
     },
   created () {
