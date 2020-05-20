@@ -18,6 +18,7 @@
         group="somegroup"
         :label="intervention.intervention_title"
          header-class="text-accent"
+         @click="cancelIntervention"
       >
         <q-card>
           <q-card-section>
@@ -60,7 +61,25 @@
       
       <q-separator />
       </q-list>
-      
+       <q-btn  style="margin-top:15px" color="secondary" label="Add intervention" :disable="hideAdd" @click="addIntervention()" />
+         <q-card-section :hidden="!isNew">
+        <q-input style="padding-top:10px" v-model="edit_action.intervention_title" label="Title" />
+        <q-input  style="padding-top:10px" v-model="edit_action.description" filled type="textarea" label="Description" />
+        <q-select  style="padding-top:10px"
+        filled
+        clearable
+        v-model="edit_action.linked_processes_id"
+        multiple
+        :options="processes_list"
+        label="linked processes"
+        
+      />
+        <div class="q-gutter-sm">
+         
+        </div>
+        <q-btn  style="margin-top:15px" color="secondary" label="Save" :id="intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="cancelIntervention()" />
+      </q-card-section>
     <br>
     </div>
   </div>
@@ -78,6 +97,7 @@ export default {
     return {
       hideForm: true,
       isNew: false,
+      hideAdd:false, 
        processes_list:[
         "How to certify education degree",
         "Renewal of residence permit for working reasons", 
@@ -87,12 +107,15 @@ export default {
       ],
       id: this.$route.params.id,
       edit_action:{
+         id:999,
         intervention_title:"",
-        description:""
+        description:"",
+        linked_processes_id:[],
+        validated:false
       }, 
       selected_plan:null,
-      validation:null
-
+      validation:null,
+      isNew: false
       
     }
   },
@@ -124,6 +147,24 @@ export default {
     },
    methods: {
     saveIntervention(event){
+      if(this.isNew){
+        console.log(this.isNew)
+         var targetId = event.currentTarget.id
+      var editing = this.filteredplans.filter((filt) => {
+        return filt.id == targetId
+        
+      })
+      this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+      this.selected_plan.actions.push(this.edit_action)
+       this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
+       console.log("i am the store)")
+       console.log(this.$store.state.intervention_plan)
+       this.isNew = false
+       this.hideAdd = false
+       console.log(this.isNew)
+
+      }
+      else{
       var targetId = event.currentTarget.id
       var editing = this.filteredplans.filter((filt) => {
         return filt.id == targetId
@@ -135,6 +176,21 @@ export default {
       this.selected_plan.actions.splice(index, 1, this.edit_action)
         this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
       this.hideForm = true
+      this.hideAdd = false
+      }
+    },
+
+      addIntervention(){
+        this.edit_action = {
+         id:999,
+        intervention_title:"",
+        description:"",
+        linked_processes_id:[],
+        validated:false
+      }
+        this.isNew = true;
+        this.hideAdd = true;
+      
       },
 
 
@@ -144,7 +200,7 @@ export default {
 
 
     editIntervention(event) {
-      this.isNew = true;
+      this.hideAdd = true
       this.hideForm = false;
        var targetId= event.currentTarget.id
       for(let i = 0; i < this.filteredplans.length; i++){
@@ -167,6 +223,7 @@ export default {
     cancelIntervention() {
        this.isNew = false;
       this.hideForm = true;
+      this.hideAdd = false
     }
     },
   created () {
