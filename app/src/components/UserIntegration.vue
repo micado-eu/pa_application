@@ -16,19 +16,23 @@
       <q-separator />
        <q-expansion-item v-for="intervention in intervention_plan.actions" :key="intervention.id"
         group="somegroup"
-        
         :label="intervention.intervention_title"
-        
-        header-class="text-accent"
+         header-class="text-accent"
       >
         <q-card>
           <q-card-section>
             {{intervention.description}}
-            <div  >
+            <div style="padding-top:10px" >
             Required documents: {{intervention.linked_processes_id}}
             </div>
+            <div style="padding-top:10px" v-if="intervention.validated">
+              <strong> Validated </strong>
+              </div>
+            <div style="padding-top:10px" v-else>
+              <strong> Pending </strong>
+              </div>
            <div class="q-pa-md q-gutter-sm  col" style="padding-left:0px; text-align:left">
-            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
+            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :disable="intervention.validated" :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
             <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
             <q-card-section :hidden="hideForm">
         <q-input style="padding-top:10px" v-model="edit_action.intervention_title" label="Title" />
@@ -132,29 +136,13 @@ export default {
         this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
       this.hideForm = true
       },
+
+
       validateIntervention(event){
-     /* var targetId = event.currentTarget.id
-      for(let i = 0; i < this.filteredplans.length; i++){
-      var validating = this.filteredplans[i].actions.filter((filt) => {
-        console.log(filt)
-        console.log(targetId)
-        console.log(filt.id == targetId)
-        return filt.id == targetId
-      })
-      if(validating.length == 1){
-        console.log("in if")
-        
-        this.validation=JSON.parse(JSON.stringify(validating[0]))
-        
-      }}
-     console.log(this.validation)
-      var index = this.validation.actions.findIndex(item => item.id == targetId)
-      this.validation.actions[index].validated = true
-        this.$store.dispatch('intervention_plan/editInterventionPlan', this.validation)
-console.log("validated")
-console.log(this.$store.state.intervention_plan)
-        
-      */},
+     
+      },
+
+
     editIntervention(event) {
       this.isNew = true;
       this.hideForm = false;

@@ -1,6 +1,6 @@
 <template>
   <div class="q-pa-md">
-    <q-input v-model="plan.title" label="Intervention plan title" />
+    <q-input v-model="plan.title" bg-color="grey-3" label="Intervention plan title" />
     <q-list bordered separator>
       <q-item
         clickable
