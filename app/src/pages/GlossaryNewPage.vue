@@ -1,6 +1,6 @@
 <template>
   <edit-glossary
-    v-on:save="saveNewGlossaryItem($event)"
+    v-on:save="saveNewGlossaryItemAndReturn($event)"
   />
 </template>
 
@@ -12,6 +12,10 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["saveNewGlossaryItem"]),
+    saveNewGlossaryItemAndReturn(data) {
+      this.saveNewGlossaryItem(data)
+      this.$router.push({ path: "/glossary" })
+    }
   }
 }
 </script>

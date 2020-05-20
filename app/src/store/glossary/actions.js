@@ -11,3 +11,9 @@ export function saveNewGlossaryItem (state, data) {
     .saveNewGlossaryItem(data)
     .then(glossaryItem => state.commit('addNewGlossaryItem', glossaryItem))
 }
+
+export function editGlossaryItem (state, data) {
+  return client
+    .editGlossaryItem(data)
+    .then(glossaryItem => state.commit('editGlossaryItem', glossaryItem))
+}

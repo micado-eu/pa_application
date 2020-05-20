@@ -17,6 +17,9 @@ export default {
   saveNewGlossaryItem(glossaryItem) {
     let aux = Object.assign(glossaryItem, { id: i})
     i--
-    return fetch(glossaryItem)
+    return fetch(aux, 1000)
+  },
+  editGlossaryItem(newItem) {
+    return fetch(newItem, 1000)
   }
 }

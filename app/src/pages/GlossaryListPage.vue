@@ -43,6 +43,7 @@
           <q-btn
             label="Edit"
             color="accent"
+            :to="getEditRoute(glossaryItem.id)"
           />
         </q-item-section>
       </q-item>
@@ -84,6 +85,9 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
+    getEditRoute(id) {
+      return "glossary/" + id + "/edit"
+    }
   },
   created () {
     this.loading = true

@@ -9,6 +9,7 @@ import MigrantManager from '../components/MigrantManager'
 import NgoManager from '../components/NgoManager'
 import InfoEditor from '../components/InfoEditor'
 import GlossaryNewPage from '../pages/GlossaryNewPage'
+import GlossaryEditPage from '../pages/GlossaryEditPage'
 
 // import DataSettings from '../components/DataSettings.vue'
 // import DataSettings from '../components/DataSettings.vue'
@@ -49,7 +50,8 @@ const routes = [
       { path: '/situation', component: MigrationSituation },
       { path: '/ngo/requestmediation', component: RequestMediation },
       { path: '/glossary', component: GlossaryListPage },
-      { path: '/glossary/new', component: GlossaryNewPage }
+      { path: '/glossary/new', component: GlossaryNewPage },
+      { path: '/glossary/:id/edit/', component: GlossaryEditPage }
     ]
   }
 ]/*
