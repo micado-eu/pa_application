@@ -1,7 +1,7 @@
 <template>
   <div
     padding
-    :id="this._uid"
+    :id="uuid"
   >
     <editor-content
       class="editor__content"
@@ -11,8 +11,12 @@
       class="desc_tooltip"
       v-model="showTooltip"
       :target="targetElement"
-      ref="descriptionTooltip"
-    >{{currentDescription}}</q-tooltip>
+      anchor="top middle" 
+      self="bottom middle" 
+      :offset="[10, 10]"
+    >
+      {{currentDescription}}
+    </q-tooltip>
   </div>
 </template>
 
@@ -36,6 +40,9 @@ import {
   Italic,
   Mention
 } from "tiptap-extensions"
+
+let uuid = 0
+
 export default {
   name: "GlossaryEditorViewer",
   components: {
@@ -52,7 +59,7 @@ export default {
       editor: null,
       currentDescriptionContent: "",
       targetElement: false,
-      showTooltip: false,
+      showTooltip: false, // Don't show by default
     }
   },
   computed: {
@@ -66,7 +73,7 @@ export default {
     setContent (content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription (descriptionJSON, element) {
+    setCurrentDescription (glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       var editorInterpreter = new Editor({
@@ -90,7 +97,7 @@ export default {
           new Strike(),
           new Underline(),
         ],
-        content: descriptionJSON
+        content: glossaryElem.description
       })
       var doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html');
       var plainDescription = doc.body.textContent || "";
@@ -101,27 +108,21 @@ export default {
     setGlossaryClickEvents () {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
       var currentDescriptionSetter = this.setCurrentDescription
-      var uid = this._uid
+      var uuid = this.uuid
       document.addEventListener("mouseover", function (e) {
-        var componentDiv = document.getElementById(uid)
+        var componentDiv = document.getElementById(uuid)
         var isParentOfDiv = componentDiv.contains(e.target)
         if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
-          currentDescriptionSetter(glossaryElem.description, e.target)
-        }
-      })
-      var router = this.$router
-      document.addEventListener("click", function (e) {
-        var componentDiv = document.getElementById(uid)
-        var isParentOfDiv = componentDiv.contains(e.target)
-        if (e.target && (e.target.classList.contains("mention") || e.target.classList.contains("desc_tooltip")) && isParentOfDiv) {
-          var glossaryElemTitle = e.srcElement.innerText.substring(1)
-          var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
-          router.push({ path: '/glossary', query: { id: glossaryElem.id } })
+          currentDescriptionSetter(glossaryElem, e.target)
         }
       })
     }
+  },
+  beforeCreate () {
+    this.uuid = uuid.toString();
+    uuid += 1;
   },
   created () {
     this.fetchGlossary().then(() => {
