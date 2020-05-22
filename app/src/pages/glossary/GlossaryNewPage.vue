@@ -8,7 +8,7 @@
 import { mapActions } from "vuex"
 export default {
   components: {
-    "edit-glossary": require('components/EditGlossaryElement.vue').default,
+    "edit-glossary": require('components/glossary/EditGlossaryElement.vue').default,
   },
   methods: {
     ...mapActions("glossary", ["saveNewGlossaryItem"]),

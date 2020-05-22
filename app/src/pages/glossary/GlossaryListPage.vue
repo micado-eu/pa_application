@@ -13,7 +13,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex"
-import ListSearchTags from '../components/ListSearchTags'
+import ListSearchTags from 'components/ListSearchTags'
 export default {
   data() {
     return {

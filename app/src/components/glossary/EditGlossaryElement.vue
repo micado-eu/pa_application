@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import EditElement from './EditElement'
+import EditElement from 'components/EditElement'
 export default {
   name: "EditGlossaryElement",
   components: {
