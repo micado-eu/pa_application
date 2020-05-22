@@ -17,6 +17,7 @@ import steps from './steps'
 import graphs from './graphs'
 import user from './user'
 import intervention_plan from './intervention_plan'
+import news from './news'
 
 Vue.use(Vuex)
 
@@ -43,7 +44,8 @@ export default function (/* { ssrContext } */) {
       steps,
       graphs,
       user,
-      intervention_plan
+      intervention_plan,
+      news
     },
 
     // enable strict mode (adds overhead!)

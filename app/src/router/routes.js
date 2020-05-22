@@ -10,6 +10,9 @@ import InfoEditor from '../components/InfoEditor'
 import GlossaryListPage from '../pages/glossary/GlossaryListPage.vue'
 import GlossaryNewPage from '../pages/glossary/GlossaryNewPage'
 import GlossaryEditPage from '../pages/glossary/GlossaryEditPage'
+import NewsListPage from '../pages/news/NewsListPage.vue'
+import NewsNewPage from '../pages/news/NewsNewPage.vue'
+import NewsEditPage from '../pages/news/NewsEditPage.vue'
 
 // import DataSettings from '../components/DataSettings.vue'
 // import DataSettings from '../components/DataSettings.vue'
@@ -50,9 +53,14 @@ const routes = [
       { path: '/map', component: () => import('components/Map.vue') },
       { path: '/situation', component: MigrationSituation },
       { path: '/ngo/requestmediation', component: RequestMediation },
+
       { path: '/glossary', component: GlossaryListPage },
       { path: '/glossary/new', component: GlossaryNewPage },
-      { path: '/glossary/:id/edit/', component: GlossaryEditPage }
+      { path: '/glossary/:id/edit/', component: GlossaryEditPage },
+      
+      { path: '/news', component: NewsListPage },
+      { path: '/news/new', component: NewsNewPage },
+      { path: '/news/:id/edit/', component: NewsEditPage },
     ]
   }
 ]/*
