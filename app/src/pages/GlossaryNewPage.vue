@@ -13,8 +13,10 @@ export default {
   methods: {
     ...mapActions("glossary", ["saveNewGlossaryItem"]),
     saveNewGlossaryItemAndReturn(data) {
-      this.saveNewGlossaryItem(data)
-      this.$router.push({ path: "/glossary" })
+      let router = this.$router
+      this.saveNewGlossaryItem(data).then(() => {
+        router.push({ path: "/glossary" })
+      })
     }
   }
 }

@@ -1,53 +1,35 @@
 <template>
-  <div padding>
-    <span>Title:</span>
-    <q-input
-      color="accent"
-      outlined
-      label="Title"
-      label-color="accent"
-      v-model="internalTitle"
-    />
-    <span>Description:</span>
-    <glossary-editor
-      class="desc-editor"
-      :content="description"
-      v-on:editorSave="saveGlossaryItem($event)"
+  <div>
+    <edit-element
+      :title="title"
+      :description="description"
+      :save_item_fn="saveGlossaryItem"
     />
   </div>
 </template>
 
 <script>
+import EditElement from './EditElement'
 export default {
-  data () {
-    return {
-      internalTitle: this.title
-    }
+  name: "EditGlossaryElement",
+  components: {
+    "edit-element": EditElement
   },
   props: {
     "title": {
       type: String,
-      default: ""
     },
     "description": {
       type: String | Object,
-      default: ""
     }
   },
-  components: {
-    "glossary-editor": require('components/GlossaryEditor.vue').default,
-  },
   methods: {
-    saveGlossaryItem(data) {
-      this.$emit('save', {title: this.internalTitle, description: data})
+    saveGlossaryItem(title, desc) {
+      this.$emit('save', {title: title, description: desc})
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-  .desc-editor {
-    border: 1px solid $primary;
-    border-radius: 10px;
-  }
 </style>

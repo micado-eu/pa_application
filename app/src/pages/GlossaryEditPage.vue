@@ -25,8 +25,10 @@ export default {
   methods: {
     ...mapActions("glossary", ["fetchGlossary", "editGlossaryItem"]),
     editGlossaryItemAndReturn (data) {
-      this.editGlossaryItem(Object.assign(data, { id: this.$route.params.id }))
-      this.$router.push({ path: "/glossary" })
+      let router = this.$router
+      this.editGlossaryItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
+        router.push({ path: "/glossary" })
+      })
     }
   },
   computed: {
