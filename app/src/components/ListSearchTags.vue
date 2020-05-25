@@ -14,7 +14,17 @@
         <q-icon name="search" />
       </template>
     </q-input>
-    <q-toolbar class="bg-accent text-white shadow-2">
+    <q-btn
+      unelevated
+      no-caps
+      :color="selectedTags.indexOf(tag) == -1 ? 'accent' : 'primary'"
+      v-for="tag in tags"
+      :key="tag"
+      :label="tag"
+      class="q-mr-sm"
+      @click="addOrRemoveSelectedTag(tag)"
+    />
+    <q-toolbar class="bg-accent text-white shadow-2 q-mt-md">
       <q-avatar>
         <q-icon name="sort_by_alpha" />
       </q-avatar>
@@ -27,9 +37,7 @@
         :to="new_url"
       />
     </q-toolbar>
-    <q-list
-      bordered
-    >
+    <q-list bordered>
       <q-item
         v-for="item in filteredElements"
         :key="item.id"
@@ -42,7 +50,20 @@
         </q-item-section>
         <q-item-section
           side
-          v-if="editButtonToShow===item.id"
+          v-for="tag in item.tags"
+          :key="tag"
+        >
+          <q-btn
+            unelevated
+            color="accent"
+            no-caps
+            :key="tag"
+            :label="tag"
+          />
+        </q-item-section>
+        <q-item-section
+          side
+          :style="{visibility: editButtonToShow===item.id ? 'visible' : 'hidden'}"
         >
           <q-btn
             label="Edit"
@@ -60,32 +81,77 @@ import Fuse from 'fuse.js'
 export default {
   name: "ListSearchTags",
   props: ["elements", "new_url", "edit_url_fn", "title"],
-  data () {
+  data() {
     return {
       editButtonToShow: -1,
-      filteredElements: this.elements,
-      searchText: ""
+      filteredElementsBySearch: this.elements,
+      filteredElementsByTags: this.elements,
+      searchText: "",
+      tags: [],
+      selectedTags: []
+    }
+  },
+  methods: {
+    addOrRemoveSelectedTag(tag) {
+      var index = this.selectedTags.indexOf(tag)
+      if (index !== -1) {
+        this.selectedTags.splice(index, 1);
+      } else {
+        this.selectedTags.push(tag)
+      }
+      this.filterByTags()
+    },
+    filterByTags() {
+      if (this.selectedTags.length > 0) {
+        let selectedTags = this.selectedTags;
+        this.filteredElementsByTags = this.elements.filter(e => {
+          for (let tag of selectedTags) {
+            if (e.tags.indexOf(tag) == -1) {
+              return false
+            }
+          }
+          return true;
+        });
+      } else {
+        this.filteredElementsByTags = this.elements
+      }
+
     }
   },
   computed: {
     search: {
-      get () {
+      get() {
         return this.searchText
       },
-      set (newSearch) {
+      set(newSearch) {
         if (newSearch) {
-          const fuse = new Fuse(elements, {
+          const fuse = new Fuse(this.elements, {
             keys: ['title', 'description'],
           })
-          this.filteredElements = fuse.search(newSearch).map(i => i.item)
+          this.filteredElementsBySearch = fuse.search(newSearch).map(i => i.item)
           this.searchText = newSearch
         } else {
-          this.filteredElements = elements
+          this.filteredElementsBySearch = this.elements
           this.searchText = ""
         }
       }
+    },
+    filteredElements() {
+      var filteredElementsByTags = this.filteredElementsByTags
+      return this.filteredElementsBySearch.filter(function (n) {
+        return filteredElementsByTags.indexOf(n) !== -1;
+      });
     }
   },
+  created() {
+    for (let elem of this.elements) {
+      if (elem.tags) {
+        for (let tag of elem.tags) {
+          this.tags.push(tag)
+        }
+      }
+    }
+  }
 }
 </script>
 
