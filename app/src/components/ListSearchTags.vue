@@ -42,8 +42,8 @@
         v-for="item in filteredElements"
         :key="item.id"
         clickable
-        @mouseover="editButtonToShow=item.id"
-        @mouseleave="editButtonToShow=-1"
+        @mouseover="hovered=item.id"
+        @mouseleave="hovered=-1"
       >
         <q-item-section>
           <q-item-label>{{ item.title }}</q-item-label>
@@ -63,12 +63,22 @@
         </q-item-section>
         <q-item-section
           side
-          :style="{visibility: editButtonToShow===item.id ? 'visible' : 'hidden'}"
+          :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
         >
           <q-btn
             label="Edit"
             color="accent"
             :to="edit_url_fn(item.id)"
+          />
+        </q-item-section>
+        <q-item-section
+          side
+          :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
+        >
+          <q-btn
+            label="Delete"
+            color="accent"
+            @click="delete_fn(item)"
           />
         </q-item-section>
       </q-item>
@@ -80,10 +90,10 @@
 import Fuse from 'fuse.js'
 export default {
   name: "ListSearchTags",
-  props: ["elements", "new_url", "edit_url_fn", "title"],
+  props: ["elements", "new_url", "edit_url_fn", "delete_fn", "title"],
   data() {
     return {
-      editButtonToShow: -1,
+      hovered: -1,
       filteredElementsBySearch: this.elements,
       filteredElementsByTags: this.elements,
       searchText: "",
@@ -126,7 +136,7 @@ export default {
       set(newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.elements, {
-            keys: ['title', 'description'],
+            keys: ['title'],
           })
           this.filteredElementsBySearch = fuse.search(newSearch).map(i => i.item)
           this.searchText = newSearch

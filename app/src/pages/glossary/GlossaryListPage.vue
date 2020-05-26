@@ -6,6 +6,7 @@
       :elements="glossary"
       new_url="glossary/new"
       :edit_url_fn="getEditRoute"
+      :delete_fn="deleteGlossaryItem"
       title="Glossary"
     />
   </div>
@@ -27,12 +28,12 @@ export default {
     ...mapGetters("glossary", ["glossary"]),
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary"]),
-    getEditRoute (id) {
+    ...mapActions("glossary", ["fetchGlossary", "deleteGlossaryItem"]),
+    getEditRoute(id) {
       return "glossary/" + id + "/edit"
     }
   },
-  created () {
+  created() {
     this.loading = true
     this.fetchGlossary().then(() => {
       this.loading = false

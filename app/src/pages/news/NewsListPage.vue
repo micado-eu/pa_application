@@ -6,6 +6,7 @@
       :elements="news"
       new_url="news/new"
       :edit_url_fn="getEditRoute"
+      :delete_fn="deleteNewsItem"
       title="News"
     />
   </div>
@@ -27,12 +28,12 @@ export default {
     ...mapGetters("news", ["news"]),
   },
   methods: {
-    ...mapActions("news", ["fetchNews"]),
-    getEditRoute (id) {
+    ...mapActions("news", ["fetchNews", "deleteNewsItem"]),
+    getEditRoute(id) {
       return "news/" + id + "/edit"
     }
   },
-  created () {
+  created() {
     this.loading = true
     this.fetchNews().then(() => {
       this.loading = false

@@ -11,3 +11,10 @@ export function editGlossaryItem(state, payload) {
   let elemIndex = state.glossary.indexOf(elem)
   state.glossary[elemIndex] = payload
 }
+
+export function deleteGlossaryItem(state, glossaryItem) {
+  let index = state.glossary.indexOf(glossaryItem)
+  if (index !== -1) {
+    state.glossary.splice(index, 1);
+  }
+}
