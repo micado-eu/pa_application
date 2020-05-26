@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-accent">
+    <q-header
+      elevated
+      class="bg-accent"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -59,7 +62,10 @@
         </q-item>
         <br />
         <div class="row justify-center full-height full-width text-center">
-          <img alt="Powered by Micado" src="~assets/powered_Micado_white.png" />
+          <img
+            alt="Powered by Micado"
+            src="~assets/powered_Micado_white.png"
+          />
         </div>
       </q-list>
     </q-drawer>
@@ -132,7 +138,13 @@ export default {
           label: "menu.glossary",
           icon: "sort_by_alpha",
           to: "/glossary",
-          description: "sample of editor with glossary integration"
+          description: "Manage the glossary"
+        },
+        {
+          label: "menu.news",
+          icon: "sort_by_alpha",
+          to: "/news",
+          description: "Manage the news"
         },
         {
           label: "menu.data",
