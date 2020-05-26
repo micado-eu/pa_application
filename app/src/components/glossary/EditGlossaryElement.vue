@@ -21,11 +21,14 @@ export default {
     },
     "description": {
       type: String | Object,
+    },
+    "tags": {
+      type: Array
     }
   },
   methods: {
-    saveGlossaryItem(title, desc) {
-      this.$emit('save', {title: title, description: desc})
+    saveGlossaryItem(title, desc, tags) {
+      this.$emit('save', { title: title, description: desc, tags: tags })
     }
   }
 }

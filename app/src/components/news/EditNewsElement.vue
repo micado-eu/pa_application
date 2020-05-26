@@ -4,6 +4,7 @@
       :title="title"
       :description="description"
       :save_item_fn="saveNewsItem"
+      :tags="tags"
     />
   </div>
 </template>
@@ -21,11 +22,14 @@ export default {
     },
     "description": {
       type: String | Object,
+    },
+    "tags": {
+      type: Array
     }
   },
   methods: {
-    saveNewsItem(title, desc) {
-      this.$emit('save', {title: title, description: desc})
+    saveNewsItem(title, desc, tags) {
+      this.$emit('save', { title: title, description: desc, tags: tags })
     }
   }
 }

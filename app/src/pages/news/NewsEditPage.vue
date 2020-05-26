@@ -6,6 +6,7 @@
       v-on:save="editNewsItemAndReturn($event)"
       :title="title"
       :description="description"
+      :tags="tags"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex"
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       newsElem: undefined
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     ...mapActions("news", ["fetchNews", "editNewsItem"]),
-    editNewsItemAndReturn (data) {
+    editNewsItemAndReturn(data) {
       let router = this.$router
       this.editNewsItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
         router.push({ path: "/news" })
@@ -48,9 +49,17 @@ export default {
       } else {
         return ""
       }
-    }
+    },
+    tags: function () {
+      let elem = this.newsElemById(this.$route.params.id)
+      if (elem) {
+        return elem.tags
+      } else {
+        return []
+      }
+    },
   },
-  created () {
+  created() {
     this.loading = true
     this.fetchNews().then(() => {
       this.loading = false

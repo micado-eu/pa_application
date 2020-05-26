@@ -6,6 +6,7 @@
       v-on:save="editGlossaryItemAndReturn($event)"
       :title="title"
       :description="description"
+      :tags="tags"
     />
   </div>
 </template>
@@ -13,7 +14,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex"
 export default {
-  data () {
+  data() {
     return {
       loading: false,
       glossaryElem: undefined
@@ -24,7 +25,7 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary", "editGlossaryItem"]),
-    editGlossaryItemAndReturn (data) {
+    editGlossaryItemAndReturn(data) {
       let router = this.$router
       this.editGlossaryItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
         router.push({ path: "/glossary" })
@@ -48,9 +49,17 @@ export default {
       } else {
         return ""
       }
-    }
+    },
+    tags: function () {
+      let elem = this.glossaryElemById(this.$route.params.id)
+      if (elem) {
+        return elem.tags
+      } else {
+        return []
+      }
+    },
   },
-  created () {
+  created() {
     this.loading = true
     this.fetchGlossary().then(() => {
       this.loading = false

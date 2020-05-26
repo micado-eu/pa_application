@@ -147,7 +147,9 @@ export default {
     for (let elem of this.elements) {
       if (elem.tags) {
         for (let tag of elem.tags) {
-          this.tags.push(tag)
+          if (this.tags.indexOf(tag) == -1) {
+            this.tags.push(tag)
+          }
         }
       }
     }
