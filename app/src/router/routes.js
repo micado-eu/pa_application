@@ -10,9 +10,9 @@ import InfoEditor from '../components/InfoEditor'
 import GlossaryListPage from '../pages/glossary/GlossaryListPage.vue'
 import GlossaryNewPage from '../pages/glossary/GlossaryNewPage'
 import GlossaryEditPage from '../pages/glossary/GlossaryEditPage'
-import NewsListPage from '../pages/news/NewsListPage.vue'
-import NewsNewPage from '../pages/news/NewsNewPage.vue'
-import NewsEditPage from '../pages/news/NewsEditPage.vue'
+import InformationListPage from '../pages/information_centre/InformationListPage.vue'
+import InformationNewPage from '../pages/information_centre/InformationNewPage.vue'
+import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
 import EU from '../components/migration_monitor/EU.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import City from '../components/migration_monitor/City.vue'
@@ -61,9 +61,9 @@ const routes = [
       { path: '/glossary/new', component: GlossaryNewPage },
       { path: '/glossary/:id/edit/', component: GlossaryEditPage },
 
-      { path: '/news', component: NewsListPage },
-      { path: '/news/new', component: NewsNewPage },
-      { path: '/news/:id/edit/', component: NewsEditPage },
+      { path: '/information', component: InformationListPage },
+      { path: '/information/new', component: InformationNewPage },
+      { path: '/information/:id/edit/', component: InformationEditPage },
     ]
   }
 ]/*

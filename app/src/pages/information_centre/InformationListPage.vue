@@ -3,11 +3,11 @@
     <span v-if="loading">Loading...</span>
     <list-search-tags
       v-if="!loading"
-      :elements="news"
-      new_url="news/new"
+      :elements="information"
+      new_url="information/new"
       :edit_url_fn="getEditRoute"
-      :delete_fn="deleteNewsItem"
-      title="News"
+      :delete_fn="deleteInformationItem"
+      title="Information centre"
     />
   </div>
 </template>
@@ -25,17 +25,17 @@ export default {
     "list-search-tags": ListSearchTags
   },
   computed: {
-    ...mapGetters("news", ["news"]),
+    ...mapGetters("information", ["information"]),
   },
   methods: {
-    ...mapActions("news", ["fetchNews", "deleteNewsItem"]),
+    ...mapActions("information", ["fetchInformation", "deleteInformationItem"]),
     getEditRoute(id) {
-      return "news/" + id + "/edit"
+      return "information/" + id + "/edit"
     }
   },
   created() {
     this.loading = true
-    this.fetchNews().then(() => {
+    this.fetchInformation().then(() => {
       this.loading = false
     })
   }

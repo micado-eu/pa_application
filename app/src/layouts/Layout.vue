@@ -135,10 +135,10 @@ export default {
           description: "Manage the glossary"
         },
         {
-          label: "menu.news",
+          label: "menu.information_centre",
           icon: "description",
-          to: "/news",
-          description: "Manage the news"
+          to: "/information",
+          description: "Manage the information"
         },
         {
           label: "menu.data",

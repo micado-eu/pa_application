@@ -1,9 +1,9 @@
 <template>
   <div>
     <span v-if="loading">Loading...</span>
-    <edit-news
+    <edit-information
       v-if="!loading"
-      v-on:save="editNewsItemAndReturn($event)"
+      v-on:save="editInformationItemAndReturn($event)"
       :title="title"
       :description="description"
       :tags="tags"
@@ -17,25 +17,25 @@ export default {
   data() {
     return {
       loading: false,
-      newsElem: undefined
+      informationElem: undefined
     }
   },
   components: {
-    "edit-news": require('components/news/EditNewsElement.vue').default,
+    "edit-information": require('components/information_centre/EditInformationElement.vue').default,
   },
   methods: {
-    ...mapActions("news", ["fetchNews", "editNewsItem"]),
-    editNewsItemAndReturn(data) {
+    ...mapActions("information", ["fetchInformation", "editInformationItem"]),
+    editInformationItemAndReturn(data) {
       let router = this.$router
-      this.editNewsItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
-        router.push({ path: "/news" })
+      this.editInformationItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
+        router.push({ path: "/information" })
       })
     }
   },
   computed: {
-    ...mapGetters("news", ["newsElemById"]),
+    ...mapGetters("information", ["informationElemById"]),
     title: function () {
-      let elem = this.newsElemById(this.$route.params.id)
+      let elem = this.informationElemById(this.$route.params.id)
       if (elem) {
         return elem.title
       } else {
@@ -43,7 +43,7 @@ export default {
       }
     },
     description: function () {
-      let elem = this.newsElemById(this.$route.params.id)
+      let elem = this.informationElemById(this.$route.params.id)
       if (elem) {
         return elem.description
       } else {
@@ -51,7 +51,7 @@ export default {
       }
     },
     tags: function () {
-      let elem = this.newsElemById(this.$route.params.id)
+      let elem = this.informationElemById(this.$route.params.id)
       if (elem) {
         return elem.tags
       } else {
@@ -61,7 +61,7 @@ export default {
   },
   created() {
     this.loading = true
-    this.fetchNews().then(() => {
+    this.fetchInformation().then(() => {
       this.loading = false
     })
   }

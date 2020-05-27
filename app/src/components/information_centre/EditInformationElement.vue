@@ -3,7 +3,7 @@
     <edit-element
       :title="title"
       :description="description"
-      :save_item_fn="saveNewsItem"
+      :save_item_fn="saveInformationItem"
       :tags="tags"
     />
   </div>
@@ -12,7 +12,7 @@
 <script>
 import EditElement from 'components/EditElement'
 export default {
-  name: "EditNewsElement",
+  name: "EditInformationElement",
   components: {
     "edit-element": EditElement
   },
@@ -28,7 +28,7 @@ export default {
     }
   },
   methods: {
-    saveNewsItem(title, desc, tags) {
+    saveInformationItem(title, desc, tags) {
       this.$emit('save', { title: title, description: desc, tags: tags })
     }
   }
