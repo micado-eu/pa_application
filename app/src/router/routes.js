@@ -13,14 +13,10 @@ import GlossaryEditPage from '../pages/glossary/GlossaryEditPage'
 import NewsListPage from '../pages/news/NewsListPage.vue'
 import NewsNewPage from '../pages/news/NewsNewPage.vue'
 import NewsEditPage from '../pages/news/NewsEditPage.vue'
-
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
-// import DataSettings from '../components/DataSettings.vue'
+import EU from '../components/migration_monitor/EU.vue'
+import Country from '../components/migration_monitor/Country.vue'
+import City from '../components/migration_monitor/City.vue'
+import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 
 const routes = [
   {
@@ -32,8 +28,8 @@ const routes = [
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
-      { path: '/migrant/:id', component: () => import('components/UserIntegration.vue') , props: true, name: process },
-      { path: '/migrant/:id/add', component: () => import('components/AddInterventionPlan.vue') , props: true, name: process },
+      { path: '/migrant/:id', component: () => import('components/UserIntegration.vue'), props: true, name: process },
+      { path: '/migrant/:id/add', component: () => import('components/AddInterventionPlan.vue'), props: true, name: process },
       { path: '/ngo', component: NgoManager },
       { path: '/info', component: InfoEditor },
 
@@ -51,13 +47,20 @@ const routes = [
 
       { path: '/dashboard', component: () => import('components/Dashboard.vue') },
       { path: '/map', component: () => import('components/Map.vue') },
-      { path: '/situation', component: MigrationSituation },
+      {
+        path: '/situation', component: MigrationSituation, children: [
+          { path: 'eu', component: EU },
+          { path: 'city', component: City },
+          { path: 'country', component: Country },
+          { path: 'editor', component: MigrationSitEditor }
+        ]
+      },
       { path: '/ngo/requestmediation', component: RequestMediation },
 
       { path: '/glossary', component: GlossaryListPage },
       { path: '/glossary/new', component: GlossaryNewPage },
       { path: '/glossary/:id/edit/', component: GlossaryEditPage },
-      
+
       { path: '/news', component: NewsListPage },
       { path: '/news/new', component: NewsNewPage },
       { path: '/news/:id/edit/', component: NewsEditPage },

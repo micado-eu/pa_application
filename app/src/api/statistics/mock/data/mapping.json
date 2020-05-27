@@ -1,0 +1,27 @@
+{
+    "city": {
+        "incoming": [
+            {
+                "url":"https://geodienste.hamburg.de/HH_WFS_Micado?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:zuzuege_ausserhalb_hh",
+                "resolve":"",
+                "title": "Influx Hamburg",
+                "description": "",
+                "x": "mic:datum",
+                "y": "mic:wert"
+            },
+            {
+                "url":"https://geodienste.hamburg.de/HH_WFS_Micado?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:davon_familiennachzuege",
+                "resolve":"",
+                "title": "Influx Hamburg for family reunification",
+                "description": "",
+                "x": "mic:datum",
+                "y": "mic:wert"
+            }
+        ],
+        "integration": {},
+        "return": {},
+        "accommodation": {}
+    },
+    "country": {},
+    "eu": {}
+}

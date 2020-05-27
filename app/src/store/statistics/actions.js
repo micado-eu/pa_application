@@ -10,5 +10,8 @@ export function fetchStatistics(state, data) {
       state.commit('setTimeseries', res.timeseries)
       state.commit('setOrigin', res.origin)
       state.commit('setMigrants', res.migrants)
+      state.commit('setMapping', res.mapping)
+      state.commit('setInflux_for_family_reunion', res.influx_for_family_reunion)
+      state.commit('setInflux_hamburg', res.influx_hamburg)
     })
 }

@@ -1,5 +1,8 @@
 export default {
   timeseries: {},
   origin: {},
-  migrants: {}
+  migrants: {},
+  mapping: {},
+  influx_hamburg: {},
+  influx_for_family_reunion: {}
 }
