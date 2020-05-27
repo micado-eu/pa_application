@@ -1,10 +1,116 @@
 <template>
   <div>
-    <DocumentTypeManager @scroll="scrollTo" />
-    <IntegrationCategory @scroll="scrollTo" />
-    <IntegrationType @scroll="scrollTo" />
-    <Topic @scroll="scrollTo" />
-    <UserType @scroll="scrollTo" />
+    <q-card>
+      <q-tabs
+        v-model="tab"
+        dense
+        class="text-grey"
+        active-color="primary"
+        indicator-color="primary"
+        align="justify"
+      >
+        <q-tab
+          name="data"
+          label="Data management"
+        />
+        <q-tab
+          name="settings"
+          label="Settings"
+        />
+        <q-tab
+          name="language"
+          label="Language"
+        />
+      </q-tabs>
+
+      <q-separator />
+
+      <q-tab-panels
+        v-model="tab"
+        animated
+      >
+        <q-tab-panel
+          name="data"
+          class="q-pa-none"
+        >
+
+          <q-splitter v-model="splitterModel">
+
+            <template v-slot:before>
+              <q-tabs
+                v-model="innerTab"
+                vertical
+                class="text-teal"
+              >
+                <q-tab
+                  name="dataDocType"
+                  icon="mail"
+                  label="Document Types"
+                />
+                <q-tab
+                  name="dataIntCat"
+                  icon="alarm"
+                  label="Integration Categories"
+                />
+                <q-tab
+                  name="dataIntType"
+                  icon="movie"
+                  label="Integration Types"
+                />
+                <q-tab
+                  name="dataTopic"
+                  icon="movie"
+                  label="Topics"
+                />
+                <q-tab
+                  name="dataUserType"
+                  icon="movie"
+                  label="User Types"
+                />
+              </q-tabs>
+            </template>
+
+            <template v-slot:after>
+              <q-tab-panels
+                v-model="innerTab"
+                animated
+                transition-prev="slide-down"
+                transition-next="slide-up"
+              >
+                <q-tab-panel name="dataDocType">
+                  <DocumentTypeManager @scroll="scrollTo" />
+                </q-tab-panel>
+
+                <q-tab-panel name="dataIntCat">
+                  <IntegrationCategory @scroll="scrollTo" />
+                </q-tab-panel>
+
+                <q-tab-panel name="dataIntType">
+                  <IntegrationType @scroll="scrollTo" />
+                </q-tab-panel>
+                <q-tab-panel name="dataTopic">
+                  <Topic @scroll="scrollTo" />
+                </q-tab-panel>
+                <q-tab-panel name="dataUserType">
+                  <UserType @scroll="scrollTo" />
+                </q-tab-panel>
+              </q-tab-panels>
+            </template>
+
+          </q-splitter>
+        </q-tab-panel>
+
+        <q-tab-panel name="settings">
+          <div class="text-h6">Settings for MICADO migrant application</div>
+          <FunctionConfiguration />
+        </q-tab-panel>
+
+        <q-tab-panel name="language">
+          <ActiveLanguageSelector />
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-card>
+
   </div>
 </template>
 
@@ -14,6 +120,9 @@ import IntegrationCategory from "./data_settings/IntegrationCategory";
 import IntegrationType from "./data_settings/IntegrationType";
 import Topic from "./data_settings/Topic";
 import UserType from "./data_settings/UserType";
+import ActiveLanguageSelector from "./settings/ActiveLanguageSelector.vue";
+import FunctionConfiguration from "./settings/FunctionConfiguration.vue";
+
 const TIMEOUT = 1;
 
 export default {
@@ -23,17 +132,26 @@ export default {
     IntegrationCategory,
     IntegrationType,
     Topic,
-    UserType
+    UserType,
+    ActiveLanguageSelector,
+    FunctionConfiguration
+  },
+  data () {
+    return {
+      tab: 'data',
+      innerTab: 'innerMails',
+      splitterModel: 20
+    }
   },
   computed: {},
-  mounted() {
+  mounted () {
     // has to use a brief timeout
     if (this.$route.hash) {
       setTimeout(() => this.scrollTo(this.$route.hash), 1000);
     }
   },
   methods: {
-    scrollTo: function(hash) {
+    scrollTo: function (hash) {
       location.href = this.$route.path + hash;
     }
   }
