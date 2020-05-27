@@ -117,12 +117,6 @@ export default {
           description: "Edit guided processes information"
         },
         {
-          label: "menu.info",
-          icon: "description",
-          to: "/info",
-          description: "Edit general information posts"
-        },
-        {
           label: "menu.situation",
           icon: "dvr",
           to: "/situation",
@@ -142,7 +136,7 @@ export default {
         },
         {
           label: "menu.news",
-          icon: "sort_by_alpha",
+          icon: "description",
           to: "/news",
           description: "Manage the news"
         },
