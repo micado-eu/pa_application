@@ -87,7 +87,7 @@ export default {
     AuthMenu
   },
 
-  data() {
+  data () {
     return {
       leftDrawerOpen: false,
       navs: [
@@ -141,15 +141,9 @@ export default {
           description: "Manage the information"
         },
         {
-          label: "menu.data",
-          icon: "storage",
-          to: "/data_settings",
-          description: "Manage MICADO data structure"
-        },
-        {
           label: "menu.setting",
           icon: "settings",
-          to: "/app_settings",
+          to: "/data_settings",
           description: "Manage MICADO application"
         }
       ]
