@@ -22,6 +22,7 @@
          :Nationality="user.nationality"
          :Gender="user.gender"
          :Path="user.id"
+         @remove="deleteUser"
          >
         </User>
     </q-list>
@@ -68,13 +69,15 @@ export default {
     }
   },
   methods: {
-     deleteProcess(value) {
-      var deletedProcess = this.processes.filter((filt) => {
+     deleteUser(value) {
+       console.log("deleting")
+      var deletedUser = this.users.filter((filt) => {
           console.log("in fil")
           console.log(filt)
+          console.log(filt.id == value)
           return filt.id == value
         })  
-      this.$store.commit('flows/deleteProcess', deletedProcess[0])
+      this.$store.commit('user/deleteUser', deletedUser[0].id)
     }
   },
 

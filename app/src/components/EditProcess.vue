@@ -146,21 +146,23 @@ export default {
       this.$store.dispatch('topic/fetchTopic')
       .then(topic => {
         console.log(topic)
+        for ( var i = 0; i<this.topic.length; i++){
+        var the_topic = {label: this.topic[i].topic, value:this.topic[i].id}
+        this.t_tags.push(the_topic)
+      }
         this.loading = false
       })
       this.$store.dispatch('user_type/fetchUserType')
       .then(user_type => {
         console.log(user_type)
-        this.loading = false
-      })
-      for ( var i = 0; i<this.topic.length; i++){
-        var the_topic = {label: this.topic[i].topic, value:this.topic[i].id}
-        this.t_tags.push(the_topic)
-      }
+
        for ( var j = 0; j<this.user.length; j++){
         var the_user = {label: this.user[j].user_type, value:this.user[j].id}
         this.u_tags.push(the_user)
       }
+        this.loading = false
+      })
+      
       if(this.id != null){
          console.log("ciso ")
         this.is_new=false

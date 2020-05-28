@@ -20,8 +20,7 @@
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
       <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="info" label="Integration" :to="'migrant/' + this.Path"  />
-      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="secondary" label="Profile" />
-      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="accent" label="Delete" @click="remove_process($event)" />
+      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="accent" label="Delete" @click="remove_user($event)" />
       
       </div>
     </div>
@@ -39,6 +38,12 @@ export default {
   },
 
   methods: {
+    remove_user(event){
+       let target = event.currentTarget.id
+      console.log(this.Path)
+      this.$emit('remove', this.Path)
+
+    }
   
   }
 }
