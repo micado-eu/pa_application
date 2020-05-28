@@ -1,8 +1,10 @@
 <template>
   <div>
-    <router-link v-for="(d,i) in data" :key="i" :to="d.link">
-      <h6>{{d.title}}</h6>
-    </router-link>
+    <div id="nav">
+      <router-link class="col" v-for="(d,i) in data" :key="i" :to="d.link">
+        <h6>{{d.title}}</h6>
+      </router-link>
+    </div>
     <router-view />
   </div>
 </template>
@@ -21,6 +23,12 @@ export default {
   }
 };
 </script>
-<style>
-  
+<style scoped>
+#nav {
+  display: flex;
+}
+.col {
+  text-align: center;
+  flex: 1;
+}
 </style>

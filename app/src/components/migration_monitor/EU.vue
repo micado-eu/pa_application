@@ -96,6 +96,7 @@ export default {
   },
   computed: {
     timeseries: function() {
+      console.log("timeseries: ",this.$store.state.statistics.timeseries.data.timeseries);
       return this.$store.state.statistics.timeseries.data.timeseries;
     },
     origins: function() {

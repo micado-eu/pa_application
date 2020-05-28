@@ -1,8 +1,54 @@
 <template>
-  <div id="nav">
-    <router-link v-for="(d,i) in anchor" :key="i" :to="'#'+d.title" class="col">
-      <h6>{{d.title}}</h6>
-    </router-link>
+  <div>
+    <div id="nav">
+      <router-link v-for="(d,i) in anchor" :key="i" :to="'#'+d.title" class="col">
+        <h6>{{d.title}}</h6>
+      </router-link>
+    </div>
+    <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>{{graph_data[0].title}}</h6>
+          <p>
+            <strong>description:</strong>
+          </p>
+          <p>
+            <strong>data provider:</strong>EU
+          </p>
+          <p>
+            <strong>updated time:</strong>2019.07
+          </p>
+        </div>
+      </div>
+      <lineChart
+        class="chart"
+        :lineData="graph_data[0].content"
+        :timeColumn="'parseDate'"
+        :valueColumn="'parseY'"
+      />
+    </div>
+    <div id="row">
+      <div class="info">
+        <div class="info-content">
+          <h6>{{graph_data[1].title}}</h6>
+          <p>
+            <strong>description:</strong>
+          </p>
+          <p>
+            <strong>data provider:</strong>EU
+          </p>
+          <p>
+            <strong>updated time:</strong>2019.07
+          </p>
+        </div>
+      </div>
+      <lineChart
+        class="chart"
+        :lineData="graph_data[1].content"
+        :timeColumn="'parseDate'"
+        :valueColumn="'parseY'"
+      />
+    </div>
   </div>
 </template>
 
@@ -25,6 +71,7 @@ export default {
   },
   data: function() {
     return {
+      graph_data: [],
       anchor: [
         { title: "incoming", link: "" },
         { title: "accommodation", link: "" },
@@ -34,17 +81,24 @@ export default {
     };
   },
   computed: {
-    timeseries: function() {
-      return this.$store.state.statistics.timeseries.data.timeseries;
-    },
-    origins: function() {
-      return this.$store.state.statistics.origin.data;
-    },
-    migrants: function() {
-      return this.$store.state.statistics.migrants.data.migrants;
+    city_graphs: function() {
+      return [...this.$store.state.statistics.mapping.city.incoming];
     }
   },
   mounted: function() {
+    this.graph_data = [];
+    console.log("!!!!!!!!! ", this.city_graphs);
+    for (let i = 0; i < this.city_graphs.length; i++) {
+      const graphObj = { ...this.city_graphs[i] },
+        data = { ...this.$store.state.statistics[graphObj.id] },
+        resolve = graphObj.resolve;
+      graphObj.content = eval("data" + resolve);
+      graphObj.content.forEach(item => {
+        item.parseDate = new Date(item[graphObj.date][0]).getTime() / 1000;
+        item.parseY = parseInt(item[graphObj.y][0]);
+      });
+      this.graph_data.push(graphObj);
+    }
   }
 };
 </script>

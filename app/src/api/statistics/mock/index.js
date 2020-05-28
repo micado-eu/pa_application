@@ -19,21 +19,22 @@ const fetch = (mockData, time = 0) => {
 export default {
   fetchStatistics() {
     return Promise.all([
-      fetch(timeseries, 1000), 
-      fetch(origin, 1000), 
+      fetch(timeseries, 1000),
+      fetch(origin, 1000),
       fetch(migrants, 1000),
       fetch(mapping, 1000),
-      fetch(influx_for_family_reunion, 1000)],
-      fetch(influx_hamburg, 1000))
+      fetch(influx_hamburg, 1000),
+      fetch(influx_for_family_reunion, 1000)])
       .then((res) => {
-        return { 
-          timeseries: res[0], 
-          origin: res[1], 
+        return {
+          timeseries: res[0],
+          origin: res[1],
           migrants: res[2],
           mapping: res[3],
-          influx_for_family_reunion: res[4],
-          influx_hamburg: res[5],
-         };
+          influx_hamburg: res[4],
+
+          influx_for_family_reunion: res[5]
+        };
       });
   }
 }
