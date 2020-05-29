@@ -4,15 +4,15 @@
     :id="uuid"
   >
     <editor-content
-      class="editor__content"
+      class="editor_content"
       :editor="editor"
     />
     <q-tooltip
       class="desc_tooltip"
       v-model="showTooltip"
       :target="targetElement"
-      anchor="top middle" 
-      self="bottom middle" 
+      anchor="top middle"
+      self="bottom middle"
       :offset="[10, 10]"
     >
       {{currentDescription}}
@@ -54,7 +54,7 @@ export default {
       default: ""
     }
   },
-  data () {
+  data() {
     return {
       editor: null,
       currentDescriptionContent: "",
@@ -64,16 +64,16 @@ export default {
   },
   computed: {
     ...mapGetters('glossary', ['glossary', 'glossaryElemByTitle']),
-    currentDescription () {
+    currentDescription() {
       return this.currentDescriptionContent
     }
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
-    setContent (content) {
+    setContent(content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription (glossaryElem, element) {
+    setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       var editorInterpreter = new Editor({
@@ -105,13 +105,19 @@ export default {
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     },
-    setGlossaryClickEvents () {
+    setGlossaryClickEvents() {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
       var currentDescriptionSetter = this.setCurrentDescription
       var uuid = this.uuid
       document.addEventListener("mouseover", function (e) {
         var componentDiv = document.getElementById(uuid)
-        var isParentOfDiv = componentDiv.contains(e.target)
+        var isParentOfDiv;
+        if (componentDiv) {
+          isParentOfDiv = componentDiv.contains(e.target)
+        } else {
+          isParentOfDiv = false
+        }
+        var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
         if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
@@ -120,11 +126,11 @@ export default {
       })
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     this.uuid = uuid.toString();
     uuid += 1;
   },
-  created () {
+  created() {
     this.fetchGlossary().then(() => {
       this.editor = new Editor({
         editable: false,
@@ -158,6 +164,10 @@ export default {
 
 <style lang="scss">
 .mention {
-  border: 1px solid $primary;
+  text-decoration: underline;
+}
+.editor_content {
+  font-family: Nunito Sans;
+  font-size: 13pt;
 }
 </style>

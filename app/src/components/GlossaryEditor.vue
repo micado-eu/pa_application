@@ -105,7 +105,7 @@
         </div>
       </editor-menu-bar>
       <editor-content
-        class="editor__content"
+        class="editor_content"
         :editor="editor"
       />
     </div>
@@ -182,7 +182,7 @@ export default {
     ...mapActions("glossary", ["fetchGlossary"]),
     // we have to replace our suggestion text with a mention
     // so it's important to pass also the position of your suggestion text
-    selectGlossaryItem (glossaryItem) {
+    selectGlossaryItem(glossaryItem) {
       this.insertMention({
         range: this.suggestionRange,
         attrs: {
@@ -193,11 +193,11 @@ export default {
       this.editor.focus()
       this.showSuggestionsData = false
     },
-    emitEditorContent () {
+    emitEditorContent() {
       this.$emit('editorSave', this.editor.getJSON())
     }
   },
-  data () {
+  data() {
     return {
       editor: null,
       query: null,
@@ -210,14 +210,14 @@ export default {
   },
   computed: {
     ...mapGetters('glossary', ['glossary']),
-    hasResults () {
+    hasResults() {
       return this.filteredGlossaryItems.length
     },
-    showSuggestions () {
+    showSuggestions() {
       return this.showSuggestionsData
     },
   },
-  created () {
+  created() {
     this.loading = true
     this.fetchGlossary()
       .then(() => {
@@ -286,12 +286,17 @@ export default {
   }
 }
 </script>
-<style lang="scss">
-  .ProseMirror {
-    border: 1px solid $primary;
-  }
+<style lang="scss" scoped>
+.ProseMirror {
+  border: 1px solid $primary;
+}
 
-  .mention {
-    border: 1px solid $primary;
-  }
+.mention {
+  text-decoration: underline;
+}
+
+.editor_content {
+  font-family: Nunito Sans;
+  font-size: 13pt;
+}
 </style>
