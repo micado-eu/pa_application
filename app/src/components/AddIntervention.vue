@@ -1,7 +1,10 @@
 <template>
-  <div><div>
-    <q-btn  style="margin-top:15px" color="secondary" label="Add intervention"  :disable="hideAdd" @click="button_id =the_intervention_plan.id;  addIntervention($event)" />
-         <q-card-section :hidden="the_intervention_plan.id != button_id">
+  <div >
+    <div>
+
+   
+    <q-btn  style="margin-top:15px"color="accent" no-caps label="Add intervention" :disable="hideAdd" @click="addIntervention($event)" />
+         <q-card-section :hidden="showAddForm">
         <q-input style="padding-top:10px" v-model="model.intervention_title" label="Title" />
         <q-input  style="padding-top:10px" v-model="model.description" filled type="textarea" label="Description" />
         <q-select  style="padding-top:10px"
@@ -13,16 +16,24 @@
         label="linked processes"
         
       />
+       <q-select  style="padding-top:10px"
+        filled
+        clearable
+        v-model="model.category"
+        
+        :options="intervention_categories"
+        label="Intervention category"
+        
+      />
         <div class="q-gutter-sm">
          
         </div>
-        <q-btn  style="margin-top:15px" color="secondary" label="Save" :id="the_intervention_plan.id" @click="button_id = null;saveIntervention($event)" />
-        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="button_id = null; cancelIntervention($event)" />
+        <q-btn  style="width:70px; margin-top:10px;margin-right:15px" no-caps color="accent" label="Save" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="width:70px; margin-top:10px;margin-right:15px" no-caps color="info" label="Cancel" @click=" cancelIntervention($event)" />
       </q-card-section>
     <br>
     </div>
     
-   
     <br>
     </div>
 </template>
@@ -32,12 +43,14 @@ export default {
   name: "AddIntervention",
   data(){
     return{
-      button_id:null
+    
     }
   },
   components: {},
-   props:["hideAdd", "model", "the_processes_list", "the_intervention_plan","isNew" ],
-  computed: {},
+   props:["hideAdd", "model", "the_processes_list", "the_intervention_plan","intervention_categories", "showAddForm" ],
+  computed: {
+   
+  },
   mounted() {},
   methods: {
      saveIntervention(event){
@@ -60,9 +73,6 @@ export default {
       console.log(targetId)
       this.$emit('addIntervention')
     },
-    closeAdd(){
-      this.button_id= 0
-    }
     
   }, 
   created(){

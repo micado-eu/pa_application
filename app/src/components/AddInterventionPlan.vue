@@ -11,16 +11,20 @@
         <q-item-section>{{an_action.intervention_title}}</q-item-section>
         <q-item-section side>
           <q-btn
-            color="negative"
+            color="accent"
             label="Delete"
-            size="xs"
+            size="sm"
+            style="width:70px; margin-bottom:5px"
+            no-caps
             :id="an_action.intervention_title"
             @click="deleteAction($event)"
           />
           <q-btn
-            color="secondary"
+            color="info"
             label="Edit"
-            size="xs"
+            size="sm"
+            style="width:70px"
+            no-caps
             :id="an_action.intervention_title"
             @click="editAction($event)"
           />
@@ -29,7 +33,7 @@
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newAction()" :disable="hideAdd" />
+        <q-btn color="accent" no-caps label="Add Intervention" @click="newAction()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="action.intervention_title" label="Title" />
@@ -44,12 +48,21 @@
         label="linked processes"
         
       />
+       <q-select  style="padding-top:10px"
+        filled
+        clearable
+        v-model="action.category"
+        
+        :options="categories"
+        label="Intervention category"
+        
+      />
         </div>
-        <q-btn color="secondary" label="Save" @click="saveAction(action)" />
-        <q-btn color="secondary" label="Cancel" @click="cancelAction()" />
+        <q-btn color="accent" style="width:70px; margin-top:10px;margin-right:10px" no-caps label="Save" @click="saveAction(action)" />
+        <q-btn color="info" style="width:70px; margin-top:10px;margin-right:10px" no-caps label="Cancel" @click="cancelAction()" />
       </q-card-section>
     </q-card>
-     <q-btn color="secondary" label="Save plan" @click="savePlan(plan)" />
+     <q-btn color="accent" style="width:100px; margin-top:10px;" no-caps label="Save plan" @click="savePlan(plan)" />
   </div>
 </template>
 
@@ -92,12 +105,17 @@ export default {
         intervention_title:"",
         description:"",
         linked_processes_id:[],
-        validated:false
+        validated:false,
+        category:""
 
-      }
+      }, 
+      categories:[]
     };
   },
   computed: {
+    intervention_categories(){
+         return this.$store.state.integration_category.integration_category;
+      }
    
   },
   methods: {
@@ -148,7 +166,17 @@ export default {
     }
   },
   created() {
-    
+    this.$store
+      .dispatch("integration_category/fetchIntegrationCategory")
+      .then(intervention_categories => {
+
+         console.log(intervention_categories)
+        for ( var i = 0; i<this.intervention_categories.length; i++){
+        var the_category = {label: this.intervention_categories[i].title, value:this.intervention_categories[i].id}
+        this.categories.push(the_category)
+        this.loading = false;
+        }
+      })
   }
 };
 </script>

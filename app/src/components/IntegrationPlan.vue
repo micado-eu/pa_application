@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
       <q-separator />
        <q-expansion-item 
         group="somegroup"
@@ -34,6 +34,15 @@
         label="linked processes"
         
       />
+      <q-select  style="padding-top:10px"
+        filled
+        clearable
+        v-model="model.category"
+        
+        :options="intervention_categories"
+        label="Intervention category"
+        
+      />
         <div class="q-gutter-sm">
          
         </div>
@@ -58,7 +67,7 @@ export default {
     }
   },
   components: {},
-  props:["title", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm"],
+  props:["title", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories"],
   computed: {},
   mounted() {},
   methods: {
@@ -67,7 +76,7 @@ export default {
       console.log("I am")
       console.log(targetId)
       this.$emit('editIntervention', targetId)
-      this.$emit('closeAdd')
+
     },
     validateIntervention(event){
 

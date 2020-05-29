@@ -22,10 +22,11 @@
     :the_processes_list="processes_list"
     :model="edit_action"
     :hideForm="hideForm"
+    :intervention_categories="categories"
     @editIntervention="editIntervention"
     @cancelIntervention="cancelIntervention"
     @saveIntervention="saveIntervention"
-    @closeAdd="close">
+    >
     </IntegrationPlan>
 
     <AddIntervention
@@ -34,10 +35,11 @@
     :model="edit_action"
     :the_intervention_plan="intervention_plan"
     :the_processes_list="processes_list"
-    @addIntervention="addIntervention"
+    @addIntervention="addIntervention(); button_id = intervention_plan.id"
     @saveIntervention="saveIntervention"
     @cancelIntervention="cancelIntervention"
-    :isNew="isNew">
+    :intervention_categories="categories"
+    :showAddForm="button_id != intervention_plan.id">
     </AddIntervention>
 
 
@@ -60,6 +62,7 @@ export default {
       hideForm: true,
       isNew: false,
       the_user:[],
+      button_id:null,
       hideAdd:false, 
        processes_list:[
         "How to certify education degree",
@@ -74,11 +77,12 @@ export default {
         intervention_title:"",
         description:"",
         linked_processes_id:[],
-        validated:false
+        validated:false, 
+        category:""
       }, 
       selected_plan:null,
       validation:null,
-      isNew: false
+      categories:[]
       
     }
   },
@@ -106,14 +110,13 @@ export default {
         return this.users.filter((filt) => {
           return filt.id == this.id
         })
-        } 
+        }, 
+        
+      intervention_categories(){
+         return this.$store.state.integration_category.integration_category;
+      }
     },
    methods: {
-     close(){
-       console.log(this.$refs.add[1])
-        this.$refs.add[1].closeAdd()
-        console.log(this.$refs.add[1].button_id)
-     },
     saveIntervention(value){
       if(this.isNew){
         console.log(this.isNew)
@@ -150,14 +153,19 @@ export default {
     },
 
       addIntervention(){
+        console.log("adding interventions")
+        console.log(this.isNew)
+         this.isNew = true;
+         console.log(this.isNew)
         this.edit_action = {
          id:999,
         intervention_title:"",
         description:"",
         linked_processes_id:[],
-        validated:false
+        validated:false, 
+        category:""
       }
-        this.isNew = true;
+       
         this.hideAdd = true;
       
       },
@@ -169,6 +177,7 @@ export default {
 
 
     editIntervention(value) {
+      this.button_id = null
       this.isNew = false
       this.hideAdd = true
       this.hideForm = false;
@@ -191,10 +200,12 @@ export default {
      
     },
     cancelIntervention() {
+      console.log("going back")
+      this.button_id = null
        this.isNew = false;
       this.hideForm = true;
       this.hideAdd = false
-      this.button_id = null
+     
     }
     },
   created () {
@@ -213,7 +224,20 @@ export default {
        .then(intervention_plans => {
         this.loading = false
       })  
-  
+   
+   console.log(this.$store);
+    this.$store
+      .dispatch("integration_category/fetchIntegrationCategory")
+      .then(intervention_categories => {
+
+         console.log(intervention_categories)
+        for ( var i = 0; i<this.intervention_categories.length; i++){
+        var the_category = {label: this.intervention_categories[i].title, value:this.intervention_categories[i].id}
+        this.categories.push(the_category)
+        this.loading = false;
+        }
+      })
+      
   },
  
 }
