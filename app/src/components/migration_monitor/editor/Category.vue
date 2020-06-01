@@ -53,9 +53,7 @@ export default {
   },
   computed: {
     category() {
-      console.log("!! ", Object.keys(this.$store.state.statistics.mapping));
-      console.log("!! ", this.$store.state.integration_category.integration_category);
-      return Object.keys(this.$store.state.statistics.mapping.city);
+      return this.$store.state.statistics.categories;
     }
   },
   methods: {

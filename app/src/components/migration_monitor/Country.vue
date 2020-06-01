@@ -10,16 +10,12 @@ import * as mpapi from "masterportalAPI";
 import services from "../../api/map/config/services.json";
 import portalConfig from "../../api/map/config/portal.json";
 import localGeoJSON from "../../api/map/config/localGeoJSON.js";
-import lineChart from "./lineChart";
-import pieChart from "./pieChart";
-import barChart from "./barChart";
+
 
 export default {
   name: "MigrationSituation",
   components: {
-    lineChart,
-    pieChart,
-    barChart
+
   },
   computed: {
     timeseries: function() {
@@ -37,7 +33,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .mock-body {
   flex: 1;
 }

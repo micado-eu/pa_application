@@ -18,6 +18,29 @@
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
           <div class="col-4" style="padding-left:40px;">
+            <h5 style="text-align:left;font-size:18px">Category</h5>
+          </div>
+          <div class="col-8" style="margin: auto;display: block;">
+            <q-select
+              v-model="category"
+              rounded
+              standout
+              :options="categories"
+              label
+              @input="onInput"
+            />
+          </div>
+        </div>
+        <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
+          <div class="col-4" style="padding-left:40px;">
+            <h5 style="text-align:left;font-size:18px">Graph type</h5>
+          </div>
+          <div class="col-8" style="margin: auto;display: block;">
+            <q-select v-model="type" rounded standout :options="types" label @input="onInput" />
+          </div>
+        </div>
+        <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
+          <div class="col-4" style="padding-left:40px;">
             <h5 style="text-align:left;font-size:18px">x axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
@@ -30,21 +53,6 @@
           </div>
           <div class="col-8" style="margin: auto;display: block;">
             <q-input bg-color="grey-3" dense rounded standout outlined />
-          </div>
-        </div>
-        <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
-          <div class="col-4" style="padding-left:40px;">
-            <h5 style="text-align:left;font-size:18px">Category</h5>
-          </div>
-          <div class="col-8" style="margin: auto;display: block;">
-            <q-select
-              v-model="category"
-              rounded
-              standout
-              :options="categories"
-              label="Standard"
-              @input="onInput"
-            />
           </div>
         </div>
 
@@ -181,12 +189,14 @@ export default {
     return {
       data_format: "JSON",
       formats: ["JSON", "csv", "API"],
-      category: ""
+      category: "",
+      type: "",
+      types: ["BAR", "LINE", "PIE"]
     };
   },
   computed: {
     categories() {
-      return Object.keys(this.$store.state.statistics.mapping.city);
+      return this.$store.state.statistics.categories;
     }
   },
   methods: {

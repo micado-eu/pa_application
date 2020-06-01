@@ -20,20 +20,14 @@ export function setMigrants(state, migrants) {
   }
 }
 
-export function setMapping(state, mapping) {
-  if (mapping) {
-    state.mapping = mapping
+export function setCity_graphs(state, city_graphs) {
+  if (city_graphs) {
+    state.city_graphs = city_graphs
   }
 }
 
-export function setInflux_for_family_reunion(state, influx_for_family_reunion) {
-  if (influx_for_family_reunion) {
-    state.influx_for_family_reunion = influx_for_family_reunion
-  }
-}
-
-export function setInflux_hamburg(state, influx_hamburg) {
-  if (influx_hamburg) {
-    state.influx_hamburg = influx_hamburg
+export function setCategories(state, categories) {
+  if (categories) {
+    state.categories = categories
   }
 }

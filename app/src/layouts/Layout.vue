@@ -119,7 +119,7 @@ export default {
         {
           label: "menu.situation",
           icon: "dvr",
-          to: "/situation",
+          to: "/situation/city",
           description: "Dashboard and charts of migration situation"
         },
         {

@@ -32,7 +32,7 @@
 
 
 <script>
-import User from './User'
+import User from './migrant_manager/User'
 
 
 export default {

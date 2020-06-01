@@ -1,9 +1,17 @@
 <template>
   <div>
-    <div id="nav">
-      <router-link class="col" v-for="(d,i) in data" :key="i" :to="d.link">
+    <div id="nav" class="bg-accent">
+      <q-item
+        clickable
+        active
+        active-class="nav-active"
+        class="col"
+        v-for="(d,i) in data"
+        :key="i"
+        :to="d.link"
+      >
         <h6>{{d.title}}</h6>
-      </router-link>
+      </q-item>
     </div>
     <router-view />
   </div>
@@ -28,7 +36,16 @@ export default {
   display: flex;
 }
 .col {
-  text-align: center;
   flex: 1;
+  justify-content: center;
+  text-decoration: none;
 }
+.nav-active {
+  background-color: white;
+  color: black;
+}
+h6 {
+  margin: 0;
+}
+
 </style>

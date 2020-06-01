@@ -2,52 +2,18 @@
   <div>
     <div id="nav">
       <router-link v-for="(d,i) in anchor" :key="i" :to="'#'+d.title" class="col">
-        <h6>{{d.title}}</h6>
+        <div class="anchor">
+          <p>
+            <q-icon :name="d.icon" />
+          </p>
+          <p>{{d.title}}</p>
+        </div>
       </router-link>
     </div>
-    <div id="row">
-      <div class="info">
-        <div class="info-content">
-          <h6>{{graph_data[0].title}}</h6>
-          <p>
-            <strong>description:</strong>
-          </p>
-          <p>
-            <strong>data provider:</strong>EU
-          </p>
-          <p>
-            <strong>updated time:</strong>2019.07
-          </p>
-        </div>
+    <div class="row">
+      <div v-for="(d,i) in graph_data" :key="i" class="col-12 col-lg-6">
+        <Chart :graph-data="d" />
       </div>
-      <lineChart
-        class="chart"
-        :lineData="graph_data[0].content"
-        :timeColumn="'parseDate'"
-        :valueColumn="'parseY'"
-      />
-    </div>
-    <div id="row">
-      <div class="info">
-        <div class="info-content">
-          <h6>{{graph_data[1].title}}</h6>
-          <p>
-            <strong>description:</strong>
-          </p>
-          <p>
-            <strong>data provider:</strong>EU
-          </p>
-          <p>
-            <strong>updated time:</strong>2019.07
-          </p>
-        </div>
-      </div>
-      <lineChart
-        class="chart"
-        :lineData="graph_data[1].content"
-        :timeColumn="'parseDate'"
-        :valueColumn="'parseY'"
-      />
     </div>
   </div>
 </template>
@@ -58,45 +24,44 @@ import * as mpapi from "masterportalAPI";
 import services from "../../api/map/config/services.json";
 import portalConfig from "../../api/map/config/portal.json";
 import localGeoJSON from "../../api/map/config/localGeoJSON.js";
-import lineChart from "./lineChart";
-import pieChart from "./pieChart";
-import barChart from "./barChart";
+import Chart from "./chart/Chart";
 
 export default {
   name: "MigrationSituation",
   components: {
-    lineChart,
-    pieChart,
-    barChart
+    Chart
   },
   data: function() {
     return {
       graph_data: [],
       anchor: [
-        { title: "incoming", link: "" },
-        { title: "accommodation", link: "" },
-        { title: "integration", link: "" },
-        { title: "return", link: "" }
+        { title: "incoming", link: "", icon: "directions_run" },
+        { title: "accommodation", link: "", icon: "local_hotel" },
+        { title: "integration", link: "", icon: "how_to_reg" },
+        { title: "return", link: "", icon: "airplanemode_active" }
       ]
     };
   },
   computed: {
     city_graphs: function() {
-      return [...this.$store.state.statistics.mapping.city.incoming];
+      return JSON.parse(
+        JSON.stringify(this.$store.state.statistics.city_graphs)
+      );
     }
   },
   mounted: function() {
     this.graph_data = [];
-    console.log("!!!!!!!!! ", this.city_graphs);
     for (let i = 0; i < this.city_graphs.length; i++) {
-      const graphObj = { ...this.city_graphs[i] },
-        data = { ...this.$store.state.statistics[graphObj.id] },
-        resolve = graphObj.resolve;
-      graphObj.content = eval("data" + resolve);
+      const graphObj = { ...this.city_graphs[i] };
       graphObj.content.forEach(item => {
-        item.parseDate = new Date(item[graphObj.date][0]).getTime() / 1000;
-        item.parseY = parseInt(item[graphObj.y][0]);
+        item[graphObj.x] = new Date(item[graphObj.x][0]).getTime() / 1000;
+        item[graphObj.y] = parseInt(item[graphObj.y][0]);
       });
+      if (graphObj.xIsTime) {
+        graphObj.content = graphObj.content.sort(
+          (a, b) => b[graphObj.x] - a[graphObj.x]
+        );
+      }
       this.graph_data.push(graphObj);
     }
   }
@@ -109,50 +74,31 @@ h6 {
 }
 #nav {
   display: flex;
+  position: sticky;
+  top: 50px;
 }
 .col {
   flex: 1;
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+}
+.anchor {
+  width: max-content;
   text-align: center;
+  padding: 20px;
 }
-.mock-body {
-  flex: 1;
+.anchor:hover {
+  color: #ff7c44;
 }
-.mock-content {
-  padding: 1em;
-  color: black;
-  background: white;
-  /* display: flex; */
-  /* flex-direction: column; */
-  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.56);
-  border-radius: 5px;
-}
-
-/* Not part of MPAPI, but really nice if no background image is configured. */
-.map-background {
-  background: #22222222;
-}
-#row {
-  height: 400px;
-  display: flex;
-  margin: auto;
+.row {
   width: 90%;
-  margin-top: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 40px rgba(0, 0, 0, 0.56);
-}
-#map-row {
-  display: flex;
   margin: auto;
-  width: 90%;
-  margin-top: 20px;
 }
-.chart {
-  flex: 9;
+p {
+  margin: 0;
 }
-.info {
-  flex: 3;
-}
-.info-content {
-  margin: 50px;
+.q-icon {
+  font-size: 24px;
 }
 </style>

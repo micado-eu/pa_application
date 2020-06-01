@@ -1,21 +1,14 @@
 <template>
   <svg :width="width" :height="height" :id="id">
     <g :transform="'translate(' + margin.left + ',' + margin.top + ')'">
-      <!-- <circle
+      <path :d="drawLine(lineData)" stroke="#ecbc3a" />
+      <circle
         v-for="(d,i) in lineData"
         :key="i"
         :cx="scaleX(new Date(d[timeColumn]*1000))"
         :cy="scaleY(d[valueColumn])"
         :r="2"
         fill="#3490DC"
-      />-->
-      <rect
-        v-for="(d,i) in lineData"
-        :key="i"
-        :x="scaleXBand(new Date(d[timeColumn]*1000))"
-        :y="scaleY(d[valueColumn])"
-        :width="scaleXBand.bandwidth()"
-        :height="height - scaleY(d[valueColumn]) - margin.top - margin.bottom"
       />
     </g>
     <ChartAxisBottom
@@ -34,7 +27,6 @@
 import {
   scaleLinear,
   scaleTime,
-  scaleBand,
   extent,
   select,
   line,
@@ -46,7 +38,7 @@ import ChartAxisBottom from "./ChartAxisBottom.vue";
 import ChartAxisLeft from "./ChartAxisLeft.vue";
 
 export default {
-  name: "barChart",
+  name: "lineChart",
   components: {
     ChartAxisBottom,
     ChartAxisLeft
@@ -58,15 +50,15 @@ export default {
   },
   data: function() {
     return {
-      id: "barSvg",
+      id: "lineSvg",
       margin: {
-        left: 100,
-        top: 20,
-        right: 20,
-        bottom: 50
+        left: 30,
+        top: 30,
+        right: 30,
+        bottom: 30
       },
       width: "100%",
-      height: "100%",
+      height: "300",
       xid: "x0",
       yid: "y0",
       timeout: false
@@ -81,15 +73,16 @@ export default {
         .domain(extent(this.lineData, d => new Date(d[this.timeColumn] * 1000)))
         .range([0, this.width - this.margin.left - this.margin.right]);
     },
-    scaleXBand: function() {
-      return scaleBand()
-        .domain(this.lineData.map(d => new Date(d[this.timeColumn] * 1000)))
-        .range([0, this.width - this.margin.left - this.margin.right]);
-    },
     scaleY: function() {
       return scaleLinear()
         .domain(extent(this.lineData, d => d[this.valueColumn]))
         .range([this.height - this.margin.top - this.margin.bottom, 0]);
+    },
+    drawLine: function() {
+      return line()
+        .x(d => this.scaleX(new Date(d[this.timeColumn] * 1000)))
+        .y(d => this.scaleY(d[this.valueColumn]))
+        .curve(curveCardinal);
     }
   },
   methods: {
@@ -136,10 +129,5 @@ path {
   fill: none;
   stroke: #99e6b4;
   stroke-width: 3px;
-}
-rect {
-  fill: #99e6b4;
-  stroke: white;
-  stroke-width: 1px;
 }
 </style>
