@@ -1,6 +1,18 @@
 [
-    "incoming",
-    "accommodation",
-    "integration",
-    "return"
+    {
+        "category": "incoming",
+        "icon": "home"
+    },
+    {
+        "category": "accommodation",
+        "icon": "local_hotel"
+    },
+    {
+        "category": "integration",
+        "icon": "how_to_reg"
+    },
+    {
+        "category": "return",
+        "icon": "airplanemode_active"
+    }
 ]

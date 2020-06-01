@@ -1,35 +1,26 @@
 <template>
   <div>
     <div id="nav">
-      <router-link v-for="(d,i) in anchor" :key="i" :to="'#'+d.title" class="col">
-        <div class="anchor">
+      <router-link v-for="(d,i) in categories" :key="i" :to="'#'+d.category" class="col">
+        <div class="anchor" @click="onClickNav(d.category)">
           <p>
             <q-icon :name="d.icon" />
           </p>
-          <p>{{d.title}}</p>
+          <p>{{d.category}}</p>
         </div>
       </router-link>
     </div>
-    <div class="row">
-      <div v-for="(d,i) in graph_data" :key="i" class="col-12 col-lg-6">
-        <Chart :graph-data="d" />
-      </div>
-    </div>
+    <ChartGroup v-for="(c,i) in categories" :key="i" :category="c.category" />
   </div>
 </template>
 
 <script>
-import { Style, Stroke, Fill } from "ol/style.js";
-import * as mpapi from "masterportalAPI";
-import services from "../../api/map/config/services.json";
-import portalConfig from "../../api/map/config/portal.json";
-import localGeoJSON from "../../api/map/config/localGeoJSON.js";
-import Chart from "./chart/Chart";
+import ChartGroup from "./ChartGroup";
 
 export default {
   name: "MigrationSituation",
   components: {
-    Chart
+    ChartGroup
   },
   data: function() {
     return {
@@ -47,6 +38,17 @@ export default {
       return JSON.parse(
         JSON.stringify(this.$store.state.statistics.city_graphs)
       );
+    },
+    categories: function() {
+      return this.$store.state.statistics.categories;
+    }
+  },
+  methods: {
+    /**
+     * jump to the corresponding chartGroup when clicked
+     */
+    onClickNav: function(category) {
+      location.href = this.$route.path + "#" + category;
     }
   },
   mounted: function() {
@@ -76,10 +78,12 @@ h6 {
   display: flex;
   position: sticky;
   top: 50px;
+  background-color: rgba(255, 255, 255, 0.75);
 }
 .col {
   flex: 1;
   text-decoration: none;
+  color:black;
   display: flex;
   justify-content: center;
 }

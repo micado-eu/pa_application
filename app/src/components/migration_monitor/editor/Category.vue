@@ -4,26 +4,11 @@
       <h5 @click="onClickTitle()">{{$options.name}}</h5>
     </router-link>
     <q-list bordered separator>
-      <q-item
-        clickable
-        v-ripple
-        v-for="(d,i) in category"
-        :key="i"
-      >
+      <q-item clickable v-ripple v-for="(d,i) in category" :key="i">
         <q-item-section>{{d}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
-          <q-btn
-            color="negative"
-            label="Delete"
-            size="xs"
-            @click="deleteIntegrationCategory(i)"
-          />
-          <q-btn
-            color="secondary"
-            label="Edit"
-            size="xs"
-            @click="edit(d)"
-          />
+          <q-btn color="negative" label="Delete" size="xs" @click="deleteIntegrationCategory(i)" />
+          <q-btn color="secondary" label="Edit" size="xs" @click="edit(d)" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -53,7 +38,7 @@ export default {
   },
   computed: {
     category() {
-      return this.$store.state.statistics.categories;
+      return this.$store.state.statistics.categories.map(d => d.category);
     }
   },
   methods: {

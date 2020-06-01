@@ -4,7 +4,7 @@
       <div class="info">
         <div class="info-content">
           <p>
-            <strong>description:</strong>
+            <strong>description:</strong>{{graphData.description}}
           </p>
           <p>
             <strong>data provider:</strong>EU
@@ -67,7 +67,8 @@ export default {
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 }
 .info-content {
-  margin: 50px;
+  font-size: 1rem;
+  /* margin: 50px; */
 }
 h6 {
   margin: 0;
