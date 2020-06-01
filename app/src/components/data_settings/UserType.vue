@@ -5,14 +5,14 @@
       <q-item clickable v-ripple v-for="a_user_type in user_type" :key="a_user_type.id">
         <q-item-section>{{a_user_type.user_type}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
-          <q-btn color="negative" label="Delete" size="xs" @click="deleteUserType(a_user_type.id)" />
-          <q-btn color="secondary" label="Edit" size="xs" @click="editUserType(a_user_type)" />
+          <q-btn color="negative" unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" label="Delete" size="xs" @click="deleteUserType(a_user_type.id)" />
+          <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editUserType(a_user_type)" />
         </q-item-section>
       </q-item>
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newUserType()" :disable="hideAdd" />
+        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Add" @click="newUserType()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="int_user_type_shell.user_type" label="User type" />
@@ -22,8 +22,8 @@
           type="textarea"
           label="Description"
         />
-        <q-btn color="secondary" label="Save" @click="saveUserType()" />
-        <q-btn color="secondary" label="Cancel" @click="cancelUserType()" />
+        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveUserType()" />
+        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelUserType()" />
       </q-card-section>
     </q-card>
   </div>

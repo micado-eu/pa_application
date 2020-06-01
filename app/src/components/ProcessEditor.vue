@@ -12,7 +12,7 @@
     </q-input>
   </div>
   <div class="col" style="display:inline-block;text-align:right;width:135px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add Process" no-caps size="15px" to="guided_process_editor/edit" />
+   <q-btn style="width:135px; margin-bottom:15px;border-radius:2px" color="accent" unelevated rounded label="Add Process" no-caps size="15px" to="guided_process_editor/edit" />
   </div>
   </div>
   

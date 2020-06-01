@@ -87,10 +87,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn color="accent" unelevated rounded label="Cancel" style="width:100px" to="/document_type"/>
+    <q-btn color="accent" unelevated rounded label="Cancel" style="width:100px; border-radius:2px" to="/document_type"/>
     </div>
     <div class=" q-pa-md col-6" style="text-align:left">
-    <q-btn color="info" unelevated rounded label="Save/Update" style="width:150px" @click="saveData(edit_document)" to="/document_type"/>
+    <q-btn color="info" unelevated rounded label="Save/Update" style="width:150px; border-radius:2px" @click="saveData(edit_document)" to="/document_type"/>
     </div>
     </div>
 </div>

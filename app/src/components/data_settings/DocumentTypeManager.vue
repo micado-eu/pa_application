@@ -10,7 +10,7 @@
           unelevated
           rounded
           color="info"
-          style="width:750px; color: secondary"
+          style="width:750px;border-radius:2px"
           label="Add Document"
           to="/adddocument"
         />

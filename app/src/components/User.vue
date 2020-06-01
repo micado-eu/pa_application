@@ -19,8 +19,8 @@
         <span style="padding-right:5px">{{this.Gender}}</span>
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
-      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="info" label="Integration" :to="'migrant/' + this.Path"  />
-      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px" rounded color="accent" label="Delete" @click="remove_user($event)" />
+      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px;border-radius:2px" unelevated rounded color="info" label="Integration" :to="'migrant/' + this.Path"  />
+      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px;border-radius:2px" unelevated rounded color="accent" label="Delete" @click="remove_user($event)" />
       
       </div>
     </div>

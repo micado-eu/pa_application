@@ -5,10 +5,10 @@
    <h5> Manage Steps </h5>
   </div>
   <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Add step" no-caps size="15px" @click="addNode" />
+   <q-btn style="width:135px; margin-bottom:15px;border-radius:2px" color="accent"  unelevated rounded label="Add step" no-caps size="15px" @click="addNode" />
   </div>
   <div class="col" style="display:inline-block;text-align:right;padding-right:15px">
-   <q-btn style="width:135px; margin-bottom:15px" color="accent" rounded label="Save Graph" no-caps size="15px" @click="saveGraph" />
+   <q-btn style="width:135px; margin-bottom:15px;border-radius:2px" color="accent"  unelevated rounded label="Save Graph" no-caps size="15px" @click="saveGraph" />
   </div>
   </div>
     <div >
@@ -30,9 +30,9 @@
   <div class=" q-pa-lg" style="display:inline-block; width:750px;border-width:2px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px">
     <div class=" q-pa-xsm row" style="text-align:center">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Step Name </h5>
+        <h5 style="text-align:left;margin-bottom:0px"> Step Name </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
+      <div class="col-8" style="margin: auto;display: block;margin-bottom:0px">
         <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.title" />
       </div>
     </div>
@@ -41,18 +41,18 @@
     
     <div class=" q-pa-xsm row" >
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Step location </h5>
+        <h5 style="text-align:left;margin-bottom:0px"> Step location </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
+      <div class="col-8" style="margin: auto;display: block;margin-bottom:0px">
         <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.location"  />
       </div>
     </div>
 
     <div class=" q-pa-xsm row" >
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Step cost </h5>
+        <h5 style="text-align:left;margin-bottom:0px"> Step cost </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
+      <div class="col-8" style="margin: auto;display: block;margin-bottom:0px">
         <q-input rounded dense  bg-color="grey-3" standout outlined v-model="edit_step.data.cost"  />
       </div>
     </div>
@@ -61,7 +61,7 @@
       <div class=" q-pa-xsm col-4">
         <h5 style="text-align:left"> Required documents </h5>
       </div>
-      <div class=" q-pa-md col-8">
+      <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
      <q-select
         filled
         clearable
@@ -78,9 +78,9 @@
       
        <div class=" q-pa-xsm row" style="text-align:center">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left"> Linked processes </h5>
+        <h5 style="text-align:left; margin-top:14px"> Linked processes </h5>
       </div>
-      <div class=" q-pa-md col-8">
+      <div class=" q-pa-md col-8" style="padding-top:0px">
      <q-select
         filled
         
@@ -115,10 +115,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn color="red" label="Save" @click="saveStep(edit_step)" style="width:150px" />
+    <q-btn color="accent"  unelevated label="Save" @click="saveStep(edit_step)" style="width:150px;border-radius:2px" />
     </div>
     <div class="q-pa-md col-6" style="text-align:left">
-    <q-btn color="red" label="Back"  style="width:150px"/>
+    <q-btn color="info"  unelevated label="Back"  style="width:150px;border-radius:2px"/>
     </div>
     </div>
 </div>

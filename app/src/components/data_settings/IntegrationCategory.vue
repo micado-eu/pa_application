@@ -16,13 +16,17 @@
             color="negative"
             label="Delete"
             size="xs"
+            no-caps
             @click="deleteIntegrationCategory(a_integration_category.id)"
+            unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" 
           />
           <q-btn
             color="secondary"
             label="Edit"
             size="xs"
+            no-caps
             @click="editIntegrationCategory(a_integration_category)"
+            unelevated rounded style="width:70px;border-radius:2px" 
           />
         </q-item-section>
       </q-item>
@@ -33,8 +37,8 @@
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="int_cat_shell.title" label="Standard" />
-        <q-btn color="secondary" label="Save" @click="saveIntegrationCategory()" />
-        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationCategory()" />
+        <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveIntegrationCategory()" />
+        <q-btn color="info" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
   </div>

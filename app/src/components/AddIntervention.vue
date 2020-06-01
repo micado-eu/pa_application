@@ -3,7 +3,7 @@
     <div>
 
    
-    <q-btn  style="margin-top:15px"color="accent" no-caps label="Add intervention" :disable="hideAdd" @click="addIntervention($event)" />
+    <q-btn  style="margin-top:15px;border-radius:2px" color="accent" no-caps label="Add intervention" :disable="hideAdd" @click="addIntervention($event)" />
          <q-card-section :hidden="showAddForm">
         <q-input style="padding-top:10px" v-model="model.intervention_title" label="Title" />
         <q-input  style="padding-top:10px" v-model="model.description" filled type="textarea" label="Description" />
@@ -28,8 +28,8 @@
         <div class="q-gutter-sm">
          
         </div>
-        <q-btn  style="width:70px; margin-top:10px;margin-right:15px" no-caps color="accent" label="Save" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
-        <q-btn  style="width:70px; margin-top:10px;margin-right:15px" no-caps color="info" label="Cancel" @click=" cancelIntervention($event)" />
+        <q-btn  style="width:70px; margin-top:15px;margin-right:15px" no-caps color="accent" label="Save" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="width:70px; margin-top:15px;margin-right:15px" no-caps color="info" label="Cancel" @click=" cancelIntervention($event)" />
       </q-card-section>
     <br>
     </div>

@@ -14,20 +14,24 @@
             color="negative"
             label="Delete"
             size="xs"
+            no-caps
             @click="deleteIntegrationType(a_integration_type.id)"
+            unelevated rounded style="width:70px;border-radius:2px; margin-bottom:5px"
           />
           <q-btn
             color="secondary"
             label="Edit"
             size="xs"
+            no-caps
             @click="editIntegrationType(a_integration_type)"
+            unelevated rounded style="width:70px;border-radius:2px"
           />
         </q-item-section>
       </q-item>
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newIntegrationType()" :disable="hideAdd" />
+        <q-btn no-caps color="secondary" label="Add" unelevated rounded style="width:70px;border-radius:2px" @click="newIntegrationType()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="int_type_shell.title" label="Title" />
@@ -40,8 +44,8 @@
             v-model="int_type_shell.category_type"
           />
         </div>
-        <q-btn color="secondary" label="Save" @click="saveIntegrationType()" />
-        <q-btn color="secondary" label="Cancel" @click="cancelIntegrationType()" />
+        <q-btn no-caps color="secondary" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
+        <q-btn no-caps color="secondary" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
       </q-card-section>
     </q-card>
   </div>

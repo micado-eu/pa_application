@@ -46,7 +46,7 @@
         <q-btn
         class="q-px-md q-py-s"
         color="accent"
-        style="font-size:13px;font-weight:600;width:70px;"
+        style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded 
         label="Edit"
@@ -59,7 +59,7 @@
         <q-btn
         class="q-px-md q-py-s"
         color="info"
-        style="font-size:13px;font-weight:600;width:70px;"
+        style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded
         @click="remove_doc($event)"

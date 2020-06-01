@@ -61,12 +61,12 @@
   </div>
   <div  style="text-align:center">
     <div class="q-pa-md q-gutter-md col-4" style="display:inline-block">
-    <q-btn color="secondary" no-caps rounded label="Manage steps" :disable="this.disabled" style="width:150px" :to="this.id + '/steps'"/>
+    <q-btn color="secondary" no-caps rounded label="Manage steps"  unelevated :disable="this.disabled" style="width:150px;border-radius:2px" :to="this.id + '/steps'"/>
     
-    <q-btn color="info" no-caps rounded label="Save changes" style="width:150px" @click="saveProcess(edit_process)"/>
+    <q-btn color="info" no-caps rounded label="Save changes"  unelevated style="width:150px;border-radius:2px" @click="saveProcess(edit_process)"/>
     
     
-    <q-btn color="accent" no-caps rounded label="Back" style="width:150px" to="/guided_process_editor"/>
+    <q-btn color="accent" no-caps rounded label="Back"  unelevated style="width:150px;border-radius:2px" to="/guided_process_editor"/>
     </div>
     </div>
 </div>

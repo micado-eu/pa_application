@@ -1,10 +1,13 @@
 <template>
 <div>
-   <div class="row items-start q-gutter-md">
-     <h3 style="margin-bottom:0px">{{user.username}}</h3>
-    <q-card class="my-card" style="width:800px" flat bordered>
+   <div class="row " style="width:750px">
+     <h3 style="margin-bottom:30px;padding-left:12px;width:70%">{{user.username}}</h3>
+     <span style="text-align:right; width:30%;display: inline-block; vertical-align:middle">
+     <q-btn style="width:120px; margin-top:55px; border-radius:2px" color="accent" rounded label="Add Plan" no-caps size="15px" :to="user.id + '/add'" />
+     </span >
+    <q-card class="my-card" style="width:750px; margin-left:10px" flat >
       <q-card-section horizontal>
-        <q-card-section style="width:50%">
+        <q-card-section style="width:50%;padding-left:2px">
          <div>
       <span style="text-align:left;font-size:20px">Username: </span><span style="font-size:20px">{{user.username}}</span>
   </div>
@@ -50,7 +53,5 @@ export default {
 </script>
 
 <style scoped>
-.intro span{
 
-}
 </style>

@@ -6,6 +6,7 @@
         :label="intervention.intervention_title"
          header-class="text-accent"
          @click="cancelIntervention"
+         style="width:750px"
       >
         <q-card>
           <q-card-section>
@@ -20,8 +21,8 @@
               <strong> Pending </strong>
               </div>
            <div class="q-pa-md q-gutter-sm  col" style="padding-left:0px; text-align:left">
-            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="info"  :disable="intervention.validated" :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
-            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px" rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
+            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px;border-radius:2px;" rounded color="info"  :disable="intervention.validated" :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
+            <q-btn size="11px" no-caps style="width:85px;margin-bottom:5px;border-radius:2px" rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
             <q-card-section :hidden="hideForm">
         <q-input style="padding-top:10px" v-model="model.intervention_title" label="Title" />
         <q-input  style="padding-top:10px" v-model="model.description" filled type="textarea" label="Description" />
@@ -46,8 +47,8 @@
         <div class="q-gutter-sm">
          
         </div>
-        <q-btn  style="margin-top:15px" color="secondary" label="Save" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
-        <q-btn  style="margin-top:15px" color="secondary" label="Cancel" @click="cancelIntervention($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px" color="accent" label="Save" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px" color="info" label="Cancel" @click="cancelIntervention($event)" />
       </q-card-section>
            </div>
           </q-card-section>

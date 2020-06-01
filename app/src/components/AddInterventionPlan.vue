@@ -3,8 +3,8 @@
     <q-input v-model="plan.title" bg-color="grey-3" label="Intervention plan title" />
     <q-list bordered separator>
       <q-item
-        clickable
-        v-ripple
+        
+        
         v-for="an_action in plan.actions"
         :key="an_action.id"
       >
@@ -14,7 +14,8 @@
             color="accent"
             label="Delete"
             size="sm"
-            style="width:70px; margin-bottom:5px"
+            style="width:70px; margin-bottom:5px;border-radius:2px"
+            unelevated
             no-caps
             :id="an_action.intervention_title"
             @click="deleteAction($event)"
@@ -23,7 +24,7 @@
             color="info"
             label="Edit"
             size="sm"
-            style="width:70px"
+            style="width:70px;border-radius:2px"
             no-caps
             :id="an_action.intervention_title"
             @click="editAction($event)"
@@ -33,7 +34,7 @@
     </q-list>
     <q-card class="my-card">
       <q-card-section>
-        <q-btn color="accent" no-caps label="Add Intervention" @click="newAction()" :disable="hideAdd" />
+        <q-btn color="accent" style="border-radius:2px"  unelevated no-caps label="Add Intervention" @click="newAction()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="action.intervention_title" label="Title" />
@@ -58,11 +59,11 @@
         
       />
         </div>
-        <q-btn color="accent" style="width:70px; margin-top:10px;margin-right:10px" no-caps label="Save" @click="saveAction(action)" />
-        <q-btn color="info" style="width:70px; margin-top:10px;margin-right:10px" no-caps label="Cancel" @click="cancelAction()" />
+        <q-btn color="accent" style="width:70px; margin-top:10px;margin-right:10px;border-radius:2px" unelevated no-caps label="Save" @click="saveAction(action)" />
+        <q-btn color="info" style="width:70px; margin-top:10px;margin-right:10px;border-radius:2px"  unelevated no-caps label="Cancel" @click="cancelAction()" />
       </q-card-section>
     </q-card>
-     <q-btn color="accent" style="width:100px; margin-top:10px;" no-caps label="Save plan" @click="savePlan(plan)" />
+     <q-btn color="accent" style="width:100px; margin-top:10px;" unelevated no-caps label="Save plan" @click="savePlan(plan)" />
   </div>
 </template>
 

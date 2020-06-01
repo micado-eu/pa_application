@@ -4,15 +4,12 @@
    <UserProfile
    :user="the_user">
    </UserProfile>
-<div class="col" style="text-align:center;padding-top:20px">
-   <q-btn style="width:768px; margin-bottom:25px" color="info" rounded label="Add Plan" no-caps size="15px" :to="this.id + '/add'" />
-  </div>
   </div>
 <div style="">
- <div class="q-pa-md" style="width:800px; margin:0 auto" v-for="intervention_plan in filteredplans" 
+ <div class="q-pa-md" style="width:750px; margin:0 auto; padding-left:0px" v-for="intervention_plan in filteredplans" 
     :key="intervention_plan.id" >
-    
-    <h4 style="padding-top:20px; padding-bottom:20px; margin-top:0px; margin-bottom:0px; padding-left:5px; background-color:#0f3a5d; color:white"> {{intervention_plan.title}} </h4>
+    <q-list bordered class="rounded-borders" style="width:750px">
+    <h4 style="padding-top:20px; padding-bottom:20px; margin-top:0px; margin-bottom:0px;width:750px; padding-left:5px; background-color:#0f3a5d; color:white"> {{intervention_plan.title}} </h4>
 
     <IntegrationPlan
     v-for="intervention in intervention_plan.actions" :key="intervention.id"
@@ -28,7 +25,7 @@
     @saveIntervention="saveIntervention"
     >
     </IntegrationPlan>
-
+</q-list>
     <AddIntervention
     ref="add"
     :hideAdd="hideAdd"
