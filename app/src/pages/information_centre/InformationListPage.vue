@@ -7,6 +7,8 @@
       new_url="information/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteInformationItem"
+      icon_name="document"
+      add_label="Add Event"
       title="Information centre"
     />
   </div>

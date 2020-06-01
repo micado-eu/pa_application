@@ -4,15 +4,15 @@
     :id="uuid"
   >
     <editor-content
-      class="editor__content"
+      class="editor_content"
       :editor="editor"
     />
     <q-tooltip
       class="desc_tooltip"
       v-model="showTooltip"
       :target="targetElement"
-      anchor="top middle" 
-      self="bottom middle" 
+      anchor="top middle"
+      self="bottom middle"
       :offset="[10, 10]"
     >
       {{currentDescription}}
@@ -24,18 +24,8 @@
 import { mapGetters, mapActions } from "vuex"
 import { Editor, EditorContent } from "tiptap"
 import {
-  Blockquote,
-  HorizontalRule,
-  OrderedList,
-  BulletList,
-  ListItem,
-  TodoItem,
-  TodoList,
   Link,
-  Strike,
   Underline,
-  HardBreak,
-  Heading,
   Bold,
   Italic,
   Mention
@@ -54,7 +44,7 @@ export default {
       default: ""
     }
   },
-  data () {
+  data() {
     return {
       editor: null,
       currentDescriptionContent: "",
@@ -64,37 +54,26 @@ export default {
   },
   computed: {
     ...mapGetters('glossary', ['glossary', 'glossaryElemByTitle']),
-    currentDescription () {
+    currentDescription() {
       return this.currentDescriptionContent
     }
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
-    setContent (content) {
+    setContent(content) {
       this.editor.setContent(content)
     },
-    setCurrentDescription (glossaryElem, element) {
+    setCurrentDescription(glossaryElem, element) {
       // Gets JSON description and transforms it to plain text
       // Create an invisible editor to transform the JSON into HTML for parsing
       var editorInterpreter = new Editor({
         editable: false,
         extensions: [
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
           new Mention({
             items: () => this.glossary,
           }),
           new Bold(),
           new Italic(),
-          new Blockquote(),
-          new BulletList(),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
-          new Link(),
-          new Strike(),
           new Underline(),
         ],
         content: glossaryElem.description
@@ -105,13 +84,19 @@ export default {
       this.currentDescriptionContent = plainDescription
       editorInterpreter.destroy()
     },
-    setGlossaryClickEvents () {
+    setGlossaryClickEvents() {
       var glossaryElemByTitleFunc = this.glossaryElemByTitle
       var currentDescriptionSetter = this.setCurrentDescription
       var uuid = this.uuid
       document.addEventListener("mouseover", function (e) {
         var componentDiv = document.getElementById(uuid)
-        var isParentOfDiv = componentDiv.contains(e.target)
+        var isParentOfDiv;
+        if (componentDiv) {
+          isParentOfDiv = componentDiv.contains(e.target)
+        } else {
+          isParentOfDiv = false
+        }
+        var isParentOfDiv = componentDiv !== null ? componentDiv.contains(e.target) : false
         if (e.target && e.target.classList.contains("mention") && isParentOfDiv) {
           var glossaryElemTitle = e.srcElement.innerText.substring(1)
           var glossaryElem = glossaryElemByTitleFunc(glossaryElemTitle)
@@ -120,31 +105,21 @@ export default {
       })
     }
   },
-  beforeCreate () {
+  beforeCreate() {
     this.uuid = uuid.toString();
     uuid += 1;
   },
-  created () {
+  created() {
     this.fetchGlossary().then(() => {
       this.editor = new Editor({
         editable: false,
         extensions: [
-          new HardBreak(),
-          new Heading({ levels: [1, 2, 3] }),
           new Mention({
             items: () => this.glossary,
           }),
           new Bold(),
           new Italic(),
-          new Blockquote(),
-          new BulletList(),
-          new HorizontalRule(),
-          new ListItem(),
-          new OrderedList(),
-          new TodoItem(),
-          new TodoList(),
           new Link(),
-          new Strike(),
           new Underline(),
         ],
         content: ""
@@ -158,6 +133,10 @@ export default {
 
 <style lang="scss">
 .mention {
-  border: 1px solid $primary;
+  text-decoration: underline;
+}
+.editor_content {
+  font-family: Nunito Sans;
+  font-size: 13pt;
 }
 </style>

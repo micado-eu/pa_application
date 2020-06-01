@@ -3,6 +3,8 @@
     <span v-if="loading">Loading...</span>
     <edit-glossary
       v-if="!loading"
+      class="q-ma-md"
+      :pagetitle="pageTitle"
       v-on:save="editGlossaryItemAndReturn($event)"
       :title="title"
       :description="description"
@@ -17,7 +19,8 @@ export default {
   data() {
     return {
       loading: false,
-      glossaryElem: undefined
+      glossaryElem: undefined,
+      pageTitle: "Edit Glossary Term"
     }
   },
   components: {
