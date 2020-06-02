@@ -102,6 +102,8 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-steps-client', 'src/api/steps/mock');
         chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/mock');
         chain.resolve.alias.set('api-information-client', 'src/api/information/mock');
+        chain.resolve.alias.set('api-glossary_category-client', 'src/api/glossary_category/mock');
+        chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/mock');
       }
     },
 

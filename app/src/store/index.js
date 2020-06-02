@@ -18,6 +18,8 @@ import graphs from './graphs'
 import user from './user'
 import intervention_plan from './intervention_plan'
 import information from './information'
+import glossary_category from './glossary_category'
+import information_category from './information_category'
 
 Vue.use(Vuex)
 
@@ -45,7 +47,9 @@ export default function (/* { ssrContext } */) {
       graphs,
       user,
       intervention_plan,
-      information
+      information,
+      glossary_category,
+      information_category
     },
 
     // enable strict mode (adds overhead!)
