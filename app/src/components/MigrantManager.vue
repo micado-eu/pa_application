@@ -36,7 +36,7 @@ import User from './migrant_manager/User'
 
 
 export default {
-  name: 'DocumentType',
+  name: 'MigrantManager',
   props: {
     msg: String
   },

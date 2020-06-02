@@ -16,6 +16,7 @@ import language from './language'
 import steps from './steps'
 import graphs from './graphs'
 import user from './user'
+import ngo_user from './ngo_user'
 import intervention_plan from './intervention_plan'
 import information from './information'
 import glossary_category from './glossary_category'
@@ -46,6 +47,7 @@ export default function (/* { ssrContext } */) {
       steps,
       graphs,
       user,
+      ngo_user,
       intervention_plan,
       information,
       glossary_category,
