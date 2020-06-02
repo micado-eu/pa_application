@@ -23,3 +23,9 @@ export function deleteInformationItem(state, data) {
     .deleteInformationItem(data)
     .then(() => state.commit('deleteInformationItem', data))
 }
+
+export function updatePublishInformationItem(state, data) {
+  return client
+    .updatePublishInformationItem(data.newValue, data.old)
+    .then((newData) => state.commit('updatePublishInformationItem', newData))
+}

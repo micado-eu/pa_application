@@ -18,3 +18,7 @@ export function deleteInformationItem(state, informationItem) {
     state.information.splice(index, 1);
   }
 }
+
+export function updatePublishInformationItem(state, payload) {
+  editInformationItem(state, payload)
+}

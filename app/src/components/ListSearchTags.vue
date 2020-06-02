@@ -46,9 +46,20 @@
         v-for="item in filteredElements"
         :key="item.id"
         clickable
+        :class="publishState[item.id] ? 'published' : 'unpublished'"
         @mouseover="hovered=item.id"
         @mouseleave="hovered=-1"
       >
+        <q-item-section
+          avatar
+          v-if="publish_mode"
+        >
+          <q-checkbox
+            color="accent"
+            :value="publishState[item.id]"
+            @input="updatePublish($event, item)"
+          />
+        </q-item-section>
         <q-item-section>
           <q-item-label class="title-label">{{ item.title }}</q-item-label>
         </q-item-section>
@@ -101,7 +112,52 @@ import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
 export default {
   name: "ListSearchTags",
-  props: ["elements", "new_url", "edit_url_fn", "delete_fn", "title", "icon_name", "add_label"],
+  props: {
+    elements: {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    new_url: {
+      type: String,
+      default: "/"
+    },
+    edit_url_fn: {
+      type: Function,
+      default: function () {
+        return () => "/"
+      }
+    },
+    delete_fn: {
+      type: Function,
+      default: function () {
+        return () => ""
+      }
+    },
+    title: {
+      type: String,
+      default: ""
+    },
+    icon_name: {
+      type: String,
+      default: ""
+    },
+    add_label: {
+      type: String,
+      default: "Add"
+    },
+    publish_mode: {
+      type: Boolean,
+      default: false
+    },
+    update_publish_fn: {
+      type: Function,
+      default: function () {
+        return () => "/"
+      }
+    }
+  },
   data() {
     return {
       hovered: -1,
@@ -109,7 +165,8 @@ export default {
       filteredElementsByTags: this.elements,
       searchText: "",
       tags: [],
-      selectedTags: []
+      selectedTags: [],
+      publishState: {}
     }
   },
   components: {
@@ -139,7 +196,10 @@ export default {
       } else {
         this.filteredElementsByTags = this.elements
       }
-
+    },
+    updatePublish(newValue, item) {
+      this.update_publish_fn({ newValue, old: item })
+      this.publishState[item.id] = newValue
     }
   },
   computed: {
@@ -168,7 +228,9 @@ export default {
     }
   },
   created() {
+    console.log("test")
     for (let elem of this.elements) {
+      // Tags
       if (elem.tags) {
         for (let tag of elem.tags) {
           if (this.tags.indexOf(tag) == -1) {
@@ -176,6 +238,8 @@ export default {
           }
         }
       }
+      // Publish
+      this.publishState[elem.id] = elem.publish
     }
   }
 }
@@ -199,5 +263,11 @@ $accent_list: #ff7c44;
 }
 .item-btn {
   background-color: $accent_list;
+}
+.published {
+  opacity: 1;
+}
+.unpublished {
+  opacity: 0.5;
 }
 </style>

@@ -15,7 +15,7 @@ export default {
     return fetch(information, 1000) // wait 1s before returning posts
   },
   saveNewInformationItem(informationItem) {
-    let aux = Object.assign(informationItem, { id: i })
+    let aux = Object.assign({ id: i }, informationItem)
     i--
     return fetch(aux, 1000)
   },
@@ -24,5 +24,10 @@ export default {
   },
   deleteInformationItem(item) {
     return fetch(item, 1000)
-  }
+  },
+  updatePublishInformationItem(newValue, oldItem) {
+    let aux = Object.assign({}, oldItem)
+    aux.publish = newValue
+    return fetch(aux, 1000)
+  },
 }

@@ -10,6 +10,8 @@
       icon_name="document"
       add_label="Add Event"
       title="Information centre"
+      publish_mode
+      :update_publish_fn="updatePublishInformationItem"
     />
   </div>
 </template>
@@ -30,7 +32,7 @@ export default {
     ...mapGetters("information", ["information"]),
   },
   methods: {
-    ...mapActions("information", ["fetchInformation", "deleteInformationItem"]),
+    ...mapActions("information", ["fetchInformation", "deleteInformationItem", "updatePublishInformationItem"]),
     getEditRoute(id) {
       return "information/" + id + "/edit"
     }
