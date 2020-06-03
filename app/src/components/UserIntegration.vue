@@ -8,9 +8,16 @@
 <div style="">
  <div class="q-pa-md" style="width:750px; margin:0 auto; padding-left:0px" v-for="intervention_plan in filteredplans" 
     :key="intervention_plan.id" >
-    <q-list bordered class="rounded-borders" style="width:750px">
-    <h4 style="padding-top:20px; padding-bottom:20px; margin-top:0px; margin-bottom:0px;width:750px; padding-left:5px; background-color:#0f3a5d; color:white"> {{intervention_plan.title}} </h4>
-
+    <q-list bordered class="rounded-borders" style="width:750px; border-radius:10px">
+    <h4 style="padding-top:10px;font-size:20pt; font-weight:600;padding-bottom:20px; margin-top:0px; height:60px;margin-bottom:0px;width:750px; padding-left:5px; background-color:#0f3a5d; color:white; border-top-left-radius:10px;border-top-right-radius:10px">
+      <span style="padding-left:30px">
+      {{intervention_plan.title}} 
+      </span>
+      <span style="float:right; margin-right:15px ">
+      <q-btn icon-right="add" style="margin-top:0px;border-radius:2px" color="accent" no-caps label="Add intervention" :disable="hideAdd" @click="button_id = intervention_plan.id;addIntervention()" />
+      </span>
+      </h4>
+    
     <IntegrationPlan
     v-for="intervention in intervention_plan.actions" :key="intervention.id"
     :title="intervention_plan.title"
@@ -160,7 +167,7 @@ export default {
         description:"",
         linked_processes_id:[],
         validated:false, 
-        category:""
+        category:[]
       }
        
         this.hideAdd = true;

@@ -128,6 +128,7 @@ export default {
       this.action = JSON.parse(JSON.stringify(editing[0]))
       this.isNew = false;
       this.hideForm = false;
+      this.hideAdd = true
     },
     deleteAction(event) {
       var targetId = event.currentTarget.id
