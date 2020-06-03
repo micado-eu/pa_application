@@ -28,6 +28,6 @@ export default {
   updatePublishInformationItem(newValue, oldItem) {
     let aux = Object.assign({}, oldItem)
     aux.publish = newValue
-    return fetch(aux, 1000)
+    return fetch(aux, 50)
   },
 }

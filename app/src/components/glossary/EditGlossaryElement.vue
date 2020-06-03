@@ -4,6 +4,7 @@
       :title="title"
       :description="description"
       :save_item_fn="saveGlossaryItem"
+      :pagetitle="pagetitle"
     />
   </div>
 </template>
@@ -24,6 +25,9 @@ export default {
     },
     "tags": {
       type: Array
+    },
+    "pagetitle": {
+      type: String
     }
   },
   methods: {
