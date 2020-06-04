@@ -91,7 +91,7 @@
           <q-btn
             round
             class="item-btn"
-            icon="img:statics/icons/MICADO PA APP Icon - Edit (600x600).png"
+            icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
             :to="edit_url_fn(item.id)"
           />
         </q-item-section>
@@ -103,7 +103,7 @@
           <q-btn
             round
             class="item-btn"
-            icon="img:statics/icons/MICADO PA APP Icon - Delete (600x600).png"
+            icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
             @click="delete_fn(item)"
           />
         </q-item-section>

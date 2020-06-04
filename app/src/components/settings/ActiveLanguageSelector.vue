@@ -2,26 +2,18 @@
   <div class="q-pa-md">
     <h5>{{$options.name}}</h5>
 
-    <div class="q-gutter-lg row" v-for="i in Math.ceil(languages.length / 4)" v-bind:key="i">
-      <div
-        class="q-gutter-xs col"
-        v-for="language in languages.slice((i - 1) * 4, i * 4)"
-        style="text-align:center"
-        :id="language.iso_code"
-        @click="setActive(language)"
-        v-bind:key="language.iso_code"
-      >
-        <!-- TODO: Change color to primary when styles are correctly set -->
-        <q-btn
-          v-bind:unelevated="!language.active"
-          v-bind:outlined="language.active"
-          rounded
-          style="color: #0F3A5D;"
-          v-bind:label="language.name"
-          no-caps
-        ></q-btn>
-      </div>
-    </div>
+    <q-btn
+      v-for="language in languages"
+      :key="language.iso_code"
+      :unelevated="!language.active"
+      :outline="language.active"
+      :style="language.active"
+      class="q-mx-sm language_btn"
+      :label="language.name"
+      @click="setActive(language)"
+      :id="language.iso_code"
+      no-caps
+    ></q-btn>
   </div>
 </template>
 
@@ -48,3 +40,9 @@ export default {
   }
 };
 </script>
+<style lang="scss" scoped>
+.language_btn {
+  color: #0f3a5d;
+  border-radius: 2px;
+}
+</style>
