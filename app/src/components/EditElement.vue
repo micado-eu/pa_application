@@ -31,7 +31,8 @@
         >
           <q-item-section>
             <q-btn
-              color="accent"
+              class="tag_btn"
+              no-caps
               :label="tag"
             />
           </q-item-section>
@@ -55,13 +56,17 @@
           v-model="tagInput"
         />
         <q-btn
-          color="accent"
           no-caps
           @click="addTag()"
           label="Add tag"
-          class="q-my-sm"
+          class="q-my-sm add_tag_btn"
         />
-        <span v-if="duplicateTagError">Duplicates are not allowed</span>
+        <span
+          v-if="tagError"
+          class="q-ml-sm"
+        >
+          {{tagErrorMessage}}
+        </span>
       </div>
     </div>
     <div class="row q-mx-auto">
@@ -120,16 +125,21 @@ export default {
       internalTitle: this.title,
       internalTags: [...this.tags],
       tagInput: "",
-      duplicateTagError: false,
+      tagError: false,
+      tagErrorMessage: "",
     }
   },
   methods: {
     addTag() {
       if (this.internalTags.indexOf(this.tagInput) !== -1) {
-        this.duplicateTagError = true
+        this.tagErrorMessage = "Duplicates are not allowed."
+        this.tagError = true
+      } else if (this.tagInput.length <= 0) {
+        this.tagErrorMessage = "Empty tags are not allowed."
+        this.tagError = true
       } else {
         this.internalTags.push(this.tagInput)
-        this.duplicateTagError = false
+        this.tagError = false
       }
     },
     goBack() {
@@ -170,13 +180,17 @@ $title_font_size: 20pt;
 .tag_list {
   max-width: 20%;
 }
+.tag_btn {
+  background-color: $btn_secondary;
+  text-decoration: underline;
+}
 .del_tag_btn {
   background-color: $btn_secondary;
 }
 .title_input {
   font-size: $title_font_size;
 }
-.desc-editor {
-  min-height: 80px;
+.add_tag_btn {
+  background-color: $btn_secondary;
 }
 </style>
