@@ -6,16 +6,12 @@
     "situation": "Migration situation monitor",
     "setting": "Settings",
     "process": "Guided processes",
-<<<<<<< Updated upstream
     "cso": "CSO users",
-    "migrant": "Migrant users",
-=======
     "ngo": "NGO admin management",
     "migrant": "Migrant management",
->>>>>>> Stashed changes
     "data": "Data settings",
     "glossary": "Glossary",
     "information_centre": "Information centre",
-    "chatbot":"MICADO Bot"
+    "chatbot": "MICADO Bot"
   }
 }

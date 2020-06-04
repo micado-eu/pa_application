@@ -104,7 +104,7 @@ export default {
           description: "manage migrant accounts"
         },
         {
-          label: "menu.cso",
+          label: "menu.ngo",
           icon: "business",
           to: "/cso",
           description: "manage CSO accounts"
