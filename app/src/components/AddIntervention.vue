@@ -68,7 +68,7 @@
          
         </div>
          <div style="text-align:center">
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated outline  no-caps color="info" label="Cancel" @click="cancelIntervention($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  label="Cancel" @click="cancelIntervention($event)" />
         <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" label="Save Changes" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
         </div>
         </div>
@@ -122,6 +122,10 @@ export default {
   }
 };
 </script>
-
-<style>
+<style scoped>
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
 </style>

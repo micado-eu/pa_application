@@ -6,13 +6,14 @@
         :label="intervention.intervention_title"
         :header-class="{ 'bg-secondary text-white' : intervention.validated }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
+        :expand-icon-class="{'text-white' : intervention.validated}"
          @click="cancelIntervention"
          style="width:750px;"
       >
         <q-card>
           <q-card-section style="padding-left:0px; padding-right:0px">
             <div style="padding-top:10px;padding-left:30px; font-size:15pt" >
-              Related Processes:  <q-chip style="font-size:13pt; font-weight:300" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
+              Related Processes:  <q-chip style="font-size:13pt; font-weight:300; border-radius:2px" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
             </div>
             <div style="padding-left:30px; font-size:15pt">
               Description:
@@ -20,11 +21,11 @@
             </div>
             <div class="row">
               <q-item-section class="col-9" style="padding-left:30px; font-size:15pt; width:570px">
-                <span style="width:540px" v-if="!readMoreActivated">{{intervention.description.slice(0, 200)}}   </span>
-                <a class="" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
+                <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{intervention.description.slice(0, 200)}}   </span>
+                <a class="" style="font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
                   Read more...
                 </a>
-                <span style="width:540px" v-if="readMoreActivated" v-html="intervention.description"></span>
+                <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="readMoreActivated" v-html="intervention.description"></span>
               </q-item-section>
               <q-item-section class="col" style="text-align:right; margin-left:0px">
                 <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.validated" :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
@@ -95,7 +96,7 @@
         <div class="q-gutter-sm">
          </div>
         <div style="text-align:center">
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated outline  no-caps color="info" label="Cancel" @click="cancelIntervention($event)" />
+        <q-btn class="button"  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  label="Cancel" @click="cancelIntervention($event)" />
         <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" label="Save Changes" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
         </div>
           </div>
@@ -156,5 +157,10 @@ export default {
 </script>
 
 <style scoped>
-
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
 </style>
+

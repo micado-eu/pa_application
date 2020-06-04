@@ -54,7 +54,7 @@ module.exports = function (ctx) {
           dark: '#0d0d0d',
 
           positive: '#21BA45',
-          negative: '#C10015',
+          negative: '#C71f40',
           info: '#ff7c44',
           warning: '#F2C037'
         }

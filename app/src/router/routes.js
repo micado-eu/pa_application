@@ -30,7 +30,7 @@ const routes = [
       { path: '/migrant', component: MigrantManager },
       { path: '/migrant/:id', component: () => import('components/UserIntegration.vue'), props: true, name: process },
       { path: '/migrant/:id/add', component: () => import('components/AddInterventionPlan.vue'), props: true, name: process },
-      { path: '/ngo', component: NgoManager },
+      { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
 
 

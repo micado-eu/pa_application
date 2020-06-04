@@ -105,10 +105,10 @@ export default {
           description: "manage migrant accounts"
         },
         {
-          label: "menu.ngo",
+          label: "menu.cso",
           icon: "business",
-          to: "/ngo",
-          description: "manage NGO accounts"
+          to: "/cso",
+          description: "manage CSO accounts"
         },
         {
           label: "menu.process",
