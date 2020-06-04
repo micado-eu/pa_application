@@ -6,7 +6,7 @@
         <q-item-section>{{a_user_type.user_type}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
           <q-btn color="negative" unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" label="Delete" size="xs" @click="deleteUserType(a_user_type.id)" />
-          <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editUserType(a_user_type)" />
+          <q-btn color="info" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editUserType(a_user_type)" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -22,8 +22,8 @@
           type="textarea"
           label="Description"
         />
-        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveUserType()" />
-        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelUserType()" />
+        <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveUserType()" />
+        <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelUserType()" />
       </q-card-section>
     </q-card>
   </div>
@@ -95,3 +95,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
+</style>

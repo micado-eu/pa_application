@@ -21,7 +21,7 @@
             unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" 
           />
           <q-btn
-            color="secondary"
+            color="info"
             label="Edit"
             size="xs"
             no-caps
@@ -38,7 +38,7 @@
       <q-card-section :hidden="hideForm">
         <q-input v-model="int_cat_shell.title" label="Standard" />
         <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveIntegrationCategory()" />
-        <q-btn color="info" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelIntegrationCategory()" />
+        <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
   </div>
@@ -128,5 +128,10 @@ export default {
 a {
   text-decoration: none;
   color: #000000;
+}
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
 }
 </style>

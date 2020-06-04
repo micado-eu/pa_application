@@ -9,7 +9,7 @@
         <q-item-section class="col-5 flex flex-left">{{a_topic.topic}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
           <q-btn no-caps color="negative" unelevated rounded style="width:70px;border-radius:2px; margin-bottom:10px" label="Delete" size="xs" @click="deleteTopic(a_topic.id)" />
-          <q-btn no-caps color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editTopic(a_topic)" />
+          <q-btn no-caps color="info" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editTopic(a_topic)" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -19,8 +19,8 @@
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-input v-model="int_topic_shell.topic" label="Topic" />
-        <q-btn no-caps color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveTopic()" />
-        <q-btn  no-caps color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelTopic()" />
+        <q-btn no-caps color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveTopic()" />
+        <q-btn  no-caps class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelTopic()" />
       </q-card-section>
     </q-card>
   </div>
@@ -92,3 +92,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
+</style>

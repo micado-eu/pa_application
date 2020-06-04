@@ -29,7 +29,7 @@
             style="width:70px;border-radius:2px;margin-bottom:5px"
           />
           <q-btn
-            color="secondary"
+            color="info"
             label="Edit"
             size="xs"
             no-caps
@@ -64,7 +64,7 @@
           @click="saveInformationCategory()"
         />
         <q-btn
-          color="info"
+          class="button"
           unelevated
           rounded
           style="width:70px;border-radius:2px"
@@ -160,5 +160,10 @@ export default {
 a {
   text-decoration: none;
   color: #000000;
+}
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
 }
 </style>

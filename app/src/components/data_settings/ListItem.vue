@@ -45,7 +45,7 @@
       style="padding-bottom:3.5px; display: inline-block">
         <q-btn
         class="q-px-md q-py-s"
-        color="accent"
+        color="info"
         style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded 
@@ -58,7 +58,7 @@
       style="padding-top:3.5px;  display: inline-block">
         <q-btn
         class="q-px-md q-py-s"
-        color="info"
+        color="negative"
         style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded

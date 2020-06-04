@@ -27,7 +27,7 @@
             style="width:70px;margin-bottom:5px;border-radius:2px"
             unelevated
             rounded
-            color="info"
+            color="secondary"
             label="View"
             :to="'#'"
           />
@@ -37,7 +37,7 @@
             style="width:70px;margin-bottom:5px;border-radius:2px"
             unelevated
             rounded
-            color="accent"
+            color="negative"
             label="Delete"
             @click="remove_user($event)"
           />

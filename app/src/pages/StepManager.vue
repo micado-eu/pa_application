@@ -115,10 +115,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn color="accent"  unelevated label="Save" @click="saveStep(edit_step)" style="width:150px;border-radius:2px" />
+    <q-btn color="accent" no-caps="" unelevated label="Save" @click="saveStep(edit_step)" style="width:150px;border-radius:2px" />
     </div>
     <div class="q-pa-md col-6" style="text-align:left">
-    <q-btn color="info"  unelevated label="Back"  style="width:150px;border-radius:2px"/>
+    <q-btn class="button" no-caps="" unelevated label="Back"  style="width:150px;border-radius:2px"/>
     </div>
     </div>
 </div>
@@ -482,5 +482,11 @@ export default {
   padding-left: 80px;
 }
 
-
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
 </style>
+
+

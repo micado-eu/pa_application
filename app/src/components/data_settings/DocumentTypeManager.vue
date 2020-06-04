@@ -9,7 +9,7 @@
           size="lg"
           unelevated
           rounded
-          color="info"
+          color="accent"
           style="width:750px;border-radius:2px"
           label="Add Document"
           to="/adddocument"

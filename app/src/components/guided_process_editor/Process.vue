@@ -18,7 +18,7 @@
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
       <q-btn size="11px" no-caps style="width:70px;border-radius:2px; margin-bottom:5px" unelevated rounded color="info" label="Edit" :to="this.Path +'/edit/' + this.Link" />
       <q-btn size="11px" no-caps style="width:70px;border-radius:2px; margin-bottom:5px" unelevated rounded color="secondary" label="Manage" :to="'guided_process_editor/edit/' + this.Link + '/steps'" />
-      <q-btn size="11px" no-caps style="width:70px;border-radius:2px; margin-bottom:5px" unelevated rounded color="accent" label="Delete" @click="remove_process($event)" />
+      <q-btn size="11px" no-caps style="width:70px;border-radius:2px; margin-bottom:5px" unelevated rounded color="negative" label="Delete" @click="remove_process($event)" />
       
       </div>
     </div>

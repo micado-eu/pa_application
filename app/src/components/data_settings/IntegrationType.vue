@@ -19,7 +19,7 @@
             unelevated rounded style="width:70px;border-radius:2px; margin-bottom:5px"
           />
           <q-btn
-            color="secondary"
+            color="info"
             label="Edit"
             size="xs"
             no-caps
@@ -44,8 +44,8 @@
             v-model="int_type_shell.category_type"
           />
         </div>
-        <q-btn no-caps color="secondary" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
-        <q-btn no-caps color="secondary" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
+        <q-btn no-caps color="accent" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
+        <q-btn no-caps class="button" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
       </q-card-section>
     </q-card>
   </div>
@@ -147,3 +147,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #C71f40;
+}
+</style>
