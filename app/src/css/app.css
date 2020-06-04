@@ -3,3 +3,7 @@ iframe {
   height: 500px;
   width: 800px;
 }
+
+.ProseMirror {
+  min-height: 120px;
+}

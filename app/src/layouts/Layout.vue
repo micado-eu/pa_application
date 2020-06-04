@@ -87,7 +87,7 @@ export default {
     AuthMenu
   },
 
-  data () {
+  data() {
     return {
       leftDrawerOpen: false,
       navs: [
@@ -130,7 +130,7 @@ export default {
         },
         {
           label: "menu.glossary",
-          icon: "sort_by_alpha",
+          icon: "img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png",
           to: "/glossary",
           description: "Manage the glossary"
         },

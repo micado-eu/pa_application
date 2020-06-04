@@ -3,49 +3,67 @@
     <div class="page-title q-my-lg">{{pagetitle}}</div>
     <span class="q-my-lg label-edit">Title:</span>
     <q-input
+      class="title_input"
       outlined
-      label="Title"
       v-model="internalTitle"
     />
-    <!-- TODO: Enable tags when mockup is available -->
-    <!-- <span class="q-my-lg label-edit">Tags:</span>
-    <div>
-      <q-input
-        color="accent"
-        outlined
-        placeholder="New tag"
-        label-color="accent"
-        v-model="tagInput"
-      />
-      <q-btn
-        color="accent"
-        no-caps
-        @click="addTag()"
-      >
-        Add tag
-      </q-btn>
-      <span v-if="duplicateTagError">Duplicates are not allowed</span>
-    </div>
-    <div
-      v-for="tag in internalTags"
-      :key="tag"
-    >
-      <span>
-        {{tag}}
-      </span>
-      <q-btn
-        @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-        label="Delete"
-        color="accent"
-        no-caps
-      />
-    </div> -->
     <span class="q-my-lg label-edit">Description:</span>
     <glossary-editor
       class="desc-editor"
       :content="description"
       ref="editor"
     />
+    <div
+      v-if="tags_enabled"
+      class="q-my-md tag_list"
+    >
+      <span class="q-my-lg label-edit">Tags:</span>
+      <q-list
+        v-if="internalTags.length > 0"
+        separator
+        bordered
+        dense
+      >
+        <q-item
+          v-for="tag in internalTags"
+          :key="tag"
+          class="q-mb-sm"
+        >
+          <q-item-section>
+            <q-btn
+              color="accent"
+              :label="tag"
+            />
+          </q-item-section>
+          <q-item-section side>
+            <q-btn
+              @click="internalTags.splice(internalTags.indexOf(tag), 1)"
+              round
+              icon="img:statics/icons/MICADO PA APP Icon - Delete (600x600).png"
+              no-caps
+              class="q-ml-sm del_tag_btn"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <div>
+        <q-input
+          color="accent"
+          outlined
+          placeholder="New tag"
+          label-color="accent"
+          v-model="tagInput"
+        />
+        <q-btn
+          color="accent"
+          no-caps
+          @click="addTag()"
+          label="Add tag"
+          class="q-my-sm"
+        />
+        <span v-if="duplicateTagError">Duplicates are not allowed</span>
+      </div>
+    </div>
     <div class="row q-mx-auto">
       <q-btn
         outline
@@ -91,6 +109,10 @@ export default {
       default: function () {
         return []
       }
+    },
+    "tags_enabled": {
+      type: Boolean,
+      default: false,
     }
   },
   data() {
@@ -124,6 +146,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$btn_secondary: #cdd0d2;
+$title_font_size: 20pt;
 .edit-element-component {
   border: 1px solid $primary;
   border-radius: 10px;
@@ -133,14 +157,26 @@ export default {
   width: 20%;
 }
 .page-title {
-  color: $primary;
+  color: #0f3a5d;
   font-family: Nunito;
-  font-size: 20pt;
+  font-size: $title_font_size;
   font-weight: bold;
 }
 
 .label-edit {
   font-family: Nunito;
   font-size: 15pt;
+}
+.tag_list {
+  max-width: 20%;
+}
+.del_tag_btn {
+  background-color: $btn_secondary;
+}
+.title_input {
+  font-size: $title_font_size;
+}
+.desc-editor {
+  min-height: 80px;
 }
 </style>
