@@ -2,14 +2,20 @@
   "menu": {
     "title": "My Tools",
     "home": "home",
-    "usage": "Usage Monitor",
-    "situation": "Migration situation Monitor",
-    "setting": "App settings",
+    "usage": "MICADO stats",
+    "situation": "Migration situation monitor",
+    "setting": "Settings",
     "process": "Guided processes",
+<<<<<<< Updated upstream
     "cso": "CSO users",
     "migrant": "Migrant users",
+=======
+    "ngo": "NGO admin management",
+    "migrant": "Migrant management",
+>>>>>>> Stashed changes
     "data": "Data settings",
     "glossary": "Glossary",
-    "information_centre": "Information centre"
+    "information_centre": "Information centre",
+    "chatbot":"MICADO Bot"
   }
 }

@@ -1,9 +1,6 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header
-      elevated
-      class="bg-accent"
-    >
+    <q-header elevated class="bg-accent">
       <q-toolbar>
         <q-btn
           flat
@@ -62,10 +59,7 @@
         </q-item>
         <br />
         <div class="row justify-center full-height full-width text-center">
-          <img
-            alt="Powered by Micado"
-            src="~assets/powered_Micado_white.png"
-          />
+          <img alt="Powered by Micado" src="~assets/powered_Micado_white.png" />
         </div>
       </q-list>
     </q-drawer>
@@ -97,7 +91,12 @@ export default {
           to: "/",
           description: ""
         },
-
+        {
+          label: "menu.situation",
+          icon: "dvr",
+          to: "/situation/city",
+          description: "Dashboard and charts of migration situation"
+        },
         {
           label: "menu.migrant",
           icon: "face",
@@ -117,10 +116,10 @@ export default {
           description: "Edit guided processes information"
         },
         {
-          label: "menu.situation",
-          icon: "dvr",
-          to: "/situation/city",
-          description: "Dashboard and charts of migration situation"
+          label: "menu.information_centre",
+          icon: "description",
+          to: "/information",
+          description: "Manage the information"
         },
         {
           label: "menu.usage",
@@ -135,10 +134,10 @@ export default {
           description: "Manage the glossary"
         },
         {
-          label: "menu.information_centre",
-          icon: "description",
-          to: "/information",
-          description: "Manage the information"
+          label: "menu.chatbot",
+          icon: "adb",
+          to: "/chatbot",
+          description: "Manage and train the MICADO Bot"
         },
         {
           label: "menu.setting",

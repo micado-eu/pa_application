@@ -17,6 +17,7 @@ import EU from '../components/migration_monitor/EU.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import City from '../components/migration_monitor/City.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
+import chatBot from '../components/ChatBot.vue'
 
 const routes = [
   {
@@ -32,6 +33,7 @@ const routes = [
       { path: '/migrant/:id/add', component: () => import('components/AddInterventionPlan.vue'), props: true, name: process },
       { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
+      { path: '/chatbot', component: chatBot },
 
 
       { path: '/adddocument', component: AddDocument },
