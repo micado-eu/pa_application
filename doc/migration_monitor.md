@@ -39,36 +39,20 @@ where "mic:datum" and "mic:wert" correspond to the string input in the "x axis" 
 ``` json
  [
     {
-        "mic:datum": [
-            "2015-06"
-        ],
-        "mic:wert": [
-            "56"
-        ]
+        "mic:datum": "2015-06",
+        "mic:wert": "56"
     },
     {
-        "mic:datum": [
-            "2015-07"
-        ],
-        "mic:wert": [
-            "88"
-        ]
+        "mic:datum": "2015-07",
+        "mic:wert": "88"
     },
     {
-        "mic:datum": [
-            "2015-08"
-        ],
-        "mic:wert": [
-            "101"
-        ]
+        "mic:datum": "2015-08",
+        "mic:wert": "101"
     },
     {
-        "mic:datum": [
-            "2015-09"
-        ],
-        "mic:wert": [
-            "122"
-        ]
+        "mic:datum": "2015-09",
+        "mic:wert": "122"
     }
 ]
 ```
