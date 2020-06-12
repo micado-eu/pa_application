@@ -10,10 +10,10 @@
       >
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
           <div class="col-4" style="padding-left:40px;">
-            <h5 style="text-align:left;font-size:18px">Graph title</h5>
+            <h5 style="text-align:left;font-size:18px">Chart title</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined />
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="title" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -33,7 +33,7 @@
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
           <div class="col-4" style="padding-left:40px;">
-            <h5 style="text-align:left;font-size:18px">Graph type</h5>
+            <h5 style="text-align:left;font-size:18px">Chart type</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
             <q-select v-model="type" rounded standout :options="types" label @input="onInput" />
@@ -44,7 +44,7 @@
             <h5 style="text-align:left;font-size:18px">x axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined />
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="x" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -52,16 +52,32 @@
             <h5 style="text-align:left;font-size:18px">y axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined />
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="y" />
           </div>
         </div>
 
         <div class="row" style="padding-bottom:15px;padding-right:45px">
           <div class="col-4" style="padding-left:40px;">
-            <h5 style="text-align:left;font-size:18px">Graph description</h5>
+            <h5 style="text-align:left;font-size:18px">Chart description</h5>
           </div>
           <div class="col-8" style="display: block;">
-            <q-input type="textarea" bg-color="grey-3" rounded standout outlined />
+            <q-input
+              type="textarea"
+              bg-color="grey-3"
+              rounded
+              standout
+              outlined
+              v-model="description"
+            />
+          </div>
+        </div>
+
+        <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
+          <div class="col-4" style="padding-left:40px;">
+            <h5 style="text-align:left;font-size:18px">X axis is unix-timestamp</h5>
+          </div>
+          <div class="col-8" style="margin: auto;display: block;">
+            <q-checkbox color="accent" v-model="xIsTime" clickable />
           </div>
         </div>
 
@@ -92,19 +108,19 @@
             <q-file @input="getFiles" bg-color="grey-3" dense rounded standout outlined></q-file>
           </div>
           <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
-            <q-img
+            <!-- <q-img
               :src="myimage"
               spinner-color="white"
               style="max-height: 100px; max-width: 150px"
               @click="hotimage = true"
-            />
+            />-->
             <q-dialog>
               <q-card>
-                <v-hotspot
+                <!-- <v-hotspot
                   :init-options="hotspotConfig"
                   @save-data="saveData"
                   @after-delete="afterDelete"
-                />
+                />-->
               </q-card>
             </q-dialog>
           </div>
@@ -122,19 +138,19 @@
             <q-file @input="getFiles" bg-color="grey-3" dense rounded standout outlined></q-file>
           </div>
           <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
-            <q-img
+            <!-- <q-img
               :src="myimage"
               spinner-color="white"
               style="max-height: 100px; max-width: 150px"
               @click="hotimage = true"
-            />
+            /> -->
             <q-dialog>
               <q-card>
-                <v-hotspot
+                <!-- <v-hotspot
                   :init-options="hotspotConfig"
                   @save-data="saveData"
                   @after-delete="afterDelete"
-                />
+                />-->
               </q-card>
             </q-dialog>
           </div>
@@ -149,7 +165,7 @@
             <h5 style="text-align:left;font-size:18px">API address</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined />
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="url" />
           </div>
         </div>
       </div>
@@ -183,10 +199,16 @@
 
 <script>
 export default {
-  name: "AddNewGraph",
+  name: "AddNewChart",
 
   data() {
     return {
+      title: "",
+      description: "",
+      x: "",
+      y: "",
+      url: "",
+      xIsTime: false,
       data_format: "JSON",
       formats: ["JSON", "csv", "API"],
       category: "",
@@ -196,13 +218,14 @@ export default {
   },
   computed: {
     categories() {
-      return this.$store.state.statistics.categories;
+      return this.$store.state.statistics.categories.map((c)=>c.category);
     }
   },
   methods: {
     onInput: function(e) {
       console.log("Change: ", e);
-    }
+    },
+    getFiles: function() {}
   }
 };
 </script>
