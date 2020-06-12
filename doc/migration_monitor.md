@@ -8,14 +8,14 @@ The data uploaded or connected has to follow a simple format (specified in the *
 
 ## using the editor
 
-**[The editor](http://localhost:8080/situation/editor)**, allows users to provide the necessary information for the Migrant Monitor to create and render new charts.
+**[The editor](http://pa.micadoproject.eu/situation/editor)**, allows users to provide the necessary information for the Migrant Monitor to create and render new charts.
 
 ### Category Editor
 In the Migration Monitor, charts will be displayed in groups according to their categorization.
-**[This editor](http://localhost:8080/situation/editor#CategoryEditor)** allows users to manage the categories.
+**[This editor](http://pa.micadoproject.eu/situation/editor#CategoryEditor)** allows users to manage the categories.
 
 ### Add New Chart
-**[This editor](http://localhost:8080/situation/editor#AddNewChart)** allows users to upload data for new charts.
+**[This editor](http://pa.micadoproject.eu/situation/editor#AddNewGraph)** allows users to upload data for new charts.
 Below are the description of each input fields.
 | field                    | default | data type | definition                                        |
 |--------------------------|---------|-----------|---------------------------------------------------|
