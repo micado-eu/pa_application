@@ -34,7 +34,7 @@ Below are the description of each input fields.
 ## JSON specs
 
 The following example demonstrates the data structure required for the uploaded JSON files, 
-where "mic:datum" and "mic:wert" correspond to the string input in the "x axis" and "y axis" from the **["Add New Chart"](#add-new-chart)** editor:
+where **"mic:datum"** and **"mic:wert"** correspond to the string input in the **"x axis"** and **"y axis"** from the **["Add New Chart"](#add-new-chart)** editor:
 
 ``` json
  [
@@ -56,5 +56,9 @@ where "mic:datum" and "mic:wert" correspond to the string input in the "x axis" 
     }
 ]
 ```
+
+Here is the generated chart:
+
+![alt text](https://github.com/micado-eu/pa_application/blob/master/doc/img/migration_monitor/linechart.png?raw=true "line chart example")
 
 ## csv specs
