@@ -59,6 +59,6 @@ where **"mic:datum"** and **"mic:wert"** correspond to the string input in the *
 
 Here is the generated chart:
 
-![alt text](https://github.com/micado-eu/pa_application/blob/master/doc/img/migration_monitor/linechart.png?raw=true "line chart example")
+<!-- ![alt text](https://github.com/micado-eu/pa_application/blob/master/doc/img/migration_monitor/linechart.png?raw=true "line chart example") -->
 
 ## csv specs
