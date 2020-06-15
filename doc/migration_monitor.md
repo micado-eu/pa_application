@@ -62,3 +62,14 @@ Here is the generated chart:
 <!-- ![alt text](https://github.com/micado-eu/pa_application/blob/master/doc/img/migration_monitor/linechart.png?raw=true "line chart example") -->
 
 ## csv specs
+
+The following example demonstrates the data structure required for the uploaded csv files, 
+where **"mic:datum"** and **"mic:wert"** correspond to the string input in the **"x axis"** and **"y axis"** from the **["Add New Chart"](#add-new-chart)** editor, and the "mic:datum" values are time values converted to **[unixtimestamp](https://en.wikipedia.org/wiki/Unix_time)**:
+
+| mic:datum | mic:wert |
+|-----------|----------|
+| 1433116800   | 56       |
+| 1433203200   | 88       |
+| 1438387200   | 101      |
+| 1441065600   | 122      |
+
