@@ -18,7 +18,7 @@
             style="height: 40px; max-width: 40px"
           />
         </q-item-section>
-        <q-item-section class="col-5 flex flex-left">{{a_topic.translations.filter(function(t){return t.lang==activeLanguage})[0].topic}}</q-item-section>
+        <q-item-section class="col-5 flex flex-left">{{showTopicLabel(a_topic)}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
           <q-btn
             no-caps
@@ -148,8 +148,10 @@ export default {
     saveTopic () {
       if (this.isNew) {
         // we are adding a new instance
+        let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
+
         this.$store
-          .dispatch("topic/saveTopic", this.int_topic_shell)
+          .dispatch("topic/saveTopic", workingTopic)
           .then(int_cat => {
             console.log("saved");
           });
@@ -162,7 +164,7 @@ export default {
           });
       }
       this.hideForm = true;
-      this.int_topic_shell = { id: -1, title: "" };
+      this.createShell()
     },
     newTopic () {
       this.isNew = true;
@@ -177,12 +179,46 @@ export default {
     editTopic (topic) {
       this.isNew = false;
       this.hideForm = false;
-      this.int_topic_shell = JSON.parse(JSON.stringify(topic));
+      //     this.int_topic_shell = JSON.parse(JSON.stringify(topic));
+      this.mergeTopic(topic)
     },
     filterTranslationModel (currentLang) {
       return function (element) {
         return element.lang == currentLang;
       }
+    },
+    showTopicLabel (workingTopic) {
+      return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
+    },
+    createShell () {
+      this.int_topic_shell = { id: -1, topic: null, translations: [], icon: "", published: false, publicationDate: null, }
+      this.languages.forEach(l => {
+        //       console.log(l)
+        this.int_topic_shell.translations.push({ id: -1, lang: l.lang, topic: '', translationDate: null })
+      });
+    },
+    mergeTopic (topic) {
+      console.log(topic)
+      this.int_topic_shell.id = topic.id
+      this.int_topic_shell.icon = topic.icon
+      this.int_topic_shell.published = topic.published
+      this.int_topic_shell.publicationDate = topic.publicationDate
+      topic.translations.forEach(tr => {
+        console.log(tr)
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.int_topic_shell.translations.length; i++) {
+          if (this.int_topic_shell.translations[i].lang == tr.lang) {
+            this.int_topic_shell.translations.splice(i, 1);
+            this.int_topic_shell.translations.push(tr)
+            break;
+          }
+        }
+      });
+
+      console.log(this.int_topic_shell)
+
+
     }
   },
   //store.commit('increment', 10)
@@ -196,10 +232,7 @@ export default {
     this.$store.dispatch("language/fetchLanguages").then(langs => {
       let al = this.activeLanguage
       this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
-      this.languages.forEach(l => {
-        console.log(l)
-        this.int_topic_shell.translations.push({ lang: l.lang, topic: '' })
-      });
+      this.createShell()
       console.log('active language')
       console.log(this.int_topic_shell)
     })
