@@ -13,9 +13,24 @@ export function fetchTopic (state, data) {
 export function editTopic (state, topic_element) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(topic_element)
+  // update translations
+  return client
+    .updateTopic(topic_element).then(function (update_return) {
+      // cycle in the translations and update each
+      console.log(update_return)
+      topic_element.translations.forEach(function (aTranslation) {
+        client.updateTopicTranslation(aTranslation).then(function (update_translation_return) {
+          console.log(update_translation_return)
+        })
+      })
+      state.commit('editTopic', topic_element)
+    })
+  // update topic
+  /*
   return client
     .updateTopic(topic_element)
     .then(topic_return => state.commit('editTopic', topic_return))
+    */
 }
 
 export function saveTopic (state, topic_element) {

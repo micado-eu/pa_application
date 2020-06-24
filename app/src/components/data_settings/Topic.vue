@@ -161,9 +161,10 @@ export default {
       this.$store.dispatch("topic/deleteTopic", index);
     },
     saveTopic () {
+      let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
+
       if (this.isNew) {
         // we are adding a new instance
-        let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
 
         this.$store
           .dispatch("topic/saveTopic", workingTopic)
@@ -173,7 +174,7 @@ export default {
       } else {
         // we are updating the exsisting
         this.$store
-          .dispatch("topic/editTopic", this.int_topic_shell)
+          .dispatch("topic/editTopic", workingTopic)
           .then(int_cat => {
             console.log("updated");
           });
@@ -225,7 +226,7 @@ export default {
         for (var i = 0; i < this.int_topic_shell.translations.length; i++) {
           if (this.int_topic_shell.translations[i].lang == tr.lang) {
             this.int_topic_shell.translations.splice(i, 1);
-            this.int_topic_shell.translations.push(tr)
+            this.int_topic_shell.translations.push(JSON.parse(JSON.stringify(tr)))
             break;
           }
         }
