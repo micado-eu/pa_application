@@ -11,7 +11,7 @@
         v-for="a_topic in topic"
         :key="a_topic.id"
       >
-        <q-item-section>
+        <q-item-section class="col-2 flex flex-left">
           <q-img
             :src="a_topic.icon"
             spinner-color="white"
@@ -19,7 +19,14 @@
           />
         </q-item-section>
         <q-item-section class="col-5 flex flex-left">{{showTopicLabel(a_topic)}}</q-item-section>
-        <q-item-section class="col-5 flex flex-center">
+        <q-item-section class="col-2 flex flex-left">
+          <q-toggle
+            v-model="a_topic.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
+        <q-item-section class="col-3 flex flex-center">
           <q-btn
             no-caps
             color="negative"
@@ -84,21 +91,40 @@
             />
           </q-tab-panel>
         </q-tab-panels>
-        <q-file
-          @input="getFiles"
-          bg-color="grey-3"
-          dense
-          rounded
-          standout
-          outlined
-        >
+        <q-card class="my-card">
+          <q-card-section>
 
-        </q-file>
-        <q-img
-          :src="topicimage"
-          spinner-color="white"
-          style="max-height: 100px; max-width: 150px"
-        />
+            <q-file
+              @input="getFiles"
+              bg-color="grey-3"
+              dense
+              rounded
+              standout
+              outlined
+            >
+
+            </q-file>
+            <q-img
+              :src="topicimage"
+              spinner-color="white"
+              style="max-height: 100px; max-width: 150px"
+            />
+          </q-card-section>
+          <q-card-section>
+            <q-toggle
+              v-model="int_topic_shell.published"
+              color="green"
+              label="is Published"
+            />
+            <q-input
+              v-model="int_topic_shell.publicationDate"
+              label="Publication date"
+              readonly
+            />
+          </q-card-section>
+
+        </q-card>
+
         <q-btn
           no-caps
           color="accent"
@@ -136,7 +162,7 @@ export default {
   name: "TopicType",
   data () {
     return {
-      int_topic_shell: { id: -1, topic: "", translations: [], icon: "" },
+      int_topic_shell: { id: -1, translations: [], icon: "" },
       hideForm: true,
       hideAdd: false,
       isNew: false,
