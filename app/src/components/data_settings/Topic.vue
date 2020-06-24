@@ -84,7 +84,21 @@
             />
           </q-tab-panel>
         </q-tab-panels>
+        <q-file
+          @input="getFiles"
+          bg-color="grey-3"
+          dense
+          rounded
+          standout
+          outlined
+        >
 
+        </q-file>
+        <q-img
+          :src="topicimage"
+          spinner-color="white"
+          style="max-height: 100px; max-width: 150px"
+        />
         <q-btn
           no-caps
           color="accent"
@@ -126,6 +140,7 @@ export default {
       hideForm: true,
       hideAdd: false,
       isNew: false,
+      topicimage: null,
       activeLanguage: this.$i18n.locale,
       langTab: ''
     };
@@ -219,6 +234,33 @@ export default {
       console.log(this.int_topic_shell)
 
 
+    },
+    getFiles (files) {
+      console.log(files);
+      console.log(this)
+
+      console.log(self)
+
+      let reader = new FileReader()
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(files)
+
+      // on reader load somthing...
+      reader.onload = () => {
+
+        // Make a fileInfo Object
+        let fileInfo = {
+          name: files.name,
+          type: files.type,
+          size: Math.round(files.size / 1000) + ' kB',
+          base64: reader.result,
+          file: files
+        }
+        this.topicimage = fileInfo.base64
+        this.int_topic_shell.icon = fileInfo.base64
+        console.log(fileInfo)
+      }
     }
   },
   //store.commit('increment', 10)
