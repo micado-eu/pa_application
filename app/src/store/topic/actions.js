@@ -55,12 +55,21 @@ export function saveTopic (state, topic_element) {
       */
 }
 
-export function deleteTopic (state, topic_element) {
+export function deleteTopic (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(topic_element)
+  console.log(index)
+  return client.deleteTopicTranslations(index).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+    client.deleteTopic(index).then(function () {
+      state.commit('deleteTopic', index)
+    })
+  })
+  /*
   return client
     .deleteTopic(topic_element)
     .then(topic_return => state.commit('deleteTopic', topic_return))
+    */
 }
 
 
