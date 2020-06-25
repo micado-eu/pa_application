@@ -3,8 +3,22 @@
     <h5>{{$options.name}}</h5>
     <q-list bordered separator>
       <q-item clickable v-ripple v-for="a_user_type in user_type" :key="a_user_type.id">
-        <q-item-section>{{a_user_type.user_type}}</q-item-section>
-        <q-item-section class="col-5 flex flex-center">
+         <q-item-section class="col-2 flex flex-left">
+          <q-img
+            :src="a_user_type.icon"
+            spinner-color="white"
+            style="height: 40px; max-width: 40px"
+          />
+        </q-item-section>
+        <q-item-section class="col-5 flex flex-left">{{a_user_type.user_type}}</q-item-section>
+        <q-item-section class="col-2 flex flex-left">
+          <q-toggle
+            v-model="a_user_type.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
+        <q-item-section class="col-3 flex flex-center">
           <q-btn color="negative" unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" label="Delete" size="xs" @click="deleteUserType(a_user_type.id)" />
           <q-btn color="info" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editUserType(a_user_type)" />
         </q-item-section>
@@ -22,6 +36,15 @@
           type="textarea"
           label="Description"
         />
+          <FileUploader
+        :Image="userimage"
+        :published="int_user_type_shell.published"
+        :publicationDate="int_user_type_shell.publicationDate"
+        :icon="int_user_type_shell.icon"
+        @upload="getFiles"
+        @publish="isPublished"> 
+
+        </FileUploader>
         <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveUserType()" />
         <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelUserType()" />
       </q-card-section>
@@ -30,6 +53,8 @@
 </template>
 
 <script>
+import FileUploader from 'components/FileUploader'
+
 export default {
   name: "UserType",
   data() {
@@ -37,8 +62,12 @@ export default {
       int_user_type_shell: { id: -1, user_type: "", description: "" },
       hideForm: true,
       hideAdd: false,
-      isNew: false
+      isNew: false, 
+      userimage: null
     };
+  },
+   components: {
+    FileUploader
   },
   computed: {
     user_type() {
@@ -73,6 +102,69 @@ export default {
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;
+    },
+        createShell () {
+      this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, }
+      this.languages.forEach(l => {
+        //       console.log(l)
+        this.int_topic_shell.translations.push({ id: -1, lang: l.lang, user_type: '', translationDate: null })
+      });
+    },
+    mergeUserType (user_type) {
+      console.log(user_type)
+      this.int_user_type_shell.id = user_type.id
+      this.int_user_type_shell.icon = user_type.icon
+      this.int_user_type_shell.published = user_type.published
+      this.int_user_type_shell.publicationDate = user_type.publicationDate
+      user_type.translations.forEach(tr => {
+        console.log(tr)
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.int_user_type_shell.translations.length; i++) {
+          if (this.int_user_type_shell.translations[i].lang == tr.lang) {
+            this.int_user_type_shell.translations.splice(i, 1);
+            this.int_user_type_shell.translations.push(JSON.parse(JSON.stringify(tr)))
+            break;
+          }
+        }
+      });
+
+      console.log(this.int_user_type_shell)
+
+
+    },
+     getFiles (files) {
+      console.log(files);
+      console.log(this)
+
+      console.log(self)
+
+      let reader = new FileReader()
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(files)
+
+      // on reader load somthing...
+      reader.onload = () => {
+
+        // Make a fileInfo Object
+        let fileInfo = {
+          name: files.name,
+          type: files.type,
+          size: Math.round(files.size / 1000) + ' kB',
+          base64: reader.result,
+          file: files
+        }
+        this.userimage = fileInfo.base64
+        this.int_user_type_shell.icon = fileInfo.base64
+        console.log(fileInfo)
+      }
+    },
+     isPublished(value){
+      console.log("publishing")
+      this.int_user_type_shell.published = value
+            console.log(this.int_user_type_shell.published)
+
     },
     cancelUserType() {
       this.isNew = false;

@@ -85,13 +85,27 @@
             :key="language.lang"
             :name="language.name"
           >
-            <q-input
+          <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
+           <q-input
               v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"
               label="Topic"
             />
           </q-tab-panel>
         </q-tab-panels>
-        <q-card class="my-card">
+        <FileUploader
+        :Image="topicimage"
+        :published="int_topic_shell.published"
+        :publicationDate="int_topic_shell.publicationDate"
+        :icon="int_topic_shell.icon"
+        @upload="getFiles"
+        @publish="isPublished"> 
+
+        </FileUploader>
+        
+
+
+
+      <!--  <q-card class="my-card">
           <q-card-section>
 
             <q-file
@@ -123,7 +137,7 @@
             />
           </q-card-section>
 
-        </q-card>
+        </q-card>-->
 
         <q-btn
           no-caps
@@ -158,6 +172,7 @@ function startsWith(wordToCompare) {
     }
 }
 */
+import FileUploader from 'components/FileUploader'
 export default {
   name: "TopicType",
   data () {
@@ -171,6 +186,9 @@ export default {
       langTab: ''
     };
   },
+  components: {
+    FileUploader
+  },
   computed: {
     topic () {
       return this.$store.state.topic.topic;
@@ -179,7 +197,6 @@ export default {
       return this.$store.state.language.languages;
 
     }
-
   },
   methods: {
     deleteTopic (index) {
@@ -207,6 +224,12 @@ export default {
       }
       this.hideForm = true;
       this.createShell()
+    },
+    isPublished(value){
+      console.log("publishing")
+      this.int_topic_shell.published = value
+            console.log(this.int_topic_shell.published)
+
     },
     newTopic () {
       this.isNew = true;

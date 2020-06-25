@@ -9,6 +9,13 @@
         :key="a_integration_type.id"
       >
         <q-item-section>{{a_integration_type.title}}</q-item-section>
+       <q-item-section class="col-5 flex flex-left">
+          <q-toggle
+            v-model="a_integration_type.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
         <q-item-section side>
           <q-btn
             color="negative"
@@ -44,6 +51,21 @@
             v-model="int_type_shell.category_type"
           />
         </div>
+        <q-card class="mycard">
+          
+          <q-card-section>
+            <q-toggle
+              v-model="int_type_shell.published"
+              color="green"
+              label="is Published"
+            />
+            <q-input
+              v-model="int_type_shell.publicationDate"
+              label="Publication date"
+              readonly
+            />
+          </q-card-section>
+    </q-card>
         <q-btn no-caps color="accent" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
         <q-btn no-caps class="button" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
       </q-card-section>
@@ -52,6 +74,8 @@
 </template>
 
 <script>
+import FileUploader from 'components/FileUploader'
+
 export default {
   name: "IntegrationType",
   data() {
