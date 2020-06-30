@@ -1,21 +1,25 @@
 [
     {
-        "iso_code": "en-us",
+        "lang": "en",
+        "isoCode": "en-us",
         "name": "English",
         "active": true
     },
     {
-        "iso_code": "de",
+        "lang": "de",
+        "isoCode": "de",
         "name": "Deutsch",
         "active": true
     },
     {
-        "iso_code": "ar",
+        "lang": "ar",
+        "isoCode": "ar",
         "name": "عربي",
         "active": false
     },
     {
-        "iso_code": "it",
+        "lang": "it",
+        "isoCode": "it-it",
         "name": "Italiano",
         "active": false
     }

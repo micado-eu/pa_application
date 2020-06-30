@@ -8,7 +8,6 @@
       v-on:save="editGlossaryItemAndReturn($event)"
       :title="title"
       :description="description"
-      :tags="tags"
     />
   </div>
 </template>
@@ -49,14 +48,6 @@ export default {
         return elem.description
       } else {
         return ""
-      }
-    },
-    tags: function () {
-      let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem) {
-        return elem.tags
-      } else {
-        return []
       }
     },
   },

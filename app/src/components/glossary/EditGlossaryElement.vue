@@ -23,16 +23,13 @@ export default {
     "description": {
       type: String | Object,
     },
-    "tags": {
-      type: Array
-    },
     "pagetitle": {
       type: String
     }
   },
   methods: {
     saveGlossaryItem(title, desc, tags) {
-      this.$emit('save', { title: title, description: desc, tags: tags })
+      this.$emit('save', { title: title, description: desc })
     }
   }
 }

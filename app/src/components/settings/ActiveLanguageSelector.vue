@@ -4,14 +4,14 @@
 
     <q-btn
       v-for="language in languages"
-      :key="language.iso_code"
+      :key="language.isoCode"
       :unelevated="!language.active"
       :outline="language.active"
       :style="language.active"
       class="q-mx-sm language_btn"
       :label="language.name"
       @click="setActive(language)"
-      :id="language.iso_code"
+      :id="language.isoCode"
       no-caps
     ></q-btn>
   </div>
@@ -28,11 +28,12 @@ export default {
     ...mapActions("language", ["fetchLanguages", "setLanguageActive"]),
     setActive(language) {
       let newLanguage = {
-        iso_code: language.iso_code,
+        lang: language.lang,
+        isoCode: language.isoCode,
         name: language.name,
         active: !language.active
       };
-      this.setLanguageActive(newLanguage);
+      this.setLanguageActive(newLanguage)
     }
   },
   created() {
