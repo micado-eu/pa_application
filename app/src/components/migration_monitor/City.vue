@@ -24,7 +24,6 @@ export default {
   },
   data: function() {
     return {
-      graph_data: [],
       anchor: [
         { title: "incoming", link: "", icon: "directions_run" },
         { title: "accommodation", link: "", icon: "local_hotel" },
@@ -34,11 +33,6 @@ export default {
     };
   },
   computed: {
-    city_graphs: function() {
-      return JSON.parse(
-        JSON.stringify(this.$store.state.statistics.city_graphs)
-      );
-    },
     categories: function() {
       return this.$store.state.statistics.categories;
     }
@@ -52,20 +46,6 @@ export default {
     }
   },
   mounted: function() {
-    this.graph_data = [];
-    for (let i = 0; i < this.city_graphs.length; i++) {
-      const graphObj = { ...this.city_graphs[i] };
-      graphObj.content.forEach(item => {
-        item[graphObj.x] = new Date(item[graphObj.x][0]).getTime() / 1000;
-        item[graphObj.y] = parseInt(item[graphObj.y][0]);
-      });
-      if (graphObj.xIsTime) {
-        graphObj.content = graphObj.content.sort(
-          (a, b) => b[graphObj.x] - a[graphObj.x]
-        );
-      }
-      this.graph_data.push(graphObj);
-    }
   }
 };
 </script>
@@ -83,7 +63,7 @@ h6 {
 .col {
   flex: 1;
   text-decoration: none;
-  color:black;
+  color: black;
   display: flex;
   justify-content: center;
 }

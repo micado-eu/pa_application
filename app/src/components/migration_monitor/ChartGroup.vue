@@ -40,11 +40,19 @@ export default {
   mounted: function() {
     this.graph_data = [];
     for (let i = 0; i < this.city_graphs.length; i++) {
-      if (this.city_graphs[i].category === this.category) {
-        const graphObj = { ...this.city_graphs[i] };
+      const graphObj = { ...this.city_graphs[i] };
+      Object.keys(graphObj).forEach(key => {
+        if (typeof graphObj[key] === "string") {
+          graphObj[key] = graphObj[key].trim();
+        }
+      });
+      if (typeof graphObj.content === "string") {
+        graphObj.content = JSON.parse(graphObj.content);
+      }
+      if (graphObj.category === this.category) {
         graphObj.content.forEach(item => {
-          item[graphObj.x] = new Date(item[graphObj.x][0]).getTime() / 1000;
-          item[graphObj.y] = parseInt(item[graphObj.y][0]);
+          item[graphObj.x] = new Date(item[graphObj.x]).getTime();
+          item[graphObj.y] = parseInt(item[graphObj.y]);
         });
         if (graphObj.xIsTime) {
           graphObj.content = graphObj.content.sort(
