@@ -1,6 +1,9 @@
 <template>
   <svg :width="width" :height="height" :id="id">
-    <g :transform="'translate(' + margin.left + ',' + margin.top + ')'">
+    <g
+      v-if="typeof width!=='string'"
+      :transform="'translate(' + margin.left + ',' + margin.top + ')'"
+    >
       <path :d="drawLine(lineData)" stroke="#ecbc3a" />
       <circle
         v-for="(d,i) in lineData"
@@ -12,6 +15,7 @@
       />
     </g>
     <ChartAxisBottom
+      v-if="typeof width!=='string'"
       :scaleX="scaleX"
       :key="xid"
       :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"
