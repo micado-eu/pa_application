@@ -72,6 +72,8 @@
           <glossary-editor-viewer
             :class="!publish_mode || publishState[item.id] ? 'published' : 'unpublished'"
             :content="item.description"
+            v-if="!loading"
+            :glossary_fetched="true"
           />
         </q-item-section>
         <q-item-section class="tag_btn_section">
@@ -113,6 +115,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex"
 import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
 export default {
@@ -171,13 +174,15 @@ export default {
       searchText: "",
       tags: [],
       selectedTags: [],
-      publishState: {}
+      publishState: {},
+      loading: true,
     }
   },
   components: {
     "glossary-editor-viewer": GlossaryEditorViewer
   },
   methods: {
+    ...mapActions("glossary", ["fetchGlossary"]),
     addOrRemoveSelectedTag(tag) {
       var index = this.selectedTags.indexOf(tag)
       if (index !== -1) {
@@ -233,7 +238,10 @@ export default {
     }
   },
   created() {
-    console.log("test")
+    this.loading = true
+    this.fetchGlossary().then(() => {
+      this.loading = false
+    })
     for (let elem of this.elements) {
       // Tags
       if (elem.tags) {

@@ -42,6 +42,10 @@ export default {
     content: {
       type: String | Object,
       default: ""
+    },
+    glossary_fetched: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -60,6 +64,23 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
+    initialize() {
+      this.editor = new Editor({
+        editable: false,
+        extensions: [
+          new Mention({
+            items: () => this.glossary,
+          }),
+          new Bold(),
+          new Italic(),
+          new Link(),
+          new Underline(),
+        ],
+        content: ""
+      })
+      this.setContent(this.content)
+      this.setGlossaryClickEvents()
+    },
     setContent(content) {
       this.editor.setContent(content)
     },
@@ -110,23 +131,13 @@ export default {
     uuid += 1;
   },
   created() {
-    this.fetchGlossary().then(() => {
-      this.editor = new Editor({
-        editable: false,
-        extensions: [
-          new Mention({
-            items: () => this.glossary,
-          }),
-          new Bold(),
-          new Italic(),
-          new Link(),
-          new Underline(),
-        ],
-        content: ""
+    if (!this.glossary_fetched) {
+      this.fetchGlossary().then(() => {
+        this.initialize()
       })
-      this.setContent(this.content)
-      this.setGlossaryClickEvents()
-    })
+    } else {
+      this.initialize()
+    }
   }
 }
 </script>

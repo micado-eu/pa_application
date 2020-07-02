@@ -8,6 +8,7 @@
       v-on:save="editGlossaryItemAndReturn($event)"
       :title="title"
       :description="description"
+      :lang="lang"
     />
   </div>
 </template>
@@ -36,7 +37,7 @@ export default {
     ...mapGetters("glossary", ["glossaryElemById"]),
     title: function () {
       let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem) {
+      if (elem && elem.title) {
         return elem.title
       } else {
         return ""
@@ -44,8 +45,16 @@ export default {
     },
     description: function () {
       let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem) {
+      if (elem && elem.description) {
         return elem.description
+      } else {
+        return ""
+      }
+    },
+    lang: function () {
+      let elem = this.glossaryElemById(this.$route.params.id)
+      if (elem && elem.lang) {
+        return elem.lang
       } else {
         return ""
       }

@@ -28,9 +28,8 @@ export default {
       });
   },
   saveNewGlossaryItem(glossaryItem) {
-    let newGlossaryItem = Object.assign(glossaryItem, this.$q.lang.getLocale())
     return axiosInstance
-      .post('/backend/1.0.0/glossaries', newGlossaryItem)
+      .post('/backend/1.0.0/glossaries', glossaryItem)
       .then(
         response => response.data
       ).catch(function (error) {
@@ -54,9 +53,8 @@ export default {
       });
   },
   editGlossaryItem(newItem) {
-    let newGlossaryItem = Object.assign(newItem, this.$q.lang.getLocale())
     return axiosInstance
-      .patch('/backend/1.0.0/glossaries/' + newGlossaryItem.id, newGlossaryItem)
+      .patch('/backend/1.0.0/glossaries/' + newItem.id, newItem)
       .then(
         response => response.data
       ).catch(function (error) {

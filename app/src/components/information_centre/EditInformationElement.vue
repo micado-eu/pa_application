@@ -30,11 +30,14 @@ export default {
     },
     "pagetitle": {
       type: String
+    },
+    "lang": {
+      type: String
     }
   },
   methods: {
-    saveInformationItem(title, desc, tags) {
-      this.$emit('save', { title: title, description: desc, tags: tags })
+    saveInformationItem(title, desc, lang, tags) {
+      this.$emit('save', { title: title, description: desc, tags: tags, lang })
     }
   }
 }

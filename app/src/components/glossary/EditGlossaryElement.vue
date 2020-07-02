@@ -5,6 +5,7 @@
       :description="description"
       :save_item_fn="saveGlossaryItem"
       :pagetitle="pagetitle"
+      :activeLanguage="lang"
     />
   </div>
 </template>
@@ -25,11 +26,14 @@ export default {
     },
     "pagetitle": {
       type: String
+    },
+    "lang": {
+      type: String
     }
   },
   methods: {
-    saveGlossaryItem(title, desc, tags) {
-      this.$emit('save', { title: title, description: desc })
+    saveGlossaryItem(title, desc, lang, tags) {
+      this.$emit('save', { title: title, description: desc, lang })
     }
   }
 }

@@ -7,6 +7,7 @@
       :title="title"
       :description="description"
       :tags="tags"
+      :lang="lang"
       class="q-ma-md"
       pagetitle="Edit Event from the Information Centre"
     />
@@ -38,7 +39,7 @@ export default {
     ...mapGetters("information", ["informationElemById"]),
     title: function () {
       let elem = this.informationElemById(this.$route.params.id)
-      if (elem) {
+      if (elem && elem.title) {
         return elem.title
       } else {
         return ""
@@ -46,7 +47,7 @@ export default {
     },
     description: function () {
       let elem = this.informationElemById(this.$route.params.id)
-      if (elem) {
+      if (elem && elem.description) {
         return elem.description
       } else {
         return ""
@@ -54,10 +55,18 @@ export default {
     },
     tags: function () {
       let elem = this.informationElemById(this.$route.params.id)
-      if (elem) {
+      if (elem && elem.tags) {
         return elem.tags
       } else {
         return []
+      }
+    },
+    lang: function () {
+      let elem = this.informationElemById(this.$route.params.id)
+      if (elem && elem.lang) {
+        return elem.lang
+      } else {
+        return ""
       }
     },
   },
