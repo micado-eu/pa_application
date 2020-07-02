@@ -22,9 +22,9 @@
           <ListItem
             v-for="document_type in document_types"
             :key="document_type.id"
-            :Title="document_type.type"
-            :Text="document_type.description"
-            Image="statics/placeholder.jpg"
+            :Title="document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document"
+            :Text="document_type.translations.filter(filterTranslationModel(activeLanguage))[0].description"
+            :Image="document_type.icon"
             :Link="document_type.id"
             @remove="deleteDocument"
           ></ListItem>
@@ -47,7 +47,9 @@ export default {
     ListItem
   },
   data() {
-    return {};
+    return {
+      activeLanguage: this.$i18n.locale
+    };
   },
 
   computed: {
@@ -65,22 +67,28 @@ export default {
         console.log(filt);
         return filt.id == value;
       });
-      this.$store.commit(
+      this.$store.dispatch(
         "document_type/deleteDocumentType",
-        filteredDocuments[0]
+        filteredDocuments[0].id
       );
-    }
+    },
+     filterTranslationModel (currentLang) {
+      return function (element) {
+        return element.lang == currentLang;
+      }
+  }
   },
   created() {
     this.loading = true;
     console.log(this.$store);
     this.$store
-      .dispatch("document_type/fetchDocument_type")
+      .dispatch("document_type/fetchDocumentType")
       .then(document_types => {
         this.loading = false;
-      });
+              });
   }
-};
+  }
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
