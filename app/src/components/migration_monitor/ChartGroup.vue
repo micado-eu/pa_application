@@ -24,44 +24,27 @@ export default {
   components: {
     Chart
   },
-  props: ["category"],
+  props: ["category", "board"],
   data: function() {
     return {
       graph_data: []
     };
   },
   computed: {
-    city_graphs: function() {
-      return JSON.parse(
-        JSON.stringify(this.$store.state.statistics.city_graphs)
-      );
+    charts: function() {
+      return this.$store.state.statistics.charts;
     }
   },
   mounted: function() {
     this.graph_data = [];
-    for (let i = 0; i < this.city_graphs.length; i++) {
-      const graphObj = { ...this.city_graphs[i] };
-      Object.keys(graphObj).forEach(key => {
-        if (typeof graphObj[key] === "string") {
-          graphObj[key] = graphObj[key].trim();
-        }
-      });
-      if (typeof graphObj.content === "string") {
-        graphObj.content = JSON.parse(graphObj.content);
+    this.charts.forEach(c => {
+      if (
+        c.board === this.board &&
+        c.category === this.category
+      ) {
+        this.graph_data.push(c);
       }
-      if (graphObj.category === this.category) {
-        graphObj.content.forEach(item => {
-          item[graphObj.x] = new Date(item[graphObj.x]).getTime();
-          item[graphObj.y] = parseInt(item[graphObj.y]);
-        });
-        if (graphObj.xIsTime) {
-          graphObj.content = graphObj.content.sort(
-            (a, b) => b[graphObj.x] - a[graphObj.x]
-          );
-        }
-        this.graph_data.push(graphObj);
-      }
-    }
+    });
   }
 };
 </script>

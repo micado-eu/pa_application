@@ -97,7 +97,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
         chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/mock');
         chain.resolve.alias.set('api-user-client', 'src/api/user/mock');
-        chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/mock');
+        chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server');
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');
         chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
         chain.resolve.alias.set('api-steps-client', 'src/api/steps/mock');
