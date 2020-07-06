@@ -27,8 +27,6 @@ import VueFormJsonSchema from 'vue-form-json-schema';
 
 Vue.component('vue-form-json-schema', VueFormJsonSchema);
 
-import {setLocale} from './i18n'
 
 
 // here we have to read from settings the various data and also the default lang so here we set the locale
-setLocale('en')
