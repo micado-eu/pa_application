@@ -49,7 +49,7 @@
                 bg-color="grey-3"
                 standout
                 outlined
-                v-model="edit_process.title"
+                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
               />
             </div>
           </div>
@@ -72,7 +72,7 @@
                 bg-color="grey-3"
                 standout
                 outlined
-                v-model="edit_process.text"
+                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
               />
             </div>
           </div>
@@ -210,8 +210,10 @@ export default {
   },
   methods: {
     saveProcess (value) {
+      let workingProcess = JSON.parse(JSON.stringify(this.edit_process));
+
       if (this.is_new) {
-        this.$store.dispatch('flows/saveProcess', value)
+        this.$store.dispatch('flows/saveProcess', workingProcess)
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
         //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
@@ -222,6 +224,11 @@ export default {
         console.log(value)
         console.log(this.processes)
         console.log(this.$store.state.flows)
+      }
+    },
+    filterTranslationModel (currentLang) {
+      return function (element) {
+        return element.lang == currentLang;
       }
     },
     createShell () {

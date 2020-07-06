@@ -8,5 +8,47 @@ export default {
       .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers')
       .then(response => response.data)
       .catch(error_handler);
+  },
+  fetchDocuments () {
+    return fetch(flows, 1000) // wait 1s before returning posts
+  },
+  updateProcess (process) {
+    console.log("fake call to update DB")
+    console.log(process)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(process)
+      }, 0)
+    })
+  },
+  deleteProcess (process) {
+    console.log("fake call to delete DB")
+    console.log(process)
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(process)
+      }, 0)
+    })
+  },
+  saveProcess (process) {
+    console.log("call to save to DB")
+    console.log(process)
+    // create fake id here
+
+    return axiosInstance
+      .post('/backend/1.0.0/processes', process)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  saveProcessTranslation (translation, id) {
+    translation.id = id
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/processes/' + id + '/process-translations', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
   }
+
 }
