@@ -2,6 +2,7 @@ export default {
   timeseries: {},
   origin: {},
   migrants: {},
-  city_graphs: {},
+  city_graphs: [],
+  boards: [],
   categories: []
 }
