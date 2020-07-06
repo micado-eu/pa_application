@@ -6,7 +6,7 @@ export default {
   fetchTopic () {
     return axiosInstance
       .get('/backend/1.0.0/topics?filter[include][0][relation]=translations')
-      .then(response => response.data)
+      .then(response => { return response.data })
       .catch(error_handler);
   },
   saveTopic (topic) {

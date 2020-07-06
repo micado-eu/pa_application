@@ -318,13 +318,15 @@ export default {
       this.loading = false;
     });
     //   this.activeLanguage = this.$i18n.locale,
-    this.$store.dispatch("language/fetchLanguages").then(langs => {
-      let al = this.activeLanguage
-      this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
-      this.createShell()
-      console.log('active language')
-      console.log(this.int_topic_shell)
-    })
+    this.createShell()
+    /*
+        this.$store.dispatch("language/fetchLanguages").then(langs => {
+          let al = this.activeLanguage
+          this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
+          console.log('active language')
+          console.log(this.int_topic_shell)
+        })
+    */
   }
 };
 </script>

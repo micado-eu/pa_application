@@ -96,7 +96,7 @@
             filled
             dense
             clearable
-            v-model="edit_process.user_tags"
+            v-model="edit_process.applicableUsers"
             multiple
             :options="this.u_tags"
             label="User Tags"
@@ -112,7 +112,7 @@
             filled
             dense
             clearable
-            v-model="edit_process.topic_tags"
+            v-model="edit_process.processTopics"
             multiple
             :options="this.t_tags"
             label="Topic Tags"
@@ -163,18 +163,17 @@
 </template>
 
 <script>
-
+import editEntityMixin from '../mixin/editEntityMixin'
 
 export default {
   name: 'PageIndex',
-
+  mixins: [editEntityMixin],
+  props: ["theprocess"],
 
   data () {
     return {
       id: this.$route.params.id,
-      activeLanguage: this.$i18n.locale,
       is_new: true,
-      langTab: this.$defaultLangString,
       edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published: false, publicationDate: null, },
       u_tags: [
 
@@ -194,9 +193,7 @@ export default {
     user () {
       return this.$store.state.user_type.user_type
     },
-    languages () {
-      return this.$store.state.language.languages;
-    },
+
     disabled () {
       if (this.id != null) {
         return false
@@ -226,57 +223,71 @@ export default {
         console.log(this.$store.state.flows)
       }
     },
-    filterTranslationModel (currentLang) {
-      return function (element) {
-        return element.lang == currentLang;
-      }
-    },
+
     createShell () {
       this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published: false, publicationDate: null, }
       this.languages.forEach(l => {
-        //       console.log(l)
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', translationDate: null })
       });
+    },
+    mergeProcess (process) {
+      console.log("MERGING")
+      console.log(process)
+      this.edit_process.id = process.id
+      this.edit_process.link = process.link
+      this.edit_process.published = process.published
+      this.edit_process.publicationDate = process.publicationDate
+      process.translations.forEach(pr => {
+        console.log(pr)
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.edit_process.translations.length; i++) {
+          if (this.edit_process.translations[i].lang == pr.lang) {
+            this.edit_process.translations.splice(i, 1);
+            this.edit_process.translations.push(JSON.parse(JSON.stringify(pr)))
+            break;
+          }
+        }
+      });
+
+      console.log(this.edit_process)
+
+
     }
   },
   created () {
     this.loading = true
     console.log(this.$defaultLangString);
+    this.createShell()
+
     this.$store.dispatch('flows/fetchFlows')
       .then(flows => {
         console.log(flows)
-        this.createShell()
         this.loading = false
       })
-    /*
-  this.$store.dispatch("language/fetchLanguages").then(langs => {
-    let al = this.activeLanguage
-    this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
-    this.createShell()
-    console.log('active language')
-    console.log(this.edit_process)
-  })
-  */
+
     this.$store.dispatch('topic/fetchTopic')
-      .then(topic => {
-        console.log(topic)
-        for (var i = 0; i < this.topic.length; i++) {
-          var the_topic = { label: this.topic[i].topic, value: this.topic[i].id }
+      .then(topics => {
+        console.log(topics)
+        topics.forEach(topic => {
+          var the_topic = { label: topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic, value: topic.id }
           this.t_tags.push(the_topic)
-        }
-        this.loading = false
+        })
+
       })
     this.$store.dispatch('user_type/fetchUserType')
       .then(user_type => {
         console.log(user_type)
 
-        for (var j = 0; j < this.user.length; j++) {
-          var the_user = { label: this.user[j].user_type, value: this.user[j].id }
+        user_type.forEach(ut => {
+          var the_user = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType, value: ut.id }
           this.u_tags.push(the_user)
-        }
-        this.loading = false
+        })
       })
 
+    console.log("THEPROCESS:")
+    console.log(this.theprocess)
+    /*
     if (this.id != null) {
       console.log("ciso ")
       this.is_new = false
@@ -289,9 +300,12 @@ export default {
 
       })
       this.edit_process = Object.assign({}, filteredProcesses[0]);
+      */
+    if (this.theprocess != null) {
+      this.mergeProcess(this.theprocess)
       console.log(this.edit_process)
-
     }
+    // }
   },
 
 }

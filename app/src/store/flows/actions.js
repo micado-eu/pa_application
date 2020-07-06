@@ -31,7 +31,7 @@ export function saveProcess (state, process) {
 
   return client
     .saveProcess(savingProcess)
-    .then(process_return => {
+    .then(async process_return => {
       console.log("SAVED")
       console.log("returned from saving process")
       console.log(process_return)
@@ -40,6 +40,31 @@ export function saveProcess (state, process) {
       }, process_return.id)
       // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
       console.log("after foreach save translation")
+
+      process.processTopics.forEach(function (topic) {
+        client.saveProcessTopic(topic.value, process_return.id)
+      }, process_return.id)
+      console.log("after foreach save topics")
+
+
+      const parti = async () => {
+        await asyncForEach(process.applicableUsers, async (user) => {
+          console.log("IL PROCESS ID È: " + process_return.id)
+          await client.saveProcessUser(user.value, process_return.id)
+        })
+        console.log('Dopo il secondo asyncforeach');
+
+      }
+      await parti()
+
+      /*
+      
+             process.applicableUsers.asyncForEach(function (user) {
+              client.saveProcessUser(user.value, process_return.id)
+            }, process_return.id)
+            */
+      console.log("after foreach save users")
+
       process.id = process_return.id
       // now we need to set the id for all translations
       for (var i = 0; i < process.translations.length; i++) {
@@ -47,4 +72,10 @@ export function saveProcess (state, process) {
       }
       state.commit('saveProcess', process)
     })
+}
+
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }

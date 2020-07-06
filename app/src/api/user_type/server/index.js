@@ -1,12 +1,14 @@
-import axios from 'axios'
+import { axiosInstance } from 'boot/axios'
+import { error_handler } from '../../../helper/utility'
 
 export default {
-  fetchIntegrationCategory () {
-    return axios
-      .get('https://jsonplaceholder.typicode.com/posts')
-      .then(response => response.data)
+  fetchUserType () {
+    return axiosInstance
+      .get('/backend/1.0.0/user-types?filter[include][0][relation]=translations')
+      .then(response => { return response.data })
+      .catch(error_handler);
   },
-  updateIntegrationCategory(integration_category){
+  updateIntegrationCategory (integration_category) {
 
   }
 }

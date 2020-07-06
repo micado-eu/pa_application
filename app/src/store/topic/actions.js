@@ -7,7 +7,10 @@ export function someAction (context) {
 export function fetchTopic (state, data) {
   return client
     .fetchTopic()
-    .then(topic => state.commit('setTopic', topic))
+    .then(topic => {
+      state.commit('setTopic', topic)
+      return topic
+    })
 }
 
 export function editTopic (state, topic_element) {

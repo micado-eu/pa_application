@@ -47,6 +47,7 @@
           :Tag_1="process.user_tags"
           :Tag_2="process.topic_tags"
           :Link="process.id"
+          :theProcess="process"
           Path="guided_process_editor"
           @remove="deleteProcess"
         >
