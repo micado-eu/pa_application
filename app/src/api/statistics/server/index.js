@@ -2,13 +2,21 @@ import timeseries from '../mock/data/timeseries'
 import origin from '../mock/data/origin'
 import migrants from '../mock/data/migrants'
 import categories from '../mock/data/city/categories.json'
+import { axiosInstance } from 'boot/axios'
 
-const charts_request = new Request('http://localhost:3000/charts', {
-    method: 'GET',
-    headers: new Headers(),
-    mode: 'cors',
-    cache: 'default',
-});
+// const charts_request = new Request('http://localhost:3000/charts', {
+//     method: 'GET',
+//     headers: new Headers(),
+//     mode: 'cors',
+//     cache: 'default',
+// });
+
+function fetchCharts() {
+    return axiosInstance
+        .get('/backend/1.0.0/charts')
+        .then(response => response.data)
+        .catch(error_handler);
+}
 
 const fetchLocal = (mockData, time = 0) => {
     return new Promise((resolve) => {
@@ -25,15 +33,15 @@ export default {
             fetchLocal(timeseries, 1000),
             fetchLocal(origin, 1000),
             fetchLocal(migrants, 1000),
-            fetch(charts_request),
+            // fetch(charts_request),
+            fetchCharts(),
             fetchLocal(categories, 1000)])
-
             .then(async (res) => {
                 return {
                     timeseries: res[0],
                     origin: res[1],
                     migrants: res[2],
-                    charts: await res[3].json(),
+                    charts: res[3],
                     categories: res[4],
                 };
             })
