@@ -21,6 +21,7 @@ import intervention_plan from './intervention_plan'
 import information from './information'
 import glossary_category from './glossary_category'
 import information_category from './information_category'
+import settings from './settings'
 
 Vue.use(Vuex)
 
@@ -51,6 +52,7 @@ export default function (/* { ssrContext } */) {
       intervention_plan,
       information,
       glossary_category,
+      settings,
       information_category
     },
 

@@ -15,7 +15,7 @@ export function fetchDocuments (state, data) {
     .then(flows => state.commit('setDocuments', flows))
 }
 
-export function editProcess(state, process) {
+export function editProcess (state, process) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(process)
   return client
@@ -23,10 +23,59 @@ export function editProcess(state, process) {
     .then(process_return => state.commit('editProcess', process_return))
 }
 
-export function saveProcess(state, process) {
+export function saveProcess (state, process) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(process)
+  let savingProcess = JSON.parse(JSON.stringify(process, ['link', 'published']));
+  console.log(savingProcess)
+
   return client
-    .saveProcess(process)
-    .then(process_return => state.commit('saveProcess', process_return))
+    .saveProcess(savingProcess)
+    .then(async process_return => {
+      console.log("SAVED")
+      console.log("returned from saving process")
+      console.log(process_return)
+      process.translations.forEach(function (transl) {
+        client.saveProcessTranslation(transl, process_return.id)
+      }, process_return.id)
+      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
+      console.log("after foreach save translation")
+
+      process.processTopics.forEach(function (topic) {
+        client.saveProcessTopic(topic.value, process_return.id)
+      }, process_return.id)
+      console.log("after foreach save topics")
+
+
+      const parti = async () => {
+        await asyncForEach(process.applicableUsers, async (user) => {
+          console.log("IL PROCESS ID È: " + process_return.id)
+          await client.saveProcessUser(user.value, process_return.id)
+        })
+        console.log('Dopo il secondo asyncforeach');
+
+      }
+      await parti()
+
+      /*
+      
+             process.applicableUsers.asyncForEach(function (user) {
+              client.saveProcessUser(user.value, process_return.id)
+            }, process_return.id)
+            */
+      console.log("after foreach save users")
+
+      process.id = process_return.id
+      // now we need to set the id for all translations
+      for (var i = 0; i < process.translations.length; i++) {
+        process.translations[i].id = process_return.id
+      }
+      state.commit('saveProcess', process)
+    })
+}
+
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }

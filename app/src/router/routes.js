@@ -15,7 +15,7 @@ import InformationNewPage from '../pages/information_centre/InformationNewPage.v
 import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
 import EU from '../components/migration_monitor/EU.vue'
 import Country from '../components/migration_monitor/Country.vue'
-import City from '../components/migration_monitor/City.vue'
+import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import chatBot from '../components/ChatBot.vue'
 
@@ -40,8 +40,8 @@ const routes = [
       { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
       { path: '/guided_process_editor', component: ProcessEditor },
 
-      { path: '/guided_process_editor/edit/:id', component: () => import('components/EditProcess.vue'), props: true, name: process },
-      { path: '/guided_process_editor/edit/', component: () => import('components/EditProcess.vue'), props: true, name: process },
+      //      { path: '/guided_process_editor/edit/:id', component: () => import('components/EditProcess.vue'), props: true, name: process },
+      { path: '/guided_process_editor/edit/', name: 'editprocess', component: () => import('components/EditProcess.vue'), props: (route) => ({ ...route.params }) },
       { path: '/guided_process_editor/edit/:id/steps', component: () => import('pages/StepManager.vue'), props: true, name: process },
 
       { path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process },
@@ -51,10 +51,8 @@ const routes = [
       { path: '/map', component: () => import('components/Map.vue') },
       {
         path: '/situation', component: MigrationSituation, children: [
-          { path: 'eu', component: EU },
-          { path: 'city', component: City },
-          { path: 'country', component: Country },
-          { path: 'editor', component: MigrationSitEditor }
+          { path: 'editor', component: MigrationSitEditor },
+          { path: ':board', component: Board }
         ]
       },
       { path: '/ngo/requestmediation', component: RequestMediation },

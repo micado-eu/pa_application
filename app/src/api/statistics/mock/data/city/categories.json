@@ -1,18 +1,18 @@
 [
     {
         "category": "incoming",
-        "icon": "home"
+        "board": "hamburg"
     },
     {
         "category": "accommodation",
-        "icon": "local_hotel"
+        "board": "hamburg"
     },
     {
         "category": "integration",
-        "icon": "how_to_reg"
+        "board": "hamburg"
     },
     {
         "category": "return",
-        "icon": "airplanemode_active"
+        "board": "hamburg"
     }
 ]

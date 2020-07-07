@@ -77,7 +77,7 @@
             <h5 style="text-align:left;font-size:18px">X axis is unix-timestamp</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-checkbox color="accent" v-model="xIsTime" clickable />
+            <q-checkbox color="accent" v-model="xistime" clickable />
           </div>
         </div>
 
@@ -208,7 +208,7 @@ export default {
       x: "",
       y: "",
       url: "",
-      xIsTime: false,
+      xistime: false,
       data_format: "JSON",
       formats: ["JSON", "csv", "API"],
       category: "",

@@ -6,7 +6,7 @@
         active
         active-class="nav-active"
         class="col"
-        v-for="(d,i) in data"
+        v-for="(d,i) in boards"
         :key="i"
         :to="d.link"
       >
@@ -19,15 +19,12 @@
 <script>
 export default {
   name: "MigrationSituation",
-  data: function() {
-    return {
-      data: [
-        { title: "EU", link: "/situation/eu" },
-        { title: "Country", link: "/situation/country" },
-        { title: "City", link: "/situation/city" },
-        { title: "edit", link: "/situation/editor" }
-      ]
-    };
+  computed: {
+    boards: function() {
+      return this.$store.state.statistics.boards.map(b => {
+        return { title: b, link: `/situation/${b}` };
+      });
+    }
   }
 };
 </script>
@@ -47,5 +44,4 @@ export default {
 h6 {
   margin: 0;
 }
-
 </style>

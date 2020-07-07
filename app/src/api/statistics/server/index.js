@@ -3,7 +3,7 @@ import origin from '../mock/data/origin'
 import migrants from '../mock/data/migrants'
 import categories from '../mock/data/city/categories.json'
 
-const myRequest = new Request('http://localhost:8082/todos', {
+const charts_request = new Request('http://localhost:3000/charts', {
     method: 'GET',
     headers: new Headers(),
     mode: 'cors',
@@ -18,13 +18,14 @@ const fetchLocal = (mockData, time = 0) => {
     })
 }
 
+
 export default {
     fetchStatistics() {
         return Promise.all([
             fetchLocal(timeseries, 1000),
             fetchLocal(origin, 1000),
             fetchLocal(migrants, 1000),
-            fetch(myRequest),
+            fetch(charts_request),
             fetchLocal(categories, 1000)])
 
             .then(async (res) => {
@@ -32,7 +33,7 @@ export default {
                     timeseries: res[0],
                     origin: res[1],
                     migrants: res[2],
-                    city_graphs: await res[3].json(),
+                    charts: await res[3].json(),
                     categories: res[4],
                 };
             })

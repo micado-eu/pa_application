@@ -10,7 +10,7 @@
         </div>
       </router-link>
     </div>
-    <ChartGroup v-for="(c,i) in categories" :key="i" :category="c.category" />
+    <ChartGroup v-for="(c,i) in categories" :key="board+'_'+i" :category="c.category" :board="board" />
   </div>
 </template>
 
@@ -18,23 +18,18 @@
 import ChartGroup from "./ChartGroup";
 
 export default {
-  name: "MigrationSituation",
+  name: "Board",
   components: {
     ChartGroup
   },
-  data: function() {
-    return {
-      anchor: [
-        { title: "incoming", link: "", icon: "directions_run" },
-        { title: "accommodation", link: "", icon: "local_hotel" },
-        { title: "integration", link: "", icon: "how_to_reg" },
-        { title: "return", link: "", icon: "airplanemode_active" }
-      ]
-    };
-  },
   computed: {
     categories: function() {
-      return this.$store.state.statistics.categories;
+      return this.$store.state.statistics.categories.filter(
+        c => c.board === this.board
+      );
+    },
+    board: function() {
+      return this.$route.params.board;
     }
   },
   methods: {
@@ -44,8 +39,6 @@ export default {
     onClickNav: function(category) {
       location.href = this.$route.path + "#" + category;
     }
-  },
-  mounted: function() {
   }
 };
 </script>

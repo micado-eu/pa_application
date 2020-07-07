@@ -10,8 +10,8 @@ export function fetchStatistics(state, data) {
       state.commit('setTimeseries', res.timeseries)
       state.commit('setOrigin', res.origin)
       state.commit('setMigrants', res.migrants)
-      state.commit('setCity_graphs', res.city_graphs)
-      state.commit('setCategories', res.categories)
-
+      state.commit('setCharts', res.charts)
+      state.commit('setBoards', res.charts)
+      state.commit('setCategories', res.charts)
     })
 }
