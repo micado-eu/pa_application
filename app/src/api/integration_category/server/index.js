@@ -18,25 +18,58 @@ export default {
         }, 0)
       })
     },
-    saveIntegrationCategory(integration_category) {
-      console.log("fake call to save to DB")
-      console.log(integration_category)
-      // create fake id here
-      integration_category.id = 999
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(integration_category)
-        }, 0)
-      })
+    updateIntegrationCategory (integration_category) {
+      const whereClause = {
+        id: { eq: integration_category.id }
+      },
+        updatingCategory = (integration_category.publicationDate == null) ? JSON.parse(JSON.stringify(integration_category, ['id', 'published'])) : integration_category
+  
+      return axiosInstance
+        .patch('/backend/1.0.0/intervention-categories?where=' + JSON.stringify(whereClause), updatingCategory)
+        .then(response => response.data)
+        .catch(error_handler);
     },
-    deleteIntegrationCategory(integration_category) {
-      console.log("fake call to save to DB")
-      console.log(integration_category)
+  
+    updateIntegrationCategoryTranslation (translation) {
+      const whereClause = {
+        id: { eq: translation.id }, lang: { eq: translation.lang }
+      },
+        updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title'])) : translation
+  
+      return axiosInstance
+        .patch('/backend/1.0.0/intervention-categories/' + translation.id + '/intervention-category-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+    
+    saveIntegrationCategory (integration_category) {
       // create fake id here
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(integration_category)
-        }, 0)
-      })
-    }
+      return axiosInstance
+        .post('/backend/1.0.0/intervention-categories', integration_category)
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+    saveIntegrationCategoryTranslation (translation, id) {
+      translation.id = id
+      const savingTranslation = JSON.parse(JSON.stringify(translation));
+  
+      // create fake id here
+      return axiosInstance
+        .post('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translations', savingTranslation)
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+    deleteIntegrationCategoryTranslations (id) {
+      return axiosInstance
+        .delete('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translations')
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+  
+    deleteIntegrationCategory (id) {
+      return axiosInstance
+        .delete('/backend/1.0.0/intervention-categories/' + id)
+        .then(response => response.data)
+        .catch(error_handler);
+    },
   }

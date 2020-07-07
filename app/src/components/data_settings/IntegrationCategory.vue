@@ -10,7 +10,7 @@
         v-for="a_integration_category in integration_category"
         :key="a_integration_category.id"
       >
-        <q-item-section>{{a_integration_category.title}}</q-item-section>
+        <q-item-section>{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-2 flex flex-left">
           <q-toggle
             v-model="a_integration_category.published"
@@ -68,7 +68,7 @@
           :key="language.lang"
           :name="language.name"
         >
-        <q-input v-model="int_cat_shell.translations.filter(filterTranslationModel(activeLanguage))[0].title" label="Standard" />
+        <q-input v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title" label="Standard" />
          </q-tab-panel>
         </q-tab-panels>
         <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveIntegrationCategory()" />
@@ -108,12 +108,16 @@ export default {
         index
       );
     },
+    showCategoryLabel (workingCat) {
+     
+      return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].title
+    },
     saveIntegrationCategory() {
       if (this.isNew) {
         // we are adding a new instance
         this.$store
           .dispatch(
-            "integration_category/saveCategoryTypeElement",
+            "integration_category/saveIntegrationCategory",
             this.int_cat_shell
           )
           .then(int_cat => {
@@ -131,7 +135,7 @@ export default {
           });
       }
       this.hideForm = true;
-      this.int_cat_shell = { id: -1, title: "" };
+      this.createShell()
     },
     newIntegrationCategory() {
       this.isNew = true;

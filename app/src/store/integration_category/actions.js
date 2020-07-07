@@ -10,32 +10,69 @@ export function fetchIntegrationCategory(state, data) {
     .then(integration_category => state.commit('setCategoryType', integration_category))
 }
 
-export function editCategoryTypeElement(state, integration_category_element) {
+export function editCategoryTypeElement (state, integration_category) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(integration_category_element)
+  console.log(integration_category)
+  // update translations
   return client
-    .updateIntegrationCategory(integration_category_element)
-    .then(integration_category_return => state.commit('editCategoryTypeElement', integration_category_return))
+    .updateIntegrationCategory(integration_category).then(function (update_return) {
+      // cycle in the translations and update each
+      console.log(update_return)
+      integration_category.translations.forEach(function (aTranslation) {
+        client.updateIntegrationCategoryTranslation(aTranslation).then(function (update_translation_return) {
+          console.log(update_translation_return)
+        })
+      })
+      state.commit('editCategoryTypeElement', integration_category)
+    })
+  // update topic
+  /*
+  return client
+    .updateTopic(topic_element)
+    .then(topic_return => state.commit('editTopic', topic_return))
+    */
 }
-
-export function saveCategoryTypeElement(state, integration_category_element) {
+export function saveIntegrationCategory (state, integration_category) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(integration_category_element)
-  return client
-    .saveIntegrationCategory(integration_category_element)
-    .then(integration_category_return => state.commit('saveCategoryTypeElement', integration_category_return))
+  console.log("in actions savec ategory:")
+  console.log(integration_category)
+  let savingCategory= JSON.parse(JSON.stringify(integration_category, ['published', 'publicationDate']));
+  console.log(savingCategory)
+
+
+  // we need to save first the topic
+  return client.saveIntegrationCategory(savingCategory)
+    .then(function (category_return) {
+      console.log("returned from saving category")
+      console.log(category_return)
+      // in topic_return we have the ID that we need in the following cycle
+      integration_category.translations.forEach(function (transl) {
+        client.saveIntegrationCategoryTranslation(transl, category_return.id)
+      }, category_return.id)
+      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
+      console.log("after foreach save translation")
+      integration_category.id = category_return.id
+      // now we need to set the id for all translations
+      for (var i = 0; i < integration_category.translations.length; i++) {
+        integration_category.translations[i].id = category_return.id
+      }
+      state.commit('saveCategoryTypeElement', integration_category)
+    }
+      // here we cycle for all translations to save each one
+
+    )
 }
 
-export function deleteIntegrationCategory(state, integration_category_element) {
+
+export function deleteIntegrationCategory (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(integration_category_element)
-  return client
-    .deleteIntegrationCategory(integration_category_element)
-    .then(integration_category_return => state.commit('deleteIntegrationCategory', integration_category_return))
+  console.log(index)
+  return client.deleteIntegrationCategoryTranslations(index).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+    client.deleteIntegrationCategory(index).then(function () {
+      state.commit('deleteIntegrationCategory', index)
+    })
+  })
 }
 
-
-/*export function deleteDocument({commit}, document_type) {
-
-  commit(delete_document_type, document_type.id)
-} */
