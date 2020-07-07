@@ -12,33 +12,67 @@ export function fetchUserType (state, data) {
       return user_type
     })
 }
-
-export function editUserTypeElement (state, user_type_element) {
+export function editUserType (state, user_type) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(user_type_element)
+  console.log(user_type)
+  // update translations
   return client
-    .updateUserType(user_type_element)
-    .then(user_type_return => state.commit('editUserTypeElement', user_type_return))
+    .updateUserType(user_type).then(function (update_return) {
+      // cycle in the translations and update each
+      console.log(update_return)
+      user_type.translations.forEach(function (aTranslation) {
+        client.updateUserTypeTranslation(aTranslation).then(function (update_translation_return) {
+          console.log(update_translation_return)
+        })
+      })
+      state.commit('editUserType', user_type)
+    })
+ 
 }
 
-export function saveUserTypeElement (state, user_type_element) {
+
+
+export function saveUserType (state, user_type) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(user_type_element)
-  return client
-    .saveUserType(user_type_element)
-    .then(user_type_return => state.commit('saveUserTypeElement', user_type_return))
+  console.log("in actions save user type:")
+  console.log(user_type)
+  let savingUserType = JSON.parse(JSON.stringify(user_type, ['publicationDate', 'published', 'icon']));
+  console.log(savingUserType)
+
+
+  // we need to save first the user type
+  return client.saveUserType(savingUserType)
+    .then(function (user_type_return) {
+      console.log("returned from saving user type")
+      console.log(user_type_return)
+      // in topic_return we have the ID that we need in the following cycle
+      user_type.translations.forEach(function (transl) {
+        client.saveUserTypeTranslation(transl, user_type_return.id)
+      }, user_type_return.id)
+      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
+      console.log("after foreach save translation")
+      user_type.id = user_type_return.id
+      // now we need to set the id for all translations
+      for (var i = 0; i < user_type.translations.length; i++) {
+        user_type.translations[i].id = user_type_return.id
+      }
+      state.commit('saveUserType', user_type)
+    }
+      // here we cycle for all translations to save each one
+
+    )
+
 }
 
-export function deleteUserType (state, user_type_element) {
+
+export function deleteUserType (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(user_type_element)
-  return client
-    .deleteUserType(user_type_element)
-    .then(user_type_return => state.commit('deleteUserType', user_type_return))
+  console.log(index)
+  return client.deleteUserTypeTranslations(index).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+    client.deleteUserType(index).then(function () {
+      state.commit('deleteUserType', index)
+    })
+  })
 }
-
-
-/*export function deleteDocument({commit}, document_type) {
-
-  commit(delete_document_type, document_type.id)
-} */

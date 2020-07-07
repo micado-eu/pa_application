@@ -36,7 +36,7 @@ const routes = [
       { path: '/chatbot', component: chatBot },
 
 
-      { path: '/adddocument', component: AddDocument },
+      { path: '/adddocument',name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params }) },
       { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
       { path: '/guided_process_editor', component: ProcessEditor },
 

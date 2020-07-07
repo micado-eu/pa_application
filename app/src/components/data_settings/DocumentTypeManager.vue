@@ -26,6 +26,7 @@
             :Text="document_type.translations.filter(filterTranslationModel(activeLanguage))[0].description"
             :Image="document_type.icon"
             :Link="document_type.id"
+            :theDocumentType="document_type"
             @remove="deleteDocument"
           ></ListItem>
         </q-list>

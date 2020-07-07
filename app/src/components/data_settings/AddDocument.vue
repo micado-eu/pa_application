@@ -128,15 +128,15 @@
 import VueHotspot from 'vue-hotspot'
 import axios from 'axios'
 import https from 'https';
+import editEntityMixin from '../../mixin/editEntityMixin'
 
 export default {
   name: 'PageIndex',
   components: {     'v-hotspot': VueHotspot },
-
+  props: ["thedocumenttype"],
+  mixins: [editEntityMixin],
   data (){
     return {
-      activeLanguage: this.$i18n.locale,
-      langTab: '',
       id:this.$route.params.id,
       is_new: true, 
       int_doc_shell: 
@@ -167,10 +167,6 @@ export default {
       return this.$store.state.document_type.document_type
       }
     },
-     languages () {
-      return this.$store.state.language.languages;
-
-    }
   },
   methods: {
       getFiles(files){
@@ -207,11 +203,8 @@ export default {
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null })
       });
       },
-      filterTranslationModel (currentLang) {
-      return function (element) {
-        return element.lang == currentLang;
-      }
-  },
+     
+  
   mergeDoc (doc) {
       console.log(doc)
       this.int_doc_shell.id = doc.id
@@ -256,46 +249,26 @@ export default {
       afterDelete () {
         // Do something after delete
         console.log('Do something after delete ...')
-      }
-      
+      } 
     }, 
      created () {
+      this.createShell()
     this.loading = true
     console.log(this.$store);
     this.$store.dispatch('document_type/fetchDocumentType')
       .then(document_types => {
         this.loading = false
         console.log("i am document types")
-       console.log(document_types)})
-
-    //this causes a bug:the languages are not yet taken when the rest of the stuff occurs
-    this.$store.dispatch("language/fetchLanguages").then( langs => {
-       let al = this.activeLanguage
-      this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
-
-      console.log('active language')
-      //console.log(this.int_topic_shell)
-       if(this.id != null){
-         console.log("ciso ")
-        this.is_new=false
-        this.createShell()
-        console.log("hello")
-         var filteredDocuments = this.document_types.filter((filt) => {
-          console.log("in fil")
-          console.log(filt)
-          console.log(filt.id == this.id)
-          return filt.id == this.id
-        
-         })  
-         console.log("i am filtered docs")
-         console.log(filteredDocuments)
-         this.mergeDoc(filteredDocuments[0])
-         console.log("I am the shell")
-        console.log(this.int_doc_shell)
-         
+       console.log(document_types)
+       }
+       )
+           if (this.thedocumenttype != null) {
+      this.mergeDoc(this.thedocumenttype)
+      console.log(this.int_doc_shell)
+      this.is_new = false
     }
     else{
-      this.createShell()
+      
       console.log("in else")
       console.log(this.int_doc_shell)
     
@@ -304,9 +277,10 @@ export default {
     console.log(this.int_doc_shell)
     
     }
-      
-    })
+
+  
      }
+     
  
 }
 </script>

@@ -7,13 +7,13 @@ export function setUserType(state, user_type) {
   state.user_type = user_type
 }
 
-export function editUserTypeElement(state, user_type_element) {
+export function editUserType(state, user_type_element) {
   console.log("update the state")
   const index = state.user_type.findIndex(item => item.id === user_type_element.id);
   if (index !== -1) state.user_type.splice(index, 1, user_type_element);
 }
 
-export function saveUserTypeElement(state, user_type_element) {
+export function saveUserType(state, user_type_element) {
   console.log("save to the state")
   console.log(user_type_element)
 

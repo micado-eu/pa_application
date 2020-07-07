@@ -171,8 +171,11 @@ function startsWith(wordToCompare) {
 }
 */
 import FileUploader from 'components/FileUploader'
+import editEntityMixin from '../../mixin/editEntityMixin'
+
 export default {
   name: "TopicType",
+  mixins: [editEntityMixin],
   data () {
     return {
       int_topic_shell: { id: -1, translations: [], icon: "" },
@@ -180,8 +183,6 @@ export default {
       hideAdd: false,
       isNew: false,
       topicimage: null,
-      activeLanguage: this.$i18n.locale,
-      langTab: ''
     };
   },
   components: {
@@ -191,9 +192,6 @@ export default {
     topic () {
       return this.$store.state.topic.topic;
     },
-    languages () {
-      return this.$store.state.language.languages;
-    }
   },
   methods: {
     deleteTopic (index) {
@@ -244,11 +242,7 @@ export default {
       //     this.int_topic_shell = JSON.parse(JSON.stringify(topic));
       this.mergeTopic(topic)
     },
-    filterTranslationModel (currentLang) {
-      return function (element) {
-        return element.lang == currentLang;
-      }
-    },
+    
     showTopicLabel (workingTopic) {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
     },

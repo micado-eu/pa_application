@@ -10,7 +10,7 @@
             style="height: 40px; max-width: 40px"
           />
         </q-item-section>
-        <q-item-section class="col-5 flex flex-left">{{a_user_type.user_type}}</q-item-section>
+        <q-item-section class="col-5 flex flex-left">{{showUserTypeLabel(a_user_type)}}</q-item-section>
         <q-item-section class="col-2 flex flex-left">
           <q-toggle
             v-model="a_user_type.published"
@@ -29,13 +29,40 @@
         <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Add" @click="newUserType()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input v-model="int_user_type_shell.user_type" label="User type" />
+         <q-tabs
+          v-model="langTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        <q-tab-panels
+          v-model="langTab"
+          animated
+        >
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
+        <q-input v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType" label="User type" />
         <q-input
-          v-model="int_user_type_shell.description"
+          v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
           filled
           type="textarea"
           label="Description"
         />
+        </q-tab-panel>
+        </q-tab-panels>
           <FileUploader
         :Image="userimage"
         :published="int_user_type_shell.published"
@@ -54,12 +81,14 @@
 
 <script>
 import FileUploader from 'components/FileUploader'
+import editEntityMixin from '../../mixin/editEntityMixin'
 
 export default {
   name: "UserType",
+  mixins: [editEntityMixin],
   data() {
     return {
-      int_user_type_shell: { id: -1, user_type: "", description: "" },
+      int_user_type_shell: { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, },
       hideForm: true,
       hideAdd: false,
       isNew: false, 
@@ -83,31 +112,44 @@ export default {
       if (this.isNew) {
         // we are adding a new instance
         this.$store
-          .dispatch("user_type/saveUserTypeElement", this.int_user_type_shell)
+          .dispatch("user_type/saveUserType", this.int_user_type_shell)
           .then(int_cat => {
             console.log("saved");
           });
       } else {
         // we are updating the exsisting
         this.$store
-          .dispatch("user_type/editUserTypeElement", this.int_user_type_shell)
+          .dispatch("user_type/editUserType", this.int_user_type_shell)
           .then(int_cat => {
             console.log("updated");
           });
       }
       this.hideForm = true;
-      this.int_user_type_shell = { id: -1, user_type: "", description: "" };
+      this.createShell()
     },
     newUserType() {
+      
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;
+    },
+    editUserType(user_type) {
+     
+      this.isNew = false;
+      this.hideForm = false;
+      //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
+      this.mergeUserType(user_type)
+       console.log(this.int_user_type_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0])
+    },
+    showUserTypeLabel (workingTopic) {
+     
+      return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
     },
         createShell () {
       this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, }
       this.languages.forEach(l => {
         //       console.log(l)
-        this.int_topic_shell.translations.push({ id: -1, lang: l.lang, user_type: '', translationDate: null })
+        this.int_user_type_shell.translations.push({ id: -1, lang: l.lang, userType: '', description:"", translationDate: null })
       });
     },
     mergeUserType (user_type) {
@@ -179,6 +221,7 @@ export default {
   },
   //store.commit('increment', 10)
   created() {
+    this.createShell()
     this.loading = true;
     console.log(this.$store);
     this.$store.dispatch("user_type/fetchUserType").then(processes => {

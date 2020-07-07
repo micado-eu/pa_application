@@ -41,8 +41,35 @@
         <q-btn no-caps color="secondary" label="Add" unelevated rounded style="width:70px;border-radius:2px" @click="newIntegrationType()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
+         <q-tabs
+          v-model="langTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        <q-tab-panels
+          v-model="langTab"
+          animated
+        >
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
         <q-input v-model="int_type_shell.title" label="Title" />
         <q-input v-model="int_type_shell.description" filled type="textarea" label="Description" />
+         </q-tab-panel>
+        </q-tab-panels>
         <div class="q-gutter-sm">
           <q-option-group
             :options="normalizedOptions"
@@ -66,6 +93,7 @@
             />
           </q-card-section>
     </q-card>
+   
         <q-btn no-caps color="accent" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
         <q-btn no-caps class="button" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
       </q-card-section>
@@ -75,12 +103,14 @@
 
 <script>
 import FileUploader from 'components/FileUploader'
+import editEntityMixin from '../../mixin/editEntityMixin'
 
 export default {
   name: "IntegrationType",
+  mixins: [editEntityMixin],
   data() {
     return {
-      int_type_shell: { id: -1, title: "", description: "", category_type: 2 },
+      int_type_shell: { id: -1, translations:[], category_type: "", interventionTypeValidators:[], interventionProcess:[] },
       hideForm: true,
       hideAdd: false,
       isNew: false
@@ -131,12 +161,7 @@ export default {
           });
       }
       this.hideForm = true;
-      this.int_type_shell = {
-        id: -1,
-        title: "",
-        description: "",
-        category_type: 2
-      };
+      this.createShell()
     },
     newIntegrationType() {
       this.isNew = true;
@@ -151,11 +176,46 @@ export default {
     editIntegrationType(integration_type) {
       this.isNew = false;
       this.hideForm = false;
-      this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
+      //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
+      this.mergeType(integration_type)
+    },
+    createShell () {
+      this.int_type_shell = {  id: -1, translations:[], category_type: "", interventionTypeValidators:[], interventionProcess:[], published: false, publicationDate: null, }
+      this.languages.forEach(l => {
+        this.int_type_shell.translations.push({ id: -1, lang: l.lang, intervention_title: '', description: '', translationDate: null })
+      });
+    },
+    mergeType (intervention_type) {
+      console.log("MERGING")
+      console.log(process)
+      this.int_type_shell.id = intervention_type.id
+      this.int_type_shell.link = intervention_type.link
+      this.int_type_shell.published = intervention_type.published
+      this.int_type_shell.publicationDate = intervention_type.publicationDate
+      this.int_type_shell.category_type = intervention_type.category_type
+      this.int_type_shell.interventionTypeValidators = intervention_type.interventionTypeValidators
+      this.int_type_shell.interventionProcess = intervention_type.interventionProcess
+      intervention_type.translations.forEach(pr => {
+        console.log(pr)
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.int_type_shell.translations.length; i++) {
+          if (this.int_type_shell.translations[i].lang == pr.lang) {
+            this.int_type_shell.translations.splice(i, 1);
+            this.int_type_shell.translations.push(JSON.parse(JSON.stringify(pr)))
+            break;
+          }
+        }
+      });
+
+      console.log(this.int_type_shell)
+
+
     }
   },
   //store.commit('increment', 10)
   created() {
+    this.createShell()
     this.loading = true;
     console.log(this.$store);
     this.$store

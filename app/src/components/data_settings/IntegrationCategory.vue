@@ -11,6 +11,13 @@
         :key="a_integration_category.id"
       >
         <q-item-section>{{a_integration_category.title}}</q-item-section>
+        <q-item-section class="col-2 flex flex-left">
+          <q-toggle
+            v-model="a_integration_category.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
         <q-item-section class="col-5 flex flex-center">
           <q-btn
             color="negative"
@@ -36,7 +43,34 @@
         <q-btn color="secondary" label="Add" @click="newIntegrationCategory()" :disable="hideAdd" />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input v-model="int_cat_shell.title" label="Standard" />
+           <q-tabs
+        v-model="langTab"
+        dense
+        class="text-grey"
+        active-color="primary"
+        indicator-color="primary"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+          :label="language.name"
+        />
+      </q-tabs>
+      <q-tab-panels
+        v-model="langTab"
+        animated
+      >
+        <q-tab-panel
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+        >
+        <q-input v-model="int_cat_shell.translations.filter(filterTranslationModel(activeLanguage))[0].title" label="Standard" />
+         </q-tab-panel>
+        </q-tab-panels>
         <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveIntegrationCategory()" />
         <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelIntegrationCategory()" />
       </q-card-section>
@@ -45,11 +79,14 @@
 </template>
 
 <script>
+import editEntityMixin from '../../mixin/editEntityMixin'
+
 export default {
   name: "IntegrationCategory",
+  mixins: [editEntityMixin],
   data() {
     return {
-      int_cat_shell: { id: -1, title: "" },
+      int_cat_shell: { id: -1,  translations:[] },
       hideForm: true,
       hideAdd: false,
       isNew: false
@@ -109,11 +146,40 @@ export default {
     editIntegrationCategory(integration_category) {
       this.isNew = false;
       this.hideForm = false;
-      this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
-    }
+      //this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
+      this.mergeCategory(integration_category)
+    },
+      createShell () {
+      this.int_cat_shell = { id: -1,  translations: [], published: false, publicationDate: null, }
+      this.languages.forEach(l => {
+        //       console.log(l)
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null })
+      });
+    },
+    mergeCategory (category) {
+      console.log(category)
+      this.int_cat_shell.id = category.id
+      category.translations.forEach(tr => {
+        console.log(tr)
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.int_cat_shell.translations.length; i++) {
+          if (this.int_cat_shell.translations[i].lang == tr.lang) {
+            this.int_cat_shell.translations.splice(i, 1);
+            this.int_cat_shell.translations.push(JSON.parse(JSON.stringify(tr)))
+            break;
+          }
+        }
+      });
+
+      console.log(this.int_cat_shell)
+
+
+    },
   },
   //store.commit('increment', 10)
   created() {
+    this.createShell()
     this.loading = true;
     console.log(this.$store);
     this.$store
@@ -121,6 +187,7 @@ export default {
       .then(processes => {
         this.loading = false;
       });
+      
   }
 };
 </script>

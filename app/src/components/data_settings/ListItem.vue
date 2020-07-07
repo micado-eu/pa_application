@@ -51,7 +51,7 @@
         rounded 
         label="Edit"
         no-caps
-        :to="'adddocument/' + this.Link"/>
+        @click="editDocumentType()"/>
       </div>
       <div 
       class="row" 
@@ -78,7 +78,7 @@
 <script>
 export default {
   name: 'ListItem',
-  props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link", "ID"],
+  props: ["Title", "Text", "Image", "Tag_1", "Tag_2", "Bool", "Link", "ID", "theDocumentType"],
   data() {
     return {};
   }, 
@@ -88,6 +88,11 @@ export default {
       console.log(this.Link)
       this.$emit('remove', this.Link)
 
+    },
+    editDocumentType () {
+      console.log("prima di mandare i process")
+      console.log(this.theDocumentType)
+      this.$router.push({ name: 'editdocumenttype', params: { thedocumenttype: this.theDocumentType } })
     }
   }
 };
