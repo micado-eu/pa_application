@@ -3,16 +3,19 @@ import { error_handler } from '../../../helper/utility'
 
 
 export default {
+  fetchTopic () {
     return axiosInstance
       .get('/backend/1.0.0/topics?filter[include][0][relation]=translations')
       .catch(error_handler);
   },
+  saveTopic (topic) {
     // create fake id here
     return axiosInstance
       .post('/backend/1.0.0/topics', topic)
       .then(response => response.data)
       .catch(error_handler);
   },
+  saveTopicTranslation (translation, id) {
     translation.id = id
     const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic']));
 
