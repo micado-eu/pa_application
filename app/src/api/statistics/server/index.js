@@ -3,6 +3,7 @@ import origin from '../mock/data/origin'
 import migrants from '../mock/data/migrants'
 import categories from '../mock/data/city/categories.json'
 import { axiosInstance } from 'boot/axios'
+import { error_handler } from '../../../helper/utility'
 
 // const charts_request = new Request('http://localhost:3000/charts', {
 //     method: 'GET',
@@ -42,6 +43,7 @@ export default {
                     origin: res[1],
                     migrants: res[2],
                     charts: res[3],
+                    // charts: await res[3].json().then(data=>data),
                     categories: res[4],
                 };
             })
