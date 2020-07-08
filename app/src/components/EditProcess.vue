@@ -98,6 +98,8 @@
             clearable
             v-model="edit_process.applicableUsers"
             multiple
+            emit-value
+            map-options
             :options="this.u_tags"
             label="User Tags"
             style="width: 200px"
@@ -114,6 +116,8 @@
             clearable
             v-model="edit_process.processTopics"
             multiple
+            emit-value
+            map-options
             :options="this.t_tags"
             label="Topic Tags"
             style="width: 200px"
@@ -238,7 +242,7 @@ export default {
       this.edit_process.published = process.published
       this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsers = process.applicableUsers
-      this.edit_process.processTopics = process.processTopics
+      //    this.edit_process.processTopics = process.processTopics
       process.translations.forEach(pr => {
         console.log(pr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
@@ -252,23 +256,28 @@ export default {
         }
       });
 
+      // here we have to cycle on topics and use the processTopics data to set the chosen ones
+      process.processTopics.forEach(the_topic => {
+        this.edit_process.processTopics.push(the_topic.idTopic)
+      })
+      console.log("THE MERGED OBJECT")
       console.log(this.edit_process)
 
 
     }
   },
-  created () {
+  async created () {
     this.loading = true
     console.log(this.$defaultLangString);
     this.createShell()
 
-    this.$store.dispatch('flows/fetchFlows')
+    await this.$store.dispatch('flows/fetchFlows')
       .then(flows => {
         console.log(flows)
         this.loading = false
       })
 
-    this.$store.dispatch('topic/fetchTopic')
+    await this.$store.dispatch('topic/fetchTopic')
       .then(topics => {
         console.log(topics)
         topics.forEach(topic => {
@@ -277,7 +286,7 @@ export default {
         })
 
       })
-    this.$store.dispatch('user_type/fetchUserType')
+    await this.$store.dispatch('user_type/fetchUserType')
       .then(user_type => {
         console.log(user_type)
 

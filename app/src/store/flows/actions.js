@@ -34,21 +34,24 @@ export function saveProcess (state, process) {
       // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
       console.log("after foreach save translation")
 
-      process.processTopics.forEach(function (topic) {
-        client.saveProcessTopic(topic.value, process_return.id)
-      }, process_return.id)
-      console.log("after foreach save topics")
+      const saveTopics = async () => {
+        await asyncForEach(process.processTopics, async (topic) => {
+          console.log(topic)
+          await client.saveProcessTopic(topic, process_return.id)
+        })
+        console.log("after foreach save topics")
+      }
+      await saveTopics()
 
-
-      const parti = async () => {
+      const saveUsers = async () => {
         await asyncForEach(process.applicableUsers, async (user) => {
           console.log("IL PROCESS ID È: " + process_return.id)
           await client.saveProcessUser(user.value, process_return.id)
         })
-        console.log('Dopo il secondo asyncforeach');
+        console.log('Dopo il applicableUsers');
 
       }
-      await parti()
+      await saveUsers()
 
       /*
       
@@ -100,17 +103,17 @@ export function editProcess (state, process) {
       process.translations.forEach(function (aTranslation) {
         client.updateProcessTranslation(aTranslation).then(function (update_translation_return) {
           console.log(update_translation_return)
-          client.updateProcessTopic(process).then(function (update_process_topics_return){
-              console.log(update_process_topics_return)
-              client.updateProcessUser(process).then(function (update_process_user_return){
-                console.log(update_process_user_return)
-              })
+          client.updateProcessTopic(process).then(function (update_process_topics_return) {
+            console.log(update_process_topics_return)
+            client.updateProcessUser(process).then(function (update_process_user_return) {
+              console.log(update_process_user_return)
+            })
           })
         })
       })
       state.commit('editProcess', process)
     })
-  
+
 }
 
 async function asyncForEach (array, callback) {
