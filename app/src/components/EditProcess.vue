@@ -223,13 +223,13 @@ export default {
         this.$store.dispatch('flows/editProcess', value);
         console.log(this.is_new)
         console.log(value)
-        console.log(this.processes)
+        console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published: false, publicationDate: null, }
+      this.edit_process = { id: -1, applicableUsers: [], applicableUsersOrig:[], translations: [], processTopics: [], processTopicsOrig:[],  link: "", published: false, publicationDate: null, }
       this.languages.forEach(l => {
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', translationDate: null })
       });
@@ -241,7 +241,9 @@ export default {
       this.edit_process.link = process.link
       this.edit_process.published = process.published
       this.edit_process.publicationDate = process.publicationDate
-      this.edit_process.applicableUsers = process.applicableUsers
+      this.edit_process.applicableUsersOrig = []
+      this.edit_process.processTopicsOrig = []
+      //this.edit_process.applicableUsers = process.applicableUsers
       //    this.edit_process.processTopics = process.processTopics
       process.translations.forEach(pr => {
         console.log(pr)
@@ -255,23 +257,29 @@ export default {
           }
         }
       });
+            console.log("pre-topics foreach")
 
       // here we have to cycle on topics and use the processTopics data to set the chosen ones
       if (process.processTopics != null) {
         process.processTopics.forEach(the_topic => {
           this.edit_process.processTopics.push(the_topic.idTopic)
+          this.edit_process.processTopicsOrig.push(the_topic.idTopic)
         })
       }
 
       if (process.applicableUsers != null) {
         process.applicableUsers.forEach(the_user => {
           this.edit_process.applicableUsers.push(the_user.idUserTypes)
+          this.edit_process.applicableUsersOrig.push(the_user.idUserTypes)
+
         })
       }
 
       console.log("THE MERGED OBJECT")
       console.log(this.edit_process)
+      
 
+     
 
     }
   },
@@ -322,6 +330,7 @@ export default {
       this.edit_process = Object.assign({}, filteredProcesses[0]);
       */
     if (this.theprocess != null) {
+      this.is_new = false
       this.mergeProcess(this.theprocess)
       console.log(this.edit_process)
     }
