@@ -73,6 +73,29 @@ export function saveProcess (state, process) {
       state.commit('saveProcess', process)
     })
 }
+export function deleteProcess (state, index) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(index)
+  return client.deleteProcessTranslations(index).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+
+    client.deleteProcessUser(index).then(function (process_return) {
+      console.log(process_return)
+      client.deleteProcessTopic(index).then(function (topic_return) {
+        console.log(topic_return)
+      })
+    })
+    client.deleteProcess(index).then(function () {
+      state.commit('deleteProcess', index)
+    })
+  })
+  /*
+  return client
+    .deleteTopic(topic_element)
+    .then(topic_return => state.commit('deleteTopic', topic_return))
+    */
+}
 
 async function asyncForEach (array, callback) {
   for (let index = 0; index < array.length; index++) {

@@ -92,7 +92,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
         chain.resolve.alias.set('api-documents-client', 'src/api/documents/mock');
         chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server');
-        chain.resolve.alias.set('api-integration_type-client', 'src/api/integration_type/mock');
+        chain.resolve.alias.set('api-integration_type-client', 'src/api/integration_type/server');
         chain.resolve.alias.set('api-integration_category-client', 'src/api/integration_category/server');
         chain.resolve.alias.set('api-intervention_plan-client', 'src/api/intervention_plan/mock');
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');

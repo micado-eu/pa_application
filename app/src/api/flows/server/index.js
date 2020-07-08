@@ -21,14 +21,31 @@ export default {
       }, 0)
     })
   },
-  deleteProcess (process) {
-    console.log("fake call to delete DB")
-    console.log(process)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(process)
-      }, 0)
-    })
+
+  deleteProcessTranslations (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+
+  deleteProcess (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessTopic (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-topics')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessUser (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-users')
+      .then(response => response.data)
+      .catch(error_handler);
   },
   saveProcess (process) {
     console.log("call to save to DB")

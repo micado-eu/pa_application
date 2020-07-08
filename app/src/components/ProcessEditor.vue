@@ -105,7 +105,7 @@ export default {
         console.log(filt)
         return filt.id == value
       })
-      this.$store.commit('flows/deleteProcess', deletedProcess[0])
+      this.$store.dispatch('flows/deleteProcess', deletedProcess[0].id)
     },
     filterTranslationModel (currentLang) {
       return function (element) {

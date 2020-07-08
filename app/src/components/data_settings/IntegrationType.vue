@@ -8,7 +8,7 @@
         v-for="a_integration_type in integration_type"
         :key="a_integration_type.id"
       >
-        <q-item-section>{{a_integration_type.title}}</q-item-section>
+        <q-item-section>{{showTypeLabel(a_integration_type)}}</q-item-section>
        <q-item-section class="col-5 flex flex-left">
           <q-toggle
             v-model="a_integration_type.published"
@@ -66,8 +66,8 @@
             :key="language.lang"
             :name="language.name"
           >
-        <q-input v-model="int_type_shell.title" label="Title" />
-        <q-input v-model="int_type_shell.description" filled type="textarea" label="Description" />
+        <q-input v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle" label="Title" />
+        <q-input v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description" filled type="textarea" label="Description" />
          </q-tab-panel>
         </q-tab-panels>
         <div class="q-gutter-sm">
@@ -75,7 +75,7 @@
             :options="normalizedOptions"
             label="Notifications"
             type="radio"
-            v-model="int_type_shell.category_type"
+            v-model="int_type_shell.categoryType"
           />
         </div>
         <q-card class="mycard">
@@ -110,7 +110,7 @@ export default {
   mixins: [editEntityMixin],
   data() {
     return {
-      int_type_shell: { id: -1, translations:[], category_type: "", interventionTypeValidators:[], interventionProcess:[] },
+      int_type_shell: { id: -1, translations:[], categoryType: null },
       hideForm: true,
       hideAdd: false,
       isNew: false
@@ -161,6 +161,7 @@ export default {
           });
       }
       this.hideForm = true;
+      this.hideAdd = false
       this.createShell()
     },
     newIntegrationType() {
@@ -179,10 +180,14 @@ export default {
       //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
       this.mergeType(integration_type)
     },
+    showTypeLabel (workingType) {
+     
+      return workingType.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle
+    },
     createShell () {
-      this.int_type_shell = {  id: -1, translations:[], category_type: "", interventionTypeValidators:[], interventionProcess:[], published: false, publicationDate: null, }
+      this.int_type_shell = {  id: -1, translations:[], categoryType: null, published: false, publicationDate: null, }
       this.languages.forEach(l => {
-        this.int_type_shell.translations.push({ id: -1, lang: l.lang, intervention_title: '', description: '', translationDate: null })
+        this.int_type_shell.translations.push({ id: -1, lang: l.lang, interventionTitle: '', description: '', translationDate: null })
       });
     },
     mergeType (intervention_type) {
@@ -192,8 +197,7 @@ export default {
       this.int_type_shell.link = intervention_type.link
       this.int_type_shell.published = intervention_type.published
       this.int_type_shell.publicationDate = intervention_type.publicationDate
-      this.int_type_shell.category_type = intervention_type.category_type
-      this.int_type_shell.interventionTypeValidators = intervention_type.interventionTypeValidators
+      this.int_type_shell.categoryType = intervention_type.categoryType
       this.int_type_shell.interventionProcess = intervention_type.interventionProcess
       intervention_type.translations.forEach(pr => {
         console.log(pr)

@@ -9,15 +9,8 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
-    updateIntegrationCategory(integration_category) {
-      console.log("fake call to update DB")
-      console.log(integration_category)
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(integration_category)
-        }, 0)
-      })
-    },
+  
+
     updateIntegrationCategory (integration_category) {
       const whereClause = {
         id: { eq: integration_category.id }

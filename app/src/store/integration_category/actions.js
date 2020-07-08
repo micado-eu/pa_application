@@ -25,12 +25,6 @@ export function editCategoryTypeElement (state, integration_category) {
       })
       state.commit('editCategoryTypeElement', integration_category)
     })
-  // update topic
-  /*
-  return client
-    .updateTopic(topic_element)
-    .then(topic_return => state.commit('editTopic', topic_return))
-    */
 }
 export function saveIntegrationCategory (state, integration_category) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
