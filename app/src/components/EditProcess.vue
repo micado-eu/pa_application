@@ -257,9 +257,18 @@ export default {
       });
 
       // here we have to cycle on topics and use the processTopics data to set the chosen ones
-      process.processTopics.forEach(the_topic => {
-        this.edit_process.processTopics.push(the_topic.idTopic)
-      })
+      if (process.processTopics != null) {
+        process.processTopics.forEach(the_topic => {
+          this.edit_process.processTopics.push(the_topic.idTopic)
+        })
+      }
+
+      if (process.applicableUsers != null) {
+        process.applicableUsers.forEach(the_user => {
+          this.edit_process.applicableUsers.push(the_user.idUserTypes)
+        })
+      }
+
       console.log("THE MERGED OBJECT")
       console.log(this.edit_process)
 
