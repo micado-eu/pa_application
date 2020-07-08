@@ -15,13 +15,6 @@ export function fetchDocuments (state, data) {
     .then(flows => state.commit('setDocuments', flows))
 }
 
-export function editProcess (state, process) {
-  // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(process)
-  return client
-    .updateProcess(process)
-    .then(process_return => state.commit('editProcess', process_return))
-}
 
 export function saveProcess (state, process) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
@@ -95,6 +88,29 @@ export function deleteProcess (state, index) {
     .deleteTopic(topic_element)
     .then(topic_return => state.commit('deleteTopic', topic_return))
     */
+}
+export function editProcess (state, process) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log(process)
+  // update translations
+  return client
+    .updateProcess(process).then(function (update_return) {
+      // cycle in the translations and update each
+      console.log(update_return)
+      process.translations.forEach(function (aTranslation) {
+        client.updateProcessTranslation(aTranslation).then(function (update_translation_return) {
+          console.log(update_translation_return)
+          client.updateProcessTopic(process).then(function (update_process_topics_return){
+              console.log(update_process_topics_return)
+              client.updateProcessUser(process).then(function (update_process_user_return){
+                console.log(update_process_user_return)
+              })
+          })
+        })
+      })
+      state.commit('editProcess', process)
+    })
+  
 }
 
 async function asyncForEach (array, callback) {

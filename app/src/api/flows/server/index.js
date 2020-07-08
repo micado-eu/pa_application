@@ -84,6 +84,52 @@ export default {
       .post('/backend/1.0.0/processes/' + id + '/process-users', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
+  },
+
+  updateProcess (process) {
+    const whereClause = {
+      id: { eq: process.id }
+    },
+      updatingProcess= (process.publicationDate == null) ? JSON.parse(JSON.stringify(process, ['id', 'link', 'published'])) : process
+
+    return axiosInstance
+      .patch('/backend/1.0.0/processes?where=' + JSON.stringify(whereClause), updatingProcess)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  updateProcessUser (process) {
+    const whereClause = {
+      idProcess: { eq: process.id }
+    },
+      updatingProcessUser=  JSON.parse(JSON.stringify(process.applicableUsers, ['idProcess', 'idUserTypes']))
+
+    return axiosInstance
+      .patch('/backend/1.0.0/processes' + process.id + 'process-users?where=' + JSON.stringify(whereClause), updatingProcessUser)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  updateProcessTopic (process) {
+    const whereClause = {
+      idProcess: { eq: process.id }
+    },
+      updatingProcessTopic=  JSON.parse(JSON.stringify(process.applicableUsers, ['idProcess', 'idTopic']))
+
+    return axiosInstance
+      .patch('/backend/1.0.0/processes' + process.id + 'process-topics?where=' + JSON.stringify(whereClause), updatingProcessTopic)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+
+  updateProcessTranslation (translation) {
+    const whereClause = {
+      id: { eq: translation.id }, lang: { eq: translation.lang }
+    },
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'prcess', 'description'])) : translation
+
+    return axiosInstance
+      .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
   }
 
 }

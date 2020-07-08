@@ -237,6 +237,8 @@ export default {
       this.edit_process.link = process.link
       this.edit_process.published = process.published
       this.edit_process.publicationDate = process.publicationDate
+      this.edit_process.applicableUsers = process.applicableUsers
+      this.edit_process.processTopics = process.processTopics
       process.translations.forEach(pr => {
         console.log(pr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
