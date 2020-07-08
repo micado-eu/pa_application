@@ -83,10 +83,10 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
 
       },
-      chainWebpack (chain, { isServer, isClient }) {
+      chainWebpack(chain, { isServer, isClient }) {
         chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
         chain.resolve.alias.set('api-features-client', 'src/api/features/server');
         chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/mock');
@@ -104,7 +104,6 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/mock');
         chain.resolve.alias.set('api-information-client', 'src/api/information/mock');
         chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server');
-        chain.resolve.alias.set('api-glossary_category-client', 'src/api/glossary_category/mock');
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/mock');
         chain.resolve.alias.set('api-ngo_user-client', 'src/api/ngo_user/mock')
       }
@@ -177,7 +176,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
       // bundler: 'builder', // or 'packager'
-      extendWebpack (cfg) {
+      extendWebpack(cfg) {
 
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack

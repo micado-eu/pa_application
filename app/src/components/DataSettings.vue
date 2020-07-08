@@ -58,11 +58,6 @@
                   label="Integration Types"
                 />
                 <q-tab
-                  name="dataGlossaryCat"
-                  icon="sort_by_alpha"
-                  label="Glossary Categories"
-                />
-                <q-tab
                   name="dataInfoCat"
                   icon="information"
                   label="Information Centre Categories"
@@ -97,9 +92,6 @@
 
                 <q-tab-panel name="dataIntType">
                   <IntegrationType @scroll="scrollTo" />
-                </q-tab-panel>
-                <q-tab-panel name="dataGlossaryCat">
-                  <GlossaryCategory @scroll="scrollTo" />
                 </q-tab-panel>
                 <q-tab-panel name="dataInfoCat">
                   <InformationCategory @scroll="scrollTo" />
@@ -138,7 +130,6 @@ import Topic from "./data_settings/Topic";
 import UserType from "./data_settings/UserType";
 import ActiveLanguageSelector from "./settings/ActiveLanguageSelector.vue";
 import FunctionConfiguration from "./settings/FunctionConfiguration.vue";
-import GlossaryCategory from "./data_settings/GlossaryCategory";
 import InformationCategory from "./data_settings/InformationCategory";
 
 const TIMEOUT = 1;
@@ -153,7 +144,6 @@ export default {
     UserType,
     ActiveLanguageSelector,
     FunctionConfiguration,
-    GlossaryCategory,
     InformationCategory
   },
   data() {

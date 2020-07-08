@@ -19,7 +19,6 @@ import user from './user'
 import ngo_user from './ngo_user'
 import intervention_plan from './intervention_plan'
 import information from './information'
-import glossary_category from './glossary_category'
 import information_category from './information_category'
 import settings from './settings'
 
@@ -51,7 +50,6 @@ export default function (/* { ssrContext } */) {
       ngo_user,
       intervention_plan,
       information,
-      glossary_category,
       settings,
       information_category
     },
