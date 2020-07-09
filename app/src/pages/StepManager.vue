@@ -48,7 +48,7 @@
             :afterCreated="afterCreated"
           >
             <cy-element
-              v-for="def in testdata"
+              v-for="def in elements"
               :key="`${def.data.id}`"
               :definition="def"
               v-on:click="editStep($event, def)"
@@ -229,6 +229,7 @@ import Step from 'components/Step'
 //import { Core, EventObject } from 'cytoscape'
 import configcy from '../configs/cytoscapeConfig'
 import edgeHandles from 'cytoscape-edgehandles'
+import { v4 as uuidv4 } from 'uuid';
 
 export default {
   //name: 'DocumentType',
@@ -243,9 +244,11 @@ export default {
     return {
       id: this.$route.params.id,
       configcy,
+      mycy: null,
       is_new: false,
       graph_id: null,
       testdata: [],
+      refresher: 0,
       editing: false,
       selected_node: "",
       documents_list: [
@@ -291,8 +294,22 @@ export default {
     graphs () {
       return this.$store.state.graphs.graphs
     },
+    elements () {
+      return this.$store.state.graphs.graphs.elements
+    },
 
   },
+  watch: {
+    refresher: function () {
+      this.$refs.cyRef.instance.layout({
+        name: 'breadthfirst',
+        avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+        directed: true,
+      }).run();
+      this.$refs.cyRef.instance.resize();
+    }
+  },
+
   methods: {
     deleteStep (value) {
       var deletedSteps = this.steps.filter((filt) => {
@@ -315,73 +332,30 @@ export default {
       console.log(node)
       if (node.group == "nodes") {
         console.log("editing")
+
         this.editing = true
 
-
-        console.log("I'm old")
-        this.is_new = false
+        if (node.data.is_new) {
+          console.log("NEW NODE")
+        }
+        else {
+          console.log("I'm old")
+          this.is_new = false
+        }
         this.edit_step = JSON.parse(JSON.stringify(node))
         console.log("this is edit step")
 
         console.log(this.edit_step)
 
-      }    },
+      }
+    },
 
     saveStep (value) {
-
       console.log(value)
-      console.log("value above")
-      let my_elements = []
-      var nodes = this.cy.elements().nodes().jsons()
-      var edges = this.cy.elements().edges().jsons()
-      for (let i = 0; i < nodes.length; i++) {
-        my_elements.push(nodes[i])
-      }
-      for (let i = 0; i < edges.length; i++) {
-        my_elements.push(edges[i])
-      }
-      for (let i = 0; i < my_elements.length; i++) {
-        console.log(my_elements[i].classes)
-        if (my_elements[i].classes == "eh-handle") {
-          my_elements.splice(i, 1)
-        }
-      }
-      var index = my_elements.findIndex(item => item.data.id == value.data.id)
-      console.log("this is the index")
-      console.log(index)
-      my_elements.splice(index, 1, value)
-
-      var data_index = this.testdata.findIndex(item => item.data.id == value.data.id)
-      console.log("this is the index")
-      console.log(index)
-      this.testdata.splice(data_index, 1, value)
-
-
-      console.log("these are the elements")
-      console.log(my_elements)
-      if (this.graph_id != null) {
-        var edit_graph = {
-          id_graph: this.graph_id,
-          elements: my_elements,
-          graph_process: this.id
-        }
-        this.$store.dispatch('graphs/editGraphs', edit_graph)
-        console.log("I am the store")
-        console.log(this.$store.state.graphs)
-      }
-      else {
-        var edit_graph = {
-          id_graph: 999,
-          elements: my_elements,
-          graph_process: this.id
-        }
-        this.$store.dispatch('graphs/saveGraphs', edit_graph)
-        console.log("I am the store")
-        console.log(this.$store.state.graphs)
-      }
-
-
-      this.editing = false
+      this.$store.dispatch('graphs/changeNode', value)
+        .then(ret => {
+          this.refresher += 1
+        })
 
     },
     saveGraph () {
@@ -457,11 +431,11 @@ export default {
 
 
     addNode (event, cy) {
-
-      this.cy.add({
+      this.$store.dispatch('graphs/addNode', {
         group: 'nodes',
         data: {
-          id: 999,
+          id: uuidv4(),
+          is_new: true,
           title: "new step",
           location: "",
           cost: "",
@@ -469,25 +443,29 @@ export default {
           linked_processes: [],
           description: "",
           process_id: [this.id]        },
-        position: { x: 300, y: 250 },
+        //      position: { x: 150, y: 150 },
       })
-      this.testdata.push({
-        group: 'nodes',
-        data: {
-          id: 999,
-          title: "new step",
-          location: "",
-          cost: "",
-          required_documents: [],
-          linked_processes: [],
-          description: "",
-          process_id: [this.id]        },
-        position: { x: 250, y: 250 },
-      })
-      console.log("final test data")
-      console.log(this.testdata)
-      console.log(this.cy.elements().edges().jsons())
-      console.log("adding node", event.target);
+        .then(ret => {
+          this.refresher += 1
+        })
+      /*
+      this.$refs.cyRef.instance.layout({
+        name: 'grid',
+        avoidOverlap: true,
+        rows: 1,
+        avoidOverlapPadding: 10, // extra spacing around nodes when avoidOverlap: true
+        nodeDimensionsIncludeLabels: false, // Excludes the label when calculating node bounding boxes for the layout algorithm
+        condense: true, // uses all available space on false, uses minimal space on true
+      }).run();
+  */
+      /*
+            this.$refs.cyRef.instance.layout({
+              name: 'breadthfirst',
+              avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+              directed: true,
+            }).run();
+            this.$refs.cyRef.instance.resize();
+            */
     },
 
     /*updateNode(event, node) {
@@ -516,12 +494,13 @@ export default {
       // cy: this is the cytoscape instance
 
       console.log("after created", cy);
-      this.cy = cy;
+      //      this.cy = cy;
+      //     this.mycy = cy;
       console.log(this.testdata)
-      this.cy.edgehandles();
-      //cy.layout({ name: 'cose' }).run();
-      cy.resize();
-      //console.log("i'm here")
+      cy.edgehandles();
+      //      cy.layout({ name: 'grid' }).run();
+      //      cy.resize();
+      console.log("i'm here")
 
     },
 
@@ -532,13 +511,7 @@ export default {
 
   created () {
     this.loading = true
-    /*
-    this.$store.dispatch('flows/fetchFlows')
-      .then(processes => {
-        this.loading = false
-      })  
-      console.log(this.$store);
-      */
+    console.log("in created")
     this.$store.dispatch('steps/fetchSteps')
       .then(steps => {
         this.loading = false
@@ -546,31 +519,29 @@ export default {
     console.log(this.$store);
     this.$store.dispatch('graphs/fetchGraphs', { id: this.id, userLang: this.$userLang })
       .then(graphs => {
-        /*
-        var filteredGraphs = this.graphs.filter((filt) => {
-          //console.log("in fil")
-          //console.log(filt)
-          //console.log(typeof(this.id))
-          //console.log(filt.process_id)
-          return filt.graph_process == this.id
-        })
-        console.log(filteredGraphs)
-        */
-        var my_graph = graphs
+        this.$refs.cyRef.instance.layout({
+          name: 'breadthfirst',
+          avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+          directed: true,
+        }).run();
 
-        if (my_graph != null) {
-          this.graph_id = my_graph.id_graph
+        this.$refs.cyRef.instance.resize();
+        //       this.$refs.cyRef.instance.fit();
 
-          console.log("this is the graph id" + this.graph_id)
-          console.log(my_graph)
-          for (var i = 0; i < my_graph.elements.length; i++) {
-            this.testdata.push(my_graph.elements[i])
-          }
-        }
-        this.loading = false
+        this.refresher += 1
+
+        console.log(this)
+        console.log(this.refresher)
+
       })
 
   },
+  /*
+  mounted () {
+    console.log("in mounted")
+    this.$refs.cyRef.instance.layout({ name: 'grid' }).run();
+  },
+  */
 }
 </script>
 

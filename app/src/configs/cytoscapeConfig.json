@@ -6,13 +6,16 @@
         "background-color": "#666",
         "label": "data(title)"
       }
-    }, {
+    },
+    {
       "selector": "edge",
       "style": {
-        "width": 3,
-        "line-color": "#f00",
+        "width": 2,
+        "straight": "straight",
+        "line-color": "#0f0",
         "target-arrow-color": "#000",
-        "target-arrow-shape": "triangle"
+        "target-arrow-shape": "triangle",
+        "arrow-scale": 5
       }
     },
     {
@@ -26,24 +29,29 @@
         "border-width": 12,
         "border-opacity": 0
       }
-    }, {
+    },
+    {
       "selector": ".eh-hover",
       "style": {
         "background-color": "red"
       }
-    }, {
+    },
+    {
       "selector": ".eh-source",
       "style": {
         "border-width": 2,
         "border-color": "red"
       }
-    }, {
+    },
+    {
       "selector": ".eh-target",
       "style": {
         "border-width": 2,
-        "border-color": "red"
+        "border-color": "red",
+        "target-arrow-shape": "triangle"
       }
-    }, {
+    },
+    {
       "selector": ".eh-preview",
       "style": {
         "label": "",
@@ -53,20 +61,29 @@
         "source-arrow-color": "red"
       }
     },
-      {
-        "selector": ".eh-ghost-edge",
-        "style": {
-          "label": "",
-          "background-color": "red",
-          "line-color": "red",
-          "target-arrow-color": "red",
-          "source-arrow-color": "red"
+    {
+      "selector": ".eh-ghost-edge",
+      "style": {
+        "label": "",
+        "background-color": "red",
+        "line-color": "red",
+        "target-arrow-color": "red",
+        "source-arrow-color": "red"
+      }
+    },
+    {
+      "selector": ".eh-preview, .eh-ghost-edge",
+      "style": {
+        "background-color": "red",
+        "line-color": "red",
+        "target-arrow-color": "red",
+        "source-arrow-color": "red"
+      }
     }
-  }
-
   ],
   "layout": {
-    "name": "cose",
-    "rows": 1
+    "name": "breadthfirst",
+    "avoidOverlap": true,
+    "directed": true
   }
 }

@@ -13,6 +13,16 @@ export function fetchGraphs (state, payload) {
     })
 }
 
+export function addNode (state, payload) {
+  state.commit('addNode', payload)
+  return 1
+}
+
+export function changeNode (state, payload) {
+  state.commit('changeNode', payload)
+  return 1
+}
+
 export function editGraphs (state, graphs) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(graphs)
