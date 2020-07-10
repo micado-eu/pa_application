@@ -1,0 +1,58 @@
+[
+  {
+  "id":1,
+  "title": "Get a Postal Kit",
+  "location": "Postal Office",
+  "cost": "0 €",
+  "required_documents":[], 
+  "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+  "next_step": "step X",
+  "process_id":["1", "4"], 
+  "description": "This is a placeholder description"
+  },
+  {
+    "id":2,
+    "title": "Send the kit",
+    "location": "Postal Office",
+    "cost": "30 €",
+    "required_documents":["Signed stamp"], 
+    "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+    "next_step": "step X",
+    "process_id":["1","2", "4"],
+    "description": "This is a placeholder description"
+  },
+  {
+    "id":3,
+    "title": "Go to Questura for fingerprints - blue office",
+    "location": "Questura",
+    "cost": "0 €",
+    "required_documents":[], 
+    "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+    "next_step": "step X",
+    "process_id":["1","3","6"],
+    "description": "This is a placeholder description"
+  },
+  {
+    "id":4,
+    "title": "Go to Municipality",
+    "location": "Municipality",
+    "cost": "0 €",
+    "required_documents":["Work contract"], 
+    "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+    "next_step": "step X",
+    "process_id":["1","6"],
+    "description": "This is a placeholder description"
+  },
+  {
+    "id":5,
+    "title": "Go to Housing department",
+    "location": "Housing department",
+    "cost": "0 €",
+    "required_documents":["Fiscal document"], 
+    "linked_processes":["How to certify education degree","Renewal of residence permit for working reasons" ],
+    "next_step": "step X",
+    "process_id":["1","5"],
+    "description": "This is a placeholder description"
+  }
+    
+]

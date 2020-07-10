@@ -1,24 +1,24 @@
-import client from 'api-steps-client'
+import client from 'api-steplinks-client'
 
 /*
 export function someAction (context) {
 }
 */
-export function fetchSteps (state, data) {
+export function fetchSteplinks (state, data) {
   return client
-    .fetchSteps()
-    .then(steps => {
-      state.commit('setSteps', steps)
-      return steps
+    .fetchSteplinks()
+    .then(steplinks => {
+      state.commit('setSteplinks', steplinks)
+      return steplinks
     })
 }
 
-export function fetchStepsByProcessId (state, id) {
+export function fetchSteplinksByProcessId (state, id) {
   return client
-    .fetchStepsByProcessId(id)
-    .then(steps => {
-      state.commit('setSteps', steps)
-      return steps
+    .fetchSteplinksByProcessId(id)
+    .then(steplinks => {
+      state.commit('setSteplinks', steplinks)
+      return steplinks
     })
 }
 
