@@ -11,11 +11,15 @@ export function addNode (state, node) {
   state.graphs.elements.push(node)
 }
 
-export function changeNode (state, node) {
+export function changeNode (state, payload) {
   //  state.graphs.elements.push(node)
-  let editingIndex = state.graphs.elements.findIndex(entry => entry.data.id == node.data.id)
+  let workingNode = state.graphs.elements.filter(el => { return el.data.id == payload.id })[0]
+  console.log(workingNode)
+  workingNode.data.is_edited = true
+  workingNode.data.title = payload.title
+  let editingIndex = state.graphs.elements.findIndex(entry => entry.data.id == workingNode.data.id)
   console.log(editingIndex)
-  state.graphs.elements.splice(editingIndex, 1, JSON.parse(JSON.stringify(node)))
+  state.graphs.elements.splice(editingIndex, 1, JSON.parse(JSON.stringify(workingNode)))
 
 }
 

@@ -54,7 +54,7 @@
             rounded
             color="secondary"
             label="Manage"
-            :to="'guided_process_editor/edit/' + this.Link + '/steps'"
+            @click="manageProcess()"
           />
           <q-btn
             size="11px"
@@ -93,6 +93,11 @@ export default {
       console.log("prima di mandare i process")
       console.log(this.theProcess)
       this.$router.push({ name: 'editprocess', params: { theprocess: this.theProcess } })
+    },
+    manageProcess () {
+      console.log("prima di editare gli step")
+      console.log(this.theProcess)
+      this.$router.push({ name: 'editstep', params: { processId: this.theProcess.id } })
     }
   }
 }
