@@ -4,7 +4,8 @@
       <div class="info">
         <div class="info-content">
           <p>
-            <strong>description:</strong>{{graphData.description}}
+            <strong>description:</strong>
+            {{graphData.description}}
           </p>
           <p>
             <strong>data provider:</strong>EU
@@ -22,12 +23,21 @@
       :lineData="graphData.content"
       :timeColumn="graphData.x"
       :valueColumn="graphData.y"
+      :xistime="graphData.xistime"
     />
     <barChart
       v-if="graphData.type==='BAR'"
       class="chart"
       :lineData="graphData.content"
       :timeColumn="graphData.x"
+      :valueColumn="graphData.y"
+      :xistime="graphData.xistime"
+    />
+    <pieChart
+      v-if="graphData.type==='PIE'"
+      class="chart"
+      :pieData="graphData.content"
+      :labelColumn="graphData.x"
       :valueColumn="graphData.y"
     />
     <h6>{{graphData.title}}</h6>
@@ -59,7 +69,7 @@ export default {
 
 <style scoped>
 #card {
-  /* height: 400px; */
+  height: 350px;
   margin: auto;
   width: 97%;
   margin-top: 20px;

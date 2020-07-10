@@ -43,17 +43,24 @@ export function setCharts(state, charts) {
         if (Array.isArray(item[c.x])) item[c.x] = item[c.x][0];
         if (Array.isArray(item[c.y])) item[c.y] = item[c.y][0];
 
-        item[c.x] = c.xistime ? new Date(item[c.x]).getTime() : item[c.x];
         item[c.y] = typeof item[c.y] === "number" ? item[c.y] : parseInt(item[c.y]);
       });
       /**
-       * sort x-axis values if x is time
+       * sort x-axis values if xistime
        */
-      if (c.xistime) {
+      if ((c.type === 'LINE' || c.type === 'BAR') && c.xistime) {
+        c.content.forEach(item => {
+          item[c.x] = new Date(item[c.x]).getTime();
+        })
         c.content = c.content.sort(
           (a, b) => b[c.x] - a[c.x]
         );
+        c.content.forEach(item => {
+          item[c.x] = new Date(item[c.x]);
+        })
       }
+
+
     })
     state.charts = charts
   }

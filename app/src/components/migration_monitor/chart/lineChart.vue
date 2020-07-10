@@ -8,7 +8,7 @@
       <circle
         v-for="(d,i) in lineData"
         :key="i"
-        :cx="scaleX(new Date(d[timeColumn]*1000))"
+        :cx="scaleX(d[timeColumn])"
         :cy="scaleY(d[valueColumn])"
         :r="2"
         fill="#3490DC"
@@ -31,6 +31,7 @@
 import {
   scaleLinear,
   scaleTime,
+  scaleBand,
   extent,
   select,
   line,
@@ -50,7 +51,8 @@ export default {
   props: {
     lineData: Array,
     timeColumn: String,
-    valueColumn: String
+    valueColumn: String,
+    xistime: Boolean
   },
   data: function() {
     return {
@@ -73,18 +75,25 @@ export default {
       return select("#" + this.id);
     },
     scaleX: function() {
-      return scaleTime()
-        .domain(extent(this.lineData, d => new Date(d[this.timeColumn] * 1000)))
-        .range([0, this.width - this.margin.left - this.margin.right]);
+      if (this.xistime) {
+        return scaleTime()
+          .domain(extent(this.lineData, d => d[this.timeColumn]))
+          .range([0, this.width - this.margin.left - this.margin.right]);
+      } else {
+        return scaleBand()
+          .domain(this.lineData.map(d => d[this.timeColumn]))
+          .range([0, this.width - this.margin.left - this.margin.right]);
+      }
     },
     scaleY: function() {
       return scaleLinear()
-        .domain(extent(this.lineData, d => d[this.valueColumn]))
+        // .domain(extent(this.lineData, d => d[this.valueColumn]))
+        .domain([0, Math.max(...this.lineData.map(d => d[this.valueColumn]))])
         .range([this.height - this.margin.top - this.margin.bottom, 0]);
     },
     drawLine: function() {
       return line()
-        .x(d => this.scaleX(new Date(d[this.timeColumn] * 1000)))
+        .x(d => this.scaleX(d[this.timeColumn]))
         .y(d => this.scaleY(d[this.valueColumn]))
         .curve(curveCardinal);
     }

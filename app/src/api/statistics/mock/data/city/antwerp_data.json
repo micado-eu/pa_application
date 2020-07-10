@@ -1,0 +1,236 @@
+{
+    "Demographic composition - including parents origin": {
+        "2020": [
+            {
+                "group": "native",
+                "percentage": 48.9
+            },
+            {
+                "group": "immigrant",
+                "percentage": 51.1
+            }
+        ]
+    },
+    "percentage of migrants": [
+        {
+            "year": "2015",
+            "percentage": 45.8
+        },
+        {
+            "year": "2016",
+            "percentage": 46.9
+        },
+        {
+            "year": "2017",
+            "percentage": 48
+        },
+        {
+            "year": "2018",
+            "percentage": 49.1
+        },
+        {
+            "year": "2019",
+            "percentage": 50.1
+        },
+        {
+            "year": "2020",
+            "percentage": 50.1
+        }
+    ],
+    "finanancial aid": {
+        "people with social replacement income - 2019 Q1": [
+            {
+                "group": "Belgian national",
+                "percentage": 34
+            },
+            {
+                "group": "EU national",
+                "percentage": 5
+            },
+            {
+                "group": "non-EU national",
+                "percentage": 61
+            }
+        ],
+        "people with social replacement income - 2019 Q2": [
+            {
+                "group": "Belgian national",
+                "percentage": 35
+            },
+            {
+                "group": "EU national",
+                "percentage": 5
+            },
+            {
+                "group": "non-EU national",
+                "percentage": 60
+            }
+        ],
+        "people with social replacement income - 2019 Q3": [
+            {
+                "group": "Belgian national",
+                "percentage": 35
+            },
+            {
+                "group": "EU national",
+                "percentage": 5
+            },
+            {
+                "group": "non-EU national",
+                "percentage": 60
+            }
+        ],
+        "people with social replacement income - 2019 Q4": [
+            {
+                "group": "Belgian national",
+                "percentage": 36
+            },
+            {
+                "group": "EU national",
+                "percentage": 6
+            },
+            {
+                "group": "non-EU national",
+                "percentage": 58
+            }
+        ],
+        "people with social replacement income - 2020 Q1": [
+            {
+                "group": "Belgian national",
+                "percentage": 37
+            },
+            {
+                "group": "EU national",
+                "percentage": 6
+            },
+            {
+                "group": "non-EU national",
+                "percentage": 57
+            }
+        ]
+    },
+    "integration courses": {
+        "Participant in integration lessons Atlas": [
+            {
+                "month": "2019-05",
+                "number": 2070
+            },
+            {
+                "month": "2019-06",
+                "number": 1971
+            },
+            {
+                "month": "2019-07",
+                "number": 1917
+            },
+            {
+                "month": "2019-08",
+                "number": 1951
+            },
+            {
+                "month": "2019-09",
+                "number": 1975
+            },
+            {
+                "month": "2019-10",
+                "number": 1985
+            },
+            {
+                "month": "2019-11",
+                "number": 1940
+            },
+            {
+                "month": "2019-12",
+                "number": 1952
+            },
+            {
+                "month": "2020-01",
+                "number": 1900
+            },
+            {
+                "month": "2020-02",
+                "number": 1812
+            },
+            {
+                "month": "2020-03",
+                "number": 1760
+            },
+            {
+                "month": "2020-04",
+                "number": 1752
+            },
+            {
+                "month": "2020-05",
+                "number": 1743
+            }
+        ]
+    },
+    "employment": {
+        "percentage of unemployed belgian nationals (18-64)": [
+            {
+                "year": 2015,
+                "percentage": 7
+            },
+            {
+                "year": 2016,
+                "percentage": 6.9
+            },
+            {
+                "year": 2017,
+                "percentage": 6.5
+            },
+            {
+                "year": 2018,
+                "percentage": 6.1
+            },
+            {
+                "year": 2019,
+                "percentage": 5.7
+            }
+        ],
+        "percentage of unemployed EU nationals (18-64)": [
+            {
+                "year": 2015,
+                "percentage": 11.1
+            },
+            {
+                "year": 2016,
+                "percentage": 10.7
+            },
+            {
+                "year": 2017,
+                "percentage": 10.1
+            },
+            {
+                "year": 2018,
+                "percentage": 9.2
+            },
+            {
+                "year": 2019,
+                "percentage": 8.4
+            }
+        ],
+        "percentage of unemployed non-EU nationals (18-64)": [
+            {
+                "year": 2015,
+                "percentage": 16.9
+            },
+            {
+                "year": 2016,
+                "percentage": 17
+            },
+            {
+                "year": 2017,
+                "percentage": 15.9
+            },
+            {
+                "year": 2018,
+                "percentage": 15.3
+            },
+            {
+                "year": 2019,
+                "percentage": 13.7
+            }
+        ]
+    }
+}

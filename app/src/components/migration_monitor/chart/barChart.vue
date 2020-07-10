@@ -15,9 +15,9 @@
       <rect
         v-for="(d,i) in lineData"
         :key="i"
-        :x="scaleXBand(new Date(d[timeColumn]*1000))"
+        :x="scaleX( d[timeColumn])"
         :y="scaleY(d[valueColumn])"
-        :width="scaleXBand.bandwidth()"
+        :width="(width-margin.left - margin.right)/lineData.length"
         :height="height - scaleY(d[valueColumn]) - margin.top - margin.bottom"
       />
     </g>
@@ -58,7 +58,8 @@ export default {
   props: {
     lineData: Array,
     timeColumn: String,
-    valueColumn: String
+    valueColumn: String,
+    xistime: Boolean
   },
   data: function() {
     return {
@@ -81,19 +82,23 @@ export default {
       return select("#" + this.id);
     },
     scaleX: function() {
-      return scaleTime()
-        .domain(extent(this.lineData, d => new Date(d[this.timeColumn] * 1000)))
-        .range([0, this.width - this.margin.left - this.margin.right]);
-    },
-    scaleXBand: function() {
-      return scaleBand()
-        .domain(this.lineData.map(d => new Date(d[this.timeColumn] * 1000)))
-        .range([0, this.width - this.margin.left - this.margin.right]);
+      if (this.xistime) {
+        return scaleTime()
+          .domain(extent(this.lineData, d => d[this.timeColumn]))
+          .range([0, this.width - this.margin.left - this.margin.right]);
+      } else {
+        return scaleBand()
+          .domain(this.lineData.map(d => d[this.timeColumn]))
+          .range([0, this.width - this.margin.left - this.margin.right]);
+      }
     },
     scaleY: function() {
-      return scaleLinear()
-        .domain(extent(this.lineData, d => d[this.valueColumn]))
-        .range([this.height - this.margin.top - this.margin.bottom, 0]);
+      return (
+        scaleLinear()
+          // .domain(extent(this.lineData, d => d[this.valueColumn]))
+          .domain([0, Math.max(...this.lineData.map(d => d[this.valueColumn]))])
+          .range([this.height - this.margin.top - this.margin.bottom, 0])
+      );
     }
   },
   methods: {
