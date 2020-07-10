@@ -11,6 +11,10 @@ export function addNode (state, node) {
   state.graphs.elements.push(node)
 }
 
+export function addEdge (state, edge) {
+  state.graphs.elements.push(edge)
+}
+
 export function changeNode (state, payload) {
   //  state.graphs.elements.push(node)
   let workingNode = state.graphs.elements.filter(el => { return el.data.id == payload.id })[0]

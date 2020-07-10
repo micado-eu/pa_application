@@ -8,6 +8,9 @@ export function fetchGraphs (state, payload) {
   return client
     .fetchGraphs(payload.id, payload.userLang)
     .then(graph => {
+      graph.elements.forEach(element => {
+        element.data.is_new = false
+      });
       state.commit('setGraphs', graph)
       return graph
     })
@@ -15,6 +18,11 @@ export function fetchGraphs (state, payload) {
 
 export function addNode (state, payload) {
   state.commit('addNode', payload)
+  return 1
+}
+
+export function addEdge (state, payload) {
+  state.commit('addEdge', payload)
   return 1
 }
 

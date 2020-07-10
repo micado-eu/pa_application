@@ -52,12 +52,19 @@ export function editSteps (state, steps) {
     .then(steps_return => state.commit('editSteps', steps_return))
 }
 
-export function saveSteps (state, steps) {
+export function saveStep (state, step) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(steps)
+  console.log(step)
+  let savingStep = JSON.parse(JSON.stringify(step, ['id', 'cost', 'locationSpecific', 'location', 'locationLon', 'locationLat', 'idProcess']));
+
+  console.log("before calling save step api")
+
   return client
-    .saveSteps(steps)
-    .then(steps_return => state.commit('saveSteps', steps_return))
+    .saveStep(savingStep)
+    .then(steps_return => {
+      //    state.commit('saveSteps', steps_return)
+    })
+
 }
 
 export function deleteSteps (state, steps) {
@@ -68,7 +75,11 @@ export function deleteSteps (state, steps) {
     .then(steps_return => state.commit('deleteSteps', steps_return))
 }
 
-
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
+}
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)

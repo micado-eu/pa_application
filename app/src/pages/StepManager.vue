@@ -52,8 +52,8 @@
               :key="`${def.data.id}`"
               :definition="def"
               v-on:click="editStep($event, def)"
-              v-on:cxttapstart="deleteElement($event, def)"
               v-on:remove="removeElement($event,def)"
+              v-on:ehcomplete="addEdge"
             />
 
           </cytoscape>
@@ -344,12 +344,13 @@ export default {
   },
 
   methods: {
+
     createShell () {
       this.step_shell = this.generateShell()
     },
 
     generateShell () {
-      let newstep = { id: -1, documents: [], translations: [], cost: 0, idProcess: this.processId, location: null, locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
+      let newstep = { id: -1, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
       this.languages.forEach(l => {
         newstep.translations.push({ id: -1, lang: l.lang, step: '', description: '', translationDate: null })
       });
@@ -446,24 +447,89 @@ export default {
 
     },
     deleteElement (event, element, cy) {
+      /*
+            console.log("these are the testdata")
+      
+            console.log(element)
+            if (element.group == 'node') {
+              this.$store.dispatch('steps/deleteStep', element.data.id)
+                .then(ret => {
+                  console.log("DELETED STEP")
+                  console.log(this.steps)
+                })
+      
+              this.$store.dispatch('graphs/deleteNode', element.data.id)
+                .then(res => {
+      
+                })
+            } else {
+              console.log("MANAGE EDGES")
+            }
+            */
+    },
 
-      console.log("these are the testdata")
+    addEdge (sourceNode, targetNode, addedEles) {
+      console.log("ADDING EDGE")
+      console.log(sourceNode)
+      console.log(targetNode)
+      console.log(sourceNode._private.data.title)
+      console.log(targetNode._private.data.title)
+      console.log(addedEles)
+      console.log(addedEles._private.map.keys())
+      console.log(addedEles._private.map.entries())
+      let newKey = ''
+      let value = ''
+      for ([newKey, value] of addedEles._private.map.entries()) {
+        console.log(newKey);
+        console.log(value);
 
-      console.log(element)
-      if (element.group == 'node') {
-        this.$store.dispatch('steps/deleteStep', element.data.id)
-          .then(ret => {
-            console.log("DELETED STEP")
-            console.log(this.steps)
-          })
-
-        this.$store.dispatch('graphs/deleteNode', element.data.id)
-          .then(res => {
-
-          })
-      } else {
-        console.log("MANAGE EDGES")
       }
+      // this.$refs.cyRef.instance.remove('[id = ' + newKey + ']');
+      console.log("Elementds in cytoscape")
+      console.log(this.$refs.cyRef.instance.elements())
+      console.log("Elementds in store")
+      console.log(this.elements)
+
+      this.$refs.cyRef.instance.elements().remove();
+
+      this.$store.dispatch('graphs/addEdge', {
+        group: 'edges',
+        data: {
+          id: newKey,
+          is_new: true,
+          source: sourceNode._private.data.id,
+          target: targetNode._private.data.id,
+          is_edited: false,
+          description: ""        },
+        //      position: { x: 150, y: 150 },
+      })
+        .then(ret => {
+          console.log("ADDED A EDGE")
+
+          this.$refs.cyRef.instance.add(this.elements);
+          console.log("Elementds in cytoscape")
+          console.log(this.$refs.cyRef.instance.elements())
+          console.log("Elementds in store")
+          console.log(this.elements)
+          this.$refs.cyRef.instance.layout({
+            name: 'breadthfirst',
+            avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+            directed: true,
+          }).run();
+          this.$refs.cyRef.instance.resize();
+        })
+
+      //    console.log("the orig elements")
+      //    console.log(this.elements)
+
+      /*
+          if (element.group == 'edges') {
+            if (element.data.is_new != null && element.data.is_new) {
+              // here we manage new edges
+              console.log("managinf edge")
+            }
+          }
+          */
     },
 
     afterCreated (cy) {
@@ -473,19 +539,48 @@ export default {
       //      this.cy = cy;
       //     this.mycy = cy;
       console.log(this.testdata)
-      cy.edgehandles();
+
+      let defaults = {
+        complete: (sourceNode, targetNode, addedEles) => this.addEdge(sourceNode, targetNode, addedEles)
+      }
+
+      cy.edgehandles(defaults);
       //      cy.layout({ name: 'grid' }).run();
       //      cy.resize();
       console.log("i'm here")
 
     },
 
-    saveGraph () {
+    async saveGraph () {
+      // start saving elements
+      // adding new steps
+      const saveSteps = async () => {
+        await this.asyncForEach(this.steps, async (step) => {
+          console.log(step)
+          if (step.is_new) {
+            await this.$store.dispatch('steps/saveStep', step)
+          }
+        })
+        console.log("after foreach save topics")
+      }
+      await saveSteps()
+      // updating chenged steps
+      // adding new steplink
+      // updating changed steplin
+      // deleting steplink
+      // deleting step
+
+
     },
     // this is used only for edges that get removed as a removal of a node that has edges
     removeElement (event, element, cy) {
       console.log("IN REMOVED")
       console.log(element)
+    },
+    async  asyncForEach (array, callback) {
+      for (let index = 0; index < array.length; index++) {
+        await callback(array[index], index, array);
+      }
     }
   },
 

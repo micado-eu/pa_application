@@ -11,7 +11,7 @@
       "selector": "edge",
       "style": {
         "width": 2,
-        "straight": "straight",
+        "straight": "bezier",
         "line-color": "#0f0",
         "target-arrow-color": "#000",
         "target-arrow-shape": "triangle",
