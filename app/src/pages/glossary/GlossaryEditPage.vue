@@ -6,9 +6,7 @@
       class="q-ma-md"
       pagetitle="Edit Glossary Term"
       v-on:save="editGlossaryItemAndReturn($event)"
-      :title="title"
-      :description="description"
-      :lang="lang"
+      :elem="elem"
     />
   </div>
 </template>
@@ -19,50 +17,36 @@ export default {
   data() {
     return {
       loading: false,
+      elem: {}
     }
   },
   components: {
     "edit-glossary": require('components/glossary/EditGlossaryElement.vue').default,
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary", "editGlossaryItem"]),
+    ...mapActions("glossary", ["fetchGlossary", "editGlossaryItem", "addNewGlossaryItemTranslation"]),
     editGlossaryItemAndReturn(data) {
       let router = this.$router
-      this.editGlossaryItem(Object.assign(data, { id: this.$route.params.id })).then(() => {
-        router.push({ path: "/glossary" })
-      })
+      let dataWithId = Object.assign(data, { id: parseInt(this.$route.params.id) })
+      let idx = this.elem.translations.findIndex(t => t.lang === data.lang)
+      if (idx !== -1) {
+        this.editGlossaryItem(dataWithId).then(() => {
+          router.push({ path: "/glossary" })
+        })
+      } else {
+        this.addNewGlossaryItemTranslation(dataWithId).then(() => {
+          router.push({ path: "/glossary" })
+        })
+      }
     }
   },
   computed: {
     ...mapGetters("glossary", ["glossaryElemById"]),
-    title: function () {
-      let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem && elem.title) {
-        return elem.title
-      } else {
-        return ""
-      }
-    },
-    description: function () {
-      let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem && elem.description) {
-        return elem.description
-      } else {
-        return ""
-      }
-    },
-    lang: function () {
-      let elem = this.glossaryElemById(this.$route.params.id)
-      if (elem && elem.lang) {
-        return elem.lang
-      } else {
-        return ""
-      }
-    },
   },
   created() {
     this.loading = true
     this.fetchGlossary().then(() => {
+      this.elem = this.glossaryElemById(this.$route.params.id)
       this.loading = false
     })
   }

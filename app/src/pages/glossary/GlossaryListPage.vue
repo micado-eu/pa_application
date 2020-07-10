@@ -6,7 +6,7 @@
       :elements="glossary"
       new_url="glossary/new"
       :edit_url_fn="getEditRoute"
-      :delete_fn="deleteGlossaryItem"
+      :delete_fn="deleteItem"
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
       add_label="Add Term"
       title="Glossary"
@@ -33,6 +33,14 @@ export default {
     ...mapActions("glossary", ["fetchGlossary", "deleteGlossaryItem"]),
     getEditRoute(id) {
       return "glossary/" + id + "/edit"
+    },
+    deleteItem(item) {
+      this.loading = true
+      this.deleteGlossaryItem(item)
+        .then(this.fetchGlossary)
+        .then(() => {
+          this.loading = false
+        })
     }
   },
   created() {
