@@ -4,13 +4,26 @@ import client from 'api-graphs-client'
 export function someAction (context) {
 }
 */
-export function fetchGraphs(state, data) {
+export function fetchGraphs (state, payload) {
   return client
-    .fetchGraphs()
-    .then(graphs => state.commit('setGraphs', graphs))
+    .fetchGraphs(payload.id, payload.userLang)
+    .then(graph => {
+      state.commit('setGraphs', graph)
+      return graph
+    })
 }
 
-export function editGraphs(state, graphs) {
+export function addNode (state, payload) {
+  state.commit('addNode', payload)
+  return 1
+}
+
+export function changeNode (state, payload) {
+  state.commit('changeNode', payload)
+  return 1
+}
+
+export function editGraphs (state, graphs) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(graphs)
   return client
@@ -18,7 +31,7 @@ export function editGraphs(state, graphs) {
     .then(graphs_return => state.commit('editGraphs', graphs_return))
 }
 
-export function saveGraphs(state, graphs) {
+export function saveGraphs (state, graphs) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(graphs)
   return client
@@ -26,7 +39,7 @@ export function saveGraphs(state, graphs) {
     .then(graphs_return => state.commit('saveGraphs', graphs_return))
 }
 
-export function deleteGraphs(state, graphs) {
+export function deleteGraphs (state, graphs) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(graphs)
   return client

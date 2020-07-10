@@ -3,17 +3,30 @@ export function someMutation (state) {
 }
 */
 
-export function setGraphs(state, graphs){
+export function setGraphs (state, graphs) {
   state.graphs = graphs
 }
 
-export function editGraphs(state, graphs) {
+export function addNode (state, node) {
+  state.graphs.elements.push(node)
+}
+
+export function changeNode (state, node) {
+  //  state.graphs.elements.push(node)
+  let editingIndex = state.graphs.elements.findIndex(entry => entry.data.id == node.data.id)
+  console.log(editingIndex)
+  state.graphs.elements.splice(editingIndex, 1, JSON.parse(JSON.stringify(node)))
+
+}
+
+
+export function editGraphs (state, graphs) {
   console.log("update the state")
   const index = state.graphs.findIndex(item => item.id === graphs.graph_id);
   if (index !== -1) state.graphs.splice(index, 1, graphs);
 }
 
-export function saveGraphs(state, graphs) {
+export function saveGraphs (state, graphs) {
   console.log("save to the state")
   console.log(graphs)
 
@@ -21,7 +34,7 @@ export function saveGraphs(state, graphs) {
   console.log(state.graphs)
 }
 
-export function deleteGraphs(state, index){
+export function deleteGraphs (state, index) {
   const idx = state.graphs.findIndex(item => item.id === index);
   if (idx !== -1) state.graphs.splice(idx, 1);
 }

@@ -262,21 +262,12 @@ export default {
        console.log(document_types)
        }
        )
-           if (this.thedocumenttype != null) {
+      if (this.thedocumenttype != null) {
       this.mergeDoc(this.thedocumenttype)
       console.log(this.int_doc_shell)
       this.is_new = false
     }
-    else{
-      
-      console.log("in else")
-      console.log(this.int_doc_shell)
-    
-    this.mergeDoc(this.int_doc_shell)
-    console.log("after merge in else")
-    console.log(this.int_doc_shell)
-    
-    }
+  
 
   
      }

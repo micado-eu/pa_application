@@ -46,7 +46,7 @@ export function saveProcess (state, process) {
       const saveUsers = async () => {
         await asyncForEach(process.applicableUsers, async (user) => {
           console.log("IL PROCESS ID È: " + process_return.id)
-          await client.saveProcessUser(user.value, process_return.id)
+          await client.saveProcessUser(user, process_return.id)
         })
         console.log('Dopo il applicableUsers');
 
@@ -95,25 +95,77 @@ export function deleteProcess (state, index) {
 export function editProcess (state, process) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(process)
+  var workingId = process.id 
+  console.log("i am working id")
+  console.log(workingId)
   // update translations
-  return client
+  client
     .updateProcess(process).then(function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
       process.translations.forEach(function (aTranslation) {
         client.updateProcessTranslation(aTranslation).then(function (update_translation_return) {
           console.log(update_translation_return)
-          client.updateProcessTopic(process).then(function (update_process_topics_return) {
-            console.log(update_process_topics_return)
-            client.updateProcessUser(process).then(function (update_process_user_return) {
-              console.log(update_process_user_return)
-            })
-          })
         })
-      })
-      state.commit('editProcess', process)
-    })
+   })
+     })
+if (process.processTopics != null){
+  console.log("new")
+  console.log(process.processTopics)
+  console.log("original")
 
+  console.log(process.processTopicsOrig)
+  process.processTopics.forEach((topic) => {
+    if(process.processTopicsOrig.includes(topic)){
+      console.log("doing nothing")
+    }
+    else{
+      console.log("in saving topic")
+      console.log(topic)
+      client.saveProcessTopic(topic, workingId)
+    }
+  })
+}
+if(process.processTopics == null){
+  process.processTopicsOrig.forEach((starting_topic) => {
+    client.deleteSingleProcessTopic(workingId, starting_topic)
+  })
+}
+else if (process.processTopicsOrig != null){
+  process.processTopicsOrig.forEach((starting_topic) => {
+  if(!process.processTopics.includes(starting_topic)){
+    console.log("in deleting topic")
+    client.deleteSingleProcessTopic(workingId, starting_topic)
+  }
+  })
+}
+
+
+
+if (process.applicableUsers != null){
+  process.applicableUsers.forEach((user) => {
+    if(process.applicableUsersOrig.includes(user)){
+      console.log("doing nothing")
+    }
+    else{
+      console.log("in saving user")
+      client.saveProcessUser(user, workingId)
+    }
+  })
+}
+if(process.applicableUsers == null){
+  process.applicableUsersOrig.forEach((starting_user) => {
+    client.deleteSingleProcessUser(workingId, starting_user)  })
+}
+else if (process.applicableUsersOrig != null){
+  process.applicableUsersOrig.forEach((starting_user) => {
+  if(!process.applicableUsers.includes(starting_user)){
+    console.log("in deleting user")
+    client.deleteSingleProcessUser(workingId, starting_user)
+  }
+  })
+}
+state.commit('editProcess', process)
 }
 
 async function asyncForEach (array, callback) {

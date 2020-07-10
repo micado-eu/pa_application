@@ -37,10 +37,6 @@ export default {
     
     saveIntegrationCategory (integration_category) {
       // create fake id here
-      return axiosInstance
-        .post('/backend/1.0.0/intervention-categories', integration_category)
-        .then(response => response.data)
-        .catch(error_handler);
     },
     saveIntegrationCategoryTranslation (translation, id) {
       translation.id = id

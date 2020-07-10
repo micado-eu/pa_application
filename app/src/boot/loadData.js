@@ -12,6 +12,9 @@ export default async ({ store, Vue }) => {
             setLocale(curlang.value)
             var defaultLangString = store.state.language.languages.filter(function (l) { return l.lang == curlang.value })[0].name
             Vue.prototype.$defaultLangString = defaultLangString
+            Vue.prototype.$defaultLang = curlang.value
+            Vue.prototype.$userLang = curlang.value
+
         })
 
 

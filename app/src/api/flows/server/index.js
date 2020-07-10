@@ -12,15 +12,7 @@ export default {
   fetchDocuments () {
     return fetch(flows, 1000) // wait 1s before returning posts
   },
-  updateProcess (process) {
-    console.log("fake call to update DB")
-    console.log(process)
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(process)
-      }, 0)
-    })
-  },
+  
 
   deleteProcessTranslations (id) {
     return axiosInstance
@@ -97,28 +89,6 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
-  updateProcessUser (process) {
-    const whereClause = {
-      idProcess: { eq: process.id }
-    },
-      updatingProcessUser=  JSON.parse(JSON.stringify(process.applicableUsers, ['idProcess', 'idUserTypes']))
-
-    return axiosInstance
-      .patch('/backend/1.0.0/processes' + process.id + 'process-users?where=' + JSON.stringify(whereClause), updatingProcessUser)
-      .then(response => response.data)
-      .catch(error_handler);
-  },
-  updateProcessTopic (process) {
-    const whereClause = {
-      idProcess: { eq: process.id }
-    },
-      updatingProcessTopic=  JSON.parse(JSON.stringify(process.applicableUsers, ['idProcess', 'idTopic']))
-
-    return axiosInstance
-      .patch('/backend/1.0.0/processes' + process.id + 'process-topics?where=' + JSON.stringify(whereClause), updatingProcessTopic)
-      .then(response => response.data)
-      .catch(error_handler);
-  },
 
   updateProcessTranslation (translation) {
     const whereClause = {
@@ -128,6 +98,26 @@ export default {
 
     return axiosInstance
       .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteSingleProcessTopic (id, topic_id) {
+    const whereClause = {
+    idTopic: topic_id
+    }
+
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-topics?where=' + JSON.stringify(whereClause))
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteSingleProcessUser (id, user_id) {
+    const whereClause = {
+    idUserTypes: user_id
+    }
+
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler);
   }

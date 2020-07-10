@@ -10,6 +10,8 @@ Vue.use(VueMermaid);
 import { Icon } from 'leaflet'
 
 import 'leaflet/dist/leaflet.css'
+//import 'vue-cytoscape/dist/vue-cytoscape.css'
+
 
 delete Icon.Default.prototype._getIconUrl;
 
