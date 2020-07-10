@@ -1,110 +1,58 @@
 import { axiosInstance } from 'boot/axios'
+import { error_handler } from '../../../helper/utility'
 
 export default {
-  fetchInformation() {
+  fetchEvents() {
     return axiosInstance
-      .get('/backend/1.0.0/events?filter[include][0][relation]=translation', {
-      })
+      .get('/backend/1.0.0/events?filter[include][0][relation]=translations')
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
   },
-  saveNewInformationItem(informationItem) {
+  saveNewEventItem(eventItem) {
     return axiosInstance
-      .post('/backend/1.0.0/events', informationItem)
+      .post('/backend/1.0.0/events', eventItem)
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
   },
-  editInformationItem(newItem) {
+  addNewEventItemTranslation(translation) {
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .post('/backend/1.0.0/events/' + translation.id + '/event-translations', translation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  editEventItem(newItem) {
     return axiosInstance
       .patch('/backend/1.0.0/events/' + newItem.id, newItem)
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
   },
-  deleteInformationItem(item) {
+  editEventItemTranslation(translation) {
+    const whereClause = {
+      id: { eq: translation.id }, lang: { eq: translation.lang }
+    }
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
     return axiosInstance
-      .delete('/backend/1.0.0/events/' + item.id)
-      .then(
-        response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      .patch('/backend/1.0.0/events/' + translation.id + '/event-translations?where=' + JSON.stringify(whereClause), translation)
+      .then(response => response.data)
+      .catch(error_handler);
   },
-  updatePublishInformationItem(newValue, oldItem) {
-    let aux = Object.assign({}, oldItem)
-    aux.publish = newValue
-    return fetch(aux, 50)
+  deleteEventItem(item) {
+    // Delete translations then item
+    return axiosInstance
+      .delete('/backend/1.0.0/events/' + item.id + '/event-translations')
+      .then(
+        response => {
+          return axiosInstance.delete('/backend/1.0.0/events/' + item.id)
+        }
+      ).then(response => response.data)
+      .catch(error_handler);
   }
 }

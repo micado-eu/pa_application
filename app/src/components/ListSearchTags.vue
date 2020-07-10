@@ -1,12 +1,9 @@
 <template>
   <div class="q-pa-md">
     <q-toolbar class="text-white shadow-2 row toolbar-list">
-      <q-toolbar-title>{{title}}</q-toolbar-title>
+      <q-toolbar-title>{{ title }}</q-toolbar-title>
       <q-avatar>
-        <q-icon
-          :name="icon_name"
-          size="lg"
-        />
+        <q-icon :name="icon_name" size="lg" />
       </q-avatar>
     </q-toolbar>
     <div class="q-my-md row">
@@ -46,14 +43,10 @@
         v-for="item in filteredElements"
         :key="item.id"
         clickable
-        @mouseover="hovered=item.id"
-        @mouseleave="hovered=-1"
+        @mouseover="hovered = item.id"
+        @mouseleave="hovered = -1"
       >
-        <q-item-section
-          avatar
-          v-if="publish_mode"
-          class="publish_section"
-        >
+        <q-item-section avatar v-if="publish_mode" class="publish_section">
           <q-checkbox
             color="accent"
             :value="publishState[item.id]"
@@ -61,16 +54,23 @@
           />
         </q-item-section>
         <q-item-section class="title_section">
-          <q-item-label :class="!publish_mode || publishState[item.id] ? 'published title-label' : 'unpublished title-label'">
+          <q-item-label
+            :class="
+              !publish_mode || publishState[item.id]
+                ? 'published title-label'
+                : 'unpublished title-label'
+            "
+          >
             {{ item.title }}
           </q-item-label>
         </q-item-section>
-        <q-item-section
-          no-wrap
-          class="description_section"
-        >
+        <q-item-section no-wrap class="description_section">
           <glossary-editor-viewer
-            :class="!publish_mode || publishState[item.id] ? 'published' : 'unpublished'"
+            :class="
+              !publish_mode || publishState[item.id]
+                ? 'published'
+                : 'unpublished'
+            "
             :content="JSON.parse(item.description)"
             v-if="!loading"
             :glossary_fetched="true"
@@ -87,7 +87,7 @@
         </q-item-section>
         <q-item-section
           side
-          :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
+          :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
           class="icon_btn_section"
         >
           <q-btn
@@ -100,7 +100,7 @@
         <q-item-section
           side
           class="icon_btn_section"
-          :style="{visibility: hovered===item.id ? 'visible' : 'hidden'}"
+          :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
         >
           <q-btn
             round
@@ -115,16 +115,16 @@
 </template>
 
 <script>
-import { mapActions } from "vuex"
-import Fuse from 'fuse.js'
-import GlossaryEditorViewer from './GlossaryEditorViewer'
+import { mapActions } from "vuex";
+import Fuse from "fuse.js";
+import GlossaryEditorViewer from "./GlossaryEditorViewer";
 export default {
   name: "ListSearchTags",
   props: {
     elements: {
       type: Array,
-      default: function () {
-        return []
+      default: function() {
+        return [];
       }
     },
     new_url: {
@@ -133,14 +133,14 @@ export default {
     },
     edit_url_fn: {
       type: Function,
-      default: function () {
-        return () => "/"
+      default: function() {
+        return () => "/";
       }
     },
     delete_fn: {
       type: Function,
-      default: function () {
-        return () => ""
+      default: function() {
+        return () => "";
       }
     },
     title: {
@@ -161,8 +161,8 @@ export default {
     },
     update_publish_fn: {
       type: Function,
-      default: function () {
-        return () => "/"
+      default: function() {
+        return () => "/";
       }
     }
   },
@@ -177,8 +177,8 @@ export default {
       tags: [],
       selectedTags: [],
       publishState: {},
-      loading: true,
-    }
+      loading: true
+    };
   },
   components: {
     "glossary-editor-viewer": GlossaryEditorViewer
@@ -186,13 +186,13 @@ export default {
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
     addOrRemoveSelectedTag(tag) {
-      var index = this.selectedTags.indexOf(tag)
+      var index = this.selectedTags.indexOf(tag);
       if (index !== -1) {
         this.selectedTags.splice(index, 1);
       } else {
-        this.selectedTags.push(tag)
+        this.selectedTags.push(tag);
       }
-      this.filterByTags()
+      this.filterByTags();
     },
     filterByTags() {
       if (this.selectedTags.length > 0) {
@@ -200,71 +200,74 @@ export default {
         this.filteredElementsByTags = this.elements.filter(e => {
           for (let tag of selectedTags) {
             if (e.tags.indexOf(tag) == -1) {
-              return false
+              return false;
             }
           }
           return true;
         });
       } else {
-        this.filteredElementsByTags = this.elements
+        this.filteredElementsByTags = this.elements;
       }
     },
     updatePublish(newValue, item) {
-      this.update_publish_fn({ newValue, old: item })
-      this.publishState[item.id] = newValue
+      this.update_publish_fn({ id: item.id, published: newValue }).then(() => {
+        this.publishState[item.id] = newValue;
+      });
     }
   },
   computed: {
     search: {
       get() {
-        return this.searchText
+        return this.searchText;
       },
       set(newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.elements, {
-            keys: ['title'],
-          })
-          this.filteredElementsBySearch = fuse.search(newSearch).map(i => i.item)
-          this.searchText = newSearch
+            keys: ["title"]
+          });
+          this.filteredElementsBySearch = fuse
+            .search(newSearch)
+            .map(i => i.item);
+          this.searchText = newSearch;
         } else {
-          this.filteredElementsBySearch = this.elements
-          this.searchText = ""
+          this.filteredElementsBySearch = this.elements;
+          this.searchText = "";
         }
       }
     },
     filteredElements() {
-      var filteredElementsByTags = this.filteredElementsByTags
-      return this.filteredElementsBySearch.filter(function (n) {
+      var filteredElementsByTags = this.filteredElementsByTags;
+      return this.filteredElementsBySearch.filter(function(n) {
         return filteredElementsByTags.indexOf(n) !== -1;
       });
     }
   },
   created() {
-    this.loading = true
+    this.loading = true;
     this.fetchGlossary().then(() => {
-      this.loading = false
-    })
+      this.loading = false;
+    });
     this.translatedElements = this.elements.map(e => {
-      let al = this.$i18n.locale
-      let idx = e.translations.findIndex(t => t.lang === al)
-      return e.translations[idx]
-    })
-    this.filteredElementsBySearch = this.translatedElements
-    this.filteredElementsByTags = this.translatedElements
+      let al = this.$i18n.locale;
+      let idx = e.translations.findIndex(t => t.lang === al);
+      return e.translations[idx];
+    });
+    this.filteredElementsBySearch = this.translatedElements;
+    this.filteredElementsByTags = this.translatedElements;
     for (let elem of this.elements) {
       // Tags
       if (elem.tags) {
         for (let tag of elem.tags) {
           if (this.tags.indexOf(tag) == -1) {
-            this.tags.push(tag)
+            this.tags.push(tag);
           }
         }
       }
       // Publish
-      this.publishState[elem.id] = elem.publish
+      this.publishState[elem.id] = elem.published;
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>

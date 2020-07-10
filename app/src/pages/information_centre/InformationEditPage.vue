@@ -4,10 +4,8 @@
     <edit-information
       v-if="!loading"
       v-on:save="editInformationItemAndReturn($event)"
-      :title="title"
-      :description="description"
       :tags="tags"
-      :lang="lang"
+      :elem="elem"
       class="q-ma-md"
       pagetitle="Edit Event from the Information Centre"
     />
@@ -15,69 +13,60 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
       loading: false,
       informationElem: undefined
-    }
+    };
   },
   components: {
-    "edit-information": require('components/information_centre/EditInformationElement.vue').default,
+    "edit-information": require("components/information_centre/EditInformationElement.vue")
+      .default
   },
   methods: {
-    ...mapActions("information", ["fetchInformation", "editInformationItem"]),
+    ...mapActions("information", [
+      "fetchInformation",
+      "editInformationItem",
+      "addNewInformationItemTranslation"
+    ]),
     editInformationItemAndReturn(data) {
-      let router = this.$router
-      this.editInformationItem(Object.assign(data, { id: this.$route.params.id, publish: this.informationElemById(this.$route.params.id).publish })).then(() => {
-        router.push({ path: "/information" })
-      })
+      let router = this.$router;
+      let dataWithId = Object.assign(data, {
+        id: parseInt(this.$route.params.id)
+      });
+      let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
+      if (idx !== -1) {
+        this.editInformationItem(dataWithId).then(() => {
+          router.push({ path: "/information" });
+        });
+      } else {
+        this.addNewInformationItemTranslation(dataWithId).then(() => {
+          router.push({ path: "/information" });
+        });
+      }
     }
   },
   computed: {
     ...mapGetters("information", ["informationElemById"]),
-    title: function () {
-      let elem = this.informationElemById(this.$route.params.id)
-      if (elem && elem.title) {
-        return elem.title
-      } else {
-        return ""
-      }
-    },
-    description: function () {
-      let elem = this.informationElemById(this.$route.params.id)
-      if (elem && elem.description) {
-        return elem.description
-      } else {
-        return ""
-      }
-    },
-    tags: function () {
-      let elem = this.informationElemById(this.$route.params.id)
+    tags: function() {
+      let elem = this.informationElemById(this.$route.params.id);
       if (elem && elem.tags) {
-        return elem.tags
+        return elem.tags;
       } else {
-        return []
+        return [];
       }
-    },
-    lang: function () {
-      let elem = this.informationElemById(this.$route.params.id)
-      if (elem && elem.lang) {
-        return elem.lang
-      } else {
-        return ""
-      }
-    },
+    }
   },
   created() {
-    this.loading = true
+    this.loading = true;
     this.fetchInformation().then(() => {
-      this.loading = false
-    })
+      this.elem = this.informationElemById(this.$route.params.id);
+      this.loading = false;
+    });
   }
-}
+};
 </script>
 
-<style>
-</style>
+<style></style>
