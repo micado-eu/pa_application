@@ -1,105 +1,59 @@
 import { axiosInstance } from 'boot/axios'
+import { error_handler } from '../../../helper/utility'
 
 export default {
   fetchGlossary() {
     return axiosInstance
-      .get('/backend/1.0.0/glossaries', {
+      .get('/backend/1.0.0/glossaries?filter[include][0][relation]=translations', {
       })
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
   },
   saveNewGlossaryItem(glossaryItem) {
     return axiosInstance
       .post('/backend/1.0.0/glossaries', glossaryItem)
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
+  },
+  addNewGlossaryItemTranslation(translation) {
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .post('/backend/1.0.0/glossaries/' + translation.id + '/glossary-translations', translation)
+      .then(response => response.data)
+      .catch(error_handler);
   },
   editGlossaryItem(newItem) {
     return axiosInstance
       .patch('/backend/1.0.0/glossaries/' + newItem.id, newItem)
       .then(
         response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
-        }
-        console.log(error.config);
-      });
+      ).catch(error_handler);
+  },
+  editGlossaryItemTranslation(translation) {
+    const whereClause = {
+      id: { eq: translation.id }, lang: { eq: translation.lang }
+    }
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .patch('/backend/1.0.0/glossaries/' + translation.id + '/glossary-translations?where=' + JSON.stringify(whereClause), translation)
+      .then(response => response.data)
+      .catch(error_handler);
   },
   deleteGlossaryItem(item) {
+    // Delete translations then item
     return axiosInstance
-      .delete('/backend/1.0.0/glossaries/' + item.id)
+      .delete('/backend/1.0.0/glossaries/' + item.id + '/glossary-translations')
       .then(
-        response => response.data
-      ).catch(function (error) {
-        console.log("ERROR IN CALLING API MANAGER")
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.log(error.response.data);
-          console.log(error.response.status);
-          console.log(error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-          // http.ClientRequest in node.js
-          console.log(error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.log('Error', error.message);
+        response => {
+          return axiosInstance.delete('/backend/1.0.0/glossaries/' + item.id)
         }
-        console.log(error.config);
-      });
+      ).then(response => response.data)
+      .catch(error_handler);
   }
 }

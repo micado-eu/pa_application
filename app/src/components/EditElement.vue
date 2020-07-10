@@ -4,6 +4,7 @@
     <div v-else>
       <q-tabs
         v-model="langTab"
+        @input="changeLanguage"
         dense
         class="text-grey"
         active-color="primary"
@@ -14,7 +15,7 @@
         <q-tab
           v-for="language in languages"
           :key="language.lang"
-          :name="language.name"
+          :name="language.lang"
           :label="language.name"
         />
       </q-tabs>
@@ -28,7 +29,8 @@
       <span class="q-my-lg label-edit">Description:</span>
       <glossary-editor
         class="desc-editor"
-        :content="description"
+        :content="internalDescription"
+        :lang="this.$i18n.locale"
         ref="editor"
       />
       <div
@@ -118,13 +120,8 @@ export default {
       type: String,
       default: "",
     },
-    "title": {
-      type: String,
-      default: ""
-    },
-    "description": {
-      type: String | Object,
-      default: ""
+    "elem": {
+      type: Object,
     },
     "save_item_fn": {
       type: Function,
@@ -139,15 +136,12 @@ export default {
       type: Boolean,
       default: false,
     },
-    "activeLanguage": {
-      type: String,
-      default: undefined
-    },
   },
   data() {
     return {
       loading: true,
-      internalTitle: this.title,
+      internalTitle: "",
+      internalDescription: "",
       internalTags: [...this.tags],
       tagInput: "",
       tagError: false,
@@ -157,6 +151,25 @@ export default {
   },
   methods: {
     ...mapActions("language", ["fetchLanguages"]),
+    changeLanguage(al) {
+      let idx = this.elem.translations.findIndex(t => t.lang === al)
+      if (idx !== -1) {
+        this.internalTitle = this.elem.translations[idx].title
+        let parsedJson = JSON.parse(this.elem.translations[idx].description)
+        this.internalDescription = parsedJson
+        if (this.$refs.editor) {
+          this.$refs.editor.setContent(parsedJson)
+          this.$refs.editor.setLang(al)
+        }
+      } else {
+        this.internalTitle = ""
+        this.internalDescription = ""
+        if (this.$refs.editor) {
+          this.$refs.editor.setContent("")
+          this.$refs.editor.setLang(al)
+        }
+      }
+    },
     addTag() {
       if (this.internalTags.indexOf(this.tagInput) !== -1) {
         this.tagErrorMessage = "Duplicates are not allowed."
@@ -173,7 +186,7 @@ export default {
       this.$router.go(-1);
     },
     callSaveFn() {
-      this.save_item_fn(this.internalTitle, this.$refs.editor.getContent(), this.languages.filter(l => l.name === this.langTab)[0].lang, this.internalTags)
+      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.internalTags)
     }
   },
   computed: {
@@ -184,12 +197,12 @@ export default {
   },
   created() {
     this.loading = true
-    if (!this.activeLanguage) {
-      this.activeLanguage = this.$i18n.locale
-    }
-    let al = this.activeLanguage
+    let al = this.$i18n.locale
     this.fetchLanguages().then(() => {
-      this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
+      this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].lang
+      if (this.elem) {
+        this.changeLanguage(al)
+      }
       this.loading = false
     })
   }

@@ -1,11 +1,9 @@
 <template>
   <div>
     <edit-element
-      :title="title"
-      :description="description"
+      :elem="elem"
       :save_item_fn="saveGlossaryItem"
       :pagetitle="pagetitle"
-      :activeLanguage="lang"
     />
   </div>
 </template>
@@ -18,18 +16,12 @@ export default {
     "edit-element": EditElement
   },
   props: {
-    "title": {
-      type: String,
-    },
-    "description": {
-      type: String | Object,
+    "elem": {
+      type: Object,
     },
     "pagetitle": {
       type: String
     },
-    "lang": {
-      type: String
-    }
   },
   methods: {
     saveGlossaryItem(title, desc, lang, tags) {

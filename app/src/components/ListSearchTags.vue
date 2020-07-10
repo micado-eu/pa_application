@@ -71,7 +71,7 @@
         >
           <glossary-editor-viewer
             :class="!publish_mode || publishState[item.id] ? 'published' : 'unpublished'"
-            :content="item.description"
+            :content="JSON.parse(item.description)"
             v-if="!loading"
             :glossary_fetched="true"
           />
@@ -169,8 +169,10 @@ export default {
   data() {
     return {
       hovered: -1,
-      filteredElementsBySearch: this.elements,
-      filteredElementsByTags: this.elements,
+      // display only elements in the language selected
+      translatedElements: [],
+      filteredElementsBySearch: [],
+      filteredElementsByTags: [],
       searchText: "",
       tags: [],
       selectedTags: [],
@@ -242,6 +244,13 @@ export default {
     this.fetchGlossary().then(() => {
       this.loading = false
     })
+    this.translatedElements = this.elements.map(e => {
+      let al = this.$i18n.locale
+      let idx = e.translations.findIndex(t => t.lang === al)
+      return e.translations[idx]
+    })
+    this.filteredElementsBySearch = this.translatedElements
+    this.filteredElementsByTags = this.translatedElements
     for (let elem of this.elements) {
       // Tags
       if (elem.tags) {

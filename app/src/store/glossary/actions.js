@@ -9,17 +9,20 @@ export function fetchGlossary(state, data) {
 export function saveNewGlossaryItem(state, data) {
   return client
     .saveNewGlossaryItem(data)
-    .then(glossaryItem => state.commit('addNewGlossaryItem', glossaryItem))
+    .then(newData => newData)
 }
 
 export function editGlossaryItem(state, data) {
   return client
-    .editGlossaryItem(data)
-    .then(glossaryItem => state.commit('editGlossaryItem', glossaryItem))
+    .editGlossaryItemTranslation(data)
+}
+
+export function addNewGlossaryItemTranslation(state, data) {
+  return client
+    .addNewGlossaryItemTranslation(data)
 }
 
 export function deleteGlossaryItem(state, data) {
   return client
     .deleteGlossaryItem(data)
-    .then(() => state.commit('deleteGlossaryItem', data))
 }
