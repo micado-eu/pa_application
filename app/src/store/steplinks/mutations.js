@@ -3,8 +3,8 @@ export function someMutation (state) {
 }
 */
 
-export function setSteps (state, steps) {
-  state.steps = steps
+export function setSteplinks (state, steplinks) {
+  state.steplinks = steplinks
 }
 
 export function addNode (state, step) {

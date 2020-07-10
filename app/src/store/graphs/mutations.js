@@ -23,6 +23,11 @@ export function changeNode (state, payload) {
 
 }
 
+export function deleteNode (state, id) {
+  const index = state.graphs.elements.findIndex(item => item.data.id === id);
+  if (index !== -1) state.graphs.elements.splice(index, 1);
+
+}
 
 export function editGraphs (state, graphs) {
   console.log("update the state")

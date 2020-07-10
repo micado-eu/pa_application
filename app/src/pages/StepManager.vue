@@ -52,7 +52,8 @@
               :key="`${def.data.id}`"
               :definition="def"
               v-on:click="editStep($event, def)"
-              v-on:cxttapstart="deleteNode($event, def)"
+              v-on:cxttapstart="deleteElement($event, def)"
+              v-on:remove="removeElement($event,def)"
             />
 
           </cytoscape>
@@ -320,6 +321,9 @@ export default {
     steps () {
       return this.$store.state.steps.steps
     },
+    steplinks () {
+      return this.$store.state.steplinks.steplinks
+    },
     graphs () {
       return this.$store.state.graphs.graphs
     },
@@ -345,7 +349,7 @@ export default {
     },
 
     generateShell () {
-      let newstep = { id: -1, documents: [], translations: [], cost: 0, idProcess: this.processId, location: null, locationLon: 0, locationLat: 0, locationSpecific: false }
+      let newstep = { id: -1, documents: [], translations: [], cost: 0, idProcess: this.processId, location: null, locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
       this.languages.forEach(l => {
         newstep.translations.push({ id: -1, lang: l.lang, step: '', description: '', translationDate: null })
       });
@@ -359,14 +363,7 @@ export default {
 
     },
 
-    deleteStep (value) {
-      var deletedSteps = this.steps.filter((filt) => {
-        //console.log("in fil")
-        //console.log(filt.id == value)
-        return filt.id == value
-      })
-      this.$store.dispatch('steps/deleteSteps', deletedSteps[0].id)
-    },
+
     preConfig (cytoscape) {
       console.log("calling pre-config");
 
@@ -440,6 +437,7 @@ export default {
 
       let newStep = this.generateShell()
       newStep.id = new_id
+      newStep.is_new = true
       this.$store.dispatch('steps/addStep', newStep)
         .then(ret => {
           console.log("ADDED STEP")
@@ -447,7 +445,26 @@ export default {
         })
 
     },
+    deleteElement (event, element, cy) {
 
+      console.log("these are the testdata")
+
+      console.log(element)
+      if (element.group == 'node') {
+        this.$store.dispatch('steps/deleteStep', element.data.id)
+          .then(ret => {
+            console.log("DELETED STEP")
+            console.log(this.steps)
+          })
+
+        this.$store.dispatch('graphs/deleteNode', element.data.id)
+          .then(res => {
+
+          })
+      } else {
+        console.log("MANAGE EDGES")
+      }
+    },
 
     afterCreated (cy) {
       // cy: this is the cytoscape instance
@@ -464,6 +481,11 @@ export default {
     },
 
     saveGraph () {
+    },
+    // this is used only for edges that get removed as a removal of a node that has edges
+    removeElement (event, element, cy) {
+      console.log("IN REMOVED")
+      console.log(element)
     }
   },
 
@@ -480,6 +502,14 @@ export default {
         console.log(steps)
         this.loading = false
       })
+
+    this.$store.dispatch('steplinks/fetchSteplinksByProcessId', this.processId)
+      .then(steplinks => {
+        console.log("THE STEPLINKS")
+        console.log(steplinks)
+        this.loading = false
+      })
+
 
     this.$store.dispatch('graphs/fetchGraphs', { id: this.processId, userLang: this.$userLang })
       .then(graphs => {

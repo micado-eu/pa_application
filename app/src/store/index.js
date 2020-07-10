@@ -14,6 +14,7 @@ import user_type from './user_type'
 import integration_type from './integration_type'
 import language from './language'
 import steps from './steps'
+import steplinks from './steplinks'
 import graphs from './graphs'
 import user from './user'
 import ngo_user from './ngo_user'
@@ -45,6 +46,7 @@ export default function (/* { ssrContext } */) {
       integration_type,
       language,
       steps,
+      steplinks,
       graphs,
       user,
       ngo_user,

@@ -101,6 +101,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');
         chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
         chain.resolve.alias.set('api-steps-client', 'src/api/steps/server');
+        chain.resolve.alias.set('api-steplinks-client', 'src/api/steplinks/server');
         chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/server');
         chain.resolve.alias.set('api-information-client', 'src/api/information/server');
         chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server');
