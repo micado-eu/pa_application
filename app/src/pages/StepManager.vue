@@ -109,7 +109,7 @@
                     bg-color="grey-3"
                     standout
                     outlined
-                    v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].title"
+                    v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                   />
                 </div>
                 <div class=" q-pa-xsm row">
@@ -349,10 +349,10 @@ export default {
       this.step_shell = this.generateShell()
     },
 
-    generateShell () {
-      let newstep = { id: -1, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
+    generateShell (id = -1) {
+      let newstep = { id: id, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
       this.languages.forEach(l => {
-        newstep.translations.push({ id: -1, lang: l.lang, step: '', description: '', translationDate: null })
+        newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null })
       });
       return newstep
     },
@@ -405,7 +405,7 @@ export default {
         .then(ret => {
           console.log("CHANGED THE STEP")
         })
-      let newtitle = this.step_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].title
+      let newtitle = this.step_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].step
       this.$store.dispatch('graphs/changeNode', { title: newtitle, id: this.step_shell.id })
         .then(ret => {
           this.refresher += 1
@@ -436,8 +436,8 @@ export default {
           this.refresher += 1
         })
 
-      let newStep = this.generateShell()
-      newStep.id = new_id
+      let newStep = this.generateShell(new_id)
+      //      newStep.id = new_id
       newStep.is_new = true
       this.$store.dispatch('steps/addStep', newStep)
         .then(ret => {
