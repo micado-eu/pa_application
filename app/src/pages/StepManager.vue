@@ -554,6 +554,10 @@ export default {
     async saveGraph () {
       // start saving elements
       // adding new steps
+      let postData = { steps: this.steps, steplinks: this.steplinks }
+
+      this.$store.dispatch('graphs/saveGraph', postData)
+      /*
       const saveSteps = async () => {
         await this.asyncForEach(this.steps, async (step) => {
           console.log(step)
@@ -564,6 +568,8 @@ export default {
         console.log("after foreach save topics")
       }
       await saveSteps()
+      */
+
       // updating chenged steps
       // adding new steplink
       // updating changed steplin

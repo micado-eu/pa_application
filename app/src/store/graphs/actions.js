@@ -16,6 +16,16 @@ export function fetchGraphs (state, payload) {
     })
 }
 
+export function saveGraph (state, payload) {
+  return client
+    .saveGraph(payload)
+    .then(graph => {
+
+      return graph
+    })
+}
+
+
 export function addNode (state, payload) {
   state.commit('addNode', payload)
   return 1
