@@ -171,28 +171,59 @@
             </div>
 
             <div
-              class=" q-pa-xsm row"
+              class="row"
               style="text-align:center"
             >
-              <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left"> Required documents </h5>
-              </div>
-              <div
-                class=" q-pa-md col-8"
-                style="margin-top:14px; margin-bottom:0px; padding-bottom:0px"
-              >
+              <q-btn
+                color="accent"
+                no-caps=""
+                unelevated
+                label="Add document"
+                @click="addStepDocument()"
+                style="width:150px;border-radius:2px"
+              />
+              <div v-if="stepdocadd">
+
                 <q-select
                   filled
                   clearable
-                  v-model="step_shell.documents"
-                  multiple
-                  :options="documents_list"
+                  v-model="step_doc_shell.idDocument"
+                  emit-value
+                  map-options
+                  :options="filtered_t_docs"
                   label="Required documents"
                   style="width: 450px"
                 />
+                <q-input
+                  rounded
+                  dense
+                  bg-color="grey-3"
+                  standout
+                  outlined
+                  v-model="step_doc_shell.cost"
+                />
               </div>
+              <q-btn
+                color="accent"
+                no-caps=""
+                unelevated
+                label="Sve document"
+                @click="saveStepDocument()"
+                style="width:150px;border-radius:2px"
+              />
+              <q-list>
+                <StepDocumentElement
+                  v-for="stepdoc in step_shell.documents"
+                  :key="stepdoc.id"
+                  :stepdoc="stepdoc"
+                  :docs_type="t_docs"
+                  @deleteDoc="deleteDoc"
+                />
+              </q-list>
+              <!--
+               
+    -->
             </div>
-
             <div
               class=" q-pa-xsm row"
               style="text-align:center"
@@ -258,6 +289,7 @@ import configcy from '../configs/cytoscapeConfig'
 import edgeHandles from 'cytoscape-edgehandles'
 import { v4 as uuidv4 } from 'uuid';
 import editEntityMixin from '../mixin/editEntityMixin'
+import StepDocumentElement from 'components/StepDocumentElement'
 
 
 export default {
@@ -267,7 +299,8 @@ export default {
   mixins: [editEntityMixin],
 
   components: {
-    Step
+    Step,
+    StepDocumentElement
   },
   data () {
     return {
@@ -280,13 +313,11 @@ export default {
       refresher: 0,
       editing: false,
       selected_node: "",
-      documents_list: [
-        "document_1",
-        "document_2",
-        "document_3",
-        "document_4",
-        "document_5"
-      ],
+      t_docs: [],
+      stepdocadd: false,
+      filtered_t_docs: [],
+      step_doc_shell: null,
+      model_docs: [],
       processes_list: [
         "How to certify education degree",
         "Renewal of residence permit for working reasons",
@@ -330,7 +361,9 @@ export default {
     elements () {
       return this.$store.state.graphs.graphs.elements
     },
-
+    document_types () {
+      return this.$store.state.document_type.document_type
+    },
   },
   watch: {
     refresher: function () {
@@ -350,11 +383,16 @@ export default {
     },
 
     generateShell (id = -1) {
-      let newstep = { id: id, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false }
+      let newstep = { id: id, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false, is_edited: false }
       this.languages.forEach(l => {
         newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null })
       });
       return newstep
+    },
+
+    generateStepDocShell (id = -1, idStep) {
+      let newstepdoc = { idDocument: id, idStep: idStep, cost: 0 }
+      return newstepdoc
     },
 
     mergeStep (idStep) {
@@ -390,6 +428,10 @@ export default {
           console.log("I'm old")
           this.is_new = false
           this.mergeStep(node.data.id)
+          console.log(node)
+          if (node.data.required_documents != null) {
+            this.model_docs = node.data.required_documents
+          }
         }
         //      this.edit_step = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == node.id })[0]))
         console.log("this is edit step")
@@ -401,6 +443,8 @@ export default {
     saveStep () {
       //     console.log(value)
       // In edit_step we have the instance of step that we are working on
+      //      let changedDocs = this.document_types.filter(doc => { return this.model_docs.includes(doc.id) })
+      //      this.step_shell.documents = changedDocs
       this.$store.dispatch('steps/changeStep', this.step_shell)
         .then(ret => {
           console.log("CHANGED THE STEP")
@@ -589,6 +633,30 @@ export default {
       for (let index = 0; index < array.length; index++) {
         await callback(array[index], index, array);
       }
+    },
+
+    deleteDoc (event) {
+      console.log("in delete doc in step manager")
+      console.log(event)
+    },
+    addStepDocument () {
+      this.stepdocadd = true
+      this.step_doc_shell = this.generateStepDocShell(-1, this.step_shell.id)
+      let docs_in_step = []
+      this.step_shell.documents.forEach((doc) => {
+        docs_in_step.push(doc.idDocument)
+      });
+      console.log(docs_in_step)
+      this.filtered_t_docs = this.t_docs.filter(adoc => {
+        return !docs_in_step.includes(adoc.value)
+      })
+      console.log(this.filtered_t_docs)
+    },
+    saveStepDocument () {
+      this.step_shell.documents.push(this.step_doc_shell)
+      console.log(this.step_shell)
+      this.stepdocadd = false
+
     }
   },
 
@@ -632,7 +700,15 @@ export default {
         console.log(this.refresher)
 
       })
+    this.$store.dispatch('document_type/fetchDocumentType')
+      .then(document_types => {
+        console.log(document_types)
+        document_types.forEach(document_type => {
+          var the_doc = { label: document_type.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: document_type.id }
+          this.t_docs.push(the_doc)
+        })
 
+      })
   },
   /*
   mounted () {
