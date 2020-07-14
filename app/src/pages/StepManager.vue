@@ -1,40 +1,39 @@
   <template>
   <div class="container">
-    <div>
-      <div
-        class="col"
-        style="display:inline-block;text-align:left;width:600px"
-      >
-        <h5> Manage Steps </h5>
-      </div>
-      <div
-        class="col"
-        style="display:inline-block;text-align:right;padding-right:15px"
-      >
+    <h5> Manage Steps </h5>
+
+    <div class="row">
+
+      <div class="col">
         <q-btn
-          style="width:135px; margin-bottom:15px;border-radius:2px"
           color="accent"
           unelevated
-          rounded
           label="Add step"
           no-caps
           size="15px"
           @click="addNode"
         />
       </div>
-      <div
-        class="col"
-        style="display:inline-block;text-align:right;padding-right:15px"
-      >
+      <div class="col">
         <q-btn
-          style="width:135px; margin-bottom:15px;border-radius:2px"
           color="accent"
           unelevated
-          rounded
           label="Save Graph"
           no-caps
           size="15px"
           @click="saveGraph"
+        />
+
+      </div>
+      <div class="col">
+        <q-btn
+          class="button"
+          color="accent"
+          no-caps=""
+          unelevated
+          label="Back"
+          @click="cancelStep"
+          style="width:150px;border-radius:2px"
         />
       </div>
     </div>
@@ -271,6 +270,7 @@
                 no-caps=""
                 unelevated
                 label="Back"
+                @click="cancelEditStep()"
                 style="width:150px;border-radius:2px"
               />
             </div>
@@ -657,6 +657,12 @@ export default {
       console.log(this.step_shell)
       this.stepdocadd = false
 
+    },
+    cancelStep () {
+      this.$router.push('/guided_process_editor')
+    },
+    cancelEditStep () {
+      this.editing = false
     }
   },
 

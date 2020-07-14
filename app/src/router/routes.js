@@ -38,7 +38,7 @@ const routes = [
 
       { path: '/adddocument', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params }) },
       { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
-      { path: '/guided_process_editor', component: ProcessEditor },
+      { path: '/guided_process_editor', component: ProcessEditor, name: 'guidedprocesslist' },
 
       //      { path: '/guided_process_editor/edit/:id', component: () => import('components/EditProcess.vue'), props: true, name: process },
       { path: '/guided_process_editor/edit/:theprocess', name: 'editprocess', component: () => import('components/EditProcess.vue'), props: (route) => ({ ...route.params }) },
