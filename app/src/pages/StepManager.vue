@@ -411,6 +411,8 @@ export default {
           this.refresher += 1
         })
 
+      this.editing = false
+      this.createShell()
     },
     addNode (event, cy) {
       let new_id = uuidv4()
