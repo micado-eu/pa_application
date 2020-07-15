@@ -15,3 +15,12 @@ export function fetchStatistics(state, data) {
       state.commit('setCategories', res.charts)
     })
 }
+
+export function addChart(state, chart) {
+  console.log('action chart: ',chart)
+  return client.addChart(chart)
+    .then(res => {
+      console.log("added chart: ", res)
+      // state.commit('saveTopic', topic_element)
+    })
+}

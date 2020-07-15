@@ -27,6 +27,21 @@ const fetchLocal = (mockData, time = 0) => {
     })
 }
 
+function csvToJSON(csv) {
+    const lines = csv.split("\n").filter(line => line),
+        result = [],
+        headers = lines[0].split(",");
+
+    for (let i = 1; i < lines.length; i++) {
+        let obj = {},
+            currentline = lines[i].split(",");
+        for (let j = 0; j < headers.length; j++) {
+            obj[headers[j]] = currentline[j];
+        }
+        result.push(obj);
+    }
+    return JSON.stringify(result); //JSON
+}
 
 export default {
     fetchStatistics() {
@@ -47,24 +62,26 @@ export default {
                     categories: res[4],
                 };
             })
-            .catch(function (error) {
-                console.log("ERROR IN CALLING API MANAGER")
-                if (error.response) {
-                    // The request was made and the server responded with a status code
-                    // that falls out of the range of 2xx
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                    // http.ClientRequest in node.js
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-                console.log(error.config);
-            });;
-    }
+            .catch(error_handler);
+    },
+    addChart(chart) {
+        if (chart.content) {
+            switch (chart.format) {
+                case 'csv':
+                    chart.content = csvToJSON(chart.content)
+                    break
+                case 'JSON':
+                    chart.content = chart.content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, '')
+                    break
+                case 'API':
+                    break
+            }
+        }
+        console.log('server chart: ', chart)
+        return axiosInstance
+            .post('/backend/1.0.0/charts', chart)
+            .then(response => response.data)
+            .catch(error_handler);
+    },
 }
+
