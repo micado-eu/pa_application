@@ -78,6 +78,7 @@
               indicator-color="primary"
               align="justify"
               narrow-indicator
+              style="width:100%"
             >
               <q-tab
                 v-for="language in languages"
@@ -89,12 +90,15 @@
             <q-tab-panels
               v-model="langTab"
               animated
+              style="width:100%"
             >
               <q-tab-panel
                 v-for="language in languages"
                 :key="language.lang"
                 :name="language.name"
+                
               >
+              <div class="row">
                 <div class=" q-pa-xsm col-4">
                   <h5 style="text-align:left;margin-bottom:0px"> Step Name </h5>
                 </div>
@@ -108,10 +112,12 @@
                     bg-color="grey-3"
                     standout
                     outlined
+                   
                     v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                   />
                 </div>
-                <div class=" q-pa-xsm row">
+              </div>
+                <div class=" q-pa-xsm row" style="width:100%">
                   <div class=" q-pa-xsm col-4">
                     <h5 style="text-align:left"> Step description </h5>
                   </div>
@@ -120,6 +126,7 @@
                     style="margin: auto;display: block;"
                   >
                     <q-input
+                    style="padding-top:10px"
                       type="textarea"
                       dense
                       bg-color="grey-3"
@@ -131,7 +138,7 @@
 
               </q-tab-panel>
             </q-tab-panels>
-            <div class=" q-pa-xsm row">
+            <div class=" q-pa-xsm row" style="width:100%">
               <div class=" q-pa-xsm col-4">
                 <h5 style="text-align:left;margin-bottom:0px"> Step location </h5>
               </div>
@@ -150,7 +157,7 @@
               </div>
             </div>
 
-            <div class=" q-pa-xsm row">
+            <div class=" q-pa-xsm row" style="width:100%">
               <div class=" q-pa-xsm col-4">
                 <h5 style="text-align:left;margin-bottom:0px"> Step cost </h5>
               </div>
@@ -168,11 +175,8 @@
                 />
               </div>
             </div>
-
-            <div
-              class="row"
-              style="text-align:center"
-            >
+            
+            <div class="row" style="width:100%; padding-top:10px">
               <q-btn
                 color="accent"
                 no-caps=""
@@ -181,8 +185,11 @@
                 @click="addStepDocument()"
                 style="width:150px;border-radius:2px"
               />
-              <div v-if="stepdocadd">
-
+            </div>
+           
+              
+              <div class="row" style="width:100%; padding-top:10px; padding-bottom:10px" v-if="stepdocadd">
+                <div class="col-6">
                 <q-select
                   filled
                   clearable
@@ -191,9 +198,12 @@
                   map-options
                   :options="filtered_t_docs"
                   label="Required documents"
-                  style="width: 450px"
+                  style="width:350px"
                 />
+                </div>
+                <div class="col-3" >
                 <q-input
+                style="width:100px;margin:0 auto"
                   rounded
                   dense
                   bg-color="grey-3"
@@ -201,16 +211,21 @@
                   outlined
                   v-model="step_doc_shell.cost"
                 />
-              </div>
-              <q-btn
+                </div>
+                <div class="col-3">
+                <q-btn
                 color="accent"
                 no-caps=""
                 unelevated
-                label="Sve document"
+                label="Save document"
                 @click="saveStepDocument()"
                 style="width:150px;border-radius:2px"
               />
-              <q-list>
+                </div>
+              </div>
+            
+              <div class="row" style="padding-top:10px; padding-bottom:10px">
+              <q-list  style="width:700px">
                 <StepDocumentElement
                   v-for="stepdoc in step_shell.documents"
                   :key="stepdoc.id"
@@ -219,10 +234,11 @@
                   @deleteDoc="deleteDoc"
                 />
               </q-list>
+              </div>
               <!--
                
     -->
-            </div>
+            
             <div
               class=" q-pa-xsm row"
               style="text-align:center"

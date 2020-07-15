@@ -1,12 +1,12 @@
 <template>
-  <div class="row">
-    <div class="col">
+  <div class="row" style="padding-bottom:10px">
+    <div class="col-3" style="text-align:left">
       {{doc_label}}
     </div>
-    <div class="col">
+    <div class="col-3">
       {{this.stepdoc.cost}}
     </div>
-    <div>
+    <div class="col-3">
       <q-btn
         class="q-px-md q-py-s"
         color="negative"
