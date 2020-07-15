@@ -21,9 +21,11 @@ export default {
   name: "MigrationSituation",
   computed: {
     boards: function() {
-      return this.$store.state.statistics.boards.map(b => {
+      const boards = this.$store.state.statistics.boards.map(b => {
         return { title: b, link: `/situation/${b}` };
       });
+      boards.push({ title: "editor", link: `/situation/editor` });
+      return boards;
     }
   }
 };

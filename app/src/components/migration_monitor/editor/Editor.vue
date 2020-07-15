@@ -1,18 +1,18 @@
 <template>
   <div class="q-pa-md">
-    <Category />
+    <!-- <Category /> -->
     <AddNew />
   </div>
 </template>
 
 <script>
-import Category from "./Category";
+// import Category from "./Category";
 import AddNew from "./AddNew";
 
 export default {
   name: "MigrationMonitorEditor",
   components: {
-    Category,
+    // Category,
     AddNew
   },
   data() {

@@ -21,14 +21,7 @@
             <h5 style="text-align:left;font-size:18px">Category</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-select
-              v-model="category"
-              rounded
-              standout
-              :options="categories"
-              label
-              @input="onInput"
-            />
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="category" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -37,6 +30,14 @@
           </div>
           <div class="col-8" style="margin: auto;display: block;">
             <q-select v-model="type" rounded standout :options="types" label @input="onInput" />
+          </div>
+        </div>
+        <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
+          <div class="col-4" style="padding-left:40px;">
+            <h5 style="text-align:left;font-size:18px">Board</h5>
+          </div>
+          <div class="col-8" style="margin: auto;display: block;">
+            <q-input bg-color="grey-3" dense rounded standout outlined v-model="board" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -143,7 +144,7 @@
               spinner-color="white"
               style="max-height: 100px; max-width: 150px"
               @click="hotimage = true"
-            /> -->
+            />-->
             <q-dialog>
               <q-card>
                 <!-- <v-hotspot
@@ -178,7 +179,8 @@
             rounded
             label="Cancel"
             style="width:100px"
-            to="/document_type"
+            @click="reset()"
+            to="/situation/editor"
           />
         </div>
         <div class="q-pa-md col-6" style="text-align:left">
@@ -188,8 +190,7 @@
             rounded
             label="Save/Update"
             style="width:150px"
-            @click="saveData(edit_document)"
-            to="/document_type"
+            @click="addChart()"
           />
         </div>
       </div>
@@ -213,19 +214,70 @@ export default {
       formats: ["JSON", "csv", "API"],
       category: "",
       type: "",
-      types: ["BAR", "LINE", "PIE"]
+      types: ["BAR", "LINE", "PIE"],
+      board: "",
+      content: null
     };
   },
   computed: {
     categories() {
-      return this.$store.state.statistics.categories.map((c)=>c.category);
+      return this.$store.state.statistics.categories.map(c => c.category);
     }
   },
   methods: {
+    addChart: function() {
+      const data = {
+        title: this.title,
+        content: this.content,
+        description: this.description,
+        category: this.category,
+        format: this.data_format,
+        type: this.type,
+        xistime: this.xistime,
+        x: this.x,
+        y: this.y,
+        board: this.board
+      };
+      this.$store.dispatch("statistics/addChart", data).then(() => {
+        this.$router.push("/situation/editor");
+      });
+    },
+    reset: function() {
+      this.title = "";
+      this.description = "";
+      this.x = "";
+      this.y = "";
+      this.url = "";
+      this.xistime = false;
+      this.data_format = "JSON";
+      this.category = "";
+      this.type = "";
+      this.board = "";
+      this.content = null;
+    },
     onInput: function(e) {
       console.log("Change: ", e);
     },
-    getFiles: function() {}
+    getFiles(file) {
+      let reader = new FileReader();
+      // Convert the file to base64 text
+      // reader.readAsDataURL(file);
+      reader.readAsText(file);
+      console.log(file);
+
+      reader.onload = () => {
+        // Make a fileInfo Object
+        let fileInfo = {
+          name: file.name,
+          type: file.type,
+          size: Math.round(file.size / 1000) + " kB",
+          result: reader.result,
+          file: file
+        };
+        console.log(fileInfo.result);
+        this.content = fileInfo.result;
+      };
+    }
   }
 };
 </script>
