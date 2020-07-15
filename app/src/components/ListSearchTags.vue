@@ -3,7 +3,10 @@
     <q-toolbar class="text-white shadow-2 row toolbar-list">
       <q-toolbar-title>{{ title }}</q-toolbar-title>
       <q-avatar>
-        <q-icon :name="icon_name" size="lg" />
+        <q-icon
+          :name="icon_name"
+          size="lg"
+        />
       </q-avatar>
     </q-toolbar>
     <div class="q-my-md row">
@@ -46,7 +49,11 @@
         @mouseover="hovered = item.id"
         @mouseleave="hovered = -1"
       >
-        <q-item-section avatar v-if="publish_mode" class="publish_section">
+        <q-item-section
+          avatar
+          v-if="publish_mode"
+          class="publish_section"
+        >
           <q-checkbox
             color="accent"
             :value="publishState[item.id]"
@@ -54,26 +61,28 @@
           />
         </q-item-section>
         <q-item-section class="title_section">
-          <q-item-label
-            :class="
+          <q-item-label :class="
               !publish_mode || publishState[item.id]
                 ? 'published title-label'
                 : 'unpublished title-label'
-            "
-          >
+            ">
             {{ item.title }}
           </q-item-label>
         </q-item-section>
-        <q-item-section no-wrap class="description_section">
+        <q-item-section
+          no-wrap
+          class="description_section"
+        >
           <glossary-editor-viewer
             :class="
               !publish_mode || publishState[item.id]
                 ? 'published'
                 : 'unpublished'
             "
-            :content="JSON.parse(item.description)"
+            :content="item.description"
             v-if="!loading"
-            :glossary_fetched="true"
+            glossary_fetched
+            :lang="lang"
           />
         </q-item-section>
         <q-item-section class="tag_btn_section">
@@ -123,7 +132,7 @@ export default {
   props: {
     elements: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -133,13 +142,13 @@ export default {
     },
     edit_url_fn: {
       type: Function,
-      default: function() {
+      default: function () {
         return () => "/";
       }
     },
     delete_fn: {
       type: Function,
-      default: function() {
+      default: function () {
         return () => "";
       }
     },
@@ -161,7 +170,7 @@ export default {
     },
     update_publish_fn: {
       type: Function,
-      default: function() {
+      default: function () {
         return () => "/";
       }
     }
@@ -177,6 +186,7 @@ export default {
       tags: [],
       selectedTags: [],
       publishState: {},
+      lang: "",
       loading: true
     };
   },
@@ -237,35 +247,36 @@ export default {
     },
     filteredElements() {
       var filteredElementsByTags = this.filteredElementsByTags;
-      return this.filteredElementsBySearch.filter(function(n) {
+      return this.filteredElementsBySearch.filter(function (n) {
         return filteredElementsByTags.indexOf(n) !== -1;
       });
     }
   },
   created() {
     this.loading = true;
+    this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => {
-      this.loading = false;
-    });
-    this.translatedElements = this.elements.map(e => {
-      let al = this.$i18n.locale;
-      let idx = e.translations.findIndex(t => t.lang === al);
-      return e.translations[idx];
-    });
-    this.filteredElementsBySearch = this.translatedElements;
-    this.filteredElementsByTags = this.translatedElements;
-    for (let elem of this.elements) {
-      // Tags
-      if (elem.tags) {
-        for (let tag of elem.tags) {
-          if (this.tags.indexOf(tag) == -1) {
-            this.tags.push(tag);
+      this.translatedElements = this.elements.map(e => {
+        let al = this.$i18n.locale;
+        let idx = e.translations.findIndex(t => t.lang === al);
+        return e.translations[idx];
+      });
+      this.filteredElementsBySearch = this.translatedElements;
+      this.filteredElementsByTags = this.translatedElements;
+      for (let elem of this.elements) {
+        // Tags
+        if (elem.tags) {
+          for (let tag of elem.tags) {
+            if (this.tags.indexOf(tag) == -1) {
+              this.tags.push(tag);
+            }
           }
         }
+        // Publish
+        this.publishState[elem.id] = elem.published;
       }
-      // Publish
-      this.publishState[elem.id] = elem.published;
-    }
+      this.loading = false;
+    });
   }
 };
 </script>

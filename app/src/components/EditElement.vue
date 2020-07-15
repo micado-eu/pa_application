@@ -155,7 +155,7 @@ export default {
       let idx = this.elem.translations.findIndex(t => t.lang === al)
       if (idx !== -1) {
         this.internalTitle = this.elem.translations[idx].title
-        let parsedJson = JSON.parse(this.elem.translations[idx].description)
+        let parsedJson = this.elem.translations[idx].description
         this.internalDescription = parsedJson
         if (this.$refs.editor) {
           this.$refs.editor.setContent(parsedJson)
