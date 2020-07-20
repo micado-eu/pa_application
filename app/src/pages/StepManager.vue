@@ -434,7 +434,7 @@ export default {
       if (node.group == "nodes") {
         console.log("editing")
 
-        this.editing = true
+        
 
         if (node.data.is_new) {
           console.log("NEW NODE")
@@ -453,6 +453,8 @@ export default {
         console.log("this is edit step")
 
         console.log(this.step_shell)
+        this.editing = false
+        this.editing = true
 
       }
     },
