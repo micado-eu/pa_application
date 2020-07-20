@@ -672,6 +672,9 @@ export default {
       console.log(this.filtered_t_docs)
     },
     saveStepDocument () {
+      if(this.step_shell.documents == null){
+          this.step_shell.documents =[]
+      }
       this.step_shell.documents.push(this.step_doc_shell)
       console.log(this.step_shell)
       this.stepdocadd = false
