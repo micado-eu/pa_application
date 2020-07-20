@@ -22,8 +22,8 @@ export function fetchSteplinksByProcessId (state, id) {
     })
 }
 
-export function addStep (state, step) {
-  state.commit('addNode', step)
+export function addStepLink (state, steplink) {
+  state.commit('addStepLink', steplink)
   return 1
 }
 
@@ -33,8 +33,8 @@ export function changeStep (state, payload) {
 }
 
 
-export function deleteStep (state, payload) {
-  state.commit('deleteStep', payload)
+export function deleteStepLink (state, payload) {
+  state.commit('deleteStepLink', payload)
   return
 }
 

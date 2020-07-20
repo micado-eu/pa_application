@@ -333,6 +333,7 @@ export default {
       stepdocadd: false,
       filtered_t_docs: [],
       step_doc_shell: null,
+      steplink_shell: null, 
       model_docs: [],
       processes_list: [
         "How to certify education degree",
@@ -532,6 +533,14 @@ export default {
             }
             */
     },
+    generateStepLink(id_edge, fromStep_edge, toStep_edge){
+      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, translations:[]}
+      this.languages.forEach(l => {
+        this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '' })
+      });
+      return this.steplink_shell
+
+    }, 
 
     addEdge (sourceNode, targetNode, addedEles) {
       console.log("ADDING EDGE")
@@ -556,7 +565,9 @@ export default {
       console.log(this.elements)
 
       this.$refs.cyRef.instance.elements().remove();
-
+      
+      this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id )
+      this.$store.dispatch('steplinks/addStepLink', this.steplink_shell)
       this.$store.dispatch('graphs/addEdge', {
         group: 'edges',
         data: {
@@ -575,6 +586,7 @@ export default {
           console.log("Elementds in cytoscape")
           console.log(this.$refs.cyRef.instance.elements())
           console.log("Elementds in store")
+          console.log(this.$store.state.steplinks.steplinks)
           console.log(this.elements)
           this.$refs.cyRef.instance.layout({
             name: 'breadthfirst',
@@ -619,6 +631,7 @@ export default {
     async saveGraph () {
       // start saving elements
       // adding new steps
+      console.log(this.$store.state.steplinks.steplinks)
       let postData = { steps: this.steps, steplinks: this.steplinks }
 
       this.$store.dispatch('graphs/saveGraph', postData)
@@ -657,6 +670,10 @@ export default {
     deleteDoc (event) {
       console.log("in delete doc in step manager")
       console.log(event)
+      /*console.log(this.step_shell.documents)
+      var idx = this.step_shell.documents.findIndex(doc => doc.idDocument == event)
+      console.log(idx)
+      this.step_shell.documents.splice(idx, 1)*/
     },
     addStepDocument () {
       this.stepdocadd = true
