@@ -472,6 +472,7 @@ export default {
         })
 
       this.editing = false
+      this.stepdocadd = false
       this.createShell()
     },
     addNode (event, cy) {
@@ -659,9 +660,11 @@ export default {
       this.stepdocadd = true
       this.step_doc_shell = this.generateStepDocShell(-1, this.step_shell.id)
       let docs_in_step = []
+      if(this.step_shell.documents != null){
       this.step_shell.documents.forEach((doc) => {
         docs_in_step.push(doc.idDocument)
       });
+      }
       console.log(docs_in_step)
       this.filtered_t_docs = this.t_docs.filter(adoc => {
         return !docs_in_step.includes(adoc.value)
@@ -679,6 +682,7 @@ export default {
     },
     cancelEditStep () {
       this.editing = false
+      this.stepdocadd = false
     }
   },
 
