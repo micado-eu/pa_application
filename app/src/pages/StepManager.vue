@@ -534,7 +534,7 @@ export default {
             */
     },
     generateStepLink(id_edge, fromStep_edge, toStep_edge){
-      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, translations:[]}
+      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, idProcess:Number(this.processId), translations:[]}
       this.languages.forEach(l => {
         this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '' })
       });
@@ -633,8 +633,10 @@ export default {
       // adding new steps
       console.log(this.$store.state.steplinks.steplinks)
       let postData = { steps: this.steps, steplinks: this.steplinks }
+      console.log(JSON.stringify(postData))
 
       this.$store.dispatch('graphs/saveGraph', postData)
+
       /*
       const saveSteps = async () => {
         await this.asyncForEach(this.steps, async (step) => {
