@@ -408,7 +408,7 @@ export default {
     },
 
     generateStepDocShell (id = -1, idStep) {
-      let newstepdoc = { idDocument: id, idStep: idStep, cost: 0 }
+      let newstepdoc = { idDocument: id, idStep: idStep, cost: 0, isOut: false }
       return newstepdoc
     },
 
