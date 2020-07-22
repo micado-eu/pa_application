@@ -695,10 +695,11 @@ export default {
     deleteDoc (event) {
       console.log("in delete doc in step manager")
       console.log(event)
-      /*console.log(this.step_shell.documents)
+      console.log(this.step_shell.documents)
       var idx = this.step_shell.documents.findIndex(doc => doc.idDocument == event)
       console.log(idx)
-      this.step_shell.documents.splice(idx, 1)*/
+      this.step_shell.documents.splice(idx, 1)
+      this.$forceUpdate()
     },
     addStepDocument () {
       this.stepdocadd = true
