@@ -112,7 +112,8 @@
                     bg-color="grey-3"
                     standout
                     outlined
-                   
+                    @blur="updateField()"
+                   :key="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                     v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                   />
                 </div>
@@ -131,6 +132,7 @@
                       dense
                       bg-color="grey-3"
                       filled
+                      @blur="updateField()"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
                     />
                   </div>
@@ -152,6 +154,7 @@
                   bg-color="grey-3"
                   standout
                   outlined
+                  @blur="updateField()"
                   v-model="step_shell.location"
                 />
               </div>
@@ -171,6 +174,7 @@
                   bg-color="grey-3"
                   standout
                   outlined
+                  @blur="updateField()"
                   v-model="step_shell.cost"
                 />
               </div>
@@ -407,6 +411,11 @@ export default {
   },
 
   methods: {
+    updateField(){
+      //console.log(this.step_shell)
+      //console.log(this)
+      this.$forceUpdate()
+    },
 
     createShell () {
       this.step_shell = this.generateShell()
@@ -729,6 +738,7 @@ export default {
   created () {
     this.loading = true
     this.createShell()
+    console.log(this.step_shell)
     console.log("in created")
     console.log(this.processId)
     this.$store.dispatch('steps/fetchStepsByProcessId', Number(this.processId))
