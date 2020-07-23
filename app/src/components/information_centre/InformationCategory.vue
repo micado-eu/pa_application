@@ -4,8 +4,9 @@
     class="q-pa-md"
   >
     <router-link :to="'#'+$options.name">
-      <h5 @click="onClickTitle()">{{$options.name}}</h5>
+      <h5 @click="onClickTitle()">Information centre categories</h5>
     </router-link>
+    <span v-if="errorMessage">{{errorMessage}}</span>
     <q-list
       bordered
       separator
@@ -16,7 +17,7 @@
         v-for="a_information_category in information_category"
         :key="a_information_category.id"
       >
-        <q-item-section>{{a_information_category.title}}</q-item-section>
+        <q-item-section>{{showCategoryLabel(a_information_category)}}</q-item-section>
         <q-item-section class="col-5 flex flex-center">
           <q-btn
             color="negative"
@@ -51,10 +52,44 @@
         />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-input
-          v-model="int_cat_shell.title"
-          label="Standard"
-        />
+        <q-tabs
+          v-model="langTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        <q-tab-panels
+          v-model="langTab"
+          animated
+        >
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
+            <q-input
+              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].eventCategory"
+              label="Event"
+            />
+          </q-tab-panel>
+        </q-tab-panels>
+        <div>
+          <q-checkbox
+            color="accent"
+            v-model="linkable"
+            label="Linkable to an integration plan?"
+          />
+        </div>
         <q-btn
           color="accent"
           unelevated
@@ -77,14 +112,19 @@
 </template>
 
 <script>
+import editEntityMixin from '../../mixin/editEntityMixin'
+
 export default {
   name: "InformationCategory",
+  mixins: [editEntityMixin],
   data() {
     return {
-      int_cat_shell: { id: -1, title: "" },
+      int_cat_shell: { id: -1, translations: [] },
       hideForm: true,
       hideAdd: false,
-      isNew: false
+      isNew: false,
+      linkable: false,
+      errorMessage: ""
     };
   },
   computed: {
@@ -97,36 +137,38 @@ export default {
       this.$emit("scroll", "#" + this.$options.name);
     },
     deleteInformationCategory(index) {
-      console.log(index);
       this.$store.dispatch(
         "information_category/deleteInformationCategory",
         index
-      );
+      ).catch(() => {
+        this.errorMessage = "Cannot delete a category when an item has this category"
+      });
+    },
+    showCategoryLabel(workingCat) {
+
+      return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].eventCategory
     },
     saveInformationCategory() {
+
+      let content = { content: this.int_cat_shell, link_integration_plan: this.linkable }
       if (this.isNew) {
         // we are adding a new instance
         this.$store
           .dispatch(
-            "information_category/saveCategoryTypeElement",
-            this.int_cat_shell
+            "information_category/saveInformationCategory",
+            content
           )
-          .then(int_cat => {
-            console.log("saved");
-          });
       } else {
         // we are updating the exsisting
         this.$store
           .dispatch(
             "information_category/editCategoryTypeElement",
-            this.int_cat_shell
+            content
           )
-          .then(int_cat => {
-            console.log("updated");
-          });
       }
+      this.linkable = false
       this.hideForm = true;
-      this.int_cat_shell = { id: -1, title: "" };
+      this.createShell()
     },
     newInformationCategory() {
       this.isNew = true;
@@ -137,22 +179,48 @@ export default {
       this.isNew = false;
       this.hideForm = true;
       this.hideAdd = false;
+      this.linkable = false
     },
     editInformationCategory(information_category) {
       this.isNew = false;
       this.hideForm = false;
-      this.int_cat_shell = JSON.parse(JSON.stringify(information_category));
-    }
+      this.linkable = information_category.link_integration_plan
+      //this.int_cat_shell = JSON.parse(JSON.stringify(information_category));
+      this.mergeCategory(information_category)
+    },
+    createShell() {
+      this.int_cat_shell = { id: -1, translations: [] }
+      this.languages.forEach(l => {
+        //       console.log(l)
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, eventCategory: '', translationDate: null })
+      });
+    },
+    mergeCategory(category) {
+      this.int_cat_shell.id = category.id
+      category.translations.forEach(tr => {
+        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
+
+        for (var i = 0; i < this.int_cat_shell.translations.length; i++) {
+          if (this.int_cat_shell.translations[i].lang == tr.lang) {
+            this.int_cat_shell.translations.splice(i, 1);
+            this.int_cat_shell.translations.push(JSON.parse(JSON.stringify(tr)))
+            break;
+          }
+        }
+      });
+
+    },
   },
   //store.commit('increment', 10)
   created() {
+    this.createShell()
     this.loading = true;
-    console.log(this.$store);
     this.$store
       .dispatch("information_category/fetchInformationCategory")
       .then(processes => {
         this.loading = false;
       });
+
   }
 };
 </script>
@@ -164,6 +232,6 @@ a {
 .button {
   background-color: white;
   color: black;
-  border: 1px solid #C71f40;
+  border: 1px solid #c71f40;
 }
 </style>

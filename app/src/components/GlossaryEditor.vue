@@ -92,7 +92,7 @@ export default {
     EditorMenuBar
   },
   props: {
-    content: {
+    value: {
       type: String | Object,
       default: ""
     },
@@ -120,7 +120,6 @@ export default {
       return this.editor.getJSON();
     },
     setContent(content) {
-      this.internalContent = content
       return this.editor.setContent(content)
     },
     getMentionElementsByLang(lang) {
@@ -189,7 +188,11 @@ export default {
           new Underline(),
           new History(),
         ],
-        content: this.internalContent
+        onUpdate: ({ getHTML }) => {
+          this.editorChange = true
+          this.$emit("input", getHTML())
+        },
+        content: this.value
       })
     },
     setLang(lang) {
@@ -208,7 +211,7 @@ export default {
       loading: true,
       showSuggestionsData: false,
       internalLang: "",
-      internalContent: "",
+      editorChange: false,
     };
   },
   computed: {
@@ -223,12 +226,24 @@ export default {
   created() {
     this.loading = true
     this.internalLang = this.lang
-    this.internalContent = this.content
     this.fetchGlossary()
       .then(() => {
         this.createEditor()
         this.loading = false
       })
+  },
+  watch: {
+    value(val) {
+      if (this.editor && !this.editorChange) {
+        this.editor.setContent(val, false)
+      }
+      this.editorChange = false
+    }
+  },
+  beforeDestroy() {
+    if (this.editor) {
+      this.editor.destroy()
+    }
   }
 }
 </script>

@@ -10,32 +10,39 @@ export function fetchInformationCategory(state, data) {
     .then(information_category => state.commit('setCategoryType', information_category))
 }
 
-export function editCategoryTypeElement(state, information_category_element) {
-  // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(information_category_element)
+export function editCategoryTypeElement(state, information_category) {
+  // update translations
   return client
-    .updateInformationCategory(information_category_element)
-    .then(information_category_return => state.commit('editCategoryTypeElement', information_category_return))
+    .updateInformationCategory({ link_integration_plan: information_category.link_integration_plan }).then(function (update_return) {
+      // cycle in the translations and update each
+      information_category.translations.forEach(function (aTranslation) {
+        client.updateInformationCategoryTranslation(aTranslation)
+      })
+      this.fetchInformationCategory(state)
+    })
+}
+export function saveInformationCategory(state, information_category) {
+  return client.saveInformationCategory({ link_integration_plan: information_category.link_integration_plan })
+    .then(function (category_return) {
+      // in topic_return we have the ID that we need in the following cycle
+      information_category.translations.forEach(function (transl, idx) {
+        client.saveInformationCategoryTranslation(transl, category_return.id).then(() => {
+          if (idx === information_category.translations.length - 1) {
+            this.fetchInformationCategory(state)
+          }
+        })
+      }, category_return.id)
+    }
+    )
 }
 
-export function saveCategoryTypeElement(state, information_category_element) {
-  // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(information_category_element)
-  return client
-    .saveInformationCategory(information_category_element)
-    .then(information_category_return => state.commit('saveCategoryTypeElement', information_category_return))
+
+export function deleteInformationCategory(state, index) {
+  console.log(index)
+  return client.deleteInformationCategoryTranslations(index).then(function (translations_delete_return) {
+    client.deleteInformationCategory(index).then(function () {
+      this.fetchInformationCategory(state)
+    })
+  })
 }
 
-export function deleteInformationCategory(state, information_category_element) {
-  // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(information_category_element)
-  return client
-    .deleteInformationCategory(information_category_element)
-    .then(information_category_return => state.commit('deleteInformationCategory', information_category_return))
-}
-
-
-/*export function deleteDocument({commit}, document_type) {
-
-  commit(delete_document_type, document_type.id)
-} */

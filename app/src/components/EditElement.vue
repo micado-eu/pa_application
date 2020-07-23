@@ -29,64 +29,76 @@
       <span class="q-my-lg label-edit">Description:</span>
       <glossary-editor
         class="desc-editor"
-        :content="internalDescription"
-        :lang="this.$i18n.locale"
+        v-model="internalDescription"
+        :lang="$userLang"
         ref="editor"
       />
-      <div
-        v-if="tags_enabled"
-        class="q-my-md tag_list"
-      >
-        <span class="q-my-lg label-edit">Tags:</span>
-        <q-list
-          v-if="internalTags.length > 0"
-          separator
-          bordered
-          dense
+      <div>
+        <div
+          v-if="tags_enabled"
+          class="q-my-md tag_list"
         >
-          <q-item
-            v-for="tag in internalTags"
-            :key="tag"
-            class="q-mb-sm"
+          <span class="q-my-lg label-edit">Tags:</span>
+          <q-list
+            v-if="internalTags.length > 0"
+            separator
+            bordered
+            dense
           >
-            <q-item-section>
-              <q-btn
-                class="tag_btn"
-                no-caps
-                :label="tag"
-              />
-            </q-item-section>
-            <q-item-section side>
-              <q-btn
-                @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                round
-                icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-                no-caps
-                class="q-ml-sm del_tag_btn"
-              />
-            </q-item-section>
-          </q-item>
-        </q-list>
-        <div>
-          <q-input
-            color="accent"
-            outlined
-            placeholder="New tag"
-            label-color="accent"
-            v-model="tagInput"
+            <q-item
+              v-for="tag in internalTags"
+              :key="tag"
+              class="q-mb-sm"
+            >
+              <q-item-section>
+                <q-btn
+                  class="tag_btn"
+                  no-caps
+                  :label="tag"
+                />
+              </q-item-section>
+              <q-item-section side>
+                <q-btn
+                  @click="internalTags.splice(internalTags.indexOf(tag), 1)"
+                  round
+                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+                  no-caps
+                  class="q-ml-sm del_tag_btn"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div>
+            <q-input
+              color="accent"
+              outlined
+              placeholder="New tag"
+              label-color="accent"
+              v-model="tagInput"
+            />
+            <q-btn
+              no-caps
+              @click="addTag()"
+              label="Add tag"
+              class="q-my-sm add_tag_btn"
+            />
+            <span
+              v-if="tagError"
+              class="q-ml-sm"
+            >
+              {{tagErrorMessage}}
+            </span>
+          </div>
+        </div>
+        <div
+          v-if="categories_enabled"
+          class="q-my-md tag_list"
+        >
+          <span class="q-my-lg label-edit">Select category:</span>
+          <q-select
+            v-model="selectedCategory"
+            :options="internalCategories"
           />
-          <q-btn
-            no-caps
-            @click="addTag()"
-            label="Add tag"
-            class="q-my-sm add_tag_btn"
-          />
-          <span
-            v-if="tagError"
-            class="q-ml-sm"
-          >
-            {{tagErrorMessage}}
-          </span>
         </div>
       </div>
       <div class="row q-mx-auto">
@@ -136,6 +148,16 @@ export default {
       type: Boolean,
       default: false,
     },
+    "categories": {
+      type: Array,
+      default: function () {
+        return []
+      }
+    },
+    "categories_enabled": {
+      type: Boolean,
+      default: false
+    }
   },
   data() {
     return {
@@ -143,6 +165,8 @@ export default {
       internalTitle: "",
       internalDescription: "",
       internalTags: [...this.tags],
+      internalCategories: [...this.categories],
+      selectedCategory: "",
       tagInput: "",
       tagError: false,
       tagErrorMessage: "",
@@ -186,7 +210,7 @@ export default {
       this.$router.go(-1);
     },
     callSaveFn() {
-      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.internalTags)
+      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.selectedCategory, this.internalTags)
     }
   },
   computed: {
@@ -232,7 +256,7 @@ $title_font_size: 20pt;
   font-size: 15pt;
 }
 .tag_list {
-  max-width: 20%;
+  max-width: 45%;
 }
 .tag_btn {
   background-color: $btn_secondary;

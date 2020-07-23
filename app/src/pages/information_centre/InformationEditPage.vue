@@ -18,7 +18,7 @@ export default {
   data() {
     return {
       loading: false,
-      informationElem: undefined
+      elem: undefined
     };
   },
   components: {
@@ -50,7 +50,7 @@ export default {
   },
   computed: {
     ...mapGetters("information", ["informationElemById"]),
-    tags: function() {
+    tags: function () {
       let elem = this.informationElemById(this.$route.params.id);
       if (elem && elem.tags) {
         return elem.tags;

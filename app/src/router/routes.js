@@ -18,6 +18,7 @@ import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import chatBot from '../components/ChatBot.vue'
+import InformationCategory from '../components/information_centre/InformationCategory.vue'
 
 const routes = [
   {
@@ -64,6 +65,7 @@ const routes = [
       { path: '/information', component: InformationListPage },
       { path: '/information/new', component: InformationNewPage },
       { path: '/information/:id/edit/', component: InformationEditPage },
+      { path: '/information/categories', component: InformationCategory }
     ]
   }
 ]/*

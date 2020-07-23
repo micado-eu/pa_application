@@ -26,6 +26,14 @@
       <q-btn
         outlined
         no-caps
+        label="Categories"
+        class="add-btn col q-ml-md"
+        :to="categories_url"
+        v-if="categories_enabled"
+      />
+      <q-btn
+        outlined
+        no-caps
         :label="add_label"
         class="add-btn col q-ml-md"
         :to="new_url"
@@ -173,6 +181,14 @@ export default {
       default: function () {
         return () => "/";
       }
+    },
+    categories_enabled: {
+      type: Boolean,
+      default: false
+    },
+    categories_url: {
+      type: String,
+      default: "/"
     }
   },
   data() {

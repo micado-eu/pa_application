@@ -12,6 +12,8 @@
       title="Information centre"
       publish_mode
       :update_publish_fn="updatePublishInformationItem"
+      categories_enabled
+      categories_url="/information/categories"
     />
   </div>
 </template>

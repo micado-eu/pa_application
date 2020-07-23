@@ -58,11 +58,6 @@
                   label="Integration Types"
                 />
                 <q-tab
-                  name="dataInfoCat"
-                  icon="information"
-                  label="Information Centre Categories"
-                />
-                <q-tab
                   name="dataTopic"
                   icon="movie"
                   label="Topics"
@@ -92,9 +87,6 @@
 
                 <q-tab-panel name="dataIntType">
                   <IntegrationType @scroll="scrollTo" />
-                </q-tab-panel>
-                <q-tab-panel name="dataInfoCat">
-                  <InformationCategory @scroll="scrollTo" />
                 </q-tab-panel>
                 <q-tab-panel name="dataTopic">
                   <Topic @scroll="scrollTo" />
@@ -130,7 +122,6 @@ import Topic from "./data_settings/Topic";
 import UserType from "./data_settings/UserType";
 import ActiveLanguageSelector from "./settings/ActiveLanguageSelector.vue";
 import FunctionConfiguration from "./settings/FunctionConfiguration.vue";
-import InformationCategory from "./data_settings/InformationCategory";
 
 const TIMEOUT = 1;
 
@@ -144,7 +135,6 @@ export default {
     UserType,
     ActiveLanguageSelector,
     FunctionConfiguration,
-    InformationCategory
   },
   data() {
     return {
