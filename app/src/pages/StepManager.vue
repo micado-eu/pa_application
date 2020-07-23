@@ -112,7 +112,8 @@
                     bg-color="grey-3"
                     standout
                     outlined
-                   
+                    @blur="updateField()"
+                   :key="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                     v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                   />
                 </div>
@@ -131,6 +132,7 @@
                       dense
                       bg-color="grey-3"
                       filled
+                      @blur="updateField()"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
                     />
                   </div>
@@ -152,6 +154,7 @@
                   bg-color="grey-3"
                   standout
                   outlined
+                  @blur="updateField()"
                   v-model="step_shell.location"
                 />
               </div>
@@ -171,6 +174,7 @@
                   bg-color="grey-3"
                   standout
                   outlined
+                  @blur="updateField()"
                   v-model="step_shell.cost"
                 />
               </div>
@@ -265,7 +269,7 @@
           </div>
           <div class="row">
             <div
-              class="q-pa-md col-6"
+              class="q-pa-md col-4"
               style="text-align:right"
             >
               <q-btn
@@ -278,7 +282,7 @@
               />
             </div>
             <div
-              class="q-pa-md col-6"
+              class="q-pa-md col-4"
               style="text-align:left"
             >
               <q-btn
@@ -287,6 +291,19 @@
                 unelevated
                 label="Back"
                 @click="cancelEditStep()"
+                style="width:150px;border-radius:2px"
+              />
+            </div>
+            <div
+              class="q-pa-md col-4"
+              style="text-align:left"
+            >
+              <q-btn
+                class="button"
+                no-caps=""
+                unelevated
+                label="Delete"
+                @click="deleteElement()"
                 style="width:150px;border-radius:2px"
               />
             </div>
@@ -394,6 +411,11 @@ export default {
   },
 
   methods: {
+    updateField(){
+      //console.log(this.step_shell)
+      //console.log(this)
+      this.$forceUpdate()
+    },
 
     createShell () {
       this.step_shell = this.generateShell()
@@ -408,7 +430,7 @@ export default {
     },
 
     generateStepDocShell (id = -1, idStep) {
-      let newstepdoc = { idDocument: id, idStep: idStep, cost: 0 }
+      let newstepdoc = { idDocument: id, idStep: idStep, cost: 0, isOut: false }
       return newstepdoc
     },
 
@@ -512,29 +534,30 @@ export default {
         })
 
     },
-    deleteElement (event, element, cy) {
-      /*
+    deleteElement () {
+      
             console.log("these are the testdata")
       
-            console.log(element)
-            if (element.group == 'node') {
-              this.$store.dispatch('steps/deleteStep', element.data.id)
+            //console.log(element)
+            //if (element.group == 'node') {
+              this.$store.dispatch('steps/deleteStep', this.step_shell.id)
                 .then(ret => {
                   console.log("DELETED STEP")
                   console.log(this.steps)
                 })
       
-              this.$store.dispatch('graphs/deleteNode', element.data.id)
+              this.$store.dispatch('graphs/deleteNode', this.step_shell.id)
                 .then(res => {
       
                 })
-            } else {
+            //} else {
               console.log("MANAGE EDGES")
-            }
-            */
+            //}
+            this.editing = false
+            
     },
     generateStepLink(id_edge, fromStep_edge, toStep_edge){
-      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, translations:[]}
+      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, idProcess:Number(this.processId), translations:[]}
       this.languages.forEach(l => {
         this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '' })
       });
@@ -633,8 +656,10 @@ export default {
       // adding new steps
       console.log(this.$store.state.steplinks.steplinks)
       let postData = { steps: this.steps, steplinks: this.steplinks }
+      console.log(JSON.stringify(postData))
 
       this.$store.dispatch('graphs/saveGraph', postData)
+      this.$router.push('/guided_process_editor')
       /*
       const saveSteps = async () => {
         await this.asyncForEach(this.steps, async (step) => {
@@ -670,10 +695,11 @@ export default {
     deleteDoc (event) {
       console.log("in delete doc in step manager")
       console.log(event)
-      /*console.log(this.step_shell.documents)
+      console.log(this.step_shell.documents)
       var idx = this.step_shell.documents.findIndex(doc => doc.idDocument == event)
       console.log(idx)
-      this.step_shell.documents.splice(idx, 1)*/
+      this.step_shell.documents.splice(idx, 1)
+      this.$forceUpdate()
     },
     addStepDocument () {
       this.stepdocadd = true
@@ -713,16 +739,17 @@ export default {
   created () {
     this.loading = true
     this.createShell()
+    console.log(this.step_shell)
     console.log("in created")
     console.log(this.processId)
-    this.$store.dispatch('steps/fetchStepsByProcessId', this.processId)
+    this.$store.dispatch('steps/fetchStepsByProcessId', Number(this.processId))
       .then(steps => {
         console.log("THE STEPS")
         console.log(steps)
         this.loading = false
       })
 
-    this.$store.dispatch('steplinks/fetchSteplinksByProcessId', this.processId)
+    this.$store.dispatch('steplinks/fetchSteplinksByProcessId', Number(this.processId))
       .then(steplinks => {
         console.log("THE STEPLINKS")
         console.log(steplinks)

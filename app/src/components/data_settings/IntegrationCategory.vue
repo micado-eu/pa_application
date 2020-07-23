@@ -135,6 +135,7 @@ export default {
           });
       }
       this.hideForm = true;
+      this.hideAdd = false
       this.createShell()
     },
     newIntegrationCategory() {

@@ -96,6 +96,7 @@ export default {
     },
     manageProcess () {
       console.log("prima di editare gli step")
+      console.log(this.theProcess.id)
       console.log(this.theProcess)
       this.$router.push({ name: 'editstep', params: { processId: this.theProcess.id } })
     }

@@ -9,11 +9,11 @@ export default {
       .catch(error_handler);
   },
   fetchStepsByProcessId (id) {
-    const whereClause = {
+   /* const whereClause = {
       idProcess: { eq: id }
-    }
+    }*/
     return axiosInstance
-      .get('/backend/1.0.0/steps?filter[include][0][relation]=translations&filter[include][1][relation]=documents&where=' + JSON.stringify(whereClause))
+      .get('/backend/1.0.0/steps?filter[include][0][relation]=translations&filter[include][1][relation]=documents&filter[where][idProcess]=' + id )
       .then(response => response.data)
       .catch(error_handler);
   },
