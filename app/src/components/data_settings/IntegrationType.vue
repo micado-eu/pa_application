@@ -67,12 +67,16 @@
             :name="language.name"
           >
         <q-input v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle" label="Title" />
-        <q-input v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description" filled type="textarea" label="Description" />
+         <GlossaryEditor
+        class="desc-editor"
+        v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
          </q-tab-panel>
         </q-tab-panels>
         <div class="q-gutter-sm">
           <q-option-group
-            :options="normalizedOptions"
+            :options="options"
             label="Notifications"
             type="radio"
             v-model="int_type_shell.categoryType"
@@ -104,6 +108,7 @@
 <script>
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
+import GlossaryEditor from 'components/GlossaryEditor'
 
 export default {
   name: "IntegrationType",
@@ -113,8 +118,12 @@ export default {
       int_type_shell: { id: -1, translations:[], categoryType: null },
       hideForm: true,
       hideAdd: false,
-      isNew: false
+      isNew: false,
+      options:[]
     };
+  },
+  components:{
+    GlossaryEditor
   },
   computed: {
     integration_type() {
@@ -123,12 +132,7 @@ export default {
     integration_category() {
       return this.$store.state.integration_category.integration_category;
     },
-    normalizedOptions() {
-      // this.myOptions would be your source
-      return this.integration_category.map(opt => {
-        return { value: opt.id, label: opt.title };
-      });
-    }
+    
   },
   methods: {
     deleteIntegrationType(index) {
@@ -170,6 +174,7 @@ export default {
       this.hideAdd = true;
     },
     cancelIntegrationType() {
+      console.log(this.normalizedOptions)
       this.isNew = false;
       this.hideForm = true;
       this.hideAdd = false;
@@ -230,6 +235,12 @@ export default {
     this.$store
       .dispatch("integration_category/fetchIntegrationCategory")
       .then(processes => {
+        this.integration_category.forEach((cat) => {
+        var translation =  cat.translations.filter((transl) => {
+          return transl.lang == this.activeLanguage
+        })[0]
+        this.options.push({ value: translation.id, label: translation.title })
+})
         this.loading = false;
       });
   }

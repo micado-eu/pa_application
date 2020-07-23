@@ -45,7 +45,11 @@
         <h5 style="text-align:left;font-size:18px"> Document type description </h5>
       </div>
       <div class="col-8" style="display: block;">
-        <q-input type="textarea" bg-color="grey-3" rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"  />
+        <GlossaryEditor
+        class="desc-editor"
+        v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
       </div>
     </div>
     <div class=" q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -129,10 +133,12 @@ import VueHotspot from 'vue-hotspot'
 import axios from 'axios'
 import https from 'https';
 import editEntityMixin from '../../mixin/editEntityMixin'
+import GlossaryEditor from 'components/GlossaryEditor'
+
 
 export default {
   name: 'PageIndex',
-  components: {     'v-hotspot': VueHotspot },
+  components: {     'v-hotspot': VueHotspot, GlossaryEditor },
   props: ["thedocumenttype"],
   mixins: [editEntityMixin],
   data (){

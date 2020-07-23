@@ -55,12 +55,17 @@
             :name="language.name"
           >
         <q-input v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType" label="User type" />
-        <q-input
+       <!-- <q-input
           v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
           filled
           type="textarea"
           label="Description"
-        />
+        />-->
+         <GlossaryEditor
+        class="desc-editor"
+        v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
         </q-tab-panel>
         </q-tab-panels>
           <FileUploader
@@ -82,6 +87,7 @@
 <script>
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
+import GlossaryEditor from 'components/GlossaryEditor'
 
 export default {
   name: "UserType",
@@ -96,7 +102,8 @@ export default {
     };
   },
    components: {
-    FileUploader
+    FileUploader,
+    GlossaryEditor
   },
   computed: {
     user_type() {
