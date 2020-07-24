@@ -28,8 +28,8 @@
                 <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="readMoreActivated" v-html="intervention.description"></span>
               </q-item-section>
               <q-item-section class="col" style="text-align:right; margin-left:0px">
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.validated" :id="intervention.id" label="Edit action" @click="editIntervention($event)"  />
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:0px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="accent" :disable="intervention.validated" label="Validate" :id="intervention.id" @click="validateIntervention($event)" />
+                <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.validated" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event)"  />
+                <q-btn size="11px" no-caps style="width:105px;margin-bottom:0px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="accent" :disable="intervention.validated" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event)" />
               </q-item-section>
             </div>
             <div class=" q-gutter-sm  col" style="padding-left:0px; text-align:left;">
@@ -96,8 +96,8 @@
         <div class="q-gutter-sm">
          </div>
         <div style="text-align:center">
-        <q-btn class="button"  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  label="Cancel" @click="cancelIntervention($event)" />
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" label="Save Changes" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn class="button"  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
         </div>
           </div>
           </div>

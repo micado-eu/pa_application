@@ -30,7 +30,7 @@
           color="accent"
           unelevated
           rounded
-          label="Add Process"
+          :label="$t('button.add_process')"
           no-caps
           size="15px"
           to="guided_process_editor/edit"

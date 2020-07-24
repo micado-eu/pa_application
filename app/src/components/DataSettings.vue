@@ -11,15 +11,15 @@
       >
         <q-tab
           name="data"
-          label="Data management"
+          :label="$t('data_settings.data_management')"
         />
         <q-tab
           name="settings"
-          label="Settings"
+          :label="$t('data_settings.settings')"
         />
         <q-tab
           name="language"
-          label="Language"
+          :label="$t('data_settings.language')"
         />
       </q-tabs>
 
@@ -45,27 +45,27 @@
                 <q-tab
                   name="dataDocType"
                   icon="mail"
-                  label="Document Types"
+                  :label="$t('data_settings.document_types')"
                 />
                 <q-tab
                   name="dataIntCat"
                   icon="alarm"
-                  label="Integration Categories"
+                  :label="$t('data_settings.intervention_categories')"
                 />
                 <q-tab
                   name="dataIntType"
                   icon="movie"
-                  label="Integration Types"
+                  :label="$t('data_settings.intervention_types')"
                 />
                 <q-tab
                   name="dataTopic"
                   icon="movie"
-                  label="Topics"
+                  :label="$t('data_settings.topics')"
                 />
                 <q-tab
                   name="dataUserType"
                   icon="movie"
-                  label="User Types"
+                  :label="$t('data_settings.user_types')"
                 />
               </q-tabs>
             </template>

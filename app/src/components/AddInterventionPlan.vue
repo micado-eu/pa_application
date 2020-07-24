@@ -13,7 +13,7 @@
                       <q-input  dense style=""   bg-color="grey-3" standout outlined v-model="plan.title" />
                     </div>
                     <div class="" style="display: block;margin-bottom:0px;width:140px; padding-right:0px;margin-left:20px; margin-right:27px">
-                     <q-btn  color="secondary" style="border-radius:2px; width:140px;height:40px; font-weight:600"  unelevated no-caps label="Add Intervention" @click="newAction()" :disable="hideAdd" />
+                     <q-btn  color="secondary" style="border-radius:2px; width:140px;height:40px; font-weight:600"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
                     </div>
                   </div>
     </div>
@@ -29,7 +29,7 @@
           <q-btn
           class="button"
             
-            label="Delete"
+            :label="$t('button.delete')"
             size="12px"
             style="width:70px; margin-bottom:5px;border-radius:2px;font-weight:600;margin-right:10px"
             unelevated
@@ -39,7 +39,7 @@
           />
           <q-btn
             color="info"
-            label="Edit"
+            :label="$t('button.edit')"
             size="12px"
             style="width:70px;border-radius:2px;font-weight:600; margin-right:10px"
             no-caps
@@ -113,15 +113,15 @@
          
         </div>
          <div style="text-align:center">
-        <q-btn class="button" style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px; width:80px; font-weight:600" unelevated  no-caps  label="Cancel" @click="cancelAction($event)" />
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px; width:135px;font-weight:600" unelevated no-caps color="accent" label="Save Changes" :id="plan.id" @click="saveAction(action)" />
+        <q-btn class="button" style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px; width:80px; font-weight:600" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px; width:135px;font-weight:600" unelevated no-caps color="accent" :label="$t('button.save')" :id="plan.id" @click="saveAction(action)" />
         </div>
         </div>
       </q-card-section>
     </q-card>
      <div style="text-align:center; padding-bottom:10px">
-     <q-btn  color="accent" style="width:100px; margin-top:10px; margin-right:10px;font-weight:600" :disable="hideAdd" unelevated no-caps label="Save plan" @click="savePlan(plan)" />
-     <q-btn  color="info" style="width:100px; margin-top:10px;font-weight:600" :disable="hideAdd" unelevated no-caps label="Back" :to="'/migrant/' + this.id" />
+     <q-btn  color="accent" style="width:100px; margin-top:10px; margin-right:10px;font-weight:600" :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan(plan)" />
+     <q-btn  color="info" style="width:100px; margin-top:10px;font-weight:600" :disable="hideAdd" unelevated no-caps :label="$t('button.back')" :to="'/migrant/' + this.id" />
   </div>
     
     </div>

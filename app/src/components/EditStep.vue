@@ -88,10 +88,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn color="red" label="Save" @click="saveStep(edit_step)" style="width:150px" />
+    <q-btn color="red" :label="$t('button.save')" @click="saveStep(edit_step)" style="width:150px" />
     </div>
     <div class="q-pa-md col-6" style="text-align:left">
-    <q-btn color="red" label="Back"  style="width:150px"/>
+    <q-btn color="red" :label="$t('button.back')"  style="width:150px"/>
     </div>
     </div>
 </div>

@@ -10,8 +10,8 @@
     </div>
     
      <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
-      <q-btn size="11px" no-caps style="width:70px;" rounded color="info" label="Edit" :to="'/edit_step/' + this.Link" />
-      <q-btn size="11px" no-caps style="width:70px" rounded color="accent" label="Delete" @click="remove_step($event)" />
+      <q-btn size="11px" no-caps style="width:70px;" rounded color="info" :label="$t('button.edit')" :to="'/edit_step/' + this.Link" />
+      <q-btn size="11px" no-caps style="width:70px" rounded color="accent" :label="$t('button.delete')" @click="remove_step($event)" />
     </div>
     
     </div>

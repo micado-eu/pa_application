@@ -135,7 +135,7 @@
           color="secondary"
           no-caps
           rounded
-          label="Manage steps"
+          :label="$t('button.manage_steps')"
           unelevated
           :disable="this.disabled"
           style="width:150px;border-radius:2px"
@@ -146,7 +146,7 @@
           color="info"
           no-caps
           rounded
-          label="Save changes"
+          :label="$t('button.save')"
           unelevated
           style="width:150px;border-radius:2px"
           @click="saveProcess(edit_process)"
@@ -156,7 +156,7 @@
           color="accent"
           no-caps
           rounded
-          label="Back"
+          :label="$t('button.back')"
           unelevated
           style="width:150px;border-radius:2px"
           to="/guided_process_editor"
