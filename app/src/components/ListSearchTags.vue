@@ -39,16 +39,30 @@
         :to="new_url"
       />
     </div>
-    <q-btn
-      :unelevated="selectedTags.indexOf(tag) == -1"
-      :outline="selectedTags.indexOf(tag) !== -1"
-      no-caps
-      v-for="tag in tags"
-      :key="tag"
-      :label="tag"
-      class="q-mr-sm tag_btn"
-      @click="addOrRemoveSelectedTag(tag)"
-    />
+    <div>
+      <q-btn
+        :unelevated="selectedTags.indexOf(tag) == -1"
+        :outline="selectedTags.indexOf(tag) !== -1"
+        no-caps
+        v-for="tag in tags"
+        :key="tag"
+        :label="tag"
+        class="q-mr-sm tag_btn"
+        @click="addOrRemoveSelectedTag(tag)"
+      />
+    </div>
+    <div>
+      <q-btn
+        :unelevated="selectedCategory !== category"
+        :outline="selectedCategory === category"
+        no-caps
+        v-for="category in this.translatedCategories"
+        :key="category.id"
+        :label="category.category"
+        class="q-mr-sm category_btn"
+        @click="addOrRemoveSelectedCategory(category)"
+      />
+    </div>
     <q-list class="q-mt-md">
       <q-item
         v-for="item in filteredElements"
@@ -91,6 +105,13 @@
             v-if="!loading"
             glossary_fetched
             :lang="lang"
+          />
+        </q-item-section>
+        <q-item-section class="tag_btn_section">
+          <q-btn
+            no-caps
+            :label="item.category.category"
+            class="q-mb-sm category_btn"
           />
         </q-item-section>
         <q-item-section class="tag_btn_section">
@@ -198,9 +219,12 @@ export default {
       translatedElements: [],
       filteredElementsBySearch: [],
       filteredElementsByTags: [],
+      filteredElementsByCategory: [],
       searchText: "",
       tags: [],
+      translatedCategories: [],
       selectedTags: [],
+      selectedCategory: undefined,
       publishState: {},
       lang: "",
       loading: true
@@ -220,10 +244,18 @@ export default {
       }
       this.filterByTags();
     },
+    addOrRemoveSelectedCategory(category) {
+      if (this.selectedCategory === category) {
+        this.selectedCategory = undefined
+      } else {
+        this.selectedCategory = category
+      }
+      this.filterByCategory();
+    },
     filterByTags() {
       if (this.selectedTags.length > 0) {
         let selectedTags = this.selectedTags;
-        this.filteredElementsByTags = this.elements.filter(e => {
+        this.filteredElementsByTags = this.translatedElements.filter(e => {
           for (let tag of selectedTags) {
             if (e.tags.indexOf(tag) == -1) {
               return false;
@@ -232,7 +264,19 @@ export default {
           return true;
         });
       } else {
-        this.filteredElementsByTags = this.elements;
+        this.filteredElementsByTags = this.translatedElements;
+      }
+    },
+    filterByCategory() {
+      if (this.selectedCategory) {
+        this.filteredElementsByCategory = this.translatedElements.filter(e => {
+          if (e.category !== this.selectedCategory) {
+            return false;
+          }
+          return true;
+        });
+      } else {
+        this.filteredElementsByCategory = this.translatedElements;
       }
     },
     updatePublish(newValue, item) {
@@ -248,7 +292,7 @@ export default {
       },
       set(newSearch) {
         if (newSearch) {
-          const fuse = new Fuse(this.elements, {
+          const fuse = new Fuse(this.translatedElements, {
             keys: ["title"]
           });
           this.filteredElementsBySearch = fuse
@@ -256,15 +300,16 @@ export default {
             .map(i => i.item);
           this.searchText = newSearch;
         } else {
-          this.filteredElementsBySearch = this.elements;
+          this.filteredElementsBySearch = this.translatedElements;
           this.searchText = "";
         }
       }
     },
     filteredElements() {
       var filteredElementsByTags = this.filteredElementsByTags;
+      var filteredElementsByCategory = this.filteredElementsByCategory;
       return this.filteredElementsBySearch.filter(function (n) {
-        return filteredElementsByTags.indexOf(n) !== -1;
+        return filteredElementsByTags.indexOf(n) !== -1 && filteredElementsByCategory.indexOf(n) !== -1;
       });
     }
   },
@@ -273,12 +318,20 @@ export default {
     this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => {
       this.translatedElements = this.elements.map(e => {
-        let al = this.$i18n.locale;
-        let idx = e.translations.findIndex(t => t.lang === al);
-        return e.translations[idx];
+        let idx = e.translations.findIndex(t => t.lang === this.lang);
+        let translation = { ...e.translations[idx] };
+        if (this.categories_enabled) {
+          let idxCat = e.category.translations.findIndex(t => t.lang === this.lang);
+          translation.category = e.category.translations[idxCat]
+          if (this.translatedCategories.indexOf(translation.category) == -1) {
+            this.translatedCategories.push(translation.category)
+          }
+        }
+        return translation
       });
       this.filteredElementsBySearch = this.translatedElements;
       this.filteredElementsByTags = this.translatedElements;
+      this.filteredElementsByCategory = this.translatedElements;
       for (let elem of this.elements) {
         // Tags
         if (elem.tags) {
@@ -320,6 +373,11 @@ $btn_secondary: #cdd0d2;
 .tag_btn {
   background-color: $btn_secondary;
   text-decoration: underline;
+}
+.category_btn {
+  background-color: $btn_secondary;
+  text-decoration: underline;
+  border: 1px solid $accent_list;
 }
 .published {
   opacity: 1;
