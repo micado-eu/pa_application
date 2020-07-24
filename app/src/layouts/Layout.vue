@@ -65,7 +65,9 @@
     </q-drawer>
 
     <q-page-container>
+      <q-page>
       <router-view />
+      </q-page>
     </q-page-container>
   </q-layout>
 </template>
@@ -94,7 +96,7 @@ export default {
         {
           label: "menu.situation",
           icon: "dvr",
-          to: "/situation/city",
+          to: "/situation/map",
           description: "menu.situation_desc"
         },
         {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="migration-situation-container">
     <div id="nav" class="bg-accent">
       <q-item
         clickable
@@ -20,17 +20,21 @@
 export default {
   name: "MigrationSituation",
   computed: {
-    boards: function() {
-      const boards = this.$store.state.statistics.boards.map(b => {
+    boards: function () {
+      const boards = this.$store.state.statistics.boards.map((b) => {
         return { title: b, link: `/situation/${b}` };
       });
+      boards.push({ title: "map", link: `/situation/map` });
       boards.push({ title: "editor", link: `/situation/editor` });
       return boards;
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
+#migration-situation-container {
+  min-height: inherit;
+}
 #nav {
   display: flex;
 }

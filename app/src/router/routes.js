@@ -13,7 +13,7 @@ import GlossaryEditPage from '../pages/glossary/GlossaryEditPage'
 import InformationListPage from '../pages/information_centre/InformationListPage.vue'
 import InformationNewPage from '../pages/information_centre/InformationNewPage.vue'
 import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
-import EU from '../components/migration_monitor/EU.vue'
+import MigrationSitMap from '../components/migration_monitor/map/Map.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
@@ -53,6 +53,7 @@ const routes = [
       {
         path: '/situation', component: MigrationSituation, children: [
           { path: 'editor', component: MigrationSitEditor },
+          { path: 'map', component: MigrationSitMap },
           { path: ':board', component: Board }
         ]
       },
