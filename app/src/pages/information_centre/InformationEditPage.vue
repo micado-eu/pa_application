@@ -29,23 +29,34 @@ export default {
     ...mapActions("information", [
       "fetchInformation",
       "editInformationItem",
+      "editInformationItemTranslation",
       "addNewInformationItemTranslation"
     ]),
     editInformationItemAndReturn(data) {
       let router = this.$router;
-      let dataWithId = Object.assign(data, {
-        id: parseInt(this.$route.params.id)
-      });
-      let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
-      if (idx !== -1) {
-        this.editInformationItem(dataWithId).then(() => {
-          router.push({ path: "/information" });
-        });
-      } else {
-        this.addNewInformationItemTranslation(dataWithId).then(() => {
-          router.push({ path: "/information" });
-        });
+      let categoryId = data.category.id
+      let id = parseInt(this.$route.params.id)
+      let eventData = {
+        id,
+        category: categoryId
       }
+      delete data.category
+      let dataWithId = Object.assign(data, {
+        id
+      });
+      this.editInformationItem(eventData).then(() => {
+        let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
+        if (idx !== -1) {
+          this.editInformationItemTranslation(dataWithId).then(() => {
+            router.push({ path: "/information" });
+          });
+        } else {
+          this.addNewInformationItemTranslation(dataWithId).then(() => {
+            router.push({ path: "/information" });
+          });
+        }
+      })
+
     }
   },
   computed: {

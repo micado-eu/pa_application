@@ -21,6 +21,10 @@ export function addNewInformationItemTranslation(state, data) {
 }
 
 export function editInformationItem(state, data) {
+  return client.editEventItem(data)
+}
+
+export function editInformationItemTranslation(state, data) {
   data.event = data['title'];
   delete data.title;
   return client

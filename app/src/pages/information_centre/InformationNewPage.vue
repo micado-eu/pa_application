@@ -24,8 +24,10 @@ export default {
       let id = -1;
       let eventData = {
         published: true,
-        publicationDate: new Date().toISOString()
-      };
+        publicationDate: new Date().toISOString(),
+        category: translationData.category.id
+      }
+      delete translationData.category
       this.saveNewInformationItem(eventData)
         .then(newData => {
           id = newData.id;
