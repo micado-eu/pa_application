@@ -14,7 +14,7 @@
       {{intervention_plan.title}} 
       </span>
       <span style="float:right; margin-right:15px ">
-      <q-btn icon-right="add" style="margin-top:0px;border-radius:2px" color="accent" no-caps label="Add intervention" :disable="hideAdd" @click="button_id = intervention_plan.id;addIntervention()" />
+      <q-btn icon-right="add" style="margin-top:0px;border-radius:2px" color="accent" no-caps :label="$t('button.add_intervention')" :disable="hideAdd" @click="button_id = intervention_plan.id;addIntervention()" />
       </span>
       </h4>
     

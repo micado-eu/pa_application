@@ -8,7 +8,7 @@
         <q-btn
           color="accent"
           unelevated
-          label="Add step"
+          :label="$t('button.add_step')"
           no-caps
           size="15px"
           @click="addNode"
@@ -18,7 +18,7 @@
         <q-btn
           color="accent"
           unelevated
-          label="Save Graph"
+          :label="$t('button.save_graph')"
           no-caps
           size="15px"
           @click="saveGraph"
@@ -31,7 +31,7 @@
           color="accent"
           no-caps=""
           unelevated
-          label="Back"
+          :label="$t('button.back')"
           @click="cancelStep"
           style="width:150px;border-radius:2px"
         />
@@ -185,7 +185,7 @@
                 color="accent"
                 no-caps=""
                 unelevated
-                label="Add document"
+                :label="$t('button.add_document')"
                 @click="addStepDocument()"
                 style="width:150px;border-radius:2px"
               />
@@ -221,7 +221,7 @@
                 color="accent"
                 no-caps=""
                 unelevated
-                label="Save document"
+                :label="$t('button.save_document')"
                 @click="saveStepDocument()"
                 style="width:150px;border-radius:2px"
               />
@@ -276,7 +276,7 @@
                 color="accent"
                 no-caps=""
                 unelevated
-                label="Save"
+                :label="$t('button.save')"
                 @click="saveStep()"
                 style="width:150px;border-radius:2px"
               />
@@ -289,7 +289,7 @@
                 class="button"
                 no-caps=""
                 unelevated
-                label="Back"
+                :label="$t('button.back')"
                 @click="cancelEditStep()"
                 style="width:150px;border-radius:2px"
               />
@@ -302,7 +302,7 @@
                 class="button"
                 no-caps=""
                 unelevated
-                label="Delete"
+                :label="$t('button.delete')"
                 @click="deleteElement()"
                 style="width:150px;border-radius:2px"
               />

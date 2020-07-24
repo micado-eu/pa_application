@@ -14,7 +14,7 @@
         unelevated
         rounded
         @click="deleteDoc($event,stepdoc.idDocument)"
-        label="Delete"
+        :label="$t('button.delete')"
         no-caps
       />
     </div>

@@ -1,16 +1,58 @@
 {
+  "application_title": "MICADO app",
   "menu": {
     "title": "My Tools",
-    "home": "home",
+    "home": "Home",
+    "home_desc":"",
     "usage": "MICADO stats",
+    "usage_desc":"Dashboard and charts of the MICADO app usage",
     "situation": "Migration situation monitor",
+    "situation_desc":"Dashboard and charts of migration situation",
     "setting": "Settings",
+    "setting_desc":"Manage MICADO application",
     "process": "Guided processes",
+    "process_desc":"Edit guided processes information",
     "cso": "CSO admin management",
+    "cso_desc":"Manage Civil Society Organisations(CSO) accounts",
     "migrant": "Migrant management",
+    "migrant_desc":"Manage migrant accounts",
     "data": "Data settings",
     "glossary": "Glossary",
+    "glossary_desc":"Manage the glossary",
     "information_centre": "Information centre",
-    "chatbot": "MICADO Bot"
+    "information_centre_desc":"Manage the information",
+    "chatbot": "MICADO Bot",
+    "chatbot_desc":"Manage and train the MICADO Bot"
+  }, 
+  "button":{
+    "add_document":"Add Document",
+    "integration":"Integration",
+    "delete":"Delete",
+    "save":"Save",
+    "cancel":"Cancel",
+    "back":"Back",
+    "edit":"Edit",
+    "download":"Download",
+    "add_intervention":"Add intervention",
+    "manage_steps":"Manage steps",
+    "edit_action":"Edit action",
+    "validate":"Validate",
+    "add_process":"Add process",
+    "add_plan":"Add plan",
+    "add_step":"Add step",
+    "save_graph":"Save Graph",
+    "save_document":"Save document"
+  },
+  "data_settings":{
+    "data_management":"Data management",
+    "settings":"Settings",
+    "language":"Language",
+    "document_types":"Document Types",
+    "topics":"Topics",
+    "intervention_categories":"Intervention Categories",
+    "intervention_types":"Intervention Types",
+    "user_types":"User Types"
+    
+
   }
 }

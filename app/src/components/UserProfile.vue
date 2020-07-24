@@ -3,7 +3,7 @@
    <div class="row " style="width:750px">
      <h3 style="margin-bottom:30px;padding-left:12px;width:65%; font-size:25pt; font-weight:600">{{user.username}}</h3>
      <span style="text-align:right; width:35%;display: inline-block; vertical-align:middle">
-     <q-btn style="width:250px; margin-top:37px; margin-bottom:30px;margin-left:5px; border-radius:2px" unelevated color="accent" rounded label="Add Plan" no-caps size="15px" :to="user.id + '/add'" />
+     <q-btn style="width:250px; margin-top:37px; margin-bottom:30px;margin-left:5px; border-radius:2px" unelevated color="accent" rounded :label="$t('button.add_plan')" no-caps size="15px" :to="user.id + '/add'" />
      </span >
     <q-card class="my-card" style="width:750px; margin-left:10px" flat >
       <q-card-section horizontal>

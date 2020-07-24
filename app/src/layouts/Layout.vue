@@ -11,7 +11,7 @@
           aria-label="Menu"
         />
 
-        <q-toolbar-title>Micado App</q-toolbar-title>
+        <q-toolbar-title>{{$t(application_title)}}</q-toolbar-title>
 
         <div>Micado v0.1</div>
       </q-toolbar>
@@ -54,7 +54,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t( nav.label) }}</q-item-label>
-            <q-item-label caption>{{ nav.description }}</q-item-label>
+            <q-item-label caption>{{ $t(nav.description) }}</q-item-label>
           </q-item-section>
         </q-item>
         <br />
@@ -89,61 +89,61 @@ export default {
           label: "menu.home",
           icon: "home",
           to: "/",
-          description: ""
+          description: "menu.home_desc"
         },
         {
           label: "menu.situation",
           icon: "dvr",
           to: "/situation/city",
-          description: "Dashboard and charts of migration situation"
+          description: "menu.situation_desc"
         },
         {
           label: "menu.migrant",
           icon: "face",
           to: "/migrant",
-          description: "manage migrant accounts"
+          description: "menu.migrant_desc"
         },
         {
           label: "menu.cso",
           icon: "business",
           to: "/cso",
-          description: "manage Civil Society Organisations(CSO) accounts"
+          description: "menu.cso_desc"
         },
         {
           label: "menu.process",
           icon: "linear_scale",
           to: "/guided_process_editor",
-          description: "Edit guided processes information"
+          description: "menu.process_desc"
         },
         {
           label: "menu.information_centre",
           icon: "description",
           to: "/information",
-          description: "Manage the information"
+          description: "menu.information_centre_desc"
         },
         {
           label: "menu.usage",
           icon: "bar_chart",
           to: "/dashboard",
-          description: "Dashboard and charts of the MICADO app usage"
+          description: "menu.usage_desc"
         },
         {
           label: "menu.glossary",
           icon: "img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png",
           to: "/glossary",
-          description: "Manage the glossary"
+          description: "menu.glossary_desc"
         },
         {
           label: "menu.chatbot",
           icon: "adb",
           to: "/chatbot",
-          description: "Manage and train the MICADO Bot"
+          description: "menu.chatbot_desc"
         },
         {
           label: "menu.setting",
           icon: "settings",
           to: "/data_settings",
-          description: "Manage MICADO application"
+          description: "menu.setting_desc"
         }
       ]
     };
