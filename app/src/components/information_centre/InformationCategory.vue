@@ -50,6 +50,12 @@
           @click="newInformationCategory()"
           :disable="hideAdd"
         />
+        <q-btn
+          color="secondary"
+          label="Go back"
+          @click="$router.go(-1)"
+          :disable="hideAdd"
+        />
       </q-card-section>
       <q-card-section :hidden="hideForm">
         <q-tabs
@@ -150,7 +156,7 @@ export default {
     },
     saveInformationCategory() {
 
-      let content = { content: this.int_cat_shell, link_integration_plan: this.linkable }
+      let content = { link_integration_plan: this.linkable, ...this.int_cat_shell }
       if (this.isNew) {
         // we are adding a new instance
         this.$store

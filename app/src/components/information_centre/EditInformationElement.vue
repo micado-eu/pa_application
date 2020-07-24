@@ -8,7 +8,8 @@
       :tags="tags"
       :pagetitle="pagetitle"
       tags_enabled
-      :categories=informationCategoriesTitles
+      :categories=informationCategories
+      categories_enabled
     />
   </div>
 </template>
@@ -24,7 +25,6 @@ export default {
   data() {
     return {
       loading: true,
-      informationCategoriesTitles: []
     }
   },
   props: {
@@ -42,17 +42,15 @@ export default {
     ...mapActions("information_category", ["fetchInformationCategory"]),
     saveInformationItem(title, desc, lang, category, tags) {
       // TODO: Reenable tags
-      let categoryObject = this.informationCategoryByTitle(category)
-      this.$emit("save", { title, description: desc, lang, categoryObject });
+      this.$emit("save", { title, description: desc, lang, category });
     }
   },
   computed: {
-    ...mapGetters("information_category", ["informationCategories", "informationCategoryByTitle"]),
+    ...mapGetters("information_category", ["informationCategories"]),
   },
   created() {
     this.loading = true
     this.fetchInformationCategory().then(() => {
-      this.informationCategoriesTitles = this.informationCategories.map(ic => ic.eventCategory)
       this.loading = false
     })
   }

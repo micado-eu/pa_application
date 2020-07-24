@@ -98,6 +98,7 @@
           <q-select
             v-model="selectedCategory"
             :options="internalCategories"
+            @input="setCategoryObjectModel($event)"
           />
         </div>
       </div>
@@ -164,8 +165,9 @@ export default {
       loading: true,
       internalTitle: "",
       internalDescription: "",
-      internalTags: [...this.tags],
-      internalCategories: [...this.categories],
+      internalTags: [],
+      internalCategories: [],
+      internalCategoriesObjects: [],
       selectedCategory: "",
       tagInput: "",
       tagError: false,
@@ -176,22 +178,34 @@ export default {
   methods: {
     ...mapActions("language", ["fetchLanguages"]),
     changeLanguage(al) {
-      let idx = this.elem.translations.findIndex(t => t.lang === al)
-      if (idx !== -1) {
-        this.internalTitle = this.elem.translations[idx].title
-        let parsedJson = this.elem.translations[idx].description
-        this.internalDescription = parsedJson
-        if (this.$refs.editor) {
-          this.$refs.editor.setContent(parsedJson)
-          this.$refs.editor.setLang(al)
+      if (this.elem) {
+        let idx = this.elem.translations.findIndex(t => t.lang === al)
+        if (idx !== -1) {
+          this.internalTitle = this.elem.translations[idx].title
+          let parsedJson = this.elem.translations[idx].description
+          this.internalDescription = parsedJson
+          if (this.$refs.editor) {
+            this.$refs.editor.setContent(parsedJson)
+            this.$refs.editor.setLang(al)
+          }
+        } else {
+          this.resetFields(al)
         }
       } else {
-        this.internalTitle = ""
-        this.internalDescription = ""
-        if (this.$refs.editor) {
-          this.$refs.editor.setContent("")
-          this.$refs.editor.setLang(al)
-        }
+        this.resetFields(al)
+      }
+    },
+    resetFields(al) {
+      this.internalTitle = ""
+      this.internalDescription = ""
+      this.internalTags = []
+      this.selectedCategory = ""
+      this.selectedCategoryObject = {}
+      this.tagInput = ""
+      this.setInternalCategorySelector(al)
+      if (this.$refs.editor) {
+        this.$refs.editor.setContent("")
+        this.$refs.editor.setLang(al)
       }
     },
     addTag() {
@@ -204,13 +218,31 @@ export default {
       } else {
         this.internalTags.push(this.tagInput)
         this.tagError = false
+        this.tagInput = ""
       }
+    },
+    setInternalCategorySelector(al) {
+      this.internalCategories = this.categories.map(ic => {
+        let idx = ic.translations.findIndex(t => t.lang === al)
+        let translation = ic.translations[idx]
+        this.internalCategoriesObjects.push(translation)
+        let eventCategory = translation.eventCategory
+        if (eventCategory.length <= 0) {
+          eventCategory = "&ltNot translated&gt"
+        }
+        return eventCategory
+      })
+    },
+    setCategoryObjectModel(eventCategory) {
+      let idx = this.internalCategoriesObjects.findIndex(t => t.eventCategory === eventCategory)
+      this.selectedCategoryObject = this.internalCategoriesObjects[idx]
+      console.log(this.selectedCategoryObject)
     },
     goBack() {
       this.$router.go(-1);
     },
     callSaveFn() {
-      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.selectedCategory, this.internalTags)
+      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.selectedCategoryObject, this.internalTags)
     }
   },
   computed: {
@@ -226,6 +258,13 @@ export default {
       this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].lang
       if (this.elem) {
         this.changeLanguage(al)
+        let idxCat = this.categories.findIndex(ic => ic.id === this.elem.category)
+        let idxTranslation = this.categories[idxCat].translations.findIndex(t => t.lang === al)
+        this.selectedCategoryObject = this.categories[idxCat].translations[idxTranslation]
+        this.selectedCategory = this.selectedCategoryObject.eventCategory
+      }
+      if (this.categories.length > 0) {
+        this.setInternalCategorySelector(al)
       }
       this.loading = false
     })

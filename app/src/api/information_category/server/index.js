@@ -10,13 +10,9 @@ export default {
       .catch(error_handler);
   },
   updateInformationCategory(information_category) {
-    const whereClause = {
-      id: { eq: information_category.id }
-    },
-      updatingCategory = (information_category.publicationDate == null) ? JSON.parse(JSON.stringify(information_category, ['id', 'published'])) : information_category
-
+    console.log(information_category)
     return axiosInstance
-      .patch('/backend/1.0.0/event-categories?where=' + JSON.stringify(whereClause), updatingCategory)
+      .patch('/backend/1.0.0/event-categories/' + information_category.id, information_category)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -24,11 +20,10 @@ export default {
   updateInformationCategoryTranslation(translation) {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
-    },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title'])) : translation
-
+    }
+    console.log(translation)
     return axiosInstance
-      .patch('/backend/1.0.0/event-categories/' + translation.id + '/event-category-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/backend/1.0.0/event-categories/' + translation.id + '/event-category-translations?where=' + JSON.stringify(whereClause), translation)
       .then(response => response.data)
       .catch(error_handler);
   },

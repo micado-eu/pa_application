@@ -13,12 +13,12 @@ export function fetchInformationCategory(state, data) {
 export function editCategoryTypeElement(state, information_category) {
   // update translations
   return client
-    .updateInformationCategory({ link_integration_plan: information_category.link_integration_plan }).then(function (update_return) {
+    .updateInformationCategory({ id: information_category.id, link_integration_plan: information_category.link_integration_plan }).then(function (update_return) {
       // cycle in the translations and update each
       information_category.translations.forEach(function (aTranslation) {
         client.updateInformationCategoryTranslation(aTranslation)
       })
-      this.fetchInformationCategory(state)
+      fetchInformationCategory(state)
     })
 }
 export function saveInformationCategory(state, information_category) {
@@ -28,7 +28,7 @@ export function saveInformationCategory(state, information_category) {
       information_category.translations.forEach(function (transl, idx) {
         client.saveInformationCategoryTranslation(transl, category_return.id).then(() => {
           if (idx === information_category.translations.length - 1) {
-            this.fetchInformationCategory(state)
+            fetchInformationCategory(state)
           }
         })
       }, category_return.id)
@@ -41,7 +41,7 @@ export function deleteInformationCategory(state, index) {
   console.log(index)
   return client.deleteInformationCategoryTranslations(index).then(function (translations_delete_return) {
     client.deleteInformationCategory(index).then(function () {
-      this.fetchInformationCategory(state)
+      fetchInformationCategory(state)
     })
   })
 }
