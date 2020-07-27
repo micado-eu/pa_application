@@ -2,11 +2,11 @@
 <div style="padding-left:25px">
   <div class="q-pa-md col" style="width:800px; margin:0 auto">
    <UserProfile
-   :user="the_user">
+   :user="theuser">
    </UserProfile>
   </div>
 <div style="">
- <div class="q-pa-md" style="width:750px; margin:0 auto; padding-left:0px" v-for="intervention_plan in filteredplans" 
+ <div class="q-pa-md" style="width:750px; margin:0 auto; padding-left:0px" v-for="intervention_plan in intervention_plans" 
     :key="intervention_plan.id" >
     <q-list bordered class="rounded-borders" style="width:750px; border-radius:10px">
     <h4 style="padding-top:10px;font-size:20pt; font-weight:600;padding-bottom:20px; margin-top:0px; height:60px;margin-bottom:0px;width:750px; padding-left:5px; background-color:#0f3a5d; color:white; border-top-left-radius:10px;border-top-right-radius:10px">
@@ -19,14 +19,14 @@
       </h4>
     
     <IntegrationPlan
-    v-for="intervention in intervention_plan.actions" :key="intervention.id"
+    v-for="intervention in intervention_plan.interventions" :key="intervention.id"
     :title="intervention_plan.title"
     :the_intervention_plan="intervention_plan"
     :intervention="intervention"
     :the_processes_list="processes_list"
-    :model="edit_action"
+    :model="intervention_shell"
     :hideForm="hideForm"
-    :intervention_categories="categories"
+    :intervention_categories="types"
     @editIntervention="editIntervention"
     @cancelIntervention="cancelIntervention"
     @saveIntervention="saveIntervention"
@@ -36,13 +36,13 @@
     <AddIntervention
     ref="add"
     :hideAdd="hideAdd"
-    :model="edit_action"
+    :model="intervention_shell"
     :the_intervention_plan="intervention_plan"
     :the_processes_list="processes_list"
     @addIntervention="addIntervention(); button_id = intervention_plan.id"
     @saveIntervention="saveIntervention"
     @cancelIntervention="cancelIntervention"
-    :intervention_categories="categories"
+    :intervention_categories="types"
     :showAddForm="button_id != intervention_plan.id">
     </AddIntervention>
 
@@ -56,11 +56,13 @@
 import IntegrationPlan from './IntegrationPlan'
 import AddIntervention from './AddIntervention'
 import UserProfile from './UserProfile'
+import editEntityMixin from '../mixin/editEntityMixin'
+
 
 export default {
   name: 'PageIndex',
-  
-
+  props:['theuser'],
+  mixins: [editEntityMixin],
   data (){
     return {
       hideForm: true,
@@ -84,9 +86,21 @@ export default {
         validated:false, 
         category:""
       }, 
+      intervention_shell:{
+        id:-1,
+        listId:-1,
+        interventionType:[],
+        validationDate:null, 
+        completed:false,
+        validatingUserId: 1,
+        validatingUserTenant: -1234,
+        assignmentDate: '2016-06-22 19:10:25-07', 
+        validationRequestDate:'2016-06-22 19:10:25-07', 
+      },
+
       selected_plan:null,
       validation:null,
-      categories:[]
+      types:[]
       
     }
   },
@@ -96,6 +110,9 @@ export default {
     computed:{
       intervention_plans () {
       return this.$store.state.intervention_plan.intervention_plan
+    },
+     intervention_types () {
+      return this.$store.state.integration_type.integration_type
     },
       filteredplans () {
        return this.intervention_plans.filter((filt) => {
@@ -121,19 +138,45 @@ export default {
       }
     },
    methods: {
+    createShell (id_plan) {
+      this.intervention_shell = {  id:-1,
+        listId:id_plan,
+        interventionType:[],
+        validationDate:null, 
+        completed:false,
+        validatingUserId: 1,
+        validatingUserTenant: -1234,
+        assignmentDate: '2016-06-22 19:10:25-07', 
+        validationRequestDate:'2016-06-22 19:10:25-07', }
+    },
+
+ mergeIntervention (intervention) {
+      console.log(intervention)
+      this.intervention_shell.id = intervention.id
+      this.intervention_shell.listId = intervention.listId
+      this.intervention_shell.interventionType = JSON.parse(JSON.stringify(intervention.interventionType))
+      this.intervention_shell.validationDate = intervention.validationDate
+      this.intervention_shell.completed = intervention.completed
+      this.intervention_shell.validatingUserId = intervention.validatingUserId
+      this.intervention_shell.validatingUserTenant = intervention.validatingUserTenant
+      this.intervention_shell.assignmentDate = intervention.assignmentDate
+      this.intervention_shell.validationRequestDate = intervention.validationRequestDate
+
+
+    },
     saveIntervention(value){
-      if(this.isNew){
+     
         console.log(this.isNew)
          var targetId = event.currentTarget.id
-      var editing = this.filteredplans.filter((filt) => {
-        return filt.id == value
+      var editing = this.intervention_plans.filter((filt) => {
+        return filt.id == value.listId
         
       })
+       if(this.isNew){
       this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
-      this.selected_plan.actions.push(this.edit_action)
-       this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
-       console.log("i am the store)")
-       console.log(this.$store.state.intervention_plan)
+      this.selected_plan.interventions.push(this.intervention_shell)
+      this.$store.dispatch('intervention_plan/saveIntervention', {intervention:this.intervention_shell, plan:this.selected_plan})
+     console.log("")
        this.isNew = false
        this.hideAdd = false
        this.button_id = null
@@ -141,34 +184,26 @@ export default {
 
       }
       else{
-      
-      var editing = this.filteredplans.filter((filt) => {
-        return filt.id == value
-        
-      })
+      console.log("I am the editing intervention")
+      console.log(this.intervention_shell)
+
       this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
-      console.log(this.selected_plan.actions)
-      var index = this.selected_plan.actions.findIndex(item => item.id == this.edit_action.id)
-      this.selected_plan.actions.splice(index, 1, this.edit_action)
-        this.$store.dispatch('intervention_plan/editInterventionPlan', this.selected_plan)
+      console.log("i am selected plan interventions")
+      console.log(this.selected_plan.interventions)
+      var index = this.selected_plan.interventions.findIndex(item => item.id == this.intervention_shell.id)
+      this.selected_plan.interventions.splice(index, 1, this.intervention_shell)
+        this.$store.dispatch('intervention_plan/editIntervention', {intervention:this.intervention_shell, plan:this.selected_plan})
       this.hideForm = true
       this.hideAdd = false
       }
     },
 
       addIntervention(){
+        this.createShell(this.button_id)
         console.log("adding interventions")
         console.log(this.isNew)
          this.isNew = true;
          console.log(this.isNew)
-        this.edit_action = {
-         id:999,
-        intervention_title:"",
-        description:"",
-        linked_processes_id:[],
-        validated:false, 
-        category:[]
-      }
        
         this.hideAdd = true;
       
@@ -181,11 +216,13 @@ export default {
 
 
     editIntervention(value) {
+      this.mergeIntervention(value)
       this.button_id = null
       this.isNew = false
       this.hideAdd = true
       this.hideForm = false;
-       var targetId= value
+      console.log(this.intervention_shell)
+     /*  var targetId= value
       for(let i = 0; i < this.filteredplans.length; i++){
       var editing = this.filteredplans[i].actions.filter((filt) => {
         console.log(filt)
@@ -200,7 +237,7 @@ export default {
         console.log(this.edit_action)
       }
       }
-      console.log(this.edit_action)
+      console.log(this.edit_action)*/
      
     },
     cancelIntervention() {
@@ -213,6 +250,7 @@ export default {
     }
     },
   created () {
+    console.log(this.theuser.umId)
     console.log(this.$store);
     this.$store.dispatch('user/fetchUser')
       .then(users => {
@@ -224,25 +262,39 @@ export default {
       })  
     
     console.log(this.$store);
-    this.$store.dispatch('intervention_plan/fetchInterventionPlan')
+    this.$store.dispatch('intervention_plan/fetchInterventionPlan', this.theuser.umId)
        .then(intervention_plans => {
+         console.log(intervention_plans)
         this.loading = false
       })  
    
-   console.log(this.$store);
+  /* console.log(this.$store);
     this.$store
       .dispatch("integration_category/fetchIntegrationCategory")
       .then(intervention_categories => {
 
          console.log(intervention_categories)
-        for ( var i = 0; i<this.intervention_categories.length; i++){
-        var the_category = {label: this.intervention_categories[i].title, value:this.intervention_categories[i].id}
+        for ( var i = 0; i<this.intervention_types.length; i++){
+        var the_category = {label: this.intervention_types[i].title, value:this.intervention_types[i].id}
         this.categories.push(the_category)
         this.loading = false;
         }
       })
       
-  },
+  },*/
+  this.$store
+      .dispatch("integration_type/fetchIntegrationType")
+      .then(integration_types => {
+
+         console.log(integration_types)
+       integration_types.forEach(ut => {
+          var the_integration_types = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle, value: ut.id }
+          this.types.push(the_integration_types)
+        })
+        
+      })
+      
+  }
  
 }
 </script>

@@ -17,10 +17,8 @@
     <q-list style="display:inline-block;width:750px" >
         <User v-for="user in filteredUsers"
          :key="user.id"
-         :Username="user.username"
-         :Age="user.age"
-         :Nationality="user.nationality"
-         :Gender="user.gender"
+         :Username="user.umUserName"
+         :theUser="user"
          :Path="user.id"
          @remove="deleteUser"
          >
@@ -62,7 +60,7 @@ export default {
           return this.users.filter((filt) =>{
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
-          if( searchArray.every(string => filt.username.toLowerCase().includes(string))){
+          if( searchArray.every(string => filt.umUserName.toLowerCase().includes(string))){
               return true;
             }})
         } 
@@ -88,6 +86,7 @@ export default {
     console.log(this.$store);
     this.$store.dispatch('user/fetchUser')
       .then(users => {
+        console.log(users)
         this.loading = false
       })  
   }

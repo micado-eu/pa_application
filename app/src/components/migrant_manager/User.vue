@@ -19,7 +19,7 @@
         <span style="padding-right:5px">{{this.Gender}}</span>
       </div>
       <div class="q-pa-md q-gutter-sm  col" style="padding-top:0px; padding-bottom:0px; text-align:right">
-      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px;border-radius:2px" unelevated rounded color="secondary" :label="$t('button.integration')" :to="'migrant/' + this.Path"  />
+      <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px;border-radius:2px" unelevated rounded color="secondary" :label="$t('button.integration')" @click="interventionPlan()"  />
       <q-btn size="11px" no-caps style="width:70px;margin-bottom:5px;border-radius:2px" unelevated rounded color="negative" :label="$t('button.delete')" @click="remove_user($event)" />
       
       </div>
@@ -32,7 +32,7 @@
 <script>
 export default {
   name: 'Process',
-  props: ["Username",  "Age", "Nationality", "Gender", "Path"], 
+  props: ["Username",  "Age", "Nationality", "Gender", "Path", "theUser"], 
   data() {
     return {};
   },
@@ -43,6 +43,10 @@ export default {
       console.log(this.Path)
       this.$emit('remove', this.Path)
 
+    },
+      interventionPlan(){
+      console.log(this.theUser)
+      this.$router.push({ name: 'interventionplan', params: { theuser: this.theUser } })
     }
   
   }

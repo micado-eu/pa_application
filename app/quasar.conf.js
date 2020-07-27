@@ -94,10 +94,10 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server');
         chain.resolve.alias.set('api-integration_type-client', 'src/api/integration_type/server');
         chain.resolve.alias.set('api-integration_category-client', 'src/api/integration_category/server');
-        chain.resolve.alias.set('api-intervention_plan-client', 'src/api/intervention_plan/mock');
+        chain.resolve.alias.set('api-intervention_plan-client', 'src/api/intervention_plan/server');
         chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
         chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server');
-        chain.resolve.alias.set('api-user-client', 'src/api/user/mock');
+        chain.resolve.alias.set('api-user-client', 'src/api/user/server');
         chain.resolve.alias.set('api-language-client', 'src/api/language/server');
         chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
         chain.resolve.alias.set('api-steps-client', 'src/api/steps/server');

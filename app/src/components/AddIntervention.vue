@@ -48,16 +48,18 @@
       
        <div class=" q-pa-xsm row" style="text-align:center">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left; padding-left:30px">  Category </h5>
+        <h5 style="text-align:left; padding-left:30px">  Type </h5>
       </div>
       <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
      <q-select
         filled
         clearable
-        v-model="model.category"
+        emit-value
+        map-options
+        v-model="model.interventionType"
         :options="intervention_categories"
         bg-color="white"
-        label="Intervention Category"
+        label="Intervention Type"
         style="width: 450px"
       />
       </div>
@@ -69,7 +71,7 @@
         </div>
          <div style="text-align:center">
         <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event)" />
+        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, model)" />
         </div>
         </div>
       </q-card-section>
@@ -95,11 +97,11 @@ export default {
   },
   mounted() {},
   methods: {
-     saveIntervention(event){
+     saveIntervention(event, value){
       let targetId = event.currentTarget.id
       console.log("I am")
-      console.log(targetId)
-      this.$emit('saveIntervention', targetId)
+      console.log(value)
+      this.$emit('saveIntervention', value)
 
     },
     cancelIntervention(event){

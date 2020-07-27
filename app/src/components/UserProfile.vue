@@ -1,7 +1,7 @@
 <template>
 <div>
    <div class="row " style="width:750px">
-     <h3 style="margin-bottom:30px;padding-left:12px;width:65%; font-size:25pt; font-weight:600">{{user.username}}</h3>
+     <h3 style="margin-bottom:30px;padding-left:12px;width:65%; font-size:25pt; font-weight:600">{{user.umUserName}}</h3>
      <span style="text-align:right; width:35%;display: inline-block; vertical-align:middle">
      <q-btn style="width:250px; margin-top:37px; margin-bottom:30px;margin-left:5px; border-radius:2px" unelevated color="accent" rounded :label="$t('button.add_plan')" no-caps size="15px" :to="user.id + '/add'" />
      </span >
@@ -9,7 +9,7 @@
       <q-card-section horizontal>
         <q-card-section style="width:100%;padding-left:2px">
          <div>
-      <span style="text-align:left;font-size:20pt;">Username: </span><span style="font-size:20pt">{{user.username}}</span>
+      <span style="text-align:left;font-size:20pt;">Username: </span><span style="font-size:20pt">{{user.umUserName}}</span>
   </div>
   <div>
       <span style="text-align:left;font-size:20pt">Legal name: </span><span style="font-size:20pt">{{user.username}}</span>

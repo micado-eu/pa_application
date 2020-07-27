@@ -7,7 +7,10 @@ export function someAction (context) {
 export function fetchUser(state, data) {
   return client
     .fetchUser()
-    .then(user => state.commit('setUser', user))
+    .then(user => {
+      state.commit('setUser', user)
+      return user
+    })
 }
 
 export function editUser(state, user) {
