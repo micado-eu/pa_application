@@ -107,7 +107,10 @@
             :lang="lang"
           />
         </q-item-section>
-        <q-item-section class="tag_btn_section">
+        <q-item-section
+          v-if="categories_enabled"
+          class="tag_btn_section"
+        >
           <q-btn
             no-caps
             :label="item.category.category"
