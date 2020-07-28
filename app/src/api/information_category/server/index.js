@@ -10,7 +10,6 @@ export default {
       .catch(error_handler);
   },
   updateInformationCategory(information_category) {
-    console.log(information_category)
     return axiosInstance
       .patch('/backend/1.0.0/event-categories/' + information_category.id, information_category)
       .then(response => response.data)
@@ -21,7 +20,6 @@ export default {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
-    console.log(translation)
     return axiosInstance
       .patch('/backend/1.0.0/event-categories/' + translation.id + '/event-category-translations?where=' + JSON.stringify(whereClause), translation)
       .then(response => response.data)

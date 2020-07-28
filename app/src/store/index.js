@@ -21,6 +21,7 @@ import ngo_user from './ngo_user'
 import intervention_plan from './intervention_plan'
 import information from './information'
 import information_category from './information_category'
+import information_tags from './information_tags'
 import settings from './settings'
 
 Vue.use(Vuex)
@@ -53,7 +54,8 @@ export default function (/* { ssrContext } */) {
       intervention_plan,
       information,
       settings,
-      information_category
+      information_category,
+      information_tags
     },
 
     // enable strict mode (adds overhead!)
