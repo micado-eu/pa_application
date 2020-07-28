@@ -51,7 +51,7 @@
 <script>
 export default {
   name: "Process",
-  props: ["name", "type"],
+  props: ["name", "type", "theUser"],
   data() {
     return {};
   },
@@ -61,7 +61,8 @@ export default {
       let target = event.currentTarget.id;
       console.log(this.Path);
       this.$emit("remove", this.Path);
-    }
+    },
+  
   }
 };
 </script>

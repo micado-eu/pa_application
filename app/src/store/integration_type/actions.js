@@ -7,7 +7,10 @@ export function someAction (context) {
 export function fetchIntegrationType(state, data) {
   return client
     .fetchIntegrationType()
-    .then(integration_type => state.commit('setIntegrationType', integration_type))
+    .then(integration_type => {
+      state.commit('setIntegrationType', integration_type)
+      return integration_type
+    })
 }
 
 export function editIntegrationTypeElement (state, integration_type_element) {

@@ -11,7 +11,7 @@
           aria-label="Menu"
         />
 
-        <q-toolbar-title>{{$t(application_title)}}</q-toolbar-title>
+        <q-toolbar-title>{{$t("application_title")}}</q-toolbar-title>
 
         <div>Micado v0.1</div>
       </q-toolbar>

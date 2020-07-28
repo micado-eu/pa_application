@@ -6,8 +6,26 @@ export function someAction (context) {
 */
 export function fetchInterventionPlan(state, data) {
   return client
-    .fetchInterventionPlan()
-    .then(intervention_plan => state.commit('setInterventionPlan', intervention_plan))
+    .fetchInterventionPlan(data)
+    .then(intervention_plan => {
+      state.commit('setInterventionPlan', intervention_plan)
+      return intervention_plan
+    })
+}
+
+export function saveIntervention(state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log( payload.intervention)
+  return client
+    .saveIntervention(payload.plan.id,payload.intervention)
+    .then(intervention_plan_return => state.commit('editInterventionPlan', payload.plan))
+}
+export function editIntervention(state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log( payload.intervention)
+  return client
+    .editIntervention(payload.plan.id,payload.intervention)
+    .then(intervention_plan_return => state.commit('editInterventionPlan', payload.plan))
 }
 
 export function editInterventionPlan(state, intervention_plan) {
