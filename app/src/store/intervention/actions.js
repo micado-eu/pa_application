@@ -1,12 +1,12 @@
-import client from 'api-intervention_plan-client'
+import client from 'api-intervention-client'
 
 /*
 export function someAction (context) {
 }
 */
-export function fetchInterventionPlan(state, id) {
+export function fetchInterventionPlan(state, data) {
   return client
-    .fetchInterventionPlan(id)
+    .fetchInterventionPlan(data)
     .then(intervention_plan => {
       state.commit('setInterventionPlan', intervention_plan)
       return intervention_plan
@@ -36,39 +36,12 @@ export function editInterventionPlan(state, intervention_plan) {
     .then(intervention_plan_return => state.commit('editInterventionPlan', intervention_plan_return))
 }
 
-
-export function saveInterventionPlan (state, intervention_plan) {
+export function saveInterventionPlan(state, intervention_plan) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(intervention_plan)
-  let savingPlan = JSON.parse(JSON.stringify(intervention_plan, ['title', 'creationDate', 'endDate', 'caseManager', 'userId', 'userTenant', 'completed']));
-  console.log(savingPlan)
-
   return client
-    .saveInterventionPlan(savingPlan)
-    .then(async plan_return => {
-      console.log("SAVED")
-      console.log("returned from saving intervention_plan")
-      console.log(plan_return)
-      const saveIntervent = async () => {
-        await asyncForEach(intervention_plan.interventions, async (intervent) => {
-          intervent.listId = plan_return.id
-          console.log(intervent)
-          await client.saveIntervention(plan_return.id,intervent ).then(intervent_return =>{
-            intervent.id = intervent_return.id
-          })
-        })
-        console.log("after foreach save intervent")
-      }
-      await saveIntervent()
-      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
-
-      
-      console.log("after foreach save users this is the intervention plan")
-      console.log(intervention_plan)
-      intervention_plan.id = plan_return.id
-     
-      state.commit('saveInterventionPlan', intervention_plan)
-    })
+    .saveInterventionPlan(intervention_plan)
+    .then(intervention_plan_return => state.commit('saveInterventionPlan', intervention_plan_return))
 }
 
 export function deleteInterventionPlan(state, intervention_plan) {
@@ -79,11 +52,7 @@ export function deleteInterventionPlan(state, intervention_plan) {
     .then(intervention_plan_return => state.commit('deleteInterventionPlan', intervention_plan_return))
 }
 
-async function asyncForEach (array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
-}
+
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)

@@ -19,6 +19,7 @@ import graphs from './graphs'
 import user from './user'
 import ngo_user from './ngo_user'
 import intervention_plan from './intervention_plan'
+import intervention from './intervention'
 import information from './information'
 import information_category from './information_category'
 import settings from './settings'
@@ -53,7 +54,8 @@ export default function (/* { ssrContext } */) {
       intervention_plan,
       information,
       settings,
-      information_category
+      information_category, 
+      intervention
     },
 
     // enable strict mode (adds overhead!)
