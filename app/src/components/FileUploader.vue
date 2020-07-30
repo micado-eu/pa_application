@@ -1,12 +1,12 @@
 <template>
     <q-card class="my-card">
           <q-card-section>
-
+            <div style="font-size:16px; font-weight:600"> Icon </div>
             <q-file
               @input="getFiles($event)"
               bg-color="grey-3"
               dense
-              rounded
+              label="Upload your icon"
               standout
               outlined
             >
@@ -18,18 +18,29 @@
               style="max-height: 100px; max-width: 150px"
             />
           </q-card-section>
-          <q-card-section>
-            <q-toggle
-              :value="published"
-              color="green"
-              label="is Published"
-              @input="isPublished"
-            />
+          <q-card-section class="row">
+              <div class="col-8">
+                <div style="font-size:16px; font-weight:600"> Publication Date </div>
             <q-input
+            outlined
+            filled
+            dense
               v-model="publicationDate"
               label="Publication date"
               readonly
             />
+            </div>
+            <div class="col-4" style="padding-left:20px;">
+              <div style="font-size:16px; font-weight:600"> Publication Date </div>
+            <q-toggle
+              :value="published"
+              color="green"
+              
+              @input="isPublished"
+              left-label
+            />
+            </div>
+          
           </q-card-section>
 
         </q-card>

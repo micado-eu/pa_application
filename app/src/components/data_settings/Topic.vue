@@ -1,81 +1,20 @@
 <template>
   <div class="q-pa-md">
-    <h5>{{$options.name}}</h5>
-    <q-list
-      bordered
-      separator
-    >
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_topic in topic"
-        :key="a_topic.id"
-      >
-        <q-item-section class="col-2 flex flex-left">
-          <q-img
-            :src="a_topic.icon"
-            spinner-color="white"
-            style="height: 40px; max-width: 40px"
-          />
-        </q-item-section>
-        <q-item-section class="col-5 flex flex-left">{{showTopicLabel(a_topic)}}</q-item-section>
-        <q-item-section class="col-2 flex flex-left">
-          <q-toggle
-            v-model="a_topic.published"
-            color="green"
-            disable
-          />
-        </q-item-section>
-        <q-item-section class="col-3 flex flex-center">
-          <q-btn
-            no-caps
-            color="negative"
-            unelevated
-            rounded
-            style="width:70px;border-radius:2px; margin-bottom:10px"
-            label="Delete"
-            size="xs"
-            @click="deleteTopic(a_topic.id)"
-          />
-          <q-btn
-            no-caps
-            color="info"
-            unelevated
-            rounded
-            style="width:70px;border-radius:2px"
-            label="Edit"
-            size="xs"
-            @click="editTopic(a_topic)"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
-    <q-card class="my-card">
-      <q-card-section>
-        <q-btn
-          color="secondary"
-          label="Add"
+    <div class="row">
+    <h5 class="col-6">{{$options.name}}</h5>
+    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+     <q-btn
+          color="info"
+          no-caps
+          label="Add Type"
           @click="newTopic()"
           :disable="hideAdd"
+          style="width:200px"
         />
-      </q-card-section>
-      <q-card-section :hidden="hideForm">
-        <q-tabs
-          v-model="langTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
+  </div>
+    </div>
+    <q-card class="q-pa-xl" :hidden="hideForm" style="margin-bottom:100px">
+       
         <q-tab-panels
           v-model="langTab"
           animated
@@ -86,9 +25,13 @@
             :name="language.name"
           >
             <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
+            <div style="font-size:16px; font-weight:600"> Topic </div>
             <q-input
+              outlined
+              filled
+              dense
               v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"
-              label="Topic"
+              label="Enter topic title here"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -136,26 +79,98 @@
           </q-card-section>
 
         </q-card>-->
-
+ <q-tabs
+          v-model="langTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+          <q-btn
+          no-caps
+          class="button"
+          unelevated
+          rounded
+          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
+          label="Cancel"
+          @click="cancelTopic()"
+        />
         <q-btn
           no-caps
           color="accent"
           unelevated
           rounded
-          style="width:70px;border-radius:2px"
+          style="width:100px;border-radius:2px;margin-top:30px"
           label="Save"
           @click="saveTopic()"
         />
-        <q-btn
-          no-caps
-          class="button"
-          unelevated
-          rounded
-          style="width:70px;border-radius:2px"
-          label="Cancel"
-          @click="cancelTopic()"
-        />
-      </q-card-section>
+      
+
+      </q-card>
+      <div class="row" style="padding-left:20px; padding-bottom:10px">
+    <div class="col-1 flex flex-left">
+      Image
+    </div>
+    <div class="col-7 flex flex-left">
+      Name
+    </div>
+    <div class="col-1 flex flex-left">
+      Published
+    </div>
+    <div class="col-1 flex flex-center" style="padding-left:10px">
+      Edit
+    </div> 
+    <div class="col-1 flex flex-center" style="padding-left:30px">
+      Delete 
+    </div>
+      </div>
+
+    <q-list
+      bordered
+      separator
+    >
+      <q-item
+        clickable
+        v-ripple
+        v-for="a_topic in topic"
+        :key="a_topic.id"
+      >
+        <q-item-section class="col-1 flex flex-left">
+          <q-img
+            :src="a_topic.icon"
+            spinner-color="white"
+            style="height: 40px; max-width: 40px"
+          />
+        </q-item-section>
+        <q-item-section class="col-7 flex flex-left" style="font-size:16px; font-weight:600">{{showTopicLabel(a_topic)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-left">
+          <q-toggle
+            v-model="a_topic.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editTopic(a_topic)" />
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center">
+         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteTopic(a_topic.id)" size="md" />
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <q-card class="my-card">
+
+      
     </q-card>
   </div>
 </template>
@@ -227,6 +242,7 @@ export default {
 
     },
     newTopic () {
+      this.createShell()
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;
