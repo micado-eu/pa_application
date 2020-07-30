@@ -1,48 +1,59 @@
 <template>
   <div :id="$options.name" class="q-pa-md">
-    <router-link :to="'#'+$options.name">
-      <h5 @click="onClickTitle()">{{$options.name}}</h5>
+    <div class="row">
+    <router-link class="col-6" :to="'#'+$options.name">
+      <h5  @click="onClickTitle()">{{$options.name}}</h5>
     </router-link>
-    <q-list bordered separator>
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_integration_category in integration_category"
-        :key="a_integration_category.id"
+    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+       <q-btn color="info"  no-caps label="Add Category" @click="newIntegrationCategory()" :disable="hideAdd" style="width:200px"/>
+    </div>
+    </div>
+  <q-card class="my-card">
+      
+      <q-card-section :hidden="hideForm" style="margin-bottom:100px">
+        
+      <q-tab-panels
+        v-model="langTab"
+        animated
       >
-        <q-item-section>{{showCategoryLabel(a_integration_category)}}</q-item-section>
-        <q-item-section class="col-2 flex flex-left">
-          <q-toggle
-            v-model="a_integration_category.published"
-            color="green"
-            disable
-          />
-        </q-item-section>
-        <q-item-section class="col-5 flex flex-center">
-          <q-btn
-            color="negative"
-            label="Delete"
-            size="xs"
-            no-caps
-            @click="deleteIntegrationCategory(a_integration_category.id)"
-            unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" 
-          />
-          <q-btn
-            color="info"
-            label="Edit"
-            size="xs"
-            no-caps
-            @click="editIntegrationCategory(a_integration_category)"
-            unelevated rounded style="width:70px;border-radius:2px" 
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
-    <q-card class="my-card">
-      <q-card-section>
-        <q-btn color="secondary" label="Add" @click="newIntegrationCategory()" :disable="hideAdd" />
-      </q-card-section>
-      <q-card-section :hidden="hideForm">
+        <q-tab-panel
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+        >
+        <div style="font-size:16px; font-weight:600"> Integration category </div>
+            <q-input
+              outlined
+              filled
+              dense
+              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title"
+              label="Enter category title here"
+            />
+         </q-tab-panel>
+        </q-tab-panels>
+         <q-card-section class="row">
+              <div class="col-8">
+                <div style="font-size:16px; font-weight:600"> Publication Date </div>
+            <q-input
+            outlined
+            filled
+            dense
+              v-model="int_cat_shell.publicationDate"
+              label="Publication date"
+              readonly
+            />
+            </div>
+            <div class="col-4" style="padding-left:20px;">
+              <div style="font-size:16px; font-weight:600"> Publication Date </div>
+            <q-toggle
+              :value="int_cat_shell.published"
+              color="green"
+              @input="isPublished(!int_cat_shell.published,$event)"
+              left-label
+            />
+            </div>
+          
+          </q-card-section>
            <q-tabs
         v-model="langTab"
         dense
@@ -59,22 +70,53 @@
           :label="language.name"
         />
       </q-tabs>
-      <q-tab-panels
-        v-model="langTab"
-        animated
-      >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-        >
-        <q-input v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title" label="Standard" />
-         </q-tab-panel>
-        </q-tab-panels>
-        <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveIntegrationCategory()" />
-        <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelIntegrationCategory()" />
+      <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+        <q-btn color="accent" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" label="Save" @click="saveIntegrationCategory()" />
+        <q-btn class="button" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" label="Cancel" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
+       <div class="row" style=" padding-bottom:10px">
+    
+    <div class="col-9 flex flex-left" style="padding-left:15px;">
+      Name
+    </div>
+    <div class="col-1 flex flex-left">
+      Published
+    </div>
+    <div class="col-1 flex flex-center" style="margin-left:0px">
+      Edit
+    </div> 
+    <div class="col-1 flex flex-center" style="padding-left:20px">
+      Delete 
+    </div>
+      </div>
+    <q-list bordered separator>
+      <q-item
+        clickable
+        v-ripple
+        v-for="a_integration_category in integration_category"
+        :key="a_integration_category.id"
+      >
+        <q-item-section class="col-9 flex flex-left">{{showCategoryLabel(a_integration_category)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-left">
+          <q-toggle
+            v-model="a_integration_category.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+           <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationCategory(a_integration_category)" />
+         
+        </q-item-section>
+           <q-item-section class="col-1 flex flex-center">
+
+          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteIntegrationCategory(a_integration_category.id)" size="md" />
+          
+        </q-item-section>
+      </q-item>
+    </q-list>
+    
   </div>
 </template>
 
@@ -98,6 +140,9 @@ export default {
     }
   },
   methods: {
+    isPublished(value, event){
+      this.int_cat_shell.published = value
+    },
     onClickTitle: function() {
       this.$emit("scroll", "#" + this.$options.name);
     },
@@ -164,6 +209,8 @@ export default {
     mergeCategory (category) {
       console.log(category)
       this.int_cat_shell.id = category.id
+      this.int_cat_shell.published = category.published
+      this.int_cat_shell.publicationDate = category.publicationDate
       category.translations.forEach(tr => {
         console.log(tr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
