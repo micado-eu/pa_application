@@ -97,7 +97,7 @@
         v-for="a_integration_category in integration_category"
         :key="a_integration_category.id"
       >
-        <q-item-section class="col-9 flex flex-left">{{showCategoryLabel(a_integration_category)}}</q-item-section>
+        <q-item-section class="col-9 flex flex-left" style="font-size:16px; font-weight:600">{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_integration_category.published"

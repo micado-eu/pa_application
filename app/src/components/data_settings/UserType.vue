@@ -1,50 +1,20 @@
 <template>
   <div class="q-pa-md">
-    <h5>{{$options.name}}</h5>
-    <q-list bordered separator>
-      <q-item clickable v-ripple v-for="a_user_type in user_type" :key="a_user_type.id">
-         <q-item-section class="col-2 flex flex-left">
-          <q-img
-            :src="a_user_type.icon"
-            spinner-color="white"
-            style="height: 40px; max-width: 40px"
-          />
-        </q-item-section>
-        <q-item-section class="col-5 flex flex-left">{{showUserTypeLabel(a_user_type)}}</q-item-section>
-        <q-item-section class="col-2 flex flex-left">
-          <q-toggle
-            v-model="a_user_type.published"
-            color="green"
-            disable
-          />
-        </q-item-section>
-        <q-item-section class="col-3 flex flex-center">
-          <q-btn color="negative" unelevated rounded style="width:70px;border-radius:2px;margin-bottom:5px" label="Delete" size="xs" @click="deleteUserType(a_user_type.id)" />
-          <q-btn color="info" unelevated rounded style="width:70px;border-radius:2px" label="Edit" size="xs" @click="editUserType(a_user_type)" />
-        </q-item-section>
-      </q-item>
-    </q-list>
-    <q-card class="my-card">
-      <q-card-section>
-        <q-btn color="secondary" unelevated rounded style="width:70px;border-radius:2px" label="Add" @click="newUserType()" :disable="hideAdd" />
-      </q-card-section>
-      <q-card-section :hidden="hideForm">
-         <q-tabs
-          v-model="langTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
+    <div class="row">
+    <h5 class="col-6">{{$options.name}}</h5>
+    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+     <q-btn
+          color="info"
+          no-caps
+          label="Add Type"
+          @click="newUserType()"
+          :disable="hideAdd"
+          style="width:200px"
+        />
+  </div>
+    </div>
+    <q-card class="q-pa-md" :hidden="hideForm" style="margin-bottom:100px">
+      
         <q-tab-panels
           v-model="langTab"
           animated
@@ -54,13 +24,21 @@
             :key="language.lang"
             :name="language.name"
           >
-        <q-input v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType" label="User type" />
+           <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> User </div>
+           <q-input
+              outlined
+              filled
+              dense
+              v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
+              label="Enter user type here"
+            />
        <!-- <q-input
           v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
           filled
           type="textarea"
           label="Description"
         />-->
+        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Description </div>
          <GlossaryEditor
         class="desc-editor"
         v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -77,10 +55,88 @@
         @publish="isPublished"> 
 
         </FileUploader>
-        <q-btn color="accent" unelevated rounded style="width:70px;border-radius:2px" label="Save" @click="saveUserType()" />
-        <q-btn class="button" unelevated rounded style="width:70px;border-radius:2px" label="Cancel" @click="cancelUserType()" />
-      </q-card-section>
+           <q-tabs
+          v-model="langTab"
+          dense
+          class="text-grey"
+          active-color="primary"
+          indicator-color="primary"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+          <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+          <q-btn
+          no-caps
+          class="button"
+          unelevated
+          rounded
+          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
+          label="Cancel"
+          @click="cancelUserType()"
+        />
+        <q-btn
+          no-caps
+          color="accent"
+          unelevated
+          rounded
+          style="width:100px;border-radius:2px;margin-top:30px"
+          label="Save"
+          @click="saveUserType()"
+        />
+       
     </q-card>
+      <div class="row" style="padding-left:20px; padding-bottom:10px">
+    <div class="col-1 flex flex-left">
+      Image
+    </div>
+    <div class="col-8 flex flex-left">
+      Name
+    </div>
+    <div class="col-1 flex flex-left">
+      Published
+    </div>
+    <div class="col-1 flex flex-center" style="padding-left:10px">
+      Edit
+    </div> 
+    <div class="col-1 flex flex-center" style="padding-left:30px">
+      Delete 
+    </div>
+      </div>
+    <q-list bordered separator>
+      <q-item clickable v-ripple v-for="a_user_type in user_type" :key="a_user_type.id">
+         <q-item-section class="col-1 flex flex-left">
+          <q-img
+            :src="a_user_type.icon"
+            spinner-color="white"
+            style="height: 40px; max-width: 40px"
+          />
+        </q-item-section>
+        <q-item-section class="col-8 flex flex-left" style="font-size:16px; font-weight:600">{{showUserTypeLabel(a_user_type)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-left">
+          <q-toggle
+            v-model="a_user_type.published"
+            color="green"
+            disable
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editUserType(a_user_type)" />
+        </q-item-section>
+          <q-item-section class="col-1 flex flex-center">
+          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteUserType(a_user_type.id)" size="md" />
+        </q-item-section>
+      </q-item>
+    </q-list>
+    
+      
+      
   </div>
 </template>
 
@@ -132,6 +188,7 @@ export default {
           });
       }
       this.hideForm = true;
+      this.hideAdd = false;
       this.createShell()
     },
     newUserType() {

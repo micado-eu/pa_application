@@ -121,7 +121,7 @@
     <div class="col-1 flex flex-left">
       Image
     </div>
-    <div class="col-7 flex flex-left">
+    <div class="col-8 flex flex-left">
       Name
     </div>
     <div class="col-1 flex flex-left">
@@ -152,7 +152,7 @@
             style="height: 40px; max-width: 40px"
           />
         </q-item-section>
-        <q-item-section class="col-7 flex flex-left" style="font-size:16px; font-weight:600">{{showTopicLabel(a_topic)}}</q-item-section>
+        <q-item-section class="col-8 flex flex-left" style="font-size:16px; font-weight:600">{{showTopicLabel(a_topic)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_topic.published"
