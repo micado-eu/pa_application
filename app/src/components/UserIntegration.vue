@@ -61,7 +61,7 @@ import editEntityMixin from '../mixin/editEntityMixin'
 
 export default {
   name: 'PageIndex',
-  props:['theuser'],
+  props:['theuser', 'theuserid'],
   mixins: [editEntityMixin],
   data (){
     return {
@@ -264,6 +264,7 @@ export default {
     console.log(this.$store);
     this.$store.dispatch('intervention_plan/fetchInterventionPlan', this.theuser.umId)
        .then(intervention_plans => {
+         console.log("these are the returned plans")
          console.log(intervention_plans)
         this.loading = false
       })  

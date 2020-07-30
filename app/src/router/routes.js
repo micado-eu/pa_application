@@ -30,8 +30,8 @@ const routes = [
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
-      { path: '/migrant/:theuser', name: 'interventionplan', component: () => import('components/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
-      { path: '/migrant/:id/add', component: () => import('components/AddInterventionPlan.vue'), props: true, name: process },
+      { path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('components/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
+      { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('components/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
       { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
       { path: '/chatbot', component: chatBot },
