@@ -8,7 +8,7 @@
       :tags="tags"
       :pagetitle="pagetitle"
       tags_enabled
-      :categories=informationCategories
+      :categories="informationCategories"
       categories_enabled
     />
   </div>
@@ -24,35 +24,34 @@ export default {
   },
   data() {
     return {
-      loading: true,
-    }
+      loading: true
+    };
   },
   props: {
     elem: {
       type: Object
     },
-    tags: {
-      type: Array
-    },
     pagetitle: {
       type: String
+    },
+    tags: {
+      type: Array
     }
   },
   methods: {
     ...mapActions("information_category", ["fetchInformationCategory"]),
-    saveInformationItem(title, desc, lang, category, tags) {
-      // TODO: Reenable tags
-      this.$emit("save", { title, description: desc, lang, category });
+    saveInformationItem(title, description, lang, category, tags) {
+      this.$emit("save", { title, description, lang, category, tags });
     }
   },
   computed: {
-    ...mapGetters("information_category", ["informationCategories"]),
+    ...mapGetters("information_category", ["informationCategories"])
   },
   created() {
-    this.loading = true
+    this.loading = true;
     this.fetchInformationCategory().then(() => {
-      this.loading = false
-    })
+      this.loading = false;
+    });
   }
 };
 </script>

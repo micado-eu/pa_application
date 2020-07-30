@@ -19,6 +19,10 @@ export default {
       "addNewInformationItemTranslation",
       "deleteInformationItem"
     ]),
+    ...mapActions("information_tags", [
+      "saveInformationTags",
+      "saveInformationTagsTranslation"
+    ]),
     saveNewInformationItemAndReturn(translationData) {
       let router = this.$router;
       let id = -1;
@@ -26,20 +30,35 @@ export default {
         published: true,
         publicationDate: new Date().toISOString(),
         category: translationData.category.id
-      }
-      delete translationData.category
+      };
+      let tagData = {};
+      let tags = translationData.tags.map(tag => {
+        return {
+          lang: translationData.lang,
+          tag
+        };
+      });
+      delete translationData.category;
+      delete translationData.tags;
       this.saveNewInformationItem(eventData)
         .then(newData => {
           id = newData.id;
           let dataWithId = Object.assign(translationData, { id });
+          let tagData = {
+            eventId: newData.id,
+            tags
+          };
           return this.addNewInformationItemTranslation(dataWithId);
+        })
+        .then(() => {
+          return this.saveInformationTags(tagData);
         })
         .then(() => {
           router.push({ path: "/information" });
         })
         .catch(() => {
           if (id !== -1) {
-            this.deleteGlossaryItem({ id });
+            this.deleteInformationItem({ id });
           }
         });
     }

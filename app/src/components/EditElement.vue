@@ -266,6 +266,12 @@ export default {
       if (this.categories.length > 0) {
         this.setInternalCategorySelector(al)
       }
+      if (this.tags.length > 0) {
+        for (let tag of this.tags) {
+          let idxTag = tag.translations.findIndex(t => t.lang === al)
+          this.internalTags.push(tag.translations[idxTag].tag)
+        }
+      }
       this.loading = false
     })
   }

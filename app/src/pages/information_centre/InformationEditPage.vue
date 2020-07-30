@@ -18,7 +18,8 @@ export default {
   data() {
     return {
       loading: false,
-      elem: undefined
+      elem: undefined,
+      tags: undefined,
     };
   },
   components: {
@@ -32,6 +33,11 @@ export default {
       "editInformationItemTranslation",
       "addNewInformationItemTranslation"
     ]),
+    ...mapActions("information_tags", [
+      "fetchInformationTags",
+      "deleteInformationTagsFromEvent",
+      "saveInformationTags"
+    ]),
     editInformationItemAndReturn(data) {
       let router = this.$router;
       let categoryId = data.category.id
@@ -41,6 +47,13 @@ export default {
         category: categoryId
       }
       delete data.category
+      let tags = data.tags.map(tag_lbl => {
+        return {
+          lang: data.lang,
+          tag: tag_lbl
+        }
+      })
+      delete data.tags
       let dataWithId = Object.assign(data, {
         id
       });
@@ -48,11 +61,31 @@ export default {
         let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
         if (idx !== -1) {
           this.editInformationItemTranslation(dataWithId).then(() => {
-            router.push({ path: "/information" });
+            this.deleteInformationTagsFromEvent(id).then(() => {
+              if (tags.length > 0) {
+                this.saveInformationTags({
+                  eventId: id,
+                  tags
+                }).then(() => {
+                  router.push({ path: "/information" });
+                })
+              } else {
+                router.push({ path: "/information" });
+              }
+            })        
           });
         } else {
           this.addNewInformationItemTranslation(dataWithId).then(() => {
-            router.push({ path: "/information" });
+            if (tags.length > 0) {
+                this.saveInformationTags({
+                  eventId: id,
+                  tags
+                }).then(() => {
+                  router.push({ path: "/information" });
+                })
+              } else {
+                router.push({ path: "/information" });
+              }
           });
         }
       })
@@ -61,20 +94,16 @@ export default {
   },
   computed: {
     ...mapGetters("information", ["informationElemById"]),
-    tags: function () {
-      let elem = this.informationElemById(this.$route.params.id);
-      if (elem && elem.tags) {
-        return elem.tags;
-      } else {
-        return [];
-      }
-    }
+    ...mapGetters("information_tags", ["informationTagsByEvent"]),
   },
   created() {
     this.loading = true;
     this.fetchInformation().then(() => {
       this.elem = this.informationElemById(this.$route.params.id);
-      this.loading = false;
+      this.fetchInformationTags().then(() => {
+        this.tags = this.informationTagsByEvent(this.elem.id)
+        this.loading = false;
+      })
     });
   }
 };

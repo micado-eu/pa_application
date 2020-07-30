@@ -1,9 +1,5 @@
 import client from 'api-information_tags-client'
 
-/*
-export function someAction (context) {
-}
-*/
 export function fetchInformationTags(state, data) {
   return client
     .fetchInformationTags()
@@ -23,7 +19,7 @@ export function editTagsTypeElement(state, information_tags) {
 }
 export async function saveInformationTags(state, information_tags) {
   let promises = []
-  for (let tag of information_tag.tags) {
+  for (let tag of information_tags.tags) {
     let newTag = await client.saveInformationTags({ eventId: information_tags.eventId })
     promises.push(client.saveInformationTagsTranslation({
       id: newTag.id,
@@ -33,12 +29,9 @@ export async function saveInformationTags(state, information_tags) {
   return Promise.all(promises)
 }
 
-export function deleteInformationTags(state, index) {
-  console.log(index)
-  return client.deleteInformationTagsTranslations(index).then(function (translations_delete_return) {
-    client.deleteInformationTags(index).then(function () {
+export function deleteInformationTagsFromEvent(state, eventId) {
+    client.deleteInformationTags(eventId).then(function () {
       fetchInformationTags(state)
     })
-  })
 }
 

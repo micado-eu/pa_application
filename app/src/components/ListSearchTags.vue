@@ -47,7 +47,7 @@
         v-for="tag in tags"
         :key="tag"
         :label="tag"
-        class="q-mr-sm tag_btn"
+        class="q-mr-sm q-mb-sm tag_btn"
         @click="addOrRemoveSelectedTag(tag)"
       />
     </div>
@@ -121,8 +121,8 @@
           <q-btn
             no-caps
             v-for="tag in item.tags"
-            :key="tag"
-            :label="tag"
+            :key="tag.id"
+            :label="tag.tag"
             class="q-mb-sm tag_btn"
           />
         </q-item-section>
@@ -213,6 +213,10 @@ export default {
     categories_url: {
       type: String,
       default: "/"
+    },
+    tags_enabled: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -259,12 +263,18 @@ export default {
       if (this.selectedTags.length > 0) {
         let selectedTags = this.selectedTags;
         this.filteredElementsByTags = this.translatedElements.filter(e => {
+          let matchedTags = []
           for (let tag of selectedTags) {
-            if (e.tags.indexOf(tag) == -1) {
-              return false;
+            for (let elemTag of e.tags) {
+              if (elemTag.tag === tag) {
+                // This check avoids duplicate matches
+                if (matchedTags.indexOf(tag) == -1) {
+                  matchedTags.push(tag)
+                }
+              }
             }
           }
-          return true;
+          return matchedTags.length == selectedTags.length;
         });
       } else {
         this.filteredElementsByTags = this.translatedElements;
@@ -330,23 +340,31 @@ export default {
             this.translatedCategories.push(translation.category)
           }
         }
+        if (this.tags_enabled) {
+          // Tags
+          if (e.tags.length > 0) {
+            let tagTranslations = []
+            for (let tag of e.tags) {
+              let translations = tag.translations.filter(tag => tag.lang === this.lang)
+              if (translations.length > 0) {
+                tagTranslations.push(translations[0])
+                if (this.tags.indexOf(translations[0].tag) == -1) {
+                  this.tags.push(translations[0].tag);
+                }
+              }
+            }
+            translation.tags = tagTranslations
+          }
+        }
+        if (this.publish_mode) {
+          // Publish
+          this.publishState[e.id] = e.published;
+        }
         return translation
       });
       this.filteredElementsBySearch = this.translatedElements;
       this.filteredElementsByTags = this.translatedElements;
       this.filteredElementsByCategory = this.translatedElements;
-      for (let elem of this.elements) {
-        // Tags
-        if (elem.tags) {
-          for (let tag of elem.tags) {
-            if (this.tags.indexOf(tag) == -1) {
-              this.tags.push(tag);
-            }
-          }
-        }
-        // Publish
-        this.publishState[elem.id] = elem.published;
-      }
       this.loading = false;
     });
   }

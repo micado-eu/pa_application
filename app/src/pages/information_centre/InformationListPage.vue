@@ -14,6 +14,7 @@
       :update_publish_fn="updatePublishInformationItem"
       categories_enabled
       categories_url="/information/categories"
+      tags_enabled
     />
   </div>
 </template>
@@ -34,6 +35,7 @@ export default {
   computed: {
     ...mapGetters("information", ["information"]),
     ...mapGetters("information_category", ["informationCategories"]),
+    ...mapGetters("information_tags", ["informationTagsByEvent"]),
   },
   methods: {
     ...mapActions("information", [
@@ -41,9 +43,9 @@ export default {
       "deleteInformationItem",
       "updatePublishInformationItem"
     ]),
-    ...mapActions("information_category", [
-      "fetchInformationCategory",
-    ]),
+    ...mapActions("information_category", ["fetchInformationCategory"]),
+    ...mapActions("information_tags", ["fetchInformationTags"]),
+    ...mapActions("information_tags", ["fetchInformationTags"]),
     getEditRoute(id) {
       return "information/" + id + "/edit";
     },
@@ -60,21 +62,28 @@ export default {
     this.loading = true;
     this.fetchInformation().then(() => {
       this.fetchInformationCategory().then(() => {
-        this.informationElems = JSON.parse(JSON.stringify(this.information))
-        let informationCategoryElems = [...this.informationCategories]
-        for (let category of informationCategoryElems) {
-          for (let translation of category.translations) {
-            translation.category = translation["eventCategory"]
-            delete translation.eventCategory
+        this.fetchInformationTags().then(() => {
+          this.informationElems = JSON.parse(JSON.stringify(this.information));
+          let informationCategoryElems = [...this.informationCategories];
+          for (let category of informationCategoryElems) {
+            for (let translation of category.translations) {
+              translation.category = translation["eventCategory"];
+              delete translation.eventCategory;
+            }
           }
-        }
-        for (let elem of this.informationElems) {
-          let idxCat = elem.category
-          let idxCategoryObject = informationCategoryElems.findIndex(ic => ic.id === idxCat)
-          elem.category = informationCategoryElems[idxCategoryObject]
-        }
-        this.loading = false;
-      })
+          for (let elem of this.informationElems) {
+            // Set categories-elements relations
+            let idxCat = elem.category;
+            let idxCategoryObject = informationCategoryElems.findIndex(
+              ic => ic.id === idxCat
+            );
+            elem.category = informationCategoryElems[idxCategoryObject];
+            // Set tag-elements relations
+            elem.tags = this.informationTagsByEvent(elem.id)
+          }
+          this.loading = false;
+        })
+      });
     });
   }
 };

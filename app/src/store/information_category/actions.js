@@ -1,9 +1,5 @@
 import client from 'api-information_category-client'
 
-/*
-export function someAction (context) {
-}
-*/
 export function fetchInformationCategory(state, data) {
   return client
     .fetchInformationCategory()

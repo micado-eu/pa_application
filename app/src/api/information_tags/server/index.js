@@ -21,7 +21,7 @@ export default {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
     return axiosInstance
-      .patch('/backend/1.0.0/event-tags/' + translation.id + '/event-tags-translations?where=' + JSON.stringify(whereClause), translation)
+      .patch('/backend/1.0.0/event-tags/' + translation.id + '/event-tag-translations?where=' + JSON.stringify(whereClause), translation)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -33,23 +33,16 @@ export default {
       .catch(error_handler);
   },
   saveInformationTagsTranslation(translation) {
-    translation.id = id
+    let id = translation.id
     delete translation.id
     return axiosInstance
-      .post('/backend/1.0.0/event-tags/' + id + '/event-tags-translations', translation)
+      .post('/backend/1.0.0/event-tags/' + id + '/event-tag-translations', translation)
       .then(response => response.data)
       .catch(error_handler);
   },
-  deleteInformationTagsTranslations(id) {
-    return axiosInstance
-      .delete('/backend/1.0.0/event-tags/' + id + '/event-tags-translations')
-      .then(response => response.data)
-      .catch(error_handler);
-  },
-
   deleteInformationTags(id) {
     return axiosInstance
-      .delete('/backend/1.0.0/event-tags/' + id)
+      .delete('/backend/1.0.0/events/' + id + "/event-tags")
       .then(response => response.data)
       .catch(error_handler);
   },
