@@ -19,13 +19,9 @@
           :label="language.name"
         />
       </q-tabs>
-      <div class="page-title q-my-lg">{{pagetitle}}</div>
+      <div class="page-title q-my-lg">{{ pagetitle }}</div>
       <span class="q-my-lg label-edit">Title:</span>
-      <q-input
-        class="title_input"
-        outlined
-        v-model="internalTitle"
-      />
+      <q-input class="title_input" outlined v-model="internalTitle" />
       <span class="q-my-lg label-edit">Description:</span>
       <glossary-editor
         class="desc-editor"
@@ -34,28 +30,12 @@
         ref="editor"
       />
       <div>
-        <div
-          v-if="tags_enabled"
-          class="q-my-md tag_list"
-        >
+        <div v-if="tags_enabled" class="q-my-md tag_list">
           <span class="q-my-lg label-edit">Tags:</span>
-          <q-list
-            v-if="internalTags.length > 0"
-            separator
-            bordered
-            dense
-          >
-            <q-item
-              v-for="tag in internalTags"
-              :key="tag"
-              class="q-mb-sm"
-            >
+          <q-list v-if="internalTags.length > 0" separator bordered dense>
+            <q-item v-for="tag in internalTags" :key="tag" class="q-mb-sm">
               <q-item-section>
-                <q-btn
-                  class="tag_btn"
-                  no-caps
-                  :label="tag"
-                />
+                <q-btn class="tag_btn" no-caps :label="tag" />
               </q-item-section>
               <q-item-section side>
                 <q-btn
@@ -82,18 +62,12 @@
               label="Add tag"
               class="q-my-sm add_tag_btn"
             />
-            <span
-              v-if="tagError"
-              class="q-ml-sm"
-            >
-              {{tagErrorMessage}}
+            <span v-if="tagError" class="q-ml-sm">
+              {{ tagErrorMessage }}
             </span>
           </div>
         </div>
-        <div
-          v-if="categories_enabled"
-          class="q-my-md tag_list"
-        >
+        <div v-if="categories_enabled" class="q-my-md tag_list">
           <span class="q-my-lg label-edit">Select category:</span>
           <q-select
             v-model="selectedCategory"
@@ -125,37 +99,37 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "EditElement",
   props: {
-    "pagetitle": {
+    pagetitle: {
       type: String,
-      default: "",
+      default: ""
     },
-    "elem": {
-      type: Object,
+    elem: {
+      type: Object
     },
-    "save_item_fn": {
-      type: Function,
+    save_item_fn: {
+      type: Function
     },
-    "tags": {
+    tags: {
       type: Array,
-      default: function () {
-        return []
+      default: function() {
+        return [];
       }
     },
-    "tags_enabled": {
+    tags_enabled: {
       type: Boolean,
-      default: false,
+      default: false
     },
-    "categories": {
+    categories: {
       type: Array,
-      default: function () {
-        return []
+      default: function() {
+        return [];
       }
     },
-    "categories_enabled": {
+    categories_enabled: {
       type: Boolean,
       default: false
     }
@@ -173,109 +147,127 @@ export default {
       tagError: false,
       tagErrorMessage: "",
       langTab: ""
-    }
+    };
   },
   methods: {
     ...mapActions("language", ["fetchLanguages"]),
     changeLanguage(al) {
       if (this.elem) {
-        let idx = this.elem.translations.findIndex(t => t.lang === al)
+        let idx = this.elem.translations.findIndex(t => t.lang === al);
         if (idx !== -1) {
-          this.internalTitle = this.elem.translations[idx].title
-          let parsedJson = this.elem.translations[idx].description
-          this.internalDescription = parsedJson
+          this.internalTitle = this.elem.translations[idx].title;
+          let parsedJson = this.elem.translations[idx].description;
+          this.internalDescription = parsedJson;
           if (this.$refs.editor) {
-            this.$refs.editor.setContent(parsedJson)
-            this.$refs.editor.setLang(al)
+            this.$refs.editor.setContent(parsedJson);
+            this.$refs.editor.setLang(al);
           }
         } else {
-          this.resetFields(al)
+          this.resetFields(al);
         }
       } else {
-        this.resetFields(al)
+        this.resetFields(al);
       }
     },
     resetFields(al) {
-      this.internalTitle = ""
-      this.internalDescription = ""
-      this.internalTags = []
-      this.selectedCategory = ""
-      this.selectedCategoryObject = {}
-      this.tagInput = ""
-      this.setInternalCategorySelector(al)
+      this.internalTitle = "";
+      this.internalDescription = "";
+      this.internalTags = [];
+      this.selectedCategory = "";
+      this.selectedCategoryObject = {};
+      this.tagInput = "";
+      this.setInternalCategorySelector(al);
       if (this.$refs.editor) {
-        this.$refs.editor.setContent("")
-        this.$refs.editor.setLang(al)
+        this.$refs.editor.setContent("");
+        this.$refs.editor.setLang(al);
       }
     },
     addTag() {
       if (this.internalTags.indexOf(this.tagInput) !== -1) {
-        this.tagErrorMessage = "Duplicates are not allowed."
-        this.tagError = true
+        this.tagErrorMessage = "Duplicates are not allowed.";
+        this.tagError = true;
       } else if (this.tagInput.length <= 0) {
-        this.tagErrorMessage = "Empty tags are not allowed."
-        this.tagError = true
+        this.tagErrorMessage = "Empty tags are not allowed.";
+        this.tagError = true;
       } else {
-        this.internalTags.push(this.tagInput)
-        this.tagError = false
-        this.tagInput = ""
+        this.internalTags.push(this.tagInput);
+        this.tagError = false;
+        this.tagInput = "";
       }
     },
     setInternalCategorySelector(al) {
       this.internalCategories = this.categories.map(ic => {
-        let idx = ic.translations.findIndex(t => t.lang === al)
-        let translation = ic.translations[idx]
-        this.internalCategoriesObjects.push(translation)
-        let eventCategory = translation.eventCategory
+        let idx = ic.translations.findIndex(t => t.lang === al);
+        let translation = ic.translations[idx];
+        this.internalCategoriesObjects.push(translation);
+        let eventCategory = translation.eventCategory;
         if (eventCategory.length <= 0) {
-          eventCategory = "&ltNot translated&gt"
+          eventCategory = "&ltNot translated&gt";
         }
-        return eventCategory
-      })
+        return eventCategory;
+      });
     },
     setCategoryObjectModel(eventCategory) {
-      let idx = this.internalCategoriesObjects.findIndex(t => t.eventCategory === eventCategory)
-      this.selectedCategoryObject = this.internalCategoriesObjects[idx]
-      console.log(this.selectedCategoryObject)
+      let idx = this.internalCategoriesObjects.findIndex(
+        t => t.eventCategory === eventCategory
+      );
+      this.selectedCategoryObject = this.internalCategoriesObjects[idx];
+      console.log(this.selectedCategoryObject);
     },
     goBack() {
       this.$router.go(-1);
     },
     callSaveFn() {
-      this.save_item_fn(this.internalTitle, JSON.stringify(this.$refs.editor.getContent()), this.langTab, this.selectedCategoryObject, this.internalTags)
+      this.save_item_fn(
+        this.internalTitle,
+        JSON.stringify(this.$refs.editor.getContent()),
+        this.langTab,
+        this.selectedCategoryObject,
+        this.internalTags
+      );
     }
   },
   computed: {
-    ...mapGetters("language", ["languages"]),
+    ...mapGetters("language", ["languages"])
   },
   components: {
-    "glossary-editor": require('components/GlossaryEditor.vue').default,
+    "glossary-editor": require("components/GlossaryEditor.vue").default
   },
   created() {
-    this.loading = true
-    let al = this.$i18n.locale
+    this.loading = true;
+    let al = this.$i18n.locale;
     this.fetchLanguages().then(() => {
-      this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].lang
+      this.langTab = this.languages.filter(function(l) {
+        return l.lang == al;
+      })[0].lang;
       if (this.elem) {
-        this.changeLanguage(al)
-        let idxCat = this.categories.findIndex(ic => ic.id === this.elem.category)
-        let idxTranslation = this.categories[idxCat].translations.findIndex(t => t.lang === al)
-        this.selectedCategoryObject = this.categories[idxCat].translations[idxTranslation]
-        this.selectedCategory = this.selectedCategoryObject.eventCategory
+        this.changeLanguage(al);
+        if (this.categories_enabled) {
+          let idxCat = this.categories.findIndex(
+            ic => ic.id === this.elem.category
+          );
+          let idxTranslation = this.categories[idxCat].translations.findIndex(
+            t => t.lang === al
+          );
+          this.selectedCategoryObject = this.categories[idxCat].translations[
+            idxTranslation
+          ];
+          this.selectedCategory = this.selectedCategoryObject.eventCategory;
+        }
       }
       if (this.categories.length > 0) {
-        this.setInternalCategorySelector(al)
+        this.setInternalCategorySelector(al);
       }
       if (this.tags.length > 0) {
         for (let tag of this.tags) {
-          let idxTag = tag.translations.findIndex(t => t.lang === al)
-          this.internalTags.push(tag.translations[idxTag].tag)
+          let idxTag = tag.translations.findIndex(t => t.lang === al);
+          this.internalTags.push(tag.translations[idxTag].tag);
         }
       }
-      this.loading = false
-    })
+      this.loading = false;
+    });
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
