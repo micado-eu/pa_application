@@ -31,7 +31,7 @@
             />
             </div>
             <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600"> Publication Date </div>
+              <div style="font-size:16px; font-weight:600">isPublished </div>
             <q-toggle
               :value="published"
               color="green"

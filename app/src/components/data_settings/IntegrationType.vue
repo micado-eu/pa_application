@@ -1,47 +1,80 @@
 <template>
   <div class="q-pa-md">
-    <h5>{{$options.name}}</h5>
-    <q-list bordered separator>
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_integration_type in integration_type"
-        :key="a_integration_type.id"
-      >
-        <q-item-section>{{showTypeLabel(a_integration_type)}}</q-item-section>
-       <q-item-section class="col-5 flex flex-left">
-          <q-toggle
-            v-model="a_integration_type.published"
-            color="green"
-            disable
+    <div class="row">
+    <h5 class="col-6">{{$options.name}}</h5>
+    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+     <q-btn
+          color="info"
+          no-caps
+          label="Add Type"
+          @click="newIntegrationType()"
+          :disable="hideAdd"
+          style="width:200px"
+        />
+  </div>
+    </div>
+    <q-card class="q-pa-md" :hidden="hideForm" style="margin-bottom:100px">
+      
+        <q-tab-panels
+          v-model="langTab"
+          animated
+        >
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
+          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Intervention type </div>
+        <q-input 
+        outlined
+        filled
+        dense
+        v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
+        label="Enter type here" />
+        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Description </div>
+         <GlossaryEditor
+        class="desc-editor"
+        v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
+         </q-tab-panel>
+        </q-tab-panels>
+        <div class="q-gutter-sm">
+          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px; padding-left:16px"> Category type </div>
+          <q-option-group
+            :options="options"
+            label="Notifications"
+            type="radio"
+            v-model="int_type_shell.categoryType"
           />
-        </q-item-section>
-        <q-item-section side>
-          <q-btn
-            color="negative"
-            label="Delete"
-            size="xs"
-            no-caps
-            @click="deleteIntegrationType(a_integration_type.id)"
-            unelevated rounded style="width:70px;border-radius:2px; margin-bottom:5px"
-          />
-          <q-btn
-            color="info"
-            label="Edit"
-            size="xs"
-            no-caps
-            @click="editIntegrationType(a_integration_type)"
-            unelevated rounded style="width:70px;border-radius:2px"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
-    <q-card class="my-card">
-      <q-card-section>
-        <q-btn no-caps color="secondary" label="Add" unelevated rounded style="width:70px;border-radius:2px" @click="newIntegrationType()" :disable="hideAdd" />
-      </q-card-section>
-      <q-card-section :hidden="hideForm">
-         <q-tabs
+        </div>
+     
+           <q-card-section class="row">
+              <div class="col-8">
+                <div style="font-size:16px; font-weight:600"> Publication Date </div>
+            <q-input
+            outlined
+            filled
+            dense
+              v-model="int_type_shell.publicationDate"
+              label="Publication date"
+              readonly
+            />
+            </div>
+            <div class="col-4" style="padding-left:20px;">
+              <div style="font-size:16px; font-weight:600"> isPublished </div>
+            <q-toggle
+              :value="int_type_shell.published"
+              color="green"
+              @input="isPublished(!int_type_shell.published,$event)"
+              left-label
+            />
+            </div>
+                  </q-card-section>
+
+          
+          
+      <q-tabs
           v-model="langTab"
           dense
           class="text-grey"
@@ -57,50 +90,67 @@
             :label="language.name"
           />
         </q-tabs>
-        <q-tab-panels
-          v-model="langTab"
-          animated
-        >
-          <q-tab-panel
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-          >
-        <q-input v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle" label="Title" />
-         <GlossaryEditor
-        class="desc-editor"
-        v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-        :lang="language.lang"
-        ref="editor" />
-         </q-tab-panel>
-        </q-tab-panels>
-        <div class="q-gutter-sm">
-          <q-option-group
-            :options="options"
-            label="Notifications"
-            type="radio"
-            v-model="int_type_shell.categoryType"
+        <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+            <q-btn
+          no-caps
+          class="button"
+          unelevated
+          rounded
+          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
+          label="Cancel"
+          @click="cancelIntegrationType()"
+        />
+        <q-btn
+          no-caps
+          color="accent"
+          unelevated
+          rounded
+          style="width:100px;border-radius:2px;margin-top:30px"
+          label="Save"
+          @click="saveIntegrationType()"
+        />
+        
+        </q-card>
+    <div class="row" style=" padding-bottom:10px">
+    <div class="col-9 flex flex-left" style="padding-left:15px;">
+      Name
+    </div>
+    <div class="col-1 flex flex-left">
+      Published
+    </div>
+    <div class="col-1 flex flex-center" style="margin-left:0px">
+      Edit
+    </div> 
+    <div class="col-1 flex flex-center" style="padding-left:20px">
+      Delete 
+    </div>
+      </div>
+    <q-list bordered separator>
+      <q-item
+        clickable
+        v-ripple
+        v-for="a_integration_type in integration_type"
+        :key="a_integration_type.id"
+      >
+        <q-item-section class="col-9 flex flex-left" style="font-size:16px; font-weight:600">{{showTypeLabel(a_integration_type)}}</q-item-section>
+       <q-item-section class="col-1 flex flex-left">
+          <q-toggle
+            v-model="a_integration_type.published"
+            color="green"
+            disable
           />
-        </div>
-        <q-card class="mycard">
-          
-          <q-card-section>
-            <q-toggle
-              v-model="int_type_shell.published"
-              color="green"
-              label="is Published"
-            />
-            <q-input
-              v-model="int_type_shell.publicationDate"
-              label="Publication date"
-              readonly
-            />
-          </q-card-section>
-    </q-card>
-   
-        <q-btn no-caps color="accent" label="Save" unelevated rounded style="width:70px;border-radius:2px" @click="saveIntegrationType()" />
-        <q-btn no-caps class="button" label="Cancel" unelevated rounded style="width:70px;border-radius:2px" @click="cancelIntegrationType()" />
-      </q-card-section>
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+        <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationType(a_integration_type)" />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+        <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteIntegrationType(a_integration_type.id)" size="md" />
+        </q-item-section>
+      </q-item>
+    </q-list>
+    <q-card class="my-card">
+      
+      
     </q-card>
   </div>
 </template>
@@ -111,7 +161,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 
 export default {
-  name: "IntegrationType",
+  name: "InterventionType",
   mixins: [editEntityMixin],
   data() {
     return {
@@ -135,6 +185,9 @@ export default {
     
   },
   methods: {
+    isPublished(value, event){
+      this.int_type_shell.published = value
+    },
     deleteIntegrationType(index) {
       console.log(index);
       this.$store.dispatch(
@@ -169,6 +222,7 @@ export default {
       this.createShell()
     },
     newIntegrationType() {
+      this.createShell()
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;

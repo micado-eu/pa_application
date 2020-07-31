@@ -163,7 +163,7 @@
         <q-item-section class="col-1 flex flex-center">
           <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editTopic(a_topic)" />
           </q-item-section>
-          <q-item-section class="col-1 flex flex-center">
+          <q-item-section class="col-1 flex flex-center" >
          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteTopic(a_topic.id)" size="md" />
         </q-item-section>
       </q-item>
