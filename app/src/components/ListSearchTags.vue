@@ -56,102 +56,115 @@
         :unelevated="selectedCategory !== category"
         :outline="selectedCategory === category"
         no-caps
-        v-for="category in this.translatedCategories"
+        v-for="category in translatedCategories"
         :key="category.id"
         :label="category.category"
         class="q-mr-sm category_btn"
         @click="addOrRemoveSelectedCategory(category)"
       />
     </div>
-    <q-list class="q-mt-md">
-      <q-item
-        v-for="item in filteredElements"
-        :key="item.id"
-        clickable
-        @mouseover="hovered = item.id"
-        @mouseleave="hovered = -1"
-      >
-        <q-item-section
-          avatar
-          v-if="publish_mode"
-          class="publish_section"
+    <div class="row">
+      <q-list class="q-mt-md col-11">
+        <q-item
+          v-for="item in filteredElements"
+          :key="item.id"
+          :id="item.id"
+          clickable
+          @mouseover="hovered = item.id"
+          @mouseleave="hovered = -1"
         >
-          <q-checkbox
-            color="accent"
-            :value="publishState[item.id]"
-            @input="updatePublish($event, item)"
-          />
-        </q-item-section>
-        <q-item-section class="title_section">
-          <q-item-label :class="
+          <q-item-section
+            avatar
+            v-if="publish_mode"
+            class="publish_section"
+          >
+            <q-checkbox
+              color="accent"
+              :value="publishState[item.id]"
+              @input="updatePublish($event, item)"
+            />
+          </q-item-section>
+          <q-item-section class="title_section">
+            <q-item-label :class="
               !publish_mode || publishState[item.id]
                 ? 'published title-label'
                 : 'unpublished title-label'
             ">
-            {{ item.title }}
-          </q-item-label>
-        </q-item-section>
-        <q-item-section
-          no-wrap
-          class="description_section"
-        >
-          <glossary-editor-viewer
-            :class="
+              {{ item.title }}
+            </q-item-label>
+          </q-item-section>
+          <q-item-section
+            no-wrap
+            class="description_section"
+          >
+            <glossary-editor-viewer
+              :class="
               !publish_mode || publishState[item.id]
                 ? 'published'
                 : 'unpublished'
             "
-            :content="item.description"
-            v-if="!loading"
-            glossary_fetched
-            :lang="lang"
-          />
-        </q-item-section>
-        <q-item-section
-          v-if="categories_enabled"
-          class="tag_btn_section"
+              :content="item.description"
+              v-if="!loading"
+              glossary_fetched
+              :lang="lang"
+            />
+          </q-item-section>
+          <q-item-section
+            v-if="categories_enabled"
+            class="tag_btn_section"
+          >
+            <q-btn
+              no-caps
+              :label="item.category.category"
+              class="q-mb-sm category_btn"
+            />
+          </q-item-section>
+          <q-item-section class="tag_btn_section">
+            <q-btn
+              no-caps
+              v-for="tag in item.tags"
+              :key="tag.id"
+              :label="tag.tag"
+              class="q-mb-sm tag_btn"
+            />
+          </q-item-section>
+          <q-item-section
+            side
+            :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
+            class="icon_btn_section"
+          >
+            <q-btn
+              round
+              class="item-btn"
+              icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
+              :to="edit_url_fn(item.id)"
+            />
+          </q-item-section>
+          <q-item-section
+            side
+            class="icon_btn_section"
+            :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
+          >
+            <q-btn
+              round
+              class="item-btn"
+              icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+              @click="delete_fn(item)"
+            />
+          </q-item-section>
+        </q-item>
+      </q-list>
+      <div class="q-ml-sm col">
+        <span
+          v-for="(letter, index) in alphabet"
+          :key="letter"
+          class="row alphabet"
+          @click="scrollIntoElement(index)"
         >
-          <q-btn
-            no-caps
-            :label="item.category.category"
-            class="q-mb-sm category_btn"
-          />
-        </q-item-section>
-        <q-item-section class="tag_btn_section">
-          <q-btn
-            no-caps
-            v-for="tag in item.tags"
-            :key="tag.id"
-            :label="tag.tag"
-            class="q-mb-sm tag_btn"
-          />
-        </q-item-section>
-        <q-item-section
-          side
-          :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-          class="icon_btn_section"
-        >
-          <q-btn
-            round
-            class="item-btn"
-            icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
-            :to="edit_url_fn(item.id)"
-          />
-        </q-item-section>
-        <q-item-section
-          side
-          class="icon_btn_section"
-          :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-        >
-          <q-btn
-            round
-            class="item-btn"
-            icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-            @click="delete_fn(item)"
-          />
-        </q-item-section>
-      </q-item>
-    </q-list>
+          {{letter}}
+        </span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -234,6 +247,8 @@ export default {
       selectedCategory: undefined,
       publishState: {},
       lang: "",
+      alphabet: [],
+      alphabetIds: [],
       loading: true
     };
   },
@@ -296,6 +311,12 @@ export default {
       this.update_publish_fn({ id: item.id, published: newValue }).then(() => {
         this.publishState[item.id] = newValue;
       });
+    },
+    compare(a, b) {
+      return a.title.localeCompare(b.title, this.$userLang, { sensitivity: "base" })
+    },
+    scrollIntoElement(index) {
+      document.getElementById(this.alphabetIds[index]).scrollIntoView()
     }
   },
   computed: {
@@ -362,10 +383,19 @@ export default {
         }
         return translation
       });
+      this.translatedElements.sort(this.compare)
+      for (let elem of this.translatedElements) {
+        let firstChar = elem.title.charAt(0).toUpperCase()
+        if (!this.alphabet.includes(firstChar)) {
+          this.alphabet.push(firstChar)
+          this.alphabetIds.push(elem.id)
+        }
+      }
       this.filteredElementsBySearch = this.translatedElements;
       this.filteredElementsByTags = this.translatedElements;
       this.filteredElementsByCategory = this.translatedElements;
       this.loading = false;
+      console.log(this)
     });
   }
 };
@@ -420,5 +450,11 @@ $btn_secondary: #cdd0d2;
 }
 .icon_btn_section {
   flex: 350;
+}
+.alphabet {
+  color: $primary;
+  font-family: "Nunito";
+  font-weight: bold;
+  cursor: pointer;
 }
 </style>
