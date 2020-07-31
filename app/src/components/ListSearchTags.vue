@@ -395,7 +395,6 @@ export default {
       this.filteredElementsByTags = this.translatedElements;
       this.filteredElementsByCategory = this.translatedElements;
       this.loading = false;
-      console.log(this)
     });
   }
 };

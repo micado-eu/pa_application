@@ -26,3 +26,8 @@ export function deleteGlossaryItem(state, data) {
   return client
     .deleteGlossaryItem(data)
 }
+
+export function updatePublishGlossaryItem(state, data) {
+  return client
+    .editGlossaryItem(data)
+}

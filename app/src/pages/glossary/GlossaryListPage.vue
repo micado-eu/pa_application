@@ -10,6 +10,8 @@
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
       add_label="Add Term"
       title="Glossary"
+      publish_mode
+      :update_publish_fn="updatePublishGlossaryItem"
     />
   </div>
 </template>
@@ -30,7 +32,11 @@ export default {
     ...mapGetters("glossary", ["glossary"]),
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary", "deleteGlossaryItem"]),
+    ...mapActions("glossary", [
+      "fetchGlossary",
+      "deleteGlossaryItem",
+      "updatePublishGlossaryItem"
+    ]),
     getEditRoute(id) {
       return "glossary/" + id + "/edit"
     },
