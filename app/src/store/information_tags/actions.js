@@ -17,21 +17,25 @@ export function editTagsTypeElement(state, information_tags) {
       fetchInformationTags(state)
     })
 }
-export async function saveInformationTags(state, information_tags) {
+
+export function saveInformationTags(state, information_tags) {
   let promises = []
   for (let tag of information_tags.tags) {
-    let newTag = await client.saveInformationTags({ eventId: information_tags.eventId })
-    promises.push(client.saveInformationTagsTranslation({
-      id: newTag.id,
-      ...tag
-    }))
+    promises.push(
+      client.saveInformationTags({ eventId: information_tags.eventId }).then((newTag) => {
+        return client.saveInformationTagsTranslation({
+          id: newTag.id,
+          ...tag
+        })
+      })
+    )
   }
   return Promise.all(promises)
 }
 
 export function deleteInformationTagsFromEvent(state, eventId) {
-    client.deleteInformationTags(eventId).then(function () {
-      fetchInformationTags(state)
-    })
+  client.deleteInformationTags(eventId).then(function () {
+    fetchInformationTags(state)
+  })
 }
 
