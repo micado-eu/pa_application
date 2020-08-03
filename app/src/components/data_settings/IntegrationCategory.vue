@@ -5,7 +5,7 @@
       <h5  @click="onClickTitle()">{{$options.name}}</h5>
     </router-link>
     <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
-       <q-btn color="info"  no-caps label="Add Category" @click="newIntegrationCategory()" :disable="hideAdd" style="width:200px"/>
+       <q-btn color="info"  no-caps :label="$t('button.add_category')" @click="newIntegrationCategory()" :disable="hideAdd" style="width:200px"/>
     </div>
     </div>
   <q-card class="my-card">
@@ -21,30 +21,30 @@
           :key="language.lang"
           :name="language.name"
         >
-        <div style="font-size:16px; font-weight:600"> Integration category </div>
+        <div style="font-size:16px; font-weight:600"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
               outlined
               filled
               dense
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title"
-              label="Enter category title here"
+              :label="$t('input_labels.category_placeholder')"
             />
          </q-tab-panel>
         </q-tab-panels>
          <q-card-section class="row">
               <div class="col-8">
-                <div style="font-size:16px; font-weight:600"> Publication Date </div>
+                <div style="font-size:16px; font-weight:600"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
             dense
               v-model="int_cat_shell.publicationDate"
-              label="Publication date"
+              :label="$t('input_labels.publication_date')"
               readonly
             />
             </div>
             <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600"> isPublished </div>
+              <div style="font-size:16px; font-weight:600"> {{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="int_cat_shell.published"
               color="green"
@@ -71,23 +71,23 @@
         />
       </q-tabs>
       <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
-        <q-btn color="accent" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" label="Save" @click="saveIntegrationCategory()" />
-        <q-btn class="button" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" label="Cancel" @click="cancelIntegrationCategory()" />
+        <q-btn color="accent" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" :label="$t('button.save')" @click="saveIntegrationCategory()" />
+        <q-btn class="button" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" :label="$t('button.cancel')" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
        <div class="row" style=" padding-bottom:10px">
     
     <div class="col-9 flex flex-left" style="padding-left:15px;">
-      Name
+      {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      Published
+      {{$t('input_labels.is_published')}}
     </div>
     <div class="col-1 flex flex-center" style="margin-left:0px">
-      Edit
+      {{$t('input_labels.edit')}}
     </div> 
     <div class="col-1 flex flex-center" style="padding-left:20px">
-      Delete 
+      {{$t('input_labels.delete')}} 
     </div>
       </div>
     <q-list bordered separator>

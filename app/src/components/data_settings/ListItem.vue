@@ -49,7 +49,7 @@
         style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded 
-        label="Edit"
+        :label="$t('button.edit')"
         no-caps
         @click="editDocumentType()"/>
       </div>
@@ -63,7 +63,7 @@
         unelevated
         rounded
         @click="remove_doc($event)"
-        label="Delete"
+        :label="$t('button.delete')"
         no-caps
         />
       </div>

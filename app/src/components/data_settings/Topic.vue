@@ -6,7 +6,7 @@
      <q-btn
           color="info"
           no-caps
-          label="Add Type"
+          :label="$t('button.add_type')"
           @click="newTopic()"
           :disable="hideAdd"
           style="width:200px"
@@ -25,13 +25,13 @@
             :name="language.name"
           >
             <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-            <div style="font-size:16px; font-weight:600"> Topic </div>
+            <div style="font-size:16px; font-weight:600"> {{$t('input_labels.topic')}} </div>
             <q-input
               outlined
               filled
               dense
               v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"
-              label="Enter topic title here"
+              :label="$t('input_labels.topic_placeholder')"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -102,7 +102,7 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
-          label="Cancel"
+          :label="$t('button.cancel')"
           @click="cancelTopic()"
         />
         <q-btn
@@ -111,7 +111,7 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
-          label="Save"
+          :label="$t('button.save')"
           @click="saveTopic()"
         />
       
@@ -119,19 +119,19 @@
       </q-card>
       <div class="row" style="padding-left:20px; padding-bottom:10px">
     <div class="col-1 flex flex-left">
-      Image
+      {{$t('input_labels.image')}}
     </div>
     <div class="col-8 flex flex-left">
-      Name
+      {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      Published
+      {{$t('input_labels.is_published')}}
     </div>
     <div class="col-1 flex flex-center" style="padding-left:10px">
-      Edit
+      {{$t('input_labels.edit')}}
     </div> 
     <div class="col-1 flex flex-center" style="padding-left:30px">
-      Delete 
+      {{$t('input_labels.delete')}}
     </div>
       </div>
 

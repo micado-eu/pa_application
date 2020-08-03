@@ -6,7 +6,7 @@
      <q-btn
           color="info"
           no-caps
-          label="Add Type"
+         :label="$t('button.add_type')"
           @click="newUserType()"
           :disable="hideAdd"
           style="width:200px"
@@ -24,13 +24,13 @@
             :key="language.lang"
             :name="language.name"
           >
-           <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> User </div>
+           <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.user_type')}} </div>
            <q-input
               outlined
               filled
               dense
               v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
-              label="Enter user type here"
+              :label="$t('input_labels.user_type_placeholder')"
             />
        <!-- <q-input
           v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -38,7 +38,7 @@
           type="textarea"
           label="Description"
         />-->
-        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Description </div>
+        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.description')}} </div>
          <GlossaryEditor
         class="desc-editor"
         v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -78,7 +78,7 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
-          label="Cancel"
+          :label="$t('button.cancel')"
           @click="cancelUserType()"
         />
         <q-btn
@@ -87,26 +87,26 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
-          label="Save"
+          :label="$t('button.save')"
           @click="saveUserType()"
         />
        
     </q-card>
       <div class="row" style="padding-left:20px; padding-bottom:10px">
     <div class="col-1 flex flex-left">
-      Image
+      {{$t('input_labels.image')}}
     </div>
     <div class="col-8 flex flex-left">
-      Name
+      {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      Published
+      {{$t('input_labels.is_published')}}
     </div>
     <div class="col-1 flex flex-center" style="padding-left:10px">
-      Edit
+      {{$t('input_labels.edit')}}
     </div> 
     <div class="col-1 flex flex-center" style="padding-left:30px">
-      Delete 
+      {{$t('input_labels.delete')}}
     </div>
       </div>
     <q-list bordered separator>

@@ -117,10 +117,10 @@
   </div>
   <div class="row">
     <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn class="button" unelevated rounded label="Cancel" style="width:100px; border-radius:2px" to="/data_settings"/>
+    <q-btn class="button" unelevated rounded :label="$t('button.cancel')" style="width:100px; border-radius:2px" to="/data_settings"/>
     </div>
     <div class=" q-pa-md col-6" style="text-align:left">
-    <q-btn color="accent" unelevated rounded label="Save/Update" style="width:150px; border-radius:2px" @click="saveData(int_doc_shell)" to="/data_settings"/>
+    <q-btn color="accent" unelevated rounded :label="$t('button.save')" style="width:150px; border-radius:2px" @click="saveData(int_doc_shell)" to="/data_settings"/>
     </div>
     </div>
     </q-tab-panel>

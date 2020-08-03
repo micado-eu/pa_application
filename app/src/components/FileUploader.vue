@@ -6,7 +6,7 @@
               @input="getFiles($event)"
               bg-color="grey-3"
               dense
-              label="Upload your icon"
+              :label="$t('input_labels.upload_icon')"
               standout
               outlined
             >
@@ -20,18 +20,18 @@
           </q-card-section>
           <q-card-section class="row">
               <div class="col-8">
-                <div style="font-size:16px; font-weight:600"> Publication Date </div>
+                <div style="font-size:16px; font-weight:600"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
             dense
               v-model="publicationDate"
-              label="Publication date"
+              :label="$t('input_labels.publication_date')"
               readonly
             />
             </div>
             <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600">isPublished </div>
+              <div style="font-size:16px; font-weight:600">{{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="published"
               color="green"

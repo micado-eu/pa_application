@@ -6,7 +6,7 @@
      <q-btn
           color="info"
           no-caps
-          label="Add Type"
+          :label="$t('button.add_type')"
           @click="newIntegrationType()"
           :disable="hideAdd"
           style="width:200px"
@@ -24,14 +24,14 @@
             :key="language.lang"
             :name="language.name"
           >
-          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Intervention type </div>
+          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.intervention_type')}} </div>
         <q-input 
         outlined
         filled
         dense
         v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
-        label="Enter type here" />
-        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> Description </div>
+        :label="$t('input_labels.type_placeholder')" />
+        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.description')}} </div>
          <GlossaryEditor
         class="desc-editor"
         v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -40,7 +40,7 @@
          </q-tab-panel>
         </q-tab-panels>
         <div class="q-gutter-sm">
-          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px; padding-left:16px"> Category type </div>
+          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px; padding-left:16px"> {{$t('input_labels.category_type')}} </div>
           <q-option-group
             :options="options"
             label="Notifications"
@@ -51,18 +51,18 @@
      
            <q-card-section class="row">
               <div class="col-8">
-                <div style="font-size:16px; font-weight:600"> Publication Date </div>
+                <div style="font-size:16px; font-weight:600"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
             dense
               v-model="int_type_shell.publicationDate"
-              label="Publication date"
+              :label="$t('input_labels.publication_date')"
               readonly
             />
             </div>
             <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600"> isPublished </div>
+              <div style="font-size:16px; font-weight:600"> {{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="int_type_shell.published"
               color="green"
@@ -97,7 +97,7 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
-          label="Cancel"
+          :label="$t('button.cancel')"
           @click="cancelIntegrationType()"
         />
         <q-btn
@@ -106,23 +106,23 @@
           unelevated
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
-          label="Save"
+          :label="$t('button.save')"
           @click="saveIntegrationType()"
         />
         
         </q-card>
     <div class="row" style=" padding-bottom:10px">
     <div class="col-9 flex flex-left" style="padding-left:15px;">
-      Name
+      {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      Published
+      {{$t('input_labels.is_published')}}
     </div>
     <div class="col-1 flex flex-center" style="margin-left:0px">
-      Edit
+      {{$t('input_labels.edit')}}
     </div> 
     <div class="col-1 flex flex-center" style="padding-left:20px">
-      Delete 
+      {{$t('input_labels.delete')}}
     </div>
       </div>
     <q-list bordered separator>

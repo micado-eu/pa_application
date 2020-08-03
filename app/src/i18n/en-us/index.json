@@ -41,7 +41,9 @@
     "add_plan":"Add plan",
     "add_step":"Add step",
     "save_graph":"Save Graph",
-    "save_document":"Save document"
+    "add_category":"Add Category",
+    "save_document":"Save document",
+    "add_type":"Add Type"
   },
   "data_settings":{
     "data_management":"Data management",
@@ -52,7 +54,24 @@
     "intervention_categories":"Intervention Categories",
     "intervention_types":"Intervention Types",
     "user_types":"User Types"
-    
-
+  },
+  "input_labels":{
+    "category_placeholder":"Enter category title here",
+    "publication_date":"Publication Date",
+    "is_published":"Published",
+    "intervention_category":"Intervention Category",
+    "intervention_type":"Intervention Type",
+    "topic":"Topic",
+    "user_type":"User Type",
+    "category_type":"Category Type",
+    "type_placeholder":"Enter type here",
+    "description":"Description",
+    "image":"Image",
+    "name":"Name",
+    "edit":"Edit",
+    "delete":"Delete",
+    "topic_placeholder":"Enter topic title here",
+    "upload_icon":"Upload your icon",
+    "user_type_placeholder":"Enter user type here"
   }
 }

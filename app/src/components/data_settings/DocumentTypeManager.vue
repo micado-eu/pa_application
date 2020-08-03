@@ -11,7 +11,7 @@
           rounded
           color="accent"
           style="width:750px;border-radius:2px"
-          label="Add Document"
+          :label="$t('button.add_document')"
           to="/adddocument"
         />
       </div>
