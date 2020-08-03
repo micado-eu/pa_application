@@ -30,6 +30,7 @@
     @editIntervention="editIntervention"
     @cancelIntervention="cancelIntervention"
     @saveIntervention="saveIntervention"
+    @validated="validateIntervention"
     >
     </IntegrationPlan>
 </q-list>
@@ -210,8 +211,22 @@ export default {
       },
 
 
-      validateIntervention(event){
-     
+      validateIntervention(value){
+        console.log("in validation page")
+        console.log(value)
+        this.mergeIntervention(value)
+        this.intervention_shell.completed = JSON.parse(JSON.stringify(true))
+        var editing = this.intervention_plans.filter((filt) => {
+        return filt.id == value.listId
+        })
+        this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+        console.log("i am selected plan interventions")
+        console.log(this.selected_plan.interventions)
+        var index = this.selected_plan.interventions.findIndex(item => item.id == this.intervention_shell.id)
+        this.selected_plan.interventions.splice(index, 1, this.intervention_shell)
+        this.$store.dispatch('intervention_plan/editIntervention', {intervention:this.intervention_shell, plan:this.selected_plan})
+
+
       },
 
 

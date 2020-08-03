@@ -4,7 +4,7 @@
        <q-expansion-item 
         group="somegroup"
         :label="intervention.intervention_title"
-        :header-class="{ 'bg-secondary text-white' : intervention.validated }"
+        :header-class="{ 'bg-secondary text-white' : intervention.completed }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.validated}"
          @click="cancelIntervention"
@@ -28,8 +28,8 @@
                 <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="readMoreActivated" v-html="intervention.description"></span>
               </q-item-section>
               <q-item-section class="col" style="text-align:right; margin-left:0px">
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.validated" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:0px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="accent" :disable="intervention.validated" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event)" />
+                <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
+                <q-btn size="11px" no-caps style="width:105px;margin-bottom:0px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
               </q-item-section>
             </div>
             <div class=" q-gutter-sm  col" style="padding-left:0px; text-align:left;">
@@ -137,7 +137,9 @@ export default {
       this.$emit('editIntervention', value)
 
     },
-    validateIntervention(event){
+    validateIntervention(event, value){
+      console.log("In validating intervention")
+      this.$emit('validated', value )
 
     },
     saveIntervention(event, value){
