@@ -46,11 +46,13 @@
           active
           active-class="my-menu-link"
           v-for="(nav) in navs"
+          @click="changeIcon(nav.label)"
           :to="nav.to"
           :key="nav.label"
+          style="padding-top:16px; padding-bottom:16px"
         >
           <q-item-section avatar>
-            <q-icon :name="nav.icon" />
+            <q-icon :key="nav.label" :name="(selectedKey == nav.label) ? nav.active_icon : nav.icon " />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t( nav.label) }}</q-item-label>
@@ -89,67 +91,86 @@ export default {
       navs: [
         {
           label: "menu.home",
-          icon: "home",
+          icon: "img:statics/icons/Icon - Home.png",
+          active_icon:"img:statics/icons/Icon - Home (selected).png",
           to: "/",
           description: "menu.home_desc"
         },
         {
           label: "menu.situation",
-          icon: "dvr",
+          icon: "img:statics/icons/Icon - Migration Situation Monitor.png",
+          active_icon:"img:statics/icons/Icon - Migration Situation Monitor (selected).png",
           to: "/situation/map",
           description: "menu.situation_desc"
         },
         {
           label: "menu.migrant",
-          icon: "face",
+          icon: "img:statics/icons/Icon - Migrant Management.png",
+          active_icon:"img:statics/icons/Icon - Migrant Management (selected).png",
           to: "/migrant",
           description: "menu.migrant_desc"
         },
         {
           label: "menu.cso",
-          icon: "business",
+          icon: "img:statics/icons/Icon - CSO Admin Management.png",
+          active_icon:"img:statics/icons/Icon - CSO Admin Management (selected).png",
           to: "/cso",
           description: "menu.cso_desc"
         },
         {
           label: "menu.process",
-          icon: "linear_scale",
+          icon: "img:statics/icons/Icon - Guided Processes.png",
+          active_icon:"img:statics/icons/Icon - Guided Processes (selected).png",
           to: "/guided_process_editor",
           description: "menu.process_desc"
         },
         {
           label: "menu.information_centre",
-          icon: "description",
+          icon: "img:statics/icons/Icon - Information Centre.png",
+          active_icon:"img:statics/icons/Icon - Information Centre (selected).png",
           to: "/information",
           description: "menu.information_centre_desc"
         },
         {
           label: "menu.usage",
-          icon: "bar_chart",
+          icon: "img:statics/icons/Icon - Micado Stats.png",
+          active_icon:"img:statics/icons/Icon - Micado Stats (selected).png",
           to: "/dashboard",
           description: "menu.usage_desc"
         },
         {
           label: "menu.glossary",
-          icon: "img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png",
+          icon: "img:statics/icons/Icon - Glossary.png",
+          active_icon:"img:statics/icons/Icon - Glossary (selected).png",
           to: "/glossary",
           description: "menu.glossary_desc"
         },
         {
           label: "menu.chatbot",
-          icon: "adb",
+          icon: "img:statics/icons/Icon - Chatbot.png",
+          active_icon:"img:statics/icons/Icon - Chatbot (selected).png",
           to: "/chatbot",
           description: "menu.chatbot_desc"
         },
         {
           label: "menu.setting",
-          icon: "settings",
+          icon: "img:statics/icons/Icon - Settings.png",
+          active_icon:"img:statics/icons/Icon - Settings (selected).png",
           to: "/data_settings",
           description: "menu.setting_desc"
         }
-      ]
+      ],
+      selectedKey: null
     };
+  },
+  methods: {
+    changeIcon(key) {
+      console.log("selected key")
+      this.selectedKey = key
   }
+  
+},
+  
 };
 </script>
 
