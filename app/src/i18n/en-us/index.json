@@ -43,10 +43,12 @@
     "add_process":"Add process",
     "add_plan":"Add plan",
     "add_step":"Add step",
+    "add_tag":"Add tag",
     "save_graph":"Save Graph",
     "add_category":"Add Category",
     "save_document":"Save document",
-    "add_type":"Add Type"
+    "add_type":"Add Type",
+    "view":"View"
   },
   "data_settings":{
     "data_management":"Data management",
@@ -62,12 +64,16 @@
     "category_placeholder":"Enter category title here",
     "publication_date":"Publication Date",
     "event":"Event",
+    "search":"Search",
     "event_checkbox":"Linkable to an integration plan?",
     "is_published":"Published",
     "intervention_category":"Intervention Category",
     "intervention_type":"Intervention Type",
+    "related_processes":"Related processes",
     "topic":"Topic",
     "user_type":"User Type",
+    "user_tags":"User Tags",
+    "topic_tags":"Topic Tags",
     "category_type":"Category Type",
     "type_placeholder":"Enter type here",
     "description":"Description",
@@ -77,6 +83,20 @@
     "delete":"Delete",
     "topic_placeholder":"Enter topic title here",
     "upload_icon":"Upload your icon",
-    "user_type_placeholder":"Enter user type here"
+    "upload_new_docs":"Upload new documents",
+    "user_type_placeholder":"Enter user type here",
+    "title":"Title",
+    "tags":"Tags",
+    "select_category":"Select category",
+    "type":"Type",
+    "required_documents":"Required documents"
+  },
+  "profile":{
+    "username":"Username",
+    "legal_name":"Legal Name",
+    "nationality":"Nationality",
+    "age":"Age",
+    "gender":"Gender",
+    "status":"Status"
   }
 }

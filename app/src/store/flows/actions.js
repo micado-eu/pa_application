@@ -79,6 +79,9 @@ export function deleteProcess (state, payload) {
   client.deleteProcessTopic(payload.process).then(function (topic_return) {
       console.log(topic_return)
     })
+    if(payload.comments == null){
+      payload.comments=[]
+    }
     const deleteProcessCommentTranslation = async () => {
       await asyncForEach(payload.comments, async (comment) => {
         console.log(comment)

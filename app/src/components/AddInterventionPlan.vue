@@ -85,7 +85,7 @@
         multiple
         :options="processes_list"
         bg-color="white"
-        label="Related Processes"
+        :label="$t('input_labels.related_processes')"
         style="width: 450px"
       />
       </div>
@@ -104,7 +104,7 @@
         v-model="intervention_shell.interventionType"
         :options="types"
         bg-color="white"
-        label="Intervention Category"
+        :label="$t('input_labels.intervention_type')"
         style="width: 450px"
       />
       </div>

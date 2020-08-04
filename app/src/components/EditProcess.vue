@@ -101,7 +101,7 @@
             emit-value
             map-options
             :options="this.u_tags"
-            label="User Tags"
+            :label="$t('input_labels.user_tags')"
             style="width: 200px"
           />
         </div>
@@ -119,7 +119,7 @@
             emit-value
             map-options
             :options="this.t_tags"
-            label="Topic Tags"
+            :label="$t('input_labels.topic_tags')"
             style="width: 200px"
           />
         </div>
@@ -210,22 +210,23 @@ export default {
 
   },
   methods: {
-    saveProcess (value) {
+   async saveProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process));
 
       if (this.is_new) {
-        this.$store.dispatch('flows/saveProcess', workingProcess)
+       await this.$store.dispatch('flows/saveProcess', workingProcess)
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
         //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
       }
       else {
-        this.$store.dispatch('flows/editProcess', value);
+        await this.$store.dispatch('flows/editProcess', value);
         console.log(this.is_new)
         console.log(value)
         console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
+      this.$router.push({path: '/guided_process_editor'})
     },
 
     createShell () {

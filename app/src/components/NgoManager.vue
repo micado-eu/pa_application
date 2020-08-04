@@ -8,7 +8,7 @@
           items-center
           filled
           v-model="search"
-          label="Search"
+          :label="$t('input_labels.search')"
         >
           <template v-slot:append>
             <q-avatar>

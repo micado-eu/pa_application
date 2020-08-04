@@ -3,7 +3,7 @@
     
   <div style="text-align:center;">
    <div class="col" style="display:inline-block;padding-right:20px;padding-left:20px">
-   <q-input style="border-radius:10px; width:590px;font-size:18px" dense items-center filled v-model="search" label="Search" >
+   <q-input style="border-radius:10px; width:590px;font-size:18px" dense items-center filled v-model="search" :label="$t('input_labels.search')" >
    <template v-slot:append>
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">

@@ -20,9 +20,9 @@
         />
       </q-tabs>
       <div class="page-title q-my-lg">{{ pagetitle }}</div>
-      <span class="q-my-lg label-edit">Title:</span>
+      <span class="q-my-lg label-edit">{{$t('input_labels.title')}}:</span>
       <q-input class="title_input" outlined v-model="internalTitle" />
-      <span class="q-my-lg label-edit">Description:</span>
+      <span class="q-my-lg label-edit">{{$t('input_labels.description')}}:</span>
       <glossary-editor
         class="desc-editor"
         v-model="internalDescription"
@@ -31,7 +31,7 @@
       />
       <div>
         <div v-if="tags_enabled" class="q-my-md tag_list">
-          <span class="q-my-lg label-edit">Tags:</span>
+          <span class="q-my-lg label-edit">{{$t('input_labels.tags')}}:</span>
           <q-list v-if="internalTags.length > 0" separator bordered dense>
             <q-item v-for="tag in internalTags" :key="tag" class="q-mb-sm">
               <q-item-section>
@@ -59,7 +59,7 @@
             <q-btn
               no-caps
               @click="addTag()"
-              label="Add tag"
+              :label="$t('button.add_tag')"
               class="q-my-sm add_tag_btn"
             />
             <span v-if="tagError" class="q-ml-sm">
@@ -68,7 +68,7 @@
           </div>
         </div>
         <div v-if="categories_enabled" class="q-my-md tag_list">
-          <span class="q-my-lg label-edit">Select category:</span>
+          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}:</span>
           <q-select
             v-model="selectedCategory"
             :options="internalCategories"
@@ -81,7 +81,7 @@
           outline
           no-caps
           color="accent"
-          label="Cancel"
+          :label="$t('button.cancel')"
           class="q-mr-sm edit-element-button"
           @click="goBack()"
         />
@@ -89,7 +89,7 @@
           unelevated
           no-caps
           color="accent"
-          label="Save"
+          :label="$t('button.save')"
           @click="callSaveFn()"
           class="row edit-element-button"
         />

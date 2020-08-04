@@ -9,22 +9,22 @@
       <q-card-section horizontal>
         <q-card-section style="width:100%;padding-left:2px">
          <div>
-      <span style="text-align:left;font-size:20pt;">Username: </span><span style="font-size:20pt">{{user.umUserName}}</span>
+      <span style="text-align:left;font-size:20pt;">{{$t('profile.username')}}: </span><span style="font-size:20pt">{{user.umUserName}}</span>
   </div>
   <div>
-      <span style="text-align:left;font-size:20pt">Legal name: </span><span style="font-size:20pt">{{user.username}}</span>
+      <span style="text-align:left;font-size:20pt">{{$t('profile.legal_name')}}: </span><span style="font-size:20pt">{{user.username}}</span>
   </div>
   <div>
-      <span style="text-align:left;font-size:20pt">Age: </span><span style="font-size:20pt">{{user.age}}</span>
+      <span style="text-align:left;font-size:20pt">{{$t('profile.age')}}: </span><span style="font-size:20pt">{{user.age}}</span>
   </div>
   <div>
-      <span style="text-align:left;font-size:20pt">Nationality: </span><span style="font-size:20pt">{{user.nationality}}</span>
+      <span style="text-align:left;font-size:20pt">{{$t('profile.nationality')}}: </span><span style="font-size:20pt">{{user.nationality}}</span>
   </div>
   <div>
-      <span style="text-align:left;font-size:20pt">Gender: </span><span style="font-size:20pt">{{user.gender}}</span>
+      <span style="text-align:left;font-size:20pt">{{$t('profile.gender')}}: </span><span style="font-size:20pt">{{user.gender}}</span>
   </div>
   <div>
-      <span style="text-align:left;font-size:20pt">Status: </span><span style="font-size:20pt">{{user.user_type}}</span>
+      <span style="text-align:left;font-size:20pt">{{$t('profile.status')}}: </span><span style="font-size:20pt">{{user.user_type}}</span>
   </div>
         </q-card-section >
 <div style="text-align: right; width:50%">

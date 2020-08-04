@@ -9,7 +9,7 @@
         <div class=" " style="display:inline-block; width:750px;border-width:2px;  margin-bottom: 1px">
     <div class=" q-pa-xsm row" style="text-align:center; padding-left:30px">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> Title </h5>
+        <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> {{$t('input_labels.title')}} </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;margin-bottom:0px; padding-right:30px">
         <q-input  dense   bg-color="white" standout outlined v-model="model.intervention_title" />
@@ -19,7 +19,7 @@
    
          <div class=" q-pa-xsm row" style="text-align:center; padding-left:30px">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> Description </h5>
+        <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> {{$t('input_labels.description')}} </h5>
       </div>
       <div class="col-8" style="margin: auto;display: block;margin-bottom:0px; padding-right:30px; padding-top:10px">
         <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="model.description" />
@@ -30,7 +30,7 @@
 
        <div class=" q-pa-xsm row" style="text-align:center">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left; padding-left:30px"> Related processes </h5>
+        <h5 style="text-align:left; padding-left:30px"> {{$t('input_labels.related_processes')}} </h5>
       </div>
       <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
      <q-select
@@ -40,7 +40,7 @@
         multiple
         :options="the_processes_list"
         bg-color="white"
-        label="Related Processes"
+        :label="$t('input_labels.related_processes')"
         style="width: 450px"
       />
       </div>
@@ -48,7 +48,7 @@
       
        <div class=" q-pa-xsm row" style="text-align:center">
       <div class=" q-pa-xsm col-4">
-        <h5 style="text-align:left; padding-left:30px">  Type </h5>
+        <h5 style="text-align:left; padding-left:30px">  {{$t('input_labels.type')}} </h5>
       </div>
       <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
      <q-select
@@ -59,7 +59,7 @@
         v-model="model.interventionType"
         :options="intervention_categories"
         bg-color="white"
-        label="Intervention Type"
+        :label="$t('input_labels.intervention_type')"
         style="width: 450px"
       />
       </div>

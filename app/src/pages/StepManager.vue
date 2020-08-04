@@ -201,7 +201,7 @@
                   emit-value
                   map-options
                   :options="filtered_t_docs"
-                  label="Required documents"
+                  :label="$t('input_labels.required_documents')"
                   style="width:350px"
                 />
                 </div>
@@ -260,7 +260,7 @@
                   v-model="step_shell.linked_processes"
                   multiple
                   :options="processes_list"
-                  label="linked processes"
+                  :label="$t('input_labels.related_processes')"
                   style="width: 450px"
                 />
               </div>

@@ -28,7 +28,7 @@
             unelevated
             rounded
             color="secondary"
-            label="View"
+            :label="$t('button.view')"
             :to="'#'"
           />
           <q-btn
@@ -38,7 +38,7 @@
             unelevated
             rounded
             color="negative"
-            label="Delete"
+            :label="$t('button.delete')"
             @click="remove_user($event)"
           />
         </div>

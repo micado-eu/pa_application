@@ -13,7 +13,7 @@
         </q-item-section>
       </q-item>
     </q-list>
-Upload new documents
+ {{$t('input_labels.upload_new_docs')}}
     <div class="ThumbnailContainer" v-if="collection === 'thumbnail'">
       <button id="open-thumbnail-modal" class="button">Select file</button>
     </div>
