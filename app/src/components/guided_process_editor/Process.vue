@@ -43,7 +43,7 @@
             unelevated
             rounded
             color="info"
-            label="Edit"
+            :label="$t('button.edit')"
             @click="editProcess()"
           />
           <q-btn
@@ -53,7 +53,7 @@
             unelevated
             rounded
             color="secondary"
-            label="Manage"
+            :label="$t('button.manage')"
             @click="manageProcess()"
           />
           <q-btn
@@ -63,7 +63,7 @@
             unelevated
             rounded
             color="negative"
-            label="Delete"
+            :label="$t('button.delete')"
             @click="remove_process($event)"
           />
 

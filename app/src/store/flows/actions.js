@@ -69,22 +69,124 @@ export function saveProcess (state, process) {
       state.commit('saveProcess', process)
     })
 }
-export function deleteProcess (state, index) {
+export function deleteProcess (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(index)
-  return client.deleteProcessTranslations(index).then(function (translations_delete_return) {
+  state.commit('deleteProcess', payload.process)
+
+  console.log(payload)
+  return client.deleteProcessUser(payload.process).then(async process_return => {
+    console.log(process_return)
+  client.deleteProcessTopic(payload.process).then(function (topic_return) {
+      console.log(topic_return)
+    })
+    const deleteProcessCommentTranslation = async () => {
+      await asyncForEach(payload.comments, async (comment) => {
+        console.log(comment)
+        await client.deleteProcessCommentTranslation(comment.idcomment)
+      })
+      console.log("after foreach delete process comment translation")
+    }
+    await deleteProcessCommentTranslation()
+
+    const deleteProcessComment = async () => {
+      await asyncForEach(payload.comments, async (comment) => {
+        console.log(comment)
+        await client.deleteProcessComment(comment.idprocess)
+        await client.deleteComments(comment.idcomment)
+      })
+      console.log("after foreach delete process comment")
+    }
+    await deleteProcessComment()
+
+  const deleteStepLinksTranslation = async () => {
+    await asyncForEach(payload.steplinks, async (steplink) => {
+      console.log(steplink)
+      await client.deleteProcessStepLinkTranslation(steplink.id)
+    })
+    console.log("after foreach delete steplinks translation")
+  }
+  await deleteStepLinksTranslation()
+  
+
+  const deleteStepLinks = async () => {
+    await asyncForEach(payload.steplinks, async (steplink) => {
+      console.log(steplink)
+      await client.deleteProcessStepLink(steplink.id)
+    })
+    console.log("after foreach delete steplinks ")
+  }
+  await deleteStepLinks()
+
+  const deleteStepDocuments = async () => {
+    await asyncForEach(payload.steps, async (step) => {
+      console.log(step)
+      await client.deleteProcessStepDocument(step.id)
+    })
+    console.log("after foreach delete step document")
+  }
+  await deleteStepDocuments()
+
+  const deleteProcessStepTranslation = async () => {
+    await asyncForEach(payload.steps, async (step) => {
+      console.log(step)
+      await client.deleteProcessStepTranslation(step.id)
+    })
+    console.log("after foreach delete step translation")
+  }
+  await deleteProcessStepTranslation()
+
+  const deleteProcessStep = async () => {
+    await asyncForEach(payload.steps, async (step) => {
+      console.log(step)
+      await client.deleteProcessStep(step.id)
+    })
+    console.log("after foreach delete step ")
+  }
+  await deleteProcessStep()
+
+  
+  client.deleteProcessTranslations(payload.process)
+  client.deleteProcess(payload.process).then(function () {
+  })
+
+
+ 
+
+
+
+
+
+  /*payload.steps.forEach((step) =>{
+    if(step.idProcess == payload.process){
+      payload.steplinks.forEach((steplink)=>{
+        if(steplink.fromStep == step.id || steplink.toStep == step.id){
+          
+          client.deleteProcessStepLinkTranslation(steplink.id).then(function (process_return) {
+            client.deleteProcessStepLink(steplink.id).then(function(link_return){
+              client.deleteProcessStepDocument(step.id)
+            })
+          })
+          
+        }
+      })
+      client.deleteProcessStepTranslation(step.id).then(function(transl_return){
+        client.deleteProcessStep(step.id)
+      })
+    }
+  })
+   client.deleteProcessTranslations(payload.process).then(function (translations_delete_return) {
     console.log("deleted the translations")
     console.log(translations_delete_return)
 
-    client.deleteProcessUser(index).then(function (process_return) {
+    client.deleteProcessUser(payload.process).then(function (process_return) {
       console.log(process_return)
-      client.deleteProcessTopic(index).then(function (topic_return) {
+      client.deleteProcessTopic(payload.process).then(function (topic_return) {
         console.log(topic_return)
       })
     })
-    client.deleteProcess(index).then(function () {
-      state.commit('deleteProcess', index)
-    })
+    client.deleteProcess(payload.process).then(function () {
+      state.commit('deleteProcess', payload.process)
+    })*/
   })
   /*
   return client

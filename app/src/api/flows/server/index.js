@@ -5,7 +5,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchFlows () {
     return axiosInstance
-      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers')
+      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments')
       .then(response => { return response.data })
       .catch(error_handler);
   },
@@ -36,6 +36,55 @@ export default {
   deleteProcessUser (id) {
     return axiosInstance
       .delete('/backend/1.0.0/processes/' + id + '/process-users')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessStepLink(id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/step-links/' + id )
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessStepLinkTranslation(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/step-links/' + id + '/step-link-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessStepDocument(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/steps/' + id + '/step-documents')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessStep(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/steps/' + id )
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  
+  deleteProcessStepTranslation(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/steps/' + id + '/step-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessCommentTranslation (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/comments/' + id + '/comments-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessComment (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-comments')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteComments (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/comments/' + id)
       .then(response => response.data)
       .catch(error_handler);
   },

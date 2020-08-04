@@ -21,7 +21,7 @@
         <q-item-section class="col-5 flex flex-center">
           <q-btn
             color="negative"
-            label="Delete"
+            :label="$t('button.delete')"
             size="xs"
             no-caps
             @click="deleteInformationCategory(a_information_category.id)"
@@ -31,7 +31,7 @@
           />
           <q-btn
             color="info"
-            label="Edit"
+            :label="$t('button.edit')"
             size="xs"
             no-caps
             @click="editInformationCategory(a_information_category)"
@@ -46,13 +46,13 @@
       <q-card-section>
         <q-btn
           color="secondary"
-          label="Add"
+          :label="$t('button.add')"
           @click="newInformationCategory()"
           :disable="hideAdd"
         />
         <q-btn
           color="secondary"
-          label="Go back"
+          :label="$t('button.go_back')"
           @click="$router.go(-1)"
           :disable="hideAdd"
         />
@@ -85,7 +85,7 @@
           >
             <q-input
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].eventCategory"
-              label="Event"
+              :label="$t('input_labels.event')"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -93,7 +93,7 @@
           <q-checkbox
             color="accent"
             v-model="linkable"
-            label="Linkable to an integration plan?"
+            :label="$t('input_labels.event_checkbox')"
           />
         </div>
         <q-btn
@@ -101,7 +101,7 @@
           unelevated
           rounded
           style="width:70px;border-radius:2px"
-          label="Save"
+          :label="$t('button.save')"
           @click="saveInformationCategory()"
         />
         <q-btn
@@ -109,7 +109,7 @@
           unelevated
           rounded
           style="width:70px;border-radius:2px"
-          label="Cancel"
+          :label="$t('button.cancel')"
           @click="cancelInformationCategory()"
         />
       </q-card-section>

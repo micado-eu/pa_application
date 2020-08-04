@@ -27,10 +27,13 @@
   "button":{
     "add_document":"Add Document",
     "integration":"Integration",
+    "add":"Add",
     "delete":"Delete",
+    "manage":"Manage",
     "save":"Save",
     "cancel":"Cancel",
     "back":"Back",
+    "go_back":"Go back",
     "edit":"Edit",
     "download":"Download",
     "add_intervention":"Add intervention",
@@ -58,6 +61,8 @@
   "input_labels":{
     "category_placeholder":"Enter category title here",
     "publication_date":"Publication Date",
+    "event":"Event",
+    "event_checkbox":"Linkable to an integration plan?",
     "is_published":"Published",
     "intervention_category":"Intervention Category",
     "intervention_type":"Intervention Type",

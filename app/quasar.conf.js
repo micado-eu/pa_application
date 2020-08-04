@@ -109,6 +109,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
         chain.resolve.alias.set('api-ngo_user-client', 'src/api/ngo_user/mock');
         chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
+        chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
       }
     },
 

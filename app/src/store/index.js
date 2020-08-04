@@ -24,7 +24,7 @@ import information from './information'
 import information_category from './information_category'
 import information_tags from './information_tags'
 import settings from './settings'
-
+import comments from'./comments'
 Vue.use(Vuex)
 
 /*
@@ -57,7 +57,8 @@ export default function (/* { ssrContext } */) {
       settings,
       information_category,
       information_tags,
-      intervention
+      intervention,
+      comments
     },
 
     // enable strict mode (adds overhead!)

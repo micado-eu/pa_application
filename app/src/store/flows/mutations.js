@@ -24,8 +24,8 @@ export function saveProcess(state, data){
 state.flows.push(data)
 }
 
-export function deleteProcess(state, process) {
-var index = state.flows.findIndex(d => d.id == process.id);
+export function deleteProcess(state, id) {
+var index = state.flows.findIndex(d => d.id == id);
 state.flows.splice(index, 1);
 console.log("deleted process at place " + index)
 }

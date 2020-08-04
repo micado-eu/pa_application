@@ -63,7 +63,7 @@ import Process from './guided_process_editor/Process'
 
 
 export default {
-  name: 'DocumentType',
+  name: 'ProcessEditor',
   props: {
     msg: String
   },
@@ -82,6 +82,13 @@ export default {
     processes () {
       return this.$store.state.flows.flows
     },
+      steps () {
+      return this.$store.state.steps.steps
+    },
+     steplinks () {
+      return this.$store.state.steplinks.steplinks
+    },
+   
     filteredProcesses () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -89,6 +96,7 @@ export default {
       }
       else {
         return this.processes.filter((a_process) => {
+          console.log(this.activeLanguage)
           var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
@@ -100,12 +108,25 @@ export default {
   },
   methods: {
     deleteProcess (value) {
+      console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
         console.log("in fil")
         console.log(filt)
         return filt.id == value
       })
-      this.$store.dispatch('flows/deleteProcess', deletedProcess[0].id)
+      console.log("I am deleted process")
+      console.log(deletedProcess[0])
+      var deletedSteps = this.steps.filter((step) =>{
+        return step.idProcess == deletedProcess[0].id
+      })
+      console.log("I am deleted steps")
+      console.log(deletedSteps)
+      var deletedStepLinks = this.steplinks.filter((steplink) =>{
+        return steplink.idProcess == deletedProcess[0].id
+      })
+      console.log("I am deleted steplinks")
+      console.log(deletedStepLinks)
+      this.$store.dispatch('flows/deleteProcess', { process:deletedProcess[0].id, steps: deletedSteps, steplinks: deletedStepLinks, comments:deletedProcess[0].comments} )
     },
     filterTranslationModel (currentLang) {
       return function (element) {
@@ -127,6 +148,17 @@ export default {
         this.loading = false
         console.log(this.processes)
       })
+    this.$store.dispatch('steps/fetchSteps')
+      .then(steps => {
+        this.loading = false
+        console.log(this.steps)
+      })
+     this.$store.dispatch('steplinks/fetchSteplinks')
+      .then(steplinks => {
+        this.loading = false
+        console.log(this.steplinks)
+      })
+      
   }
 }
 </script>
