@@ -160,7 +160,7 @@ export default {
           description: "menu.setting_desc"
         }
       ],
-      selectedKey: null
+      selectedKey: "menu.home"
     };
   },
   methods: {
