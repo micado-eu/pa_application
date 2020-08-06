@@ -12,7 +12,7 @@
         >
           <template v-slot:append>
             <q-avatar>
-               <q-icon name="search" />
+              <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg" />
             </q-avatar>
           </template>
         </q-input>

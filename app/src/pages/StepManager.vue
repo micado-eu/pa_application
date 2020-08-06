@@ -1,7 +1,42 @@
   <template>
-  <div>
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Manage Steps - {{ this.title }}</div>
   <div class="container">
+    <h5> Manage Steps </h5>
+
+    <div class="row">
+
+      <div class="col">
+        <q-btn
+          color="accent"
+          unelevated
+          :label="$t('button.add_step')"
+          no-caps
+          size="15px"
+          @click="addNode"
+        />
+      </div>
+      <div class="col">
+        <q-btn
+          color="accent"
+          unelevated
+          :label="$t('button.save_graph')"
+          no-caps
+          size="15px"
+          @click="saveGraph"
+        />
+
+      </div>
+      <div class="col">
+        <q-btn
+          class="button"
+          color="accent"
+          no-caps=""
+          unelevated
+          :label="$t('button.back')"
+          @click="cancelStep"
+          style="width:150px;border-radius:2px"
+        />
+      </div>
+    </div>
     <div>
       <q-card class="my-card">
         <q-card-section>
@@ -276,44 +311,6 @@
         </div>
       </div>
     </div>
-    <div class="row" style="text-align:center; padding-top:10px">
-      <div class="col" style="text-align:right">
-        <q-btn
-          class="button"
-          no-caps=""
-          unelevated
-          :label="$t('button.back')"
-          @click="cancelStep"
-          style="width:135px;border-radius:5px"
-        />
-</div>
-      <div class="col" style="text-align:center;">
-        <q-btn
-          color="secondary"
-          unelevated
-          :label="$t('button.add_step')"
-           style="border-radius:5px; width:170px"
-          no-caps
-          size="15px"
-          @click="addNode"
-        />
-      </div>
-      <div class="col" style="text-align:left">
-        <q-btn
-          color="accent"
-          unelevated
-          :label="$t('button.save_graph')"
-          no-caps
-           style="border-radius:5px; width:135px"
-          size="15px"
-          @click="saveGraph"
-        />
-
-      </div>
-      
-      
-    </div>
-  </div>
   </div>
 </template>
 
@@ -401,14 +398,6 @@ export default {
     document_types () {
       return this.$store.state.document_type.document_type
     },
-    title (){
-      var temp =  this.processes.filter((a_proc) =>{
-        return a_proc.id == this.processId
-      })[0]
-      console.log("i am temp")
-      console.log(temp)
-      return temp.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
-    }
   },
   watch: {
     refresher: function () {

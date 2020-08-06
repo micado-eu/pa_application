@@ -1,16 +1,13 @@
   <template>
-  <div >
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Guided processes</div>
-
   <div class="container">
 
     <div style="text-align:center;">
       <div
-        class="col-10"
-        style="display:inline-block;width:80%;padding-right:30px;padding-left:0px"
+        class="col"
+        style="display:inline-block;padding-right:20px;padding-left:20px"
       >
         <q-input
-          style="border-radius:10px;width:100% ;font-size:18px"
+          style="border-radius:10px; width:590px;font-size:18px"
           dense
           items-center
           filled
@@ -19,18 +16,18 @@
         >
           <template v-slot:append>
             <q-avatar>
-              <q-icon name="search" />
+              <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
             </q-avatar>
           </template>
         </q-input>
       </div>
       <div
-        class="col-2"
-        style="display:inline-block;text-align:right;width:150px"
+        class="col"
+        style="display:inline-block;text-align:right;width:135px"
       >
         <q-btn
-          style="width:150px; margin-bottom:15px;border-radius:2px"
-          color="secondary"
+          style="width:135px; margin-bottom:15px;border-radius:2px"
+          color="accent"
           unelevated
           rounded
           :label="$t('button.add_process')"
@@ -40,26 +37,9 @@
         />
       </div>
     </div>
-   
+
     <div style="text-align:center;">
-    
-      <q-list style="display:inline-block; width:90%; padding-top:20px;">
-       
-    <q-item class=" row" style="padding-left:16px; padding-bottom:0px">
-    <q-item-section class="col-8 flex flex-left" style="text-align:left">
-        {{$t('input_labels.name')}} 
-    </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center" style="margin-left:30px">
-       {{$t('input_labels.edit')}}
-    </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center" style="">
-    {{$t('input_labels.manage')}}
-    </q-item-section> 
-    <q-item-section class="col-1.3 flex flex-center" style="">
-      {{$t('input_labels.delete')}}
-    </q-item-section>
-        </q-item>
-        <hr style="margin-bottom:60px">
+      <q-list style="display:inline-block;width:750px">
         <Process
           v-for="process in filteredProcesses"
           :key="process.id"
@@ -74,7 +54,6 @@
         </Process>
       </q-list>
     </div>
-  </div>
   </div>
 </template>
 
