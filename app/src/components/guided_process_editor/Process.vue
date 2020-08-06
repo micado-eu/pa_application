@@ -1,21 +1,18 @@
 <template>
 
-  <q-item style="padding-top:0px; padding-bottom:0px">
-    <div>
-      <div>
-        <div
-          class=" q-pa-md col"
-          style="width:750px; padding-bottom:0px; padding-left:0px"
-        >
-          <div style="font-size:20px; text-align:left; font-size:18px">{{ this.Title }}</div>
-        </div>
+  <q-item style="padding-top:0px; padding-bottom:20px; ">
+    <div style="width:100%">
+      <div class="row">
+        
+          <div class="col-8 flex flex-left" style=" text-align:left; font-size:18px">{{ this.Title }}</div>
+        
 
-      </div>
+     <!-- </div>
       <div
         class=" row"
         style="width:750px"
-      >
-        <div
+      >-->
+      <!--  <div
           class=" q-pa-md  col"
           style="text-align:left; padding-top:0px;padding-bottom:0px;padding-left:0px"
         >
@@ -31,12 +28,19 @@
             :label="tag.label"
             :key="tag.value"
           ></q-chip>
-        </div>
-        <div
-          class="q-pa-md q-gutter-sm  col"
-          style="padding-top:0px; padding-bottom:0px; text-align:right"
-        >
-          <q-btn
+        </div>-->
+        
+         <q-item-section class="col-1.3 flex flex-center" style="margin-left:30px">
+          <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" />
+          </q-item-section>
+          <q-item-section class="col-1.3 flex flex-center" >
+         <q-icon style="marign-left:30px" name="img:statics/icons/Icon - manage (guided processes).png"  @click.stop="manageProcess()" size="md" />
+        </q-item-section>
+          <q-item-section class="col-1.3 flex flex-center" >
+         <q-icon style="marign-left:30px" name="img:statics/icons/Icon - Delete.svg"  @click.stop="remove_process($event)" size="md" />
+        </q-item-section>
+        
+         <!-- <q-btn
             size="11px"
             no-caps
             style="width:70px;border-radius:2px; margin-bottom:5px"
@@ -65,11 +69,11 @@
             color="negative"
             :label="$t('button.delete')"
             @click="remove_process($event)"
-          />
+          />-->
 
-        </div>
+        
       </div>
-      <hr style="margin:0px">
+      <hr style="margin:0px;border: 0.999px solid #EFEFEF">
     </div>
   </q-item>
 </template>
