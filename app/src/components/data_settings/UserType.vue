@@ -192,7 +192,7 @@ export default {
       this.createShell()
     },
     newUserType() {
-      
+      this.createShell()
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;

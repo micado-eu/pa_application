@@ -184,6 +184,7 @@ export default {
       this.createShell()
     },
     newIntegrationCategory() {
+      this.createShell()
       this.isNew = true;
       this.hideForm = false;
       this.hideAdd = true;
