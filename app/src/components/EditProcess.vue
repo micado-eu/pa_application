@@ -1,10 +1,109 @@
 <template>
+<div>
+    <div v-if="theprocess!=null" style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Edit process - {{this.title}}</div>
+    <div v-else style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Add new process</div>
+
   <div style="text-align:center; padding-top:40px">
     <div
       class=""
-      style=" display:inline-block; width:750px;border-width:2px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px"
+      style=" display:inline-block; border: 1px solid #DADADA; border-radius: 5px; margin-bottom: 1px; width:80%"
     >
-      <q-tabs
+      
+      <q-tab-panels
+        v-model="langTab"
+        animated
+      >
+        <q-tab-panel
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+        >
+          <div
+            class=" q-pa-xsm "
+            style="padding-bottom:50px; padding-top:40px;padding-left:150px; padding-right:150px"
+          >
+            
+             <div style="font-size:16px; font-weight:600; text-align:left; padding-bottom:15px">Process name </div>
+            
+              <q-input
+                dense
+                bg-color="grey-3"
+                standout
+                outlined
+                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
+                :label="$t('input_labels.topic_placeholder')"
+              />
+          </div>
+
+          <div class=" q-pa-xsm "  style="padding-bottom:50px; padding-left:150px; padding-right:150px">
+           
+              <div style="text-align:left;font-size:16px; font-weight:600; padding-bottom:15px"> Process description </div>
+            <GlossaryEditor
+           
+        class="desc-editor"
+        v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
+             
+            </div>
+          
+        </q-tab-panel>
+      </q-tab-panels>
+    
+        <div
+          class=" q-pa-xsm row"
+          style="padding-left:150px; padding-right:150px"
+        >
+          <div class="col-6" style="text-align:left;font-size:15px;"> User tags </div>
+          <div class="col-6" style="text-align:left;font-size:15px"> Topic tags </div>
+        </div>
+        <div class="q-pa-xsm row" style="padding-left:150px; padding-right:150px">
+        <div
+          class="col-6"
+          style="padding-left:0px; padding-top:15px"
+        >
+          <q-select
+            filled
+            dense
+            clearable
+            v-model="edit_process.applicableUsers"
+            @add="addUserTag($event)"
+            @remove="removeUserTag($event)"
+            @clear="clearAllUsers()"
+            multiple
+            emit-value
+            map-options
+            :options="this.u_tags"
+            :label="$t('input_labels.user_tags')"
+            style="width: 90%"
+          />
+          <q-chip v-for="tag in selected_u_tags" dense :key="tag">{{tag}}</q-chip>
+        </div>
+
+        <div
+          class="col-6"
+          style="padding-right:45px; padding-top:15px"
+        >
+          <q-select
+            filled
+            dense
+            clearable
+            v-model="edit_process.processTopics"
+            @add="addTopicTag($event)"
+            @remove="removeTopicTag($event)"
+            @clear="clearAllTopics()"
+            multiple
+            emit-value
+            map-options
+            :options="this.t_tags"
+            :label="$t('input_labels.topic_tags')"
+            style="width: 90%"
+          />
+          <q-chip v-for="tag in selected_t_tags" dense :key="tag">{{tag}}</q-chip>
+        </div>
+      </div>
+      <hr style= "width:85%;border: 0.999px solid #DADADA;margin-top:90px">
+<q-tabs
         v-model="langTab"
         dense
         class="text-grey"
@@ -20,117 +119,21 @@
           :label="language.name"
         />
       </q-tabs>
-      <q-tab-panels
-        v-model="langTab"
-        animated
-      >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-        >
-          <div
-            class=" q-pa-xsm row"
-            style="text-align:center"
-          >
-            <div
-              class="col-4"
-              style="padding-left:40px"
-            >
-              <h5 style="text-align:left;font-size:15px;"> Process Name </h5>
-            </div>
-            <div
-              class="col-8"
-              style="margin: auto;display: block;padding-right:40px"
-            >
-              <q-input
-                rounded
-                dense
-                bg-color="grey-3"
-                standout
-                outlined
-                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
-              />
-            </div>
-          </div>
-
-          <div class=" q-pa-xsm row">
-            <div
-              class="col-4"
-              style="padding-left:40px"
-            >
-              <h5 style="text-align:left;font-size:15px; margin:0"> Process description </h5>
-            </div>
-            <div
-              class="col-8"
-              style="margin: auto;display: block;padding-right:40px"
-            >
-              <q-input
-                rounded
-                dense
-                type="textarea"
-                bg-color="grey-3"
-                standout
-                outlined
-                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
-              />
-            </div>
-          </div>
-        </q-tab-panel>
-      </q-tab-panels>
-      <div
-        class=" q-pa-xsm row"
-        style="text-align:center"
-      >
-        <div
-          class=" col-4"
-          style="padding-left:40px"
-        >
-          <h5 style="text-align:left;font-size:15px"> Process tags </h5>
-        </div>
-        <div
-          class="col-4"
-          style="padding-left:0px; padding-top:15px"
-        >
-          <q-select
-            filled
-            dense
-            clearable
-            v-model="edit_process.applicableUsers"
-            multiple
-            emit-value
-            map-options
-            :options="this.u_tags"
-            :label="$t('input_labels.user_tags')"
-            style="width: 200px"
-          />
-        </div>
-
-        <div
-          class="col-4"
-          style="padding-right:45px; padding-top:15px"
-        >
-          <q-select
-            filled
-            dense
-            clearable
-            v-model="edit_process.processTopics"
-            multiple
-            emit-value
-            map-options
-            :options="this.t_tags"
-            :label="$t('input_labels.topic_tags')"
-            style="width: 200px"
-          />
-        </div>
-      </div>
-
-    </div>
-    <div style="text-align:center">
+      <hr style= "width:85%;border: 0.999px solid #DADADA;">
+      <div style="text-align:left; padding-left:150px">
       <div
         class="q-pa-md q-gutter-md col-4"
         style="display:inline-block"
       >
+         <q-btn
+          class="button"
+          no-caps
+          rounded
+          :label="$t('button.back')"
+          unelevated
+          style="width:150px;border-radius:2px"
+          to="/guided_process_editor"
+        />
         <q-btn
           color="secondary"
           no-caps
@@ -143,7 +146,7 @@
         />
 
         <q-btn
-          color="info"
+          color="accent"
           no-caps
           rounded
           :label="$t('button.save')"
@@ -152,28 +155,26 @@
           @click="saveProcess(edit_process)"
         />
 
-        <q-btn
-          color="accent"
-          no-caps
-          rounded
-          :label="$t('button.back')"
-          unelevated
-          style="width:150px;border-radius:2px"
-          to="/guided_process_editor"
-        />
+     
       </div>
     </div>
+    </div>
+    
   </div>
+</div>
 </template>
 
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
-
+import GlossaryEditor from 'components/GlossaryEditor'
 export default {
   name: 'PageIndex',
   mixins: [editEntityMixin],
   props: ["theprocess"],
-
+  components: {
+    
+    GlossaryEditor
+  },
   data () {
     return {
       id: this.$route.params.id,
@@ -182,9 +183,11 @@ export default {
       u_tags: [
 
       ],
+      selected_u_tags:[],
       t_tags: [
 
       ],
+      selected_t_tags:[]
     }
   },
   computed: {
@@ -196,6 +199,9 @@ export default {
     },
     user () {
       return this.$store.state.user_type.user_type
+    },
+    title () {
+      return this.theprocess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
     },
 
     disabled () {
@@ -210,6 +216,42 @@ export default {
 
   },
   methods: {
+    addUserTag(value){
+      console.log(value)
+     
+     var the_user =  this.user.filter((a_user) => {
+        return a_user.id == value.value
+      })[0]
+      var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
+      this.selected_u_tags.push(the_user_transl)
+      
+    },
+    removeUserTag(value){
+      console.log(value)
+      var idx = this.selected_u_tags.indexOf(value)
+      this.selected_u_tags.splice(value.index, 1)
+    },
+    clearAllUsers(){
+      this.selected_u_tags = []
+    },
+    addTopicTag(value){
+      console.log(value)
+     
+     var the_topic =  this.topic.filter((a_topic) => {
+        return a_topic.id == value.value
+      })[0]
+      var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
+      this.selected_t_tags.push(the_topic_transl)
+      
+    },
+    removeTopicTag(value){
+      console.log(value)
+     
+      this.selected_t_tags.splice(value.index, 1)
+    },
+    clearAllTopics(){
+      this.selected_t_tags = []
+    },
    async saveProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process));
 
@@ -244,6 +286,7 @@ export default {
       this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
+      this.sele
       //this.edit_process.applicableUsers = process.applicableUsers
       //    this.edit_process.processTopics = process.processTopics
       process.translations.forEach(pr => {
@@ -264,6 +307,13 @@ export default {
       if (process.processTopics != null) {
         process.processTopics.forEach(the_topic => {
           this.edit_process.processTopics.push(the_topic.idTopic)
+
+          var the_topic =  this.topic.filter((a_topic) => {
+            return a_topic.id == the_topic.idTopic
+            })[0]
+          var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
+          this.selected_t_tags.push(the_topic_transl)
+
           this.edit_process.processTopicsOrig.push(the_topic.idTopic)
         })
       }
@@ -271,6 +321,13 @@ export default {
       if (process.applicableUsers != null) {
         process.applicableUsers.forEach(the_user => {
           this.edit_process.applicableUsers.push(the_user.idUserTypes)
+
+          var the_user =  this.user.filter((a_user) => {
+            return a_user.id == the_user.idUserTypes
+          })[0]
+          var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
+          this.selected_u_tags.push(the_user_transl)
+
           this.edit_process.applicableUsersOrig.push(the_user.idUserTypes)
 
         })
@@ -341,4 +398,9 @@ export default {
 }
 </script>
 <style scoped>
+.button {
+  background-color: white;
+  color: black;
+  border: 1px solid #c71f40;
+}
 </style>

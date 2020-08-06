@@ -214,7 +214,22 @@ export function editProcess (state, process) {
         })
    })
      })
-if (process.processTopics != null){
+     client.deleteProcessTopic(process.id)
+     client.deleteProcessUser(process.id)
+
+     if (process.processTopics != null){
+      process.processTopics.forEach((topic) => {
+        console.log("in saving topic")
+      console.log(topic)
+      client.saveProcessTopic(topic, workingId)
+    })}
+    if (process.applicableUsers != null){
+      process.applicableUsers.forEach((user) => {
+        console.log("in saving user")
+        client.saveProcessUser(user, workingId)
+      })
+    }
+/*if (process.processTopics != null){
   console.log("new")
   console.log(process.processTopics)
   console.log("original")
@@ -269,7 +284,7 @@ else if (process.applicableUsersOrig != null){
     client.deleteSingleProcessUser(workingId, starting_user)
   }
   })
-}
+}*/
 state.commit('editProcess', process)
 }
 
