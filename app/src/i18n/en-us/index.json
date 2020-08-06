@@ -89,7 +89,8 @@
     "tags":"Tags",
     "select_category":"Select category",
     "type":"Type",
-    "required_documents":"Required documents"
+    "required_documents":"Required documents",
+    "manage":"Manage"
   },
   "profile":{
     "username":"Username",
