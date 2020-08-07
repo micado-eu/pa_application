@@ -1,6 +1,6 @@
   <template>
   <div>
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Manage Steps - {{ this.title }}</div>
+  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
   <div class="container">
     <div>
       <q-card class="my-card">
@@ -65,7 +65,7 @@
               >
               <div class="row">
                 <div class=" q-pa-xsm col-4">
-                  <h5 style="text-align:left;margin-bottom:0px"> Step Name </h5>
+                  <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_name')}} </h5>
                 </div>
                 <div
                   class="col-8"
@@ -85,7 +85,7 @@
               </div>
                 <div class=" q-pa-xsm row" style="width:100%">
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left"> Step description </h5>
+                    <h5 style="text-align:left"> {{$t('input_labels.step_description')}} </h5>
                   </div>
                   <div
                     class="col-8"
@@ -107,7 +107,7 @@
             </q-tab-panels>
             <div class=" q-pa-xsm row" style="width:100%">
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> Step location </h5>
+                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_location')}} </h5>
               </div>
               <div
                 class="col-8"
@@ -127,7 +127,7 @@
 
             <div class=" q-pa-xsm row" style="width:100%">
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> Step cost </h5>
+                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_cost')}} </h5>
               </div>
               <div
                 class="col-8"
@@ -213,7 +213,7 @@
               style="text-align:center"
             >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left; margin-top:14px"> Linked processes </h5>
+                <h5 style="text-align:left; margin-top:14px"> {{$t('input_labels.related_processes')}} </h5>
               </div>
               <div
                 class=" q-pa-md col-8"

@@ -90,7 +90,18 @@
     "select_category":"Select category",
     "type":"Type",
     "required_documents":"Required documents",
-    "manage":"Manage"
+    "manage":"Manage",
+    "process_description":"Process description",
+    "process_name":"Process name",
+    "step_name": "Step name",
+    "step_description":"Step description",
+    "step_location":"Step location",
+    "step_cost":"Step cost",
+    "edit_process":"Edit process",
+    "add_new_process":"Add new process",
+    "guided_processes":"Guided processes",
+    "manage_steps":"Manage steps"
+   
   },
   "profile":{
     "username":"Username",

@@ -1,7 +1,7 @@
 <template>
 <div>
-    <div v-if="theprocess!=null" style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Edit process - {{this.title}}</div>
-    <div v-else style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Add new process</div>
+    <div v-if="theprocess!=null" style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.edit_process')}} - {{this.title}}</div>
+    <div v-else style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.add_new_process')}}</div>
 
   <div style="text-align:center; padding-top:40px">
     <div
@@ -23,7 +23,7 @@
             style="padding-bottom:50px; padding-top:40px;padding-left:150px; padding-right:150px"
           >
             
-             <div style="font-size:16px; font-weight:600; text-align:left; padding-bottom:15px">Process name </div>
+             <div style="font-size:16px; font-weight:600; text-align:left; padding-bottom:15px">{{$t('input_labels.process_name')}} </div>
             
               <q-input
                 dense
@@ -37,7 +37,7 @@
 
           <div class=" q-pa-xsm "  style="padding-bottom:50px; padding-left:150px; padding-right:150px">
            
-              <div style="text-align:left;font-size:16px; font-weight:600; padding-bottom:15px"> Process description </div>
+              <div style="text-align:left;font-size:16px; font-weight:600; padding-bottom:15px"> {{$t('input_labels.process_description')}} </div>
             <GlossaryEditor
            
         class="desc-editor"
@@ -54,8 +54,8 @@
           class=" q-pa-xsm row"
           style="padding-left:150px; padding-right:150px"
         >
-          <div class="col-6" style="text-align:left;font-size:15px;"> User tags </div>
-          <div class="col-6" style="text-align:left;font-size:15px"> Topic tags </div>
+          <div class="col-6" style="text-align:left;font-size:15px;"> {{$t('input_labels.user_tags')}} </div>
+          <div class="col-6" style="text-align:left;font-size:15px"> {{$t('input_labels.topic_tags')}} </div>
         </div>
         <div class="q-pa-xsm row" style="padding-left:150px; padding-right:150px">
         <div
