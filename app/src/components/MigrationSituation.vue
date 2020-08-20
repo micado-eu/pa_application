@@ -1,5 +1,5 @@
 <template>
-  <div id="migration-situation-container">
+  <div id="migration-situation-container" v-if="boards.length>2">
     <div id="nav" class="bg-accent">
       <q-item
         clickable
@@ -24,10 +24,20 @@ export default {
       const boards = this.$store.state.statistics.boards.map((b) => {
         return { title: b, link: `/situation/${b}` };
       });
-      boards.push({ title: "map", link: `/situation/map` });
-      boards.push({ title: "editor", link: `/situation/editor` });
+      boards.push(
+        { title: "map", link: `/situation/map` },
+        { title: "editor", link: `/situation/editor` }
+      );
       return boards;
     },
+  },
+  created: function () {
+    this.$q.loading.show({
+      delay: 400,
+    });
+    this.$store.dispatch("statistics/fetchStatistics").then(() => {
+      this.$q.loading.hide();
+    });
   },
 };
 </script>
