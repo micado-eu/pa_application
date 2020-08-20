@@ -1,12 +1,12 @@
-import { axiosInstance } from 'boot/axios'
+import axios from 'axios'
 import { error_handler, isJSON } from '../../../helper/utility'
 
-function fetchCharts() {
-    return axiosInstance
-        .get('/backend/1.0.0/charts')
-        .then(response => response.data)
-        .catch(error_handler);
-}
+const charts_request = new Request('http://localhost:3000/charts', {
+    method: 'GET',
+    headers: new Headers(),
+    mode: 'cors',
+    cache: 'default',
+});
 
 function csvToJSON(csv) {
     const lines = csv.split("\n").filter(line => line),
@@ -26,10 +26,10 @@ function csvToJSON(csv) {
 
 export default {
     fetchStatistics() {
-        return fetchCharts()
-            .then((res) => {
+        return fetch(charts_request)
+            .then(async (res) => {
                 return {
-                    charts: res
+                    charts: await res.json(),
                 };
             })
             .catch(error_handler);
@@ -46,12 +46,17 @@ export default {
                 case 'API':
                     break
             }
-            return axiosInstance
-                .post('/backend/1.0.0/charts', chart)
+            return axios
+                .post('http://localhost:3000/charts', chart, {
+                    headers: {
+                        'accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    }
+                })
                 .then(response => response.data)
                 .catch(error_handler);
         } else {
-            return Promise.reject("Error: the file format/data formats is wrong")
+            return Promise.reject('Error: your format is wrong')
         }
     }
 }

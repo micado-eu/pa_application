@@ -12,5 +12,11 @@ function error_handler (error) {
     console.log(error.config);
 }
 
+function isJSON(str) {
+    return /^[\],:{}\s]*$/.test(str.replace(/\\["\\\/bfnrtu]/g, '@').
+        replace(/"[^"\\\n\r]*"|true|false|null|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?/g, ']').
+        replace(/(?:^|:|,)(?:\s*\[)+/g, ''))
+}
 
-export { error_handler }
+
+export { error_handler, isJSON }

@@ -7,9 +7,6 @@ export function fetchStatistics(state, data) {
   return client
     .fetchStatistics()
     .then(res => {
-      state.commit('setTimeseries', res.timeseries)
-      state.commit('setOrigin', res.origin)
-      state.commit('setMigrants', res.migrants)
       state.commit('setCharts', res.charts)
       state.commit('setBoards', res.charts)
       state.commit('setCategories', res.charts)
@@ -17,7 +14,6 @@ export function fetchStatistics(state, data) {
 }
 
 export function addChart(state, chart) {
-  console.log('action chart: ',chart)
   return client.addChart(chart)
     .then(res => {
       console.log("added chart: ", res)
