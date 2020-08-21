@@ -25,23 +25,32 @@ export default {
     Chart
   },
   props: ["category", "board"],
-  data: function() {
+  data: function () {
     return {
       graph_data: []
     };
   },
   computed: {
-    charts: function() {
-      return this.$store.state.statistics.charts;
-    }
+    charts: function () {
+      // FIXME: mockdata for map chart
+      // return this.$store.state.statistics.charts
+      return [
+        ...this.$store.state.statistics.charts,
+        {
+          board: "hamburg",
+          category: "incoming",
+          content: "",
+          description: "bla",
+          format: "csv",
+          title: "TEST MAP",
+          type: "MAP"
+        }];
+    },
   },
-  mounted: function() {
+  mounted: function () {
     this.graph_data = [];
-    this.charts.forEach(c => {
-      if (
-        c.board === this.board &&
-        c.category === this.category
-      ) {
+    this.charts.forEach((c) => {
+      if (c.board === this.board && c.category === this.category) {
         this.graph_data.push(c);
       }
     });

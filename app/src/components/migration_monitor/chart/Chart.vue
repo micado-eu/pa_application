@@ -40,6 +40,7 @@
       :labelColumn="graphData.x"
       :valueColumn="graphData.y"
     />
+    <mapChart v-if="graphData.type==='MAP'" class="chart" />
     <h6>{{graphData.title}}</h6>
   </div>
 </template>
@@ -50,20 +51,22 @@ import * as mpapi from "masterportalAPI";
 import lineChart from "./lineChart";
 import pieChart from "./pieChart";
 import barChart from "./barChart";
+import mapChart from "./mapChart";
 
 export default {
   name: "MigrationSituation",
   components: {
     lineChart,
     pieChart,
-    barChart
+    barChart,
+    mapChart,
   },
   props: ["graphData"],
-  data: function() {
+  data: function () {
     return {};
   },
   computed: {},
-  mounted: function() {}
+  mounted: function () {},
 };
 </script>
 

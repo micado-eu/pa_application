@@ -44,19 +44,6 @@
         :y2="scaleY(d[valueColumn])"
         stroke-width="2"
       />
-      <line
-        v-for="(d,i) in lineData"
-        class="line"
-        :key="i+'_line'"
-        :x1="scaleX(d[timeColumn])"
-        :x2="scaleX(d[timeColumn])"
-        :y1="height-margin.top-margin.bottom"
-        :y2="scaleY(d[valueColumn])"
-        stroke-width="1"
-        stroke="black"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave"
-      />
     </g>
     <text
       v-if="typeof width!=='string'"
