@@ -35,17 +35,18 @@ export default {
             .catch(error_handler);
     },
     addChart(chart) {
+
+        switch (chart.format) {
+            case 'csv':
+                chart.content = csvToJSON(chart.content)
+                break
+            case 'JSON':
+                chart.content = chart.content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, '')
+                break
+            case 'API':
+                break
+        }
         if (isJSON(chart.content)) {
-            switch (chart.format) {
-                case 'csv':
-                    chart.content = csvToJSON(chart.content)
-                    break
-                case 'JSON':
-                    chart.content = chart.content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, '')
-                    break
-                case 'API':
-                    break
-            }
             return axios
                 .post('http://localhost:3000/charts', chart, {
                     headers: {
