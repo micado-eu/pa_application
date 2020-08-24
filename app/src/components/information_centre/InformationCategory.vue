@@ -1,15 +1,11 @@
 <template>
-  <div
-    :id="$options.name"
-    class="q-pa-md"
-  >
-    <router-link :to="'#'+$options.name">
-      <h5 @click="onClickTitle()">Information centre categories</h5>
-    </router-link>
+  <div :id="$options.name">
+    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Information Centre - Categories</div>
     <span v-if="errorMessage">{{errorMessage}}</span>
     <q-list
       bordered
       separator
+      class="q-pa-md"
     >
       <q-item
         clickable
@@ -18,42 +14,44 @@
         :key="a_information_category.id"
       >
         <q-item-section>{{showCategoryLabel(a_information_category)}}</q-item-section>
-        <q-item-section class="col-5 flex flex-center">
+        <q-item-section
+          side
+          class="icon_btn_section"
+        >
           <q-btn
-            color="negative"
-            :label="$t('button.delete')"
-            size="xs"
-            no-caps
+            round
+            class="item-btn"
+            icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
             @click="deleteInformationCategory(a_information_category.id)"
-            unelevated
-            rounded
-            style="width:70px;border-radius:2px;margin-bottom:5px"
           />
+        </q-item-section>
+        <q-item-section
+          side
+          class="icon_btn_section"
+        >
           <q-btn
-            color="info"
-            :label="$t('button.edit')"
-            size="xs"
-            no-caps
+            round
+            class="item-btn"
+            icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
             @click="editInformationCategory(a_information_category)"
-            unelevated
-            rounded
-            style="width:70px;border-radius:2px"
           />
         </q-item-section>
       </q-item>
     </q-list>
     <q-card class="my-card">
-      <q-card-section>
+      <q-card-section align="center">
         <q-btn
-          color="secondary"
-          :label="$t('button.add')"
-          @click="newInformationCategory()"
+          class="q-mr-sm"
+          outline
+          color="accent"
+          :label="$t('button.go_back')"
+          @click="$router.go(-1)"
           :disable="hideAdd"
         />
         <q-btn
-          color="secondary"
-          :label="$t('button.go_back')"
-          @click="$router.go(-1)"
+          color="accent"
+          :label="$t('button.add')"
+          @click="newInformationCategory()"
           :disable="hideAdd"
         />
       </q-card-section>
@@ -96,22 +94,24 @@
             :label="$t('input_labels.event_checkbox')"
           />
         </div>
-        <q-btn
-          color="accent"
-          unelevated
-          rounded
-          style="width:70px;border-radius:2px"
-          :label="$t('button.save')"
-          @click="saveInformationCategory()"
-        />
-        <q-btn
-          class="button"
-          unelevated
-          rounded
-          style="width:70px;border-radius:2px"
-          :label="$t('button.cancel')"
-          @click="cancelInformationCategory()"
-        />
+        <div align="center">
+          <q-btn
+            class="button q-mr-sm"
+            unelevated
+            rounded
+            style="width:70px;border-radius:2px"
+            :label="$t('button.cancel')"
+            @click="cancelInformationCategory()"
+          />
+          <q-btn
+            color="accent"
+            unelevated
+            rounded
+            style="width:70px;border-radius:2px"
+            :label="$t('button.save')"
+            @click="saveInformationCategory()"
+          />
+        </div>
       </q-card-section>
     </q-card>
   </div>
