@@ -9,7 +9,7 @@ function fetchCharts() {
 }
 
 function csvToJSON(csv) {
-    const lines = csv.split("\n").filter(line => line),
+    const lines = csv.replace(/\r/g, "").split("\n").filter(line => line),
         result = [],
         headers = lines[0].split(",");
 
@@ -38,6 +38,7 @@ export default {
         switch (chart.format) {
             case 'csv':
                 chart.content = csvToJSON(chart.content)
+                // chart.content = csvToJSON(chart.content).replace(/\n|\r/g, "")
                 break
             case 'JSON':
                 chart.content = chart.content.replace(/(\r\n|\n|\r)/gm, "").replace(/\s/g, '')
