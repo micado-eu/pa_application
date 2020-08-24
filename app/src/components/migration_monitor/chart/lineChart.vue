@@ -4,7 +4,10 @@
       v-if="typeof width!=='string'"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
-      <path :d="drawLine(lineData)" stroke="#ecbc3a" />
+      <path :d="drawLine(lineData)" 
+        fill='none'
+  stroke='#99e6b4'
+  stroke-width='3px' />
       <circle
         v-for="(d,i) in lineData"
         :key="i"
@@ -21,6 +24,7 @@
         :y="scaleY(d[valueColumn])"
         :width="barWidth"
         :height="height - scaleY(d[valueColumn]) - margin.top - margin.bottom"
+        fill='none'
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
       />
@@ -205,11 +209,6 @@ div {
   margin-left: 5%; */
   background: white;
 }
-path {
-  fill: none;
-  stroke: #99e6b4;
-  stroke-width: 3px;
-}
 .line,
 .label {
   opacity: 0;
@@ -219,7 +218,6 @@ path {
   stroke: #f5b642;
 }
 rect {
-  fill: none;
   pointer-events: all;
 }
 </style>

@@ -5,7 +5,6 @@ export function setCharts(state, charts) {
   if (charts) {
     state.charts = []
     charts.forEach(c => {
-      console.log("c: ", c)
       /**
        * format all strings
        */

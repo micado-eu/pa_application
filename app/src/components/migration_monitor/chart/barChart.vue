@@ -4,14 +4,6 @@
       v-if="typeof width!=='string'"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
-      <!-- <circle
-        v-for="(d,i) in lineData"
-        :key="i"
-        :cx="scaleX(new Date(d[timeColumn]*1000))"
-        :cy="scaleY(d[valueColumn])"
-        :r="2"
-        fill="#3490DC"
-      />-->
       <rect
         v-for="(d,i) in lineData"
         :key="i+'_rect'"
@@ -21,6 +13,9 @@
         :y="scaleY(d[valueColumn])"
         :width="barWidth"
         :height="height - scaleY(d[valueColumn]) - margin.top - margin.bottom"
+        fill='#99e6b4'
+        stroke='white'
+        stroke-width='1px'
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
       />
@@ -175,16 +170,6 @@ div {
   /* margin-top: 5%;
   margin-left: 5%; */
   background: white;
-}
-path {
-  fill: none;
-  stroke: #99e6b4;
-  stroke-width: 3px;
-}
-rect {
-  fill: #99e6b4;
-  stroke: white;
-  stroke-width: 1px;
 }
 .label {
   opacity: 0;
