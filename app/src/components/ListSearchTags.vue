@@ -1,168 +1,239 @@
 <template>
-  <div class="q-pa-md">
-    <q-toolbar class="text-white shadow-2 row toolbar-list">
-      <q-toolbar-title>{{ title }}</q-toolbar-title>
-      <q-avatar>
-        <q-icon
-          :name="icon_name"
-          size="lg"
-        />
-      </q-avatar>
-    </q-toolbar>
-    <div class="q-my-md row">
-      <q-input
-        color="accent"
-        v-model="search"
-        debounce="500"
-        filled
-        outlined
-        label="Search"
-        class="col-10"
-      >
-        <template v-slot:append>
-          <q-icon name="search" />
-        </template>
-      </q-input>
-      <q-btn
-        outlined
-        no-caps
-        label="Categories"
-        class="add-btn col q-ml-md"
-        :to="categories_url"
-        v-if="categories_enabled"
-      />
-      <q-btn
-        outlined
-        no-caps
-        :label="add_label"
-        class="add-btn col q-ml-md"
-        :to="new_url"
-      />
-    </div>
-    <div>
-      <q-btn
-        :unelevated="selectedTags.indexOf(tag) == -1"
-        :outline="selectedTags.indexOf(tag) !== -1"
-        no-caps
-        v-for="tag in tags"
-        :key="tag"
-        :label="tag"
-        class="q-mr-sm q-mb-sm tag_btn"
-        @click="addOrRemoveSelectedTag(tag)"
-      />
-    </div>
-    <div>
-      <q-btn
-        :unelevated="selectedCategory !== category"
-        :outline="selectedCategory === category"
-        no-caps
-        v-for="category in translatedCategories"
-        :key="category.id"
-        :label="category.category"
-        class="q-mr-sm category_btn"
-        @click="addOrRemoveSelectedCategory(category)"
-      />
-    </div>
+  <div>
+    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{title}}</div>
     <div class="row">
-      <q-list class="q-mt-md col-11">
-        <q-item
-          v-for="item in filteredElements"
-          :key="item.id"
-          :id="item.id"
-          clickable
-          @mouseover="hovered = item.id"
-          @mouseleave="hovered = -1"
+      <div class="col q-mt-md q-ml-md">
+        <q-list
+          bordered
+          v-if="tags_enabled || categories_enabled"
         >
-          <q-item-section
-            avatar
-            v-if="publish_mode"
-            class="publish_section"
+          <q-item>
+            <q-item-section>
+              <q-item-label class="title-label">Filter</q-item-label>
+            </q-item-section>
+            <q-item-section>
+              <a
+                href="javascript:void(0)"
+                @click="clearFilters()"
+              >
+                Clear all filters
+              </a>
+            </q-item-section>
+          </q-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
+            v-if="tags_enabled"
           >
-            <q-checkbox
-              color="accent"
-              :value="publishState[item.id]"
-              @input="updatePublish($event, item)"
-            />
-          </q-item-section>
-          <q-item-section class="title_section">
-            <q-item-label :class="
-              !publish_mode || publishState[item.id]
-                ? 'published title-label'
-                : 'unpublished title-label'
-            ">
-              {{ item.title }}
-            </q-item-label>
-          </q-item-section>
-          <q-item-section
-            no-wrap
-            class="description_section"
-          >
-            <glossary-editor-viewer
-              :class="
-              !publish_mode || publishState[item.id]
-                ? 'published'
-                : 'unpublished'
-            "
-              :content="item.description"
-              v-if="!loading"
-              glossary_fetched
-              :lang="lang"
-            />
-          </q-item-section>
-          <q-item-section
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="title-label">Tags</q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="tag in filterTags"
+              :key="tag"
+            >
+              <q-checkbox
+                color="accent"
+                v-model="selectedTags"
+                :val="tag"
+                :label="tag"
+                class="filter-text"
+                @input="filterByTags()"
+              />
+            </q-item>
+            <q-item>
+              <a
+                href="javascript:void(0)"
+                class="filter-text"
+                @click="showMoreTags()"
+              >
+                Show more
+              </a>
+            </q-item>
+          </q-expansion-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
             v-if="categories_enabled"
-            class="tag_btn_section"
           >
-            <q-btn
-              no-caps
-              :label="item.category.category"
-              class="q-mb-sm category_btn"
-            />
-          </q-item-section>
-          <q-item-section class="tag_btn_section">
-            <q-btn
-              no-caps
-              v-for="tag in item.tags"
-              :key="tag.id"
-              :label="tag.tag"
-              class="q-mb-sm tag_btn"
-            />
-          </q-item-section>
-          <q-item-section
-            side
-            :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-            class="icon_btn_section"
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="title-label">Category</q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="category in filterCategories"
+              :key="category.id"
+            >
+              <q-radio
+                color="accent"
+                v-model="selectedCategory"
+                :val="category"
+                :label="category.category"
+                @input="filterByCategory()"
+                class="filter-text"
+              />
+            </q-item>
+            <q-item>
+              <a
+                href="javascript:void(0)"
+                class="filter-text"
+                @click="showMoreCategories()"
+              >
+                Show more
+              </a>
+            </q-item>
+          </q-expansion-item>
+        </q-list>
+      </div>
+      <div class="q-mx-sm col-10">
+        <div class="q-my-md q-mr-md row">
+          <q-input
+            color="accent"
+            v-model="search"
+            debounce="500"
+            filled
+            outlined
+            label="Search"
+            class="col-10"
           >
-            <q-btn
-              round
-              class="item-btn"
-              icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
-              :to="edit_url_fn(item.id)"
-            />
-          </q-item-section>
-          <q-item-section
-            side
-            class="icon_btn_section"
-            :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-          >
-            <q-btn
-              round
-              class="item-btn"
-              icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-              @click="delete_fn(item)"
-            />
-          </q-item-section>
-        </q-item>
-      </q-list>
-      <div class="q-ml-sm col">
-        <span
-          v-for="(letter, index) in alphabet"
-          :key="letter"
-          class="row alphabet"
-          @click="scrollIntoElement(index)"
-        >
-          {{letter}}
-        </span>
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+          <q-btn
+            outlined
+            no-caps
+            label="Categories"
+            class="add-btn col q-ml-md"
+            :to="categories_url"
+            v-if="categories_enabled"
+          />
+          <q-btn
+            outlined
+            no-caps
+            :label="add_label"
+            class="add-btn col q-ml-md"
+            :to="new_url"
+          />
+        </div>
+        <div class="row">
+          <q-list class="q-mt-md col-11 element-list">
+            <!-- column title -->
+            <q-item v-if="publish_mode || categories_enabled || tags_enabled">
+              <q-item-section
+                class="publish_section"
+                v-if="publish_mode"
+              >
+                Published
+              </q-item-section>
+              <q-item-section
+                class="col_title_section"
+                v-if="publish_mode"
+              />
+              <q-item-section
+                class="publish_section"
+                v-if="categories_enabled"
+              >
+                Category
+              </q-item-section>
+              <q-item-section
+                class="publish_section"
+                v-if="tags_enabled"
+              >
+                Tag
+              </q-item-section>
+            </q-item>
+            <q-separator v-if="publish_mode || categories_enabled || tags_enabled" />
+            <!-- items -->
+            <q-item
+              v-for="item in filteredElements"
+              :key="item.id"
+              :id="item.id"
+              clickable
+              @mouseover="hovered = item.id"
+              @mouseleave="hovered = -1"
+            >
+              <q-item-section
+                avatar
+                v-if="publish_mode"
+                class="publish_section"
+              >
+                <q-checkbox
+                  color="accent"
+                  :value="publishState[item.id]"
+                  @input="updatePublish($event, item)"
+                />
+              </q-item-section>
+              <q-item-section class="title_section">
+                <q-item-label :class="
+                !publish_mode || publishState[item.id]
+                  ? 'published title-label'
+                  : 'unpublished title-label'
+              ">
+                  {{ item.title }}
+                </q-item-label>
+                <glossary-editor-viewer
+                  :class="
+                    !publish_mode || publishState[item.id]
+                      ? 'published'
+                      : 'unpublished'
+                  "
+                  :content="item.description"
+                  v-if="!loading"
+                  glossary_fetched
+                  :lang="lang"
+                />
+              </q-item-section>
+              <q-item-section
+                class="category_section"
+                v-if="categories_enabled"
+              >
+                {{item.category.category}}
+              </q-item-section>
+              <q-item-section class="tag_btn_section">
+                <q-btn
+                  no-caps
+                  v-for="tag in item.tags"
+                  :key="tag.id"
+                  :label="tag.tag"
+                  class="q-mb-sm tag_btn"
+                />
+              </q-item-section>
+              <q-item-section
+                side
+                :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
+                class="icon_btn_section"
+              >
+                <q-btn
+                  round
+                  class="item-btn"
+                  icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
+                  :to="edit_url_fn(item.id)"
+                />
+                <br>
+                <q-btn
+                  round
+                  class="item-btn"
+                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+                  @click="delete_fn(item)"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
+          <div class="q-ml-sm q-mt-md col">
+            <span
+              v-for="(letter, index) in alphabet"
+              :key="letter"
+              class="row alphabet"
+              @click="scrollIntoElement(index)"
+            >
+              {{letter}}
+            </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -249,6 +320,8 @@ export default {
       lang: "",
       alphabet: [],
       alphabetIds: [],
+      lastIndexTags: 5,
+      lastIndexCategories: 5,
       loading: true
     };
   },
@@ -257,15 +330,6 @@ export default {
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
-    addOrRemoveSelectedTag(tag) {
-      var index = this.selectedTags.indexOf(tag);
-      if (index !== -1) {
-        this.selectedTags.splice(index, 1);
-      } else {
-        this.selectedTags.push(tag);
-      }
-      this.filterByTags();
-    },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -276,21 +340,25 @@ export default {
     },
     filterByTags() {
       if (this.selectedTags.length > 0) {
-        let selectedTags = this.selectedTags;
-        this.filteredElementsByTags = this.translatedElements.filter(e => {
+        this.filteredElementsByTags = [];
+        for (let e of this.translatedElements) {
           let matchedTags = []
-          for (let tag of selectedTags) {
-            for (let elemTag of e.tags) {
-              if (elemTag.tag === tag) {
-                // This check avoids duplicate matches
-                if (matchedTags.indexOf(tag) == -1) {
-                  matchedTags.push(tag)
+          for (let tag of this.selectedTags) {
+            if (e.tags) {
+              for (let elemTag of e.tags) {
+                if (elemTag.tag === tag) {
+                  // This check avoids duplicate matches
+                  if (matchedTags.indexOf(tag) == -1) {
+                    matchedTags.push(tag)
+                  }
                 }
               }
             }
           }
-          return matchedTags.length == selectedTags.length;
-        });
+          if (matchedTags.length == this.selectedTags.length) {
+            this.filteredElementsByTags.push(e)
+          }
+        }
       } else {
         this.filteredElementsByTags = this.translatedElements;
       }
@@ -317,6 +385,18 @@ export default {
     },
     scrollIntoElement(index) {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
+    },
+    clearFilters() {
+      this.selectedTags = [];
+      this.selectedCategory = undefined;
+      this.filteredElementsByTags = this.translatedElements;
+      this.filteredElementsByCategory = this.translatedElements;
+    },
+    showMoreTags() {
+      this.lastIndexTags += 5;
+    },
+    showMoreCategories() {
+      this.lastIndexCategories += 5;
     }
   },
   computed: {
@@ -345,7 +425,13 @@ export default {
       return this.filteredElementsBySearch.filter(function (n) {
         return filteredElementsByTags.indexOf(n) !== -1 && filteredElementsByCategory.indexOf(n) !== -1;
       });
-    }
+    },
+    filterTags() {
+      return this.tags.slice(0, this.lastIndexTags)
+    },
+    filterCategories() {
+      return this.translatedCategories.slice(0, this.lastIndexCategories)
+    },
   },
   created() {
     this.loading = true;
@@ -421,8 +507,8 @@ $btn_secondary: #cdd0d2;
   background-color: $btn_secondary;
 }
 .tag_btn {
-  background-color: $btn_secondary;
-  text-decoration: underline;
+  background-color: $primary;
+  color: white;
 }
 .category_btn {
   background-color: $btn_secondary;
@@ -441,19 +527,30 @@ $btn_secondary: #cdd0d2;
 .title_section {
   flex: 3000;
 }
-.description_section {
-  flex: 10000;
-}
 .tag_btn_section {
   flex: 1000;
 }
+.category_section {
+  flex: 1500;
+}
 .icon_btn_section {
   flex: 350;
+}
+.col_title_section {
+  flex: 650;
 }
 .alphabet {
   color: $primary;
   font-family: "Nunito";
   font-weight: bold;
   cursor: pointer;
+}
+.filter-text {
+  font-family: "Nunito";
+  font-weight: normal;
+}
+.element-list {
+  overflow-y: scroll;
+  max-height: 75vh;
 }
 </style>
