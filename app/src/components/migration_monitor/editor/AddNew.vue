@@ -216,16 +216,16 @@ export default {
       type: "",
       types: ["BAR", "LINE", "PIE"],
       board: "",
-      content: null
+      content: null,
     };
   },
   computed: {
     categories() {
-      return this.$store.state.statistics.categories.map(c => c.category);
-    }
+      return this.$store.state.statistics.categories.map((c) => c.category);
+    },
   },
   methods: {
-    addChart: function() {
+    addChart: function () {
       const data = {
         title: this.title,
         content: this.content,
@@ -236,13 +236,23 @@ export default {
         xistime: this.xistime,
         x: this.x,
         y: this.y,
-        board: this.board
+        board: this.board,
       };
-      this.$store.dispatch("statistics/addChart", data).then(() => {
-        this.$router.push("/situation/editor");
-      });
+      this.$store
+        .dispatch("statistics/addChart", data)
+        .then(() => {
+          this.$q.dialog({
+            message: 'upload succeeds, please refresh to see new charts',
+          });
+          // this.$router.push("/situation/editor");
+        })
+        .catch((err) => {
+          this.$q.dialog({
+            message: err,
+          });
+        });
     },
-    reset: function() {
+    reset: function () {
       this.title = "";
       this.description = "";
       this.x = "";
@@ -255,7 +265,7 @@ export default {
       this.board = "";
       this.content = null;
     },
-    onInput: function(e) {
+    onInput: function (e) {
       console.log("Change: ", e);
     },
     getFiles(file) {
@@ -272,13 +282,13 @@ export default {
           type: file.type,
           size: Math.round(file.size / 1000) + " kB",
           result: reader.result,
-          file: file
+          file: file,
         };
         console.log(fileInfo.result);
         this.content = fileInfo.result;
       };
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>
