@@ -4,7 +4,7 @@
     <edit-glossary
       v-if="!loading"
       class="q-ma-md"
-      pagetitle="Edit Glossary Term"
+      pagetitle="glossary.edit"
       v-on:save="editGlossaryItemAndReturn($event)"
       :elem="elem"
     />

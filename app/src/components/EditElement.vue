@@ -1,7 +1,91 @@
 <template>
-  <div class="q-pa-md edit-element-component">
+  <div>
+    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(pagetitle)}}</div>
     <span v-if="loading">Loading...</span>
-    <div v-else>
+    <div class = "edit-element-component q-pa-md q-ma-md" v-else>
+      <span class="q-my-lg label-edit">{{$t('input_labels.title')}}:</span>
+      <q-input
+        class="title_input"
+        outlined
+        v-model="internalTitle"
+      />
+      <span class="q-my-lg label-edit">{{$t('input_labels.description')}}:</span>
+      <glossary-editor
+        class="desc-editor"
+        v-model="internalDescription"
+        :lang="$userLang"
+        ref="editor"
+      />
+      <div class="row">
+        <div
+          v-if="tags_enabled"
+          class="q-my-md tag_list col"
+        >
+          <span class="q-my-lg label-edit">{{$t('input_labels.tags')}}:</span>
+          <div>
+            <q-input
+              color="accent"
+              outlined
+              placeholder="New tag"
+              label-color="accent"
+              v-model="tagInput"
+            />
+            <q-btn
+              no-caps
+              @click="addTag()"
+              :label="$t('button.add_tag')"
+              class="q-my-sm add_tag_btn"
+            />
+            <span
+              v-if="tagError"
+              class="q-ml-sm"
+            >
+              {{ $t(tagErrorMessage) }}
+            </span>
+          </div>
+          <q-list
+            v-if="internalTags.length > 0"
+            separator
+            bordered
+            dense
+          >
+            <q-item
+              v-for="tag in internalTags"
+              :key="tag"
+              class="q-mb-sm"
+            >
+              <q-item-section>
+                <q-btn
+                  class="tag_btn"
+                  no-caps
+                  :label="tag"
+                />
+              </q-item-section>
+              <q-item-section side>
+                <q-btn
+                  @click="internalTags.splice(internalTags.indexOf(tag), 1)"
+                  round
+                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+                  no-caps
+                  class="q-ml-sm del_tag_btn"
+                />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </div>
+        <div
+          v-if="categories_enabled"
+          class="q-my-md q-ml-lg tag_list col"
+        >
+          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}:</span>
+          <q-select
+            v-model="selectedCategory"
+            :options="internalCategories"
+            @input="setCategoryObjectModel($event)"
+          />
+        </div>
+      </div>
+      <hr style="width:85%;border: 0.999px solid #DADADA;margin-top:90px">
       <q-tabs
         v-model="langTab"
         @input="changeLanguage"
@@ -19,63 +103,7 @@
           :label="language.name"
         />
       </q-tabs>
-      <div class="page-title q-my-lg">{{ pagetitle }}</div>
-      <span class="q-my-lg label-edit">{{$t('input_labels.title')}}:</span>
-      <q-input class="title_input" outlined v-model="internalTitle" />
-      <span class="q-my-lg label-edit">{{$t('input_labels.description')}}:</span>
-      <glossary-editor
-        class="desc-editor"
-        v-model="internalDescription"
-        :lang="$userLang"
-        ref="editor"
-      />
-      <div>
-        <div v-if="tags_enabled" class="q-my-md tag_list">
-          <span class="q-my-lg label-edit">{{$t('input_labels.tags')}}:</span>
-          <q-list v-if="internalTags.length > 0" separator bordered dense>
-            <q-item v-for="tag in internalTags" :key="tag" class="q-mb-sm">
-              <q-item-section>
-                <q-btn class="tag_btn" no-caps :label="tag" />
-              </q-item-section>
-              <q-item-section side>
-                <q-btn
-                  @click="internalTags.splice(internalTags.indexOf(tag), 1)"
-                  round
-                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-                  no-caps
-                  class="q-ml-sm del_tag_btn"
-                />
-              </q-item-section>
-            </q-item>
-          </q-list>
-          <div>
-            <q-input
-              color="accent"
-              outlined
-              placeholder="New tag"
-              label-color="accent"
-              v-model="tagInput"
-            />
-            <q-btn
-              no-caps
-              @click="addTag()"
-              :label="$t('button.add_tag')"
-              class="q-my-sm add_tag_btn"
-            />
-            <span v-if="tagError" class="q-ml-sm">
-              {{ tagErrorMessage }}
-            </span>
-          </div>
-        </div>
-        <div v-if="categories_enabled" class="q-my-md tag_list">
-          <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}:</span>
-          <q-select
-            v-model="selectedCategory"
-            :options="internalCategories"
-            @input="setCategoryObjectModel($event)"
-          />
-        </div>
-      </div>
+      <hr style="width:85%;border: 0.999px solid #DADADA">
       <div class="row q-mx-auto">
         <q-btn
           outline
@@ -115,7 +143,7 @@ export default {
     },
     tags: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -125,7 +153,7 @@ export default {
     },
     categories: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
       }
     },
@@ -237,7 +265,7 @@ export default {
     this.loading = true;
     let al = this.$i18n.locale;
     this.fetchLanguages().then(() => {
-      this.langTab = this.languages.filter(function(l) {
+      this.langTab = this.languages.filter(function (l) {
         return l.lang == al;
       })[0].lang;
       if (this.elem) {
@@ -274,7 +302,7 @@ export default {
 $btn_secondary: #cdd0d2;
 $title_font_size: 20pt;
 .edit-element-component {
-  border: 1px solid $primary;
+  border: 1px solid $btn_secondary;
   border-radius: 10px;
 }
 .edit-element-button {

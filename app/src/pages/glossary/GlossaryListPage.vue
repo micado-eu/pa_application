@@ -8,8 +8,8 @@
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
-      add_label="Add Term"
-      title="Glossary"
+      add_label="button.add_glossary"
+      title="glossary.list_title"
       publish_mode
       :update_publish_fn="updatePublishGlossaryItem"
     />

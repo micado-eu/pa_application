@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{title}}</div>
+    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(title)}}</div>
     <div class="row">
       <div class="col q-mt-md q-ml-md">
         <q-list
@@ -9,14 +9,14 @@
         >
           <q-item>
             <q-item-section>
-              <q-item-label class="title-label">Filter</q-item-label>
+              <q-item-label class="title-label">{{$t("filters.title")}}</q-item-label>
             </q-item-section>
             <q-item-section>
               <a
                 href="javascript:void(0)"
                 @click="clearFilters()"
               >
-                Clear all filters
+                {{$t("filters.clear_all")}}
               </a>
             </q-item-section>
           </q-item>
@@ -27,7 +27,7 @@
           >
             <template v-slot:header>
               <q-item-section>
-                <q-item-label class="title-label">Tags</q-item-label>
+                <q-item-label class="title-label">{{$t("filters.tags_title")}}</q-item-label>
               </q-item-section>
             </template>
             <q-item
@@ -49,7 +49,7 @@
                 class="filter-text"
                 @click="showMoreTags()"
               >
-                Show more
+                {{$t("filters.show_more")}}
               </a>
             </q-item>
           </q-expansion-item>
@@ -60,7 +60,7 @@
           >
             <template v-slot:header>
               <q-item-section>
-                <q-item-label class="title-label">Category</q-item-label>
+                <q-item-label class="title-label">{{$t("filters.category_title")}}</q-item-label>
               </q-item-section>
             </template>
             <q-item
@@ -82,7 +82,7 @@
                 class="filter-text"
                 @click="showMoreCategories()"
               >
-                Show more
+                {{$t("filters.show_more")}}
               </a>
             </q-item>
           </q-expansion-item>
@@ -96,7 +96,7 @@
             debounce="500"
             filled
             outlined
-            label="Search"
+            :label='$t("input_labels.search")'
             class="col-10"
           >
             <template v-slot:append>
@@ -106,7 +106,7 @@
           <q-btn
             outlined
             no-caps
-            label="Categories"
+            :label='$t("button.categories")'
             class="add-btn col q-ml-md"
             :to="categories_url"
             v-if="categories_enabled"
@@ -114,7 +114,7 @@
           <q-btn
             outlined
             no-caps
-            :label="add_label"
+            :label='$t(add_label)'
             class="add-btn col q-ml-md"
             :to="new_url"
           />
@@ -137,13 +137,13 @@
                 class="publish_section"
                 v-if="categories_enabled"
               >
-                Category
+                {{$t("lists.category")}}
               </q-item-section>
               <q-item-section
                 class="publish_section"
                 v-if="tags_enabled"
               >
-                Tag
+                {{$t("lists.tags")}}
               </q-item-section>
             </q-item>
             <q-separator v-if="publish_mode || categories_enabled || tags_enabled" />

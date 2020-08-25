@@ -48,7 +48,10 @@
     "add_category":"Add Category",
     "save_document":"Save document",
     "add_type":"Add Type",
-    "view":"View"
+    "view":"View",
+    "add_glossary": "Add Term",
+    "add_event": "Add Event",
+    "categories": "Categories"
   },
   "data_settings":{
     "data_management":"Data management",
@@ -110,5 +113,33 @@
     "age":"Age",
     "gender":"Gender",
     "status":"Status"
+  },
+  "information_centre": {
+    "list_title": "Information centre",
+    "add_new": "Add New Event to the Information Centre",
+    "edit": "Edit Event from the Information Centre",
+    "categories_title": "Information Centre - Categories",
+    "categories_error": "Cannot delete a category when an item has this category"
+  },
+  "glossary": {
+    "list_title": "Glossary",
+    "add_new": "Add New Glossary Term",
+    "edit": "Edit Glossary Term"
+  },
+  "tags": {
+    "duplicate_error": "Duplicates are not allowed.",
+    "empty_error": "Empty tags are not allowed."
+  },
+  "filters": {
+    "title": "Filter",
+    "clear_all": "Clear all filters",
+    "tags_title": "Tags",
+    "category_title": "Category",
+    "show_more": "Show more"
+  },
+  "lists": {
+    "published": "Published",
+    "category": "Category",
+    "tags": "Tags"
   }
 }

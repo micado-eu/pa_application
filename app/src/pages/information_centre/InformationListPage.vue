@@ -8,8 +8,8 @@
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
       icon_name="document"
-      add_label="Add Event"
-      title="Information centre"
+      add_label="button.add_event"
+      title="information_centre.list_title"
       publish_mode
       :update_publish_fn="updatePublishInformationItem"
       categories_enabled

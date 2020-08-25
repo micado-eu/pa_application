@@ -1,7 +1,7 @@
 <template>
   <div :id="$options.name">
-    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">Information Centre - Categories</div>
-    <span v-if="errorMessage">{{errorMessage}}</span>
+    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t("information_centre.categories_title")}}</div>
+    <span v-if="errorMessage">{{$t(errorMessage)}}</span>
     <q-list
       bordered
       separator
@@ -147,12 +147,13 @@ export default {
         "information_category/deleteInformationCategory",
         index
       ).catch(() => {
-        this.errorMessage = "Cannot delete a category when an item has this category"
+        this.errorMessage = "information_centre.categories_error"
       });
     },
     showCategoryLabel(workingCat) {
-
-      return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].eventCategory
+      if (workingCat.translations) {
+        return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].eventCategory
+      }
     },
     saveInformationCategory() {
 

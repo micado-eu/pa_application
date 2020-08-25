@@ -7,7 +7,7 @@
       :tags="tags"
       :elem="elem"
       class="q-ma-md"
-      pagetitle="Edit Event from the Information Centre"
+      pagetitle="information_centre.edit"
     />
   </div>
 </template>

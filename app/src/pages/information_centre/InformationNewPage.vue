@@ -1,7 +1,6 @@
 <template>
   <edit-information
-    class="q-ma-md"
-    pagetitle="Add New Event to the Information Centre"
+    pagetitle="information_centre.add_new"
     v-on:save="saveNewInformationItemAndReturn($event)"
   />
 </template>
