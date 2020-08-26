@@ -22,19 +22,20 @@
           class="q-my-md tag_list col"
         >
           <span class="q-my-lg label-edit">{{$t('input_labels.tags')}}:</span>
-          <div>
+          <div class="row">
             <q-input
               color="accent"
               outlined
               placeholder="New tag"
               label-color="accent"
               v-model="tagInput"
+              class="col-8"
             />
             <q-btn
               no-caps
               @click="addTag()"
               :label="$t('button.add_tag')"
-              class="q-my-sm add_tag_btn"
+              class="q-my-sm q-ml-sm add_tag_btn col"
             />
             <span
               v-if="tagError"
@@ -309,12 +310,6 @@ $title_font_size: 20pt;
   border-radius: 2px;
   width: 20%;
 }
-.page-title {
-  color: #0f3a5d;
-  font-family: "Nunito";
-  font-size: $title_font_size;
-  font-weight: bold;
-}
 
 .label-edit {
   font-family: "Nunito";
@@ -334,6 +329,7 @@ $title_font_size: 20pt;
   font-size: $title_font_size;
 }
 .add_tag_btn {
-  background-color: $btn_secondary;
+  background-color: #0b91ce;
+  color: white;
 }
 </style>
