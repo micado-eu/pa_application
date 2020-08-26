@@ -22,7 +22,7 @@
             round
             class="item-btn"
             icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
-            @click="deleteInformationCategory(a_information_category.id)"
+            @click="editInformationCategory(a_information_category)"
           />
         </q-item-section>
         <q-item-section
@@ -33,7 +33,7 @@
             round
             class="item-btn"
             icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
-            @click="editInformationCategory(a_information_category)"
+            @click="deleteInformationCategory(a_information_category.id)"
           />
         </q-item-section>
       </q-item>
@@ -130,12 +130,16 @@ export default {
       hideAdd: false,
       isNew: false,
       linkable: false,
-      errorMessage: ""
+      errorMessage: "",
+      disabledDelete: []
     };
   },
   computed: {
     information_category() {
       return this.$store.state.information_category.information_category;
+    },
+    information() {
+      return this.$store.state.information.information;
     }
   },
   methods: {
@@ -143,12 +147,16 @@ export default {
       this.$emit("scroll", "#" + this.$options.name);
     },
     deleteInformationCategory(index) {
-      this.$store.dispatch(
+      if (this.disabledDelete.includes(index)) {
+        this.errorMessage = "information_centre.categories_error"
+      } else {
+        this.$store.dispatch(
         "information_category/deleteInformationCategory",
         index
       ).catch(() => {
         this.errorMessage = "information_centre.categories_error"
       });
+      }
     },
     showCategoryLabel(workingCat) {
       if (workingCat.translations) {
@@ -225,7 +233,14 @@ export default {
     this.$store
       .dispatch("information_category/fetchInformationCategory")
       .then(processes => {
-        this.loading = false;
+        this.$store.dispatch("information/fetchInformation").then(() => {
+          for (let inf of this.information) {
+            if (!this.disabledDelete.includes(inf.category)) {
+              this.disabledDelete.push(inf.category)
+            }
+          }
+          this.loading = false;
+        })
       });
 
   }
