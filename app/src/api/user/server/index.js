@@ -9,4 +9,12 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
+
+  fetchSpecificUser (tenant, id) {
+    console.log(tenant)
+    return axiosInstance
+      .get('/backend/1.0.0/users/' + id + '?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans')
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
 }
