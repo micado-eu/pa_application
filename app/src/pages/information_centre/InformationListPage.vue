@@ -54,7 +54,7 @@ export default {
       this.deleteInformationItem(item)
         .then(this.fetchInformation)
         .then(() => {
-          this.loading = false;
+          this.$router.go();
         });
     }
   },

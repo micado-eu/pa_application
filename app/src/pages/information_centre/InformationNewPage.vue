@@ -43,7 +43,7 @@ export default {
         .then(newData => {
           id = newData.id;
           let dataWithId = Object.assign(translationData, { id });
-          let tagData = {
+          tagData = {
             eventId: newData.id,
             tags
           };
@@ -55,7 +55,8 @@ export default {
         .then(() => {
           router.push({ path: "/information" });
         })
-        .catch(() => {
+        .catch((e) => {
+          console.error(e);
           if (id !== -1) {
             this.deleteInformationItem({ id });
           }

@@ -438,37 +438,41 @@ export default {
     this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => {
       this.translatedElements = this.elements.map(e => {
-        let idx = e.translations.findIndex(t => t.lang === this.lang);
-        let translation = { ...e.translations[idx] };
-        if (this.categories_enabled) {
-          let idxCat = e.category.translations.findIndex(t => t.lang === this.lang);
-          translation.category = e.category.translations[idxCat]
-          if (this.translatedCategories.indexOf(translation.category) == -1) {
-            this.translatedCategories.push(translation.category)
+        let translation = undefined
+        if (e.translations) {
+          let idx = e.translations.findIndex(t => t.lang === this.lang);
+          translation = { ...e.translations[idx] };
+          if (this.categories_enabled) {
+            let idxCat = e.category.translations.findIndex(t => t.lang === this.lang);
+            translation.category = e.category.translations[idxCat]
+            if (this.translatedCategories.indexOf(translation.category) == -1) {
+              this.translatedCategories.push(translation.category)
+            }
           }
-        }
-        if (this.tags_enabled) {
-          // Tags
-          if (e.tags.length > 0) {
-            let tagTranslations = []
-            for (let tag of e.tags) {
-              let translations = tag.translations.filter(tag => tag.lang === this.lang)
-              if (translations.length > 0) {
-                tagTranslations.push(translations[0])
-                if (this.tags.indexOf(translations[0].tag) == -1) {
-                  this.tags.push(translations[0].tag);
+          if (this.tags_enabled) {
+            // Tags
+            if (e.tags.length > 0) {
+              let tagTranslations = []
+              for (let tag of e.tags) {
+                let translations = tag.translations.filter(tag => tag.lang === this.lang)
+                if (translations.length > 0) {
+                  tagTranslations.push(translations[0])
+                  if (this.tags.indexOf(translations[0].tag) == -1) {
+                    this.tags.push(translations[0].tag);
+                  }
                 }
               }
+              translation.tags = tagTranslations
             }
-            translation.tags = tagTranslations
           }
-        }
-        if (this.publish_mode) {
-          // Publish
-          this.publishState[e.id] = e.published;
+          if (this.publish_mode) {
+            // Publish
+            this.publishState[e.id] = e.published;
+          }
         }
         return translation
       });
+      this.translatedElements = this.translatedElements.filter(e => e !== undefined)
       this.translatedElements.sort(this.compare)
       for (let elem of this.translatedElements) {
         let firstChar = elem.title.charAt(0).toUpperCase()
