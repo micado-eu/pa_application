@@ -223,7 +223,7 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <div class="q-ml-sm q-mt-md col">
+          <div class="q-ml-sm q-mt-md col" v-if="alphabetical_sorting">
             <span
               v-for="(letter, index) in alphabet"
               :key="letter"
@@ -299,6 +299,10 @@ export default {
       default: "/"
     },
     tags_enabled: {
+      type: Boolean,
+      default: false
+    },
+    alphabetical_sorting: {
       type: Boolean,
       default: false
     }
@@ -382,6 +386,9 @@ export default {
     },
     compare(a, b) {
       return a.title.localeCompare(b.title, this.$userLang, { sensitivity: "base" })
+    },
+    compareTranslationDates(a, b) {
+      return new Date(b.translationDate) - new Date(a.translationDate)
     },
     scrollIntoElement(index) {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
@@ -473,14 +480,19 @@ export default {
         return translation
       });
       this.translatedElements = this.translatedElements.filter(e => e !== undefined)
-      this.translatedElements.sort(this.compare)
-      for (let elem of this.translatedElements) {
-        let firstChar = elem.title.charAt(0).toUpperCase()
-        if (!this.alphabet.includes(firstChar)) {
-          this.alphabet.push(firstChar)
-          this.alphabetIds.push(elem.id)
+      if (this.alphabetical_sorting) {
+        this.translatedElements.sort(this.compare)
+        for (let elem of this.translatedElements) {
+          let firstChar = elem.title.charAt(0).toUpperCase()
+          if (!this.alphabet.includes(firstChar)) {
+            this.alphabet.push(firstChar)
+            this.alphabetIds.push(elem.id)
+          }
         }
+      } else {
+        this.translatedElements.sort(this.compareTranslationDates)
       }
+      console.log(this.translatedElements)
       this.filteredElementsBySearch = this.translatedElements;
       this.filteredElementsByTags = this.translatedElements;
       this.filteredElementsByCategory = this.translatedElements;

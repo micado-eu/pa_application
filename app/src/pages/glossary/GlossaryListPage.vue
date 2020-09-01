@@ -12,6 +12,7 @@
       title="glossary.list_title"
       publish_mode
       :update_publish_fn="updatePublishGlossaryItem"
+      alphabetical_sorting
     />
   </div>
 </template>
