@@ -119,34 +119,36 @@
             :to="new_url"
           />
         </div>
+        <div class="flex" v-if="publish_mode || categories_enabled || tags_enabled">
+          <!-- column title -->
+            <span
+              v-if="publish_mode"
+              style="flex:0.2"
+            >
+              Published
+            </span>
+            <span
+              v-if="publish_mode"
+              style="flex:1.5"
+            />
+            <span
+              v-if="categories_enabled"
+              style="flex:0.75"
+            >
+              {{$t("lists.category")}}
+            </span>
+            <span
+              v-if="tags_enabled"
+              style="flex:1.045"
+            >
+              {{$t("lists.tags")}}
+            </span>
+          </div>
+        <div class="row">
+          <q-separator v-if="publish_mode || categories_enabled || tags_enabled" style="max-width: 91.7%"/>
+        </div>
         <div class="row">
           <q-list class="q-mt-md col-11 element-list">
-            <!-- column title -->
-            <q-item v-if="publish_mode || categories_enabled || tags_enabled">
-              <q-item-section
-                class="publish_section"
-                v-if="publish_mode"
-              >
-                Published
-              </q-item-section>
-              <q-item-section
-                class="col_title_section"
-                v-if="publish_mode"
-              />
-              <q-item-section
-                class="publish_section"
-                v-if="categories_enabled"
-              >
-                {{$t("lists.category")}}
-              </q-item-section>
-              <q-item-section
-                class="publish_section"
-                v-if="tags_enabled"
-              >
-                {{$t("lists.tags")}}
-              </q-item-section>
-            </q-item>
-            <q-separator v-if="publish_mode || categories_enabled || tags_enabled" />
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -524,6 +526,7 @@ $btn_secondary: #cdd0d2;
 }
 .tag_btn {
   background-color: $primary;
+  width: 60px;
   color: white;
 }
 .category_btn {
