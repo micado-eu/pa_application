@@ -1,17 +1,17 @@
 <template>
   <div class="q-pa-md">
-    <h5>{{$options.name}}</h5>
+    <h5>{{$t("data_settings.language")}}</h5>
 
     <q-btn
       v-for="language in languages"
       :key="language.isoCode"
-      :unelevated="!language.active"
-      :outline="language.active"
+      :outline="!language.active"
       :style="language.active"
       class="q-mx-sm language_btn"
       :label="language.name"
       @click="setActive(language)"
       :id="language.isoCode"
+      color="accent"
       no-caps
     ></q-btn>
   </div>
@@ -43,7 +43,6 @@ export default {
 </script>
 <style lang="scss" scoped>
 .language_btn {
-  color: #0f3a5d;
   border-radius: 2px;
 }
 </style>
