@@ -88,7 +88,7 @@ import pieChart from "./chart/pieChart";
 import barChart from "./chart/barChart";
 
 export default {
-  name: "MigrationSituation",
+  name: "EU",
   components: {
     lineChart,
     pieChart,

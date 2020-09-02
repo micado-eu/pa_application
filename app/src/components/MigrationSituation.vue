@@ -1,19 +1,45 @@
 <template>
   <div id="migration-situation-container" v-if="boards.length>2">
-    <div id="nav" class="bg-accent">
-      <q-item
-        clickable
-        active
-        active-class="nav-active"
-        class="col"
-        v-for="(d,i) in boards"
-        :key="i"
-        :to="d.link"
-      >
-        <h6>{{d.title}}</h6>
-      </q-item>
-    </div>
-    <router-view />
+    <q-drawer
+      show-if-above
+      bordered
+      :content-style="{backgroundColor: '#DCE4E8',border: 'none'}"
+      class="situation-drawer"
+    >
+      <q-scroll-area class="fit">
+        <q-list>
+          <template v-for="(board,i) in boards">
+            <q-expansion-item
+              class="situation-menu-expansion-item"
+              :key="i"
+              :to="board.link"
+              expand-separator
+              :label="board.title"
+              caption
+              clickable
+            >
+              <q-item
+                v-for="(c,i) in getCategory(board)"
+                :key="i+'_category'"
+                :header-inset-level="1"
+                clickable
+                :to="onClickNav(board.title, c.category)"
+                class="situation-menu-item"
+              >
+                <q-item-section>{{ c.category }}</q-item-section>
+              </q-item>
+            </q-expansion-item>
+            <q-separator :key="'sep' + i" />
+          </template>
+        </q-list>
+      </q-scroll-area>
+    </q-drawer>
+    <q-page-container>
+      <q-page>
+        <router-view />
+      </q-page>
+    </q-page-container>
+    <div class="grey-block"></div>
   </div>
 </template>
 <script>
@@ -25,10 +51,28 @@ export default {
         return { title: b, link: `/situation/${b}` };
       });
       boards.push(
-        { title: "map", link: `/situation/map` },
+        // { title: "map", link: `/situation/map` },
         { title: "editor", link: `/situation/editor` }
       );
       return boards;
+    },
+  },
+  methods: {
+    getCategory: function (board) {
+      return this.$store.state.statistics.categories.filter(
+        (c) => c.board === board.title
+      );
+    },
+    /**
+     * jump to the corresponding chartGroup when clicked
+     */
+    onClickNav: function (board, category) {
+      const baseURL = this.$route.path.substring(
+        0,
+        this.$route.path.indexOf("situation") + 10
+      );
+      // location.href = baseURL + board + "#" + category;
+      return baseURL + board + "#" + category;
     },
   },
   created: function () {
@@ -44,6 +88,14 @@ export default {
 <style scoped>
 #migration-situation-container {
   min-height: inherit;
+  position: relative;
+  top: -50px;
+}
+.grey-block {
+  height: 50px;
+  background-color: #dce4e8;
+  width: 299px;
+  position: absolute;
 }
 #nav {
   display: flex;
@@ -57,7 +109,12 @@ export default {
   background-color: white;
   color: black;
 }
-h6 {
-  margin: 0;
+.situation-menu-expansion-item {
+  background-color: #0b91ce;
+  font-weight: bold;
+}
+.situation-menu-item {
+  background-color: #dce4e8;
+  font-weight: normal;
 }
 </style>

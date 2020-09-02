@@ -1,15 +1,5 @@
 <template>
   <div class="board">
-    <div id="nav">
-      <router-link v-for="(d,i) in categories" :key="i" :to="'#'+d.category" class="col">
-        <div class="anchor" @click="onClickNav(d.category)">
-          <p>
-            <q-icon :name="d.icon" />
-          </p>
-          <p>{{d.category}}</p>
-        </div>
-      </router-link>
-    </div>
     <div class="charts" ref="charts">
       <ChartGroup
         v-for="(c,i) in categories"
@@ -50,12 +40,6 @@ export default {
     },
   },
   methods: {
-    /**
-     * jump to the corresponding chartGroup when clicked
-     */
-    onClickNav: function (category) {
-      location.href = this.$route.path + "#" + category;
-    },
     printPNG: function () {
       htmlToImage.toPng(this.$refs["charts"]).then(function (dataUrl) {
         download(dataUrl, "my-node.png");
@@ -75,15 +59,7 @@ export default {
   background-color: white;
   padding-bottom: 10rem;
 }
-h6 {
-  display: inline-block;
-}
-#nav {
-  display: flex;
-  position: sticky;
-  top: 50px;
-  background-color: rgba(255, 255, 255, 0.75);
-}
+
 .col {
   flex: 1;
   text-decoration: none;
@@ -91,18 +67,7 @@ h6 {
   display: flex;
   justify-content: center;
 }
-.anchor {
-  width: max-content;
-  text-align: center;
-  padding: 20px;
-}
-.anchor:hover {
-  color: #ff7c44;
-}
-.row {
-  width: 90%;
-  margin: auto;
-}
+
 p {
   margin: 0;
 }
