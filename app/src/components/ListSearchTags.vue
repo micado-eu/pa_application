@@ -528,6 +528,7 @@ $btn_secondary: #cdd0d2;
   background-color: $primary;
   width: 60px;
   color: white;
+  border-radius: 32px;
 }
 .category_btn {
   background-color: $btn_secondary;
