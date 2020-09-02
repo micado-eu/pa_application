@@ -526,7 +526,7 @@ $btn_secondary: #cdd0d2;
 }
 .tag_btn {
   background-color: $primary;
-  width: 60px;
+  width: 110px;
   color: white;
   border-radius: 32px;
 }
