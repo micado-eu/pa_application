@@ -46,13 +46,11 @@
           color="accent"
           :label="$t('button.go_back')"
           @click="$router.go(-1)"
-          :disable="hideAdd"
         />
         <q-btn
           color="accent"
           :label="$t('button.add')"
           @click="newInformationCategory()"
-          :disable="hideAdd"
         />
       </q-card-section>
       <q-card-section :hidden="hideForm">

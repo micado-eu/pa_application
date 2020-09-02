@@ -44,15 +44,15 @@ export default {
       "updatePublishInformationItem"
     ]),
     ...mapActions("information_category", ["fetchInformationCategory"]),
-    ...mapActions("information_tags", ["fetchInformationTags"]),
-    ...mapActions("information_tags", ["fetchInformationTags"]),
+    ...mapActions("information_tags", ["fetchInformationTags", "deleteInformationTagsFromEvent"]),
     getEditRoute(id) {
       return "information/" + id + "/edit";
     },
     deleteItem(item) {
       this.loading = true;
-      this.deleteInformationItem(item)
-        .then(this.fetchInformation)
+      this.deleteInformationTagsFromEvent(item.id)
+        .then(this.deleteInformationItem(item))
+        .then(this.fetchInformation())
         .then(() => {
           this.$router.go();
         });
