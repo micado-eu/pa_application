@@ -9,10 +9,12 @@
       <q-scroll-area class="fit">
         <q-list>
           <template v-for="(board,i) in boards">
+            <q-separator class="bg-dark-separator" :key="'sep' + i" />
             <q-expansion-item
               class="situation-menu-expansion-item"
               :key="i"
               :to="board.link"
+              active-class="my-menu-link"
               expand-separator
               :label="board.title"
               caption
@@ -29,7 +31,7 @@
                 <q-item-section>{{ c.category }}</q-item-section>
               </q-item>
             </q-expansion-item>
-            <q-separator :key="'sep' + i" />
+            <q-separator class="bg-dark-separator" :key="'sep' + i" />
           </template>
         </q-list>
       </q-scroll-area>
@@ -110,11 +112,15 @@ export default {
   color: black;
 }
 .situation-menu-expansion-item {
-  background-color: #0b91ce;
+  /* background-color: #0b91ce; */
   font-weight: bold;
 }
 .situation-menu-item {
   background-color: #dce4e8;
   font-weight: normal;
+}
+.q-list {
+  /* align with the main menu bar */
+  margin-top: 177px;
 }
 </style>

@@ -1,5 +1,4 @@
 <template>
-  <div>
     <svg :width="width" :height="height" :id="id">
       <g
         v-if="typeof width!=='string'"
@@ -15,7 +14,7 @@
         />
       </g>
     </svg>
-  </div>
+
 </template>
 <script>
 import { geoPath, geoMercator } from "d3";
@@ -37,7 +36,7 @@ export default {
         bottom: 30,
       },
       width: "100%",
-      height: "300",
+      height: "85%",
       xid: "x0",
       yid: "y0",
       timeout: false,

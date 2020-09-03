@@ -6,6 +6,7 @@
         :key="board+'_'+i"
         :category="c.category"
         :board="board"
+        @group-clicked="renderModal"
       />
     </div>
     <q-btn
@@ -16,6 +17,7 @@
       title="print this page"
       @click="printPNG()"
     />
+    <Modal v-if="showModal" @close="showModal = false" :graphData="graphData" />
   </div>
 </template>
 
@@ -23,11 +25,19 @@
 import ChartGroup from "./ChartGroup";
 import htmlToImage from "html-to-image";
 import download from "downloadjs";
+import Modal from "./modal/Modal";
 
 export default {
   name: "Board",
   components: {
     ChartGroup,
+    Modal,
+  },
+  data: function () {
+    return {
+      showModal: true,
+      grahDataId: null,
+    };
   },
   computed: {
     categories: function () {
@@ -38,12 +48,21 @@ export default {
     board: function () {
       return this.$route.params.board;
     },
+    graphData: function () {
+      return this.$store.state.statistics.charts.filter(
+        (c) => c.id === this.grahDataId
+      )[0];
+    },
   },
   methods: {
     printPNG: function () {
       htmlToImage.toPng(this.$refs["charts"]).then(function (dataUrl) {
         download(dataUrl, "my-node.png");
       });
+    },
+    renderModal: function (grahDataId) {
+      this.grahDataId = grahDataId;
+      this.showModal = true;
     },
   },
 };

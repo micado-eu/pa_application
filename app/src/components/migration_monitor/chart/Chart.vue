@@ -1,22 +1,5 @@
 <template>
-  <div id="card">
-    <q-tooltip>
-      <div class="info">
-        <div class="info-content">
-          <p>
-            <strong>description:</strong>
-            {{graphData.description}}
-          </p>
-          <p>
-            <strong>data provider:</strong>EU
-          </p>
-          <p>
-            <strong>updated time:</strong>2019.07
-          </p>
-        </div>
-      </div>
-    </q-tooltip>
-
+  <div id="card" :style="{ 'height': height }" @click="$emit('chart-clicked',graphData.id)">
     <lineChart
       v-if="graphData.type==='LINE'"
       class="chart"
@@ -63,16 +46,19 @@ export default {
   },
   props: ["graphData"],
   data: function () {
-    return {};
+    return {
+      height: "350px",
+    };
   },
   computed: {},
-  mounted: function () {},
+  created: function () {
+    if (this.graphData.type === "MAP") this.height = "600px";
+  },
 };
 </script>
 
 <style scoped>
 #card {
-  height: 350px;
   margin: auto;
   width: 97%;
   margin-top: 20px;

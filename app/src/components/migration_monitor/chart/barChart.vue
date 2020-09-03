@@ -92,7 +92,7 @@ export default {
         bottom: 60,
       },
       width: "100%",
-      height: "300",
+      height: "85%",
       xid: "x0",
       yid: "y0",
       timeout: false,

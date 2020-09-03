@@ -4,8 +4,8 @@
       <h5>{{category}}</h5>
     </div>
     <div class="row">
-      <div v-for="(d,i) in graph_data" :key="i" class="col-12 col-lg-6">
-        <Chart :graph-data="d" />
+      <div v-for="(d,i) in graph_data" :key="i" class="col-12">
+        <Chart :graph-data="d" @chart-clicked="sendData" />
       </div>
     </div>
   </div>
@@ -22,12 +22,12 @@ import Chart from "./chart/Chart";
 export default {
   name: "ChartGroup",
   components: {
-    Chart
+    Chart,
   },
   props: ["category", "board"],
   data: function () {
     return {
-      graph_data: []
+      graph_data: [],
     };
   },
   computed: {
@@ -43,8 +43,15 @@ export default {
           description: "bla",
           format: "csv",
           title: "TEST MAP",
-          type: "MAP"
-        }];
+          type: "MAP",
+        },
+      ];
+    },
+  },
+  methods: {
+    sendData: function (grahDataId) {
+      console.log("group:",grahDataId);
+      this.$emit("group-clicked", grahDataId);
     },
   },
   mounted: function () {
@@ -54,7 +61,7 @@ export default {
         this.graph_data.push(c);
       }
     });
-  }
+  },
 };
 </script>
 
