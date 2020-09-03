@@ -1,7 +1,11 @@
 <template>
-  <div class="q-pa-md">
-    <!-- <Category /> -->
-    <AddNew />
+  <div>
+    <div
+      style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44"
+    >Add new chart</div>
+    <div class="q-pa-md">
+      <AddNew />
+    </div>
   </div>
 </template>
 
@@ -13,11 +17,11 @@ export default {
   name: "MigrationMonitorEditor",
   components: {
     // Category,
-    AddNew
+    AddNew,
   },
   data() {
     return {};
-  }
+  },
 };
 </script>
 <style scoped>

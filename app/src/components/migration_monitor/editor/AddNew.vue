@@ -1,19 +1,13 @@
 <template>
   <div :id="$options.name" class="q-pa-md">
-    <router-link :to="'#'+$options.name">
-      <h5 @click="onClickTitle()">{{$options.name}}</h5>
-    </router-link>
     <div style="text-align:center;padding-top:30px">
-      <div
-        class="q-pa-lg"
-        style="display:inline-block; border-width:1px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; padding-top:0px; width:750px;"
-      >
+      <div class="q-pa-lg edit-element-component">
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
           <div class="col-4" style="padding-left:40px;">
             <h5 style="text-align:left;font-size:18px">Chart title</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="title" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="title" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -21,7 +15,7 @@
             <h5 style="text-align:left;font-size:18px">Category</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="category" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="category" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -29,7 +23,7 @@
             <h5 style="text-align:left;font-size:18px">Chart type</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-select v-model="type" rounded standout :options="types" label @input="onInput" />
+            <q-select v-model="type" standout :options="types" label @input="onInput" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -37,7 +31,7 @@
             <h5 style="text-align:left;font-size:18px">Board</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="board" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="board" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -45,7 +39,7 @@
             <h5 style="text-align:left;font-size:18px">x axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="x" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="x" />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -53,7 +47,7 @@
             <h5 style="text-align:left;font-size:18px">y axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="y" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="y" />
           </div>
         </div>
 
@@ -65,7 +59,6 @@
             <q-input
               type="textarea"
               bg-color="grey-3"
-              rounded
               standout
               outlined
               v-model="description"
@@ -89,7 +82,6 @@
           <div class="col-8" style="margin: auto;display: block;">
             <q-select
               v-model="data_format"
-              rounded
               standout
               :options="formats"
               label="Standard"
@@ -106,7 +98,7 @@
             <h5 style="text-align:left;font-size:18px">Choose csv</h5>
           </div>
           <div class="col-6" style="margin: auto;display: block;">
-            <q-file @input="getFiles" bg-color="grey-3" dense rounded standout outlined></q-file>
+            <q-file @input="getFiles" bg-color="grey-3" dense standout outlined></q-file>
           </div>
           <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
             <!-- <q-img
@@ -136,7 +128,7 @@
             <h5 style="text-align:left;font-size:18px">Choose JSON</h5>
           </div>
           <div class="col-6" style="margin: auto;display: block;">
-            <q-file @input="getFiles" bg-color="grey-3" dense rounded standout outlined></q-file>
+            <q-file @input="getFiles" bg-color="grey-3" dense standout outlined></q-file>
           </div>
           <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
             <!-- <q-img
@@ -166,7 +158,7 @@
             <h5 style="text-align:left;font-size:18px">API address</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense rounded standout outlined v-model="url" />
+            <q-input bg-color="grey-3" dense standout outlined v-model="url" />
           </div>
         </div>
       </div>
@@ -176,7 +168,6 @@
           <q-btn
             color="accent"
             unelevated
-            rounded
             label="Cancel"
             style="width:100px"
             @click="reset()"
@@ -187,7 +178,6 @@
           <q-btn
             color="info"
             unelevated
-            rounded
             label="Save/Update"
             style="width:150px"
             @click="addChart()"
@@ -242,7 +232,7 @@ export default {
         .dispatch("statistics/addChart", data)
         .then(() => {
           this.$q.dialog({
-            message: 'upload succeeds, please refresh to see new charts',
+            message: "upload succeeds, please refresh to see new charts",
           });
           // this.$router.push("/situation/editor");
         })
@@ -291,5 +281,10 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
+$btn_secondary: #cdd0d2;
+.edit-element-component {
+  border: 1px solid $btn_secondary;
+  border-radius: 10px;
+}
 </style>
