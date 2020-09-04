@@ -7,7 +7,14 @@
             <h5 style="text-align:left;font-size:18px">Chart title</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="title" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="title"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -15,7 +22,14 @@
             <h5 style="text-align:left;font-size:18px">Category</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="category" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="category"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -23,7 +37,13 @@
             <h5 style="text-align:left;font-size:18px">Chart type</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-select v-model="type" standout :options="types" label @input="onInput" />
+            <q-select
+              v-model="type"
+              standout
+              :options="types"
+              label
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -31,7 +51,14 @@
             <h5 style="text-align:left;font-size:18px">Board</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="board" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="board"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -39,7 +66,14 @@
             <h5 style="text-align:left;font-size:18px">x axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="x" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="x"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
         <div class="q-pa-xsm row" style="text-align:center; padding-right:45px">
@@ -47,7 +81,14 @@
             <h5 style="text-align:left;font-size:18px">y axis</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="y" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="y"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
 
@@ -56,13 +97,7 @@
             <h5 style="text-align:left;font-size:18px">Chart description</h5>
           </div>
           <div class="col-8" style="display: block;">
-            <q-input
-              type="textarea"
-              bg-color="grey-3"
-              standout
-              outlined
-              v-model="description"
-            />
+            <q-input type="textarea" bg-color="grey-3" standout outlined v-model="description" />
           </div>
         </div>
 
@@ -85,7 +120,8 @@
               standout
               :options="formats"
               label="Standard"
-              @input="onInput"
+              @input="onChangeFileType"
+              :rules="[val => !!val || 'Field is required']"
             />
           </div>
         </div>
@@ -97,25 +133,16 @@
           <div class="col-4" style="padding-left:40px;">
             <h5 style="text-align:left;font-size:18px">Choose csv</h5>
           </div>
-          <div class="col-6" style="margin: auto;display: block;">
-            <q-file @input="getFiles" bg-color="grey-3" dense standout outlined></q-file>
-          </div>
-          <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
-            <!-- <q-img
-              :src="myimage"
-              spinner-color="white"
-              style="max-height: 100px; max-width: 150px"
-              @click="hotimage = true"
-            />-->
-            <q-dialog>
-              <q-card>
-                <!-- <v-hotspot
-                  :init-options="hotspotConfig"
-                  @save-data="saveData"
-                  @after-delete="afterDelete"
-                />-->
-              </q-card>
-            </q-dialog>
+          <div class="col" style="margin: auto;display: block;">
+            <q-file
+              v-model="filename"
+              @input="getFiles"
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              :rules="[val => !!val || 'Field is required']"
+            ></q-file>
           </div>
         </div>
 
@@ -127,25 +154,16 @@
           <div class="col-4" style="padding-left:40px;">
             <h5 style="text-align:left;font-size:18px">Choose JSON</h5>
           </div>
-          <div class="col-6" style="margin: auto;display: block;">
-            <q-file @input="getFiles" bg-color="grey-3" dense standout outlined></q-file>
-          </div>
-          <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
-            <!-- <q-img
-              :src="myimage"
-              spinner-color="white"
-              style="max-height: 100px; max-width: 150px"
-              @click="hotimage = true"
-            />-->
-            <q-dialog>
-              <q-card>
-                <!-- <v-hotspot
-                  :init-options="hotspotConfig"
-                  @save-data="saveData"
-                  @after-delete="afterDelete"
-                />-->
-              </q-card>
-            </q-dialog>
+          <div class="col" style="margin: auto;display: block;">
+            <q-file
+              v-model="filename"
+              @input="getFiles"
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              :rules="[val => !!val || 'Field is required']"
+            ></q-file>
           </div>
         </div>
 
@@ -158,7 +176,14 @@
             <h5 style="text-align:left;font-size:18px">API address</h5>
           </div>
           <div class="col-8" style="margin: auto;display: block;">
-            <q-input bg-color="grey-3" dense standout outlined v-model="url" />
+            <q-input
+              bg-color="grey-3"
+              dense
+              standout
+              outlined
+              v-model="url"
+              :rules="[val => !!val || 'Field is required']"
+            />
           </div>
         </div>
       </div>
@@ -207,6 +232,7 @@ export default {
       types: ["BAR", "LINE", "PIE"],
       board: "",
       content: null,
+      filename: null,
     };
   },
   computed: {
@@ -255,28 +281,31 @@ export default {
       this.board = "";
       this.content = null;
     },
-    onInput: function (e) {
-      console.log("Change: ", e);
+    onChangeFileType: function (e) {
+      this.filename = null;
+      this.content = null;
     },
     getFiles(file) {
-      let reader = new FileReader();
-      // Convert the file to base64 text
-      // reader.readAsDataURL(file);
-      reader.readAsText(file);
-      console.log(file);
-
-      reader.onload = () => {
-        // Make a fileInfo Object
-        let fileInfo = {
-          name: file.name,
-          type: file.type,
-          size: Math.round(file.size / 1000) + " kB",
-          result: reader.result,
-          file: file,
+      if (file != undefined) {
+        this.filename = file;
+        let reader = new FileReader();
+        // Convert the file to base64 text
+        // reader.readAsDataURL(file);
+        reader.readAsText(file);
+        reader.onload = () => {
+          // Make a fileInfo Object
+          let fileInfo = {
+            name: file.name,
+            type: file.type,
+            size: Math.round(file.size / 1000) + " kB",
+            result: reader.result,
+            file: file,
+          };
+          this.content = fileInfo.result;
         };
-        console.log(fileInfo.result);
-        this.content = fileInfo.result;
-      };
+      } else {
+        this.content = null;
+      }
     },
   },
 };
