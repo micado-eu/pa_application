@@ -1,6 +1,7 @@
 <template>
-  <div id="migration-situation-container" v-if="boards.length>2">
+  <q-layout id="migration-situation-container" v-if="boards.length>2">
     <q-drawer
+      key="situation-drawer"
       show-if-above
       bordered
       :content-style="{backgroundColor: '#DCE4E8',border: 'none'}"
@@ -41,8 +42,7 @@
         <router-view />
       </q-page>
     </q-page-container>
-    <div class="grey-block"></div>
-  </div>
+  </q-layout>
 </template>
 <script>
 export default {
@@ -88,17 +88,6 @@ export default {
 };
 </script>
 <style scoped>
-#migration-situation-container {
-  min-height: inherit;
-  position: relative;
-  top: -50px;
-}
-.grey-block {
-  height: 50px;
-  background-color: #dce4e8;
-  width: 299px;
-  position: absolute;
-}
 #nav {
   display: flex;
 }
