@@ -156,7 +156,7 @@ export default {
           label: "menu.setting",
           icon: "img:statics/icons/Icon - Settings.png",
           active_icon:"img:statics/icons/Icon - Settings (selected).png",
-          to: "/data_settings",
+          to: "/data_settings/document_types",
           description: "menu.setting_desc"
         }
       ],

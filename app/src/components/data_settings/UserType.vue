@@ -300,4 +300,7 @@ export default {
   color: black;
   border: 1px solid #C71f40;
 }
+h5 {
+  font-weight: bold;
+}
 </style>

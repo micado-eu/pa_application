@@ -19,6 +19,14 @@ import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import chatBot from '../components/ChatBot.vue'
 import InformationCategory from '../components/information_centre/InformationCategory.vue'
+import DocumentTypeManager from '../components/data_settings/DocumentTypeManager.vue'
+import Topic from '../components/data_settings/Topic'
+import UserType from '../components/data_settings/UserType'
+import IntegrationCategory from '../components/data_settings/IntegrationCategory'
+import IntegrationType from '../components/data_settings/IntegrationType'
+import FunctionConfiguration from '../components/settings/FunctionConfiguration'
+import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
+
 
 const routes = [
   {
@@ -26,7 +34,15 @@ const routes = [
     component: () => import('layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { path: '/data_settings', component: DataSettings },
+      { path: '/data_settings', component: DataSettings, children: [
+        { path: 'document_types', component: DocumentTypeManager },
+        { path: 'intervention_categories', component: IntegrationCategory },
+        { path: 'intervention_types', component: IntegrationType },
+        { path: 'topics', component: Topic },
+        { path: 'user_types', component: UserType },
+        { path: 'settings', component: FunctionConfiguration },
+        { path: 'language', component: ActiveLanguageSelector }
+      ] },
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
