@@ -7,3 +7,8 @@ export function setSettings (state, settings) {
     state.settings = settings
   }
 }
+export function setLastRefreshn (state, last_refresh) {
+  if (last_refresh) {
+    state.last_refresh = last_refresh
+  }
+}
