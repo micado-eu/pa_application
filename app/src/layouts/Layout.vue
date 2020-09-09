@@ -6,7 +6,7 @@
           flat
           dense
           round
-          @click="leftDrawerOpen = !leftDrawerOpen"
+          @click="closeDrawers()"
           icon="menu"
           aria-label="Menu"
         />
@@ -76,6 +76,7 @@
 
 <script>
 import AuthMenu from "./auth/AuthMenu";
+
 //import ListenToggle from 'components/ListenToggle'
 
 export default {
@@ -167,6 +168,10 @@ export default {
     changeIcon(key) {
       console.log("selected key")
       this.selectedKey = key
+  },
+  closeDrawers(){
+    this.leftDrawerOpen = !this.leftDrawerOpen
+    this.$root.$emit('drawer', this.leftDrawerOpen);
   }
   
 },
