@@ -1,8 +1,10 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import createPersistedState from 'vuex-persistedstate'
 
 // import example from './module-example'
 import documents from './documents'
+import auth from './auth'
 import features from './features'
 import flows from './flows'
 import topic from './topic'
@@ -24,7 +26,7 @@ import information from './information'
 import information_category from './information_category'
 import information_tags from './information_tags'
 import settings from './settings'
-import comments from'./comments'
+import comments from './comments'
 Vue.use(Vuex)
 
 /*
@@ -36,6 +38,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
       // example
+      auth,
       documents,
       features,
       glossary,
@@ -63,7 +66,8 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV
+    strict: process.env.DEV,
+    plugins: [createPersistedState()]
   })
 
   return Store
