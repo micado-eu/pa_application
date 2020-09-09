@@ -115,11 +115,7 @@ export default {
     }
   },
   computed: {},
-  created(){
-     this.$root.$on('drawer', (data) => {
-      this.open = data;
-    })
-  }
+  
  /* mounted() {
     // has to use a brief timeout
     if (this.$route.hash) {
