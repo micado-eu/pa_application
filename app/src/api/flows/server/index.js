@@ -9,6 +9,7 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler);
   },
+
   fetchDocuments () {
     return fetch(flows, 1000) // wait 1s before returning posts
   },
@@ -143,7 +144,7 @@ export default {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'prcess', 'description'])) : translation
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description'])) : translation
 
     return axiosInstance
       .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)

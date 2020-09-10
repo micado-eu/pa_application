@@ -214,8 +214,36 @@ export function editProcess (state, process) {
         })
    })
      })
-     client.deleteProcessTopic(process.id)
-     client.deleteProcessUser(process.id)
+
+      client.deleteProcessUser(process.id).then(function (param) {
+      client.deleteProcessTopic(process.id).then(function (param2) {
+        if (process.processTopics != null){
+          process.processTopics.forEach((topic) => {
+            console.log("in saving topic")
+          console.log(topic)
+          client.saveProcessTopic(topic, workingId)
+        })}
+        if (process.applicableUsers != null){
+          process.applicableUsers.forEach((user) => {
+            console.log("in saving user")
+            client.saveProcessUser(user, workingId)
+          })
+        }
+      })
+     })
+
+    /* const deleteUser = async () =>{ 
+      await client.deleteProcessUser(process.id)
+      console.log("finished deleting users")
+     }
+      deleteUser()
+     
+     const deleteTopic = async () =>{
+      await client.deleteProcessTopic(process.id)
+      console.log("finished deleting topic")
+
+     }
+      deleteTopic()
 
      if (process.processTopics != null){
       process.processTopics.forEach((topic) => {
@@ -228,7 +256,7 @@ export function editProcess (state, process) {
         console.log("in saving user")
         client.saveProcessUser(user, workingId)
       })
-    }
+    }*/
 /*if (process.processTopics != null){
   console.log("new")
   console.log(process.processTopics)

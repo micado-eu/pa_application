@@ -58,7 +58,7 @@ const routes = [
       { path: '/guided_process_editor', component: ProcessEditor, name: 'guidedprocesslist' },
 
       { path: '/guided_process_editor/edit/', component: () => import('components/EditProcess.vue'), props: true, name: process },
-      { path: '/guided_process_editor/edit/:theprocess', name: 'editprocess', component: () => import('components/EditProcess.vue'), props: (route) => ({ ...route.params }) },
+      { path: '/guided_process_editor/edit/:theprocessid', name: 'editprocess', component: () => import('components/EditProcess.vue'), props: (route) => ({ ...route.params }) },
       { path: '/guided_process_editor/edit/:processId/steps', component: () => import('pages/StepManager.vue'), props: (route) => ({ ...route.params }), name: 'editstep' },
 
       { path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process },

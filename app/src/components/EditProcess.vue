@@ -170,13 +170,14 @@ import GlossaryEditor from 'components/GlossaryEditor'
 export default {
   name: 'PageIndex',
   mixins: [editEntityMixin],
-  props: ["theprocess"],
+  props: ["theprocessid"],
   components: {
     
     GlossaryEditor
   },
   data () {
     return {
+      theprocess:null,
       id: this.$route.params.id,
       is_new: true,
       edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published: false, publicationDate: null, },
@@ -263,6 +264,7 @@ export default {
       }
       else {
         await this.$store.dispatch('flows/editProcess', value);
+        console.log("I am this is new")
         console.log(this.is_new)
         console.log(value)
         console.log(this.edit_process)
@@ -348,8 +350,16 @@ export default {
 
     await this.$store.dispatch('flows/fetchFlows')
       .then(flows => {
-        console.log(flows)
+        console.log(this.processes)
+        console.log(this.theprocessid)
         this.loading = false
+        var temp = this.processes.filter((current_process) => {
+          return current_process.id == this.theprocessid
+        })[0]
+        console.log(temp)
+        this.theprocess = temp
+        console.log("I am the process")
+        console.log(this.theprocess)
       })
 
     await this.$store.dispatch('topic/fetchTopic')
@@ -387,7 +397,7 @@ export default {
       })
       this.edit_process = Object.assign({}, filteredProcesses[0]);
       */
-    if (this.theprocess != null) {
+    if (this.theprocess != null ) {
       this.is_new = false
       this.mergeProcess(this.theprocess)
       console.log(this.edit_process)
