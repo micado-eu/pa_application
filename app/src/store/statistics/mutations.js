@@ -16,8 +16,8 @@ export function setCharts(state, charts) {
       if (typeof c.content === "string") {
         try {
           c.content = JSON.parse(c.content);
-          if (c.board) c.board = c.board.toLowerCase();
-          if (c.category) c.category = c.category.toLowerCase();
+          if (c.board) c.board = c.board;
+          if (c.category) c.category = c.category;
           /**
            * process individual rows of data
            */

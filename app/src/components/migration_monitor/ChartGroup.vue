@@ -32,10 +32,9 @@ export default {
   },
   computed: {
     charts: function () {
-      // FIXME: mockdata for map chart
-      // return this.$store.state.statistics.charts
       return [
         ...this.$store.state.statistics.charts,
+        // FIXME: mockdata for map chart
         {
           board: "hamburg",
           category: "incoming",
