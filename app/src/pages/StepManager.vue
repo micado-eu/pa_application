@@ -17,7 +17,7 @@
               :definition="def"
               v-on:click="editStep($event, def)"
               v-on:remove="removeElement($event,def)"
-              v-on:ehcomplete="addEdge"
+              v-on:ehcomplete="addingEdge"
             />
 
           </cytoscape>
@@ -295,7 +295,7 @@
            style="border-radius:5px; width:170px"
           no-caps
           size="15px"
-          @click="addNode"
+          @click="addingNode"
         />
       </div>
       <div class="col" style="text-align:left">
@@ -306,7 +306,7 @@
           no-caps
            style="border-radius:5px; width:135px"
           size="15px"
-          @click="saveGraph"
+          @click="savingGraph"
         />
 
       </div>
@@ -390,24 +390,7 @@ export default {
     ...mapGetters("steplinks", ["steplinks"]),
     ...mapGetters("graphs", ["graphs", "elements" ]),
     ...mapGetters("document_type", ["document_types"]),
-/*    processes () {
-      return this.$store.state.flows.flows
-    },
-    steps () {
-      return this.$store.state.steps.steps
-    },
-    steplinks () {
-      return this.$store.state.steplinks.steplinks
-    },
-    graphs () {
-      return this.$store.state.graphs.graphs
-    },
-    elements () {
-      return this.$store.state.graphs.graphs.elements
-    },
-    document_types () {
-      return this.$store.state.document_type.document_type
-    },*/
+
     title (){
       var temp =  this.processes.filter((a_proc) =>{
         return a_proc.id == this.processId
@@ -429,6 +412,27 @@ export default {
   },
 
   methods: {
+    ...mapActions("graphs", [
+    "changeNode",
+    "addNode",
+    "deleteNode",
+    "addEdge",
+    "saveGraph",
+    "fetchGraphs"
+    ]),
+    ...mapActions("steps", [
+    "changeStep",
+    "addStep",
+    "deleteStep",
+    "fetchStepsByProcessId",
+    ]),
+    ...mapActions("steplinks", [
+    "addStepLink",
+    "fetchSteplinksByProcessId"
+    ]),
+    ...mapActions("document_type", [
+      "fetchDocumentType"
+    ]),
     updateField(){
       //console.log(this.step_shell)
       //console.log(this)
@@ -504,12 +508,12 @@ export default {
       // In edit_step we have the instance of step that we are working on
       //      let changedDocs = this.document_types.filter(doc => { return this.model_docs.includes(doc.id) })
       //      this.step_shell.documents = changedDocs
-      this.$store.dispatch('steps/changeStep', this.step_shell)
+      this.changeStep(this.step_shell)
         .then(ret => {
           console.log("CHANGED THE STEP")
         })
       let newtitle = this.step_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].step
-      this.$store.dispatch('graphs/changeNode', { title: newtitle, id: this.step_shell.id })
+      this.changeNode({ title: newtitle, id: this.step_shell.id })
         .then(ret => {
           this.refresher += 1
         })
@@ -518,9 +522,10 @@ export default {
       this.stepdocadd = false
       this.createShell()
     },
-    addNode (event, cy) {
+    addingNode (event, cy) {
       let new_id = uuidv4()
-      this.$store.dispatch('graphs/addNode', {
+     
+      this.addNode({
         group: 'nodes',
         data: {
           id: new_id,
@@ -545,7 +550,7 @@ export default {
       let newStep = this.generateShell(new_id)
       //      newStep.id = new_id
       newStep.is_new = true
-      this.$store.dispatch('steps/addStep', newStep)
+      this.addStep(newStep)
         .then(ret => {
           console.log("ADDED STEP")
           console.log(this.steps)
@@ -558,13 +563,13 @@ export default {
       
             //console.log(element)
             //if (element.group == 'node') {
-              this.$store.dispatch('steps/deleteStep', this.step_shell.id)
+              this.deleteStep(this.step_shell.id)
                 .then(ret => {
                   console.log("DELETED STEP")
                   console.log(this.steps)
                 })
       
-              this.$store.dispatch('graphs/deleteNode', this.step_shell.id)
+              this.deleteNode(this.step_shell.id)
                 .then(res => {
       
                 })
@@ -583,7 +588,7 @@ export default {
 
     }, 
 
-    addEdge (sourceNode, targetNode, addedEles) {
+    addingEdge (sourceNode, targetNode, addedEles) {
       console.log("ADDING EDGE")
       console.log(sourceNode)
       console.log(targetNode)
@@ -608,8 +613,8 @@ export default {
       this.$refs.cyRef.instance.elements().remove();
       
       this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id )
-      this.$store.dispatch('steplinks/addStepLink', this.steplink_shell)
-      this.$store.dispatch('graphs/addEdge', {
+      this.addStepLink( this.steplink_shell)
+      this.addEdge({
         group: 'edges',
         data: {
           id: newKey,
@@ -659,7 +664,7 @@ export default {
       console.log(this.testdata)
 
       let defaults = {
-        complete: (sourceNode, targetNode, addedEles) => this.addEdge(sourceNode, targetNode, addedEles)
+        complete: (sourceNode, targetNode, addedEles) => this.addingEdge(sourceNode, targetNode, addedEles)
       }
 
       cy.edgehandles(defaults);
@@ -669,14 +674,14 @@ export default {
 
     },
 
-    async saveGraph () {
+    async savingGraph () {
       // start saving elements
       // adding new steps
       console.log(this.$store.state.steplinks.steplinks)
       let postData = { steps: this.steps, steplinks: this.steplinks }
       console.log(JSON.stringify(postData))
 
-      this.$store.dispatch('graphs/saveGraph', postData)
+      this.saveGraph(postData)
       this.$router.push('/guided_process_editor')
       /*
       const saveSteps = async () => {
@@ -760,14 +765,13 @@ export default {
     console.log(this.step_shell)
     console.log("in created")
     console.log(this.processId)
-    this.$store.dispatch('steps/fetchStepsByProcessId', Number(this.processId))
+    this.fetchStepsByProcessId(Number(this.processId))
       .then(steps => {
         console.log("THE STEPS")
         console.log(steps)
         this.loading = false
       })
-
-    this.$store.dispatch('steplinks/fetchSteplinksByProcessId', Number(this.processId))
+    this.fetchSteplinksByProcessId( Number(this.processId))
       .then(steplinks => {
         console.log("THE STEPLINKS")
         console.log(steplinks)
@@ -775,7 +779,7 @@ export default {
       })
 
 
-    this.$store.dispatch('graphs/fetchGraphs', { id: this.processId, userLang: this.$userLang })
+      this.fetchGraphs({ id: this.processId, userLang: this.$userLang })
       .then(graphs => {
         this.$refs.cyRef.instance.layout({
           name: 'breadthfirst',
@@ -793,7 +797,7 @@ export default {
         console.log(this.refresher)
 
       })
-    this.$store.dispatch('document_type/fetchDocumentType')
+    this.fetchDocumentType()
       .then(document_types => {
         console.log(document_types)
         document_types.forEach(document_type => {
