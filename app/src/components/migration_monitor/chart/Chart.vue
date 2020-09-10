@@ -52,7 +52,8 @@ export default {
   },
   computed: {},
   created: function () {
-    if (this.graphData.type === "MAP") this.height = "600px";
+    if (this.graphData.type === "MAP" || this.graphData.type === "PIE")
+      this.height = "600px";
   },
 };
 </script>

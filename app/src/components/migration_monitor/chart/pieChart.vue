@@ -1,6 +1,6 @@
 <template>
   <svg :width="width" :height="height" :id="id">
-    <g :transform="`translate( ${ width/2 },${ margin.top})`">
+    <g :transform="`translate( ${ width/2 },${ height/2})`">
       <g v-for="(d,i) in pie(pieData)" :key="i">
         <path :d="pathArc(d)" :fill="interpolateGnBu(color(d.data[labelColumn]))" />
         <text :transform="drawLabel(d)" text-anchor="middle" font-size="17">{{d.data[labelColumn]}}</text>
@@ -23,15 +23,9 @@ export default {
     return {
       data: [{ percentage: 10 }, { percentage: 20 }, { percentage: 30 }],
       id: "pieSvg",
-      margin: {
-        left: 100,
-        top: 120,
-        right: 20,
-        bottom: 50
-      },
-      radius: "100",
+      radius: "150",
       width: "100%",
-      height: "300"
+      height: "85%"
     };
   },
   computed: {
