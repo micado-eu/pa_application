@@ -107,7 +107,7 @@
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
           :label="$t('button.save')"
-          @click="saveIntegrationType()"
+          @click="savingIntegrationType()"
         />
         
         </q-card>
@@ -129,7 +129,7 @@
       <q-item
         clickable
         v-ripple
-        v-for="a_integration_type in integration_type"
+        v-for="a_integration_type in intervention_types"
         :key="a_integration_type.id"
       >
         <q-item-section class="col-9 flex flex-left" style="font-size:16px; font-weight:600">{{showTypeLabel(a_integration_type)}}</q-item-section>
@@ -144,7 +144,7 @@
         <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationType(a_integration_type)" />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-        <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteIntegrationType(a_integration_type.id)" size="md" />
+        <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingIntegrationType(a_integration_type.id)" size="md" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -159,6 +159,8 @@
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
+import { mapGetters, mapActions } from "vuex";
+
 
 export default {
   name: "InterventionType",
@@ -176,43 +178,36 @@ export default {
     GlossaryEditor
   },
   computed: {
-    integration_type() {
-      return this.$store.state.integration_type.integration_type;
-    },
-    integration_category() {
-      return this.$store.state.integration_category.integration_category;
-    },
-    
+    ...mapGetters("integration_type", ["intervention_types"]),
+    ...mapGetters("integration_category", ["intervention_categories"])
   },
   methods: {
+       ...mapActions("integration_type",[
+      "deleteIntegrationTypeElement",
+      "saveIntegrationTypeElement",
+      "editIntegrationTypeElement",
+      "fetchIntegrationType"
+    ]),
+    ...mapActions("integration_category",[
+      "fetchIntegrationCategory"
+    ]),
     isPublished(value, event){
       this.int_type_shell.published = value
     },
-    deleteIntegrationType(index) {
+    deletingIntegrationType(index) {
       console.log(index);
-      this.$store.dispatch(
-        "integration_type/deleteIntegrationTypeElement",
-        index
-      );
+      this.deleteIntegrationTypeElement(index)
     },
-    saveIntegrationType() {
+    savingIntegrationType() {
       if (this.isNew) {
         // we are adding a new instance
-        this.$store
-          .dispatch(
-            "integration_type/saveIntegrationTypeElement",
-            this.int_type_shell
-          )
+        this.saveIntegrationTypeElement(this.int_type_shell)
           .then(int_cat => {
             console.log("saved");
           });
       } else {
         // we are updating the exsisting
-        this.$store
-          .dispatch(
-            "integration_type/editIntegrationTypeElement",
-            this.int_type_shell
-          )
+        this.editIntegrationTypeElement(this.int_type_shell)
           .then(int_cat => {
             console.log("updated");
           });
@@ -281,15 +276,13 @@ export default {
     this.createShell()
     this.loading = true;
     console.log(this.$store);
-    this.$store
-      .dispatch("integration_type/fetchIntegrationType")
+    this.fetchIntegrationType()
       .then(processes => {
         this.loading = false;
       });
-    this.$store
-      .dispatch("integration_category/fetchIntegrationCategory")
+    this.fetchIntegrationCategory()
       .then(processes => {
-        this.integration_category.forEach((cat) => {
+        this.intervention_categories.forEach((cat) => {
         var translation =  cat.translations.filter((transl) => {
           return transl.lang == this.activeLanguage
         })[0]

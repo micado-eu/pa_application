@@ -112,7 +112,7 @@
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
           :label="$t('button.save')"
-          @click="saveTopic()"
+          @click="savingTopic()"
         />
       
 
@@ -161,10 +161,10 @@
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editTopic(a_topic)" />
+          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editingTopic(a_topic)" />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center" >
-         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteTopic(a_topic.id)" size="md" />
+         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingTopic(a_topic.id)" size="md" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -187,6 +187,7 @@ function startsWith(wordToCompare) {
 */
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "TopicType",
@@ -204,30 +205,39 @@ export default {
     FileUploader
   },
   computed: {
-    topic () {
+    ...mapGetters("topic", ["topic"]),
+    /*topic () {
       return this.$store.state.topic.topic;
-    },
+    },*/
   },
   methods: {
-    deleteTopic (index) {
+    ...mapActions("topic", [
+      "deleteTopic",
+      "saveTopic",
+      "editTopic",
+      "fetchTopic"
+    ]),
+    deletingTopic (index) {
       console.log(index);
-      this.$store.dispatch("topic/deleteTopic", index);
+      //this.$store.dispatch("topic/deleteTopic", index);
+      this.deleteTopic(index)
     },
-    saveTopic () {
-      let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
+    savingTopic () {
+      //let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
 
       if (this.isNew) {
         // we are adding a new instance
 
-        this.$store
-          .dispatch("topic/saveTopic", workingTopic)
+        //this.$store.dispatch("topic/saveTopic", workingTopic)
+        this.saveTopic(this.int_topic_shell)
           .then(int_cat => {
             console.log("saved");
           });
       } else {
+        console.log(this.int_topic_shell)
         // we are updating the exsisting
-        this.$store
-          .dispatch("topic/editTopic", workingTopic)
+        //this.$store.dispatch("topic/editTopic", workingTopic)
+        this.editTopic(this.int_topic_shell)
           .then(int_cat => {
             console.log("updated");
           });
@@ -252,7 +262,7 @@ export default {
       this.hideForm = true;
       this.hideAdd = false;
     },
-    editTopic (topic) {
+    editingTopic (topic) {
       this.isNew = false;
       this.hideForm = false;
       //     this.int_topic_shell = JSON.parse(JSON.stringify(topic));
@@ -263,7 +273,7 @@ export default {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
     },
     createShell () {
-      this.int_topic_shell = { id: -1, topic: null, translations: [], icon: "", published: false, publicationDate: null, }
+      this.int_topic_shell = { id: -1, translations: [], icon: "", published: false, publicationDate: null, }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_topic_shell.translations.push({ id: -1, lang: l.lang, topic: '', translationDate: null })

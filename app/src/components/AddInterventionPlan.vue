@@ -139,7 +139,7 @@ import editEntityMixin from '../mixin/editEntityMixin'
 
 export default {
   name: "IntegrationType",
-  props:["theuser", "theuserid"],
+  props:[ "theuserid"],
   mixins: [editEntityMixin],
   data() {
     return {
@@ -156,7 +156,7 @@ export default {
         "How to enroll children to school"
       ],
       plan_shell: {
-        id:null, 
+        id:-1, 
         title:"",
         userId: this.theuserid,
         creationdate:'2016-06-22 19:10:25-07',
@@ -188,11 +188,11 @@ export default {
   },
   methods: {
     goBack(){
-    this.$router.push({ name: 'interventionplan', params: { theuser: this.theuser } })
+    this.$router.push({ name: 'interventionplan', params: { theuserid: this.theuserid } })
     },
     createPlanShell(){
       this.plan_shell = {
-        id:null, 
+        id: -1, 
         title:"",
         userId: Number(this.theuserid),
         creationdate:'2016-06-22 19:10:25-07',
@@ -251,7 +251,7 @@ export default {
       await this.$store.dispatch('intervention_plan/saveInterventionPlan', this.plan_shell)
       console.log("I am the plan shell")
       console.log(this.plan_shell)
-       this.$router.push({ name: 'interventionplan', params: { theuser: this.theuser } })
+       this.$router.push({ name: 'interventionplan', params: { theuserid: this.theuserid } })
     },
     saveAction() {
       if (this.isNew) {

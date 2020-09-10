@@ -71,7 +71,7 @@
         />
       </q-tabs>
       <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
-        <q-btn color="accent" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" :label="$t('button.save')" @click="saveIntegrationCategory()" />
+        <q-btn color="accent" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" :label="$t('button.save')" @click="savingIntegrationCategory()" />
         <q-btn class="button" no-caps unelevated rounded style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px" :label="$t('button.cancel')" @click="cancelIntegrationCategory()" />
       </q-card-section>
     </q-card>
@@ -94,7 +94,7 @@
       <q-item
         clickable
         v-ripple
-        v-for="a_integration_category in integration_category"
+        v-for="a_integration_category in intervention_categories"
         :key="a_integration_category.id"
       >
         <q-item-section class="col-9 flex flex-left" style="font-size:16px; font-weight:600">{{showCategoryLabel(a_integration_category)}}</q-item-section>
@@ -111,7 +111,7 @@
         </q-item-section>
            <q-item-section class="col-1 flex flex-center">
 
-          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteIntegrationCategory(a_integration_category.id)" size="md" />
+          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingIntegrationCategory(a_integration_category.id)" size="md" />
           
         </q-item-section>
       </q-item>
@@ -122,6 +122,7 @@
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "InterventionCategory",
@@ -135,46 +136,39 @@ export default {
     };
   },
   computed: {
-    integration_category() {
-      return this.$store.state.integration_category.integration_category;
-    }
+    ...mapGetters("integration_category", ["intervention_categories"])
   },
   methods: {
+    ...mapActions("integration_category",[
+      "deleteIntegrationCategory",
+      "saveIntegrationCategory",
+      "editCategoryTypeElement",
+      "fetchIntegrationCategory"
+    ]),
     isPublished(value, event){
       this.int_cat_shell.published = value
     },
     onClickTitle: function() {
       this.$emit("scroll", "#" + this.$options.name);
     },
-    deleteIntegrationCategory(index) {
+    deletingIntegrationCategory(index) {
       console.log(index);
-      this.$store.dispatch(
-        "integration_category/deleteIntegrationCategory",
-        index
-      );
+      this.deleteIntegrationCategory(index)
     },
     showCategoryLabel (workingCat) {
      
       return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].title
     },
-    saveIntegrationCategory() {
+    savingIntegrationCategory() {
       if (this.isNew) {
         // we are adding a new instance
-        this.$store
-          .dispatch(
-            "integration_category/saveIntegrationCategory",
-            this.int_cat_shell
-          )
+        this.saveIntegrationCategory(this.int_cat_shell)
           .then(int_cat => {
             console.log("saved");
           });
       } else {
         // we are updating the exsisting
-        this.$store
-          .dispatch(
-            "integration_category/editCategoryTypeElement",
-            this.int_cat_shell
-          )
+        this.editCategoryTypeElement(this.int_cat_shell)
           .then(int_cat => {
             console.log("updated");
           });
@@ -235,8 +229,7 @@ export default {
     this.createShell()
     this.loading = true;
     console.log(this.$store);
-    this.$store
-      .dispatch("integration_category/fetchIntegrationCategory")
+    this.fetchIntegrationCategory()
       .then(processes => {
         this.loading = false;
       });

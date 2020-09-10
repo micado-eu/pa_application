@@ -48,7 +48,7 @@
             :intervention_categories="types"
             @editIntervention="editIntervention"
             @cancelIntervention="cancelIntervention"
-            @saveIntervention="saveIntervention"
+            @saveIntervention="savingIntervention"
             @validated="validateIntervention"
           >
           </IntegrationPlan>
@@ -60,7 +60,7 @@
           :the_intervention_plan="intervention_plan"
           :the_processes_list="processes_list"
           @addIntervention="addIntervention(); button_id = intervention_plan.id"
-          @saveIntervention="saveIntervention"
+          @saveIntervention="savingIntervention"
           @cancelIntervention="cancelIntervention"
           :intervention_categories="types"
           :showAddForm="button_id != intervention_plan.id"
@@ -83,7 +83,7 @@ import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: 'PageIndex',
-  props: ['theuser', 'theuserid'],
+  props: ['theuserid'],
   mixins: [editEntityMixin],
   data () {
     return {
@@ -206,7 +206,7 @@ export default {
 
 
     },
-    saveIntervention (value) {
+    savingIntervention (value) {
 
       console.log(this.isNew)
       var targetId = event.currentTarget.id
