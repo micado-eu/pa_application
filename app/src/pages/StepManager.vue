@@ -326,6 +326,8 @@ import edgeHandles from 'cytoscape-edgehandles'
 import { v4 as uuidv4 } from 'uuid';
 import editEntityMixin from '../mixin/editEntityMixin'
 import StepDocumentElement from 'components/StepDocumentElement'
+import { mapGetters, mapActions } from "vuex";
+
 
 
 export default {
@@ -383,7 +385,12 @@ export default {
 
 
   computed: {
-    processes () {
+    ...mapGetters("flows", ["processes"]),
+    ...mapGetters("steps", ["steps"]),
+    ...mapGetters("steplinks", ["steplinks"]),
+    ...mapGetters("graphs", ["graphs", "elements" ]),
+    ...mapGetters("document_type", ["document_types"]),
+/*    processes () {
       return this.$store.state.flows.flows
     },
     steps () {
@@ -400,7 +407,7 @@ export default {
     },
     document_types () {
       return this.$store.state.document_type.document_type
-    },
+    },*/
     title (){
       var temp =  this.processes.filter((a_proc) =>{
         return a_proc.id == this.processId

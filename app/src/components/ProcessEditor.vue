@@ -69,7 +69,7 @@
           :Link="process.id"
           :theProcess="process"
           Path="guided_process_editor"
-          @remove="deleteProcess"
+          @remove="deletingProcess"
         >
         </Process>
       </q-list>
@@ -81,6 +81,7 @@
 
 <script>
 import Process from './guided_process_editor/Process'
+import { mapGetters, mapActions } from "vuex";
 
 
 export default {
@@ -100,15 +101,9 @@ export default {
   },
 
   computed: {
-    processes () {
-      return this.$store.state.flows.flows
-    },
-      steps () {
-      return this.$store.state.steps.steps
-    },
-     steplinks () {
-      return this.$store.state.steplinks.steplinks
-    },
+    ...mapGetters("flows", ["processes"]),
+    ...mapGetters("steps", ["steps"]),
+    ...mapGetters("steplinks", ["steplinks"]),
    
     filteredProcesses () {
       //if none of the fields is filled in it will give the full list of processes
@@ -128,7 +123,17 @@ export default {
     }
   },
   methods: {
-    deleteProcess (value) {
+    ...mapActions("flows", [
+      "deleteProcess",
+      "fetchFlows"
+    ]),
+     ...mapActions("steps", [
+      "fetchSteps"
+    ]),
+     ...mapActions("steplinks", [
+      "fetchSteplinks"
+    ]),
+    deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
         console.log("in fil")
@@ -147,7 +152,8 @@ export default {
       })
       console.log("I am deleted steplinks")
       console.log(deletedStepLinks)
-      this.$store.dispatch('flows/deleteProcess', { process:deletedProcess[0].id, steps: deletedSteps, steplinks: deletedStepLinks, comments:deletedProcess[0].comments} )
+      var payload =  { process:deletedProcess[0].id, steps: deletedSteps, steplinks: deletedStepLinks, comments:deletedProcess[0].comments}
+      this.deleteProcess(payload)
     },
     filterTranslationModel (currentLang) {
       return function (element) {
@@ -164,17 +170,17 @@ export default {
   created () {
     this.loading = true
     console.log(this.$store);
-    this.$store.dispatch('flows/fetchFlows')
+    this.fetchFlows()
       .then(processes => {
         this.loading = false
         console.log(this.processes)
       })
-    this.$store.dispatch('steps/fetchSteps')
+    this.fetchSteps()
       .then(steps => {
         this.loading = false
         console.log(this.steps)
       })
-     this.$store.dispatch('steplinks/fetchSteplinks')
+     this.fetchSteplinks()
       .then(steplinks => {
         this.loading = false
         console.log(this.steplinks)

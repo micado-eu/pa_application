@@ -1,4 +1,4 @@
-/*
-export function someGetter (state) {
-}
-*/
+export function steplinks(state) {
+    return state.steplinks
+  }
+

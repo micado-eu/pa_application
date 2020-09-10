@@ -152,7 +152,7 @@
           :label="$t('button.save')"
           unelevated
           style="width:150px;border-radius:2px"
-          @click="saveProcess(edit_process)"
+          @click="savingProcess(edit_process)"
         />
 
      
@@ -167,6 +167,8 @@
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: 'PageIndex',
   mixins: [editEntityMixin],
@@ -192,15 +194,10 @@ export default {
     }
   },
   computed: {
-    processes () {
-      return this.$store.state.flows.flows
-    },
-    topic () {
-      return this.$store.state.topic.topic
-    },
-    user () {
-      return this.$store.state.user_type.user_type
-    },
+    ...mapGetters("flows", ["processes"]),
+    ...mapGetters("user_type", ["user"]),
+    ...mapGetters("topic", ["topic"]),
+   
     title () {
       return this.theprocess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
     },
@@ -217,6 +214,17 @@ export default {
 
   },
   methods: {
+    ...mapActions("flows", [
+      "fetchFlows",
+      "saveProcess",
+      "editProcess"
+    ]),
+    ...mapActions("topic", [
+      "fetchTopic"
+    ]),
+    ...mapActions("user_type", [
+      "fetchUserType"
+    ]),
     addUserTag(value){
       console.log(value)
      
@@ -253,17 +261,16 @@ export default {
     clearAllTopics(){
       this.selected_t_tags = []
     },
-   async saveProcess (value) {
+   async savingProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process));
 
       if (this.is_new) {
-       await this.$store.dispatch('flows/saveProcess', workingProcess)
+       await this.saveProcess(workingProcess)
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
-        //this.$router.push({ path: `/processmanager/edit//${this.edit_process.id}` })
       }
       else {
-        await this.$store.dispatch('flows/editProcess', value);
+        await this.editProcess(value)
         console.log("I am this is new")
         console.log(this.is_new)
         console.log(value)
@@ -347,8 +354,7 @@ export default {
     this.loading = true
     console.log(this.$defaultLangString);
     this.createShell()
-
-    await this.$store.dispatch('flows/fetchFlows')
+    await this.fetchFlows()
       .then(flows => {
         console.log(this.processes)
         console.log(this.theprocessid)
@@ -361,8 +367,7 @@ export default {
         console.log("I am the process")
         console.log(this.theprocess)
       })
-
-    await this.$store.dispatch('topic/fetchTopic')
+    await this.fetchTopic()
       .then(topics => {
         console.log(topics)
         topics.forEach(topic => {
@@ -371,7 +376,7 @@ export default {
         })
 
       })
-    await this.$store.dispatch('user_type/fetchUserType')
+    await this.fetchUserType()
       .then(user_type => {
         console.log(user_type)
 
@@ -380,23 +385,8 @@ export default {
           this.u_tags.push(the_user)
         })
       })
-
-    console.log("THEPROCESS:")
+   console.log("THEPROCESS:")
     console.log(this.theprocess)
-    /*
-    if (this.id != null) {
-      console.log("ciso ")
-      this.is_new = false
-      console.log("hello")
-      var filteredProcesses = this.processes.filter((filt) => {
-        console.log("in fil")
-        console.log(filt)
-        console.log(filt.id == this.id)
-        return filt.id == this.id
-
-      })
-      this.edit_process = Object.assign({}, filteredProcesses[0]);
-      */
     if (this.theprocess != null ) {
       this.is_new = false
       this.mergeProcess(this.theprocess)
