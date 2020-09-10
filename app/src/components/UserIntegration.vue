@@ -4,7 +4,7 @@
       class="q-pa-md col"
       style="width:800px; margin:0 auto"
     >
-      <UserProfile :user="theuser">
+      <UserProfile :user="the_user">
       </UserProfile>
     </div>
     <div style="">
@@ -77,6 +77,8 @@ import IntegrationPlan from './IntegrationPlan'
 import AddIntervention from './AddIntervention'
 import UserProfile from './UserProfile'
 import editEntityMixin from '../mixin/editEntityMixin'
+import { mapGetters, mapActions } from "vuex";
+
 
 
 export default {
@@ -128,12 +130,19 @@ export default {
     IntegrationPlan, AddIntervention, UserProfile
   },
   computed: {
-    intervention_plans () {
+    /*intervention_plans () {
       return this.$store.state.intervention_plan.intervention_plan
-    },
-    intervention_types () {
+    },*/
+    ...mapGetters("integration_type", ["intervention_types"]),
+    ...mapGetters("integration_category", ["intervention_categories"]),
+    ...mapGetters("intervention_plan", ["intervention_plans"]),
+    ...mapGetters("user", ["users"]),
+
+
+
+    /*intervention_types () {
       return this.$store.state.integration_type.integration_type
-    },
+    },*/
     filteredplans () {
       return this.intervention_plans.filter((filt) => {
         console.log(filt)
@@ -144,20 +153,31 @@ export default {
       })
     },
 
-    users () {
+    /*users () {
       return this.$store.state.user.user
-    },
+    },*/
     filteredUsers () {
       return this.users.filter((filt) => {
         return filt.id == this.id
       })
     },
 
-    intervention_categories () {
+    /*intervention_categories () {
       return this.$store.state.integration_category.integration_category;
-    }
+    }*/
   },
   methods: {
+    ...mapActions("intervention_plan", [
+      "saveIntervention",
+      "editIntervention",
+      "fetchInterventionPlan"
+    ]),
+    ...mapActions("user", [
+      "fetchSpecificUser"
+    ]),
+    ...mapActions("integration_type", [
+      "fetchIntegrationType"
+    ]),
     createShell (id_plan) {
       this.intervention_shell = {
         id: -1,
@@ -196,7 +216,10 @@ export default {
       })
       if (this.isNew) {
         this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+        console.log(this.selected_plan)
         this.selected_plan.interventions.push(this.intervention_shell)
+        var payload = {intervention: this.intervention_shell, plan: this.selected_plan}
+        //this.saveIntervention(payload)
         this.$store.dispatch('intervention_plan/saveIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
         console.log("")
         this.isNew = false
@@ -214,6 +237,8 @@ export default {
         console.log(this.selected_plan.interventions)
         var index = this.selected_plan.interventions.findIndex(item => item.id == this.intervention_shell.id)
         this.selected_plan.interventions.splice(index, 1, this.intervention_shell)
+        var payload = { intervention: this.intervention_shell, plan: this.selected_plan }
+        //this.editIntervention(payload)
         this.$store.dispatch('intervention_plan/editIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
         this.hideForm = true
         this.hideAdd = false
@@ -245,7 +270,9 @@ export default {
       console.log(this.selected_plan.interventions)
       var index = this.selected_plan.interventions.findIndex(item => item.id == this.intervention_shell.id)
       this.selected_plan.interventions.splice(index, 1, this.intervention_shell)
-      this.$store.dispatch('intervention_plan/editIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
+      var payload = { intervention: this.intervention_shell, plan: this.selected_plan }
+      this.editIntervention(payload)
+      //this.$store.dispatch('intervention_plan/editIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
 
 
     },
@@ -286,21 +313,29 @@ export default {
     }
   },
   created () {
-    console.log(this.theuser.umId)
+    console.log("in created")
+    //console.log(this.theuser.umId)
     console.log("in created the user id is:")
-    console.log(this.theuserid)
+    console.log(this.$route.query.theuserid)
     console.log("fetching user");
-    this.$store.dispatch('user/fetchSpecificUser', { userid: this.theuserid, tenantid: this.$migrant_tenant })
+    var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    console.log("I am user id")
+    console.log(this.theuserid)
+    //this.$store.dispatch('user/fetchSpecificUser', { userid: this.theuserid, tenantid: this.$migrant_tenant })
+    this.fetchSpecificUser(payload)
       .then(users => {
         this.loading = false
         var temp = this.users.filter((filt) => {
-          return filt.id == this.id
+          return filt.umId == this.theuserid
         })
+        console.log("I am found user")
+        console.log(temp)
         this.the_user = temp[0]
       })
 
     console.log(this.$store);
-    this.$store.dispatch('intervention_plan/fetchInterventionPlan', this.theuserid)
+    //this.$store.dispatch('intervention_plan/fetchInterventionPlan', this.theuserid)
+    this.fetchInterventionPlan(this.theuserid)
       .then(intervention_plans => {
         console.log("these are the returned plans")
         console.log(intervention_plans)
@@ -321,8 +356,8 @@ export default {
         })
         
     },*/
-    this.$store
-      .dispatch("integration_type/fetchIntegrationType")
+    //this.$store.dispatch("integration_type/fetchIntegrationType")
+      this.fetchIntegrationType()
       .then(integration_types => {
         console.log("got integration types")
         console.log(integration_types)

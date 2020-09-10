@@ -46,7 +46,7 @@ export default {
     },
       interventionPlan(){
       console.log(this.theUser)
-      this.$router.push({ name: 'interventionplan', params: { theuser: this.theUser, theuserid: this.theUser.umId } })
+      this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.umId } })
     }
   
   }

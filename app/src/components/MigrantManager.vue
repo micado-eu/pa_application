@@ -42,6 +42,7 @@
 
 <script>
 import User from './migrant_manager/User'
+import { mapGetters, mapActions } from "vuex";
 
 
 export default {
@@ -59,9 +60,11 @@ export default {
   },
 
   computed: {
-    users () {
+    ...mapGetters("user", ["users"]),
+
+    /*users () {
       return this.$store.state.user.user
-    },
+    },*/
     filteredUsers () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -79,6 +82,9 @@ export default {
     }
   },
   methods: {
+    ...mapActions("user", [
+      "fetchUser"
+    ]),
     deleteUser (value) {
       console.log("deleting")
       var deletedUser = this.users.filter((filt) => {
@@ -96,7 +102,8 @@ export default {
   created () {
     this.loading = true
     console.log(this.$store);
-    this.$store.dispatch('user/fetchUser', this.$migrant_tenant)
+    //this.$store.dispatch('user/fetchUser', this.$migrant_tenant)
+    this.fetchUser(this.$migrant_tenant)
       .then(users => {
         console.log(users)
         this.loading = false
