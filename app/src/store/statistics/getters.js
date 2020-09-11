@@ -1,3 +1,3 @@
 export function getStats(state) {
-    return state.statistics;
+  return state.statistics
 }

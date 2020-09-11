@@ -29,33 +29,30 @@
 </template>
 
 <script>
-import { Style, Stroke, Fill } from "ol/style.js";
-import * as mpapi from "masterportalAPI";
-import lineChart from "./lineChart";
-import pieChart from "./pieChart";
-import barChart from "./barChart";
-import mapChart from "./mapChart";
+import lineChart from './lineChart.vue'
+import pieChart from './pieChart.vue'
+import barChart from './barChart.vue'
+import mapChart from './mapChart.vue'
 
 export default {
-  name: "MigrationSituation",
+  name: 'MigrationSituation',
   components: {
     lineChart,
     pieChart,
     barChart,
-    mapChart,
+    mapChart
   },
-  props: ["graphData"],
-  data: function () {
+  props: ['graphData'],
+  data() {
     return {
-      height: "350px",
-    };
+      height: '350px'
+    }
   },
   computed: {},
-  created: function () {
-    if (this.graphData.type === "MAP" || this.graphData.type === "PIE")
-      this.height = "600px";
-  },
-};
+  created() {
+    if (this.graphData.type === 'MAP' || this.graphData.type === 'PIE') this.height = '600px'
+  }
+}
 </script>
 
 <style scoped>

@@ -61,109 +61,104 @@ import {
   scaleTime,
   scaleBand,
   extent,
-  select,
-  line,
-  axisBottom,
-  axisLeft,
-  curveCardinal,
-} from "d3";
-import ChartAxisBottom from "./ChartAxisBottom.vue";
-import ChartAxisLeft from "./ChartAxisLeft.vue";
+  select
+} from 'd3'
+import ChartAxisBottom from './ChartAxisBottom.vue'
+import ChartAxisLeft from './ChartAxisLeft.vue'
 
 export default {
-  name: "barChart",
+  name: 'barChart',
   components: {
     ChartAxisBottom,
-    ChartAxisLeft,
+    ChartAxisLeft
   },
   props: {
     lineData: Array,
     timeColumn: String,
     valueColumn: String,
-    xistime: Boolean,
+    xistime: Boolean
   },
-  data: function () {
+  data() {
     return {
-      id: "barSvg",
+      id: 'barSvg',
       margin: {
         left: 100,
         top: 30,
         right: 30,
-        bottom: 60,
+        bottom: 60
       },
-      width: "100%",
-      height: "85%",
-      xid: "x0",
-      yid: "y0",
-      timeout: false,
-    };
+      width: '100%',
+      height: '85%',
+      xid: 'x0',
+      yid: 'y0',
+      timeout: false
+    }
   },
   computed: {
-    svg: function () {
-      return select("#" + this.id);
+    svg() {
+      return select(`#${this.id}`)
     },
-    scaleX: function () {
+    scaleX() {
       if (this.xistime) {
         return scaleTime()
           .domain(extent(this.lineData, (d) => d[this.timeColumn]))
-          .range([0, this.width - this.margin.left - this.margin.right]);
-      } else {
-        return scaleBand()
-          .domain(this.lineData.map((d) => d[this.timeColumn]))
-          .range([0, this.width - this.margin.left - this.margin.right]);
+          .range([0, this.width - this.margin.left - this.margin.right])
       }
+      return scaleBand()
+        .domain(this.lineData.map((d) => d[this.timeColumn]))
+        .range([0, this.width - this.margin.left - this.margin.right])
     },
-    scaleY: function () {
+    scaleY() {
       return (
         scaleLinear()
           // .domain(extent(this.lineData, d => d[this.valueColumn]))
           .domain([
             0,
-            Math.max(...this.lineData.map((d) => d[this.valueColumn])),
+            Math.max(...this.lineData.map((d) => d[this.valueColumn]))
           ])
           .range([this.height - this.margin.top - this.margin.bottom, 0])
-      );
+      )
     },
-    barWidth: function () {
+    barWidth() {
       return (
-        (this.width - this.margin.left - this.margin.right) /
-        this.lineData.length
-      );
-    },
+        (this.width - this.margin.left - this.margin.right)
+        / this.lineData.length
+      )
+    }
   },
   methods: {
-    updateGraph: function () {
-      const client = this.$el.getBoundingClientRect();
-      this.width = client.width;
-      this.height = client.height;
+    updateGraph() {
+      const client = this.$el.getBoundingClientRect()
+      this.width = client.width
+      this.height = client.height
       // force axes to update according to the size
-      this.xid = this.xid === "x_0" ? "x_1" : "x_0";
-      this.yid = this.yid === "y_0" ? "y_1" : "y_0";
+      this.xid = this.xid === 'x_0' ? 'x_1' : 'x_0'
+      this.yid = this.yid === 'y_0' ? 'y_1' : 'y_0'
     },
-    onResize: function () {
+    onResize() {
       // clear the timeout
-      clearTimeout(this.timeout);
+      clearTimeout(this.timeout)
       // start timing for event "completion"
-      this.timeout = setTimeout(this.updateGraph, 250);
+      this.timeout = setTimeout(this.updateGraph, 250)
     },
-    onMouseOver: function (event) {
-      const label = this.$refs[event.target.id.split("_")[0] + "_label"][0];
-      label.style.opacity = 1;
+    onMouseOver(event) {
+      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
+      label.style.opacity = 1
     },
-    onMouseLeave: function (event) {
-      const label = this.$refs[event.target.id.split("_")[0] + "_label"][0];
-      label.style.opacity = 0;
-    },
+    onMouseLeave(event) {
+      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
+      label.style.opacity = 0
+    }
   },
-  mounted: function () {
+  mounted() {
     // window.resize event listener
-    window.addEventListener("resize", this.onResize);
-    this.updateGraph();
+    window.addEventListener('resize', this.onResize)
+    this.updateGraph()
   },
-  beforeDestroy: function () {
-    window.removeEventListener("resize", this.onResize);
-  },
-};
+  beforeDestroy() {
+    window.removeEventListener('resize', this.onResize)
+  }
+}
 </script>
 <style scoped>
 div {
