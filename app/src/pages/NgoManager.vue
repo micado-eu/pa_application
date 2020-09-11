@@ -1,9 +1,9 @@
   <template>
   <div class="container">
-    <div style="text-align:center;">
-      <div class="col" style="display:inline-block;padding-right:20px;padding-left:20px">
+    <div class="center">
+      <div class="col" id="div-1">
         <q-input
-          style="border-radius:10px; width:590px;font-size:18px"
+          id="input"
           dense
           items-center
           filled
@@ -19,8 +19,8 @@
       </div>
     </div>
 
-    <div style="text-align:center;">
-      <q-list style="display:inline-block;width:750px">
+    <div class="center">
+      <q-list id="list">
         <User
           v-for="user in filteredUsers"
           :key="user.id"
@@ -36,7 +36,9 @@
 
 
 <script>
-import User from "./ngo_manager/User";
+import User from "components/ngo_manager/User";
+import { mapGetters, mapActions } from "vuex";
+
 
 export default {
   name: "NgoManager",
@@ -52,10 +54,7 @@ export default {
     };
   },
   computed: {
-    users() {
-      console.log("ngo: ",this.$store.state);
-      return this.$store.state.ngo_user.user;
-    },
+    ...mapGetters("ngo_user", ["users"]),
     filteredUsers() {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -101,5 +100,22 @@ export default {
   padding-right: 80px;
   padding-bottom: 50px;
   padding-left: 80px;
+}
+.center{
+  text-align:center
+}
+#div-1{
+  display:inline-block;
+  padding-right:20px;
+  padding-left:20px
+}
+#input{
+  border-radius:10px; 
+  width:590px;
+  font-size:18px
+}
+#list{
+  display:inline-block;
+  width:750px
 }
 </style>

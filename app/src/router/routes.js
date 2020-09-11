@@ -5,7 +5,7 @@ import RequestMediation from '../components/ngo_user_management/MediationRequest
 import ProcessManager from '../pages/ProcessManager.vue'
 import AddDocument from '../components/data_settings/AddDocument'
 import MigrantManager from '../pages/MigrantManager'
-import NgoManager from '../components/NgoManager'
+import NgoManager from '../pages/NgoManager'
 import InfoEditor from '../components/InfoEditor'
 import GlossaryListPage from '../pages/glossary/GlossaryListPage.vue'
 import GlossaryNewPage from '../pages/glossary/GlossaryNewPage'
