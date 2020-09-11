@@ -162,7 +162,7 @@ export default {
         creationdate:'2016-06-22 19:10:25-07',
         endDate:'2016-06-22 19:10:25-07',
         caseManager:"john",
-        userTenant:-1234,
+        userTenant:Number(this.$migrant_tenant),
         completed:false,
         interventions:[]
       },
@@ -172,8 +172,8 @@ export default {
         interventionType:[],
         validationDate:null, 
         completed:false,
-        validatingUserId: 1,
-        validatingUserTenant: -1234,
+        validatingUserId: this.theuserid,
+        validatingUserTenant: Number(this.$migrant_tenant),
         assignmentDate: '2016-06-22 19:10:25-07', 
         validationRequestDate:'2016-06-22 19:10:25-07', 
       },
@@ -195,22 +195,23 @@ export default {
         id: -1, 
         title:"",
         userId: Number(this.theuserid),
-        creationdate:'2016-06-22 19:10:25-07',
+        creationDate:'2016-06-22 19:10:25-07',
         endDate:'2016-06-22 19:10:25-07',
         caseManager:"john",
-        userTenant:-1234,
+        userTenant:Number(this.$migrant_tenant),
         completed:false,
         interventions:[]
       }
     },
       createInterventionShell () {
-      this.intervention_shell = {  id:this.fakeId,
+      this.intervention_shell = {  
+        id:this.fakeId,
         listId:-1,
         interventionType:[],
         validationDate:null, 
         completed:false,
-        validatingUserId: 1,
-        validatingUserTenant: -1234,
+        validatingUserId: this.theuserid,
+        validatingUserTenant: Number(this.$migrant_tenant),
         assignmentDate: '2016-06-22 19:10:25-07', 
         validationRequestDate:'2016-06-22 19:10:25-07', }
     },
