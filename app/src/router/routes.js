@@ -47,7 +47,7 @@ const routes = [
 
       { path: '/migrant', component: MigrantManager },
       { path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('components/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
-      { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('components/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
+      { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
       { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
       { path: '/chatbot', component: chatBot },
