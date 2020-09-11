@@ -1,32 +1,32 @@
 <template>
-  <div style="padding-left:25px">
+  <div id="first-div">
     <div
       class="q-pa-md col"
-      style="width:800px; margin:0 auto"
+      id="second-div"
     >
       <UserProfile :user="the_user">
       </UserProfile>
     </div>
-    <div style="">
+    <div >
       <div
         class="q-pa-md"
-        style="width:750px; margin:0 auto; padding-left:0px"
+        id="third-div"
         v-for="intervention_plan in intervention_plans"
         :key="intervention_plan.id"
       >
         <q-list
+          id="list"
           bordered
           class="rounded-borders"
-          style="width:750px; border-radius:10px"
         >
-          <h4 style="padding-top:10px;font-size:20pt; font-weight:600;padding-bottom:20px; margin-top:0px; height:60px;margin-bottom:0px;width:750px; padding-left:5px; background-color:#0f3a5d; color:white; border-top-left-radius:10px;border-top-right-radius:10px">
-            <span style="padding-left:30px">
+          <h4 id="header">
+            <span id="first-span">
               {{intervention_plan.title}}
             </span>
-            <span style="float:right; margin-right:15px ">
+            <span id="second-span">
               <q-btn
+                id="button"
                 icon-right="add"
-                style="margin-top:0px;border-radius:2px"
                 color="accent"
                 no-caps
                 :label="$t('button.add_intervention')"
@@ -130,41 +130,22 @@ export default {
     IntegrationPlan, AddIntervention, UserProfile
   },
   computed: {
-    /*intervention_plans () {
-      return this.$store.state.intervention_plan.intervention_plan
-    },*/
     ...mapGetters("integration_type", ["intervention_types"]),
     ...mapGetters("integration_category", ["intervention_categories"]),
     ...mapGetters("intervention_plan", ["intervention_plans"]),
     ...mapGetters("user", ["users"]),
 
-
-
-    /*intervention_types () {
-      return this.$store.state.integration_type.integration_type
-    },*/
     filteredplans () {
       return this.intervention_plans.filter((filt) => {
-        console.log(filt)
-        console.log(this.id)
-        console.log(typeof (this.id))
-        console.log(filt.user_id == this.id)
         return filt.user_id.includes(this.id)
       })
     },
 
-    /*users () {
-      return this.$store.state.user.user
-    },*/
     filteredUsers () {
       return this.users.filter((filt) => {
         return filt.id == this.id
       })
-    },
-
-    /*intervention_categories () {
-      return this.$store.state.integration_category.integration_category;
-    }*/
+    }
   },
   methods: {
     ...mapActions("intervention_plan", [
@@ -229,12 +210,7 @@ export default {
 
       }
       else {
-        console.log("I am the editing intervention")
-        console.log(this.intervention_shell)
-
         this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
-        console.log("i am selected plan interventions")
-        console.log(this.selected_plan.interventions)
         var index = this.selected_plan.interventions.findIndex(item => item.id == this.intervention_shell.id)
         this.selected_plan.interventions.splice(index, 1, this.intervention_shell)
         var payload = { intervention: this.intervention_shell, plan: this.selected_plan }
@@ -250,8 +226,6 @@ export default {
       console.log("adding interventions")
       console.log(this.isNew)
       this.isNew = true;
-      console.log(this.isNew)
-
       this.hideAdd = true;
 
     },
@@ -285,24 +259,8 @@ export default {
       this.hideAdd = true
       this.hideForm = false;
       console.log(this.intervention_shell)
-      /*  var targetId= value
-       for(let i = 0; i < this.filteredplans.length; i++){
-       var editing = this.filteredplans[i].actions.filter((filt) => {
-         console.log(filt)
-         console.log(targetId)
-         console.log(filt.id == targetId)
-         return filt.id == targetId
-       })
-       if(editing.length == 1){
-         console.log("in if")
-         console.log(editing)
-         this.edit_action=JSON.parse(JSON.stringify(editing[0]))
-         console.log(this.edit_action)
-       }
-       }
-       console.log(this.edit_action)*/
-
     },
+
     cancelIntervention () {
       console.log("going back")
       this.button_id = null
@@ -313,51 +271,22 @@ export default {
     }
   },
   created () {
-    console.log("in created")
-    //console.log(this.theuser.umId)
-    console.log("in created the user id is:")
-    console.log(this.$route.query.theuserid)
-    console.log("fetching user");
     var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
-    console.log("I am user id")
-    console.log(this.theuserid)
-    //this.$store.dispatch('user/fetchSpecificUser', { userid: this.theuserid, tenantid: this.$migrant_tenant })
     this.fetchSpecificUser(payload)
       .then(users => {
         this.loading = false
         var temp = this.users.filter((filt) => {
           return filt.umId == this.theuserid
         })
-        console.log("I am found user")
-        console.log(temp)
         this.the_user = temp[0]
       })
-
     console.log(this.$store);
-    //this.$store.dispatch('intervention_plan/fetchInterventionPlan', this.theuserid)
     this.fetchInterventionPlan(this.theuserid)
       .then(intervention_plans => {
         console.log("these are the returned plans")
         console.log(intervention_plans)
         this.loading = false
       })
-
-    /* console.log(this.$store);
-      this.$store
-        .dispatch("integration_category/fetchIntegrationCategory")
-        .then(intervention_categories => {
-  
-           console.log(intervention_categories)
-          for ( var i = 0; i<this.intervention_types.length; i++){
-          var the_category = {label: this.intervention_types[i].title, value:this.intervention_types[i].id}
-          this.categories.push(the_category)
-          this.loading = false;
-          }
-        })
-        
-    },*/
-    //this.$store.dispatch("integration_type/fetchIntegrationType")
-      this.fetchIntegrationType()
       .then(integration_types => {
         console.log("got integration types")
         console.log(integration_types)
@@ -365,12 +294,58 @@ export default {
           var the_integration_types = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle, value: ut.id }
           this.types.push(the_integration_types)
         })
-
       })
-
   }
-
 }
 </script>
 <style scoped>
+#first-div{
+  padding-left:25px;
+}
+
+#second-div {
+  width:800px;
+  margin:0 auto;
+}
+
+#third-div {
+  width:750px;
+  margin:0 auto;
+  padding-left:0px;
+}
+
+#list{
+  width:750px;
+  border-radius:10px;
+}
+
+#header{
+  padding-top:10px;
+  font-size:20pt;
+  font-weight:600;
+  padding-bottom:20px;
+  margin-top:0px;
+  height:60px;
+  margin-bottom:0px;
+  width:750px;
+  padding-left:5px;
+  background-color:#0f3a5d;
+  color:white;
+  border-top-left-radius:10px;
+  border-top-right-radius:10px
+}
+
+#first-span{
+  padding-left:30px;
+}
+
+#second-span{
+  float:right;
+  margin-right:15px;
+}
+
+#button{
+  margin-top:0px;
+  border-radius:2px;
+}
 </style>
