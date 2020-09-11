@@ -54,7 +54,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("ngo_user", ["users"]),
+    //...mapGetters("ngo_user", ["users"]),
+   users() { 
+      console.log("ngo: ",this.$store.state);
+      return this.$store.state.ngo_user.user;
+    },
     filteredUsers() {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
