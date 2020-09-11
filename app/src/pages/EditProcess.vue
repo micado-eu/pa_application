@@ -1,12 +1,11 @@
 <template>
 <div>
-    <div v-if="theprocess!=null" style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.edit_process')}} - {{this.title}}</div>
-    <div v-else style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.add_new_process')}}</div>
+    <div v-if="theprocess!=null" class="banner" >{{$t('input_labels.edit_process')}} - {{this.title}}</div>
+    <div v-else class="banner">{{$t('input_labels.add_new_process')}}</div>
 
-  <div style="text-align:center; padding-top:40px">
+  <div id="div-1">
     <div
-      class=""
-      style=" display:inline-block; border: 1px solid #DADADA; border-radius: 5px; margin-bottom: 1px; width:80%"
+      class="container"
     >
       
       <q-tab-panels
@@ -20,10 +19,10 @@
         >
           <div
             class=" q-pa-xsm "
-            style="padding-bottom:50px; padding-top:40px;padding-left:150px; padding-right:150px"
+            id="div-2"
           >
             
-             <div style="font-size:16px; font-weight:600; text-align:left; padding-bottom:15px">{{$t('input_labels.process_name')}} </div>
+             <div id="div-3" style="">{{$t('input_labels.process_name')}} </div>
             
               <q-input
                 dense
@@ -35,9 +34,9 @@
               />
           </div>
 
-          <div class=" q-pa-xsm "  style="padding-bottom:50px; padding-left:150px; padding-right:150px">
+          <div id="div-4" class="q-pa-xsm">
            
-              <div style="text-align:left;font-size:16px; font-weight:600; padding-bottom:15px"> {{$t('input_labels.process_description')}} </div>
+              <div id="div-5" > {{$t('input_labels.process_description')}} </div>
             <GlossaryEditor
            
         class="desc-editor"
@@ -51,16 +50,16 @@
       </q-tab-panels>
     
         <div
+          id="div-6"
           class=" q-pa-xsm row"
-          style="padding-left:150px; padding-right:150px"
         >
-          <div class="col-6" style="text-align:left;font-size:15px;"> {{$t('input_labels.user_tags')}} </div>
-          <div class="col-6" style="text-align:left;font-size:15px"> {{$t('input_labels.topic_tags')}} </div>
+          <div class="col-6 tag" > {{$t('input_labels.user_tags')}} </div>
+          <div class="col-6 tag" > {{$t('input_labels.topic_tags')}} </div>
         </div>
-        <div class="q-pa-xsm row" style="padding-left:150px; padding-right:150px">
+        <div class="q-pa-xsm row" id="div-7">
         <div
-          class="col-6"
-          style="padding-left:0px; padding-top:15px"
+          class="col-6 div-8"
+
         >
           <q-select
             filled
@@ -75,14 +74,13 @@
             map-options
             :options="this.u_tags"
             :label="$t('input_labels.user_tags')"
-            style="width: 90%"
+            class="select"
           />
           <q-chip v-for="tag in selected_u_tags" dense :key="tag">{{tag}}</q-chip>
         </div>
 
         <div
-          class="col-6"
-          style="padding-right:45px; padding-top:15px"
+          class="col-6 div-9"
         >
           <q-select
             filled
@@ -97,12 +95,12 @@
             map-options
             :options="this.t_tags"
             :label="$t('input_labels.topic_tags')"
-            style="width: 90%"
+            class="select"
           />
           <q-chip v-for="tag in selected_t_tags" dense :key="tag">{{tag}}</q-chip>
         </div>
       </div>
-      <hr style= "width:85%;border: 0.999px solid #DADADA;margin-top:90px">
+      <hr id="hr-1">
 <q-tabs
         v-model="langTab"
         dense
@@ -119,19 +117,18 @@
           :label="language.name"
         />
       </q-tabs>
-      <hr style= "width:85%;border: 0.999px solid #DADADA;">
-      <div style="text-align:left; padding-left:150px">
+      <hr id="hr-2">
+      <div id="div-10">
       <div
-        class="q-pa-md q-gutter-md col-4"
-        style="display:inline-block"
+        class="q-pa-md q-gutter-md col-4 div-11"
       >
          <q-btn
-          class="button"
+          class="delete-button"
           no-caps
           rounded
           :label="$t('button.back')"
           unelevated
-          style="width:150px;border-radius:2px"
+          style=""
           to="/guided_process_editor"
         />
         <q-btn
@@ -141,7 +138,7 @@
           :label="$t('button.manage_steps')"
           unelevated
           :disable="this.disabled"
-          style="width:150px;border-radius:2px"
+          class="button"
           :to="this.id + '/steps'"
         />
 
@@ -151,7 +148,7 @@
           rounded
           :label="$t('button.save')"
           unelevated
-          style="width:150px;border-radius:2px"
+          class="button"
           @click="savingProcess(edit_process)"
         />
 
@@ -281,7 +278,7 @@ export default {
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [], applicableUsersOrig:[], translations: [], processTopics: [], processTopicsOrig:[],  link: "", published: false, publicationDate: null, }
+      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "", published: false, publicationDate: null, }
       this.languages.forEach(l => {
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', translationDate: null })
       });
@@ -295,12 +292,8 @@ export default {
       this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
-      this.sele
-      //this.edit_process.applicableUsers = process.applicableUsers
-      //    this.edit_process.processTopics = process.processTopics
       process.translations.forEach(pr => {
         console.log(pr)
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
 
         for (var i = 0; i < this.edit_process.translations.length; i++) {
           if (this.edit_process.translations[i].lang == pr.lang) {
@@ -322,8 +315,6 @@ export default {
             })[0]
           var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
           this.selected_t_tags.push(the_topic_transl)
-
-          this.edit_process.processTopicsOrig.push(the_topic.idTopic)
         })
       }
 
@@ -336,8 +327,6 @@ export default {
           })[0]
           var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
           this.selected_u_tags.push(the_user_transl)
-
-          this.edit_process.applicableUsersOrig.push(the_user.idUserTypes)
 
         })
       }
@@ -398,9 +387,99 @@ export default {
 }
 </script>
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
+  width:150px;
+  border-radius:2px
+}
+.button{
+  width:150px;
+  border-radius:2px
+}
+.banner{
+  font-style: normal;
+  height:72px;
+  text-align: center; 
+  padding-top:15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color:white; 
+  background-color:#FF7C44
+}
+.container{
+  display:inline-block; 
+  border: 1px solid #DADADA; 
+  border-radius: 5px; 
+  margin-bottom: 1px; 
+  width:80%
+}
+.tag{
+  text-align:left;
+  font-size:15px;
+}
+#div-1{
+  text-align:center; 
+  padding-top:40px
+}
+#div-2{
+  padding-bottom:50px; 
+  padding-top:40px;
+  padding-left:150px; 
+  padding-right:150px
+}
+#div-3{
+  font-size:16px; 
+  font-weight:600; 
+  text-align:left; 
+  padding-bottom:15px
+}
+#div-4{
+  padding-bottom:50px; 
+  padding-left:150px; 
+  padding-right:150px
+}
+#div-5{
+  text-align:left;
+  font-size:16px; 
+  font-weight:600; 
+  padding-bottom:15px
+}
+#div-6{
+  padding-left:150px; 
+  padding-right:150px
+}
+#div-7{
+  padding-left:150px; 
+  padding-right:150px
+}
+.div-8{
+  padding-left:0px; 
+  padding-top:15px
+}
+.select{
+  width: 90%
+}
+.div-9{
+  padding-right:45px; 
+  padding-top:15px
+}
+#hr-1{
+  width:85%;
+  border: 0.999px solid #DADADA;
+  margin-top:90px
+}
+#hr-2{
+  width:85%;
+  border: 0.999px solid #DADADA;
+}
+#div-10{
+  text-align:left; 
+  padding-left:150px
+}
+.div-11{
+  display:inline-block;
 }
 </style>
