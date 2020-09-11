@@ -88,7 +88,7 @@
           rounded
           style="width:100px;border-radius:2px;margin-top:30px"
           :label="$t('button.save')"
-          @click="saveUserType()"
+          @click="savingUserType()"
         />
        
     </q-card>
@@ -110,7 +110,7 @@
     </div>
       </div>
     <q-list bordered separator>
-      <q-item clickable v-ripple v-for="a_user_type in user_type" :key="a_user_type.id">
+      <q-item clickable v-ripple v-for="a_user_type in user" :key="a_user_type.id">
          <q-item-section class="col-1 flex flex-left">
           <q-img
             :src="a_user_type.icon"
@@ -127,10 +127,10 @@
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editUserType(a_user_type)" />
+          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editingUserType(a_user_type)" />
         </q-item-section>
           <q-item-section class="col-1 flex flex-center">
-          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deleteUserType(a_user_type.id)" size="md" />
+          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingUserType(a_user_type.id)" size="md" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -144,6 +144,8 @@
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
+import { mapGetters, mapActions } from "vuex";
+
 
 export default {
   name: "UserType",
@@ -162,27 +164,30 @@ export default {
     GlossaryEditor
   },
   computed: {
-    user_type() {
-      return this.$store.state.user_type.user_type;
-    }
+    ...mapGetters("user_type", ["user"]),
   },
   methods: {
-    deleteUserType(index) {
+       ...mapActions("user_type", [
+      "fetchUserType",
+      "deleteUserType",
+      "saveUserType",
+      "editUserType"
+    ]),
+    deletingUserType(index) {
       console.log(index);
-      this.$store.dispatch("user_type/deleteUserType", index);
+      this.deleteUserType(index)
     },
-    saveUserType() {
+    savingUserType() {
       if (this.isNew) {
         // we are adding a new instance
-        this.$store
-          .dispatch("user_type/saveUserType", this.int_user_type_shell)
+        this.saveUserType(this.int_user_type_shell)
           .then(int_cat => {
             console.log("saved");
           });
       } else {
         // we are updating the exsisting
-        this.$store
-          .dispatch("user_type/editUserType", this.int_user_type_shell)
+        console.log("IN EDITING")
+        this.editUserType(this.int_user_type_shell)
           .then(int_cat => {
             console.log("updated");
           });
@@ -197,7 +202,7 @@ export default {
       this.hideForm = false;
       this.hideAdd = true;
     },
-    editUserType(user_type) {
+    editingUserType(user_type) {
      
       this.isNew = false;
       this.hideForm = false;
@@ -277,18 +282,19 @@ export default {
       this.hideForm = true;
       this.hideAdd = false;
     },
-    editUserType(user_type) {
+    /*editUserType(user_type) {
       this.isNew = false;
       this.hideForm = false;
       this.int_user_type_shell = JSON.parse(JSON.stringify(user_type));
-    }
+    }*/
   },
   //store.commit('increment', 10)
   created() {
     this.createShell()
     this.loading = true;
     console.log(this.$store);
-    this.$store.dispatch("user_type/fetchUserType").then(processes => {
+    this.fetchUserType()
+    .then(processes => {
       this.loading = false;
     });
   }

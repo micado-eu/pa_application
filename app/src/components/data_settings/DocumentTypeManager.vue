@@ -38,27 +38,34 @@
 
 <script>
 import ListItem from "./ListItem";
+import editEntityMixin from '../../mixin/editEntityMixin'
+import { mapGetters, mapActions } from "vuex";
+
 
 export default {
   name: "DocumentTypeManager",
   props: {
     msg: String
   },
+  mixins: [editEntityMixin],
   components: {
     ListItem
   },
   data() {
     return {
-      activeLanguage: this.$i18n.locale
+      //activeLanguage: this.$i18n.locale
     };
   },
 
   computed: {
-    document_types() {
-      return this.$store.state.document_type.document_type;
-    }
+    ...mapGetters("document_type", ["document_types"])
+
   },
   methods: {
+    ...mapActions("document_type", [
+      "deleteDocumentType",
+      "fetchDocumentType"
+    ]),
     onClickTitle: function() {
       this.$emit("scroll", "#" + this.$options.name);
     },
@@ -68,10 +75,7 @@ export default {
         console.log(filt);
         return filt.id == value;
       });
-      this.$store.dispatch(
-        "document_type/deleteDocumentType",
-        filteredDocuments[0].id
-      );
+      this.deleteDocumentType(filteredDocuments[0].id)
     },
      filterTranslationModel (currentLang) {
       return function (element) {
@@ -82,8 +86,7 @@ export default {
   created() {
     this.loading = true;
     console.log(this.$store);
-    this.$store
-      .dispatch("document_type/fetchDocumentType")
+    this.fetchDocumentType()
       .then(document_types => {
         this.loading = false;
               });

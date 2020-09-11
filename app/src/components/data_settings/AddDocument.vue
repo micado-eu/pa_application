@@ -134,6 +134,8 @@ import axios from 'axios'
 import https from 'https';
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
+import { mapGetters, mapActions } from "vuex";
+
 
 
 export default {
@@ -168,13 +170,14 @@ export default {
     }
   },
   computed: {
-    document_types : {
-      get (){
-      return this.$store.state.document_type.document_type
-      }
-    },
+  ...mapGetters("document_type", ["document_types"])
   },
   methods: {
+     ...mapActions("document_type", [
+      "saveDocumentType",
+      "fetchDocumentType",
+      "editDocumentType"
+    ]),
       getFiles(files){
         console.log(files);
         console.log(this)
@@ -241,11 +244,13 @@ export default {
     },
       saveData (value) {
         if(this.is_new){
-          this.$store.dispatch('document_type/saveDocumentType', value)
+          this.saveDocumentType(value)
+          //this.$store.dispatch('document_type/saveDocumentType', value)
           console.log(this.$store.state.document_type)
         }
         else{
-          this.$store.dispatch('document_type/editDocumentType', value);
+          this.editDocumentType(value)
+          //this.$store.dispatch('document_type/editDocumentType', value);
       console.log(value)
       console.log(this.document_types)
       console.log(this.$store.state.document_type)
@@ -261,7 +266,8 @@ export default {
       this.createShell()
     this.loading = true
     console.log(this.$store);
-    this.$store.dispatch('document_type/fetchDocumentType')
+    this.fetchDocumentType()
+    //this.$store.dispatch('document_type/fetchDocumentType')
       .then(document_types => {
         this.loading = false
         console.log("i am document types")
