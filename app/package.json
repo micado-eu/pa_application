@@ -46,6 +46,10 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.7.0",
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-vue": "^6.2.2",
     "quasar-app-extension-auth-token-based": "^0.3.1"
   },
   "engines": {
