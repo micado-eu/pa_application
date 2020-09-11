@@ -1,70 +1,87 @@
 <template>
   <div :id="category">
-    <div class="row">
-      <h5>{{category}}</h5>
-    </div>
-    <div class="row">
-      <div v-for="(d,i) in graph_data" :key="i" class="col-12">
-        <Chart :graph-data="d" @chart-clicked="sendData" />
+
+    <div class="group" ref="group">
+      <div class="row" id="header">
+        <h5>{{category}}&nbsp;&nbsp;</h5>
+        <q-btn
+          id="printbtn"
+          color="info"
+          icon="print"
+          round
+          title="print this page"
+          @click="printPNG()"
+        />
+      </div>
+      <div class="row">
+        <div v-for="(d,i) in graph_data" :key="i" class="col-12">
+          <Chart :graph-data="d" @chart-clicked="sendData" />
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Style, Stroke, Fill } from "ol/style.js";
-import * as mpapi from "masterportalAPI";
-import services from "../../api/map/config/services.json";
-import portalConfig from "../../api/map/config/portal.json";
-import localGeoJSON from "../../api/map/config/localGeoJSON.js";
-import Chart from "./chart/Chart";
+import htmlToImage from 'html-to-image'
+import download from 'downloadjs'
+import Chart from './chart/Chart'
 
 export default {
-  name: "ChartGroup",
+  name: 'ChartGroup',
   components: {
-    Chart,
+    Chart
   },
-  props: ["category", "board"],
-  data: function () {
+  props: ['category', 'board'],
+  data() {
     return {
-      graph_data: [],
-    };
+      graph_data: []
+    }
   },
   computed: {
-    charts: function () {
+    charts() {
       return [
         ...this.$store.state.statistics.charts,
         // FIXME: mockdata for map chart
         {
-          board: "hamburg",
-          category: "incoming",
-          content: "",
-          description: "bla",
-          format: "csv",
-          title: "TEST MAP",
-          type: "MAP",
-        },
-      ];
-    },
+          board: 'hamburg',
+          category: 'incoming',
+          content: '',
+          description: 'bla',
+          format: 'csv',
+          title: 'TEST MAP',
+          type: 'MAP'
+        }
+      ]
+    }
   },
   methods: {
-    sendData: function (grahDataId) {
-      console.log("group:",grahDataId);
-      this.$emit("group-clicked", grahDataId);
+    printPNG() {
+      htmlToImage.toPng(this.$refs.group, { filter: (node) => node.id !== 'printbtn' }).then((dataUrl) => {
+        download(dataUrl, 'my-node.png')
+      })
     },
+    sendData(grahDataId) {
+      console.log('group:', grahDataId)
+      this.$emit('group-clicked', grahDataId)
+    }
   },
-  mounted: function () {
-    this.graph_data = [];
+  mounted() {
+    this.graph_data = []
     this.charts.forEach((c) => {
       if (c.board === this.board && c.category === this.category) {
-        this.graph_data.push(c);
+        this.graph_data.push(c)
       }
-    });
-  },
-};
+    })
+  }
+}
 </script>
 
 <style scoped>
+.group{
+  background-color: white;
+  padding:20px;
+}
 h5 {
   margin: 0;
   padding-top: 75px;
@@ -100,5 +117,13 @@ p {
 }
 .q-icon {
   font-size: 24px;
+}
+#header{
+  display:flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+#printbtn{
+  height:42px;
 }
 </style>
