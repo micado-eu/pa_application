@@ -2,9 +2,9 @@ import MigrationSituation from '../components/MigrationSituation.vue'
 import DataSettings from '../components/DataSettings.vue'
 import Settings from '../components/Settings.vue'
 import RequestMediation from '../components/ngo_user_management/MediationRequest.vue'
-import ProcessEditor from '../components/ProcessEditor.vue'
+import ProcessManager from '../pages/ProcessManager.vue'
 import AddDocument from '../components/data_settings/AddDocument'
-import MigrantManager from '../components/MigrantManager'
+import MigrantManager from '../pages/MigrantManager'
 import NgoManager from '../components/NgoManager'
 import InfoEditor from '../components/InfoEditor'
 import GlossaryListPage from '../pages/glossary/GlossaryListPage.vue'
@@ -55,7 +55,7 @@ const routes = [
 
       { path: '/adddocument', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params }) },
       { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
-      { path: '/guided_process_editor', component: ProcessEditor, name: 'guidedprocesslist' },
+      { path: '/guided_process_editor', component: ProcessManager, name: 'guidedprocesslist' },
 
       { path: '/guided_process_editor/edit/', component: () => import('components/EditProcess.vue'), props: true, name: process },
       { path: '/guided_process_editor/edit/:theprocessid', name: 'editprocess', component: () => import('components/EditProcess.vue'), props: (route) => ({ ...route.params }) },
