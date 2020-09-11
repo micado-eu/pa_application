@@ -73,9 +73,9 @@
 </template>
 
 <script>
-import IntegrationPlan from './IntegrationPlan'
-import AddIntervention from './AddIntervention'
-import UserProfile from './UserProfile'
+import IntegrationPlan from 'components/IntegrationPlan'
+import AddIntervention from 'components/AddIntervention'
+import UserProfile from 'components/UserProfile'
 import editEntityMixin from '../mixin/editEntityMixin'
 import { mapGetters, mapActions } from "vuex";
 
