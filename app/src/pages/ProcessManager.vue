@@ -1,9 +1,7 @@
   <template>
   <div >
   <div id="top-div" >{{$t('input_labels.guided_processes')}}</div>
-
   <div class="container">
-
     <div class="center">
       <div
         id="div-1"
@@ -40,14 +38,11 @@
         />
       </div>
     </div>
-   
     <div class="center">
-    
       <q-list id="list">
-       
     <q-item class="row" id="item">
     <q-item-section class="col-8 flex flex-left" id="left">
-        {{$t('input_labels.name')}} 
+        {{$t('input_labels.name')}}
     </q-item-section>
     <q-item-section class="col-1.3 flex flex-center" id="section">
        {{$t('input_labels.edit')}}
@@ -81,30 +76,35 @@
 
 <script>
 import Process from 'components/guided_process_editor/Process'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
+import editEntityMixin from '../mixin/editEntityMixin'
 
 
 export default {
   name: 'ProcessManager',
-  props: {
-    msg: String
-  },
   components: {
     Process
   },
+  mixins: [editEntityMixin,
+   storeMappingMixin({
+    getters: {
+      processes: 'flows/processes',
+      steps: 'steps/steps',
+      steplinks: 'steplinks/steplinks'
+    }, actions: {
+      deleteProcess: 'flows/deleteProcess',
+      fetchFlows: 'flows/fetchFlows',
+      fetchSteplinks: 'steplinks/fetchSteplinks',
+      fetchSteps: 'steps/fetchSteps'
+    }
+  })],
   data () {
     return {
-      search: ' ',
-      activeLanguage: this.$i18n.locale,
-
+      search: ' '
     }
   },
 
   computed: {
-    ...mapGetters("flows", ["processes"]),
-    ...mapGetters("steps", ["steps"]),
-    ...mapGetters("steplinks", ["steplinks"]),
-   
     filteredProcesses () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -123,16 +123,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("flows", [
-      "deleteProcess",
-      "fetchFlows"
-    ]),
-     ...mapActions("steps", [
-      "fetchSteps"
-    ]),
-     ...mapActions("steplinks", [
-      "fetchSteplinks"
-    ]),
     deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
@@ -184,8 +174,7 @@ export default {
       .then(steplinks => {
         this.loading = false
         console.log(this.steplinks)
-      })
-      
+      })  
   }
 }
 </script>

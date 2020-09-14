@@ -1,6 +1,6 @@
   <template>
   <div>
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
+  <div class="title" >{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
   <div class="container">
     <div>
       <q-card class="my-card">
@@ -24,26 +24,23 @@
         </q-card-section>
       </q-card>
       <div
-        style="text-align:center; padding-top:40px"
+        id="div-1"
         v-if="this.editing"
       >
         <div
-          class=" q-pa-lg"
-          style="display:inline-block; width:750px;border-width:2px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px"
+          class=" q-pa-lg div-2"
         >
           <div
-            class=" q-pa-xsm row"
-            style="text-align:center"
+            class=" q-pa-xsm row div-3"
           >
             <q-tabs
               v-model="langTab"
               dense
-              class="text-grey"
+              class="text-grey width"
               active-color="primary"
               indicator-color="primary"
               align="justify"
               narrow-indicator
-              style="width:100%"
             >
               <q-tab
                 v-for="language in languages"
@@ -55,7 +52,7 @@
             <q-tab-panels
               v-model="langTab"
               animated
-              style="width:100%"
+              class="width"
             >
               <q-tab-panel
                 v-for="language in languages"
@@ -65,11 +62,11 @@
               >
               <div class="row">
                 <div class=" q-pa-xsm col-4">
-                  <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_name')}} </h5>
+                  <h5 class="header" > {{$t('input_labels.step_name')}} </h5>
                 </div>
                 <div
-                  class="col-8"
-                  style="margin: auto;display: block;margin-bottom:0px"
+                  class="col-8 under-header"
+                  
                 >
                   <q-input
                     rounded
@@ -83,13 +80,12 @@
                   />
                 </div>
               </div>
-                <div class=" q-pa-xsm row" style="width:100%">
+                <div class=" q-pa-xsm row width" >
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left"> {{$t('input_labels.step_description')}} </h5>
+                    <h5  class="header"> {{$t('input_labels.step_description')}} </h5>
                   </div>
                   <div
-                    class="col-8"
-                    style="margin: auto;display: block;"
+                    class="col-8 under-header"
                   >
                     <q-input
                     style="padding-top:10px"
@@ -105,13 +101,12 @@
 
               </q-tab-panel>
             </q-tab-panels>
-            <div class=" q-pa-xsm row" style="width:100%">
+            <div class=" q-pa-xsm row width" >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_location')}} </h5>
+                <h5  class="header"> {{$t('input_labels.step_location')}} </h5>
               </div>
               <div
-                class="col-8"
-                style="margin: auto;display: block;margin-bottom:0px"
+                class="col-8 under-header"
               >
                 <q-input
                   rounded
@@ -125,13 +120,12 @@
               </div>
             </div>
 
-            <div class=" q-pa-xsm row" style="width:100%">
+            <div class=" q-pa-xsm row width" >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_cost')}} </h5>
+                <h5  class="header"> {{$t('input_labels.step_cost')}} </h5>
               </div>
               <div
-                class="col-8"
-                style="margin: auto;display: block;margin-bottom:0px"
+                class="col-8 under-header"
               >
                 <q-input
                   rounded
@@ -145,19 +139,19 @@
               </div>
             </div>
             
-            <div class="row" style="width:100%; padding-top:10px">
+            <div class="row width-2" >
               <q-btn
+                class="add-step-document"
                 color="accent"
-                no-caps=""
+                no-caps
                 unelevated
                 :label="$t('button.add_document')"
                 @click="addStepDocument()"
-                style="width:150px;border-radius:2px"
               />
             </div>
            
               
-              <div class="row" style="width:100%; padding-top:10px; padding-bottom:10px" v-if="stepdocadd">
+              <div class="row width-3" v-if="stepdocadd">
                 <div class="col-6">
                 <q-select
                   filled
@@ -165,14 +159,14 @@
                   v-model="step_doc_shell.idDocument"
                   emit-value
                   map-options
+                  id="select"
                   :options="filtered_t_docs"
                   :label="$t('input_labels.required_documents')"
-                  style="width:350px"
                 />
                 </div>
                 <div class="col-3" >
                 <q-input
-                style="width:100px;margin:0 auto"
+                  id="input"
                   rounded
                   dense
                   bg-color="grey-3"
@@ -183,12 +177,12 @@
                 </div>
                 <div class="col-3">
                 <q-btn
+                id="save-step-document"
                 color="accent"
-                no-caps=""
+                no-caps
                 unelevated
                 :label="$t('button.save_document')"
                 @click="saveStepDocument()"
-                style="width:150px;border-radius:2px"
               />
                 </div>
               </div>
@@ -824,11 +818,73 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-
+.title{
+  font-style: normal;
+  height:72px;
+  text-align: center; 
+  padding-top:15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color:white; 
+  background-color:#FF7C44
+}
 .button {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
+}
+#div-1{
+  text-align:center; 
+  padding-top:40px
+}
+.div-2{
+  display:inline-block; 
+  width:750px;
+  border-width:2px; 
+  border-color:#0f3a5d; 
+  border-radius: 1.95rem;
+  border-style: solid; 
+  margin-bottom: 1px
+}
+.div-3{
+  text-align:center
+}
+.width{
+  width:100%
+}
+.width-2{
+width:100%; 
+padding-top:10px
+}
+.width-3{
+width:100%; 
+padding-top:10px; 
+padding-bottom:10px
+}
+.header{
+  text-align:left; 
+  margin-bottom:0px
+}
+.under-header{
+  margin: auto;
+  display: block;
+  margin-bottom:0px
+}
+.add-step-document{
+  width:150px;
+  border-radius:2px
+}
+#select{
+  width:350px
+}
+#input{
+  width:100px;
+  margin:0 auto
+}
+#save-step-document{
+width:150px;
+border-radius:2px
 }
 </style>
 
