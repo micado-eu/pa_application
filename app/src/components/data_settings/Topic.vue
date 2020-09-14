@@ -2,18 +2,18 @@
   <div class="q-pa-md">
     <div class="row">
     <h5 class="col-6">{{$options.name}}</h5>
-    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+    <div class="col-6 div-1" >
      <q-btn
           color="info"
           no-caps
           :label="$t('button.add_type')"
           @click="newTopic()"
           :disable="hideAdd"
-          style="width:200px"
+          id="add-button"
         />
   </div>
     </div>
-    <q-card class="q-pa-xl" :hidden="hideForm" style="margin-bottom:100px">
+    <q-card class="q-pa-xl div-2" :hidden="hideForm">
        
         <q-tab-panels
           v-model="langTab"
@@ -25,7 +25,7 @@
             :name="language.name"
           >
             <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-            <div style="font-size:16px; font-weight:600"> {{$t('input_labels.topic')}} </div>
+            <div id="div-3"> {{$t('input_labels.topic')}} </div>
             <q-input
               outlined
               filled
@@ -45,41 +45,7 @@
         >
 
         </FileUploader>
-
-        <!--  <q-card class="my-card">
-          <q-card-section>
-
-            <q-file
-              @input="getFiles"
-              bg-color="grey-3"
-              dense
-              rounded
-              standout
-              outlined
-            >
-
-            </q-file>
-            <q-img
-              :src="topicimage"
-              spinner-color="white"
-              style="max-height: 100px; max-width: 150px"
-            />
-          </q-card-section>
-          <q-card-section>
-            <q-toggle
-              v-model="int_topic_shell.published"
-              color="green"
-              label="is Published"
-            />
-            <q-input
-              v-model="int_topic_shell.publicationDate"
-              label="Publication date"
-              readonly
-            />
-          </q-card-section>
-
-        </q-card>-->
- <q-tabs
+        <q-tabs
           v-model="langTab"
           dense
           class="text-grey"
@@ -95,13 +61,12 @@
             :label="language.name"
           />
         </q-tabs>
-        <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+        <hr id="hr">
           <q-btn
           no-caps
-          class="button"
+          class="delete-button"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
           :label="$t('button.cancel')"
           @click="cancelTopic()"
         />
@@ -110,14 +75,14 @@
           color="accent"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-top:30px"
           :label="$t('button.save')"
+          class="button"
           @click="savingTopic()"
         />
       
 
       </q-card>
-      <div class="row" style="padding-left:20px; padding-bottom:10px">
+      <div class="row div-4">
     <div class="col-1 flex flex-left">
       {{$t('input_labels.image')}}
     </div>
@@ -127,10 +92,10 @@
     <div class="col-1 flex flex-left">
       {{$t('input_labels.is_published')}}
     </div>
-    <div class="col-1 flex flex-center" style="padding-left:10px">
+    <div class="col-1 flex flex-center div-5">
       {{$t('input_labels.edit')}}
     </div> 
-    <div class="col-1 flex flex-center" style="padding-left:30px">
+    <div class="col-1 flex flex-center div-6" >
       {{$t('input_labels.delete')}}
     </div>
       </div>
@@ -149,10 +114,10 @@
           <q-img
             :src="a_topic.icon"
             spinner-color="white"
-            style="height: 40px; max-width: 40px"
+            id="image"
           />
         </q-item-section>
-        <q-item-section class="col-8 flex flex-left" style="font-size:16px; font-weight:600">{{showTopicLabel(a_topic)}}</q-item-section>
+        <q-item-section class="col-8 flex flex-left section">{{showTopicLabel(a_topic)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_topic.published"
@@ -161,7 +126,7 @@
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editingTopic(a_topic)" />
+          <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editingTopic(a_topic)" />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center" >
          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingTopic(a_topic.id)" size="md" />
@@ -227,8 +192,6 @@ export default {
 
       if (this.isNew) {
         // we are adding a new instance
-
-        //this.$store.dispatch("topic/saveTopic", workingTopic)
         this.saveTopic(this.int_topic_shell)
           .then(int_cat => {
             console.log("saved");
@@ -236,12 +199,12 @@ export default {
       } else {
         console.log(this.int_topic_shell)
         // we are updating the exsisting
-        //this.$store.dispatch("topic/editTopic", workingTopic)
         this.editTopic(this.int_topic_shell)
           .then(int_cat => {
             console.log("updated");
           });
       }
+      this.hideAdd = false
       this.hideForm = true;
       this.createShell()
     },
@@ -265,7 +228,6 @@ export default {
     editingTopic (topic) {
       this.isNew = false;
       this.hideForm = false;
-      //     this.int_topic_shell = JSON.parse(JSON.stringify(topic));
       this.mergeTopic(topic)
     },
     
@@ -287,8 +249,6 @@ export default {
       this.int_topic_shell.publicationDate = topic.publicationDate
       topic.translations.forEach(tr => {
         console.log(tr)
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
         for (var i = 0; i < this.int_topic_shell.translations.length; i++) {
           if (this.int_topic_shell.translations[i].lang == tr.lang) {
             this.int_topic_shell.translations.splice(i, 1);
@@ -305,17 +265,12 @@ export default {
     getFiles (files) {
       console.log(files);
       console.log(this)
-
       console.log(self)
-
       let reader = new FileReader()
-
       // Convert the file to base64 text
       reader.readAsDataURL(files)
-
       // on reader load somthing...
       reader.onload = () => {
-
         // Make a fileInfo Object
         let fileInfo = {
           name: files.name,
@@ -330,33 +285,75 @@ export default {
       }
     }
   },
-  //store.commit('increment', 10)
   created () {
     this.loading = true;
     console.log(this.$store);
     this.$store.dispatch("topic/fetchTopic").then(processes => {
       this.loading = false;
     });
-    //   this.activeLanguage = this.$i18n.locale,
     this.createShell()
-    /*
-        this.$store.dispatch("language/fetchLanguages").then(langs => {
-          let al = this.activeLanguage
-          this.langTab = this.languages.filter(function (l) { return l.lang == al })[0].name
-          console.log('active language')
-          console.log(this.int_topic_shell)
-        })
-    */
   }
 };
 </script>
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
+  width:100px;
+  border-radius:2px;
+  margin-right:15px; 
+  margin-left:10px; 
+  margin-top:30px
 }
 h5 {
   font-weight: bold;
+}
+.div-1{
+  margin-top:40px;
+  margin-bottom:40px; 
+  text-align:right
+}
+.div-2{
+  margin-bottom:100px
+}
+#add-button{
+  width:200px;
+}
+.button{
+  width:100px;
+  border-radius:2px;
+  margin-top:30px
+}
+#div-3{
+  font-size:16px; 
+  font-weight:600; 
+  
+}
+#hr{
+  margin-left:15px;
+  margin-right:15px;
+  border: 1px solid #DADADA
+}
+.div-4{
+padding-left:20px; 
+padding-bottom:10px
+}
+.div-5{
+padding-left:10px
+}
+.div-6{
+padding-left:30px
+}
+#image{
+  height: 40px; 
+  max-width: 40px
+}
+.section{
+  font-size:16px; 
+  font-weight:600
+}
+#icon{
+  margin-right:10px;
 }
 </style>
