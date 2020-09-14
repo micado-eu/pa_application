@@ -1,65 +1,42 @@
 <template>
-<div style=" padding-bottom:20px">
-  <q-item
-    style="width: 750px;padding-top:0px"
-  >
-    <q-item-section
-    class="col-2"
-    style="width:96px;height:64px">
+<div class="div-1">
+  <q-item id="item-1">
+    <q-item-section class="col-2 section-1">
         <img 
-        style="width:64px;height:64px;margin-top:20px" 
+        id="image"
         :src="this.Image">
     </q-item-section>
- 
-    
-    <div
-    class="col-9"
-    style="height:64px">
-      <div 
-      class="row" 
-      style="height:32px;vertical-align:text-top">
-        <q-item style="padding-top:0px;">
-          <q-item-section 
-          class="col" 
-          style="font-size:15px; font-weight:600;">
+    <div class="col-9 div-2">
+      <div class="row div-3" >
+        <q-item id="item-2" >
+          <q-item-section class="col section-2" >
           {{ this.Title }}
           </q-item-section>
         </q-item>
     </div>
-    <div 
-    class="row" 
-    style="height:32px; text-align:left">
-      <q-item 
-      style="overflow: hidden;text-overflow: ellipsis;display: -webkit-box;line-height: 22px;max-height: 42px;-webkit-line-clamp: 2;-webkit-box-orient: vertical;font-size:13px;padding-top:0px;">
-        <q-item-section 
-        class="col">
+    <div class="row div-4" >
+      <q-item id="item-3">
+        <q-item-section class="col">
         {{ this.Text }}
         </q-item-section>
       </q-item>
     </div>
     </div>
-    <div
-    class="col-2" style="text-align:center;">
-      <div 
-      class="row" 
-      style="padding-bottom:3.5px; display: inline-block">
+    <div class="col-2 div-5">
+      <div class="row div-6">
         <q-btn
-        class="q-px-md q-py-s"
+        class="q-px-md q-py-s button"
         color="info"
-        style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded 
         :label="$t('button.edit')"
         no-caps
         @click="editDocumentType()"/>
       </div>
-      <div 
-      class="row" 
-      style="padding-top:3.5px;  display: inline-block">
+      <div class="row div-7">
         <q-btn
-        class="q-px-md q-py-s"
+        class="q-px-md q-py-s button"
         color="negative"
-        style="font-size:13px;font-weight:600;width:70px;border-radius:2px"
         unelevated
         rounded
         @click="remove_doc($event)"
@@ -67,11 +44,9 @@
         no-caps
         />
       </div>
-     
     </div>
-    
   </q-item>
-  <hr style="margin:0px">
+  <hr id="hr">
   </div>
 </template>
 
@@ -106,7 +81,68 @@ div >>> .q-item {
   }
 }
 .button{
-  font-size:26px;
+  font-size:13px;
   font-weight:600;
+  width:70px;
+  border-radius:2px
+}
+.div-1{
+  padding-bottom:20px
+}
+#item-1{
+  width: 750px;
+  padding-top:0px
+}
+.section-1{
+  width:96px;
+  height:64px
+}
+#image{
+  width:64px;
+  height:64px;
+  margin-top:20px
+}
+.div-2{
+  height:64px
+}
+.div-3{
+  height:32px;
+  vertical-align:text-top
+}
+#item-2{
+  padding-top:0px;
+}
+.section-2{
+  font-size:15px; 
+  font-weight:600;
+}
+.div-4{
+  height:32px; 
+  text-align:left
+}
+#item-3{
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  line-height: 22px;
+  max-height: 42px;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  font-size:13px;
+  padding-top:0px;
+}
+.div-5{
+  text-align:center;
+}
+.div-6{
+  padding-bottom:3.5px;
+  display: inline-block
+}
+.div-7{
+  padding-top:3.5px; 
+  display: inline-block
+}
+#hr{
+  margin:0px
 }
 </style>

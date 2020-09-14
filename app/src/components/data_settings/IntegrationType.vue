@@ -2,18 +2,18 @@
   <div class="q-pa-md">
     <div class="row">
     <h5 class="col-6">{{$options.name}}</h5>
-    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+    <div class="col-6 div-1">
      <q-btn
           color="info"
           no-caps
           :label="$t('button.add_type')"
           @click="newIntegrationType()"
           :disable="hideAdd"
-          style="width:200px"
+          id="add-button"
         />
   </div>
     </div>
-    <q-card class="q-pa-md" :hidden="hideForm" style="margin-bottom:100px">
+    <q-card class="q-pa-md div-2" :hidden="hideForm">
       
         <q-tab-panels
           v-model="langTab"
@@ -24,14 +24,14 @@
             :key="language.lang"
             :name="language.name"
           >
-          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.intervention_type')}} </div>
+          <div class="div-3" style=""> {{$t('input_labels.intervention_type')}} </div>
         <q-input 
         outlined
         filled
         dense
         v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
         :label="$t('input_labels.type_placeholder')" />
-        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.description')}} </div>
+        <div class="div-3"> {{$t('input_labels.description')}} </div>
          <GlossaryEditor
         class="desc-editor"
         v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -40,7 +40,7 @@
          </q-tab-panel>
         </q-tab-panels>
         <div class="q-gutter-sm">
-          <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px; padding-left:16px"> {{$t('input_labels.category_type')}} </div>
+          <div id="div-4"> {{$t('input_labels.category_type')}} </div>
           <q-option-group
             :options="options"
             label="Notifications"
@@ -51,7 +51,7 @@
      
            <q-card-section class="row">
               <div class="col-8">
-                <div style="font-size:16px; font-weight:600"> {{$t('input_labels.publication_date')}} </div>
+                <div class="div-5"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
@@ -61,8 +61,8 @@
               readonly
             />
             </div>
-            <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600"> {{$t('input_labels.is_published')}} </div>
+            <div class="col-4 div-6">
+              <div class="div-5"> {{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="int_type_shell.published"
               color="green"
@@ -90,13 +90,12 @@
             :label="language.name"
           />
         </q-tabs>
-        <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
-            <q-btn
+        <hr id="hr" >
+          <q-btn
           no-caps
-          class="button"
+          class="delete-button"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
           :label="$t('button.cancel')"
           @click="cancelIntegrationType()"
         />
@@ -105,23 +104,23 @@
           color="accent"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-top:30px"
+          class="button"
           :label="$t('button.save')"
           @click="savingIntegrationType()"
         />
         
         </q-card>
-    <div class="row" style=" padding-bottom:10px">
-    <div class="col-9 flex flex-left" style="padding-left:15px;">
+    <div class="row div-7" >
+    <div class="col-9 flex flex-left div-8">
       {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
       {{$t('input_labels.is_published')}}
     </div>
-    <div class="col-1 flex flex-center" style="margin-left:0px">
+    <div class="col-1 flex flex-center div-9" >
       {{$t('input_labels.edit')}}
     </div> 
-    <div class="col-1 flex flex-center" style="padding-left:20px">
+    <div class="col-1 flex flex-center div-10">
       {{$t('input_labels.delete')}}
     </div>
       </div>
@@ -132,7 +131,7 @@
         v-for="a_integration_type in intervention_types"
         :key="a_integration_type.id"
       >
-        <q-item-section class="col-9 flex flex-left" style="font-size:16px; font-weight:600">{{showTypeLabel(a_integration_type)}}</q-item-section>
+        <q-item-section class="col-9 flex flex-left section" >{{showTypeLabel(a_integration_type)}}</q-item-section>
        <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_integration_type.published"
@@ -141,7 +140,7 @@
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-        <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationType(a_integration_type)" />
+        <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationType(a_integration_type)" />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingIntegrationType(a_integration_type.id)" size="md" />
@@ -212,7 +211,7 @@ export default {
             console.log("updated");
           });
       }
-      this.hideForm = true;
+      this.hideForm = true
       this.hideAdd = false
       this.createShell()
     },
@@ -255,8 +254,6 @@ export default {
       this.int_type_shell.interventionProcess = intervention_type.interventionProcess
       intervention_type.translations.forEach(pr => {
         console.log(pr)
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
         for (var i = 0; i < this.int_type_shell.translations.length; i++) {
           if (this.int_type_shell.translations[i].lang == pr.lang) {
             this.int_type_shell.translations.splice(i, 1);
@@ -265,13 +262,10 @@ export default {
           }
         }
       });
-
       console.log(this.int_type_shell)
-
-
     }
   },
-  //store.commit('increment', 10)
+ 
   created() {
     this.createShell()
     this.loading = true;
@@ -294,12 +288,77 @@ export default {
 };
 </script>
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
-  border: 1px solid #C71f40;
+  border: 1px solid #c71f40;
+  width:100px;
+  border-radius:2px;
+  margin-right:15px; 
+  margin-left:10px; 
+  margin-top:30px
 }
 h5 {
   font-weight: bold;
+}
+.div-1{
+  margin-top:40px;
+  margin-bottom:40px; 
+  text-align:right
+}
+.div-2{
+  margin-bottom:100px
+}
+#add-button{
+  width:200px;
+}
+.button{
+  width:100px;
+  border-radius:2px;
+  margin-top:30px
+}
+.div-3{
+  font-size:16px; 
+  font-weight:600; 
+  padding-top:10px; 
+  padding-bottom:10px
+  
+}
+#hr{
+  margin-left:15px;
+  margin-right:15px;
+  border: 1px solid #DADADA
+}
+#div-4{
+font-size:16px; 
+font-weight:600; 
+padding-top:10px; 
+padding-bottom:10px; 
+padding-left:16px
+}
+.div-5{
+font-size:16px; 
+font-weight:600}
+.div-6{
+padding-left:20px;
+}
+.div-7{
+padding-bottom:10px
+}
+.div-8{
+padding-left:15px;
+}
+.div-9{
+margin-left:0px
+}
+.div-10{
+padding-left:20px
+}
+.section{
+  font-size:16px; 
+  font-weight:600
+}
+#icon{
+  margin-right:10px;
 }
 </style>

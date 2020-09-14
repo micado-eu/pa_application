@@ -3,21 +3,22 @@
     <router-link :to="'#'+$options.name">
       <h5 @click="onClickTitle()">{{$options.name}}</h5>
     </router-link>
-    <div style="padding-top:37px; padding-bottom:37px">
-      <div class="q-gutter-md justify-center" style="text-align:center">
+    <div id="div-1" >
+      <div class="q-gutter-md justify-center div-2">
         <q-btn
+          class="add-button"
           size="lg"
           unelevated
           rounded
           color="accent"
-          style="width:750px;border-radius:2px"
+          style=""
           :label="$t('button.add_document')"
           to="/adddocument"
         />
       </div>
     </div>
-    <div style="text-align:center">
-      <div style=" display: inline-block">
+    <div class="div-2">
+      <div id="div-3">
         <q-list>
           <ListItem
             v-for="document_type in document_types"
@@ -107,5 +108,19 @@ a {
 }
 h5 {
   font-weight: bold;
+}
+#div-1{
+  padding-top:37px; 
+  padding-bottom:37px
+}
+.div-2{
+  text-align:center
+}
+#div-3{
+display: inline-block
+}
+.add-button{
+width:750px;
+border-radius:2px
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-<div style="text-align:center;padding-top:30px">
+<div id="div-1">
    <q-tabs
           v-model="langTab"
           dense
@@ -25,26 +25,24 @@
             :key="language.lang"
             :name="language.name"
           >
-  <div class=" q-pa-lg" style="display:inline-block; border-width:1px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; padding-top:0px; width:750px;">
-    <div class=" q-pa-xsm row" style="text-align:center;padding-right:45px ">
-      <div class="col-4" style="padding-left:40px; padding-top:30px">
-        <h5 style="text-align:left;font-size:18px"> Document icon </h5>
+  <div class=" q-pa-lg div-2">
+    <div class=" q-pa-xsm row div-3">
+      <div class="col-4 div-4" >
+        <h5 class="header" > Document icon </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
-       <q-file 
-      
-    >
+      <div class="col-8 div-5">
+       <q-file>
      <template v-slot:append>
             <q-icon name="attachment" />
           </template>
   </q-file> 
       </div>
     </div>
-    <div class="row" style="padding-bottom:15px;padding-right:45px" >
-      <div class="col-4" style="padding-left:40px;">
-        <h5 style="text-align:left;font-size:18px"> Document type description </h5>
+    <div class="row div-7" >
+      <div class="col-4 div-6">
+        <h5 class="header"> Document type description </h5>
       </div>
-      <div class="col-8" style="display: block;">
+      <div class="col-8 div-9" >
         <GlossaryEditor
         class="desc-editor"
         v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -52,55 +50,55 @@
         ref="editor" />
       </div>
     </div>
-    <div class=" q-pa-xsm row" style="text-align:center; padding-right:45px">
-      <div class="col-4" style="padding-left:40px;">
-        <h5 style="text-align:left;font-size:18px"> Document type  </h5>
+    <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6" >
+        <h5  class="header"> Document type  </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
+      <div class="col-8 div-5" >
         <q-input bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
       </div>
     </div>
     
-    <div class=" q-pa-xsm row" style="text-align:center;padding-right:45px">
-      <div class="col-4" style="padding-left:40px;">
-        <h5 style="text-align:left;font-size:18px"> Document Issuer </h5>
+    <div class=" q-pa-xsm row div-7" >
+      <div class="col-4 div-6">
+        <h5  class="header"> Document Issuer </h5>
       </div>
-      <div class="col-8" style="margin: auto;display: block;">
+      <div class="col-8 div-5" >
         <q-input dense bg-color="grey-3" rounded standout outlined v-model="int_doc_shell.issuer"  />
       </div>
     </div>
     
-    <div class=" q-pa-xsm row" style="text-align:center;padding-right:45px">
-      <div class="col-4" style="padding-left:40px;">
-        <h5 style="text-align:left;font-size:18px"> Valididty duration </h5>
+    <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6">
+        <h5  class="header"> Validity duration </h5>
       </div>
-      <div class="col-1" style="margin-top:25px;display: block;">
+      <div class="col-1 div-8" >
         <q-input dense bg-color="grey-3" rounded standout outlined v-model="int_doc_shell.validityDuration"  />
       </div>
-      <div class="col-2" style="margin: auto;display: block;">
-      <h5 style="text-align:left;font-size:18px"> Days </h5>
+      <div class="col-2 div-5">
+      <h5  class="header"> Days </h5>
       </div>
-       <div class="col-4" style="width:50px">
-        <h5 style="text-align:left;font-size:18px"> Validable?</h5>
+       <div class="col-4 div-10" >
+        <h5  class="header"> Validable?</h5>
       </div>
-      <div class="col-1" style="margin: auto;display: block;">
+      <div class="col-1 div-5" >
         <q-checkbox color="accent" v-model="int_doc_shell.validable" clickable @click="int_doc_shell.validable=!int_doc_shell.validable"/>
       </div>
     </div>
-    <div class=" q-pa-xsm row" style="text-align:center;padding-right:45px">
-      <div class="col-4" style="padding-left:40px;">
-        <h5 style="text-align:left;font-size:18px"> Document model </h5>
+    <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6" >
+        <h5  class="header"> Document model </h5>
       </div>
-      <div class="col-6" style="margin: auto;display: block;">
+      <div class="col-6 div-5" >
         <q-file  @input="getFiles" bg-color="grey-3" dense rounded standout outlined >
          
         </q-file>
         </div>
-        <div class="col" style="width:150px; height:100px: padding-right:45px; padding-left:15px">
+        <div class="col div-11" >
         <q-img
       :src="myimage"
       spinner-color="white"
-      style="max-height: 100px; max-width: 150px"
+      id="image"
       @click="hotimage = true" 
     />
     <q-dialog v-model="hotimage">
@@ -116,11 +114,23 @@
     </div>
   </div>
   <div class="row">
-    <div class="q-pa-md col-6" style="text-align:right">
-    <q-btn class="button" unelevated rounded :label="$t('button.cancel')" style="width:100px; border-radius:2px" to="/data_settings/document_types"/>
+    <div class="q-pa-md col-6 div-12">
+    <q-btn 
+    class="delete-button" 
+    unelevated 
+    rounded 
+    :label="$t('button.cancel')"  
+    to="/data_settings/document_types"/>
     </div>
-    <div class=" q-pa-md col-6" style="text-align:left">
-    <q-btn color="accent" unelevated rounded :label="$t('button.save')" style="width:150px; border-radius:2px" @click="saveData(int_doc_shell)" to="/data_settings/document_types"/>
+    <div class=" q-pa-md col-6 div-13">
+    <q-btn 
+    class="button" 
+    color="accent" 
+    unelevated 
+    rounded 
+    :label="$t('button.save')" 
+    @click="saveData(int_doc_shell)" 
+    to="/data_settings/document_types"/>
     </div>
     </div>
     </q-tab-panel>
@@ -288,9 +298,76 @@ export default {
 }
 </script>
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #C71f40;
+  width:100px; 
+  border-radius:2px
+}
+.button{
+  width:150px; 
+  border-radius:2px
+}
+#div-1{
+text-align:center;
+padding-top:30px
+}
+.div-2{
+display:inline-block; 
+border-width:1px; 
+border-color:#0f3a5d; 
+border-radius: 1.95rem;
+border-style: solid; 
+padding-top:0px; 
+width:750px;
+}
+.div-3{
+  text-align:center;
+  padding-right:45px
+}
+.div-4{
+  padding-left:40px; 
+  padding-top:30px
+}
+.header{
+  text-align:left;
+  font-size:18px
+}
+.div-5{
+margin: auto;
+display: block;
+}
+.div-6{
+  padding-left: 40px;
+}
+.div-7{
+  text-align:center;
+  padding-right:45px
+}
+.div-8{
+margin-top:25px;
+display: block;
+}
+.div-9{
+display: block;
+}
+.div-10{
+  width:50px
+}
+.div-11{
+  width:150px;
+  padding-right:45px;
+  padding-left:15px
+}
+#image{
+  max-height: 100px; 
+  max-width: 150px
+}
+.div-12{
+  text-align:right
+}
+.div-13{
+  text-align:left
 }
 </style>
