@@ -141,11 +141,21 @@
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 export default {
   name: "InterventionCategory",
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      intervention_categories: 'integration_category/intervention_categories'
+    }, actions: {
+      deleteIntegrationCategory: 'integration_category/deleteIntegrationCategory',
+      saveIntegrationCategory: 'integration_category/saveIntegrationCategory',
+      editCategoryTypeElement: 'integration_category/editCategoryTypeElement',
+      fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory'
+  }
+  })],
   data() {
     return {
       int_cat_shell: { id: -1,  translations:[] },
@@ -154,16 +164,7 @@ export default {
       isNew: false
     };
   },
-  computed: {
-    ...mapGetters("integration_category", ["intervention_categories"])
-  },
   methods: {
-    ...mapActions("integration_category",[
-      "deleteIntegrationCategory",
-      "saveIntegrationCategory",
-      "editCategoryTypeElement",
-      "fetchIntegrationCategory"
-    ]),
     isPublished(value, event){
       this.int_cat_shell.published = value
     },

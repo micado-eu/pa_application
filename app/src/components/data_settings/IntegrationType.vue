@@ -158,12 +158,24 @@
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 
 export default {
   name: "InterventionType",
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      intervention_types: 'integration_type/intervention_types',
+      intervention_categories: 'integration_category/intervention_categories'
+    }, actions: {
+      deleteIntegrationTypeElement: 'integration_type/deleteIntegrationTypeElement',
+      saveIntegrationTypeElement: 'integration_type/saveIntegrationTypeElement',
+      editIntegrationTypeElement: 'integration_type/editIntegrationTypeElement',
+      fetchIntegrationType: 'integration_type/fetchIntegrationType',
+      fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory'
+  }
+  })],
   data() {
     return {
       int_type_shell: { id: -1, translations:[], categoryType: null },
@@ -176,20 +188,7 @@ export default {
   components:{
     GlossaryEditor
   },
-  computed: {
-    ...mapGetters("integration_type", ["intervention_types"]),
-    ...mapGetters("integration_category", ["intervention_categories"])
-  },
   methods: {
-       ...mapActions("integration_type",[
-      "deleteIntegrationTypeElement",
-      "saveIntegrationTypeElement",
-      "editIntegrationTypeElement",
-      "fetchIntegrationType"
-    ]),
-    ...mapActions("integration_category",[
-      "fetchIntegrationCategory"
-    ]),
     isPublished(value, event){
       this.int_type_shell.published = value
     },

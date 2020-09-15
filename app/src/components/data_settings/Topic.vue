@@ -152,11 +152,22 @@ function startsWith(wordToCompare) {
 */
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+
 
 export default {
   name: "TopicType",
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      topic: 'topic/topic'
+    }, actions: {
+      deleteTopic: 'topic/deleteTopic',
+      saveTopic: 'topic/saveTopic',
+      editTopic: 'topic/editTopic',
+      fetchTopic: 'topic/fetchTopic'
+  }
+  })],
   data () {
     return {
       int_topic_shell: { id: -1, translations: [], icon: "" },
@@ -169,19 +180,8 @@ export default {
   components: {
     FileUploader
   },
-  computed: {
-    ...mapGetters("topic", ["topic"]),
-    /*topic () {
-      return this.$store.state.topic.topic;
-    },*/
-  },
+
   methods: {
-    ...mapActions("topic", [
-      "deleteTopic",
-      "saveTopic",
-      "editTopic",
-      "fetchTopic"
-    ]),
     deletingTopic (index) {
       console.log(index);
       //this.$store.dispatch("topic/deleteTopic", index);

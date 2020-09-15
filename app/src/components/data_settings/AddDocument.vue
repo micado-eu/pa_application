@@ -144,7 +144,7 @@ import axios from 'axios'
 import https from 'https';
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 
 
@@ -152,7 +152,16 @@ export default {
   name: 'PageIndex',
   components: {     'v-hotspot': VueHotspot, GlossaryEditor },
   props: ["thedocumenttype"],
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      document_types: 'document_type/document_types'
+    }, actions: {
+      saveDocumentType: 'document_type/saveDocumentType',
+      fetchDocumentType: 'document_type/fetchDocumentType',
+      editDocumentType: 'document_type/editDocumentType'
+  }
+  })],
   data (){
     return {
       id:this.$route.params.id,
@@ -179,15 +188,8 @@ export default {
       }
     }
   },
-  computed: {
-  ...mapGetters("document_type", ["document_types"])
-  },
+
   methods: {
-     ...mapActions("document_type", [
-      "saveDocumentType",
-      "fetchDocumentType",
-      "editDocumentType"
-    ]),
       getFiles(files){
         console.log(files);
         console.log(this)

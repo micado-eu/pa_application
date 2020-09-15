@@ -40,33 +40,28 @@
 <script>
 import ListItem from "./ListItem";
 import editEntityMixin from '../../mixin/editEntityMixin'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 
 export default {
   name: "DocumentTypeManager",
-  props: {
-    msg: String
-  },
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      document_types: 'document_type/document_types'
+    }, actions: {
+      deleteDocumentType: 'document_type/deleteDocumentType',
+      fetchDocumentType: 'document_type/fetchDocumentType',
+  }
+  })],
   components: {
     ListItem
   },
   data() {
     return {
-      //activeLanguage: this.$i18n.locale
-    };
-  },
-
-  computed: {
-    ...mapGetters("document_type", ["document_types"])
-
+    }
   },
   methods: {
-    ...mapActions("document_type", [
-      "deleteDocumentType",
-      "fetchDocumentType"
-    ]),
     onClickTitle: function() {
       this.$emit("scroll", "#" + this.$options.name);
     },

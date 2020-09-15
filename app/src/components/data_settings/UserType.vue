@@ -143,12 +143,23 @@
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+
 
 
 export default {
   name: "UserType",
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      user: 'user_type/user'
+    }, actions: {
+      deleteUserType: 'user_type/deleteUserType',
+      fetchUserType: 'user_type/fetchUserType',
+      saveUserType: 'user_type/saveUserType',
+      editUserType: 'user_type/editUserType'
+  }
+  })],
   data() {
     return {
       int_user_type_shell: { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, },
@@ -162,16 +173,8 @@ export default {
     FileUploader,
     GlossaryEditor
   },
-  computed: {
-    ...mapGetters("user_type", ["user"]),
-  },
+
   methods: {
-       ...mapActions("user_type", [
-      "fetchUserType",
-      "deleteUserType",
-      "saveUserType",
-      "editUserType"
-    ]),
     deletingUserType(index) {
       console.log(index);
       this.deleteUserType(index)
