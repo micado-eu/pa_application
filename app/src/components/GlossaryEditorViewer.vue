@@ -31,6 +31,7 @@ import {
   Italic,
   Mention
 } from "tiptap-extensions"
+import Image from "components/Image"
 
 let uuid = 0
 
@@ -80,6 +81,7 @@ export default {
           new Italic(),
           new Link(),
           new Underline(),
+          new Image()
         ],
         content: ""
       })
@@ -110,7 +112,9 @@ export default {
           }),
           new Bold(),
           new Italic(),
+          new Link(),
           new Underline(),
+          new Image()
         ],
         content: glossaryElem.description
       })

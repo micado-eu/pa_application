@@ -37,6 +37,85 @@
               icon="img:statics/icons/MICADO PA APP Icon - Underline (600x600).png"
               @click="commands.underline"
             />
+            <q-btn
+              unelevated
+              icon="image"
+              @click="showUploadModal = true"
+            />
+            <!-- Image upload dialog -->
+            <q-dialog
+              v-model="showUploadModal"
+              persistent
+            >
+              <q-card style="width: 500px">
+                <q-toolbar class="bg-white">
+                  <q-space />
+                  <q-btn
+                    color="red"
+                    flat
+                    v-close-popup
+                    round
+                    dense
+                    icon="close"
+                  />
+                </q-toolbar>
+                <q-tabs
+                  v-model="uploadTab"
+                  dense
+                  class="text-accent"
+                  active-color="accent"
+                  indicator-color="accent"
+                  align="justify"
+                  narrow-indicator
+                >
+                  <q-tab
+                    name="upload"
+                    :label="$t('upload_modal.upload_label')"
+                    class="accent"
+                  />
+                  <q-tab
+                    name="url"
+                    :label="$t('upload_modal.url')"
+                    color="accent"
+                  />
+                </q-tabs>
+                <q-tab-panels
+                  v-model="uploadTab"
+                  animated
+                >
+                  <q-tab-panel name="upload">
+                    <q-card-section class="row items-center">
+                      <!-- TODO: Upload -->
+                      <q-uploader
+                        :label="$t('upload_modal.upload_label')"
+                        color="accent"
+                        style="width: 500px"
+                      />
+                    </q-card-section>
+                  </q-tab-panel>
+                  <q-tab-panel name="url">
+                    <q-card-section class="row items-center">
+                      <q-input
+                        :label="$t('upload_modal.url_label')"
+                        color="accent"
+                        style="width: 500px"
+                        v-model="urlImage"
+                      />
+                    </q-card-section>
+                    <q-card-actions align="right">
+                      <q-btn
+                        unelevated
+                        :label="$t('upload_modal.upload_button')"
+                        @click="commands.image({src: urlImage})"
+                        color="accent"
+                        v-close-popup
+                        no-caps
+                      />
+                    </q-card-actions>
+                  </q-tab-panel>
+                </q-tab-panels>
+              </q-card>
+            </q-dialog>
           </div>
         </editor-menu-bar>
       </div>
@@ -83,7 +162,7 @@ import {
   Italic,
   Mention,
 } from "tiptap-extensions"
-
+import Image from "components/Image"
 
 export default {
   name: "GlossaryEditor",
@@ -100,6 +179,22 @@ export default {
       type: String,
       default: "en"
     }
+  },
+  data() {
+    return {
+      editor: null,
+      query: null,
+      suggestionRange: null,
+      filteredGlossaryItems: [],
+      insertMention: () => { },
+      loading: true,
+      showSuggestionsData: false,
+      internalLang: "",
+      editorChange: false,
+      showUploadModal: false,
+      uploadTab: "upload",
+      urlImage: "",
+    };
   },
   methods: {
     ...mapActions("glossary", ["fetchGlossary"]),
@@ -187,6 +282,7 @@ export default {
           new Link(),
           new Underline(),
           new History(),
+          new Image(null, null, this.uploadImage)
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true
@@ -199,20 +295,13 @@ export default {
       // set mention list to the glossary terms in the language selected
       this.internalLang = lang
       this.createEditor()
+    },
+    uploadImage(file) {
+      let formData = new FormData();
+      formData.append('file', file);
+      const headers = { 'Content-Type': 'multipart/form-data' };
+      // TODO: implement when decision is made
     }
-  },
-  data() {
-    return {
-      editor: null,
-      query: null,
-      suggestionRange: null,
-      filteredGlossaryItems: [],
-      insertMention: () => { },
-      loading: true,
-      showSuggestionsData: false,
-      internalLang: "",
-      editorChange: false,
-    };
   },
   computed: {
     ...mapGetters('glossary', ['glossary']),
@@ -221,7 +310,7 @@ export default {
     },
     showSuggestions() {
       return this.showSuggestionsData
-    },
+    }
   },
   created() {
     this.loading = true
