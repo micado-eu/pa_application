@@ -77,14 +77,29 @@ import IntegrationPlan from 'components/IntegrationPlan'
 import AddIntervention from 'components/AddIntervention'
 import UserProfile from 'components/UserProfile'
 import editEntityMixin from '../mixin/editEntityMixin'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 
 
 export default {
   name: 'PageIndex',
   props: ['theuserid'],
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      intervention_types: 'integration_type/intervention_types',
+      intervention_categories: 'integration_category/intervention_categories',
+      intervention_plans: 'intervention_plan/intervention_plans',
+      users: 'user/users'
+    }, actions: {
+      saveIntervention: 'intervention_plan/saveIntervention',
+      editIntervention: 'intervention_plan/editIntervention',
+      fetchInterventionPlan: 'intervention_plan/fetchInterventionPlan',
+      fetchSpecificUser: 'user/fetchSpecificUser',
+      fetchIntegrationType: 'integration_type/fetchIntegrationType'
+  }
+  })
+  ],
   data () {
     return {
       hideForm: true,
@@ -130,11 +145,6 @@ export default {
     IntegrationPlan, AddIntervention, UserProfile
   },
   computed: {
-    ...mapGetters("integration_type", ["intervention_types"]),
-    ...mapGetters("integration_category", ["intervention_categories"]),
-    ...mapGetters("intervention_plan", ["intervention_plans"]),
-    ...mapGetters("user", ["users"]),
-
     filteredplans () {
       return this.intervention_plans.filter((filt) => {
         return filt.user_id.includes(this.id)
@@ -148,17 +158,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("intervention_plan", [
-      "saveIntervention",
-      "editIntervention",
-      "fetchInterventionPlan"
-    ]),
-    ...mapActions("user", [
-      "fetchSpecificUser"
-    ]),
-    ...mapActions("integration_type", [
-      "fetchIntegrationType"
-    ]),
     createShell (id_plan) {
       this.intervention_shell = {
         id: -1,
@@ -287,6 +286,7 @@ export default {
         console.log(intervention_plans)
         this.loading = false
       })
+      this.fetchIntegrationType()
       .then(integration_types => {
         console.log("got integration types")
         console.log(integration_types)
