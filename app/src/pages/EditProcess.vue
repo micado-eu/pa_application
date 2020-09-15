@@ -164,14 +164,26 @@
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 export default {
   name: 'PageIndex',
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      processes: 'flows/processes',
+      topic: 'topic/topic',
+      user: 'user_type/user'
+    }, actions: {
+      saveProcess: 'flows/saveProcess',
+      fetchFlows: 'flows/fetchFlows',
+      editProcess: 'flows/editProcess',
+      fetchTopic: 'topic/fetchTopic',
+      fetchUserType: 'user_type/fetchUserType'
+    }
+  })],
   props: ["theprocessid"],
-  components: {
-    
+  components: { 
     GlossaryEditor
   },
   data () {
@@ -191,10 +203,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("flows", ["processes"]),
-    ...mapGetters("user_type", ["user"]),
-    ...mapGetters("topic", ["topic"]),
-   
     title () {
       return this.theprocess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
     },
@@ -206,22 +214,10 @@ export default {
       else {
         return true
       }
-
     }
 
   },
   methods: {
-    ...mapActions("flows", [
-      "fetchFlows",
-      "saveProcess",
-      "editProcess"
-    ]),
-    ...mapActions("topic", [
-      "fetchTopic"
-    ]),
-    ...mapActions("user_type", [
-      "fetchUserType"
-    ]),
     addUserTag(value){
       console.log(value)
      

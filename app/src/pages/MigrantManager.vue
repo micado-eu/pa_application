@@ -42,7 +42,7 @@
 
 <script>
 import User from 'components/migrant_manager/User'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 
 export default {
@@ -52,13 +52,18 @@ export default {
   },
   data () {
     return {
-      search: ' ',
+      search: ' '
     }
   },
-
+   mixins: [
+   storeMappingMixin({
+    getters: {
+      users: 'user/users',
+    }, actions: {
+      fetchUser: 'user/fetchUser'
+    }
+  })],
   computed: {
-    ...mapGetters("user", ["users"]),
-
     filteredUsers () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -76,9 +81,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("user", [
-      "fetchUser"
-    ]),
     deleteUser (value) {
       console.log("deleting")
       var deletedUser = this.users.filter((filt) => {

@@ -10,7 +10,7 @@
                       <h5 id="header-1"> Title: </h5>
                     </div>
                     <div id="div-7" class="col-8">
-                      <q-input  dense   bg-color="grey-3" standout outlined v-model="plan_shell.title" />
+                      <q-input dense bg-color="grey-3" standout outlined v-model="plan_shell.title" />
                     </div>
                     <div id="div-8">
                      <q-btn id="add-button" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
@@ -19,8 +19,6 @@
     </div>
     <q-list id="list" bordered separator>
       <q-item
-        
-        
         v-for="an_action in plan_shell.interventions"
         :key="an_action.id"
       >
@@ -59,8 +57,7 @@
         <q-input  dense   bg-color="white" standout outlined v-model="intervention_shell.intervention_title" />
       </div>
     </div>
-   
-         <div id="div-14" class=" q-pa-xsm row">
+    <div id="div-14" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
         <h5 class="header-2"> Description </h5>
       </div>
@@ -68,10 +65,7 @@
         <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="intervention_shell.description" />
       </div>
     </div>
-
-
-
-       <div id="div-16" class=" q-pa-xsm row">
+   <div id="div-16" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
         <h5 class="header-3"> Related processes </h5>
       </div>
@@ -88,7 +82,6 @@
       />
       </div>
       </div>
-      
        <div id="div-18" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
         <h5 class="header-3">  Category </h5>
@@ -108,10 +101,8 @@
       </div>
       </div>
         </div>
-        
         <div class="q-gutter-sm">
-         
-        </div>
+         </div>
          <div id="div-20">
         <q-btn class="form-delete-button" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
         <q-btn  class="form-save-button"  unelevated no-caps color="accent" :label="$t('button.save')" :id="plan_shell.id" @click="saveAction()" />
@@ -123,25 +114,30 @@
      <q-btn class="page-button" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan()" />
      <q-btn class="page-button" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.back')" @click="goBack" />
   </div>
-    
     </div>
-    
-    
-   
-  </div>
+    </div>
 
 </template>
 
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 export default {
   name: "IntegrationType",
   props:[ "theuserid"],
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      intervention_categories: 'integration_category/intervention_categories',
+    }, actions: {
+      fetchIntegrationType: 'integration_type/fetchIntegrationType',
+      saveInterventionPlan: 'intervention_plan/saveInterventionPlan',
+    }
+  })
+  ],
   data() {
     return {
-      
       hideForm: true,
       hideAdd: false,
       isNew: false,
@@ -177,12 +173,6 @@ export default {
       },
      types:[]
     };
-  },
-  computed: {
-    intervention_categories(){
-         return this.$store.state.integration_category.integration_category;
-      }
-   
   },
   methods: {
     goBack(){
@@ -225,8 +215,6 @@ export default {
       this.intervention_shell.validatingUserTenant = intervention.validatingUserTenant
       this.intervention_shell.assignmentDate = intervention.assignmentDate
       this.intervention_shell.validationRequestDate = intervention.validationRequestDate
-
-
     },
     editAction(event, value){
       let targetId = event.currentTarget.id
@@ -247,7 +235,7 @@ export default {
 
     },
    async savePlan(){
-      await this.$store.dispatch('intervention_plan/saveInterventionPlan', this.plan_shell)
+      await this.saveInterventionPlan(this.plan_shell)
       console.log("I am the plan shell")
       console.log(this.plan_shell)
        this.$router.push({ name: 'interventionplan', params: { theuserid: this.theuserid } })
@@ -285,8 +273,7 @@ export default {
   },
   created() {
     this.createPlanShell()
-    this.$store
-      .dispatch("integration_type/fetchIntegrationType")
+    this.fetchIntegrationType()
       .then(integration_types => {
         console.log(integration_types)
         integration_types.forEach(ut => {
