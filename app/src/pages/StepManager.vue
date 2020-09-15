@@ -1,6 +1,6 @@
   <template>
   <div>
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
+  <div class="title" >{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
   <div class="container">
     <div>
       <q-card class="my-card">
@@ -24,26 +24,23 @@
         </q-card-section>
       </q-card>
       <div
-        style="text-align:center; padding-top:40px"
+        id="div-1"
         v-if="this.editing"
       >
         <div
-          class=" q-pa-lg"
-          style="display:inline-block; width:750px;border-width:2px; border-color:#0f3a5d; border-radius: 1.95rem;border-style: solid; margin-bottom: 1px"
+          class=" q-pa-lg div-2"
         >
           <div
-            class=" q-pa-xsm row"
-            style="text-align:center"
+            class=" q-pa-xsm row div-3"
           >
             <q-tabs
               v-model="langTab"
               dense
-              class="text-grey"
+              class="text-grey width"
               active-color="primary"
               indicator-color="primary"
               align="justify"
               narrow-indicator
-              style="width:100%"
             >
               <q-tab
                 v-for="language in languages"
@@ -55,7 +52,7 @@
             <q-tab-panels
               v-model="langTab"
               animated
-              style="width:100%"
+              class="width"
             >
               <q-tab-panel
                 v-for="language in languages"
@@ -65,11 +62,11 @@
               >
               <div class="row">
                 <div class=" q-pa-xsm col-4">
-                  <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_name')}} </h5>
+                  <h5 class="header" > {{$t('input_labels.step_name')}} </h5>
                 </div>
                 <div
-                  class="col-8"
-                  style="margin: auto;display: block;margin-bottom:0px"
+                  class="col-8 under-header"
+                  
                 >
                   <q-input
                     rounded
@@ -83,16 +80,15 @@
                   />
                 </div>
               </div>
-                <div class=" q-pa-xsm row" style="width:100%">
+                <div class=" q-pa-xsm row width" >
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left"> {{$t('input_labels.step_description')}} </h5>
+                    <h5  class="header"> {{$t('input_labels.step_description')}} </h5>
                   </div>
                   <div
-                    class="col-8"
-                    style="margin: auto;display: block;"
+                    class="col-8 under-header"
                   >
                     <q-input
-                    style="padding-top:10px"
+                      class="input-2"
                       type="textarea"
                       dense
                       bg-color="grey-3"
@@ -105,13 +101,12 @@
 
               </q-tab-panel>
             </q-tab-panels>
-            <div class=" q-pa-xsm row" style="width:100%">
+            <div class=" q-pa-xsm row width" >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_location')}} </h5>
+                <h5  class="header"> {{$t('input_labels.step_location')}} </h5>
               </div>
               <div
-                class="col-8"
-                style="margin: auto;display: block;margin-bottom:0px"
+                class="col-8 under-header"
               >
                 <q-input
                   rounded
@@ -125,13 +120,12 @@
               </div>
             </div>
 
-            <div class=" q-pa-xsm row" style="width:100%">
+            <div class=" q-pa-xsm row width" >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left;margin-bottom:0px"> {{$t('input_labels.step_cost')}} </h5>
+                <h5  class="header"> {{$t('input_labels.step_cost')}} </h5>
               </div>
               <div
-                class="col-8"
-                style="margin: auto;display: block;margin-bottom:0px"
+                class="col-8 under-header"
               >
                 <q-input
                   rounded
@@ -145,19 +139,19 @@
               </div>
             </div>
             
-            <div class="row" style="width:100%; padding-top:10px">
+            <div class="row width-2" >
               <q-btn
+                class="add-step-document"
                 color="accent"
-                no-caps=""
+                no-caps
                 unelevated
                 :label="$t('button.add_document')"
                 @click="addStepDocument()"
-                style="width:150px;border-radius:2px"
               />
             </div>
            
               
-              <div class="row" style="width:100%; padding-top:10px; padding-bottom:10px" v-if="stepdocadd">
+              <div class="row width-3" v-if="stepdocadd">
                 <div class="col-6">
                 <q-select
                   filled
@@ -165,14 +159,14 @@
                   v-model="step_doc_shell.idDocument"
                   emit-value
                   map-options
+                  id="select"
                   :options="filtered_t_docs"
                   :label="$t('input_labels.required_documents')"
-                  style="width:350px"
                 />
                 </div>
                 <div class="col-3" >
                 <q-input
-                style="width:100px;margin:0 auto"
+                  class="input"
                   rounded
                   dense
                   bg-color="grey-3"
@@ -183,18 +177,18 @@
                 </div>
                 <div class="col-3">
                 <q-btn
+                id="save-step-document"
                 color="accent"
-                no-caps=""
+                no-caps
                 unelevated
                 :label="$t('button.save_document')"
                 @click="saveStepDocument()"
-                style="width:150px;border-radius:2px"
               />
                 </div>
               </div>
             
-              <div class="row" style="padding-top:10px; padding-bottom:10px">
-              <q-list  style="width:700px">
+              <div class="row div-4">
+              <q-list  id="list">
                 <StepDocumentElement
                   v-for="stepdoc in step_shell.documents"
                   :key="stepdoc.id"
@@ -209,16 +203,12 @@
     -->
             
             <div
-              class=" q-pa-xsm row"
-              style="text-align:center"
+              class=" q-pa-xsm row center"
             >
               <div class=" q-pa-xsm col-4">
-                <h5 style="text-align:left; margin-top:14px"> {{$t('input_labels.related_processes')}} </h5>
+                <h5 id="header-2"> {{$t('input_labels.related_processes')}} </h5>
               </div>
-              <div
-                class=" q-pa-md col-8"
-                style="padding-top:0px"
-              >
+              <div class=" q-pa-md col-8 div-5">
                 <q-select
                   filled
                   clearable
@@ -226,85 +216,76 @@
                   multiple
                   :options="processes_list"
                   :label="$t('input_labels.related_processes')"
-                  style="width: 450px"
+                  class="width-4"
                 />
               </div>
             </div>
 
           </div>
           <div class="row">
-            <div
-              class="q-pa-md col-4"
-              style="text-align:right"
-            >
+            <div class="q-pa-md col-4 right">
               <q-btn
                 color="accent"
-                no-caps=""
+                no-caps
                 unelevated
                 :label="$t('button.save')"
                 @click="saveStep()"
-                style="width:150px;border-radius:2px"
+                class="button"
               />
             </div>
             <div
-              class="q-pa-md col-4"
-              style="text-align:left"
+              class="q-pa-md col-4 left"
             >
               <q-btn
-                class="button"
-                no-caps=""
+                class="delete-button"
+                no-caps
                 unelevated
                 :label="$t('button.back')"
                 @click="cancelEditStep()"
-                style="width:150px;border-radius:2px"
               />
             </div>
             <div
-              class="q-pa-md col-4"
-              style="text-align:left"
+              class="q-pa-md col-4 left"
             >
               <q-btn
-                class="button"
-                no-caps=""
+                class="delete-button"
+                no-caps
                 unelevated
                 :label="$t('button.delete')"
-                @click="deleteElement()"
-                style="width:150px;border-radius:2px"
-              />
+                @click="deleteElement()"/>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="row" style="text-align:center; padding-top:10px">
-      <div class="col" style="text-align:right">
+    <div class="row div-6">
+      <div class="col right">
         <q-btn
-          class="button"
-          no-caps=""
+          class="delete-button-2"
+          no-caps
           unelevated
           :label="$t('button.back')"
           @click="cancelStep"
-          style="width:135px;border-radius:5px"
         />
 </div>
-      <div class="col" style="text-align:center;">
+      <div class="col center">
         <q-btn
           color="secondary"
           unelevated
           :label="$t('button.add_step')"
-           style="border-radius:5px; width:170px"
+          class="button-3"
           no-caps
           size="15px"
           @click="addingNode"
         />
       </div>
-      <div class="col" style="text-align:left">
+      <div class="col left" >
         <q-btn
+        class="button-2"
           color="accent"
           unelevated
           :label="$t('button.save_graph')"
           no-caps
-           style="border-radius:5px; width:135px"
           size="15px"
           @click="savingGraph"
         />
@@ -320,13 +301,13 @@
 
 <script>
 import Step from 'components/Step'
-//import { Core, EventObject } from 'cytoscape'
 import configcy from '../configs/cytoscapeConfig'
 import edgeHandles from 'cytoscape-edgehandles'
 import { v4 as uuidv4 } from 'uuid';
 import editEntityMixin from '../mixin/editEntityMixin'
 import StepDocumentElement from 'components/StepDocumentElement'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../mixin/storeMappingMixin'
+
 
 
 
@@ -334,7 +315,31 @@ export default {
   //name: 'DocumentType',
 
   props: ["processId"],
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      processes: 'flows/processes',
+      steps: 'steps/steps',
+      steplinks: 'steplinks/steplinks',
+      graphs: 'graphs/graphs',
+      elements: 'graphs/elements',
+      document_types: 'document_type/document_types'
+    }, actions: {
+      changeNode: 'graphs/changeNode',
+      addNode: 'graphs/addNode',
+      deleteNode: 'graphs/deleteNode',
+      addEdge: 'graphs/addEdge',
+      saveGraph: 'graphs/saveGraph',
+      fetchGraphs: 'graphs/fetchGraphs',
+      changeStep: 'steps/changeStep',
+      addStep: 'steps/addStep',
+      deleteStep: 'steps/deleteStep',
+      fetchStepsByProcessId: 'steps/fetchStepsByProcessId',
+      addStepLink: 'steplinks/addStepLink',
+      fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
+      fetchDocumentType: 'document_type/fetchDocumentType'
+  }
+  })],
 
   components: {
     Step,
@@ -385,12 +390,6 @@ export default {
 
 
   computed: {
-    ...mapGetters("flows", ["processes"]),
-    ...mapGetters("steps", ["steps"]),
-    ...mapGetters("steplinks", ["steplinks"]),
-    ...mapGetters("graphs", ["graphs", "elements" ]),
-    ...mapGetters("document_type", ["document_types"]),
-
     title (){
       var temp =  this.processes.filter((a_proc) =>{
         return a_proc.id == this.processId
@@ -412,27 +411,6 @@ export default {
   },
 
   methods: {
-    ...mapActions("graphs", [
-    "changeNode",
-    "addNode",
-    "deleteNode",
-    "addEdge",
-    "saveGraph",
-    "fetchGraphs"
-    ]),
-    ...mapActions("steps", [
-    "changeStep",
-    "addStep",
-    "deleteStep",
-    "fetchStepsByProcessId",
-    ]),
-    ...mapActions("steplinks", [
-    "addStepLink",
-    "fetchSteplinksByProcessId"
-    ]),
-    ...mapActions("document_type", [
-      "fetchDocumentType"
-    ]),
     updateField(){
       //console.log(this.step_shell)
       //console.log(this)
@@ -458,11 +436,9 @@ export default {
 
     mergeStep (idStep) {
       console.log("MERGING")
-      //     this.step_shell = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == idStep })[0]))
       this.step_shell = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == idStep })[0]))
 
     },
-
 
     preConfig (cytoscape) {
       console.log("calling pre-config");
@@ -494,20 +470,14 @@ export default {
             this.model_docs = node.data.required_documents
           }
         }
-        //      this.edit_step = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == node.id })[0]))
         console.log("this is edit step")
-
         console.log(this.step_shell)
         this.editing = false
         this.editing = true
-
       }
     },
     saveStep () {
-      //     console.log(value)
       // In edit_step we have the instance of step that we are working on
-      //      let changedDocs = this.document_types.filter(doc => { return this.model_docs.includes(doc.id) })
-      //      this.step_shell.documents = changedDocs
       this.changeStep(this.step_shell)
         .then(ret => {
           console.log("CHANGED THE STEP")
@@ -558,27 +528,18 @@ export default {
 
     },
     deleteElement () {
-      
-            console.log("these are the testdata")
-      
-            //console.log(element)
-            //if (element.group == 'node') {
-              this.deleteStep(this.step_shell.id)
-                .then(ret => {
-                  console.log("DELETED STEP")
-                  console.log(this.steps)
-                })
-      
-              this.deleteNode(this.step_shell.id)
-                .then(res => {
-      
-                })
-            //} else {
-              console.log("MANAGE EDGES")
-            //}
-            this.editing = false
-            
+      this.deleteStep(this.step_shell.id)
+        .then(ret => {
+        console.log("DELETED STEP")
+        console.log(this.steps)
+        })
+      this.deleteNode(this.step_shell.id)
+        .then(res => {
+            })
+      console.log("MANAGE EDGES")
+      this.editing = false      
     },
+
     generateStepLink(id_edge, fromStep_edge, toStep_edge){
       this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, idProcess:Number(this.processId), translations:[]}
       this.languages.forEach(l => {
@@ -602,9 +563,7 @@ export default {
       for ([newKey, value] of addedEles._private.map.entries()) {
         console.log(newKey);
         console.log(value);
-
       }
-      // this.$refs.cyRef.instance.remove('[id = ' + newKey + ']');
       console.log("Elementds in cytoscape")
       console.log(this.$refs.cyRef.instance.elements())
       console.log("Elementds in store")
@@ -641,37 +600,19 @@ export default {
           }).run();
           this.$refs.cyRef.instance.resize();
         })
-
-      //    console.log("the orig elements")
-      //    console.log(this.elements)
-
-      /*
-          if (element.group == 'edges') {
-            if (element.data.is_new != null && element.data.is_new) {
-              // here we manage new edges
-              console.log("managinf edge")
-            }
-          }
-          */
     },
 
     afterCreated (cy) {
       // cy: this is the cytoscape instance
 
       console.log("after created", cy);
-      //      this.cy = cy;
-      //     this.mycy = cy;
       console.log(this.testdata)
 
       let defaults = {
         complete: (sourceNode, targetNode, addedEles) => this.addingEdge(sourceNode, targetNode, addedEles)
       }
-
       cy.edgehandles(defaults);
-      //      cy.layout({ name: 'grid' }).run();
-      //      cy.resize();
       console.log("i'm here")
-
     },
 
     async savingGraph () {
@@ -680,29 +621,8 @@ export default {
       console.log(this.$store.state.steplinks.steplinks)
       let postData = { steps: this.steps, steplinks: this.steplinks }
       console.log(JSON.stringify(postData))
-
       this.saveGraph(postData)
       this.$router.push('/guided_process_editor')
-      /*
-      const saveSteps = async () => {
-        await this.asyncForEach(this.steps, async (step) => {
-          console.log(step)
-          if (step.is_new) {
-            await this.$store.dispatch('steps/saveStep', step)
-          }
-        })
-        console.log("after foreach save topics")
-      }
-      await saveSteps()
-      */
-
-      // updating chenged steps
-      // adding new steplink
-      // updating changed steplin
-      // deleting steplink
-      // deleting step
-
-
     },
     // this is used only for edges that get removed as a removal of a node that has edges
     removeElement (event, element, cy) {
@@ -790,8 +710,6 @@ export default {
 
         console.log(graphs)
         this.$refs.cyRef.instance.resize();
-        //       this.$refs.cyRef.instance.fit();
-
         this.refresher += 1
 
         console.log(this.refresher)
@@ -807,12 +725,6 @@ export default {
 
       })
   },
-  /*
-  mounted () {
-    console.log("in mounted")
-    this.$refs.cyRef.instance.layout({ name: 'grid' }).run();
-  },
-  */
 }
 </script>
 
@@ -824,11 +736,127 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-
-.button {
+.title{
+  font-style: normal;
+  height:72px;
+  text-align: center; 
+  padding-top:15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color:white; 
+  background-color:#FF7C44
+}
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
+  width:150px;
+  border-radius:2px
+}
+.delete-button-2{
+  background-color: white;
+  color: black;
+  border: 1px solid #c71f40;
+  width:135px;
+  border-radius:5px
+}
+.button{
+  width:150px;
+  border-radius:2px
+}
+.button-2{
+border-radius:5px; 
+width:135px
+}
+.button-3{
+  border-radius:5px; 
+  width:170px
+}
+#div-1{
+  text-align:center; 
+  padding-top:40px
+}
+.div-2{
+  display:inline-block; 
+  width:750px;
+  border-width:2px; 
+  border-color:#0f3a5d; 
+  border-radius: 1.95rem;
+  border-style: solid; 
+  margin-bottom: 1px
+}
+.div-3{
+  text-align:center
+}
+.width{
+  width:100%
+}
+.width-2{
+width:100%; 
+padding-top:10px
+}
+.width-3{
+width:100%; 
+padding-top:10px; 
+padding-bottom:10px
+}
+.width-4{
+  width: 450px
+}
+.header{
+  text-align:left; 
+  margin-bottom:0px
+}
+.under-header{
+  margin: auto;
+  display: block;
+  margin-bottom:0px
+}
+.add-step-document{
+  width:150px;
+  border-radius:2px
+}
+#select{
+  width:350px
+}
+.input{
+  width:100px;
+  margin:0 auto
+}
+.input-2{
+  padding-top:10px
+}
+#save-step-document{
+width:150px;
+border-radius:2px
+}
+.div-4{
+  padding-top:10px; 
+  padding-bottom:10px
+}
+#list{
+width:700px
+}
+.center{
+  text-align: center;
+}
+#header-2{
+  text-align:left; 
+  margin-top:14px
+}
+.div-5{
+  padding-top:0px
+}
+.right{
+  text-align:right
+}
+.left{
+  text-align: left;
+}
+.div-6{
+  text-align:center; 
+  padding-top:10px
 }
 </style>
 

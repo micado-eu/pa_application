@@ -114,19 +114,6 @@ export default {
       ]
     }
   },
-  computed: {},
-  
- /* mounted() {
-    // has to use a brief timeout
-    if (this.$route.hash) {
-      setTimeout(() => this.scrollTo(this.$route.hash), 1000);
-    }
-  },
-  methods: {
-    scrollTo: function (hash) {
-      location.href = this.$route.path + hash;
-    }
-  }*/
 };
 </script>
 

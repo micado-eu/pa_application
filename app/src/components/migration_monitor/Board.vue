@@ -9,63 +9,48 @@
         @group-clicked="renderModal"
       />
     </div>
-    <q-btn
-      id="printbtn"
-      color="info"
-      icon="print"
-      round
-      title="print this page"
-      @click="printPNG()"
-    />
     <Modal v-if="showModal" @close="showModal = false" :graphData="graphData" />
   </div>
 </template>
 
 <script>
-import ChartGroup from "./ChartGroup";
-import htmlToImage from "html-to-image";
-import download from "downloadjs";
-import Modal from "./modal/Modal";
+import ChartGroup from './ChartGroup'
+import Modal from './modal/Modal'
 
 export default {
-  name: "Board",
+  name: 'Board',
   components: {
     ChartGroup,
-    Modal,
+    Modal
   },
-  data: function () {
+  data() {
     return {
       showModal: true,
-      grahDataId: null,
-    };
+      grahDataId: null
+    }
   },
   computed: {
-    categories: function () {
+    categories() {
       return this.$store.state.statistics.categories.filter(
         (c) => c.board === this.board
-      );
+      )
     },
-    board: function () {
-      return this.$route.params.board;
+    board() {
+      return this.$route.params.board
     },
-    graphData: function () {
+    graphData() {
       return this.$store.state.statistics.charts.filter(
         (c) => c.id === this.grahDataId
-      )[0];
-    },
+      )[0]
+    }
   },
   methods: {
-    printPNG: function () {
-      htmlToImage.toPng(this.$refs["charts"]).then(function (dataUrl) {
-        download(dataUrl, "my-node.png");
-      });
-    },
-    renderModal: function (grahDataId) {
-      this.grahDataId = grahDataId;
-      this.showModal = true;
-    },
-  },
-};
+    renderModal(grahDataId) {
+      this.grahDataId = grahDataId
+      this.showModal = true
+    }
+  }
+}
 </script>
 
 <style scoped>

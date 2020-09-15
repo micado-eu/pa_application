@@ -1,13 +1,13 @@
   <template>
   <div class="container">
 
-    <div style="text-align:center;">
+    <div class="center">
       <div
+        id="div-1"
         class="col"
-        style="display:inline-block;padding-right:20px;padding-left:20px"
       >
         <q-input
-          style="border-radius:10px; width:590px;font-size:18px"
+          id="input"
           dense
           items-center
           filled
@@ -23,8 +23,8 @@
       </div>
     </div>
 
-    <div style="text-align:center;">
-      <q-list style="display:inline-block;width:750px">
+    <div class="center" >
+      <q-list id="list">
         <User
           v-for="user in filteredUsers"
           :key="user.id"
@@ -41,30 +41,29 @@
 
 
 <script>
-import User from './migrant_manager/User'
-import { mapGetters, mapActions } from "vuex";
+import User from 'components/migrant_manager/User'
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 
 export default {
   name: 'MigrantManager',
-  props: {
-    msg: String
-  },
   components: {
     User
   },
   data () {
     return {
-      search: ' ',
+      search: ' '
     }
   },
-
+   mixins: [
+   storeMappingMixin({
+    getters: {
+      users: 'user/users',
+    }, actions: {
+      fetchUser: 'user/fetchUser'
+    }
+  })],
   computed: {
-    ...mapGetters("user", ["users"]),
-
-    /*users () {
-      return this.$store.state.user.user
-    },*/
     filteredUsers () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -82,9 +81,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("user", [
-      "fetchUser"
-    ]),
     deleteUser (value) {
       console.log("deleting")
       var deletedUser = this.users.filter((filt) => {
@@ -102,7 +98,6 @@ export default {
   created () {
     this.loading = true
     console.log(this.$store);
-    //this.$store.dispatch('user/fetchUser', this.$migrant_tenant)
     this.fetchUser(this.$migrant_tenant)
       .then(users => {
         console.log(users)
@@ -119,5 +114,22 @@ export default {
   padding-right: 80px;
   padding-bottom: 50px;
   padding-left: 80px;
+}
+.center{
+  text-align:center;
+}
+#div-1{
+  display:inline-block;
+  padding-right:20px;
+  padding-left:20px
+}
+#input{
+  border-radius:10px; 
+  width:590px;
+  font-size:18px
+}
+#list{
+  display:inline-block;
+  width:750px
 }
 </style>

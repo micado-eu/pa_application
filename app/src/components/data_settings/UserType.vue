@@ -2,20 +2,19 @@
   <div class="q-pa-md">
     <div class="row">
     <h5 class="col-6">{{$options.name}}</h5>
-    <div class="col-6" style="margin-top:40px;margin-bottom:40px; text-align:right">
+    <div class="col-6 div-1" >
      <q-btn
+          id="add-button"
           color="info"
           no-caps
          :label="$t('button.add_type')"
           @click="newUserType()"
           :disable="hideAdd"
-          style="width:200px"
         />
   </div>
     </div>
-    <q-card class="q-pa-md" :hidden="hideForm" style="margin-bottom:100px">
-      
-        <q-tab-panels
+    <q-card class="q-pa-md div-2" :hidden="hideForm">
+      <q-tab-panels
           v-model="langTab"
           animated
         >
@@ -24,7 +23,7 @@
             :key="language.lang"
             :name="language.name"
           >
-           <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.user_type')}} </div>
+          <div class="div-3"> {{$t('input_labels.user_type')}} </div>
            <q-input
               outlined
               filled
@@ -38,7 +37,7 @@
           type="textarea"
           label="Description"
         />-->
-        <div style="font-size:16px; font-weight:600; padding-top:10px; padding-bottom:10px"> {{$t('input_labels.description')}} </div>
+        <div class=div-3> {{$t('input_labels.description')}} </div>
          <GlossaryEditor
         class="desc-editor"
         v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -71,13 +70,13 @@
             :label="language.name"
           />
         </q-tabs>
-          <hr style="margin-left:15px;margin-right:15px;border: 1px solid #DADADA;" >
+          <hr id="hr" >
           <q-btn
           no-caps
-          class="button"
+          class="delete-button"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-right:15px; margin-left:10px; margin-top:30px"
+          style=""
           :label="$t('button.cancel')"
           @click="cancelUserType()"
         />
@@ -86,13 +85,13 @@
           color="accent"
           unelevated
           rounded
-          style="width:100px;border-radius:2px;margin-top:30px"
+          class="button"
           :label="$t('button.save')"
           @click="savingUserType()"
         />
        
     </q-card>
-      <div class="row" style="padding-left:20px; padding-bottom:10px">
+      <div class="row div-4">
     <div class="col-1 flex flex-left">
       {{$t('input_labels.image')}}
     </div>
@@ -102,10 +101,10 @@
     <div class="col-1 flex flex-left">
       {{$t('input_labels.is_published')}}
     </div>
-    <div class="col-1 flex flex-center" style="padding-left:10px">
+    <div class="col-1 flex flex-center div-5">
       {{$t('input_labels.edit')}}
     </div> 
-    <div class="col-1 flex flex-center" style="padding-left:30px">
+    <div class="col-1 flex flex-center div-6">
       {{$t('input_labels.delete')}}
     </div>
       </div>
@@ -115,10 +114,10 @@
           <q-img
             :src="a_user_type.icon"
             spinner-color="white"
-            style="height: 40px; max-width: 40px"
+            id="image"
           />
         </q-item-section>
-        <q-item-section class="col-8 flex flex-left" style="font-size:16px; font-weight:600">{{showUserTypeLabel(a_user_type)}}</q-item-section>
+        <q-item-section class="col-8 flex flex-left section">{{showUserTypeLabel(a_user_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_user_type.published"
@@ -127,7 +126,7 @@
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-          <q-icon style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editingUserType(a_user_type)" />
+          <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editingUserType(a_user_type)" />
         </q-item-section>
           <q-item-section class="col-1 flex flex-center">
           <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingUserType(a_user_type.id)" size="md" />
@@ -144,12 +143,23 @@
 import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
-import { mapGetters, mapActions } from "vuex";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+
 
 
 export default {
   name: "UserType",
-  mixins: [editEntityMixin],
+  mixins: [editEntityMixin,
+  storeMappingMixin({
+    getters: {
+      user: 'user_type/user'
+    }, actions: {
+      deleteUserType: 'user_type/deleteUserType',
+      fetchUserType: 'user_type/fetchUserType',
+      saveUserType: 'user_type/saveUserType',
+      editUserType: 'user_type/editUserType'
+  }
+  })],
   data() {
     return {
       int_user_type_shell: { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, },
@@ -163,16 +173,8 @@ export default {
     FileUploader,
     GlossaryEditor
   },
-  computed: {
-    ...mapGetters("user_type", ["user"]),
-  },
+
   methods: {
-       ...mapActions("user_type", [
-      "fetchUserType",
-      "deleteUserType",
-      "saveUserType",
-      "editUserType"
-    ]),
     deletingUserType(index) {
       console.log(index);
       this.deleteUserType(index)
@@ -203,16 +205,14 @@ export default {
       this.hideAdd = true;
     },
     editingUserType(user_type) {
-     
-      this.isNew = false;
+     this.isNew = false;
       this.hideForm = false;
       //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
       this.mergeUserType(user_type)
        console.log(this.int_user_type_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0])
     },
     showUserTypeLabel (workingTopic) {
-     
-      return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
+     return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
     },
         createShell () {
       this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, }
@@ -230,8 +230,7 @@ export default {
       user_type.translations.forEach(tr => {
         console.log(tr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
-        for (var i = 0; i < this.int_user_type_shell.translations.length; i++) {
+      for (var i = 0; i < this.int_user_type_shell.translations.length; i++) {
           if (this.int_user_type_shell.translations[i].lang == tr.lang) {
             this.int_user_type_shell.translations.splice(i, 1);
             this.int_user_type_shell.translations.push(JSON.parse(JSON.stringify(tr)))
@@ -282,13 +281,7 @@ export default {
       this.hideForm = true;
       this.hideAdd = false;
     },
-    /*editUserType(user_type) {
-      this.isNew = false;
-      this.hideForm = false;
-      this.int_user_type_shell = JSON.parse(JSON.stringify(user_type));
-    }*/
   },
-  //store.commit('increment', 10)
   created() {
     this.createShell()
     this.loading = true;
@@ -301,12 +294,65 @@ export default {
 };
 </script>
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #C71f40;
+  width:100px;
+  border-radius:2px;
+  margin-right:15px; 
+  margin-left:10px; 
+  margin-top:30px
 }
 h5 {
   font-weight: bold;
+}
+.div-1{
+  margin-top:40px;
+  margin-bottom:40px;
+  text-align:right
+}
+.div-2{
+  margin-bottom:100px
+}
+#add-button{
+  width:200px;
+}
+.button{
+  width:100px;
+  border-radius:2px;
+  margin-top:30px
+}
+.div-3{
+  font-size:16px; 
+  font-weight:600; 
+  padding-top:10px; 
+  padding-bottom:10px
+}
+#hr{
+  margin-left:15px;
+  margin-right:15px;
+  border: 1px solid #DADADA
+}
+.div-4{
+padding-left:20px; 
+padding-bottom:10px
+}
+.div-5{
+padding-left:10px
+}
+.div-6{
+padding-left:30px
+}
+#image{
+  height: 40px; 
+  max-width: 40px
+}
+.section{
+  font-size:16px; 
+  font-weight:600
+}
+#icon{
+  margin-right:10px;
 }
 </style>

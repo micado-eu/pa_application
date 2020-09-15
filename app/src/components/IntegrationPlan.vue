@@ -8,60 +8,60 @@
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.validated}"
          @click="cancelIntervention"
-         style="width:750px;"
+        class="width-1"
       >
         <q-card>
-          <q-card-section style="padding-left:0px; padding-right:0px">
-            <div style="padding-top:10px;padding-left:30px; font-size:15pt" >
-              Related Processes:  <q-chip style="font-size:13pt; font-weight:300; border-radius:2px" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
+          <q-card-section class="section" >
+            <div class="div-1">
+              Related Processes:  <q-chip class="chip" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
             </div>
-            <div style="padding-left:30px; font-size:15pt">
+            <div class="div-2">
               Description:
               <br>
             </div>
             <div class="row">
-              <q-item-section class="col-9" style="padding-left:30px; font-size:15pt; width:570px">
+              <q-item-section class="col-9 section-2">
                <!-- <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{this.intervention.interventionType.slice(0, 200)}}   </span>
                 <a class="" style="font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
                   Read more...
                 </a> -->
-                <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="readMoreActivated" v-html="intervention.description"></span>
+                <span class="span" v-if="readMoreActivated" v-html="intervention.description"></span>
               </q-item-section>
-              <q-item-section class="col" style="text-align:right; margin-left:0px">
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:10px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
-                <q-btn size="11px" no-caps style="width:105px;margin-bottom:0px;border-radius:2px;margin-left:45px; margin-right:30px" unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
+              <q-item-section class="col section-3">
+                <q-btn size="11px" class="button-1" no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
+                <q-btn size="11px" class="button-2" no-caps  unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
               </q-item-section>
             </div>
-            <div class=" q-gutter-sm  col" style="padding-left:0px; text-align:left;">
-              <q-card-section :hidden="hideForm" style="padding-left:0px; padding-right:0px">
-                <div style="background-color:#efefef; padding-left:0px; padding-right:0px" >
-                  <div style="padding-left:30px; font-size:15pt; padding-top:20px">
+            <div class=" q-gutter-sm  col pad-left">
+              <q-card-section :hidden="hideForm" class="section">
+                <div class="div-3" >
+                  <div class="div-4">
                     Edit {{intervention.intervention_title}}
                   </div>
-                  <div class=" " style="display:inline-block; width:750px;border-width:2px;  margin-bottom: 1px">
-                  <div class=" q-pa-xsm row" style="text-align:center; padding-left:30px">
+                  <div class="div-5">
+                  <div class=" q-pa-xsm row div-6" >
                     <div class=" q-pa-xsm col-4">
-                      <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> Title </h5>
+                      <h5 class="header"> Title </h5>
                     </div>
-                    <div class="col-8" style="margin: auto;display: block;margin-bottom:0px; padding-right:30px">
+                    <div class="col-8 div-7">
                       <q-input  dense   bg-color="white" standout outlined v-model="model.intervention_title" />
                     </div>
                   </div>
 
-                <div class=" q-pa-xsm row" style="text-align:center; padding-left:30px">
+                <div class=" q-pa-xsm row div-6">
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left;margin-bottom:0px; font-size:15pt"> Description </h5>
+                    <h5 class="header"> Description </h5>
                   </div>
-                  <div class="col-8" style="margin: auto;display: block;margin-bottom:0px; padding-right:30px; padding-top:10px">
+                  <div class="col-8 div-8" >
                     <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="model.description" />
                   </div>
                 </div>
 
-                <div class=" q-pa-xsm row" style="text-align:center">
+                <div class=" q-pa-xsm row center" >
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left; padding-left:30px"> Related processes </h5>
+                    <h5 class="header-2"> Related processes </h5>
                   </div>
-                  <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
+                  <div class=" q-pa-md col-8 div-9">
                     <q-select
                         filled
                         clearable
@@ -70,16 +70,16 @@
                         :options="the_processes_list"
                         bg-color="white"
                         :label="$t('input_labels.related_processes')"
-                        style="width: 450px"
+                        class="width-2"
                       />
                   </div>
                 </div>
       
-                <div class=" q-pa-xsm row" style="text-align:center">
+                <div class=" q-pa-xsm row center" >
                   <div class=" q-pa-xsm col-4">
-                    <h5 style="text-align:left; padding-left:30px">  Type </h5>
+                    <h5 class="header-2">  Type </h5>
                   </div>
-                  <div class=" q-pa-md col-8" style="margin-top:14px; margin-bottom:0px; padding-bottom:0px">
+                  <div class=" q-pa-md col-8 div-9" >
                     <q-select
                         filled
                         emit-value
@@ -90,16 +90,15 @@
                         :options="intervention_categories"
                         bg-color="white"
                         :label="$t('input_labels.intervention_type')"
-                        style="width: 450px"
-                      />
+                        class="width-2"                      />
                   </div>
                 </div>
 
         <div class="q-gutter-sm">
          </div>
-        <div style="text-align:center">
-        <q-btn class="button"  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
-        <q-btn  style="margin-top:15px;border-radius:2px; margin-right:10px; margin-bottom:10px" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
+        <div class=center>
+        <q-btn class="delete-button" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
+        <q-btn  class="button" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
         </div>
           </div>
           </div>
@@ -161,10 +160,126 @@ export default {
 </script>
 
 <style scoped>
-.button {
+.delete-button {
   background-color: white;
   color: black;
   border: 1px solid #C71f40;
+  margin-top:15px;
+  border-radius:2px; 
+  margin-right:10px; 
+  margin-bottom:10px
+}
+.button{
+margin-top:15px;
+border-radius:2px; 
+margin-right:10px; 
+margin-bottom:10px
+}
+.button-1{
+  width:105px;
+  margin-bottom:10px;
+  border-radius:2px;
+  margin-left:45px; 
+  margin-right:30px
+}
+.button-2{
+  width:105px;
+  margin-bottom:0px;
+  border-radius:2px;
+  margin-left:45px; 
+  margin-right:30px
+}
+.center{
+  text-align: center;
+}
+.width-1{
+  width: 750px;
+}
+.width-2{
+  width: 450px;
+}
+.section{
+  padding-left:0px; 
+  padding-right:0px
+}
+.div-1{
+  padding-top:10px;
+  padding-left:30px; 
+  font-size:15pt
+}
+.chip{
+  font-size:13pt; 
+  font-weight:300; 
+  border-radius:2px
+}
+.div-2{
+  padding-left:30px; 
+  font-size:15pt
+}
+.section-2{
+  padding-left:30px; 
+  font-size:15pt; 
+  width:570px
+}
+.span{
+  width:540px; 
+  font-family: 'Nunito Sans', sans-serif;
+  font-weight:300
+}
+.section-3{
+  text-align:right; 
+  margin-left:0px
+}
+.pad-left{
+  padding-left:0px; 
+  text-align:left;
+}
+.div-3{
+  background-color:#efefef; 
+  padding-left:0px; 
+  padding-right:0px
+}
+.div-4{
+  padding-left:30px; 
+  font-size:15pt; 
+  padding-top:20px
+}
+.div-5{
+  display:inline-block; 
+  width:750px;
+  border-width:2px;  
+  margin-bottom: 1px
+}
+.div-6{
+  text-align:center; 
+  padding-left:30px
+}
+.header{
+  text-align:left;
+  margin-bottom:0px; 
+  font-size:15pt
+}
+.div-7{
+  margin: auto;
+  display: block;
+  margin-bottom:0px; 
+  padding-right:30px
+}
+.div-8{
+  margin: auto;
+  display: block;
+  margin-bottom:0px; 
+  padding-right:30px; 
+  padding-top:10px
+}
+.header-2{
+  text-align:left; 
+  padding-left:30px
+}
+.div-9{
+  margin-top:14px; 
+  margin-bottom:0px; 
+  padding-bottom:0px
 }
 </style>
 

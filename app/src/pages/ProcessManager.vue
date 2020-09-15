@@ -1,16 +1,14 @@
   <template>
   <div >
-  <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t('input_labels.guided_processes')}}</div>
-
+  <div id="top-div" >{{$t('input_labels.guided_processes')}}</div>
   <div class="container">
-
-    <div style="text-align:center;">
+    <div class="center">
       <div
+        id="div-1"
         class="col-10"
-        style="display:inline-block;width:80%;padding-right:30px;padding-left:0px"
       >
         <q-input
-          style="border-radius:10px;width:100% ;font-size:18px"
+          id="input"
           dense
           items-center
           filled
@@ -25,11 +23,11 @@
         </q-input>
       </div>
       <div
+        id="div-2"
         class="col-2"
-        style="display:inline-block;text-align:right;width:150px"
       >
         <q-btn
-          style="width:150px; margin-bottom:15px;border-radius:2px"
+          id="button"
           color="secondary"
           unelevated
           rounded
@@ -40,26 +38,23 @@
         />
       </div>
     </div>
-   
-    <div style="text-align:center;">
-    
-      <q-list style="display:inline-block; width:90%; padding-top:20px;">
-       
-    <q-item class=" row" style="padding-left:16px; padding-bottom:0px">
-    <q-item-section class="col-8 flex flex-left" style="text-align:left">
-        {{$t('input_labels.name')}} 
+    <div class="center">
+      <q-list id="list">
+    <q-item class="row" id="item">
+    <q-item-section class="col-8 flex flex-left" id="left">
+        {{$t('input_labels.name')}}
     </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center" style="margin-left:30px">
+    <q-item-section class="col-1.3 flex flex-center" id="section">
        {{$t('input_labels.edit')}}
     </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center" style="">
+    <q-item-section class="col-1.3 flex flex-center">
     {{$t('input_labels.manage')}}
     </q-item-section> 
-    <q-item-section class="col-1.3 flex flex-center" style="">
+    <q-item-section class="col-1.3 flex flex-center">
       {{$t('input_labels.delete')}}
     </q-item-section>
         </q-item>
-        <hr style="margin-bottom:60px">
+        <hr id="hr">
         <Process
           v-for="process in filteredProcesses"
           :key="process.id"
@@ -80,31 +75,36 @@
 
 
 <script>
-import Process from './guided_process_editor/Process'
-import { mapGetters, mapActions } from "vuex";
+import Process from 'components/guided_process_editor/Process'
+import storeMappingMixin from '../mixin/storeMappingMixin'
+import editEntityMixin from '../mixin/editEntityMixin'
 
 
 export default {
-  name: 'ProcessEditor',
-  props: {
-    msg: String
-  },
+  name: 'ProcessManager',
   components: {
     Process
   },
+  mixins: [editEntityMixin,
+   storeMappingMixin({
+    getters: {
+      processes: 'flows/processes',
+      steps: 'steps/steps',
+      steplinks: 'steplinks/steplinks'
+    }, actions: {
+      deleteProcess: 'flows/deleteProcess',
+      fetchFlows: 'flows/fetchFlows',
+      fetchSteplinks: 'steplinks/fetchSteplinks',
+      fetchSteps: 'steps/fetchSteps'
+    }
+  })],
   data () {
     return {
-      search: ' ',
-      activeLanguage: this.$i18n.locale,
-
+      search: ' '
     }
   },
 
   computed: {
-    ...mapGetters("flows", ["processes"]),
-    ...mapGetters("steps", ["steps"]),
-    ...mapGetters("steplinks", ["steplinks"]),
-   
     filteredProcesses () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -123,16 +123,6 @@ export default {
     }
   },
   methods: {
-    ...mapActions("flows", [
-      "deleteProcess",
-      "fetchFlows"
-    ]),
-     ...mapActions("steps", [
-      "fetchSteps"
-    ]),
-     ...mapActions("steplinks", [
-      "fetchSteplinks"
-    ]),
     deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
@@ -184,8 +174,7 @@ export default {
       .then(steplinks => {
         this.loading = false
         console.log(this.steplinks)
-      })
-      
+      })  
   }
 }
 </script>
@@ -197,5 +186,58 @@ export default {
   padding-right: 80px;
   padding-bottom: 50px;
   padding-left: 80px;
+}
+#top-div{
+  font-style: normal;
+  height:72px;
+  text-align: center; 
+  padding-top:15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color:white; 
+  background-color:#FF7C44
+}
+.center{
+  text-align:center;
+}
+#div-1{
+  display:inline-block;
+  width:80%;
+  padding-right:30px;
+  padding-left:0px
+}
+#div-2{
+  display:inline-block;
+  text-align:right;
+  width:150px
+}
+#input{
+  border-radius:10px;
+  width:100%;
+  font-size:18px
+}
+#button{
+  width:150px; 
+  margin-bottom:15px;
+  border-radius:2px
+}
+#list{
+  display:inline-block; 
+  width:90%; 
+  padding-top:20px
+}
+#item{
+  padding-left:16px; 
+  padding-bottom:0px
+}
+#left{
+  text-align:left
+}
+#section{
+  margin-left:30px
+}
+#hr{
+  margin-bottom:60px
 }
 </style>
