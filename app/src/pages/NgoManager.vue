@@ -37,14 +37,19 @@
 
 <script>
 import User from "components/ngo_manager/User";
-import { mapGetters, mapActions } from "vuex";
-
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 export default {
   name: "NgoManager",
-  props: {
-    msg: String
-  },
+  mixins:[
+    storeMappingMixin({
+    getters: {
+      users: 'ngo_user/users'
+    }, actions: {
+      fetchUser: 'ngo_user/fetchUser'
+    }
+  })
+  ],
   components: {
     User
   },
@@ -54,11 +59,6 @@ export default {
     };
   },
   computed: {
-    //...mapGetters("ngo_user", ["users"]),
-   users() { 
-      console.log("ngo: ",this.$store.state);
-      return this.$store.state.ngo_user.user;
-    },
     filteredUsers() {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
@@ -90,7 +90,8 @@ export default {
   created() {
     this.loading = true;
     console.log(this.$store);
-    this.$store.dispatch("ngo_user/fetchUser").then(users => {
+    this.fetchUser()
+    .then(users => {
       this.loading = false;
     });
   }

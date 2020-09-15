@@ -1,3 +1,3 @@
 export function users(state) {
-    return state.ngo_user
+    return state.user
   }
