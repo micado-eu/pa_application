@@ -1,7 +1,7 @@
 <template>
     <q-card class="my-card">
           <q-card-section>
-            <div style="font-size:16px; font-weight:600"> Icon </div>
+            <div class="field"> Icon </div>
             <q-file
               @input="getFiles($event)"
               bg-color="grey-3"
@@ -15,12 +15,12 @@
             <q-img
               :src="this.Image"
               spinner-color="white"
-              style="max-height: 100px; max-width: 150px"
+              class="image"
             />
           </q-card-section>
           <q-card-section class="row">
               <div class="col-8">
-                <div style="font-size:16px; font-weight:600"> {{$t('input_labels.publication_date')}} </div>
+                <div class="field"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
@@ -30,8 +30,8 @@
               readonly
             />
             </div>
-            <div class="col-4" style="padding-left:20px;">
-              <div style="font-size:16px; font-weight:600">{{$t('input_labels.is_published')}} </div>
+            <div class="col-4 pad">
+              <div class="field" >{{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="published"
               color="green"
@@ -70,5 +70,16 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.field-1{
+  font-size:16px; 
+  font-weight:600
+}
+.image{
+  max-height: 100px; 
+  max-width: 150px
+}
+.pad{
+  padding-left:20px;
+}
 </style>
