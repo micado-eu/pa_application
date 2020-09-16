@@ -1,30 +1,16 @@
 <template>
-  <q-item style="padding-top:0px; padding-bottom:0px">
+  <q-item  class="item">
     <div>
-      <div>
-        <div class="q-pa-md col" style="width:750px; padding-bottom:0px; padding-left:0px">
-          <div style="font-size:20px; text-align:left; font-size:18px">{{ this.name }}</div>
+      <div class="username">{{ this.name }}</div> 
+      <div class="row width">
+        <div class="q-pa-md col container">
+          <span class="span">{{this.type}}</span>
         </div>
-      </div>
-      <div class="row" style="width:750px">
-        <div
-          class="q-pa-md col"
-          style="text-align:left; padding-top:0px;padding-bottom:0px;padding-left:0px"
-        >
-          <span style="padding-right:5px">{{this.type}}</span>
-          <!-- <span style="padding-right:5px">|</span>
-          <span style="padding-right:5px">{{this.Nationality}}</span>
-          <span style="padding-right:5px">|</span>
-          <span style="padding-right:5px">{{this.Gender}}</span> -->
-        </div>
-        <div
-          class="q-pa-md q-gutter-sm col"
-          style="padding-top:0px; padding-bottom:0px; text-align:right"
-        >
+        <div class="q-pa-md q-gutter-sm col button-container">
           <q-btn
             size="11px"
             no-caps
-            style="width:70px;margin-bottom:5px;border-radius:2px"
+            class="button"
             unelevated
             rounded
             color="secondary"
@@ -34,7 +20,7 @@
           <q-btn
             size="11px"
             no-caps
-            style="width:70px;margin-bottom:5px;border-radius:2px"
+            class="button"
             unelevated
             rounded
             color="negative"
@@ -43,7 +29,7 @@
           />
         </div>
       </div>
-      <hr style="margin:0px" />
+      <hr class="hr" />
     </div>
   </q-item>
 </template>
@@ -55,23 +41,51 @@ export default {
   data() {
     return {};
   },
-
   methods: {
     remove_user(event) {
       let target = event.currentTarget.id;
       console.log(this.Path);
       this.$emit("remove", this.Path);
     },
-  
   }
 };
 </script>
 <style scoped>
-/*div >>> .q-item {
-  border-radius: 2rem;
-
-  &:hover {
-    color: blue;
-  }
-}*/
+.item{
+  padding-top:16px;
+  padding-bottom:0px
+}
+.username{
+ font-size:20px; 
+ text-align:left; 
+ font-size:18px;
+ width:750px; 
+ padding-bottom:0px; 
+ padding-left:0px
+}
+.width{
+  width:750px
+}
+.container{
+  text-align:left; 
+  padding-top:0px;
+  padding-bottom:0px;
+  padding-left:0px
+}
+.span{
+  padding-right:5px
+}
+.button-container{
+  padding-top:0px; 
+  padding-bottom:0px; 
+  text-align:right
+}
+.button{
+  width:70px;
+  margin-bottom:5px;
+  border-radius:2px
+}
+.hr{
+  margin:0px
+}
 </style>

@@ -1,5 +1,4 @@
 <template>
-<div id="div-1">
   <div id="div-2">
   <div id="div-3">
       Add Intervention Plan
@@ -114,7 +113,6 @@
      <q-btn class="page-button" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan()" />
      <q-btn class="page-button" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.back')" @click="goBack" />
   </div>
-    </div>
     </div>
 
 </template>
@@ -340,12 +338,10 @@ export default {
   width:135px;
   font-weight:600
 }
-#div-1{
-  padding-top:80px;
-}
 #div-2{
-  width:750px;
   margin:0 auto;
+  margin-top:80px;
+  width:750px;
   border-width:2px;
   border-color:#0f3a5d;
   border-radius: 10px;
