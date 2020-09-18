@@ -26,6 +26,7 @@
           >
           <div class="div-3" style=""> {{$t('input_labels.intervention_type')}} </div>
         <q-input 
+        :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
         outlined
         filled
         dense
@@ -52,23 +53,23 @@
            <q-card-section class="row">
               <div class="col-8">
                 <div class="div-5"> {{$t('input_labels.publication_date')}} </div>
-            <q-input
+           <!-- <q-input
             outlined
             filled
             dense
               v-model="int_type_shell.publicationDate"
               :label="$t('input_labels.publication_date')"
               readonly
-            />
+            />-->
             </div>
             <div class="col-4 div-6">
               <div class="div-5"> {{$t('input_labels.is_published')}} </div>
-            <q-toggle
+           <!-- <q-toggle
               :value="int_type_shell.published"
               color="green"
               @input="isPublished(!int_type_shell.published,$event)"
               left-label
-            />
+            />-->
             </div>
                   </q-card-section>
 
@@ -115,7 +116,7 @@
       {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      {{$t('input_labels.is_published')}}
+      <!--{{$t('input_labels.is_published')}}-->
     </div>
     <div class="col-1 flex flex-center div-9" >
       {{$t('input_labels.edit')}}
@@ -237,7 +238,7 @@ export default {
       return workingType.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle
     },
     createShell () {
-      this.int_type_shell = {  id: -1, translations:[], categoryType: null, published: false, publicationDate: null, }
+      this.int_type_shell = {  id: -1, translations:[], categoryType: null }
       this.languages.forEach(l => {
         this.int_type_shell.translations.push({ id: -1, lang: l.lang, interventionTitle: '', description: '', translationDate: null })
       });
@@ -247,8 +248,8 @@ export default {
       console.log(process)
       this.int_type_shell.id = intervention_type.id
       this.int_type_shell.link = intervention_type.link
-      this.int_type_shell.published = intervention_type.published
-      this.int_type_shell.publicationDate = intervention_type.publicationDate
+      //this.int_type_shell.published = intervention_type.published
+      //this.int_type_shell.publicationDate = intervention_type.publicationDate
       this.int_type_shell.categoryType = intervention_type.categoryType
       this.int_type_shell.interventionProcess = intervention_type.interventionProcess
       intervention_type.translations.forEach(pr => {

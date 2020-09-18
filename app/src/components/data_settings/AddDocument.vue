@@ -55,7 +55,7 @@
         <h5  class="header"> Document type  </h5>
       </div>
       <div class="col-8 div-5" >
-        <q-input bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
+        <q-input :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
       </div>
     </div>
     
@@ -168,7 +168,7 @@ export default {
       is_new: true, 
       int_doc_shell: 
       { 
-        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1, published: false, publicationDate: null,
+        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1, publicationDate: null,
       },
       checked: true,
       hotimage: false,
@@ -218,7 +218,7 @@ export default {
         }
       },
       createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[{id:-1, image: "string", documentTypeId:-1, oder:0}], icon: "", model:null, validable:false, validityDuration:-1, published: false, publicationDate: null, }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[{id:-1, image: "string", documentTypeId:-1, oder:0}], icon: "", model:null, validable:false, validityDuration:-1 }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null })
@@ -230,7 +230,7 @@ export default {
       console.log(doc)
       this.int_doc_shell.id = doc.id
       this.int_doc_shell.icon = doc.icon
-      this.int_doc_shell.published = doc.published
+      //this.int_doc_shell.published = doc.published
       this.int_doc_shell.publicationDate = doc.publicationDate
       this.int_doc_shell.issuer = doc.issuer
       this.int_doc_shell.model = doc.model

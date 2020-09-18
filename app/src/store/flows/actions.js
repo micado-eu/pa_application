@@ -19,7 +19,7 @@ export function fetchDocuments (state, data) {
 export function saveProcess (state, process) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(process)
-  let savingProcess = JSON.parse(JSON.stringify(process, ['link', 'published']));
+  let savingProcess = JSON.parse(JSON.stringify(process, ['link']));
   console.log(savingProcess)
 
   return client

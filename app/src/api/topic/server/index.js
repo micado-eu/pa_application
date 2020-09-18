@@ -45,7 +45,7 @@ export default {
     const whereClause = {
       id: { eq: topic.id }
     },
-      updatingTopic = (topic.publicationDate == null) ? JSON.parse(JSON.stringify(topic, ['id', 'icon', 'published'])) : topic
+      updatingTopic = (topic.publicationDate == null) ? JSON.parse(JSON.stringify(topic, ['id', 'icon'])) : topic
 
     return axiosInstance
       .patch('/backend/1.0.0/topics?where=' + JSON.stringify(whereClause), updatingTopic)

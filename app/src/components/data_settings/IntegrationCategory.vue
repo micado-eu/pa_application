@@ -29,6 +29,7 @@
         >
         <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
+            :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
               outlined
               filled
               dense
@@ -40,16 +41,16 @@
          <q-card-section class="row">
               <div class="col-8">
                 <div class="div-3"> {{$t('input_labels.publication_date')}} </div>
-            <q-input
+           <!-- <q-input
             outlined
             filled
             dense
               v-model="int_cat_shell.publicationDate"
               :label="$t('input_labels.publication_date')"
               readonly
-            />
+            />-->
             </div>
-            <div class="col-4 div-4">
+           <!-- <div class="col-4 div-4">
               <div class="div-3"> {{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="int_cat_shell.published"
@@ -57,7 +58,7 @@
               @input="isPublished(!int_cat_shell.published,$event)"
               left-label
             />
-            </div>
+            </div>-->
           
           </q-card-section>
            <q-tabs
@@ -99,9 +100,9 @@
     <div class="col-9 flex flex-left div-6">
       {{$t('input_labels.name')}}
     </div>
-    <div class="col-1 flex flex-left">
+   <!-- <div class="col-1 flex flex-left">
       {{$t('input_labels.is_published')}}
-    </div>
+    </div>-->
     <div class="col-1 flex flex-center div-7">
       {{$t('input_labels.edit')}}
     </div> 
@@ -118,11 +119,11 @@
       >
         <q-item-section class="col-9 flex flex-left div-3" >{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <q-toggle
+         <!-- <q-toggle
             v-model="a_integration_category.published"
             color="green"
             disable
-          />
+          />-->
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
            <q-icon id="icon" style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationCategory(a_integration_category)" />
@@ -165,9 +166,9 @@ export default {
     };
   },
   methods: {
-    isPublished(value, event){
+   /* isPublished(value, event){
       this.int_cat_shell.published = value
-    },
+    },*/
     onClickTitle: function() {
       this.$emit("scroll", "#" + this.$options.name);
     },
@@ -215,7 +216,7 @@ export default {
       this.mergeCategory(integration_category)
     },
       createShell () {
-      this.int_cat_shell = { id: -1,  translations: [], published: false, publicationDate: null, }
+      this.int_cat_shell = { id: -1,  translations: [] }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null })
@@ -224,8 +225,8 @@ export default {
     mergeCategory (category) {
       console.log(category)
       this.int_cat_shell.id = category.id
-      this.int_cat_shell.published = category.published
-      this.int_cat_shell.publicationDate = category.publicationDate
+      //this.int_cat_shell.published = category.published
+      //this.int_cat_shell.publicationDate = category.publicationDate
       category.translations.forEach(tr => {
         console.log(tr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})

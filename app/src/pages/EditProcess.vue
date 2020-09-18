@@ -29,6 +29,7 @@
                 bg-color="grey-3"
                 standout
                 outlined
+                :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
                 :label="$t('input_labels.topic_placeholder')"
               />
@@ -191,7 +192,7 @@ export default {
       theprocess:null,
       id: this.$route.params.id,
       is_new: true,
-      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published: false, publicationDate: null, },
+      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", publicationDate: null, },
       u_tags: [
 
       ],
@@ -274,9 +275,9 @@ export default {
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "", published: false, publicationDate: null, }
+      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "", publicationDate: null, }
       this.languages.forEach(l => {
-        this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', translationDate: null })
+        this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null })
       });
     },
     mergeProcess (process) {
@@ -284,7 +285,7 @@ export default {
       console.log(process)
       this.edit_process.id = process.id
       this.edit_process.link = process.link
-      this.edit_process.published = process.published
+      //this.edit_process.published = process.published
       this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
