@@ -46,46 +46,44 @@
 </template>
 <script>
 export default {
-  name: "MigrationSituation",
+  name: 'MigrationSituation',
   computed: {
-    boards: function () {
-      const boards = this.$store.state.statistics.boards.map((b) => {
-        return { title: b, link: `/situation/${b}` };
-      });
+    boards() {
+      const boards = this.$store.state.statistics.boards.map((b) => ({ title: b, link: `/situation/${b}` }))
       boards.push(
-        // { title: "map", link: `/situation/map` },
-        { title: "editor", link: `/situation/editor` }
-      );
-      return boards;
-    },
+        { title: 'map', link: '/situation/map' },
+        { title: 'editor', link: '/situation/editor' }
+      )
+      return boards
+    }
   },
   methods: {
-    getCategory: function (board) {
+    getCategory(board) {
       return this.$store.state.statistics.categories.filter(
         (c) => c.board === board.title
-      );
+      )
     },
     /**
      * jump to the corresponding chartGroup when clicked
      */
-    onClickNav: function (board, category) {
+    onClickNav(board, category) {
       const baseURL = this.$route.path.substring(
         0,
-        this.$route.path.indexOf("situation") + 10
-      );
+        this.$route.path.indexOf('situation') + 10
+      )
       // location.href = baseURL + board + "#" + category;
-      return baseURL + board + "#" + category;
-    },
+      return `${baseURL + board}#${category}`
+    }
   },
-  created: function () {
+  created() {
     this.$q.loading.show({
-      delay: 400,
-    });
-    this.$store.dispatch("statistics/fetchStatistics").then(() => {
-      this.$q.loading.hide();
-    });
-  },
-};
+      delay: 400
+    })
+    this.$store.dispatch('statistics/fetchStatistics').then(() => {
+      this.$q.loading.hide()
+    })
+  }
+}
 </script>
 <style scoped>
 #nav {
@@ -111,5 +109,12 @@ export default {
 .q-list {
   /* align with the main menu bar */
   margin-top: 177px;
+}
+#migration-situation-container{
+  margin-top: -50px;
+  /* height: calc(100vh - 50px); */
+}
+.q-page-container{
+  margin-top:50px;
 }
 </style>
