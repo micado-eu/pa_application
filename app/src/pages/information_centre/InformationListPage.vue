@@ -10,8 +10,6 @@
       icon_name="document"
       add_label="button.add_event"
       title="information_centre.list_title"
-      publish_mode
-      :update_publish_fn="updatePublishInformationItem"
       categories_enabled
       categories_url="/information/categories"
       tags_enabled
@@ -20,73 +18,67 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
-import ListSearchTags from "components/ListSearchTags";
+import { mapGetters, mapActions } from 'vuex'
+import ListSearchTags from 'components/ListSearchTags'
+
 export default {
   data() {
     return {
       loading: true,
       informationElems: []
-    };
+    }
   },
   components: {
-    "list-search-tags": ListSearchTags
+    'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters("information", ["information"]),
-    ...mapGetters("information_category", ["informationCategories"]),
-    ...mapGetters("information_tags", ["informationTagsByEvent"]),
+    ...mapGetters('information', ['information']),
+    ...mapGetters('information_category', ['informationCategories']),
+    ...mapGetters('information_tags', ['informationTagsByInformation'])
   },
   methods: {
-    ...mapActions("information", [
-      "fetchInformation",
-      "deleteInformationItem",
-      "updatePublishInformationItem"
+    ...mapActions('information', [
+      'fetchInformation',
+      'deleteInformationItem'
     ]),
-    ...mapActions("information_category", ["fetchInformationCategory"]),
-    ...mapActions("information_tags", ["fetchInformationTags", "deleteInformationTagsFromEvent"]),
+    ...mapActions('information_category', ['fetchInformationCategory']),
+    ...mapActions('information_tags', ['fetchInformationTags', 'deleteInformationTagsFromInformation']),
     getEditRoute(id) {
-      return "information/" + id + "/edit";
+      return `information/${id}/edit`
     },
     deleteItem(item) {
-      this.loading = true;
-      this.deleteInformationTagsFromEvent(item.id)
+      this.deleteInformationTagsFromInformation(item.id)
         .then(this.deleteInformationItem(item))
         .then(this.fetchInformation())
         .then(() => {
-          this.$router.go();
-        });
+          this.$router.go()
+        })
     }
   },
   created() {
-    this.loading = true;
+    this.loading = true
     this.fetchInformation().then(() => {
       this.fetchInformationCategory().then(() => {
         this.fetchInformationTags().then(() => {
-          this.informationElems = JSON.parse(JSON.stringify(this.information));
-          let informationCategoryElems = [...this.informationCategories];
-          for (let category of informationCategoryElems) {
-            for (let translation of category.translations) {
-              translation.category = translation["eventCategory"];
-              delete translation.eventCategory;
-            }
-          }
-          for (let elem of this.informationElems) {
+          this.informationElems = JSON.parse(JSON.stringify(this.information))
+          const informationCategoryElems = [...this.informationCategories]
+          for (let i = 0; i < this.informationElems.length; i += 1) {
+            const elem = this.informationElems[i]
             // Set categories-elements relations
-            let idxCat = elem.category;
-            let idxCategoryObject = informationCategoryElems.findIndex(
-              ic => ic.id === idxCat
-            );
-            elem.category = informationCategoryElems[idxCategoryObject];
+            const idxCat = elem.category
+            const idxCategoryObject = informationCategoryElems.findIndex(
+              (ic) => ic.id === idxCat
+            )
+            elem.category = informationCategoryElems[idxCategoryObject]
             // Set tag-elements relations
-            elem.tags = this.informationTagsByEvent(elem.id)
+            elem.tags = this.informationTagsByInformation(elem.id)
           }
-          this.loading = false;
+          this.loading = false
         })
-      });
-    });
+      })
+    })
   }
-};
+}
 </script>
 
 <style></style>

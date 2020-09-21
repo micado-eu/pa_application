@@ -2,37 +2,37 @@ import { axiosInstance } from 'boot/axios'
 import { error_handler } from '../../../helper/utility'
 
 export default {
-  fetchInformation() {
+  fetchEvent() {
     return axiosInstance
-      .get('/backend/1.0.0/information?filter[include][0][relation]=translations')
+      .get('/backend/1.0.0/events?filter[include][0][relation]=translations')
       .then(
         (response) => response.data
       ).catch(error_handler)
   },
-  saveNewInformationItem(eventItem) {
+  saveNewEventItem(eventItem) {
     return axiosInstance
-      .post('/backend/1.0.0/information', eventItem)
+      .post('/backend/1.0.0/events', eventItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
   },
-  addNewInformationItemTranslation(translation) {
+  addNewEventItemTranslation(translation) {
     if (!translation.translationDate) {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .post(`/backend/1.0.0/information/${translation.id}/information-translations`, translation)
+      .post(`/backend/1.0.0/events/${translation.id}/event-translations`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
-  editInformationItem(newItem) {
+  editEventItem(newItem) {
     return axiosInstance
-      .patch(`/backend/1.0.0/information/${newItem.id}`, newItem)
+      .patch(`/backend/1.0.0/events/${newItem.id}`, newItem)
       .then(
         (response) => response.data
       ).catch(error_handler)
   },
-  editInformationItemTranslation(translation) {
+  editEventItemTranslation(translation) {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
@@ -40,16 +40,16 @@ export default {
       translation.translationDate = new Date().toISOString()
     }
     return axiosInstance
-      .patch(`/backend/1.0.0/information/${translation.id}/information-translations?where=${JSON.stringify(whereClause)}`, translation)
+      .patch(`/backend/1.0.0/events/${translation.id}/event-translations?where=${JSON.stringify(whereClause)}`, translation)
       .then((response) => response.data)
       .catch(error_handler)
   },
-  deleteInformationItem(item) {
+  deleteEventItem(item) {
     // Delete translations then item
     return axiosInstance
-      .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
+      .delete(`/backend/1.0.0/events/${item.id}/event-translations`)
       .then(
-        (response) => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
+        (response) => axiosInstance.delete(`/backend/1.0.0/events/${item.id}`)
       ).then((response) => response.data)
       .catch(error_handler)
   },
@@ -57,10 +57,10 @@ export default {
     const promises = []
     for (let i = 0; i < topics.topics.length; i += 1) {
       const body = {
-        idInformation: topics.id,
+        idEvent: topics.id,
         idTopic: topics.topics[i].id
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/information/${topics.id}/information-topics`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/backend/1.0.0/events/${topics.id}/event-topics`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   },
@@ -68,10 +68,10 @@ export default {
     const promises = []
     for (let i = 0; i < userTypes.userTypes.length; i += 1) {
       const body = {
-        idInformation: userTypes.id,
+        idEvent: userTypes.id,
         idUserTypes: userTypes.userTypes[i].id
       }
-      promises.push(axiosInstance.post(`/backend/1.0.0/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
+      promises.push(axiosInstance.post(`/backend/1.0.0/events/${userTypes.id}/event-user-types`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
   }

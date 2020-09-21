@@ -75,11 +75,11 @@
 </template>
 
 <script>
-import AuthMenu from "./auth/AuthMenu";
-//import ListenToggle from 'components/ListenToggle'
+import AuthMenu from './auth/AuthMenu'
+// import ListenToggle from 'components/ListenToggle'
 
 export default {
-  name: "Layout",
+  name: 'Layout',
 
   components: {
     AuthMenu
@@ -90,88 +90,95 @@ export default {
       leftDrawerOpen: false,
       navs: [
         {
-          label: "menu.home",
-          icon: "img:statics/icons/Icon - Home.png",
-          active_icon:"img:statics/icons/Icon - Home (selected).png",
-          to: "/",
-          description: "menu.home_desc"
+          label: 'menu.home',
+          icon: 'img:statics/icons/Icon - Home.png',
+          active_icon: 'img:statics/icons/Icon - Home (selected).png',
+          to: '/',
+          description: 'menu.home_desc'
         },
         {
-          label: "menu.situation",
-          icon: "img:statics/icons/Icon - Migration Situation Monitor.png",
-          active_icon:"img:statics/icons/Icon - Migration Situation Monitor (selected).png",
-          to: "/situation/editor",
-          description: "menu.situation_desc"
+          label: 'menu.situation',
+          icon: 'img:statics/icons/Icon - Migration Situation Monitor.png',
+          active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).png',
+          to: '/situation/editor',
+          description: 'menu.situation_desc'
         },
         {
-          label: "menu.migrant",
-          icon: "img:statics/icons/Icon - Migrant Management.png",
-          active_icon:"img:statics/icons/Icon - Migrant Management (selected).png",
-          to: "/migrant",
-          description: "menu.migrant_desc"
+          label: 'menu.migrant',
+          icon: 'img:statics/icons/Icon - Migrant Management.png',
+          active_icon: 'img:statics/icons/Icon - Migrant Management (selected).png',
+          to: '/migrant',
+          description: 'menu.migrant_desc'
         },
         {
-          label: "menu.cso",
-          icon: "img:statics/icons/Icon - CSO Admin Management.png",
-          active_icon:"img:statics/icons/Icon - CSO Admin Management (selected).png",
-          to: "/cso",
-          description: "menu.cso_desc"
+          label: 'menu.cso',
+          icon: 'img:statics/icons/Icon - CSO Admin Management.png',
+          active_icon: 'img:statics/icons/Icon - CSO Admin Management (selected).png',
+          to: '/cso',
+          description: 'menu.cso_desc'
         },
         {
-          label: "menu.process",
-          icon: "img:statics/icons/Icon - Guided Processes.png",
-          active_icon:"img:statics/icons/Icon - Guided Processes (selected).png",
-          to: "/guided_process_editor",
-          description: "menu.process_desc"
+          label: 'menu.process',
+          icon: 'img:statics/icons/Icon - Guided Processes.png',
+          active_icon: 'img:statics/icons/Icon - Guided Processes (selected).png',
+          to: '/guided_process_editor',
+          description: 'menu.process_desc'
         },
         {
-          label: "menu.information_centre",
-          icon: "img:statics/icons/Icon - Information Centre.png",
-          active_icon:"img:statics/icons/Icon - Information Centre (selected).png",
-          to: "/information",
-          description: "menu.information_centre_desc"
+          label: 'menu.information_centre',
+          icon: 'img:statics/icons/Icon - Information Centre.png',
+          active_icon: 'img:statics/icons/Icon - Information Centre (selected).png',
+          to: '/information',
+          description: 'menu.information_centre_desc'
         },
         {
-          label: "menu.usage",
-          icon: "img:statics/icons/Icon - Micado Stats.png",
-          active_icon:"img:statics/icons/Icon - Micado Stats (selected).png",
-          to: "/dashboard",
-          description: "menu.usage_desc"
+          label: 'menu.events',
+          icon: 'img:statics/icons/Icon - Events (45x45).png',
+          active_icon: 'img:statics/icons/Icon - Events (45x45).png',
+          to: '/events',
+          description: 'menu.events_desc'
         },
         {
-          label: "menu.glossary",
-          icon: "img:statics/icons/Icon - Glossary.png",
-          active_icon:"img:statics/icons/Icon - Glossary (selected).png",
-          to: "/glossary",
-          description: "menu.glossary_desc"
+          label: 'menu.usage',
+          icon: 'img:statics/icons/Icon - Micado Stats.png',
+          active_icon: 'img:statics/icons/Icon - Micado Stats (selected).png',
+          to: '/dashboard',
+          description: 'menu.usage_desc'
         },
         {
-          label: "menu.chatbot",
-          icon: "img:statics/icons/Icon - Chatbot.png",
-          active_icon:"img:statics/icons/Icon - Chatbot (selected).png",
-          to: "/chatbot",
-          description: "menu.chatbot_desc"
+          label: 'menu.glossary',
+          icon: 'img:statics/icons/Icon - Glossary.png',
+          active_icon: 'img:statics/icons/Icon - Glossary (selected).png',
+          to: '/glossary',
+          description: 'menu.glossary_desc'
         },
         {
-          label: "menu.setting",
-          icon: "img:statics/icons/Icon - Settings.png",
-          active_icon:"img:statics/icons/Icon - Settings (selected).png",
-          to: "/data_settings/document_types",
-          description: "menu.setting_desc"
+          label: 'menu.chatbot',
+          icon: 'img:statics/icons/Icon - Chatbot.png',
+          active_icon: 'img:statics/icons/Icon - Chatbot (selected).png',
+          to: '/chatbot',
+          description: 'menu.chatbot_desc'
+        },
+        {
+          label: 'menu.setting',
+          icon: 'img:statics/icons/Icon - Settings.png',
+          active_icon: 'img:statics/icons/Icon - Settings (selected).png',
+          to: '/data_settings/document_types',
+          description: 'menu.setting_desc'
         }
       ],
-      selectedKey: "menu.home"
-    };
+      selectedKey: 'menu.home'
+    }
   },
   methods: {
     changeIcon(key) {
-      console.log("selected key")
+      console.log('selected key')
       this.selectedKey = key
+    }
+
   }
-  
-},
-  
-};
+
+}
 </script>
 
 <style>

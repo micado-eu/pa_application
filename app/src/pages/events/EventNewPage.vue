@@ -1,7 +1,7 @@
 <template>
-  <edit-information
-    pagetitle="information_centre.add_new"
-    v-on:save="saveNewInformationItemAndReturn($event)"
+  <edit-event
+    pagetitle="event_centre.add_new"
+    v-on:save="saveNewEventItemAndReturn($event)"
   />
 </template>
 
@@ -10,42 +10,44 @@ import { mapActions } from 'vuex'
 
 export default {
   components: {
-    'edit-information': require('components/information_centre/EditInformationElement.vue')
+    'edit-event': require('components/events/EditEventElement.vue')
       .default
   },
   methods: {
-    ...mapActions('information', [
-      'saveNewInformationItem',
-      'addNewInformationItemTranslation',
-      'deleteInformationItem',
+    ...mapActions('event', [
+      'saveNewEventItem',
+      'addNewEventItemTranslation',
+      'deleteEventItem',
       'setTopics',
       'setUserTypes'
     ]),
-    ...mapActions('information_tags', [
-      'saveInformationTags',
-      'saveInformationTagsTranslation'
+    ...mapActions('event_tags', [
+      'saveEventTags',
+      'saveEventTagsTranslation'
     ]),
-    saveNewInformationItemAndReturn(translationData) {
+    saveNewEventItemAndReturn(translationData) {
       const router = this.$router
       let id = -1
       const eventData = {
+        startDate: translationData[0].startDate,
+        endDate: translationData[0].finishDate
       }
       if ('category' in translationData[0]) {
         eventData.category = translationData[0].category.id
       }
-      this.saveNewInformationItem(eventData)
+      this.saveNewEventItem(eventData)
         .then((newData) => {
           id = newData.id
           const tagArrayLength = translationData[0].tags.length
           const tagData = []
           for (let k = 0; k < tagArrayLength; k += 1) {
             tagData.push({
-              informationId: newData.id
+              eventId: newData.id
             })
           }
           this.setTopics({ id, topics: translationData[0].topics })
             .then(() => this.setUserTypes({ id, userTypes: translationData[0].userTypes }))
-            .then(() => this.saveInformationTags(tagData))
+            .then(() => this.saveEventTags(tagData))
             .then((newTags) => {
               for (let i = 0; i < translationData.length; i += 1) {
                 const translation = translationData[i]
@@ -61,11 +63,11 @@ export default {
                   tag: tagInfo[idx],
                   translationState: 0
                 }))
-                this.saveInformationTagsTranslation(newTagsWithTag).then()
-                this.addNewInformationItemTranslation(dataWithId)
+                this.saveEventTagsTranslation(newTagsWithTag).then()
+                this.addNewEventItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {
-                      router.push({ path: '/information' })
+                      router.push({ path: '/events' })
                     }
                   })
               }
@@ -73,7 +75,7 @@ export default {
         }).catch((e) => {
           console.error(e)
           if (id !== -1) {
-            this.deleteInformationItem({ id })
+            this.deleteEventItem({ id })
           }
         })
     }

@@ -13,12 +13,16 @@ import GlossaryEditPage from '../pages/glossary/GlossaryEditPage'
 import InformationListPage from '../pages/information_centre/InformationListPage.vue'
 import InformationNewPage from '../pages/information_centre/InformationNewPage.vue'
 import InformationEditPage from '../pages/information_centre/InformationEditPage.vue'
+import EventListPage from '../pages/events/EventListPage.vue'
+import EventNewPage from '../pages/events/EventNewPage.vue'
+import EventEditPage from '../pages/events/EventEditPage.vue'
 import MigrationSitMap from '../components/migration_monitor/map/Map.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import chatBot from '../components/ChatBot.vue'
 import InformationCategory from '../components/information_centre/InformationCategory.vue'
+import EventCategory from '../components/events/EventCategory.vue'
 import DocumentTypeManager from '../components/data_settings/DocumentTypeManager.vue'
 import Topic from '../components/data_settings/Topic'
 import UserType from '../components/data_settings/UserType'
@@ -82,7 +86,12 @@ const routes = [
       { path: '/information', component: InformationListPage },
       { path: '/information/new', component: InformationNewPage },
       { path: '/information/:id/edit/', component: InformationEditPage },
-      { path: '/information/categories', component: InformationCategory }
+      { path: '/information/categories', component: InformationCategory },
+
+      { path: '/events', component: EventListPage },
+      { path: '/events/new', component: EventNewPage },
+      { path: '/events/:id/edit/', component: EventEditPage },
+      { path: '/events/categories', component: EventCategory },
     ]
   }
 ]/*

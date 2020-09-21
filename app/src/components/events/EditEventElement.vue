@@ -4,14 +4,15 @@
     <edit-element
       v-if="!loading"
       :elem="elem"
-      :save_item_fn="saveInformationItem"
+      :save_item_fn="saveEventItem"
       :tags="tags"
       :pagetitle="pagetitle"
       tags_enabled
-      :categories="informationCategories"
+      :categories="eventCategories"
       categories_enabled
       topics_enabled
       user_types_enabled
+      is_event
     />
   </div>
 </template>
@@ -21,7 +22,7 @@ import EditElement from 'components/EditElement'
 import { mapGetters, mapActions } from 'vuex'
 
 export default {
-  name: 'EditInformationElement',
+  name: 'EditEventElement',
   components: {
     'edit-element': EditElement
   },
@@ -42,17 +43,17 @@ export default {
     }
   },
   methods: {
-    ...mapActions('information_category', ['fetchInformationCategory']),
-    saveInformationItem(translations) {
+    ...mapActions('event_category', ['fetchEventCategory']),
+    saveEventItem(translations) {
       this.$emit('save', translations)
     }
   },
   computed: {
-    ...mapGetters('information_category', ['informationCategories'])
+    ...mapGetters('event_category', ['eventCategories'])
   },
   created() {
     this.loading = true
-    this.fetchInformationCategory().then(() => {
+    this.fetchEventCategory().then(() => {
       this.loading = false
     })
   }

@@ -23,8 +23,6 @@ export default {
       const router = this.$router
       let id = -1
       const glossaryData = {
-        published: true,
-        publicationDate: new Date().toISOString()
       }
       this.saveNewGlossaryItem(glossaryData)
         .then((newData) => {

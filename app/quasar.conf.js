@@ -104,11 +104,14 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-steps-client', 'src/api/steps/server');
         chain.resolve.alias.set('api-steplinks-client', 'src/api/steplinks/server');
         chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/server');
+        chain.resolve.alias.set('api-event-client', 'src/api/event/server');
         chain.resolve.alias.set('api-information-client', 'src/api/information/server');
         chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server');
         chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
+        chain.resolve.alias.set('api-event_category-client', 'src/api/event_category/server');
         chain.resolve.alias.set('api-ngo_user-client', 'src/api/ngo_user/mock');
         chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
+        chain.resolve.alias.set('api-event_tags-client', 'src/api/event_tags/server');
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
       }
     },

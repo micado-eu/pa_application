@@ -13,100 +13,86 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
       loading: false,
       elem: undefined,
-      tags: undefined,
-    };
+      tags: undefined
+    }
   },
   components: {
-    "edit-information": require("components/information_centre/EditInformationElement.vue")
+    'edit-information': require('components/information_centre/EditInformationElement.vue')
       .default
   },
   methods: {
-    ...mapActions("information", [
-      "fetchInformation",
-      "editInformationItem",
-      "editInformationItemTranslation",
-      "addNewInformationItemTranslation"
+    ...mapActions('information', [
+      'fetchInformation',
+      'editInformationItem',
+      'editInformationItemTranslation',
+      'addNewInformationItemTranslation'
     ]),
-    ...mapActions("information_tags", [
-      "fetchInformationTags",
-      "deleteInformationTagsFromEvent",
-      "saveInformationTags"
+    ...mapActions('information_tags', [
+      'fetchInformationTags',
+      'deleteInformationTagsFromInformation',
+      'saveInformationTags'
     ]),
     editInformationItemAndReturn(data) {
-      let router = this.$router;
-      let categoryId = data.category.id
-      let id = parseInt(this.$route.params.id)
-      let eventData = {
+      const router = this.$router
+      const categoryId = data[0].category.id
+      const id = parseInt(this.$route.params.id, 10)
+      const eventData = {
         id,
         category: categoryId
       }
-      delete data.category
-      let tags = data.tags.map(tag_lbl => {
-        return {
-          lang: data.lang,
-          tag: tag_lbl
-        }
-      })
-      delete data.tags
-      let dataWithId = Object.assign(data, {
-        id
-      });
       this.editInformationItem(eventData).then(() => {
-        let idx = this.elem.translations.findIndex(t => t.lang === data.lang);
-        if (idx !== -1) {
+        for (let i = 0; i < data.length; i += 1) {
+          const translation = data[i]
+          delete translation.category
+          const tags = translation.tags.map((tagLbl) => ({
+            lang: translation.lang,
+            tag: tagLbl
+          }))
+          delete translation.tags
+          const dataWithId = Object.assign(translation, {
+            id
+          })
+
           this.editInformationItemTranslation(dataWithId).then(() => {
-            this.deleteInformationTagsFromEvent(id).then(() => {
+            this.deleteInformationTagsFromInformation(id).then(() => {
               if (tags.length > 0) {
                 this.saveInformationTags({
-                  eventId: id,
+                  informationId: id,
                   tags
                 }).then(() => {
-                  router.push({ path: "/information" });
+                  router.push({ path: '/information' })
                 })
               } else {
-                router.push({ path: "/information" });
+                router.push({ path: '/information' })
               }
-            })        
-          });
-        } else {
-          this.addNewInformationItemTranslation(dataWithId).then(() => {
-            if (tags.length > 0) {
-                this.saveInformationTags({
-                  eventId: id,
-                  tags
-                }).then(() => {
-                  router.push({ path: "/information" });
-                })
-              } else {
-                router.push({ path: "/information" });
-              }
-          });
+            })
+          })
         }
       })
-
     }
   },
   computed: {
-    ...mapGetters("information", ["informationElemById"]),
-    ...mapGetters("information_tags", ["informationTagsByEvent"]),
+    ...mapGetters('information', ['informationElemById']),
+    ...mapGetters('information_tags', ['informationTagsByInformation'])
   },
   created() {
-    this.loading = true;
+    this.loading = true
     this.fetchInformation().then(() => {
-      this.elem = this.informationElemById(this.$route.params.id);
+      this.elem = this.informationElemById(this.$route.params.id)
       this.fetchInformationTags().then(() => {
-        this.tags = this.informationTagsByEvent(this.elem.id)
-        this.loading = false;
+        this.tags = this.informationTagsByInformation(this.elem.id)
+        this.loading = false
       })
-    });
+    })
   }
-};
+}
 </script>
 
 <style></style>
