@@ -35,7 +35,7 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions savec ategory:")
   console.log(integration_type_element)
-  let savingCategory= JSON.parse(JSON.stringify(integration_type_element, ['published', 'publicationDate', 'categoryType']));
+  let savingCategory= JSON.parse(JSON.stringify(integration_type_element, ['categoryType']));
   console.log(savingCategory)
 
 

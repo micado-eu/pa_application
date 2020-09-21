@@ -48,11 +48,9 @@
         </q-tab-panels>
           <FileUploader
         :Image="userimage"
-        :published="int_user_type_shell.published"
-        :publicationDate="int_user_type_shell.publicationDate"
         :icon="int_user_type_shell.icon"
         @upload="getFiles"
-        @publish="isPublished"> 
+        > 
 
         </FileUploader>
            <q-tabs
@@ -100,7 +98,7 @@
       {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      {{$t('input_labels.is_published')}}
+      <!--{{$t('input_labels.is_published')}}-->
     </div>
     <div class="col-1 flex flex-center div-5">
       {{$t('input_labels.edit')}}
@@ -120,11 +118,11 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{showUserTypeLabel(a_user_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <q-toggle
+          <!--<q-toggle
             v-model="a_user_type.published"
             color="green"
             disable
-          />
+          />-->
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editingUserType(a_user_type)" />
@@ -163,7 +161,7 @@ export default {
   })],
   data() {
     return {
-      int_user_type_shell: { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, },
+      int_user_type_shell: { id: -1, user_type: null, translations: [], icon: "" },
       hideForm: true,
       hideAdd: false,
       isNew: false, 
@@ -216,7 +214,7 @@ export default {
      return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
     },
         createShell () {
-      this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "", published: false, publicationDate: null, }
+      this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: ""}
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_user_type_shell.translations.push({ id: -1, lang: l.lang, userType: '', description:"", translationDate: null })
@@ -226,8 +224,8 @@ export default {
       console.log(user_type)
       this.int_user_type_shell.id = user_type.id
       this.int_user_type_shell.icon = user_type.icon
-      this.int_user_type_shell.published = user_type.published
-      this.int_user_type_shell.publicationDate = user_type.publicationDate
+      //this.int_user_type_shell.published = user_type.published
+      //this.int_user_type_shell.publicationDate = user_type.publicationDate
       user_type.translations.forEach(tr => {
         console.log(tr)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
@@ -271,12 +269,12 @@ export default {
         console.log(fileInfo)
       }
     },
-     isPublished(value){
+     /*isPublished(value){
       console.log("publishing")
       this.int_user_type_shell.published = value
             console.log(this.int_user_type_shell.published)
 
-    },
+    },*/
     cancelUserType() {
       this.isNew = false;
       this.hideForm = true;

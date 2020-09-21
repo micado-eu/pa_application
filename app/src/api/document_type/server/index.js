@@ -72,7 +72,7 @@ export default {
     const whereClause = {
       id: { eq: doc.id }
     },
-     updatingDocumentType = (doc.publicationDate == null) ? JSON.parse(JSON.stringify(doc, ['id', 'icon'])) : doc
+     updatingDocumentType =  JSON.parse(JSON.stringify(doc, ['id', 'icon']))
 
     return axiosInstance
       .patch('/backend/1.0.0/document-types?where=' + JSON.stringify(whereClause), updatingDocumentType)

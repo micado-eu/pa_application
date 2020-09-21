@@ -44,7 +44,7 @@ export default {
     const whereClause = {
       id: { eq: user_type.id }
     },
-      updatingTopic = (user_type.publicationDate == null) ? JSON.parse(JSON.stringify(user_type, ['id', 'icon'])) : user_type
+      updatingTopic =  JSON.parse(JSON.stringify(user_type, ['id', 'icon']))
 
     return axiosInstance
       .patch('/backend/1.0.0/user-types?where=' + JSON.stringify(whereClause), updatingTopic)

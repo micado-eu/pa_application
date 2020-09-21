@@ -39,17 +39,17 @@
          </q-tab-panel>
         </q-tab-panels>
          <q-card-section class="row">
-              <div class="col-8">
+              <!--<div class="col-8">
                 <div class="div-3"> {{$t('input_labels.publication_date')}} </div>
-           <!-- <q-input
+            <q-input
             outlined
             filled
             dense
               v-model="int_cat_shell.publicationDate"
               :label="$t('input_labels.publication_date')"
               readonly
-            />-->
-            </div>
+            />
+            </div>-->
            <!-- <div class="col-4 div-4">
               <div class="div-3"> {{$t('input_labels.is_published')}} </div>
             <q-toggle
@@ -100,9 +100,9 @@
     <div class="col-9 flex flex-left div-6">
       {{$t('input_labels.name')}}
     </div>
-   <!-- <div class="col-1 flex flex-left">
-      {{$t('input_labels.is_published')}}
-    </div>-->
+    <div class="col-1 flex flex-left">
+     <!-- {{$t('input_labels.is_published')}}-->
+    </div>
     <div class="col-1 flex flex-center div-7">
       {{$t('input_labels.edit')}}
     </div> 

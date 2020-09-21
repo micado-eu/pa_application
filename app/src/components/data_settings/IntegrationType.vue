@@ -52,8 +52,8 @@
      
            <q-card-section class="row">
               <div class="col-8">
-                <div class="div-5"> {{$t('input_labels.publication_date')}} </div>
-           <!-- <q-input
+               <!-- <div class="div-5"> {{$t('input_labels.publication_date')}} </div>
+            <q-input
             outlined
             filled
             dense
@@ -63,8 +63,8 @@
             />-->
             </div>
             <div class="col-4 div-6">
-              <div class="div-5"> {{$t('input_labels.is_published')}} </div>
-           <!-- <q-toggle
+             <!-- <div class="div-5"> {{$t('input_labels.is_published')}} </div>
+            <q-toggle
               :value="int_type_shell.published"
               color="green"
               @input="isPublished(!int_type_shell.published,$event)"
@@ -134,11 +134,11 @@
       >
         <q-item-section class="col-9 flex flex-left section" >{{showTypeLabel(a_integration_type)}}</q-item-section>
        <q-item-section class="col-1 flex flex-left">
-          <q-toggle
+          <!--<q-toggle
             v-model="a_integration_type.published"
             color="green"
             disable
-          />
+          />-->
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
         <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationType(a_integration_type)" />
@@ -190,9 +190,9 @@ export default {
     GlossaryEditor
   },
   methods: {
-    isPublished(value, event){
+   /* isPublished(value, event){
       this.int_type_shell.published = value
-    },
+    },*/
     deletingIntegrationType(index) {
       console.log(index);
       this.deleteIntegrationTypeElement(index)

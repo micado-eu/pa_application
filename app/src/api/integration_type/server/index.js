@@ -16,7 +16,7 @@ export default {
     const whereClause = {
       id: { eq: integration_type.id }
     },
-      updatingCategory = (integration_type.publicationDate == null) ? JSON.parse(JSON.stringify(integration_type, ['id'])) : integration_type
+      updatingCategory =  JSON.parse(JSON.stringify(integration_type, ['id', 'categoryType'])) 
 
     return axiosInstance
       .patch('/backend/1.0.0/intervention-types?where=' + JSON.stringify(whereClause), updatingCategory)

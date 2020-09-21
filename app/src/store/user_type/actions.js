@@ -36,7 +36,7 @@ export function saveUserType (state, user_type) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions save user type:")
   console.log(user_type)
-  let savingUserType = JSON.parse(JSON.stringify(user_type, ['publicationDate', 'published', 'icon']));
+  let savingUserType = JSON.parse(JSON.stringify(user_type, ['icon']));
   console.log(savingUserType)
 
 

@@ -20,7 +20,7 @@
           </q-card-section>
           <q-card-section class="row">
               <div class="col-8">
-                <div class="field"> {{$t('input_labels.publication_date')}} </div>
+                <!--<div class="field"> {{$t('input_labels.publication_date')}} </div>
             <q-input
             outlined
             filled
@@ -28,17 +28,17 @@
               v-model="publicationDate"
               :label="$t('input_labels.publication_date')"
               readonly
-            />
+            />-->
             </div>
             <div class="col-4 pad">
-              <div class="field" >{{$t('input_labels.is_published')}} </div>
+             <!-- <div class="field" >{{$t('input_labels.is_published')}} </div>
             <q-toggle
               :value="published"
               color="green"
               
               @input="isPublished"
               left-label
-            />
+            />-->
             </div>
           
           </q-card-section>
@@ -61,10 +61,10 @@ export default {
 
     
      },
-     isPublished(value){
+     /*isPublished(value){
       console.log(value)
         this.$emit('publish', value)
-     }
+     }*/
   }
 
 }

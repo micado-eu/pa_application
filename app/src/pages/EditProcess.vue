@@ -192,7 +192,7 @@ export default {
       theprocess:null,
       id: this.$route.params.id,
       is_new: true,
-      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", publicationDate: null, },
+      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "" },
       u_tags: [
 
       ],
@@ -275,7 +275,7 @@ export default {
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "", publicationDate: null, }
+      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "" }
       this.languages.forEach(l => {
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null })
       });
@@ -286,7 +286,7 @@ export default {
       this.edit_process.id = process.id
       this.edit_process.link = process.link
       //this.edit_process.published = process.published
-      this.edit_process.publicationDate = process.publicationDate
+      //this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
       process.translations.forEach(pr => {

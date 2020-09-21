@@ -168,7 +168,7 @@ export default {
       is_new: true, 
       int_doc_shell: 
       { 
-        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1, publicationDate: null,
+        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1
       },
       checked: true,
       hotimage: false,
@@ -231,7 +231,7 @@ export default {
       this.int_doc_shell.id = doc.id
       this.int_doc_shell.icon = doc.icon
       //this.int_doc_shell.published = doc.published
-      this.int_doc_shell.publicationDate = doc.publicationDate
+      //this.int_doc_shell.publicationDate = doc.publicationDate
       this.int_doc_shell.issuer = doc.issuer
       this.int_doc_shell.model = doc.model
       this.int_doc_shell.validable = doc.validable
