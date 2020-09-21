@@ -21,6 +21,7 @@ module.exports = {
   rules: {
     'comma-dangle': ['error', 'never'],
     semi: ['error', 'never'],
-    'no-param-reassign': ['error', { props: false }]
+    'no-param-reassign': ['error', { props: false }],
+    'import/prefer-default-export': 'off'
   }
 }

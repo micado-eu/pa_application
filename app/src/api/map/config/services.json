@@ -15,9 +15,814 @@
     "maxScale": 200
   },
   {
-    "id" : "2001",
-    "typ" : "GeoJSON",
-    "name" : "Landesgrenze Hamburg",
-    "url" : "https://geoportal-hamburg.de/lgv-config/landesgrenze_hh.json"
+    "id": "2001",
+    "typ": "GeoJSON",
+    "name": "Landesgrenze Hamburg",
+    "url": "https://geoportal-hamburg.de/lgv-config/landesgrenze_hh.json"
+  },
+  {
+    "id": "2757",
+    "name": "Bürgerschaftswahl 15.02.2015 - CDU Stimmen in Prozent",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Statistik_Stadtteile_Wahlergebnisse",
+    "typ": "WMS",
+    "layers": "wahlergebnis_buew_cdu_prz_15022015",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "0",
+    "minScale": "0",
+    "maxScale": "2500000",
+    "gfiAttributes": {
+      "stadtteil": "Stadtteil",
+      "cdu_2015": "CDU 2015",
+      "geom": "geom"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "1",
+    "datasets": [
+      {
+        "md_id": "F35F2748-7B19-4ADC-949D-CB90F9A693CC",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/1235b1dd-b52e-4bce-a883-887cd1764cd7",
+        "md_name": "Wahlergebnisse zu Stadtteilen in Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Politik und Wahlen"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Statistisches Amt für Hamburg und Schleswig-Holstein"
+      }
+    ]
+  },
+  {
+    "id": "4553",
+    "name": "app:oeru bestehend",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_OERU",
+    "typ": "WFS",
+    "featureType": "oeru_bestehend",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "B394D0AD-722C-4BD7-B372-25EE407BE605",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/68acf3c5-afef-46d8-b6a6-be647aa0e417",
+        "md_name": "Öffentlich rechtliche Unterbringung (ÖRU) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4554",
+    "name": "app:oeru geplant",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_OERU",
+    "typ": "WFS",
+    "featureType": "oeru_geplant",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "B394D0AD-722C-4BD7-B372-25EE407BE605",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/68acf3c5-afef-46d8-b6a6-be647aa0e417",
+        "md_name": "Öffentlich rechtliche Unterbringung (ÖRU) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4462",
+    "name": "Bestehende öfftl. rechtl. Unterbringung (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Fluechtlinge_OERU",
+    "typ": "WMS",
+    "layers": "oeru_bestehend",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "20000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "pfad": "Anlagen"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "B394D0AD-722C-4BD7-B372-25EE407BE605",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/68acf3c5-afef-46d8-b6a6-be647aa0e417",
+        "md_name": "Öffentlich rechtliche Unterbringung (ÖRU) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4463",
+    "name": "Geplante öfftl. rechtl. Unterbringung (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Fluechtlinge_OERU",
+    "typ": "WMS",
+    "layers": "oeru_geplant",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "20000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "pfad": "Anlagen",
+      "geplante_inbetriebnahme": "Plan"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "B394D0AD-722C-4BD7-B372-25EE407BE605",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/68acf3c5-afef-46d8-b6a6-be647aa0e417",
+        "md_name": "Öffentlich rechtliche Unterbringung (ÖRU) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4459",
+    "name": "Achtung - Hinweis",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Fluechtlinge_UMF",
+    "typ": "WMS",
+    "layers": "umf_hinweis",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "20000",
+    "maxScale": "350000",
+    "gfiAttributes": "ignore",
+    "gfiTheme": "default",
+    "layerAttribution": "Diese Karte beinhaltet derzeit keine Standorte zur Unterbringung von minderjährigen unbegleiteten Flüchtlingen.",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "076E27CC-3627-4CE6-9E22-12BD09C167D5",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/a3745c27-fa44-4439-baac-ba1d21174615",
+        "md_name": "Unterbringung unbegleiteter minderjähriger Flüchtlinge Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "9097",
+    "name": "app:perspektive wohnen geplant",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Perspektive_Wohnen",
+    "typ": "WFS",
+    "featureType": "perspektive_wohnen_geplant",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "26301F97-A19C-43EE-9330-E5A7207722A8",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/1c6cf3be-fecf-41cd-b6ef-f31f30267f5f",
+        "md_name": "Flüchtlingsunterbringung mit der Perspektive Wohnen Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4557",
+    "name": "app:perspektive wohnen bestehend",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Perspektive_Wohnen",
+    "typ": "WFS",
+    "featureType": "perspektive_wohnen_bestehend",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "26301F97-A19C-43EE-9330-E5A7207722A8",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/1c6cf3be-fecf-41cd-b6ef-f31f30267f5f",
+        "md_name": "Flüchtlingsunterbringung mit der Perspektive Wohnen Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4458",
+    "name": "Bestehende Flüchtlingsunterkünfte mit der Perspektive Wohnen (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Perspektive_Wohnen",
+    "typ": "WMS",
+    "layers": "perspektive_wohnen_bestehend",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "17000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "bemerkung_link": "",
+      "pfad": "Anlagen"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "26301F97-A19C-43EE-9330-E5A7207722A8",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/1c6cf3be-fecf-41cd-b6ef-f31f30267f5f",
+        "md_name": "Flüchtlingsunterbringung mit der Perspektive Wohnen Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "9095",
+    "name": "Geplante Flüchtlingsunterkünfte mit der Perspektive Wohnen (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Perspektive_Wohnen",
+    "typ": "WMS",
+    "layers": "perspektive_wohnen_geplant",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "17000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "bemerkung_link": "",
+      "pfad": "Anlagen",
+      "geplante_inbetriebnahme": "Plan"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "26301F97-A19C-43EE-9330-E5A7207722A8",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/1c6cf3be-fecf-41cd-b6ef-f31f30267f5f",
+        "md_name": "Flüchtlingsunterbringung mit der Perspektive Wohnen Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4555",
+    "name": "app:ea bestehend",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_ZEA",
+    "typ": "WFS",
+    "featureType": "ea_bestehend",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "13217475-1B3B-4CD8-B034-59DA42A81D3A",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/033016cd-43d1-4c9e-9b88-befa8da0bdb1",
+        "md_name": "Zentrale Erstaufnahmeeinrichtungen (ZEA) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4556",
+    "name": "app:ea geplant",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_ZEA",
+    "typ": "WFS",
+    "featureType": "ea_geplant",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "13217475-1B3B-4CD8-B034-59DA42A81D3A",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/033016cd-43d1-4c9e-9b88-befa8da0bdb1",
+        "md_name": "Zentrale Erstaufnahmeeinrichtungen (ZEA) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "10964",
+    "name": "app:nur ea bestehend",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_ZEA",
+    "typ": "WFS",
+    "featureType": "nur_ea_bestehend",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": []
+  },
+  {
+    "id": "10965",
+    "name": "app:zea bestehend",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Fluechtlinge_ZEA",
+    "typ": "WFS",
+    "featureType": "zea_bestehend",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": []
+  },
+  {
+    "id": "4460",
+    "name": "Bestehende Erstaufnahmeeinrichtungen (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Fluechtlinge_ZEA",
+    "typ": "WMS",
+    "layers": "ea_bestehend",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "20000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "pfad": "Anlagen"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "13217475-1B3B-4CD8-B034-59DA42A81D3A",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/033016cd-43d1-4c9e-9b88-befa8da0bdb1",
+        "md_name": "Zentrale Erstaufnahmeeinrichtungen (ZEA) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "4461",
+    "name": "Geplante Erstaufnahmeeinrichtungen (Stand 08.08.2018)",
+    "url": "https://geodienste.hamburg.de/HH_WMS_Fluechtlinge_ZEA",
+    "typ": "WMS",
+    "layers": "ea_geplant",
+    "format": "image/png",
+    "version": "1.3.0",
+    "singleTile": false,
+    "transparent": true,
+    "transparency": 0,
+    "tilesize": "512",
+    "gutter": "15",
+    "minScale": "20000",
+    "maxScale": "350000",
+    "gfiAttributes": {
+      "bezeichnung": "Bezeichnung",
+      "strasse": "Straße",
+      "bezirk": "Bezirk",
+      "stadtteil": "Stadtteil",
+      "platzzahl": "Platzzahl",
+      "platzzahl_hinweis": "Hinweis zur Platzzahl",
+      "bemerkung": "Bemerkung",
+      "pfad": "Anlagen",
+      "geplante_inbetriebnahme": "Plan"
+    },
+    "gfiTheme": "default",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "cache": false,
+    "featureCount": "10",
+    "datasets": [
+      {
+        "md_id": "13217475-1B3B-4CD8-B034-59DA42A81D3A",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/033016cd-43d1-4c9e-9b88-befa8da0bdb1",
+        "md_name": "Zentrale Erstaufnahmeeinrichtungen (ZEA) Hamburg",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Soziales"
+        ],
+        "kategorie_inspire": [
+          ""
+        ],
+        "kategorie_organisation": "Behörde für Arbeit, Soziales, Familie und Integration"
+      }
+    ]
+  },
+  {
+    "id": "1732",
+    "name": "app:hh schulen dwh",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Schulen",
+    "typ": "WFS",
+    "featureType": "hh_schulen_dwh",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": {
+      "abschluss": "abschluss",
+      "adresse_ort": "adresse_ort",
+      "adresse_strasse_hausnr": "adresse_strasse_hausnr",
+      "anzahl_schueler": "anzahl_schueler",
+      "auszeichnung": "auszeichnung",
+      "bezirk": "bezirk",
+      "bilingual": "bilingual",
+      "einzugsgebiet": "einzugsgebiet",
+      "fax": "fax",
+      "ferienbetreuung_anteil": "ferienbetreuung_anteil",
+      "foerderart": "foerderart",
+      "fremdsprache": "fremdsprache",
+      "ganztagsform": "ganztagsform",
+      "is_rebbz": "is_rebbz",
+      "kantine_vorh": "kantine_vorh",
+      "kapitelbezeichnung": "kapitelbezeichnung",
+      "kernunterricht": "kernunterricht",
+      "kernzeitbetreuung": "kernzeitbetreuung",
+      "kiosk_vorh": "kiosk_vorh",
+      "lgv_standortk_erwachsenenbildung": "lgv_standortk_erwachsenenbildung",
+      "mittagspause": "mittagspause",
+      "name_schulleiter": "name_schulleiter",
+      "nutzung_kantine_anteil": "nutzung_kantine_anteil",
+      "offenetuer": "offenetuer",
+      "rebbz_homepage": "rebbz_homepage",
+      "rechtsform": "rechtsform",
+      "schueleranzahl_schuljahr": "schueleranzahl_schuljahr",
+      "schuelerzeitung": "schuelerzeitung",
+      "schul_email": "schul_email",
+      "schul_homepage": "schul_homepage",
+      "schul_icon": "schul_icon",
+      "schul_id": "schul_id",
+      "schul_telefonnr": "schul_telefonnr",
+      "schulaufsicht": "schulaufsicht",
+      "schulentlassene_mit_esa_anteil": "schulentlassene_mit_esa_anteil",
+      "schulentlassene_mit_msa_anteil": "schulentlassene_mit_msa_anteil",
+      "schulentlassene_oa_anteil": "schulentlassene_oa_anteil",
+      "schulentlassenen_mit_fhr_anteil": "schulentlassenen_mit_fhr_anteil",
+      "schulform": "schulform",
+      "schulinspektion_link": "schulinspektion_link",
+      "schulische_ausrichtung": "schulische_ausrichtung",
+      "schulname": "schulname",
+      "schulpartnerschaft": "schulpartnerschaft",
+      "schulportrait": "schulportrait",
+      "schultyp": "schultyp",
+      "schulwahl_wohnort": "schulwahl_wohnort",
+      "schwerpunktschule": "schwerpunktschule",
+      "sprachzertifikat": "sprachzertifikat",
+      "stadtteil": "stadtteil",
+      "standort_id": "standort_id",
+      "vegetarisch": "vegetarisch",
+      "wahlmoeglichkeit_essen": "wahlmoeglichkeit_essen",
+      "zuegigkeit_kl_1": "zuegigkeit_kl_1",
+      "zuegigkeit_kl_5": "zuegigkeit_kl_5",
+      "zustaendiges_rebbz": "zustaendiges_rebbz",
+      "the_geom": "the_geom",
+      "Name": "Name",
+      "Schulicon": "Schulicon",
+      "Adresse": "Adresse",
+      "Ort": "Ort",
+      "Telefon": "Telefon",
+      "internet": "Internet",
+      "email": "E-Mail",
+      "name_rebbz": "ReBBZ",
+      "schueleranzahl": "Schülerzahl",
+      "Eingangsart": "Eingangsart"
+    },
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "D3DDBBA3-7329-475C-BB07-14D539ED6B1E",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/7988c147-7523-45bb-8f18-7f39d0d20541",
+        "md_name": "Schulstammdaten und Schülerzahlen der Hamburger Schulen",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Öffentliche Verwaltung, Haushalt und Steuern"
+        ],
+        "kategorie_inspire": [
+          "Versorgungswirtschaft und staatliche Dienste"
+        ],
+        "kategorie_organisation": "Behörde für Schule und Berufsbildung"
+      }
+    ]
+  },
+  {
+    "id": "1733",
+    "name": "app:hh schulen eingaenge",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Schulen",
+    "typ": "WFS",
+    "featureType": "hh_schulen_eingaenge",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": "showAll",
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "",
+    "datasets": [
+      {
+        "md_id": "D3DDBBA3-7329-475C-BB07-14D539ED6B1E",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/7988c147-7523-45bb-8f18-7f39d0d20541",
+        "md_name": "Schulstammdaten und Schülerzahlen der Hamburger Schulen",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Öffentliche Verwaltung, Haushalt und Steuern"
+        ],
+        "kategorie_inspire": [
+          "Versorgungswirtschaft und staatliche Dienste"
+        ],
+        "kategorie_organisation": "Behörde für Schule und Berufsbildung"
+      }
+    ]
+  },
+  {
+    "id": "8712",
+    "name": "app:staatliche schulen",
+    "url": "https://geodienste.hamburg.de/HH_WFS_Schulen",
+    "typ": "WFS",
+    "featureType": "staatliche_schulen",
+    "version": "1.1.0",
+    "featureNS": "http://www.deegree.org/app",
+    "outputFormat": "XML",
+    "gfiAttributes": {
+      "schulname": "Name",
+      "schulform": "Schulform",
+      "schultyp": "Schulstandort",
+      "schwerpunktschule": "Schwerpunktschule Inklusion",
+      "adresse_strasse_hausnr": "Straße",
+      "adresse_ort": "Ort",
+      "stadtteil": "Stadtteil",
+      "bezirk": "Bezirk",
+      "schul_telefonnr": "Telefon",
+      "schul_email": "Email",
+      "schulportrait": "Schulportrait",
+      "schul_homepage": "Homepage",
+      "name_schulleiter": "Schulleitung",
+      "zustaendiges_rebbz": "Zuständiges ReBBZ",
+      "rebbz_homepage": "Homepage des ReBBZ",
+      "schulaufsicht": "Schulaufsicht",
+      "offenetuer": "Tag d. offenen Tür",
+      "anzahl_schueler": "Schülerzahl",
+      "anzahl_schueler_gesamt": "Schülerzahl gesamt",
+      "zuegigkeit_kl_1": "Parallelklassen (Kl.1)",
+      "standortkl1": "Standort Klasse 1",
+      "zuegigkeit_kl_5": "Parallelklassen (Kl.5)",
+      "standortkl5": "Standort Klasse 5",
+      "abschluss": "Abschluss",
+      "foerderart": "Förderart",
+      "auszeichnung": "Auszeichnung",
+      "schuelerzeitung": "Schülerzeitung",
+      "schulische_ausrichtung": "Schwerpunkte in den Angeboten",
+      "schulpartnerschaft": "Schulpartnerschaft",
+      "schulinspektion_link": "Schulinspektion",
+      "einzugsgebiet": "Einzugsgebiet",
+      "schulwahl_wohnort": "Schulwahl Wohnort",
+      "fremdsprache": "Fremdsprachen",
+      "fremdsprache_mit_klasse": "Fremdsprachen ab Klassenstufe",
+      "bilingual": "Bilingual",
+      "sprachzertifikat": "Sprachzertifikat",
+      "ganztagsform": "Ganztagsform",
+      "kernzeitbetreuung": "Anteil Kernzeitbetreuung",
+      "ferienbetreuung_anteil": "Anteil Ferienbetreuung",
+      "kernunterricht": "Kernunterricht",
+      "mittagspause": "Mittagspause",
+      "kantine_vorh": "Kantine",
+      "wahlmoeglichkeit_essen": "Wahlmöglichkeit Essen",
+      "vegetarisch": "Vegetarisch",
+      "nutzung_kantine_anteil": "Nutzung Kantine",
+      "kiosk_vorh": "Kiosk",
+      "name_stellv_schulleiter": "Stellv. Schulleitung",
+      "ansprechp_buero": "Ansprechpartner Büro",
+      "ansprechp_klasse_1": "Ansprechpartner Kl.1",
+      "ansprechp_klasse_5": "Ansprechpartner Kl.5",
+      "name_oberstufenkoordinator": "Oberstufenkoordinator",
+      "oberstufenprofil": "Oberstufenprofil",
+      "standortoberstufe": "Standort Oberstufe"
+    },
+    "layerAttribution": "nicht vorhanden",
+    "legendURL": "",
+    "hitTolerance": "0",
+    "datasets": [
+      {
+        "md_id": "D3DDBBA3-7329-475C-BB07-14D539ED6B1E",
+        "csw_url": "https://metaver.de/csw",
+        "show_doc_url": "https://metaver.de/trefferanzeige?cmd=doShowDocument&docuuid=",
+        "rs_id": "https://registry.gdi-de.org/id/de.hh/7988c147-7523-45bb-8f18-7f39d0d20541",
+        "md_name": "Schulstammdaten und Schülerzahlen der Hamburger Schulen",
+        "bbox": "461468.97,5916367.23,587010.91,5980347.76",
+        "kategorie_opendata": [
+          "Öffentliche Verwaltung, Haushalt und Steuern"
+        ],
+        "kategorie_inspire": [
+          "Versorgungswirtschaft und staatliche Dienste"
+        ],
+        "kategorie_organisation": "Behörde für Schule und Berufsbildung"
+      }
+    ]
   }
 ]

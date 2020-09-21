@@ -70,6 +70,7 @@
                 >
                   <q-input
                     rounded
+                    :rules="[ val => val.length <= 25 || 'Please use maximum 25 characters']"
                     dense
                     bg-color="grey-3"
                     standout

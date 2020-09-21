@@ -30,6 +30,7 @@
               outlined
               filled
               dense
+              :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
               v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"
               :label="$t('input_labels.topic_placeholder')"
             />
@@ -37,11 +38,8 @@
         </q-tab-panels>
         <FileUploader
           :Image="topicimage"
-          :published="int_topic_shell.published"
-          :publicationDate="int_topic_shell.publicationDate"
           :icon="int_topic_shell.icon"
           @upload="getFiles"
-          @publish="isPublished"
         >
 
         </FileUploader>
@@ -90,7 +88,7 @@
       {{$t('input_labels.name')}}
     </div>
     <div class="col-1 flex flex-left">
-      {{$t('input_labels.is_published')}}
+      <!--{{$t('input_labels.is_published')}}-->
     </div>
     <div class="col-1 flex flex-center div-5">
       {{$t('input_labels.edit')}}
@@ -119,11 +117,11 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{showTopicLabel(a_topic)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <q-toggle
+         <!-- <q-toggle
             v-model="a_topic.published"
             color="green"
             disable
-          />
+          />-->
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editingTopic(a_topic)" />
@@ -208,12 +206,12 @@ export default {
       this.hideForm = true;
       this.createShell()
     },
-    isPublished (value) {
+    /*isPublished (value) {
       console.log("publishing")
       this.int_topic_shell.published = value
       console.log(this.int_topic_shell.published)
 
-    },
+    },*/
     newTopic () {
       this.createShell()
       this.isNew = true;
@@ -235,7 +233,7 @@ export default {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
     },
     createShell () {
-      this.int_topic_shell = { id: -1, translations: [], icon: "", published: false, publicationDate: null, }
+      this.int_topic_shell = { id: -1, translations: [], icon: "" }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_topic_shell.translations.push({ id: -1, lang: l.lang, topic: '', translationDate: null })
@@ -245,8 +243,8 @@ export default {
       console.log(topic)
       this.int_topic_shell.id = topic.id
       this.int_topic_shell.icon = topic.icon
-      this.int_topic_shell.published = topic.published
-      this.int_topic_shell.publicationDate = topic.publicationDate
+      //this.int_topic_shell.published = topic.published
+      //this.int_topic_shell.publicationDate = topic.publicationDate
       topic.translations.forEach(tr => {
         console.log(tr)
         for (var i = 0; i < this.int_topic_shell.translations.length; i++) {
