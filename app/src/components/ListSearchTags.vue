@@ -119,16 +119,15 @@
             :to="new_url"
           />
         </div>
-        <div class="flex" v-if="publish_mode || categories_enabled || tags_enabled">
+        <div class="flex" v-if="categories_enabled || tags_enabled">
           <!-- column title -->
             <span
-              v-if="publish_mode"
+              v-if="categories_enabled"
               style="flex:0.2"
             >
-              Published
             </span>
             <span
-              v-if="publish_mode"
+              v-if="categories_enabled"
               style="flex:1.5"
             />
             <span
@@ -145,7 +144,7 @@
             </span>
           </div>
         <div class="row">
-          <q-separator v-if="publish_mode || categories_enabled || tags_enabled" style="max-width: 91.7%"/>
+          <q-separator v-if="categories_enabled || tags_enabled" style="max-width: 91.7%"/>
         </div>
         <div class="row">
           <q-list class="q-mt-md col-11 element-list">
@@ -158,31 +157,11 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
-              <q-item-section
-                avatar
-                v-if="publish_mode"
-                class="publish_section"
-              >
-                <q-checkbox
-                  color="accent"
-                  :value="publishState[item.id]"
-                  @input="updatePublish($event, item)"
-                />
-              </q-item-section>
               <q-item-section class="title_section">
-                <q-item-label :class="
-                !publish_mode || publishState[item.id]
-                  ? 'published title-label'
-                  : 'unpublished title-label'
-              ">
+                <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
                 <glossary-editor-viewer
-                  :class="
-                    !publish_mode || publishState[item.id]
-                      ? 'published'
-                      : 'unpublished'
-                  "
                   :content="item.description"
                   v-if="!loading"
                   glossary_fetched
@@ -242,55 +221,46 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import Fuse from "fuse.js";
-import GlossaryEditorViewer from "./GlossaryEditorViewer";
+import { mapActions } from 'vuex'
+import Fuse from 'fuse.js'
+import GlossaryEditorViewer from './GlossaryEditorViewer'
+
 export default {
-  name: "ListSearchTags",
+  name: 'ListSearchTags',
   props: {
     elements: {
       type: Array,
-      default: function () {
-        return [];
+      default() {
+        return []
       }
     },
     new_url: {
       type: String,
-      default: "/"
+      default: '/'
     },
     edit_url_fn: {
       type: Function,
-      default: function () {
-        return () => "/";
+      default() {
+        return () => '/'
       }
     },
     delete_fn: {
       type: Function,
-      default: function () {
-        return () => "";
+      default() {
+        return () => ''
       }
     },
     title: {
       type: String,
-      default: ""
+      default: ''
     },
     icon_name: {
       type: String,
-      default: ""
+      default: ''
     },
     add_label: {
       type: String,
-      default: "Add"
-    },
-    publish_mode: {
-      type: Boolean,
-      default: false
-    },
-    update_publish_fn: {
-      type: Function,
-      default: function () {
-        return () => "/";
-      }
+      default: 'Add'
     },
     categories_enabled: {
       type: Boolean,
@@ -298,7 +268,7 @@ export default {
     },
     categories_url: {
       type: String,
-      default: "/"
+      default: '/'
     },
     tags_enabled: {
       type: Boolean,
@@ -317,41 +287,40 @@ export default {
       filteredElementsBySearch: [],
       filteredElementsByTags: [],
       filteredElementsByCategory: [],
-      searchText: "",
+      searchText: '',
       tags: [],
       translatedCategories: [],
       selectedTags: [],
       selectedCategory: undefined,
-      publishState: {},
-      lang: "",
+      lang: '',
       alphabet: [],
       alphabetIds: [],
       lastIndexTags: 5,
       lastIndexCategories: 5,
       loading: true
-    };
+    }
   },
   components: {
-    "glossary-editor-viewer": GlossaryEditorViewer
+    'glossary-editor-viewer': GlossaryEditorViewer
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary"]),
+    ...mapActions('glossary', ['fetchGlossary']),
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
       } else {
         this.selectedCategory = category
       }
-      this.filterByCategory();
+      this.filterByCategory()
     },
     filterByTags() {
       if (this.selectedTags.length > 0) {
-        this.filteredElementsByTags = [];
-        for (let e of this.translatedElements) {
-          let matchedTags = []
-          for (let tag of this.selectedTags) {
+        this.filteredElementsByTags = []
+        for (const e of this.translatedElements) {
+          const matchedTags = []
+          for (const tag of this.selectedTags) {
             if (e.tags) {
-              for (let elemTag of e.tags) {
+              for (const elemTag of e.tags) {
                 if (elemTag.tag === tag) {
                   // This check avoids duplicate matches
                   if (matchedTags.indexOf(tag) == -1) {
@@ -366,28 +335,23 @@ export default {
           }
         }
       } else {
-        this.filteredElementsByTags = this.translatedElements;
+        this.filteredElementsByTags = this.translatedElements
       }
     },
     filterByCategory() {
       if (this.selectedCategory) {
-        this.filteredElementsByCategory = this.translatedElements.filter(e => {
+        this.filteredElementsByCategory = this.translatedElements.filter((e) => {
           if (e.category !== this.selectedCategory) {
-            return false;
+            return false
           }
-          return true;
-        });
+          return true
+        })
       } else {
-        this.filteredElementsByCategory = this.translatedElements;
+        this.filteredElementsByCategory = this.translatedElements
       }
     },
-    updatePublish(newValue, item) {
-      this.update_publish_fn({ id: item.id, published: newValue }).then(() => {
-        this.publishState[item.id] = newValue;
-      });
-    },
     compare(a, b) {
-      return a.title.localeCompare(b.title, this.$userLang, { sensitivity: "base" })
+      return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
     },
     compareTranslationDates(a, b) {
       return new Date(b.translationDate) - new Date(a.translationDate)
@@ -396,63 +360,61 @@ export default {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
     },
     clearFilters() {
-      this.selectedTags = [];
-      this.selectedCategory = undefined;
-      this.filteredElementsByTags = this.translatedElements;
-      this.filteredElementsByCategory = this.translatedElements;
+      this.selectedTags = []
+      this.selectedCategory = undefined
+      this.filteredElementsByTags = this.translatedElements
+      this.filteredElementsByCategory = this.translatedElements
     },
     showMoreTags() {
-      this.lastIndexTags += 5;
+      this.lastIndexTags += 5
     },
     showMoreCategories() {
-      this.lastIndexCategories += 5;
+      this.lastIndexCategories += 5
     }
   },
   computed: {
     search: {
       get() {
-        return this.searchText;
+        return this.searchText
       },
       set(newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.translatedElements, {
-            keys: ["title"]
-          });
+            keys: ['title']
+          })
           this.filteredElementsBySearch = fuse
             .search(newSearch)
-            .map(i => i.item);
-          this.searchText = newSearch;
+            .map((i) => i.item)
+          this.searchText = newSearch
         } else {
-          this.filteredElementsBySearch = this.translatedElements;
-          this.searchText = "";
+          this.filteredElementsBySearch = this.translatedElements
+          this.searchText = ''
         }
       }
     },
     filteredElements() {
-      var filteredElementsByTags = this.filteredElementsByTags;
-      var filteredElementsByCategory = this.filteredElementsByCategory;
-      return this.filteredElementsBySearch.filter(function (n) {
-        return filteredElementsByTags.indexOf(n) !== -1 && filteredElementsByCategory.indexOf(n) !== -1;
-      });
+      const { filteredElementsByTags } = this
+      const { filteredElementsByCategory } = this
+      return this.filteredElementsBySearch.filter((n) => filteredElementsByTags.indexOf(n) !== -1 && filteredElementsByCategory.indexOf(n) !== -1)
     },
     filterTags() {
       return this.tags.slice(0, this.lastIndexTags)
     },
     filterCategories() {
       return this.translatedCategories.slice(0, this.lastIndexCategories)
-    },
+    }
   },
   created() {
-    this.loading = true;
+    this.loading = true
     this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => {
-      this.translatedElements = this.elements.map(e => {
-        let translation = undefined
+      this.translatedElements = this.elements.map((e) => {
+        let translation
         if (e.translations) {
-          let idx = e.translations.findIndex(t => t.lang === this.lang);
-          translation = { ...e.translations[idx] };
+          const idx = e.translations.findIndex((t) => t.lang === this.lang)
+          translation = { ...e.translations[idx] }
           if (this.categories_enabled) {
-            let idxCat = e.category.translations.findIndex(t => t.lang === this.lang);
+            const idxCat = e.category.translations.findIndex((t) => t.lang === this.lang)
             translation.category = e.category.translations[idxCat]
             if (this.translatedCategories.indexOf(translation.category) == -1) {
               this.translatedCategories.push(translation.category)
@@ -461,31 +423,27 @@ export default {
           if (this.tags_enabled) {
             // Tags
             if (e.tags.length > 0) {
-              let tagTranslations = []
-              for (let tag of e.tags) {
-                let translations = tag.translations.filter(tag => tag.lang === this.lang)
+              const tagTranslations = []
+              for (const tag of e.tags) {
+                const translations = tag.translations.filter((tag) => tag.lang === this.lang)
                 if (translations.length > 0) {
                   tagTranslations.push(translations[0])
                   if (this.tags.indexOf(translations[0].tag) == -1) {
-                    this.tags.push(translations[0].tag);
+                    this.tags.push(translations[0].tag)
                   }
                 }
               }
               translation.tags = tagTranslations
             }
           }
-          if (this.publish_mode) {
-            // Publish
-            this.publishState[e.id] = e.published;
-          }
         }
         return translation
-      });
-      this.translatedElements = this.translatedElements.filter(e => e !== undefined)
+      })
+      this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
       if (this.alphabetical_sorting) {
         this.translatedElements.sort(this.compare)
-        for (let elem of this.translatedElements) {
-          let firstChar = elem.title.charAt(0).toUpperCase()
+        for (const elem of this.translatedElements) {
+          const firstChar = elem.title.charAt(0).toUpperCase()
           if (!this.alphabet.includes(firstChar)) {
             this.alphabet.push(firstChar)
             this.alphabetIds.push(elem.id)
@@ -495,13 +453,13 @@ export default {
         this.translatedElements.sort(this.compareTranslationDates)
       }
       console.log(this.translatedElements)
-      this.filteredElementsBySearch = this.translatedElements;
-      this.filteredElementsByTags = this.translatedElements;
-      this.filteredElementsByCategory = this.translatedElements;
-      this.loading = false;
-    });
+      this.filteredElementsBySearch = this.translatedElements
+      this.filteredElementsByTags = this.translatedElements
+      this.filteredElementsByCategory = this.translatedElements
+      this.loading = false
+    })
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

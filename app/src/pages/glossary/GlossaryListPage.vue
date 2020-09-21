@@ -18,28 +18,29 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from 'vuex'
 import ListSearchTags from 'components/ListSearchTags'
+
 export default {
   data() {
     return {
-      loading: true,
+      loading: true
     }
   },
   components: {
-    "list-search-tags": ListSearchTags
+    'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters("glossary", ["glossary"]),
+    ...mapGetters('glossary', ['glossary'])
   },
   methods: {
-    ...mapActions("glossary", [
-      "fetchGlossary",
-      "deleteGlossaryItem",
-      "updatePublishGlossaryItem"
+    ...mapActions('glossary', [
+      'fetchGlossary',
+      'deleteGlossaryItem',
+      'updatePublishGlossaryItem'
     ]),
     getEditRoute(id) {
-      return "glossary/" + id + "/edit"
+      return `glossary/${id}/edit`
     },
     deleteItem(item) {
       this.loading = true

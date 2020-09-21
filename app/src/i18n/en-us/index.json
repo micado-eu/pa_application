@@ -22,7 +22,9 @@
     "information_centre": "Information centre",
     "information_centre_desc":"Manage the information",
     "chatbot": "MICADO Bot",
-    "chatbot_desc":"Manage and train the MICADO Bot"
+    "chatbot_desc":"Manage and train the MICADO Bot",
+    "events": "Events",
+    "events_desc": "Manage the events"
   }, 
   "button":{
     "add_document":"Add Document",
@@ -103,8 +105,12 @@
     "edit_process":"Edit process",
     "add_new_process":"Add new process",
     "guided_processes":"Guided processes",
-    "manage_steps":"Manage steps"
-   
+    "manage_steps":"Manage steps",
+    "start_date": "Select start date",
+    "finish_date": "Select end date",
+    "not_translated": "&ltNot translated&gt",
+    "select_topic": "Select topic",
+    "select_user_type": "Select user type"
   },
   "profile":{
     "username":"Username",
@@ -119,6 +125,13 @@
     "add_new": "Add New Event to the Information Centre",
     "edit": "Edit Event from the Information Centre",
     "categories_title": "Information Centre - Categories",
+    "categories_error": "Cannot delete a category when an item has this category"
+  },
+  "events": {
+    "list_title": "Events",
+    "add_new": "Add New Event to the Event List",
+    "edit": "Edit Event from the Event List",
+    "categories_title": "Events - Categories",
     "categories_error": "Cannot delete a category when an item has this category"
   },
   "glossary": {
@@ -141,5 +154,14 @@
     "published": "Published",
     "category": "Category",
     "tags": "Tags"
+  },
+  "upload_modal": {
+    "upload_label": "Upload",
+    "url": "URL",
+    "url_label": "URL",
+    "upload_button": "Upload"
+  },
+  "date_selector": {
+    "close": "Close"
   }
 }

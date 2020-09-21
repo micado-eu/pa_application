@@ -12,7 +12,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex"
+import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data() {
     return {
@@ -21,27 +22,27 @@ export default {
     }
   },
   components: {
-    "edit-glossary": require('components/glossary/EditGlossaryElement.vue').default,
+    'edit-glossary': require('components/glossary/EditGlossaryElement.vue').default
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary", "editGlossaryItem", "addNewGlossaryItemTranslation"]),
+    ...mapActions('glossary', ['fetchGlossary', 'editGlossaryItem', 'addNewGlossaryItemTranslation']),
     editGlossaryItemAndReturn(data) {
-      let router = this.$router
-      let dataWithId = Object.assign(data, { id: parseInt(this.$route.params.id) })
-      let idx = this.elem.translations.findIndex(t => t.lang === data.lang)
+      const router = this.$router
+      const dataWithId = Object.assign(data, { id: parseInt(this.$route.params.id) })
+      const idx = this.elem.translations.findIndex((t) => t.lang === data.lang)
       if (idx !== -1) {
         this.editGlossaryItem(dataWithId).then(() => {
-          router.push({ path: "/glossary" })
+          router.push({ path: '/glossary' })
         })
       } else {
         this.addNewGlossaryItemTranslation(dataWithId).then(() => {
-          router.push({ path: "/glossary" })
+          router.push({ path: '/glossary' })
         })
       }
     }
   },
   computed: {
-    ...mapGetters("glossary", ["glossaryElemById"]),
+    ...mapGetters('glossary', ['glossaryElemById'])
   },
   created() {
     this.loading = true
