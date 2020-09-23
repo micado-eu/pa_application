@@ -1,6 +1,6 @@
 <template>
   <edit-event
-    pagetitle="event_centre.add_new"
+    pagetitle="events.add_new"
     v-on:save="saveNewEventItemAndReturn($event)"
   />
 </template>

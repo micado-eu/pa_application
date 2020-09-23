@@ -163,5 +163,9 @@
   },
   "date_selector": {
     "close": "Close"
+  },
+  "error_messages": {
+    "title_empty": "Title is empty. Please add a title.",
+    "category_empty": "Please select a category."
   }
 }
