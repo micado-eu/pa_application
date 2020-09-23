@@ -169,7 +169,7 @@
                       <q-btn
                         v-close-popup
                         :label="$t('date_selector.close')"
-                        color="primary"
+                        color="accent"
                         flat
                       />
                     </div>
@@ -449,15 +449,12 @@ export default {
       this.internalTitle = ''
       this.internalDescription = ''
       this.internalTags = []
-      this.selectedCategory = ''
       this.tagInput = ''
       this.setInternalCategorySelector(al)
       this.selectedTopic = ''
       this.setInternalTopicSelector(al)
       this.selectedUserType = ''
       this.setInternalUserTypeSelector(al)
-      this.startDate = ''
-      this.finishDate = ''
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
         this.$refs.editor.setLang(al)
@@ -482,7 +479,7 @@ export default {
         const translation = ic.translations[idx]
         this.internalCategoriesObjects.push(translation)
         let { category } = translation
-        if (category.length <= 0) {
+        if (!category || category.length <= 0) {
           category = this.$t('input_labels.not_translated')
         }
         if (this.selectedCategoryObject.id === translation.id) {
@@ -497,7 +494,7 @@ export default {
         const translation = ic.translations[idx]
         this.internalTopicsObjects.push(translation)
         let { topic } = translation
-        if (topic.length <= 0) {
+        if (!topic || topic.length <= 0) {
           topic = this.$t('input_labels.not_translated')
         }
         const idxSelectedTopic = this.selectedTopicsObjects.findIndex(
@@ -515,7 +512,7 @@ export default {
         const translation = ic.translations[idx]
         this.internalUserTypesObjects.push(translation)
         let { userType } = translation
-        if (userType.length <= 0) {
+        if (!userType || userType.length <= 0) {
           userType = this.$t('input_labels.not_translated')
         }
         const idxSelectedUserType = this.selectedUserTypesObjects.findIndex(
@@ -537,13 +534,22 @@ export default {
       const idx = this.internalTopicsObjects.findIndex(
         (t) => t.topic === topic
       )
-      this.selectedTopicsObjects.push(this.internalTopicsObjects[idx])
+      const topicObj = this.internalTopicsObjects[idx]
+      const idxSelected = this.selectedTopicsObjects.findIndex((st) => st.topic === topicObj.topic)
+      if (idxSelected === -1) {
+        this.selectedTopicsObjects.push(topicObj)
+      }
     },
     setUserTypeObjectModel(userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
       )
-      this.selectedUserTypesObjects.push(this.internalUserTypesObjects[idx])
+      const userTypeObj = this.internalUserTypesObjects[idx]
+      const idxSelected = this.selectedUserTypesObjects
+        .findIndex((st) => st.userType === userTypeObj.userType)
+      if (idxSelected === -1) {
+        this.selectedUserTypesObjects.push(userTypeObj)
+      }
     },
     removeTopic(idx) {
       this.selectedTopicsObjects.splice(
@@ -558,39 +564,56 @@ export default {
     goBack() {
       this.$router.go(-1)
     },
+    checkErrors() {
+      if (this.internalTitle.length <= 0) {
+        window.alert(this.$t('error_messages.title_empty'))
+        return true
+      }
+      if (
+        this.categories_enabled
+        && Object.keys(this.selectedCategoryObject).length === 0
+        && this.selectedCategoryObject.constructor === Object
+      ) {
+        window.alert(this.$t('error_messages.category_empty'))
+        return true
+      }
+      return false
+    },
     callSaveFn() {
-      this.saveContent()
-      for (const language of this.languages) {
-        if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
-          this.savedTranslations.push({
-            title: '',
-            description: '',
-            lang: language.lang,
-            category: this.selectedCategoryObject,
-            topics: this.selectedTopicsObjects,
-            userTypes: this.selectedUserTypesObjects
-          })
+      if (!this.checkErrors()) {
+        this.saveContent()
+        for (const language of this.languages) {
+          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
+            this.savedTranslations.push({
+              title: '',
+              description: '',
+              lang: language.lang,
+              category: this.selectedCategoryObject,
+              topics: this.selectedTopicsObjects,
+              userTypes: this.selectedUserTypesObjects
+            })
+          }
         }
+        if (this.tags_enabled) {
+          let largestTagArrayLength = -1
+          for (let i = 0; i < this.savedTranslations.length; i += 1) {
+            if (!this.savedTranslations[i].tags) {
+              this.savedTranslations[i].tags = []
+            }
+            if (this.savedTranslations[i].tags.length > largestTagArrayLength) {
+              largestTagArrayLength = this.savedTranslations[i].tags.length
+            }
+          }
+          for (let i = 0; i < this.savedTranslations.length; i += 1) {
+            while (this.savedTranslations[i].tags.length < largestTagArrayLength) {
+              this.savedTranslations[i].tags.push('')
+            }
+          }
+        }
+        this.save_item_fn(
+          this.savedTranslations
+        )
       }
-      if (this.tags_enabled) {
-        let largestTagArrayLength = -1
-        for (let i = 0; i < this.savedTranslations.length; i += 1) {
-          if (!this.savedTranslations[i].tags) {
-            this.savedTranslations[i].tags = []
-          }
-          if (this.savedTranslations[i].tags.length > largestTagArrayLength) {
-            largestTagArrayLength = this.savedTranslations[i].tags.length
-          }
-        }
-        for (let i = 0; i < this.savedTranslations.length; i += 1) {
-          while (this.savedTranslations[i].tags.length < largestTagArrayLength) {
-            this.savedTranslations[i].tags.push('')
-          }
-        }
-      }
-      this.save_item_fn(
-        this.savedTranslations
-      )
     }
   },
   computed: {
