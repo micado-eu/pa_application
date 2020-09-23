@@ -49,34 +49,37 @@ export default {
     deleteItem(item) {
       this.deleteInformationTagsFromInformation(item.id)
         .then(this.deleteInformationItem(item))
-        .then(this.fetchInformation())
         .then(() => {
-          this.$router.go()
+          this.updateContent()
+          // this.$router.go()
         })
+    },
+    updateContent() {
+      this.loading = true
+      this.fetchInformation().then(() => {
+        this.fetchInformationCategory().then(() => {
+          this.fetchInformationTags().then(() => {
+            this.informationElems = JSON.parse(JSON.stringify(this.information))
+            const informationCategoryElems = [...this.informationCategories]
+            for (let i = 0; i < this.informationElems.length; i += 1) {
+              const elem = this.informationElems[i]
+              // Set categories-elements relations
+              const idxCat = elem.category
+              const idxCategoryObject = informationCategoryElems.findIndex(
+                (ic) => ic.id === idxCat
+              )
+              elem.category = informationCategoryElems[idxCategoryObject]
+              // Set tag-elements relations
+              elem.tags = this.informationTagsByInformation(elem.id)
+            }
+            this.loading = false
+          })
+        })
+      })
     }
   },
   created() {
-    this.loading = true
-    this.fetchInformation().then(() => {
-      this.fetchInformationCategory().then(() => {
-        this.fetchInformationTags().then(() => {
-          this.informationElems = JSON.parse(JSON.stringify(this.information))
-          const informationCategoryElems = [...this.informationCategories]
-          for (let i = 0; i < this.informationElems.length; i += 1) {
-            const elem = this.informationElems[i]
-            // Set categories-elements relations
-            const idxCat = elem.category
-            const idxCategoryObject = informationCategoryElems.findIndex(
-              (ic) => ic.id === idxCat
-            )
-            elem.category = informationCategoryElems[idxCategoryObject]
-            // Set tag-elements relations
-            elem.tags = this.informationTagsByInformation(elem.id)
-          }
-          this.loading = false
-        })
-      })
-    })
+    this.updateContent()
   }
 }
 </script>
