@@ -123,11 +123,6 @@
           <!-- column title -->
             <span
               v-if="categories_enabled"
-              style="flex:0.2"
-            >
-            </span>
-            <span
-              v-if="categories_enabled"
               style="flex:1.5"
             />
             <span
@@ -452,7 +447,6 @@ export default {
       } else {
         this.translatedElements.sort(this.compareTranslationDates)
       }
-      console.log(this.translatedElements)
       this.filteredElementsBySearch = this.translatedElements
       this.filteredElementsByTags = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
