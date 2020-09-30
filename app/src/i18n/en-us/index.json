@@ -53,7 +53,8 @@
     "view":"View",
     "add_glossary": "Add Term",
     "add_event": "Add Event",
-    "categories": "Categories"
+    "categories": "Categories",
+    "remove": "Remove"
   },
   "data_settings":{
     "data_management":"Data management",
