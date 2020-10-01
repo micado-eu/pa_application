@@ -9,7 +9,7 @@
                       <h5 id="header-1"> Title: </h5>
                     </div>
                     <div id="div-7" class="col-8">
-                      <q-input dense bg-color="grey-3" standout outlined v-model="plan_shell.title" />
+                      <q-input dense bg-color="grey-3" maxlength="100" standout outlined v-model="plan_shell.title" />
                     </div>
                     <div id="div-8">
                      <q-btn id="add-button" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />

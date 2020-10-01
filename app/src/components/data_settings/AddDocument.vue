@@ -17,7 +17,7 @@
         <h5  class="header"> Document type  </h5>
       </div>
       <div class="col-8 div-5" >
-        <q-input :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
+        <q-input maxlength="50" :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
       </div>
     </div>
     <div class="row div-7" >

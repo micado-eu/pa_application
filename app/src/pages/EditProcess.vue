@@ -30,7 +30,8 @@
                 bg-color="grey-3"
                 standout
                 outlined
-                :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
+                maxlength="50"
+                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
                 :label="$t('input_labels.topic_placeholder')"
               />

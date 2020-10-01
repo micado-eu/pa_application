@@ -29,6 +29,7 @@
               outlined
               filled
               dense
+              maxlength="20"
               :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
               v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
               :label="$t('input_labels.user_type_placeholder')"

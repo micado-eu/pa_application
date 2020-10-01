@@ -27,7 +27,8 @@
           >
           <div class="div-3" style=""> {{$t('input_labels.intervention_type')}} </div>
         <q-input 
-        :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
+        maxlength="100"
+        :rules="[ val => val.length <= 100 || 'Please use maximum 100 characters']"
         outlined
         filled
         dense
