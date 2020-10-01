@@ -39,7 +39,8 @@
           <IntegrationPlan
             v-for="intervention in intervention_plan.interventions"
             :key="intervention.id"
-            :title="intervention_plan.title"
+            :title="getTitle(intervention.interventionType)"
+            :description="getDescription(intervention.interventionType)"
             :the_intervention_plan="intervention_plan"
             :intervention="intervention"
             :the_processes_list="processes_list"
@@ -158,6 +159,29 @@ export default {
     }
   },
   methods: {
+    getTitle(id){
+      console.log(id)
+      var temp_title = this.intervention_types.filter((int)=>{
+        return int.id == id
+      })[0]
+      console.log(temp_title)
+    var lang = temp_title.translations.filter((transl) =>{
+      return transl.lang == this.activeLanguage
+    })[0].interventionTitle
+    return lang
+    },
+    getDescription(id){
+      console.log(id)
+      var temp_title = this.intervention_types.filter((int)=>{
+        return int.id == id
+      })[0]
+      console.log(temp_title)
+    var lang = temp_title.translations.filter((transl) =>{
+      return transl.lang == this.activeLanguage
+    })[0].description
+    console.log(lang)
+    return lang
+    },
     createShell (id_plan) {
       this.intervention_shell = {
         id: -1,
@@ -295,6 +319,8 @@ export default {
           this.types.push(the_integration_types)
         })
       })
+      console.log("i am intervention_categories")
+      console.log(this.intervention_types)
   }
 }
 </script>
