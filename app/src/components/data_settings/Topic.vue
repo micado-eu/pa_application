@@ -17,6 +17,7 @@
        
         <q-tab-panels
           v-model="langTab"
+          class="bg-grey-2 inset-shadow "
           animated
         >
           <q-tab-panel
@@ -36,19 +37,13 @@
             />
           </q-tab-panel>
         </q-tab-panels>
-        <FileUploader
-          :Image="topicimage"
-          :icon="int_topic_shell.icon"
-          @upload="getFiles"
-        >
-
-        </FileUploader>
-        <q-tabs
+        <q-separator />
+          <q-tabs
           v-model="langTab"
           dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
           align="justify"
           narrow-indicator
         >
@@ -59,6 +54,14 @@
             :label="language.name"
           />
         </q-tabs>
+        <FileUploader
+          :Image="topicimage"
+          :icon="int_topic_shell.icon"
+          @upload="getFiles"
+        >
+
+        </FileUploader>
+        
         <hr id="hr">
           <q-btn
           no-caps

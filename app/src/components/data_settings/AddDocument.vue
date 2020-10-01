@@ -1,23 +1,10 @@
 <template>
 <div id="div-1">
-   <q-tabs
+      
+  <div class=" q-pa-lg div-2">
+      <q-tab-panels
           v-model="langTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
-        <q-tab-panels
-          v-model="langTab"
+          class="bg-grey-2 inset-shadow margin "
           animated
         >
           <q-tab-panel
@@ -25,17 +12,12 @@
             :key="language.lang"
             :name="language.name"
           >
-  <div class=" q-pa-lg div-2">
-    <div class=" q-pa-xsm row div-3">
-      <div class="col-4 div-4" >
-        <h5 class="header" > Document icon </h5>
+  <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6" >
+        <h5  class="header"> Document type  </h5>
       </div>
-      <div class="col-8 div-5">
-       <q-file>
-     <template v-slot:append>
-            <q-icon name="attachment" />
-          </template>
-  </q-file> 
+      <div class="col-8 div-5" >
+        <q-input :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
       </div>
     </div>
     <div class="row div-7" >
@@ -50,15 +32,37 @@
         ref="editor" />
       </div>
     </div>
-    <div class=" q-pa-xsm row div-7">
-      <div class="col-4 div-6" >
-        <h5  class="header"> Document type  </h5>
+     </q-tab-panel>
+        </q-tab-panels>
+    <q-separator />
+          <q-tabs
+          v-model="langTab"
+          dense
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+      <div class=" q-pa-xsm row div-3">
+      <div class="col-4 div-4" >
+        <h5 class="header" > Document icon </h5>
       </div>
-      <div class="col-8 div-5" >
-        <q-input :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
+      <div class="col-8 div-5">
+       <q-file>
+     <template v-slot:append>
+            <q-icon name="attachment" />
+          </template>
+  </q-file> 
       </div>
     </div>
-    
     <div class=" q-pa-xsm row div-7" >
       <div class="col-4 div-6">
         <h5  class="header"> Document Issuer </h5>
@@ -162,8 +166,7 @@
     to="/data_settings/document_types"/>
     </div>
     </div>
-    </q-tab-panel>
-        </q-tab-panels>
+   
 </div>
 </template>
 
@@ -180,7 +183,7 @@ import storeMappingMixin from '../../mixin/storeMappingMixin'
 export default {
   name: 'PageIndex',
   components: {     'v-hotspot': VueHotspot, GlossaryEditor },
-  props: ["thedocumenttype"],
+  props: ["thedocumenttypeid"],
   mixins: [editEntityMixin,
   storeMappingMixin({
     getters: {
@@ -347,8 +350,11 @@ export default {
        console.log(document_types)
        }
        )
-      if (this.thedocumenttype != null) {
-      this.mergeDoc(this.thedocumenttype)
+      if (this.thedocumenttypeid != null) {
+      var filtered_type = this.document_types.filter((the_doc_type)=>{
+        return the_doc_type.id == this.thedocumenttypeid
+      })[0]
+      this.mergeDoc(filtered_type)
       this.int_doc_shell.pictures.forEach((a_picture) => {
         this.uploaded_images.push(a_picture.image)       
       })
@@ -436,5 +442,8 @@ display: block;
 }
 .div-13{
   text-align:left
+}
+.margin{
+  margin-top:20px
 }
 </style>

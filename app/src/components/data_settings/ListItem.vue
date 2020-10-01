@@ -67,7 +67,7 @@ export default {
     editDocumentType () {
       console.log("prima di mandare i process")
       console.log(this.theDocumentType)
-      this.$router.push({ name: 'editdocumenttype', params: { thedocumenttype: this.theDocumentType } })
+      this.$router.push({ name: 'editdocumenttype', params: { thedocumenttypeid: this.theDocumentType.id } })
     }
   }
 };
