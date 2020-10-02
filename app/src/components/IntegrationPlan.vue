@@ -37,7 +37,7 @@
               <q-card-section :hidden="hideForm" class="section">
                 <div class="div-3" >
                   <div class="div-4">
-                    Edit {{intervention.intervention_title}}
+                    Edit {{intervention.title}}
                   </div>
                   <div class="div-5">
                   <div class=" q-pa-xsm row div-6" >
@@ -45,7 +45,7 @@
                       <h5 class="header"> Title </h5>
                     </div>
                     <div class="col-8 div-7">
-                      <q-input  dense   bg-color="white" standout outlined v-model="model.intervention_title" />
+                      <q-input  dense   bg-color="white" standout outlined v-model="model.title" />
                     </div>
                   </div>
 

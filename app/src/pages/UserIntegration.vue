@@ -35,12 +35,11 @@
               />
             </span>
           </h4>
-
-          <IntegrationPlan
+         <IntegrationPlan
             v-for="intervention in intervention_plan.interventions"
             :key="intervention.id"
-            :title="getTitle(intervention.interventionType)"
-            :description="getDescription(intervention.interventionType)"
+            :title="intervention.title"
+            :description="intervention.description"
             :the_intervention_plan="intervention_plan"
             :intervention="intervention"
             :the_processes_list="processes_list"
@@ -130,6 +129,8 @@ export default {
         interventionType: [],
         validationDate: null,
         completed: false,
+        title:"",
+        description:"",
         validatingUserId: 1,
         validatingUserTenant: -1234,
         assignmentDate: '2016-06-22 19:10:25-07',
@@ -159,6 +160,7 @@ export default {
     }
   },
   methods: {
+    
     getTitle(id){
       console.log(id)
       var temp_title = this.intervention_types.filter((int)=>{
@@ -187,6 +189,8 @@ export default {
         id: -1,
         listId: id_plan,
         interventionType: [],
+        title:"",
+        description:"",
         validationDate: null,
         completed: false,
         validatingUserId: 1,
@@ -197,6 +201,7 @@ export default {
     },
 
     mergeIntervention (intervention) {
+      console.log("I am intervention")
       console.log(intervention)
       this.intervention_shell.id = intervention.id
       this.intervention_shell.listId = intervention.listId
@@ -207,8 +212,10 @@ export default {
       this.intervention_shell.validatingUserTenant = intervention.validatingUserTenant
       this.intervention_shell.assignmentDate = intervention.assignmentDate
       this.intervention_shell.validationRequestDate = intervention.validationRequestDate
-
-
+      this.intervention_shell.title = intervention.title
+      this.intervention_shell.description = intervention.description
+      console.log("merged intervention")
+      console.log(this.intervention_shell)
     },
     savingIntervention (value) {
 
@@ -219,13 +226,15 @@ export default {
 
       })
       if (this.isNew) {
+      console.log("this is the new intervention")
+      console.log(value)
+
         this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
         console.log(this.selected_plan)
         this.selected_plan.interventions.push(this.intervention_shell)
         var payload = {intervention: this.intervention_shell, plan: this.selected_plan}
         //this.saveIntervention(payload)
         this.$store.dispatch('intervention_plan/saveIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
-        console.log("")
         this.isNew = false
         this.hideAdd = false
         this.button_id = null
@@ -281,6 +290,7 @@ export default {
       this.isNew = false
       this.hideAdd = true
       this.hideForm = false;
+      this.$forceUpdate()
       console.log(this.intervention_shell)
     },
 

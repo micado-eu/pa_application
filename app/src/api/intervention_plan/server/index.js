@@ -14,7 +14,7 @@ export default {
       console.log(id)
       console.log("CALLING API!!!! INTERVENTION")
       
-      const savingIntervention = JSON.parse(JSON.stringify(intervention, [ 'listId','interventionType','validationDate', 'completed','validatingUserId','validatingUserTenant','assignmentDate', 'validationRequestDate']));
+      const savingIntervention = JSON.parse(JSON.stringify(intervention, [ 'listId','interventionType','title', 'description','validationDate', 'completed','validatingUserId','validatingUserTenant','assignmentDate', 'validationRequestDate']));
      
       return axiosInstance
         .post('/backend/1.0.0/individual-intervention-plans/' + id + '/individual-intervention-plan-interventions', savingIntervention)
@@ -27,7 +27,7 @@ export default {
           id: { eq: intervention.id }
         },
         
-         editingIntervention = JSON.parse(JSON.stringify(intervention, [ 'id','listId','interventionType', 'completed']));
+         editingIntervention = JSON.parse(JSON.stringify(intervention, [ 'id','listId','interventionType', 'title', 'description', 'completed']));
        
         return axiosInstance
           .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)

@@ -21,7 +21,7 @@
         v-for="an_action in plan_shell.interventions"
         :key="an_action.id"
       >
-        <q-item-section id="item-section-1">{{an_action.intervention_title}}</q-item-section>
+        <q-item-section id="item-section-1">{{an_action.title}}</q-item-section>
         <q-item-section side>
           <q-btn
             class="delete-button"
@@ -53,7 +53,7 @@
         <h5 class="header-2"> Title </h5>
       </div>
       <div id="div-13" class="col-8">
-        <q-input  dense   bg-color="white" standout outlined v-model="intervention_shell.intervention_title" />
+        <q-input  dense   bg-color="white" standout outlined v-model="intervention_shell.title" />
       </div>
     </div>
     <div id="div-14" class=" q-pa-xsm row">
@@ -162,7 +162,9 @@ export default {
         id:-1,
         listId:-1,
         interventionType:[],
-        validationDate:null, 
+        validationDate:null,
+        title:"",
+        description:"", 
         completed:false,
         validatingUserId: this.theuserid,
         validatingUserTenant: Number(this.$migrant_tenant),
@@ -194,6 +196,8 @@ export default {
         id:this.fakeId,
         listId:-1,
         interventionType:[],
+        title:"",
+        description:"",
         validationDate:null, 
         completed:false,
         validatingUserId: this.theuserid,
@@ -213,8 +217,12 @@ export default {
       this.intervention_shell.validatingUserTenant = intervention.validatingUserTenant
       this.intervention_shell.assignmentDate = intervention.assignmentDate
       this.intervention_shell.validationRequestDate = intervention.validationRequestDate
+      this.intervention_shell.title = intervention.title
+      this.intervention_shell.description = intervention.description
+
     },
     editAction(event, value){
+      console.log(value)
       let targetId = event.currentTarget.id
       var editing = this.plan_shell.interventions.filter((filt) => {
         return filt.id == value.id

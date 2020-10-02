@@ -9,7 +9,7 @@
         <h5 class="header"> {{$t('input_labels.title')}} </h5>
       </div>
       <div class="col-8 div-4">
-        <q-input  dense   bg-color="white" standout outlined v-model="model.intervention_title" />
+        <q-input  dense   bg-color="white" standout outlined v-model="model.title" />
       </div>
     </div>
     
