@@ -74,5 +74,29 @@ export default {
       promises.push(axiosInstance.post(`/backend/1.0.0/events/${userTypes.id}/event-user-types`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
+  },
+  deleteTopics(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/events/${id}/event-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  deleteUserTypes(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/events/${id}/event-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchEventTopics(id) {
+    return axiosInstance
+      .get(`/backend/1.0.0/events/${id}/event-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchEventUserTypes(id) {
+    return axiosInstance
+      .get(`/backend/1.0.0/events/${id}/event-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
   }
 }

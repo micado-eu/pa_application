@@ -48,3 +48,23 @@ export function setTopics(state, data) {
 export function setUserTypes(state, data) {
   return client.setUserTypes(data)
 }
+
+export function deleteTopics(state, id) {
+  return client.deleteTopics(id)
+}
+
+export function deleteUserTypes(state, id) {
+  return client.deleteUserTypes(id)
+}
+
+export function fetchInformationTopics(state, id) {
+  return client
+    .fetchInformationTopics(id)
+    .then((informationTopics) => informationTopics)
+}
+
+export function fetchInformationUserTypes(state, id) {
+  return client
+    .fetchInformationUserTypes(id)
+    .then((informationUserTypes) => informationUserTypes)
+}

@@ -6,6 +6,8 @@
       v-on:save="editEventItemAndReturn($event)"
       :tags="tags"
       :elem="elem"
+      :topics="topics"
+      :user_types="userTypes"
       class="q-ma-md"
       pagetitle="events.edit"
     />
@@ -20,7 +22,9 @@ export default {
     return {
       loading: false,
       elem: undefined,
-      tags: undefined
+      tags: undefined,
+      topics: undefined,
+      userTypes: undefined
     }
   },
   components: {
@@ -30,64 +34,76 @@ export default {
   methods: {
     ...mapActions('event', [
       'fetchEvent',
+      'fetchEventTopics',
+      'fetchEventUserTypes',
       'editEventItem',
       'editEventItemTranslation',
-      'addNewEventItemTranslation'
+      'addNewEventItemTranslation',
+      'deleteTopics',
+      'setTopics',
+      'deleteUserTypes',
+      'setUserTypes'
     ]),
     ...mapActions('event_tags', [
       'fetchEventTags',
       'deleteEventTagsFromEvent',
-      'saveEventTags'
+      'saveEventTags',
+      'saveEventTagsTranslation'
     ]),
     editEventItemAndReturn(data) {
       const router = this.$router
-      const categoryId = data.category.id
-      const id = parseInt(this.$route.params.id)
+      const categoryId = data[0].category.id
+      const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
-        category: categoryId
+        category: categoryId,
+        startDate: data[0].startDate,
+        endDate: data[0].finishDate
       }
-      delete data.category
-      const tags = data.tags.map((tag_lbl) => ({
-        lang: data.lang,
-        tag: tag_lbl
-      }))
-      delete data.tags
-      const dataWithId = Object.assign(data, {
-        id
-      })
-      this.editEventItem(eventData).then(() => {
-        const idx = this.elem.translations.findIndex((t) => t.lang === data.lang)
-        if (idx !== -1) {
-          this.editEventItemTranslation(dataWithId).then(() => {
-            this.deleteEventTagsFromEvent(id).then(() => {
-              if (tags.length > 0) {
-                this.saveEventTags({
-                  eventId: id,
-                  tags
-                }).then(() => {
+      const tagArrayLength = data[0].tags.length
+      const tagData = []
+      for (let k = 0; k < tagArrayLength; k += 1) {
+        tagData.push({
+          eventId: id
+        })
+      }
+      this.deleteEventTagsFromEvent(id)
+        .then(() => this.saveEventTags(tagData))
+        .then((newTags) => {
+          this.editEventItem(eventData).then(() => {
+            const { topics } = data[0]
+            this.deleteTopics(id)
+              .then(() => this.setTopics({ id, topics }))
+              .then(() => { })
+            const { userTypes } = data[0]
+            this.deleteUserTypes(id)
+              .then(() => this.setUserTypes({ id, userTypes }))
+              .then(() => { })
+            for (let i = 0; i < data.length; i += 1) {
+              const translation = data[i]
+              const tagInfo = translation.tags
+              delete translation.tags
+              const dataWithId = Object.assign(translation, { id })
+              delete translation.category
+              delete translation.topics
+              delete translation.userTypes
+              delete translation.startDate
+              delete translation.finishDate
+              const newTagsWithTag = newTags.map((newTag, idx) => ({
+                id: newTag.id,
+                lang: translation.lang,
+                tag: tagInfo[idx],
+                translationState: 0
+              }))
+              this.saveEventTagsTranslation(newTagsWithTag).then()
+              this.editEventItemTranslation(dataWithId).then(() => {
+                if (i === data.length - 1) {
                   router.push({ path: '/events' })
-                })
-              } else {
-                router.push({ path: '/events' })
-              }
-            })
-          })
-        } else {
-          this.addNewEventItemTranslation(dataWithId).then(() => {
-            if (tags.length > 0) {
-              this.saveEventTags({
-                eventId: id,
-                tags
-              }).then(() => {
-                router.push({ path: '/events' })
+                }
               })
-            } else {
-              router.push({ path: '/events' })
             }
           })
-        }
-      })
+        })
     }
   },
   computed: {
@@ -96,13 +112,23 @@ export default {
   },
   created() {
     this.loading = true
-    this.fetchEvent().then(() => {
-      this.elem = this.eventElemById(this.$route.params.id)
-      this.fetchEventTags().then(() => {
+    this.fetchEvent()
+      .then(() => {
+        this.elem = this.eventElemById(this.$route.params.id)
+        return this.fetchEventTags()
+      })
+      .then(() => {
         this.tags = this.eventTagsByEvent(this.elem.id)
+        return this.fetchEventTopics(this.elem.id)
+      })
+      .then((eventTopics) => {
+        this.topics = eventTopics.map((it) => it.idTopic)
+        return this.fetchEventUserTypes(this.elem.id)
+      })
+      .then((eventUserTypes) => {
+        this.userTypes = eventUserTypes.map((iut) => iut.idUserTypes)
         this.loading = false
       })
-    })
   }
 }
 </script>

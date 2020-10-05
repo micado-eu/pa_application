@@ -399,6 +399,9 @@ export default {
     ...mapActions('user_type', ['fetchUserType']),
     changeLanguage(al) {
       this.saveContent()
+      this.changeLanguageAux(al)
+    },
+    changeLanguageAux(al) {
       if (this.elem) {
         const idx = this.elem.translations.findIndex((t) => t.lang === al)
         if (idx !== -1) {
@@ -630,7 +633,7 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
-        this.changeLanguage(al)
+        this.changeLanguageAux(al)
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
@@ -642,6 +645,12 @@ export default {
             idxTranslation
           ]
           this.selectedCategory = this.selectedCategoryObject.category
+        }
+        if (this.is_event) {
+          const startDate = new Date(this.elem.startDate)
+          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+          const finishDate = new Date(this.elem.endDate)
+          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
         }
       }
       if (this.categories.length > 0) {
@@ -657,8 +666,13 @@ export default {
         this.fetchTopic().then(() => {
           if (this.elem && this.topics.length > 0) {
             for (let i = 0; i < this.topics.length; i += 1) {
-              const idxTopic = this.topics[i].translations.findIndex((t) => t.lang === al)
-              this.selectedTopicsObjects.push(this.topics[idxTopic])
+              const idTopic = this.topics[i]
+              const idxTopic = this.topic.findIndex((t) => t.id === idTopic)
+              const idxTopicTranslation = this.topic[idxTopic]
+                .translations
+                .findIndex((t) => t.lang === al)
+              this.selectedTopicsObjects
+                .push(this.topic[idxTopic].translations[idxTopicTranslation])
             }
           }
           if (this.topic.length > 0) {
@@ -668,8 +682,13 @@ export default {
             this.fetchUserType().then(() => {
               if (this.elem && this.user_types.length > 0) {
                 for (let i = 0; i < this.user_types.length; i += 1) {
-                  const idxUser = this.user_types[i].translations.findIndex((t) => t.lang === al)
-                  this.selectedUserTypesObjects.push(this.user_types[idxUser])
+                  const idUserType = this.user_types[i]
+                  const idxUserType = this.user.findIndex((t) => t.id === idUserType)
+                  const idxUserTypeTranslation = this.topic[idxUserType]
+                    .translations
+                    .findIndex((t) => t.lang === al)
+                  this.selectedUserTypesObjects
+                    .push(this.user[idxUserType].translations[idxUserTypeTranslation])
                 }
               }
               if (this.user.length > 0) {

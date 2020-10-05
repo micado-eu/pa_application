@@ -31,47 +31,69 @@ import IntegrationType from '../components/data_settings/IntegrationType'
 import FunctionConfiguration from '../components/settings/FunctionConfiguration'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
 
-
 const routes = [
   {
     path: '/',
     component: () => import('layouts/Layout.vue'),
     children: [
       { path: '', component: () => import('pages/Index.vue') },
-      { path: '/data_settings', component: DataSettings, children: [
-        { path: 'document_types', component: DocumentTypeManager },
-        { path: 'intervention_categories', component: IntegrationCategory },
-        { path: 'intervention_types', component: IntegrationType },
-        { path: 'topics', component: Topic },
-        { path: 'user_types', component: UserType },
-        { path: 'settings', component: FunctionConfiguration },
-        { path: 'language', component: ActiveLanguageSelector }
-      ] },
+      {
+        path: '/data_settings',
+        component: DataSettings,
+        children: [
+          { path: 'document_types', component: DocumentTypeManager },
+          { path: 'intervention_categories', component: IntegrationCategory },
+          { path: 'intervention_types', component: IntegrationType },
+          { path: 'topics', component: Topic },
+          { path: 'user_types', component: UserType },
+          { path: 'settings', component: FunctionConfiguration },
+          { path: 'language', component: ActiveLanguageSelector }
+        ]
+      },
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
-      { path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
-      { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
+      {
+        path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })
+      },
+      {
+        path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'), props: (route) => ({ ...route.params })
+      },
       { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
       { path: '/chatbot', component: chatBot },
 
-
-      { path: '/adddocument', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params }) },
-      { path: '/adddocument/:id', component: AddDocument, props: true, name: document },
+      {
+        path: '/adddocument', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params })
+      },
+      {
+        path: '/adddocument/:id', component: AddDocument, props: true, name: document
+      },
       { path: '/guided_process_editor', component: ProcessManager, name: 'guidedprocesslist' },
 
-      { path: '/guided_process_editor/edit/', component: () => import('pages/EditProcess.vue'), props: true, name: process },
-      { path: '/guided_process_editor/edit/:theprocessid', name: 'editprocess', component: () => import('pages/EditProcess.vue'), props: (route) => ({ ...route.params }) },
-      { path: '/guided_process_editor/edit/:processId/steps', component: () => import('pages/StepManager.vue'), props: (route) => ({ ...route.params }), name: 'editstep' },
+      {
+        path: '/guided_process_editor/edit/', component: () => import('pages/EditProcess.vue'), props: true, name: process
+      },
+      {
+        path: '/guided_process_editor/edit/:theprocessid', name: 'editprocess', component: () => import('pages/EditProcess.vue'), props: (route) => ({ ...route.params })
+      },
+      {
+        path: '/guided_process_editor/edit/:processId/steps', component: () => import('pages/StepManager.vue'), props: (route) => ({ ...route.params }), name: 'editstep'
+      },
 
-      { path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process },
-      { path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name: process },
+      {
+        path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process
+      },
+      {
+        path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name: process
+      },
 
       { path: '/dashboard', component: () => import('components/Dashboard.vue') },
       { path: '/map', component: () => import('components/Map.vue') },
       {
-        path: '/situation', component: MigrationSituation, children: [
+        path: '/situation',
+        component: MigrationSituation,
+        children: [
           { path: 'editor', component: MigrationSitEditor },
           { path: 'map', component: MigrationSitMap },
           { path: ':board', component: Board }
@@ -91,7 +113,7 @@ const routes = [
       { path: '/events', component: EventListPage },
       { path: '/events/new', component: EventNewPage },
       { path: '/events/:id/edit/', component: EventEditPage },
-      { path: '/events/categories', component: EventCategory },
+      { path: '/events/categories', component: EventCategory }
     ]
   }
 ]/*

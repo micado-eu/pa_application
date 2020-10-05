@@ -6,6 +6,8 @@
       v-on:save="editInformationItemAndReturn($event)"
       :tags="tags"
       :elem="elem"
+      :topics="topics"
+      :user_types="userTypes"
       class="q-ma-md"
       pagetitle="information_centre.edit"
     />
@@ -20,7 +22,9 @@ export default {
     return {
       loading: false,
       elem: undefined,
-      tags: undefined
+      tags: undefined,
+      topics: undefined,
+      userTypes: undefined
     }
   },
   components: {
@@ -32,12 +36,18 @@ export default {
       'fetchInformation',
       'editInformationItem',
       'editInformationItemTranslation',
-      'addNewInformationItemTranslation'
+      'setTopics',
+      'setUserTypes',
+      'deleteTopics',
+      'deleteUserTypes',
+      'fetchInformationTopics',
+      'fetchInformationUserTypes'
     ]),
     ...mapActions('information_tags', [
       'fetchInformationTags',
       'deleteInformationTagsFromInformation',
-      'saveInformationTags'
+      'saveInformationTags',
+      'saveInformationTagsTranslation'
     ]),
     editInformationItemAndReturn(data) {
       const router = this.$router
@@ -47,35 +57,48 @@ export default {
         id,
         category: categoryId
       }
-      this.editInformationItem(eventData).then(() => {
-        for (let i = 0; i < data.length; i += 1) {
-          const translation = data[i]
-          delete translation.category
-          const tags = translation.tags.map((tagLbl) => ({
-            lang: translation.lang,
-            tag: tagLbl
-          }))
-          delete translation.tags
-          const dataWithId = Object.assign(translation, {
-            id
-          })
-
-          this.editInformationItemTranslation(dataWithId).then(() => {
-            this.deleteInformationTagsFromInformation(id).then(() => {
-              if (tags.length > 0) {
-                this.saveInformationTags({
-                  informationId: id,
-                  tags
-                }).then(() => {
+      const tagArrayLength = data[0].tags.length
+      const tagData = []
+      for (let k = 0; k < tagArrayLength; k += 1) {
+        tagData.push({
+          informationId: id
+        })
+      }
+      this.deleteInformationTagsFromInformation(id)
+        .then(() => this.saveInformationTags(tagData))
+        .then((newTags) => {
+          this.editInformationItem(eventData).then(() => {
+            const { topics } = data[0]
+            this.deleteTopics(id)
+              .then(() => this.setTopics({ id, topics }))
+              .then(() => { })
+            const { userTypes } = data[0]
+            this.deleteUserTypes(id)
+              .then(() => this.setUserTypes({ id, userTypes }))
+              .then(() => { })
+            for (let i = 0; i < data.length; i += 1) {
+              const translation = data[i]
+              const tagInfo = translation.tags
+              delete translation.tags
+              const dataWithId = Object.assign(translation, { id })
+              delete translation.category
+              delete translation.topics
+              delete translation.userTypes
+              const newTagsWithTag = newTags.map((newTag, idx) => ({
+                id: newTag.id,
+                lang: translation.lang,
+                tag: tagInfo[idx],
+                translationState: 0
+              }))
+              this.saveInformationTagsTranslation(newTagsWithTag).then()
+              this.editInformationItemTranslation(dataWithId).then(() => {
+                if (i === data.length - 1) {
                   router.push({ path: '/information' })
-                })
-              } else {
-                router.push({ path: '/information' })
-              }
-            })
+                }
+              })
+            }
           })
-        }
-      })
+        })
     }
   },
   computed: {
@@ -84,13 +107,23 @@ export default {
   },
   created() {
     this.loading = true
-    this.fetchInformation().then(() => {
-      this.elem = this.informationElemById(this.$route.params.id)
-      this.fetchInformationTags().then(() => {
+    this.fetchInformation()
+      .then(() => {
+        this.elem = this.informationElemById(this.$route.params.id)
+        return this.fetchInformationTags()
+      })
+      .then(() => {
         this.tags = this.informationTagsByInformation(this.elem.id)
+        return this.fetchInformationTopics(this.elem.id)
+      })
+      .then((informationTopics) => {
+        this.topics = informationTopics.map((it) => it.idTopic)
+        return this.fetchInformationUserTypes(this.elem.id)
+      })
+      .then((informationUserTypes) => {
+        this.userTypes = informationUserTypes.map((iut) => iut.idUserTypes)
         this.loading = false
       })
-    })
   }
 }
 </script>

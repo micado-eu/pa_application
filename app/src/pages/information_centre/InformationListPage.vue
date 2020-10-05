@@ -50,7 +50,8 @@ export default {
       this.deleteInformationTagsFromInformation(item.id)
         .then(this.deleteInformationItem(item))
         .then(() => {
-          this.updateContent()
+          this.loading = true
+          setTimeout(() => this.updateContent(), 1000)
           // this.$router.go()
         })
     },

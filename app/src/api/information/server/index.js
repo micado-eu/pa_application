@@ -49,7 +49,7 @@ export default {
     return axiosInstance
       .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
       .then(
-        (response) => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
+        () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
       ).then((response) => response.data)
       .catch(error_handler)
   },
@@ -74,5 +74,29 @@ export default {
       promises.push(axiosInstance.post(`/backend/1.0.0/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
     }
     return Promise.all(promises).catch(error_handler)
+  },
+  deleteTopics(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/information/${id}/information-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  deleteUserTypes(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/information/${id}/information-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchInformationTopics(id) {
+    return axiosInstance
+      .get(`/backend/1.0.0/information/${id}/information-topics`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchInformationUserTypes(id) {
+    return axiosInstance
+      .get(`/backend/1.0.0/information/${id}/information-user-types`)
+      .then((response) => response.data)
+      .catch(error_handler)
   }
 }
