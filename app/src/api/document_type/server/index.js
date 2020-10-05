@@ -40,9 +40,8 @@ export default {
   },
   saveDocumentTypePictures(pictures, id, order) {
     pictures.documentTypeId = id
-    
-    const savingPicture = JSON.parse(JSON.stringify(pictures, ['image', 'documentTypeId']));
-    
+    pictures.order = order
+    const savingPicture = JSON.parse(JSON.stringify(pictures, ['image', 'documentTypeId', 'order']));
     // create fake id here
     return axiosInstance
       .post('/backend/1.0.0/document-types/' + id + '/document-type-pictures', savingPicture)

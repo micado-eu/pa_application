@@ -64,10 +64,10 @@ const routes = [
       { path: '/chatbot', component: chatBot },
 
       {
-        path: '/adddocument', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params })
+        path: '/adddocument', component: AddDocument, props: true, name: document
       },
       {
-        path: '/adddocument/:id', component: AddDocument, props: true, name: document
+        path: '/adddocument/:thedocumenttypeid', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params })
       },
       { path: '/guided_process_editor', component: ProcessManager, name: 'guidedprocesslist' },
 

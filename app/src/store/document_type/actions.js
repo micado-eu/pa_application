@@ -80,11 +80,11 @@ export function editDocumentType (state, doc_element) {
           console.log(update_translation_return)
         })
       })
-      doc_element.pictures.forEach(function (aPic) {
-        client.updateDocumentTypePictures(aPic).then(function (update_picture_return) {
-          console.log(update_picture_return)
-        })
-      })
+      client.deleteDocumentTypePictures(doc_element.id)
+      for (let i = 0; i < doc_element.pictures.length; i++) {
+        console.log("saving pictures")
+        client.saveDocumentTypePictures(doc_element.pictures[i], doc_element.id, i)
+      }
       state.commit('editDocumentType', doc_element)
     })
 }

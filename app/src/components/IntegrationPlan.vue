@@ -3,7 +3,7 @@
       <q-separator />
        <q-expansion-item 
         group="somegroup"
-        :label="intervention.intervention_title"
+        :label="title"
         :header-class="{ 'bg-secondary text-white' : intervention.completed }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.validated}"
@@ -21,11 +21,12 @@
             </div>
             <div class="row">
               <q-item-section class="col-9 section-2">
+              {{this.description}}
                <!-- <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{this.intervention.interventionType.slice(0, 200)}}   </span>
                 <a class="" style="font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
                   Read more...
                 </a> -->
-                <span class="span" v-if="readMoreActivated" v-html="intervention.description"></span>
+                <span class="span" v-if="readMoreActivated" v-html="description"></span>
               </q-item-section>
               <q-item-section class="col section-3">
                 <q-btn size="11px" class="button-1" no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
@@ -36,7 +37,7 @@
               <q-card-section :hidden="hideForm" class="section">
                 <div class="div-3" >
                   <div class="div-4">
-                    Edit {{intervention.intervention_title}}
+                    Edit {{intervention.title}}
                   </div>
                   <div class="div-5">
                   <div class=" q-pa-xsm row div-6" >
@@ -44,7 +45,7 @@
                       <h5 class="header"> Title </h5>
                     </div>
                     <div class="col-8 div-7">
-                      <q-input  dense   bg-color="white" standout outlined v-model="model.intervention_title" />
+                      <q-input  dense   bg-color="white" standout outlined v-model="model.title" />
                     </div>
                   </div>
 
@@ -122,7 +123,7 @@ export default {
     }
   },
   components: {},
-  props:["title", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories"],
+  props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories"],
   computed: {},
   mounted() {},
   methods: {

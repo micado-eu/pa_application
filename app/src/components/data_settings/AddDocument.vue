@@ -1,23 +1,10 @@
 <template>
 <div id="div-1">
-   <q-tabs
+      
+  <div class=" q-pa-lg div-2">
+      <q-tab-panels
           v-model="langTab"
-          dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
-        <q-tab-panels
-          v-model="langTab"
+          class="bg-grey-2 inset-shadow margin "
           animated
         >
           <q-tab-panel
@@ -25,17 +12,12 @@
             :key="language.lang"
             :name="language.name"
           >
-  <div class=" q-pa-lg div-2">
-    <div class=" q-pa-xsm row div-3">
-      <div class="col-4 div-4" >
-        <h5 class="header" > Document icon </h5>
+  <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6" >
+        <h5  class="header"> Document type  </h5>
       </div>
-      <div class="col-8 div-5">
-       <q-file>
-     <template v-slot:append>
-            <q-icon name="attachment" />
-          </template>
-  </q-file> 
+      <div class="col-8 div-5" >
+        <q-input maxlength="50" :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
       </div>
     </div>
     <div class="row div-7" >
@@ -50,15 +32,37 @@
         ref="editor" />
       </div>
     </div>
-    <div class=" q-pa-xsm row div-7">
-      <div class="col-4 div-6" >
-        <h5  class="header"> Document type  </h5>
+     </q-tab-panel>
+        </q-tab-panels>
+    <q-separator />
+          <q-tabs
+          v-model="langTab"
+          dense
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+      <div class=" q-pa-xsm row div-3">
+      <div class="col-4 div-4" >
+        <h5 class="header" > Document icon </h5>
       </div>
-      <div class="col-8 div-5" >
-        <q-input :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters']" bg-color="grey-3" dense rounded standout outlined v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"  />
+      <div class="col-8 div-5">
+       <q-file>
+     <template v-slot:append>
+            <q-icon name="attachment" />
+          </template>
+  </q-file> 
       </div>
     </div>
-    
     <div class=" q-pa-xsm row div-7" >
       <div class="col-4 div-6">
         <h5  class="header"> Document Issuer </h5>
@@ -85,22 +89,51 @@
         <q-checkbox color="accent" v-model="int_doc_shell.validable" clickable @click="int_doc_shell.validable=!int_doc_shell.validable"/>
       </div>
     </div>
-    <div class=" q-pa-xsm row div-7">
+      <div class=" q-pa-xsm row div-7">
       <div class="col-4 div-6" >
         <h5  class="header"> Document model </h5>
       </div>
       <div class="col-6 div-5" >
-        <q-file  @input="getFiles" bg-color="grey-3" dense rounded standout outlined >
-         
+        <q-file   bg-color="grey-3" dense rounded standout outlined > 
         </q-file>
         </div>
-        <div class="col div-11" >
+      <!--  <div class="col div-11" >
         <q-img
       :src="myimage"
       spinner-color="white"
       id="image"
       @click="hotimage = true" 
     />
+    <q-dialog v-model="hotimage">
+      <q-card>
+        <v-hotspot
+    :init-options="hotspotConfig"
+    @save-data="saveData"
+    @after-delete="afterDelete" />
+
+      </q-card>
+      </q-dialog>
+      </div>-->
+    </div>
+    <div class=" q-pa-xsm row div-7">
+      <div class="col-4 div-6" >
+        <h5  class="header"> Document pictures </h5>
+      </div>
+      <div class="col-6 div-5" >
+        <q-file  @input="getFiles($event)" bg-color="grey-3" dense multiple rounded standout outlined >
+         
+        </q-file>
+        </div>
+        <div class="div-11"  v-for="image in uploaded_images" :key="image" >
+        <q-img
+      :src="image"
+      spinner-color="white"
+      class="image"
+      @click="addHotspot(image)" 
+    />
+    <span class="span">
+            <q-btn  no-caps rounded class="negative-button" filled color="accent" @click="removePicture(image)"  :label="$t('button.remove')" />
+            </span>     
     <q-dialog v-model="hotimage">
       <q-card>
         <v-hotspot
@@ -133,8 +166,7 @@
     to="/data_settings/document_types"/>
     </div>
     </div>
-    </q-tab-panel>
-        </q-tab-panels>
+   
 </div>
 </template>
 
@@ -151,7 +183,7 @@ import storeMappingMixin from '../../mixin/storeMappingMixin'
 export default {
   name: 'PageIndex',
   components: {     'v-hotspot': VueHotspot, GlossaryEditor },
-  props: ["thedocumenttype"],
+  props: ["thedocumenttypeid"],
   mixins: [editEntityMixin,
   storeMappingMixin({
     getters: {
@@ -166,6 +198,7 @@ export default {
     return {
       id:this.$route.params.id,
       is_new: true, 
+      uploaded_images:[],
       int_doc_shell: 
       { 
         id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1
@@ -199,32 +232,47 @@ export default {
         let reader = new FileReader()
 
           // Convert the file to base64 text
-        reader.readAsDataURL(files)
+        reader.readAsDataURL(files[0])
 
         // on reader load somthing...
         reader.onload = () => {
 
           // Make a fileInfo Object
           let fileInfo = {
-            name: files.name,
-            type: files.type,
-            size: Math.round(files.size / 1000)+' kB',
+            name: files[0].name,
+            type: files[0].type,
+            size: Math.round(files[0].size / 1000)+' kB',
             base64: reader.result,
-            file: files
+            file: files[0]
           }
+          this.uploaded_images.push(fileInfo.base64)
+          console.log(this.uploaded_images)
+          this.int_doc_shell.pictures.push({
+          id:-1,
+          image: fileInfo.base64,
+          documentTypeId: -1,
+          order: null
+        })
           this.myimage = fileInfo.base64
           this.hotspotConfig.image = fileInfo.base64
           console.log(fileInfo)
         }
       },
       createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[{id:-1, image: "string", documentTypeId:-1, oder:0}], icon: "", model:null, validable:false, validityDuration:-1 }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[], icon: "", model:null, validable:false, validityDuration:-1 }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null })
       });
       },
-     
+     addHotspot(picture){
+       var selected_picture = this.uploaded_images.filter((pic)=>{
+         console.log(pic == String(picture))
+         return pic == String(picture)
+       })[0]
+        this.hotspotConfig.image = selected_picture
+       this.hotimage = true
+     },
   
   mergeDoc (doc) {
       console.log(doc)
@@ -236,7 +284,13 @@ export default {
       this.int_doc_shell.model = doc.model
       this.int_doc_shell.validable = doc.validable
       this.int_doc_shell.validityDuration = doc.validityDuration
-      this.int_doc_shell.pictures = doc.pictures
+      if(doc.pictures != null){
+        this.int_doc_shell.pictures = doc.pictures
+      }
+      else{
+        this.int_doc_shell.pictures = []
+      }
+      
       doc.translations.forEach(doc => {
         console.log(doc)
         //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
@@ -254,8 +308,18 @@ export default {
 
 
     },
+    removePicture(image){
+     var idx =  this.uploaded_images.findIndex(an_image => an_image === image)
+     this.uploaded_images.splice(idx, 1)
+     console.log(this.uploaded_images)
+     var doc_idx = this.int_doc_shell.pictures.findIndex(an_image => an_image.image === image)
+     this.int_doc_shell.pictures.splice(doc_idx, 1)
+     console.log(this.int_doc_shell.pictures)
+    },
       saveData (value) {
         if(this.is_new){
+          console.log("I am the document")
+          console.log(value)
           this.saveDocumentType(value)
           //this.$store.dispatch('document_type/saveDocumentType', value)
           console.log(this.$store.state.document_type)
@@ -286,8 +350,15 @@ export default {
        console.log(document_types)
        }
        )
-      if (this.thedocumenttype != null) {
-      this.mergeDoc(this.thedocumenttype)
+      if (this.thedocumenttypeid != null) {
+      var filtered_type = this.document_types.filter((the_doc_type)=>{
+        return the_doc_type.id == this.thedocumenttypeid
+      })[0]
+      this.mergeDoc(filtered_type)
+      this.int_doc_shell.pictures.forEach((a_picture) => {
+        this.uploaded_images.push(a_picture.image)       
+      })
+      console.log(this.uploaded_images)
       console.log(this.int_doc_shell)
       this.is_new = false
     }
@@ -362,7 +433,7 @@ display: block;
   padding-right:45px;
   padding-left:15px
 }
-#image{
+.image{
   max-height: 100px; 
   max-width: 150px
 }
@@ -371,5 +442,8 @@ display: block;
 }
 .div-13{
   text-align:left
+}
+.margin{
+  margin-top:20px
 }
 </style>

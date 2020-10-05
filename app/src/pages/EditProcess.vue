@@ -10,6 +10,7 @@
       
       <q-tab-panels
         v-model="langTab"
+        class="bg-grey-2 inset-shadow  "
         animated
       >
         <q-tab-panel
@@ -29,7 +30,8 @@
                 bg-color="grey-3"
                 standout
                 outlined
-                :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
+                maxlength="50"
+                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
                 :label="$t('input_labels.topic_placeholder')"
               />
@@ -49,7 +51,23 @@
           
         </q-tab-panel>
       </q-tab-panels>
-    
+     <q-separator/>
+          <q-tabs
+          v-model="langTab"
+          dense
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
         <div
           id="div-6"
           class=" q-pa-xsm row"
@@ -101,23 +119,7 @@
           <q-chip v-for="tag in selected_t_tags" dense :key="tag">{{tag}}</q-chip>
         </div>
       </div>
-      <hr id="hr-1">
-<q-tabs
-        v-model="langTab"
-        dense
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-          :label="language.name"
-        />
-      </q-tabs>
+
       <hr id="hr-2">
       <div id="div-10">
       <div
@@ -140,7 +142,7 @@
           unelevated
           :disable="this.disabled"
           class="button"
-          :to="this.id + '/steps'"
+          @click="manageProcess()"
         />
 
         <q-btn
@@ -209,7 +211,7 @@ export default {
     },
 
     disabled () {
-      if (this.id != null) {
+      if (this.theprocessid != null) {
         return false
       }
       else {
@@ -219,6 +221,9 @@ export default {
 
   },
   methods: {
+    manageProcess(){
+      this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
+    },
     addUserTag(value){
       console.log(value)
      
@@ -445,6 +450,7 @@ export default {
   padding-bottom:15px
 }
 #div-6{
+  padding-top:20px;
   padding-left:150px; 
   padding-right:150px
 }
@@ -479,4 +485,6 @@ export default {
 .div-11{
   display:inline-block;
 }
+
+
 </style>

@@ -16,6 +16,7 @@
     <q-card class="q-pa-md div-2" :hidden="hideForm">
       <q-tab-panels
           v-model="langTab"
+          class="bg-grey-2 inset-shadow "
           animated
         >
           <q-tab-panel
@@ -28,6 +29,7 @@
               outlined
               filled
               dense
+              maxlength="20"
               :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
               v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
               :label="$t('input_labels.user_type_placeholder')"
@@ -46,19 +48,13 @@
         ref="editor" />
         </q-tab-panel>
         </q-tab-panels>
-          <FileUploader
-        :Image="userimage"
-        :icon="int_user_type_shell.icon"
-        @upload="getFiles"
-        > 
-
-        </FileUploader>
-           <q-tabs
+        <q-separator />
+          <q-tabs
           v-model="langTab"
           dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
           align="justify"
           narrow-indicator
         >
@@ -69,6 +65,12 @@
             :label="language.name"
           />
         </q-tabs>
+          <FileUploader
+        :Image="userimage"
+        :icon="int_user_type_shell.icon"
+        @upload="getFiles"
+        > 
+        </FileUploader> 
           <hr id="hr" >
           <q-btn
           no-caps

@@ -1,6 +1,6 @@
 <template>
     <q-card class="my-card">
-          <q-card-section>
+          <q-card-section class="section">
             <div class="field"> Icon </div>
             <q-file
               @input="getFiles($event)"
@@ -18,30 +18,7 @@
               class="image"
             />
           </q-card-section>
-          <q-card-section class="row">
-              <div class="col-8">
-                <!--<div class="field"> {{$t('input_labels.publication_date')}} </div>
-            <q-input
-            outlined
-            filled
-            dense
-              v-model="publicationDate"
-              :label="$t('input_labels.publication_date')"
-              readonly
-            />-->
-            </div>
-            <div class="col-4 pad">
-             <!-- <div class="field" >{{$t('input_labels.is_published')}} </div>
-            <q-toggle
-              :value="published"
-              color="green"
-              
-              @input="isPublished"
-              left-label
-            />-->
-            </div>
-          
-          </q-card-section>
+     
 
         </q-card>
 </template>
@@ -73,7 +50,11 @@ export default {
 <style scoped>
 .field-1{
   font-size:16px; 
-  font-weight:600
+  font-weight:600;
+  
+}
+.section{
+  padding-bottom:0px;
 }
 .image{
   max-height: 100px; 

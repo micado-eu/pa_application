@@ -1,19 +1,36 @@
 <template>
 
   <q-item class="item">
+    
     <div class="width">
       <div class="row">
           <div class="col-8 flex flex-left title" >{{ this.Title }}</div>
+         
             <q-item-section class="col-1.3 flex flex-center margin">
               <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" />
             </q-item-section>
-            <q-item-section class="col-1.3 flex flex-center" >
+            <q-item-section class="col-1.3 flex flex-center top" >
               <q-icon name="img:statics/icons/Icon - manage (guided processes).png"  @click.stop="manageProcess()" size="md" />
             </q-item-section>
-            <q-item-section class="col-1.3 flex flex-center" >
+            <q-item-section class="col-1.3 flex flex-center top" >
               <q-icon name="img:statics/icons/Icon - Delete.svg"  @click.stop="remove_process($event)" size="md" />
             </q-item-section>
       </div>
+       <div class="row pad">
+            <img
+                class="image"
+                v-for="tag in Topics"
+                :src="processTopics.filter(topic => topic.id == tag.idTopic)[0].icon"
+                :key="tag.idTopic">
+              </img>
+               <q-img
+                class="image"
+                v-for="tag in Users"
+                :src="processUsers.filter(user => user.id == tag.idUserTypes)[0].icon"
+                :key="tag.idUserTypes"
+              >
+              </q-img>  
+            </div>
       <hr class="hr">
     </div>
   </q-item>
@@ -22,7 +39,7 @@
 <script>
 export default {
   name: 'Process',
-  props: ["Title", "Tag_1", "Tag_2", "Link", "Path", "theProcess"],
+  props: ["Title", "Topics", "Users", "Link", "Path", "theProcess", "processTopics", "processUsers"],
   data () {
     return {};
   },
@@ -59,10 +76,22 @@ export default {
   font-size:18px
 }
 .margin{
-  margin-left:30px
+  margin-left:30px;
+  margin-top:10px
+}
+.top{
+  margin-top:10px
 }
 .hr{
   margin:0px;
   border: 0.999px solid #EFEFEF
+}
+.image{
+  height: 25px; 
+  max-width: 25px;
+  margin-right:5px
+}
+.pad{
+  padding-bottom:5px
 }
 </style>

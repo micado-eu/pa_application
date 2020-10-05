@@ -20,6 +20,7 @@
         
       <q-tab-panels
         v-model="langTab"
+        class="bg-grey-2 inset-shadow "
         animated
       >
         <q-tab-panel
@@ -29,6 +30,7 @@
         >
         <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
+            maxlength="30"
             :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
               outlined
               filled
@@ -38,44 +40,22 @@
             />
          </q-tab-panel>
         </q-tab-panels>
-         <q-card-section class="row">
-              <!--<div class="col-8">
-                <div class="div-3"> {{$t('input_labels.publication_date')}} </div>
-            <q-input
-            outlined
-            filled
-            dense
-              v-model="int_cat_shell.publicationDate"
-              :label="$t('input_labels.publication_date')"
-              readonly
-            />
-            </div>-->
-           <!-- <div class="col-4 div-4">
-              <div class="div-3"> {{$t('input_labels.is_published')}} </div>
-            <q-toggle
-              :value="int_cat_shell.published"
-              color="green"
-              @input="isPublished(!int_cat_shell.published,$event)"
-              left-label
-            />
-            </div>-->
-          
-          </q-card-section>
-           <q-tabs
-        v-model="langTab"
-        dense
-        class="text-grey"
-        active-color="primary"
-        indicator-color="primary"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-          :label="language.name"
-        />
+       <q-tabs
+          v-model="langTab"
+          dense
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
       </q-tabs>
       <hr id="hr" >
         <q-btn

@@ -59,8 +59,10 @@
           v-for="process in filteredProcesses"
           :key="process.id"
           :Title="showProcessLabel(process)"
-          :Tag_1="process.user_tags"
-          :Tag_2="process.topic_tags"
+          :Topics="process.processTopics"
+          :Users="process.applicableUsers"
+          :processTopics="topics"
+          :processUsers="users"
           :Link="process.id"
           :theProcess="process"
           Path="guided_process_editor"
@@ -90,12 +92,16 @@ export default {
     getters: {
       processes: 'flows/processes',
       steps: 'steps/steps',
-      steplinks: 'steplinks/steplinks'
+      steplinks: 'steplinks/steplinks',
+      topics: 'topic/topic',
+      users: 'user_type/user'
     }, actions: {
       deleteProcess: 'flows/deleteProcess',
       fetchFlows: 'flows/fetchFlows',
       fetchSteplinks: 'steplinks/fetchSteplinks',
-      fetchSteps: 'steps/fetchSteps'
+      fetchSteps: 'steps/fetchSteps',
+      fetchTopic: 'topic/fetchTopic',
+      fetchUserType: 'user_type/fetchUserType'
     }
   })],
   data () {
@@ -174,7 +180,14 @@ export default {
       .then(steplinks => {
         this.loading = false
         console.log(this.steplinks)
-      })  
+      })
+      this.fetchTopic({ defaultLang: this.$defaultLang, userLang: this.$userLang })  
+    this.fetchUserType({ defaultLang: this.$defaultLang, userLang: this.$userLang })
+    .then(user_types =>{
+      console.log("in user type")
+      console.log(user_types)
+    })
+  
   }
 }
 </script>

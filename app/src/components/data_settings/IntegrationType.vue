@@ -17,6 +17,7 @@
       
         <q-tab-panels
           v-model="langTab"
+          class="bg-grey-2 inset-shadow "
           animated
         >
           <q-tab-panel
@@ -26,7 +27,8 @@
           >
           <div class="div-3" style=""> {{$t('input_labels.intervention_type')}} </div>
         <q-input 
-        :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
+        maxlength="100"
+        :rules="[ val => val.length <= 100 || 'Please use maximum 100 characters']"
         outlined
         filled
         dense
@@ -40,47 +42,12 @@
         ref="editor" />
          </q-tab-panel>
         </q-tab-panels>
-        <div class="q-gutter-sm">
-          <div id="div-4"> {{$t('input_labels.category_type')}} </div>
-          <q-option-group
-            :options="options"
-            label="Notifications"
-            type="radio"
-            v-model="int_type_shell.categoryType"
-          />
-        </div>
-     
-           <q-card-section class="row">
-              <div class="col-8">
-               <!-- <div class="div-5"> {{$t('input_labels.publication_date')}} </div>
-            <q-input
-            outlined
-            filled
-            dense
-              v-model="int_type_shell.publicationDate"
-              :label="$t('input_labels.publication_date')"
-              readonly
-            />-->
-            </div>
-            <div class="col-4 div-6">
-             <!-- <div class="div-5"> {{$t('input_labels.is_published')}} </div>
-            <q-toggle
-              :value="int_type_shell.published"
-              color="green"
-              @input="isPublished(!int_type_shell.published,$event)"
-              left-label
-            />-->
-            </div>
-                  </q-card-section>
-
-          
-          
-      <q-tabs
+        <q-tabs
           v-model="langTab"
           dense
-          class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+          class="bg-grey-2"
+          active-color="accent"
+          indicator-color="accent"
           align="justify"
           narrow-indicator
         >
@@ -91,6 +58,15 @@
             :label="language.name"
           />
         </q-tabs>
+        <div class="q-gutter-sm">
+          <div id="div-4"> {{$t('input_labels.category_type')}} </div>
+          <q-option-group
+            :options="options"
+            label="Notifications"
+            type="radio"
+            v-model="int_type_shell.categoryType"
+          />
+        </div>
         <hr id="hr" >
           <q-btn
           no-caps
