@@ -15,6 +15,7 @@
       <div class="q-pa-md q-gutter-sm  col button-container">
       <q-btn size="11px" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.integration')" @click="interventionPlan()"  />
       <q-btn size="11px" no-caps class="button" unelevated rounded color="negative" :label="$t('button.delete')" @click="remove_user($event)" />
+      <q-btn size="11px" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.migrant_data')" @click="migrantData()"  />
       
       </div>
     </div>
@@ -41,6 +42,9 @@ export default {
       interventionPlan(){
       console.log(this.theUser)
       this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.umId } })
+    },
+    migrantData(){
+      this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.umId } })
     }
   
   }

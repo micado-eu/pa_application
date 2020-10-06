@@ -1,4 +1,3 @@
-/*
-export function someGetter (state) {
-}
-*/
+export function my_documents(state) {
+    return state.documents
+  }
