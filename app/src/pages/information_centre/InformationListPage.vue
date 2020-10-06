@@ -13,6 +13,8 @@
       categories_enabled
       categories_url="/information/categories"
       tags_enabled
+      topics_enabled
+      user_types_enabled
     />
   </div>
 </template>
@@ -39,7 +41,9 @@ export default {
   methods: {
     ...mapActions('information', [
       'fetchInformation',
-      'deleteInformationItem'
+      'deleteInformationItem',
+      'fetchInformationTopics',
+      'fetchInformationUserTypes'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     ...mapActions('information_tags', ['fetchInformationTags', 'deleteInformationTagsFromInformation']),
@@ -72,8 +76,17 @@ export default {
               elem.category = informationCategoryElems[idxCategoryObject]
               // Set tag-elements relations
               elem.tags = this.informationTagsByInformation(elem.id)
+
+              this.fetchInformationTopics(elem.id).then((topics) => {
+                elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
+                return this.fetchInformationUserTypes(elem.id)
+              }).then((userTypes) => {
+                elem.userTypes = userTypes.filter((userType) => userType.idInformation === elem.id)
+                if (i >= this.informationElems.length - 1) {
+                  this.loading = false
+                }
+              })
             }
-            this.loading = false
           })
         })
       })

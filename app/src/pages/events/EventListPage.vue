@@ -13,6 +13,9 @@
       categories_enabled
       categories_url="/events/categories"
       tags_enabled
+      topics_enabled
+      user_types_enabled
+      is_event
     />
   </div>
 </template>
@@ -39,7 +42,9 @@ export default {
   methods: {
     ...mapActions('event', [
       'fetchEvent',
-      'deleteEventItem'
+      'deleteEventItem',
+      'fetchEventTopics',
+      'fetchEventUserTypes'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     ...mapActions('event_tags', ['fetchEventTags', 'deleteEventTagsFromEvent']),
@@ -62,7 +67,8 @@ export default {
         this.fetchEventTags().then(() => {
           this.eventElems = JSON.parse(JSON.stringify(this.event))
           const eventCategoryElems = [...this.eventCategories]
-          for (const elem of this.eventElems) {
+          for (let i = 0; i < this.eventElems.length; i += 1) {
+            const elem = this.eventElems[i]
             // Set categories-elements relations
             const idxCat = elem.category
             const idxCategoryObject = eventCategoryElems.findIndex(
@@ -71,8 +77,17 @@ export default {
             elem.category = eventCategoryElems[idxCategoryObject]
             // Set tag-elements relations
             elem.tags = this.eventTagsByEvent(elem.id)
+
+            this.fetchEventTopics(elem.id).then((topics) => {
+              elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
+              return this.fetchEventUserTypes(elem.id)
+            }).then((userTypes) => {
+              elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
+              if (i >= this.eventElems.length - 1) {
+                this.loading = false
+              }
+            })
           }
-          this.loading = false
         })
       })
     })
