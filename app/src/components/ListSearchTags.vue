@@ -5,7 +5,7 @@
       <div class="col q-mt-md q-ml-md">
         <q-list
           bordered
-          v-if="tags_enabled || categories_enabled"
+          v-if="tags_enabled || categories_enabled || topics_enabled || user_types_enabled"
         >
           <q-item>
             <q-item-section>
@@ -86,6 +86,86 @@
               </a>
             </q-item>
           </q-expansion-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
+            v-if="topics_enabled"
+          >
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="title-label">{{$t("filters.topics_title")}}</q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="topic in topics"
+              :key="topic.id"
+            >
+              <q-checkbox
+                color="accent"
+                v-model="selectedTopics"
+                :val="topic.id"
+                class="filter-text"
+                :label="topic.topic"
+                @input="filterByTopics()"
+              />
+              <q-img
+                :src="topic.icon"
+                spinner-color="white"
+                id="image"
+                :alt="topic.topic"
+                class="q-ml-sm filter-icon"
+              />
+            </q-item>
+            <q-item>
+              <a
+                href="javascript:void(0)"
+                class="filter-text"
+                @click="showMoreTopics()"
+              >
+                {{$t("filters.show_more")}}
+              </a>
+            </q-item>
+          </q-expansion-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
+            v-if="user_types_enabled"
+          >
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="title-label">{{$t("filters.user_types_title")}}</q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="userType in userTypes"
+              :key="userType.id"
+            >
+              <q-checkbox
+                color="accent"
+                v-model="selectedUserTypes"
+                :val="userType.id"
+                class="filter-text"
+                :label="userType.user_type"
+                @input="filterByUserTypes()"
+              />
+              <q-img
+                :src="userType.icon"
+                spinner-color="white"
+                id="image"
+                :alt="userType.user_type"
+                class="q-ml-sm filter-icon"
+              />
+            </q-item>
+            <q-item>
+              <a
+                href="javascript:void(0)"
+                class="filter-text"
+                @click="showMoreUserTypes()"
+              >
+                {{$t("filters.show_more")}}
+              </a>
+            </q-item>
+          </q-expansion-item>
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
@@ -119,27 +199,45 @@
             :to="new_url"
           />
         </div>
-        <div class="flex" v-if="categories_enabled || tags_enabled">
+        <div
+          class="flex"
+          v-if="categories_enabled || tags_enabled"
+        >
           <!-- column title -->
-            <span
-              v-if="categories_enabled"
-              style="flex:1.5"
-            />
-            <span
-              v-if="categories_enabled"
-              style="flex:0.75"
-            >
-              {{$t("lists.category")}}
-            </span>
-            <span
-              v-if="tags_enabled"
-              style="flex:1.045"
-            >
-              {{$t("lists.tags")}}
-            </span>
-          </div>
+          <span
+            v-if="categories_enabled"
+            style="flex:4200"
+          />
+          <span
+            v-if="categories_enabled"
+            style="flex:2100"
+          >
+            {{$t("lists.category")}}
+          </span>
+          <span
+            v-if="tags_enabled"
+            style="flex:1350"
+          >
+            {{$t("lists.tags")}}
+          </span>
+          <span
+            v-if="topics_enabled"
+            style="flex:1450"
+          >
+            {{$t("lists.topics")}}
+          </span>
+          <span
+            v-if="user_types_enabled"
+            style="flex:3250"
+          >
+            {{$t("lists.user_types")}}
+          </span>
+        </div>
         <div class="row">
-          <q-separator v-if="categories_enabled || tags_enabled" style="max-width: 91.7%"/>
+          <q-separator
+            v-if="categories_enabled || tags_enabled"
+            style="max-width: 91.7%"
+          />
         </div>
         <div class="row">
           <q-list class="q-mt-md col-11 element-list">
@@ -162,6 +260,12 @@
                   glossary_fetched
                   :lang="lang"
                 />
+                <span class="filter-text" v-if="is_event">
+                  {{$t("lists.start_date")}}: {{item.startDate}}
+                </span>
+                <span class="filter-text" v-if="is_event">
+                  {{$t("lists.end_date")}}: {{item.endDate}}
+                </span>
               </q-item-section>
               <q-item-section
                 class="category_section"
@@ -176,6 +280,28 @@
                   :key="tag.id"
                   :label="tag.tag"
                   class="q-mb-sm tag_btn"
+                />
+              </q-item-section>
+              <q-item-section class="tag_btn_section">
+                <q-img
+                  v-for="topic in item.topics"
+                  :key="topic.id"
+                  :src="topic.icon"
+                  spinner-color="white"
+                  id="image"
+                  :alt="topic.topic"
+                  class="filter-icon"
+                />
+              </q-item-section>
+              <q-item-section class="tag_btn_section">
+                <q-img
+                  v-for="userType in item.userTypes"
+                  :key="userType.id"
+                  :src="userType.icon"
+                  spinner-color="white"
+                  id="image"
+                  :alt="userType.topic"
+                  class="filter-icon"
                 />
               </q-item-section>
               <q-item-section
@@ -199,7 +325,10 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <div class="q-ml-sm q-mt-md col" v-if="alphabetical_sorting">
+          <div
+            class="q-ml-sm q-mt-md col"
+            v-if="alphabetical_sorting"
+          >
             <span
               v-for="(letter, index) in alphabet"
               :key="letter"
@@ -216,7 +345,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
 
@@ -272,6 +401,18 @@ export default {
     alphabetical_sorting: {
       type: Boolean,
       default: false
+    },
+    topics_enabled: {
+      type: Boolean,
+      default: false
+    },
+    user_types_enabled: {
+      type: Boolean,
+      default: false
+    },
+    is_event: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -282,16 +423,24 @@ export default {
       filteredElementsBySearch: [],
       filteredElementsByTags: [],
       filteredElementsByCategory: [],
+      filteredElementsByTopic: [],
+      filteredElementsByUserType: [],
       searchText: '',
       tags: [],
+      topics: [],
+      userTypes: [],
       translatedCategories: [],
       selectedTags: [],
       selectedCategory: undefined,
+      selectedTopics: [],
+      selectedUserTypes: [],
       lang: '',
       alphabet: [],
       alphabetIds: [],
       lastIndexTags: 5,
       lastIndexCategories: 5,
+      lastIndexTopics: 5,
+      lastIndexUserTypes: 5,
       loading: true
     }
   },
@@ -299,7 +448,8 @@ export default {
     'glossary-editor-viewer': GlossaryEditorViewer
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossary']),
+    ...mapActions('topic', ['fetchTopic']),
+    ...mapActions('user_type', ['fetchUserType']),
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -345,6 +495,56 @@ export default {
         this.filteredElementsByCategory = this.translatedElements
       }
     },
+    filterByTopic() {
+      if (this.selectedTopics.length > 0) {
+        this.filteredElementsByTopics = []
+        for (const e of this.translatedElements) {
+          const matchedTopics = []
+          for (const topic of this.selectedTopics) {
+            if (e.topics) {
+              for (const elemTopic of e.topics) {
+                if (elemTopic.id === topic) {
+                  // This check avoids duplicate matches
+                  if (matchedTopics.indexOf(topic) == -1) {
+                    matchedTopics.push(topic)
+                  }
+                }
+              }
+            }
+          }
+          if (matchedTopics.length == this.selectedTopics.length) {
+            this.filteredElementsByTopics.push(e)
+          }
+        }
+      } else {
+        this.filteredElementsByTopics = this.translatedElements
+      }
+    },
+    filterByUserType() {
+      if (this.selectedUserTypes.length > 0) {
+        this.filteredElementsByUserTypes = []
+        for (const e of this.translatedElements) {
+          const matchedUserTypes = []
+          for (const userType of this.selectedUserTypes) {
+            if (e.userTypes) {
+              for (const elemUserType of e.userTypes) {
+                if (elemUserType.id === userType) {
+                  // This check avoids duplicate matches
+                  if (matchedUserTypes.indexOf(userType) == -1) {
+                    matchedUserTypes.push(userType)
+                  }
+                }
+              }
+            }
+          }
+          if (matchedUserTypes.length == this.selectedUserTypes.length) {
+            this.filteredElementsByTopics.push(e)
+          }
+        }
+      } else {
+        this.filteredElementsByTopics = this.translatedElements
+      }
+    },
     compare(a, b) {
       return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
     },
@@ -359,50 +559,24 @@ export default {
       this.selectedCategory = undefined
       this.filteredElementsByTags = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
+      this.filteredElementsByTopic = this.translatedElements
+      this.filteredElementsByUserType = this.translatedElements
+      this.selectedTopics = []
+      this.selectedUserTypes = []
     },
     showMoreTags() {
       this.lastIndexTags += 5
     },
     showMoreCategories() {
       this.lastIndexCategories += 5
-    }
-  },
-  computed: {
-    search: {
-      get() {
-        return this.searchText
-      },
-      set(newSearch) {
-        if (newSearch) {
-          const fuse = new Fuse(this.translatedElements, {
-            keys: ['title']
-          })
-          this.filteredElementsBySearch = fuse
-            .search(newSearch)
-            .map((i) => i.item)
-          this.searchText = newSearch
-        } else {
-          this.filteredElementsBySearch = this.translatedElements
-          this.searchText = ''
-        }
-      }
     },
-    filteredElements() {
-      const { filteredElementsByTags } = this
-      const { filteredElementsByCategory } = this
-      return this.filteredElementsBySearch.filter((n) => filteredElementsByTags.indexOf(n) !== -1 && filteredElementsByCategory.indexOf(n) !== -1)
+    showMoreTopics() {
+      this.lastIndexTopics += 5
     },
-    filterTags() {
-      return this.tags.slice(0, this.lastIndexTags)
+    showMoreUserTypes() {
+      this.lastIndexUserTypes += 5
     },
-    filterCategories() {
-      return this.translatedCategories.slice(0, this.lastIndexCategories)
-    }
-  },
-  created() {
-    this.loading = true
-    this.lang = this.$i18n.locale
-    this.fetchGlossary().then(() => {
+    initializeList() {
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
@@ -431,6 +605,36 @@ export default {
               translation.tags = tagTranslations
             }
           }
+          if (this.topics_enabled) {
+            translation.topics = e.topics.map(
+              (topicRel) => {
+                const finalTopic = this.topic.filter((topic) => topicRel.idTopic === topic.id)[0]
+                if (this.topics.indexOf(finalTopic) === -1) {
+                  this.topics.push(finalTopic)
+                }
+                return finalTopic
+              }
+            )
+          }
+          if (this.user_types_enabled) {
+            translation.userTypes = e.userTypes.map(
+              (userTypeRel) => {
+                const finalUserTypes = this.user.filter(
+                  (userType) => userTypeRel.idUserTypes === userType.id
+                )[0]
+                if (this.userTypes.indexOf(finalUserTypes) === -1) {
+                  this.userTypes.push(finalUserTypes)
+                }
+                return finalUserTypes
+              }
+            )
+          }
+          if (this.is_event) {
+            const startDate = new Date(e.startDate)
+            translation.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+            const finishDate = new Date(e.endDate)
+            translation.endDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          }
         }
         return translation
       })
@@ -450,8 +654,64 @@ export default {
       this.filteredElementsBySearch = this.translatedElements
       this.filteredElementsByTags = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
+      this.filteredElementsByTopic = this.translatedElements
+      this.filteredElementsByUserType = this.translatedElements
       this.loading = false
-    })
+    }
+  },
+  computed: {
+    ...mapGetters('topic', ['topic']),
+    ...mapGetters('user_type', ['user']),
+    search: {
+      get() {
+        return this.searchText
+      },
+      set(newSearch) {
+        if (newSearch) {
+          const fuse = new Fuse(this.translatedElements, {
+            keys: ['title']
+          })
+          this.filteredElementsBySearch = fuse
+            .search(newSearch)
+            .map((i) => i.item)
+          this.searchText = newSearch
+        } else {
+          this.filteredElementsBySearch = this.translatedElements
+          this.searchText = ''
+        }
+      }
+    },
+    filteredElements() {
+      const { filteredElementsByTags } = this
+      const { filteredElementsByCategory } = this
+      const { filteredElementsByTopic } = this
+      const { filteredElementsByUserType } = this
+      return this.filteredElementsBySearch.filter(
+        (n) => filteredElementsByTags.indexOf(n) !== -1
+          && filteredElementsByCategory.indexOf(n) !== -1
+          && filteredElementsByTopic.indexOf(n) !== -1
+          && filteredElementsByUserType.indexOf(n) !== -1
+      )
+    },
+    filterTags() {
+      return this.tags.slice(0, this.lastIndexTags)
+    },
+    filterCategories() {
+      return this.translatedCategories.slice(0, this.lastIndexCategories)
+    }
+  },
+  created() {
+    this.loading = true
+    this.lang = this.$i18n.locale
+    const promises = []
+    promises.push(this.fetchGlossary)
+    if (this.topics_enabled) {
+      promises.push(this.fetchTopic)
+    }
+    if (this.user_types_enabled) {
+      promises.push(this.fetchUserType)
+    }
+    Promise.all(promises).then(() => this.initializeList())
   }
 }
 </script>
@@ -524,5 +784,9 @@ $btn_secondary: #cdd0d2;
 .element-list {
   overflow-y: scroll;
   max-height: 75vh;
+}
+.filter-icon {
+  max-height: 30px;
+  max-width: 30px;
 }
 </style>

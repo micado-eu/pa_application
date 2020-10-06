@@ -150,12 +150,18 @@
     "clear_all": "Clear all filters",
     "tags_title": "Tags",
     "category_title": "Category",
+    "topics_title": "Topics",
+    "user_types_title": "User Types",
     "show_more": "Show more"
   },
   "lists": {
     "published": "Published",
     "category": "Category",
-    "tags": "Tags"
+    "tags": "Tags",
+    "topics": "Topics",
+    "user_types": "User Types",
+    "start_date": "Start date",
+    "end_date": "End date"
   },
   "upload_modal": {
     "upload_label": "Upload",
