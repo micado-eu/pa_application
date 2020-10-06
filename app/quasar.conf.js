@@ -28,7 +28,7 @@ module.exports = function (ctx) {
       // 'themify',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      //'roboto-font', // optional, you are not bound to it
+      // 'roboto-font', // optional, you are not bound to it
       'material-icons' // optional, you are not bound to it
     ],
 
@@ -83,36 +83,37 @@ module.exports = function (ctx) {
       // extractCSS: false,
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
 
       },
-      chainWebpack(chain, { isServer, isClient }) {
-        chain.resolve.alias.set('api-flows-client', 'src/api/flows/server');
-        chain.resolve.alias.set('api-features-client', 'src/api/features/server');
-        chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/server');
-        chain.resolve.alias.set('api-documents-client', 'src/api/documents/server');
-        chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server');
-        chain.resolve.alias.set('api-integration_type-client', 'src/api/integration_type/server');
-        chain.resolve.alias.set('api-integration_category-client', 'src/api/integration_category/server');
-        chain.resolve.alias.set('api-intervention_plan-client', 'src/api/intervention_plan/server');
-        chain.resolve.alias.set('api-intervention-client', 'src/api/intervention/server');
-        chain.resolve.alias.set('api-topic-client', 'src/api/topic/server');
-        chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server');
-        chain.resolve.alias.set('api-user-client', 'src/api/user/server');
-        chain.resolve.alias.set('api-language-client', 'src/api/language/server');
-        chain.resolve.alias.set('api-settings-client', 'src/api/settings/server');
-        chain.resolve.alias.set('api-steps-client', 'src/api/steps/server');
-        chain.resolve.alias.set('api-steplinks-client', 'src/api/steplinks/server');
-        chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/server');
-        chain.resolve.alias.set('api-event-client', 'src/api/event/server');
-        chain.resolve.alias.set('api-information-client', 'src/api/information/server');
-        chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server');
-        chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server');
-        chain.resolve.alias.set('api-event_category-client', 'src/api/event_category/server');
-        chain.resolve.alias.set('api-ngo_user-client', 'src/api/ngo_user/mock');
-        chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server');
-        chain.resolve.alias.set('api-event_tags-client', 'src/api/event_tags/server');
-        chain.resolve.alias.set('api-comments-client', 'src/api/comments/server');
+      chainWebpack (chain, { isServer, isClient }) {
+        chain.resolve.alias.set('api-flows-client', 'src/api/flows/server')
+        chain.resolve.alias.set('api-features-client', 'src/api/features/server')
+        chain.resolve.alias.set('api-glossary-client', 'src/api/glossary/server')
+        chain.resolve.alias.set('api-documents-client', 'src/api/documents/server')
+        chain.resolve.alias.set('api-document_type-client', 'src/api/document_type/server')
+        chain.resolve.alias.set('api-integration_type-client', 'src/api/integration_type/server')
+        chain.resolve.alias.set('api-integration_category-client', 'src/api/integration_category/server')
+        chain.resolve.alias.set('api-intervention_plan-client', 'src/api/intervention_plan/server')
+        chain.resolve.alias.set('api-intervention-client', 'src/api/intervention/server')
+        chain.resolve.alias.set('api-topic-client', 'src/api/topic/server')
+        chain.resolve.alias.set('api-user_type-client', 'src/api/user_type/server')
+        chain.resolve.alias.set('api-user-client', 'src/api/user/server')
+        chain.resolve.alias.set('api-language-client', 'src/api/language/server')
+        chain.resolve.alias.set('api-settings-client', 'src/api/settings/server')
+        chain.resolve.alias.set('api-steps-client', 'src/api/steps/server')
+        chain.resolve.alias.set('api-steplinks-client', 'src/api/steplinks/server')
+        chain.resolve.alias.set('api-graphs-client', 'src/api/graphs/server')
+        chain.resolve.alias.set('api-event-client', 'src/api/event/server')
+        chain.resolve.alias.set('api-information-client', 'src/api/information/server')
+        chain.resolve.alias.set('api-statistics-client', 'src/api/statistics/server')
+        chain.resolve.alias.set('api-information_category-client', 'src/api/information_category/server')
+        chain.resolve.alias.set('api-event_category-client', 'src/api/event_category/server')
+        chain.resolve.alias.set('api-ngo_user-client', 'src/api/ngo_user/mock')
+        chain.resolve.alias.set('api-information_tags-client', 'src/api/information_tags/server')
+        chain.resolve.alias.set('api-event_tags-client', 'src/api/event_tags/server')
+        chain.resolve.alias.set('api-comments-client', 'src/api/comments/server')
+        chain.resolve.alias.set('api-consent-client', 'src/api/consent/server')
       }
     },
 
@@ -146,29 +147,29 @@ module.exports = function (ctx) {
         theme_color: '#027be3',
         icons: [
           {
-            'src': 'statics/icons/icon-128x128.png',
-            'sizes': '128x128',
-            'type': 'image/png'
+            src: 'statics/icons/icon-128x128.png',
+            sizes: '128x128',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-192x192.png',
-            'sizes': '192x192',
-            'type': 'image/png'
+            src: 'statics/icons/icon-192x192.png',
+            sizes: '192x192',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-256x256.png',
-            'sizes': '256x256',
-            'type': 'image/png'
+            src: 'statics/icons/icon-256x256.png',
+            sizes: '256x256',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-384x384.png',
-            'sizes': '384x384',
-            'type': 'image/png'
+            src: 'statics/icons/icon-384x384.png',
+            sizes: '384x384',
+            type: 'image/png'
           },
           {
-            'src': 'statics/icons/icon-512x512.png',
-            'sizes': '512x512',
-            'type': 'image/png'
+            src: 'statics/icons/icon-512x512.png',
+            sizes: '512x512',
+            type: 'image/png'
           }
         ]
       }
@@ -183,7 +184,7 @@ module.exports = function (ctx) {
     // https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
       // bundler: 'builder', // or 'packager'
-      extendWebpack(cfg) {
+      extendWebpack (cfg) {
 
         // do something with Electron main process Webpack cfg
         // chainWebpack also available besides this extendWebpack

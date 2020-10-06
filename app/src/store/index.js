@@ -30,6 +30,7 @@ import comments from './comments'
 import event from './event'
 import event_category from './event_category'
 import event_tags from './event_tags'
+import consent from './consent'
 
 Vue.use(Vuex)
 
@@ -68,6 +69,7 @@ export default function (/* { ssrContext } */) {
       comments,
       event,
       event_category,
+      consent,
       event_tags
     },
 
