@@ -50,6 +50,7 @@ const routes = [
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
+      { path: '/migrant/data/:theuserid', name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })  },
       { path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
       { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
       { path: '/cso', component: NgoManager },

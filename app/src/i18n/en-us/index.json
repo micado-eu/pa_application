@@ -54,7 +54,8 @@
     "add_glossary": "Add Term",
     "add_event": "Add Event",
     "categories": "Categories",
-    "remove": "Remove"
+    "remove": "Remove",
+    "migrant_data": "Data"
   },
   "data_settings":{
     "data_management":"Data management",
