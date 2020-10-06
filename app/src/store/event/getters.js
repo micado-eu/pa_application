@@ -11,7 +11,7 @@ export function eventElemByTitle(state) {
 
 export function eventElemById(state) {
   const getterFunc = function (id) {
-    return state.event.filter((g) => g.id === id)[0]
+    return state.event.filter((g) => g.id == id)[0]
   }
   return getterFunc
 }

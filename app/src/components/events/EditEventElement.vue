@@ -11,7 +11,9 @@
       :categories="eventCategories"
       categories_enabled
       topics_enabled
+      :topics="topics"
       user_types_enabled
+      :user_types="user_types"
       is_event
     />
   </div>
@@ -39,6 +41,12 @@ export default {
       type: String
     },
     tags: {
+      type: Array
+    },
+    topics: {
+      type: Array
+    },
+    user_types: {
       type: Array
     }
   },

@@ -57,6 +57,8 @@ export default {
                 delete translation.category
                 delete translation.topics
                 delete translation.userTypes
+                delete translation.startDate
+                delete translation.finishDate
                 const newTagsWithTag = newTags.map((newTag, idx) => ({
                   id: newTag.id,
                   lang: translation.lang,

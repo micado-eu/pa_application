@@ -44,12 +44,11 @@ export default {
     ...mapActions('event_category', ['fetchEventCategory']),
     ...mapActions('event_tags', ['fetchEventTags', 'deleteEventTagsFromEvent']),
     getEditRoute(id) {
-      return `event/${id}/edit`
+      return `events/${id}/edit`
     },
     deleteItem(item) {
       this.loading = true
-      this.deleteEventTagsFromEvent(item.id)
-        .then(this.deleteEventItem(item))
+      this.deleteEventItem(item)
         .then(this.fetchEvent())
         .then(() => {
           this.$router.go()
