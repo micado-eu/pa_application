@@ -11,7 +11,7 @@
       <q-scroll-area class="fit">
         <q-list>
           <template>
-            <q-separator class="bg-dark-separator"  />
+            <q-separator class="bg-dark-separator" />
             <q-expansion-item
               class="situation-menu-expansion-item"
               expand-separator
@@ -19,7 +19,6 @@
               caption
               clickable
               default-opened
-
             >
               <q-item
                 v-for="setting in data_settings"
@@ -34,23 +33,23 @@
               </q-item>
             </q-expansion-item>
             <q-separator class="bg-dark-separator" />
-            </template>
-            <q-item
-                clickable
-                to="/data_settings/settings"
-                class="situation-menu-item"
-                active-class="my-menu-link"
-              >
-                <q-item-section>{{ $t('data_settings.settings') }}</q-item-section>
-              </q-item>
-              <q-item
-                clickable
-                to="/data_settings/language"
-                class="situation-menu-item"
-                active-class="my-menu-link"
-              >
-                <q-item-section>{{ $t('data_settings.language') }}</q-item-section>
-              </q-item>
+          </template>
+          <q-item
+            clickable
+            to="/data_settings/settings"
+            class="situation-menu-item"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.settings') }}</q-item-section>
+          </q-item>
+          <q-item
+            clickable
+            to="/data_settings/language"
+            class="situation-menu-item"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.language') }}</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
@@ -63,18 +62,18 @@
 </template>
 
 <script>
-import DocumentTypeManager from "./data_settings/DocumentTypeManager";
-import IntegrationCategory from "./data_settings/IntegrationCategory";
-import IntegrationType from "./data_settings/IntegrationType";
-import Topic from "./data_settings/Topic";
-import UserType from "./data_settings/UserType";
-import ActiveLanguageSelector from "./settings/ActiveLanguageSelector.vue";
-import FunctionConfiguration from "./settings/FunctionConfiguration.vue";
+import DocumentTypeManager from './data_settings/DocumentTypeManager'
+import IntegrationCategory from './data_settings/IntegrationCategory'
+import IntegrationType from './data_settings/IntegrationType'
+import Topic from './data_settings/Topic'
+import UserType from './data_settings/UserType'
+import ActiveLanguageSelector from './settings/ActiveLanguageSelector.vue'
+import FunctionConfiguration from '../pages/settings/FunctionConfiguration.vue'
 
-const TIMEOUT = 1;
+const TIMEOUT = 1
 
 export default {
-  name: "DataSettings",
+  name: 'DataSettings',
   components: {
     DocumentTypeManager,
     IntegrationCategory,
@@ -82,39 +81,39 @@ export default {
     Topic,
     UserType,
     ActiveLanguageSelector,
-    FunctionConfiguration,
+    FunctionConfiguration
   },
-  data() {
+  data () {
     return {
-      open:true,
+      open: true,
       tab: 'data',
       innerTab: 'innerMails',
       splitterModel: 20,
-      data_settings:[
+      data_settings: [
         {
-          label: "data_settings.document_types",
-          link: "/document_types"
+          label: 'data_settings.document_types',
+          link: '/document_types'
         },
         {
-          label: "data_settings.intervention_categories",
-          link: "/intervention_categories"
+          label: 'data_settings.intervention_categories',
+          link: '/intervention_categories'
         },
         {
-          label: "data_settings.intervention_types",
-          link: "/intervention_types"
+          label: 'data_settings.intervention_types',
+          link: '/intervention_types'
         },
         {
-          label: "data_settings.topics",
-          link: "/topics"
+          label: 'data_settings.topics',
+          link: '/topics'
         },
         {
-          label: "data_settings.user_types",
-          link: "/user_types"
+          label: 'data_settings.user_types',
+          link: '/user_types'
         }
       ]
     }
-  },
-};
+  }
+}
 </script>
 
 <style scoped>
@@ -149,7 +148,7 @@ export default {
   margin-top: 177px;
 }
 .my-menu-link {
-    color: white;
-    background: #0b91ce;
-  }
+  color: white;
+  background: #0b91ce;
+}
 </style>

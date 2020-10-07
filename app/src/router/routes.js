@@ -28,7 +28,7 @@ import Topic from '../components/data_settings/Topic'
 import UserType from '../components/data_settings/UserType'
 import IntegrationCategory from '../components/data_settings/IntegrationCategory'
 import IntegrationType from '../components/data_settings/IntegrationType'
-import FunctionConfiguration from '../components/settings/FunctionConfiguration'
+import FunctionConfiguration from '../pages/settings/FunctionConfiguration'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
 
 const routes = [
@@ -53,9 +53,15 @@ const routes = [
       { path: '/app_settings', component: Settings },
 
       { path: '/migrant', component: MigrantManager },
-      { path: '/migrant/data/:theuserid', name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })  },
-      { path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })  },
-      { path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'),  props: (route) => ({ ...route.params }) },
+      {
+        path: '/migrant/data/:theuserid', name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })
+      },
+      {
+        path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })
+      },
+      {
+        path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'), props: (route) => ({ ...route.params })
+      },
       { path: '/cso', component: NgoManager },
       { path: '/info', component: InfoEditor },
       { path: '/chatbot', component: chatBot },

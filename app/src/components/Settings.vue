@@ -6,18 +6,18 @@
 </template>
 
 <script>
-import ActiveLanguageSelector from "./settings/ActiveLanguageSelector.vue";
-import FunctionConfiguration from "./settings/FunctionConfiguration.vue";
+import ActiveLanguageSelector from './settings/ActiveLanguageSelector.vue'
+import FunctionConfiguration from '../pages/settings/FunctionConfiguration.vue'
 
 export default {
-  name: "Settings",
+  name: 'Settings',
   components: {
     ActiveLanguageSelector,
     FunctionConfiguration
   },
   computed: {},
-  mounted: function() {}
-};
+  mounted () { }
+}
 </script>
 
 <style>

@@ -6,20 +6,30 @@
         <div class="text-h6">Migrant application configuration</div>
       </q-card-section>
       <q-card-section>
-        <q-option-group v-model="features" :options="options" color="yellow" type="toggle" />
-        <q-btn color="accent" glossy label="Save" @click="saveFeatures" />
+        <q-option-group
+          v-model="features"
+          :options="options"
+          color="yellow"
+          type="toggle"
+        />
+        <q-btn
+          color="accent"
+          glossy
+          label="Save"
+          @click="saveFeatures"
+        />
       </q-card-section>
     </q-card>
   </div>
 </template>
 
 <script>
-import axios from "axios";
-import https from "https";
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+
 
 export default {
   name: "FunctionConfiguration",
-  data() {
+  data () {
     return {
       group: ["FEAT_SERVICES"],
       options: [
@@ -54,18 +64,26 @@ export default {
       ]
     };
   },
+  mixins: [
+    storeMappingMixin({
+      getters: {
+        features: 'features/features',
+      }, actions: {
+        fetchFeatures: 'features/fetchFeatures'
+      }
+    })],
   computed: {
     features: {
-      get() {
+      get () {
         return this.$store.state.features.features;
       },
-      set(value) {
+      set (value) {
         this.$store.commit("features/setFeatures", value);
       }
     }
   },
   methods: {
-    saveFeatures() {
+    saveFeatures () {
       const agent = new https.Agent({
         rejectUnauthorized: false
       });
@@ -89,7 +107,7 @@ export default {
           }
         )
         .then(console.log("posted"))
-        .catch(function(err) {
+        .catch(function (err) {
           // Run into big problems when I get an error
           console.log("Got an error calling API manager: ", err);
           response => [];
@@ -97,11 +115,14 @@ export default {
       console.log("posted");
     }
   },
-  created() {
+  created () {
     console.log(this.$store);
-    this.$store.dispatch("features/fetchFeatures").then(features => {
-      //        this.loading = false
-    });
+    this.fetchFeatures()
+      .then(features => {
+        //        this.loading = false
+        console.log("got features")
+        console.log(this.features)
+      });
   }
 };
 </script>
