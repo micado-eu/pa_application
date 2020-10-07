@@ -4,8 +4,12 @@
       class="q-pa-md col"
       id="second-div"
     >
-      <UserProfile :user="the_user">
-      </UserProfile>
+      <div class="row container">
+     <h3 class=" col-6 header">{{the_user.umUserName}}</h3>
+     <span class="col-6 top-span">
+     <q-btn class=add-button unelevated color="accent" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
+     </span >
+      </div>
     </div>
     <div >
       <div
@@ -160,6 +164,10 @@ export default {
     }
   },
   methods: {
+     addInterventionPlan(){
+       console.log(this.user)
+      this.$router.push({ name: 'addinterventionplan', params: { theuser: this.the_user, theuserid: this.the_user.umId } })
+    },
     
     getTitle(id){
       console.log(id)
@@ -383,5 +391,25 @@ export default {
 #button{
   margin-top:0px;
   border-radius:2px;
+}
+.header{
+  margin-bottom:30px;
+  padding-left:12px;
+  width:65%; 
+  font-size:25pt; 
+  font-weight:600
+}
+.top-span{
+  text-align:right; 
+  width:35%;
+  display: inline-block; 
+  vertical-align:middle
+}
+.add-button{
+  width:250px; 
+  margin-top:37px; 
+  margin-bottom:30px;
+  margin-left:5px; 
+  border-radius:2px
 }
 </style>
