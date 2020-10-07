@@ -206,6 +206,7 @@ export default {
     editIntegrationType(integration_type) {
       this.isNew = false;
       this.hideForm = false;
+      this.hideAdd = true;
       //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
       this.mergeType(integration_type)
     },
