@@ -3,27 +3,7 @@
   <div class="title" >{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
   <div class="container">
     <div>
-      <q-card class="my-card">
-        <q-card-section>
-          <cytoscape
-            ref="cyRef"
-            :config="configcy"
-            :preConfig="preConfig"
-            :afterCreated="afterCreated"
-          >
-            <cy-element
-              v-for="def in elements"
-              :key="`${def.data.id}`"
-              :definition="def"
-              v-on:click="editStep($event, def)"
-              v-on:remove="removeElement($event,def)"
-              v-on:ehcomplete="addingEdge"
-            />
-
-          </cytoscape>
-        </q-card-section>
-      </q-card>
-      <div
+        <div
         id="div-1"
         v-if="this.editing"
       >
@@ -258,6 +238,26 @@
           </div>
         </div>
       </div>
+      <q-card class="my-card">
+        <q-card-section>
+          <cytoscape
+            ref="cyRef"
+            :config="configcy"
+            :preConfig="preConfig"
+            :afterCreated="afterCreated"
+          >
+            <cy-element
+              v-for="def in elements"
+              :key="`${def.data.id}`"
+              :definition="def"
+              v-on:click="editStep($event, def)"
+              v-on:remove="removeElement($event,def)"
+              v-on:ehcomplete="addingEdge"
+            />
+
+          </cytoscape>
+        </q-card-section>
+      </q-card>
     </div>
     <div class="row div-6">
       <div class="col right">
