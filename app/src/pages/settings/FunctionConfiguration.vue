@@ -6,11 +6,10 @@
         <div class="text-h6">Migrant application configuration</div>
       </q-card-section>
       <q-card-section>
-        <q-option-group
-          v-model="features"
-          :options="options"
-          color="yellow"
-          type="toggle"
+        <FeaturesElement
+          v-for="afeature in workingFeatures"
+          :feature="afeature"
+          :key="afeature.id"
         />
         <q-btn
           color="accent"
@@ -25,6 +24,7 @@
 
 <script>
 import storeMappingMixin from '../../mixin/storeMappingMixin'
+import FeaturesElement from '../../components/settings/FeaturesElement'
 
 
 export default {
@@ -32,36 +32,7 @@ export default {
   data () {
     return {
       group: ["FEAT_SERVICES"],
-      options: [
-        {
-          label: "Services",
-          value: "FEAT_SERVICES"
-        },
-        {
-          label: "Document wallet",
-          value: "FEAT_DOCUMENTS"
-        },
-        {
-          label: "Assistant",
-          value: "FEAT_ASSISTANT"
-        },
-        {
-          label: "Process flow",
-          value: "FEAT_PROCESSES"
-        },
-        {
-          label: "Integration tasks",
-          value: "FEAT_TASKS"
-        },
-        {
-          label: "Gloassary",
-          value: "FEAT_GLOSSARY"
-        },
-        {
-          label: "Default features (settings, search, notifications)",
-          value: "FEAT_DEFAULT"
-        }
-      ]
+      workingFeatures: []
     };
   },
   mixins: [
@@ -72,15 +43,11 @@ export default {
         fetchFeatures: 'features/fetchFeatures'
       }
     })],
+  components: {
+    FeaturesElement
+  },
   computed: {
-    features: {
-      get () {
-        return this.$store.state.features.features;
-      },
-      set (value) {
-        this.$store.commit("features/setFeatures", value);
-      }
-    }
+
   },
   methods: {
     saveFeatures () {
@@ -114,15 +81,21 @@ export default {
         });
       console.log("posted");
     }
+
   },
   created () {
-    console.log(this.$store);
+    console.log("created")
+    console.log(this.features);
+    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+    /*
     this.fetchFeatures()
       .then(features => {
         //        this.loading = false
         console.log("got features")
         console.log(this.features)
       });
+      */
+
   }
 };
 </script>
