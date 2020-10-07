@@ -105,19 +105,24 @@
       </div>
       <div class="col-6 div-5" >
         <q-file  accept=".jpg, image/*" @rejected="onRejected"  @input="getFiles($event)" bg-color="grey-3" dense multiple rounded standout outlined >
-         
         </q-file>
         </div>
-        <div class="div-11"  v-for="image in uploaded_images" :key="image" >
-        <q-img
+    </div>
+    <div>
+        <q-card class="pictures-card">
+        <div class="row">
+      <q-item-section class="col-4 pictures-section" v-for="image in uploaded_images"  :key="image">
+      <q-img
       :src="image"
       spinner-color="white"
       class="image"
       @click="addHotspot(image)" 
     />
+    
     <span class="span">
-            <q-btn  no-caps rounded class="negative-button" filled color="accent" @click="removePicture(image)"  :label="$t('button.remove')" />
-            </span>     
+    <q-btn  no-caps rounded class="negative-button" filled color="accent" @click="removePicture(image)"  :label="$t('button.remove')" />
+    </span> 
+    </q-item-section>
     <q-dialog v-model="hotimage">
       <q-card>
         <v-hotspot
@@ -128,6 +133,7 @@
       </q-card>
       </q-dialog>
       </div>
+      </q-card>
     </div>
   </div>
   <div class="row">
@@ -423,8 +429,9 @@ display: block;
   padding-left:15px
 }
 .image{
-  max-height: 100px; 
-  max-width: 150px
+  max-height: 175px; 
+  max-width: 150px;
+  margin:0 auto
 }
 .div-12{
   text-align:right
@@ -434,5 +441,18 @@ display: block;
 }
 .margin{
   margin-top:20px
+}
+.span{
+  margin-top:10px;
+}
+.pictures-card{
+  margin:0 auto; 
+  width:100%; 
+  padding-right:0px
+}
+.pictures-section{
+  text-align:center; 
+  margin-left:0px; 
+  margin-bottom:10px
 }
 </style>
