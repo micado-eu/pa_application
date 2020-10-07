@@ -9,6 +9,8 @@
               :label="$t('input_labels.upload_icon')"
               standout
               outlined
+              accept=".jpg, image/*" 
+              @rejected="onRejected"
             >
 
             </q-file>
@@ -38,6 +40,12 @@ export default {
 
     
      },
+     onRejected(rejectedEntries){
+       this.$q.notify({
+        type: 'negative',
+        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
+      })
+    },
      /*isPublished(value){
       console.log(value)
         this.$emit('publish', value)

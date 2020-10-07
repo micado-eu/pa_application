@@ -56,7 +56,9 @@
         <h5 class="header" > Document icon </h5>
       </div>
       <div class="col-8 div-5">
-       <q-file>
+       <q-file
+       accept=".jpg, image/*"
+        @rejected="onRejected">
      <template v-slot:append>
             <q-icon name="attachment" />
           </template>
@@ -102,7 +104,7 @@
         <h5  class="header"> Document pictures </h5>
       </div>
       <div class="col-6 div-5" >
-        <q-file  @input="getFiles($event)" bg-color="grey-3" dense multiple rounded standout outlined >
+        <q-file  accept=".jpg, image/*" @rejected="onRejected"  @input="getFiles($event)" bg-color="grey-3" dense multiple rounded standout outlined >
          
         </q-file>
         </div>
@@ -205,6 +207,12 @@ export default {
   },
 
   methods: {
+    onRejected(rejectedEntries){
+       this.$q.notify({
+        type: 'negative',
+        message: `${rejectedEntries.length} file(s) did not pass validation constraints`
+      })
+    },
       getFiles(files){
         console.log(files);
         console.log(this)
