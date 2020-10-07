@@ -71,24 +71,6 @@
         <q-input dense bg-color="grey-3" rounded standout outlined v-model="int_doc_shell.issuer"  />
       </div>
     </div>
-    
-    <div class=" q-pa-xsm row div-7">
-      <div class="col-4 div-6">
-        <h5  class="header"> Validity duration </h5>
-      </div>
-      <div class="col-1 div-8" >
-        <q-input dense bg-color="grey-3" rounded standout outlined v-model="int_doc_shell.validityDuration"  />
-      </div>
-      <div class="col-2 div-5">
-      <h5  class="header"> Days </h5>
-      </div>
-       <div class="col-4 div-10" >
-        <h5  class="header"> Validable?</h5>
-      </div>
-      <div class="col-1 div-5" >
-        <q-checkbox color="accent" v-model="int_doc_shell.validable" clickable @click="int_doc_shell.validable=!int_doc_shell.validable"/>
-      </div>
-    </div>
       <div class=" q-pa-xsm row div-7">
       <div class="col-4 div-6" >
         <h5  class="header"> Document model </h5>
@@ -201,7 +183,7 @@ export default {
       uploaded_images:[],
       int_doc_shell: 
       { 
-        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false, validityDuration:-1
+        id: -1, issuer: null, translations: [], icon: "", model:null, validable:false
       },
       checked: true,
       hotimage: false,
@@ -259,7 +241,7 @@ export default {
         }
       },
       createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[], icon: "", model:null, validable:false, validityDuration:-1 }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures:[], icon: "", model:null, validable:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null })
@@ -283,7 +265,6 @@ export default {
       this.int_doc_shell.issuer = doc.issuer
       this.int_doc_shell.model = doc.model
       this.int_doc_shell.validable = doc.validable
-      this.int_doc_shell.validityDuration = doc.validityDuration
       if(doc.pictures != null){
         this.int_doc_shell.pictures = doc.pictures
       }
