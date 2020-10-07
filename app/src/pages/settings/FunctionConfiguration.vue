@@ -40,7 +40,8 @@ export default {
       getters: {
         features: 'features/features',
       }, actions: {
-        fetchFeatures: 'features/fetchFeatures'
+        fetchFeatures: 'features/fetchFeatures',
+        updateAllFeatures: 'features/updateAllFeatures'
       }
     })],
   components: {
@@ -51,6 +52,8 @@ export default {
   },
   methods: {
     saveFeatures () {
+      console.log(this.workingFeatures)
+      /*
       const agent = new https.Agent({
         rejectUnauthorized: false
       });
@@ -79,7 +82,10 @@ export default {
           console.log("Got an error calling API manager: ", err);
           response => [];
         });
+        */
+      this.updateAllFeatures(this.workingFeatures)
       console.log("posted");
+      this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     }
 
   },

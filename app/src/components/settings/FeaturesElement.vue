@@ -3,6 +3,8 @@
     <q-toggle
       v-model="feature.enabled"
       :label="showFeaturesLabel()"
+      color="green"
+      v-on:input="emitInput"
     />
   </div>
 </template>
@@ -20,6 +22,10 @@ export default {
   methods: {
     showFeaturesLabel () {
       return this.feature.translations === undefined ? '' : this.feature.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].feature
+    },
+    emitInput () {
+      console.log('emitting input')
+      this.$emit('input', this.feature)
     }
   }
 }
