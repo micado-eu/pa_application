@@ -60,12 +60,16 @@
         </q-tabs>
         <div class="q-gutter-sm">
           <div id="div-4"> {{$t('input_labels.category_type')}} </div>
-          <q-option-group
-            :options="options"
-            label="Notifications"
-            type="radio"
-            v-model="int_type_shell.categoryType"
-          />
+          <q-select
+                  filled
+                  clearable
+                  v-model="int_type_shell.categoryType"
+                  emit-value
+                  map-options
+                  id="select"
+                  :options="options"
+                  :label="$t('input_labels.category_type')"
+                />
         </div>
         <hr id="hr" >
           <q-btn

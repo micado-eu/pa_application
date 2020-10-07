@@ -4,7 +4,7 @@
        <q-expansion-item 
         group="somegroup"
         :label="title"
-        :header-class="{ 'bg-secondary text-white' : intervention.completed }"
+        :header-class="{ 'bg-green text-white' : intervention.completed }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.validated}"
          @click="cancelIntervention"
