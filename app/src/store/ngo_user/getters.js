@@ -1,3 +1,3 @@
-export function users(state) {
-    return state.user
+export function tenants(state) {
+    return state.ngo_user
   }

@@ -4,10 +4,10 @@ import client from 'api-ngo_user-client'
 export function someAction (context) {
 }
 */
-export function fetchUser(state, data) {
+export function fetchTenant(state, data) {
   return client
-    .fetchUser()
-    .then(user => state.commit('setUser', user))
+    .fetchTenant()
+    .then(tenant => state.commit('setUser', tenant))
 }
 
 export function editUser(state, user) {

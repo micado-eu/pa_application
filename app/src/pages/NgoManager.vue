@@ -25,7 +25,7 @@
           v-for="user in filteredUsers"
           :key="user.id"
           :name="user.name"
-          :type="user.type"
+          :type="user.email"
           :Path="user.id"
           @remove="deleteUser"
         ></User>
@@ -44,9 +44,9 @@ export default {
   mixins:[
     storeMappingMixin({
     getters: {
-      users: 'ngo_user/users'
+      tenants: 'ngo_user/tenants'
     }, actions: {
-      fetchUser: 'ngo_user/fetchUser'
+      fetchTenant: 'ngo_user/fetchTenant'
     }
   })
   ],
@@ -62,9 +62,9 @@ export default {
     filteredUsers() {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
-        return this.users;
+        return this.tenants
       } else {
-        return this.users.filter(filt => {
+        return this.tenants.filter(filt => {
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ");
           if (
@@ -90,8 +90,10 @@ export default {
   created() {
     this.loading = true;
     console.log(this.$store);
-    this.fetchUser()
+    this.fetchTenant()
     .then(users => {
+      console.log("i am tenants")
+      console.log(users)
       this.loading = false;
     });
   }

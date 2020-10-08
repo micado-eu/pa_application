@@ -3,8 +3,8 @@ export function someMutation (state) {
 }
 */
 
-export function setUser(state, user) {
-  state.user = user
+export function setUser(state, tenant) {
+  state.ngo_user = tenant
 }
 
 export function editUser(state, user) {
