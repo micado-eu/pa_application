@@ -22,6 +22,10 @@ module.exports = {
     'comma-dangle': ['error', 'never'],
     semi: ['error', 'never'],
     'no-param-reassign': ['error', { props: false }],
-    'import/prefer-default-export': 'off'
+    'import/prefer-default-export': 'off',
+    camelcase: 'off',
+    'no-plusplus': 'off',
+    'no-console': 'off',
+    'import/no-unresolved': 'off'
   }
 }
