@@ -164,8 +164,7 @@ export default {
 
 
   created () {
-    this.loading = true
-    console.log(this.$store);
+
     this.fetchFlows()
       .then(processes => {
         this.loading = false

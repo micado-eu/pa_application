@@ -112,7 +112,8 @@
     "finish_date": "Select end date",
     "not_translated": "&ltNot translated&gt",
     "select_topic": "Select topic",
-    "select_user_type": "Select user type"
+    "select_user_type": "Select user type",
+    "generated_docs":"Generated documents"
   },
   "profile": {
     "username": "Username",

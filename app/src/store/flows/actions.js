@@ -46,12 +46,27 @@ export function saveProcess (state, process) {
       const saveUsers = async () => {
         await asyncForEach(process.applicableUsers, async (user) => {
           console.log("IL PROCESS ID È: " + process_return.id)
+          console.log(process.applicableUsers)
+          console.log(user)
           await client.saveProcessUser(user, process_return.id)
         })
         console.log('Dopo il applicableUsers');
 
       }
       await saveUsers()
+
+      const saveProcessDocs = async () => {
+        await asyncForEach(process.producedDoc, async (doc) => {
+          console.log("IL PROCESS ID È: " + process_return.id)
+          console.log("this is produced docs")
+          console.log(process.producedDoc)
+          console.log(doc)
+          await client.saveProcessProducedDocs(doc, process_return.id)
+        })
+        console.log('Dopo il produced docs');
+
+      }
+      await saveProcessDocs()
 
       /*
       
@@ -79,6 +94,10 @@ export function deleteProcess (state, payload) {
   client.deleteProcessTopic(payload.process).then(function (topic_return) {
       console.log(topic_return)
     })
+    client.deleteProcessProducedDocs(payload.process).then(function (doc_return) {
+      console.log(doc_return)
+    })
+    
     if(payload.comments == null){
       payload.comments=[]
     }
@@ -217,20 +236,29 @@ export function editProcess (state, process) {
 
       client.deleteProcessUser(process.id).then(function (param) {
       client.deleteProcessTopic(process.id).then(function (param2) {
+        client.deleteProcessProducedDocs(process.id).then(function (param3) {
         if (process.processTopics != null){
           process.processTopics.forEach((topic) => {
             console.log("in saving topic")
           console.log(topic)
           client.saveProcessTopic(topic, workingId)
-        })}
+        })
+      }
         if (process.applicableUsers != null){
           process.applicableUsers.forEach((user) => {
             console.log("in saving user")
             client.saveProcessUser(user, workingId)
+          }) 
+        }
+        if (process.producedDoc != null){
+          process.producedDoc.forEach((doc) => {
+            console.log("in saving produced doc")
+            client.saveProcessProducedDocs(doc, workingId)
           })
         }
       })
      })
+    })
 
     /* const deleteUser = async () =>{ 
       await client.deleteProcessUser(process.id)
@@ -312,7 +340,7 @@ else if (process.applicableUsersOrig != null){
     client.deleteSingleProcessUser(workingId, starting_user)
   }
   })
-}*/
+} */
 state.commit('editProcess', process)
 }
 
