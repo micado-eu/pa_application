@@ -113,7 +113,8 @@
     "not_translated": "&ltNot translated&gt",
     "select_topic": "Select topic",
     "select_user_type": "Select user type",
-    "generated_docs":"Generated documents"
+    "generated_docs": "Generated documents",
+    "integration_type_validators": "Integration type validators"
   },
   "profile": {
     "username": "Username",

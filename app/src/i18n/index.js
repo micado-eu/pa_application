@@ -4,9 +4,9 @@ import ar from './ar'
 import de from './de'
 
 export default {
-  'en-us': enUS,
-  it: it,
-  ar: ar,
-  de: de
+  en: enUS,
+  it,
+  ar,
+  de
 
 }

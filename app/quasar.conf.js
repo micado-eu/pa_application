@@ -114,6 +114,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-event_tags-client', 'src/api/event_tags/server')
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server')
         chain.resolve.alias.set('api-consent-client', 'src/api/consent/server')
+        chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server')
       }
     },
 
