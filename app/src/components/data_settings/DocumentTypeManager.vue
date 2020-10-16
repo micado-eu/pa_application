@@ -249,7 +249,7 @@
           <q-icon id="icon" name="img:statics/icons/Edit.png" size="md" @click.stop="editingDoc(document_type)" />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center" >
-         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingDoc(document_type.id)" size="md" />
+         <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingDoc(document_type)" size="md" />
         </q-item-section>
       </q-item>
     </q-list>
@@ -310,12 +310,14 @@ export default {
   mixins: [editEntityMixin,
   storeMappingMixin({
     getters: {
-      document_types: 'document_type/document_types'
+      document_types: 'document_type/document_types',
+      hotspots: 'picture_hotspots/hotspots'
     }, actions: {
       deleteDocumentType: 'document_type/deleteDocumentType',
       fetchDocumentType: 'document_type/fetchDocumentType',
       saveDocumentType: 'document_type/saveDocumentType',
-      editDocumentType: 'document_type/editDocumentType'
+      editDocumentType: 'document_type/editDocumentType',
+      fetchHotspots: 'picture_hotspots/fetchHotspots'
   }
   })],
   components: {
@@ -323,6 +325,7 @@ export default {
   },
   data() {
     return {
+      deleting_hotspots:[],
       hideForm: true,
       hideAdd: false,
       isNew: false,
@@ -363,12 +366,21 @@ export default {
       this.hideForm = false;
       this.mergeDoc(doc)
     },
-    deletingDoc (index) {
+    deletingDoc (doc) {
       //we will need to filter through the hotspots and send those to because they need to be deleted and we can't delete 
       //hotspots translations without having hotspots ids
-      console.log(index);
+      console.log(doc.pictures)
+      doc.pictures.forEach((pic) =>{
+        var spots = this.hotspots.filter((spot)=>{
+          return spot.pictureId == pic.id
+        })[0]
+        this.deleting_hotspots.push(spots)
+        })
+      console.log("i am deleting hotspots")
+      console.log(this.deleting_hotspots)
       //this.$store.dispatch("topic/deleteTopic", index);
-      this.deleteDocumentType(index)
+      this.deleteDocumentType({index:doc.id, hotspots:this.deleting_hotspots})
+      this.deleting_hotspots=[]
     },
     cancelDoc () {
       this.isNew = false;
@@ -586,6 +598,7 @@ export default {
    
   created() {
     this.createShell()
+    this.fetchHotspots()
     this.loading = true;
     console.log(this.$store);
     this.fetchDocumentType()

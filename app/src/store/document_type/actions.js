@@ -49,20 +49,29 @@ export function saveDocumentType (state, doc_element) {
 
     )
 }
-export function deleteDocumentType (state, index) {
+export function deleteDocumentType (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(index)
-  return client.deleteDocumentTypeTranslation(index).then(function (translations_delete_return) {
+  console.log(payload.index)
+  return client.deleteDocumentTypeTranslation(payload.index).then(function (translations_delete_return) {
     console.log("deleted the translations")
     console.log(translations_delete_return)
-    client.deleteDocumentTypePictures(index).then(function (picture_delete_return) {
-      console.log("deleted the pictures")
-      console.log(picture_delete_return)
-      client.deleteDocumentType(index).then(function () {
-        state.commit('deleteDocumentType', index)
+    const deleteHotspot = async () => {
+      await asyncForEach(payload.hotspots, async(spot)=>{
+        await client.deleteHotpotTranslation(spot.id).then(()=>{
+           client.deleteHotspot(spot.id)
+        })
+      }).then(()=>{
+        client.deleteDocumentTypePictures(payload.index).then(function (picture_delete_return) {
+          console.log("deleted the pictures")
+          console.log(picture_delete_return)
+          client.deleteDocumentType(payload.index).then(function () {
+            state.commit('deleteDocumentType', payload.index)
+          })
+        })
       })
-    })
-
+    }
+     deleteHotspot()
+   
   })
 
 }
@@ -87,4 +96,10 @@ export function editDocumentType (state, doc_element) {
       }
       state.commit('editDocumentType', doc_element)
     })
+}
+
+async function asyncForEach (array, callback) {
+  for (let index = 0; index < array.length; index++) {
+    await callback(array[index], index, array);
+  }
 }

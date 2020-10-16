@@ -79,6 +79,19 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  deleteHotpotTranslation (id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/picture-hotspots/${id}/picture-hotspot-translations`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+
+  deleteHotspot (id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/picture-hotspots/${id}`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   updateDocumentType (doc) {
     const whereClause = {
       id: { eq: doc.id }
