@@ -6,12 +6,22 @@
         :label="title"
         :header-class="{ 'bg-green text-white' : intervention.completed }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
-        :expand-icon-class="{'text-white' : intervention.validated}"
+        :expand-icon-class="{'text-white' : intervention.completed}"
          @click="cancelIntervention"
         class="width-1"
       >
         <q-card>
-          <q-card-section class="section" >
+          <q-card-section  v-if="intervention.completed">
+            <div class="row" style="text-align:center">
+              <div class="col">
+              <img alt="Completion document" class="image" :src="completionDoc" />
+              </div>
+              <div class="col " style="  position: relative;">
+            <q-icon class="absolute-center" name="check" size="100px" color="green" />
+            </div>
+            </div>
+          </q-card-section>
+          <q-card-section v-else class="section" >
             <div class="div-1">
               Related Processes:  <q-chip class="chip" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
             </div>
@@ -123,7 +133,7 @@ export default {
     }
   },
   components: {},
-  props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories"],
+  props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories", "completionDoc"],
   computed: {},
   mounted() {},
   methods: {
@@ -161,6 +171,10 @@ export default {
 </script>
 
 <style scoped>
+.image{
+  max-width:150px;
+  max-height:150px;
+}
 .delete-button {
   background-color: white;
   color: black;

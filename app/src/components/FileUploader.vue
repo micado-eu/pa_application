@@ -1,7 +1,7 @@
 <template>
     <q-card class="my-card">
           <q-card-section class="section">
-            <div class="field"> Icon </div>
+            <div class="field"> {{$t('input_labels.upload_icon')}} </div>
             <q-file
               @input="getFiles($event)"
               bg-color="grey-3"

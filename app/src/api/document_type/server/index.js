@@ -48,6 +48,18 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  deleteDocumentTypePicturesHotspotsTranslations(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/picture-hotspots/${id}/picture-hotspot-translations`)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteDocumentTypePicturesHotspots(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/picture-hotspots/${id}`)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
   deleteDocumentTypePictures (id) {
     return axiosInstance
       .delete(`/backend/1.0.0/document-types/${id}/document-type-pictures`)

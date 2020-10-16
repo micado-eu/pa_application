@@ -114,7 +114,17 @@
     "select_topic": "Select topic",
     "select_user_type": "Select user type",
     "generated_docs": "Generated documents",
-    "integration_type_validators": "Integration type validators"
+    "integration_type_validators": "Integration type validators",
+    "issuer":"Document issuer",
+    "doc_type":"Document type",
+    "doc_type_placeholder":"Enter document type here",
+    "icon":"Icon",
+    "upload_model":"Upload document model",
+    "upload_doc_pics":"Upload document pictures",
+    "doc_pics":"Document pictures",
+    "doc_cost":"Document cost",
+    "doc":"Document",
+    "cost":"Cost"
   },
   "profile": {
     "username": "Username",

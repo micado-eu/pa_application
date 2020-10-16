@@ -49,6 +49,7 @@
             :the_processes_list="processes_list"
             :model="intervention_shell"
             :hideForm="hideForm"
+            :completionDoc="findDoc(intervention.id)"
             :intervention_categories="types"
             @editIntervention="editIntervention"
             @cancelIntervention="cancelIntervention"
@@ -94,13 +95,17 @@ export default {
       intervention_types: 'integration_type/intervention_types',
       intervention_categories: 'integration_category/intervention_categories',
       intervention_plans: 'intervention_plan/intervention_plans',
-      users: 'user/users'
+      users: 'user/users',
+      documents: 'documents/my_documents',
+      completion_docs: 'documents/completion_documents'
     }, actions: {
       saveIntervention: 'intervention_plan/saveIntervention',
       editIntervention: 'intervention_plan/editIntervention',
       fetchInterventionPlan: 'intervention_plan/fetchInterventionPlan',
       fetchSpecificUser: 'user/fetchSpecificUser',
-      fetchIntegrationType: 'integration_type/fetchIntegrationType'
+      fetchIntegrationType: 'integration_type/fetchIntegrationType',
+      fetchDocuments: 'documents/fetchDocuments',
+      fetchCompletionDocuments: 'documents/fetchCompletionDocuments'
   }
   })
   ],
@@ -164,6 +169,22 @@ export default {
     }
   },
   methods: {
+    findDoc(id){
+      console.log(id)
+      var intervention_doc = this.completion_docs.filter((doc)=>{
+        return doc.idIntervention == id
+      })[0]
+      if(intervention_doc!= null){
+        var the_doc= this.documents.filter((document) => {
+        return document.id == intervention_doc.idDocument
+      })[0]
+      if(the_doc != null){
+         return the_doc.pictures[0].picture
+      }
+      }
+      
+     
+    },
      addInterventionPlan(){
        console.log(this.user)
       this.$router.push({ name: 'addinterventionplan', params: { theuser: this.the_user, theuserid: this.the_user.umId } })
@@ -322,6 +343,14 @@ export default {
         this.the_user = temp[0]
       })
     console.log(this.$store);
+    this.fetchDocuments(this.theuserid).then(docs =>{
+      console.log("I am the docs of this user")
+      console.log(docs)
+    })
+    this.fetchCompletionDocuments().then(completion_docs =>{
+      console.log("I am the completion documents")
+      console.log(completion_docs)
+    })
     this.fetchInterventionPlan(this.theuserid)
       .then(intervention_plans => {
         console.log("these are the returned plans")

@@ -8,4 +8,10 @@ export default {
     .then(response => { return response.data })
     .catch(error_handler);
 },
+fetchCompletionDocuments () {
+  return axiosInstance
+    .get('/backend/1.0.0/completed-intervention-documents')
+    .then(response => { return response.data })
+    .catch(error_handler);
+},
 }
