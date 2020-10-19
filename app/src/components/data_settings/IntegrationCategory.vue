@@ -3,23 +3,24 @@
     :id="$options.name"
     class="q-pa-md"
   >
-    <div class="row">
-      <router-link
-        class="col-6"
-        :to="'#'+$options.name"
-      >
-        <h5 @click="onClickTitle()">{{$options.name}}</h5>
-      </router-link>
-      <div class="col-6 div-2">
-        <UploadButton entity="intervention_category" />
-        <q-btn
-          color="info"
-          no-caps
-          :label="$t('button.add_category')"
-          @click="newIntegrationCategory()"
-          :disable="hideAdd"
-          class="add-button"
-        />
+    <div class="row wrap justify-start items-start content-center">
+      <div class="col">
+        <router-link :to="'#'+$options.name">
+          <h5 @click="onClickTitle()">{{$options.name}}</h5>
+        </router-link>
+      </div>
+      <div class="full-height col">
+        <div class="row  justify-end items-center ">
+          <UploadButton entity="intervention_category" />
+          <q-btn
+            color="info"
+            no-caps
+            :label="$t('button.add_category')"
+            @click="newIntegrationCategory()"
+            :disable="hideAdd"
+            class="add-button"
+          />
+        </div>
       </div>
     </div>
     <q-card class="my-card">

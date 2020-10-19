@@ -1,11 +1,14 @@
 <template>
-  <div>
+  <div class="col-4 justify-center">
     <q-btn
       color="info"
       label="Batch Upload"
       class="add-button"
+      size="9px"
       @click="show_dialog=true"
     />
+    <a href="/statics/csv/intervention_category.csv">download template</a>
+
     <q-dialog
       v-model="show_dialog"
       persistent
@@ -80,6 +83,7 @@ export default {
       })
         .catch(function () {
           console.log('FAILURE!!')
+
         })
 
     }
