@@ -48,6 +48,23 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  saveHotspots(spot){
+    const savingSpot = JSON.parse(JSON.stringify(spot, ['x', 'y', 'pictureId']))
+    return axiosInstance
+    .post('/backend/1.0.0/picture-hotspots', savingSpot)
+    .then(response => response.data)
+    .catch(error_handler);
+  },
+  saveHotspotTranslation (translation, id) {
+    translation.phtId = id
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'title', 'message']))
+
+    // create fake id here
+    return axiosInstance
+      .post(`/backend/1.0.0/picture-hotspots/${id}/picture-hotspot-translations`, savingTranslation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   deleteDocumentTypePicturesHotspotsTranslations(id) {
     return axiosInstance
       .delete(`/backend/1.0.0/picture-hotspots/${id}/picture-hotspot-translations`)
