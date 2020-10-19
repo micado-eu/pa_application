@@ -4,8 +4,7 @@ module.exports = {
     es6: true
   },
   extends: [
-    'plugin:vue/essential',
-    'airbnb-base'
+    'plugin:vue/essential'
   ],
   globals: {
     Atomics: 'readonly',

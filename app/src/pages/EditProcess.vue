@@ -4,7 +4,7 @@
     <div v-else class="banner">{{$t('input_labels.add_new_process')}}</div>
 
   <div id="div-1">
-    <div
+    <q-card
       class="container"
     >
       
@@ -23,7 +23,7 @@
             id="div-2"
           >
             
-             <div id="div-3" style="">{{$t('input_labels.process_name')}} </div>
+             <div id="div-3">{{$t('input_labels.process_name')}} </div>
             
               <q-input
                 dense
@@ -33,7 +33,7 @@
                 maxlength="50"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
-                :label="$t('input_labels.topic_placeholder')"
+                :label="$t('input_labels.process_name')"
               />
           </div>
 
@@ -72,6 +72,22 @@
           id="div-6"
           class=" q-pa-xsm row"
         >
+         <div class="col-6 tag" > {{$t('input_labels.generated_docs')}} </div>
+         <q-select
+            filled
+            dense
+            clearable
+            v-model="edit_process.producedDoc"
+            @add="addDoc($event)"
+            @remove="removeDoc($event)"
+            @clear="clearAllDocs()"
+            multiple
+            emit-value
+            map-options
+            :options="this.docOptions"
+            :label="$t('input_labels.generated_docs')"
+            class="select"
+          />
           <div class="col-6 tag" > {{$t('input_labels.user_tags')}} </div>
           <div class="col-6 tag" > {{$t('input_labels.topic_tags')}} </div>
         </div>
@@ -158,7 +174,7 @@
      
       </div>
     </div>
-    </div>
+    </q-card>
     
   </div>
 </div>
@@ -176,13 +192,15 @@ export default {
     getters: {
       processes: 'flows/processes',
       topic: 'topic/topic',
-      user: 'user_type/user'
+      user: 'user_type/user',
+      documents: 'document_type/document_types'
     }, actions: {
       saveProcess: 'flows/saveProcess',
       fetchFlows: 'flows/fetchFlows',
       editProcess: 'flows/editProcess',
       fetchTopic: 'topic/fetchTopic',
-      fetchUserType: 'user_type/fetchUserType'
+      fetchUserType: 'user_type/fetchUserType',
+      fetchDocumentType: 'document_type/fetchDocumentType'
     }
   })],
   props: ["theprocessid"],
@@ -200,9 +218,10 @@ export default {
       ],
       selected_u_tags:[],
       t_tags: [
-
       ],
-      selected_t_tags:[]
+      selected_t_tags:[],
+      docOptions:[], 
+      selectedDocs:[]
     }
   },
   computed: {
@@ -223,6 +242,24 @@ export default {
   methods: {
     manageProcess(){
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
+    },
+    addDoc(value){
+      console.log(value)
+     
+     var doc =  this.documents.filter((a_doc) => {
+        return a_doc.id == value.value
+      })[0]
+      var the_doc_transl = doc.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document
+      this.selectedDocs.push(the_doc_transl)
+      
+    },
+    removeDoc(value){
+      console.log(value)
+      var idx = this.selectedDocs.indexOf(value)
+      this.selectedDocs.splice(value.index, 1)
+    },
+    clearAllDocs(){
+      this.selectedDocs = []
     },
     addUserTag(value){
       console.log(value)
@@ -280,7 +317,7 @@ export default {
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [],  link: "" }
+      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [], producedDoc:[], link: "" }
       this.languages.forEach(l => {
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null })
       });
@@ -306,7 +343,17 @@ export default {
         }
       });
             console.log("pre-topics foreach")
+ if (process.producedDoc != null) {
+        process.producedDoc.forEach(the_doc => {
+          this.edit_process.producedDoc.push(the_doc.idDocument)
 
+          var the_doc =  this.documents.filter((a_doc) => {
+            return a_doc.id == the_doc.idDocument
+            })[0]
+          var the_doc_transl = the_doc.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document
+          this.selectedDocs.push(the_doc_transl)
+        })
+      }
       // here we have to cycle on topics and use the processTopics data to set the chosen ones
       if (process.processTopics != null) {
         process.processTopics.forEach(the_topic => {
@@ -376,6 +423,16 @@ export default {
           this.u_tags.push(the_user)
         })
       })
+       await this.fetchDocumentType()
+      .then(docs => {
+        console.log(docs)
+
+        docs.forEach(ut => {
+          var doc = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: ut.id }
+          this.docOptions.push(doc)
+        })
+        console.log(this.docOptions)
+      })
    console.log("THEPROCESS:")
     console.log(this.theprocess)
     if (this.theprocess != null ) {
@@ -412,9 +469,7 @@ export default {
   background-color:#FF7C44
 }
 .container{
-  display:inline-block; 
-  border: 1px solid #DADADA; 
-  border-radius: 5px; 
+  display:inline-block;
   margin-bottom: 1px; 
   width:80%
 }
@@ -427,8 +482,8 @@ export default {
   padding-top:40px
 }
 #div-2{
-  padding-bottom:50px; 
-  padding-top:40px;
+  padding-bottom:20px; 
+  padding-top:20px;
   padding-left:150px; 
   padding-right:150px
 }
@@ -439,7 +494,7 @@ export default {
   padding-bottom:15px
 }
 #div-4{
-  padding-bottom:50px; 
+  padding-bottom:20px; 
   padding-left:150px; 
   padding-right:150px
 }

@@ -31,6 +31,8 @@ import event from './event'
 import event_category from './event_category'
 import event_tags from './event_tags'
 import consent from './consent'
+import tenant from './tenant'
+import picture_hotspots from './picture_hotspots'
 
 Vue.use(Vuex)
 
@@ -70,7 +72,9 @@ export default function (/* { ssrContext } */) {
       event,
       event_category,
       consent,
-      event_tags
+      tenant,
+      event_tags,
+      picture_hotspots
     },
 
     // enable strict mode (adds overhead!)

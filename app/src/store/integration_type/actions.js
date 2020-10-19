@@ -4,7 +4,7 @@ import client from 'api-integration_type-client'
 export function someAction (context) {
 }
 */
-export function fetchIntegrationType(state, data) {
+export function fetchIntegrationType (state, data) {
   return client
     .fetchIntegrationType()
     .then(integration_type => {
@@ -13,12 +13,13 @@ export function fetchIntegrationType(state, data) {
     })
 }
 
-export function editIntegrationTypeElement (state, integration_type_element) {
+export async function editIntegrationTypeElement (state, integration_type_element) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log("in editIntegrationTypeElement")
   console.log(integration_type_element)
   // update translations
   return client
-    .updateIntegrationType(integration_type_element).then(function (update_return) {
+    .updateIntegrationType(integration_type_element).then(async function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
       console.log("in update translation")
@@ -26,6 +27,29 @@ export function editIntegrationTypeElement (state, integration_type_element) {
         client.updateIntegrationTypeTranslation(aTranslation).then(function (update_translation_return) {
           console.log(update_translation_return)
         })
+      })
+      // manage validators
+      console.log("start managing validators")
+      await client.deleteIntegrationTypeValidators(integration_type_element.id)
+        .then(function () {
+          let promises = []
+          integration_type_element.interventionTypeValidators.forEach(function (validator) {
+            promises.push(client.saveIntegrationTypeValidators(validator, integration_type_element.id))
+            console.log("saved a validator: " + validator)
+
+          }, integration_type_element.id)
+
+          Promise.all(promises)
+        })
+      console.log("deleted and saved")
+
+      let savedValidators = []
+
+      integration_type_element.interventionTypeValidators.forEach(function (validator) {
+        savedValidators.push({ interventionTypeId: integration_type_element.id, tenantId: validator })
+        console.log("saved validators")
+        console.log(savedValidators)
+        integration_type_element.interventionTypeValidators = savedValidators
       })
       state.commit('editIntegrationTypeElement', integration_type_element)
     })
@@ -35,7 +59,7 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions savec ategory:")
   console.log(integration_type_element)
-  let savingCategory= JSON.parse(JSON.stringify(integration_type_element, ['categoryType']));
+  let savingCategory = JSON.parse(JSON.stringify(integration_type_element, ['categoryType']))
   console.log(savingCategory)
 
 
@@ -55,6 +79,15 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
       for (var i = 0; i < integration_type_element.translations.length; i++) {
         integration_type_element.translations[i].id = type_return.id
       }
+      // saving the validators
+      let savedValidators = []
+      integration_type_element.interventionTypeValidators.forEach(function (validator) {
+        client.saveIntegrationTypeValidators(validator, type_return.id)
+        savedValidators.push({ interventionTypeId: type_return.id, tenantId: validator })
+      }, type_return.id)
+      console.log("saved validators")
+      console.log(savedValidators)
+      integration_type_element.interventionTypeValidators = savedValidators
       state.commit('saveIntegrationTypeElement', integration_type_element)
     }
       // here we cycle for all translations to save each one

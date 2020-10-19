@@ -12,3 +12,12 @@ export function fetchDocuments(state, id) {
       return documents
     })
 }
+export function fetchCompletionDocuments(state, id) {
+  return client
+    .fetchCompletionDocuments()
+    .then(documents => {
+      state.commit('setCompletionDocuments', documents)
+      return documents
+    })
+}
+

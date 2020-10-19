@@ -5,7 +5,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchFlows () {
     return axiosInstance
-      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments')
+      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments&filter[include][4][relation]=producedDoc')
       .then(response => { return response.data })
       .catch(error_handler);
   },
@@ -37,6 +37,12 @@ export default {
   deleteProcessUser (id) {
     return axiosInstance
       .delete('/backend/1.0.0/processes/' + id + '/process-users')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessProducedDocs (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-produced-documents')
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -124,6 +130,15 @@ export default {
     // create fake id here
     return axiosInstance
       .post('/backend/1.0.0/processes/' + id + '/process-users', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  saveProcessProducedDocs (doc_id, id) {
+    const savingTranslation = { idProcess: id, idDocument: doc_id }
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/processes/' + id + '/process-produced-documents', savingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },

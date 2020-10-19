@@ -3,22 +3,22 @@
   <div class="title" >{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
   <div class="container">
     <div>
-        <div
-        id="div-1"
+        <q-card
         v-if="this.editing"
+        class="div-2"
       >
         <div
-          class=" q-pa-lg div-2"
+          class=" q-pa-lg "
         >
           <div
-            class=" q-pa-xsm row div-3"
+            class=" q-pa-xsm row "
           >
             <q-tabs
               v-model="langTab"
               dense
-              class="text-grey width"
-              active-color="primary"
-              indicator-color="primary"
+              class="bg-grey-2 width"
+              active-color="accent"
+              indicator-color="accent"
               align="justify"
               narrow-indicator
             >
@@ -32,7 +32,7 @@
             <q-tab-panels
               v-model="langTab"
               animated
-              class="width"
+               class="bg-grey-2 inset-shadow width "
             >
               <q-tab-panel
                 v-for="language in languages"
@@ -40,85 +40,82 @@
                 :name="language.name"
                 
               >
-              <div class="row">
-                <div class=" q-pa-xsm col-4">
-                  <h5 class="header" > {{$t('input_labels.step_name')}} </h5>
-                </div>
-                <div
-                  class="col-8 under-header"
-                  
-                >
-                  <q-input
-                    rounded
-                    :rules="[ val => val.length <= 25 || 'Please use maximum 25 characters']"
-                    dense
-                    bg-color="grey-3"
-                    standout
-                    outlined
-                    @blur="updateField()"
-                   :key="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
-                    v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
-                  />
-                </div>
-              </div>
-                <div class=" q-pa-xsm row width" >
-                  <div class=" q-pa-xsm col-4">
-                    <h5  class="header"> {{$t('input_labels.step_description')}} </h5>
-                  </div>
-                  <div
-                    class="col-8 under-header"
-                  >
-                    <q-input
-                      class="input-2"
-                      type="textarea"
-                      dense
-                      bg-color="grey-3"
-                      filled
-                      @blur="updateField()"
-                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-                    />
-                  </div>
-                </div>
+               <div
+            class=" q-pa-xsm "
+            id="div-2"
+          >
+            
+             <div class="labels">{{$t('input_labels.process_name')}} </div>
+            
+              <q-input
+                dense
+                bg-color="grey-3"
+                standout
+                outlined
+                maxlength="50"
+                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
+                :label="$t('input_labels.process_name')"
+              />
+          </div>
+
+          <div id="div-4" class="q-pa-xsm">
+           
+              <div class="labels" > {{$t('input_labels.process_description')}} </div>
+            <GlossaryEditor
+           
+        class="desc-editor"
+        v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+        :lang="language.lang"
+        ref="editor" />
+             
+            </div>
 
               </q-tab-panel>
             </q-tab-panels>
-            <div class=" q-pa-xsm row width" >
-              <div class=" q-pa-xsm col-4">
-                <h5  class="header"> {{$t('input_labels.step_location')}} </h5>
-              </div>
-              <div
-                class="col-8 under-header"
-              >
-                <q-input
-                  rounded
-                  dense
-                  bg-color="grey-3"
-                  standout
-                  outlined
-                  @blur="updateField()"
-                  v-model="step_shell.location"
-                />
-              </div>
-            </div>
+             <div
+          id="location"
+          style="width:100%"
+        >
+            
+             <div class="labels">{{$t('input_labels.step_location')}} </div>
+            
+              <q-input
+                dense
+                class="no-pad"
+                bg-color="grey-3"
+                standout
+                outlined
+                @blur="updateField()"
+                maxlength="50"
+                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                v-model="step_shell.location"
+                :label="$t('input_labels.step_location')"
+              />
+          </div>
+           <div
+          id="location"
+          style="width:100%"
+        >
+            
+             <div class="labels">{{$t('input_labels.step_cost')}} </div>
+            
+              <q-input
+                dense
+                class="no-pad"
+                bg-color="grey-3"
+                standout
+                outlined
+                @blur="updateField()"
+                maxlength="50"
+                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                v-model="step_shell.cost"
+                :label="$t('input_labels.step_cost')"
+              />
+          </div>
+           
 
-            <div class=" q-pa-xsm row width" >
-              <div class=" q-pa-xsm col-4">
-                <h5  class="header"> {{$t('input_labels.step_cost')}} </h5>
-              </div>
-              <div
-                class="col-8 under-header"
-              >
-                <q-input
-                  rounded
-                  dense
-                  bg-color="grey-3"
-                  standout
-                  outlined
-                  @blur="updateField()"
-                  v-model="step_shell.cost"
-                />
-              </div>
-            </div>
+            
             
             <div class="row width-2" >
               <q-btn
@@ -136,6 +133,7 @@
                 <div class="col-6">
                 <q-select
                   filled
+                  dense
                   clearable
                   v-model="step_doc_shell.idDocument"
                   emit-value
@@ -148,7 +146,7 @@
                 <div class="col-3" >
                 <q-input
                   class="input"
-                  rounded
+                  :label="$t('input_labels.doc_cost')"
                   dense
                   bg-color="grey-3"
                   standout
@@ -168,7 +166,18 @@
                 </div>
               </div>
             
-              <div class="row div-4">
+              <div v-if="step_shell.documents != null " class="row " style="width:100%">
+                
+    <div class="col-9 flex flex-left labels">
+      {{$t('input_labels.doc')}}
+    </div>
+    <div class="col-2 flex flex-center labels ">
+      {{$t('input_labels.cost')}}
+    </div> 
+    <div class="col-1 flex flex-center labels" >
+      {{$t('input_labels.delete')}}
+    </div>
+      </div>
               <q-list  id="list">
                 <StepDocumentElement
                   v-for="stepdoc in step_shell.documents"
@@ -178,33 +187,32 @@
                   @deleteDoc="deleteDoc"
                 />
               </q-list>
-              </div>
               <!--
                
     -->
+             <div
+          id="location"
+          style="width:100%"
+        >
             
-            <div
-              class=" q-pa-xsm row center"
-            >
-              <div class=" q-pa-xsm col-4">
-                <h5 id="header-2"> {{$t('input_labels.related_processes')}} </h5>
-              </div>
-              <div class=" q-pa-md col-8 div-5">
-                <q-select
+             <div class="labels">{{$t('input_labels.related_processes')}} </div>
+            
+              <q-select
                   filled
+                  dense
                   clearable
                   v-model="step_shell.linked_processes"
                   multiple
                   :options="processes_list"
                   :label="$t('input_labels.related_processes')"
-                  class="width-4"
+                 
                 />
-              </div>
-            </div>
-
           </div>
+          </div>
+         
+
           <div class="row">
-            <div class="q-pa-md col-4 right">
+            <div class="q-pa-md col-4 left">
               <q-btn
                 color="accent"
                 no-caps
@@ -237,6 +245,7 @@
             </div>
           </div>
         </div>
+         </q-card>
       </div>
       <q-card class="my-card">
         <q-card-section>
@@ -308,6 +317,8 @@ import { v4 as uuidv4 } from 'uuid';
 import editEntityMixin from '../mixin/editEntityMixin'
 import StepDocumentElement from 'components/StepDocumentElement'
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import GlossaryEditor from 'components/GlossaryEditor'
+
 
 
 
@@ -344,7 +355,8 @@ export default {
 
   components: {
     Step,
-    StepDocumentElement
+    StepDocumentElement,
+    GlossaryEditor
   },
   data () {
     return {
@@ -430,7 +442,7 @@ export default {
       return newstep
     },
 
-    generateStepDocShell (id = -1, idStep) {
+    generateStepDocShell (id = null, idStep) {
       let newstepdoc = { idDocument: id, idStep: idStep, cost: 0, isOut: false }
       return newstepdoc
     },
@@ -647,7 +659,7 @@ export default {
     },
     addStepDocument () {
       this.stepdocadd = true
-      this.step_doc_shell = this.generateStepDocShell(-1, this.step_shell.id)
+      this.step_doc_shell = this.generateStepDocShell(null, this.step_shell.id)
       let docs_in_step = []
       if(this.step_shell.documents != null){
       this.step_shell.documents.forEach((doc) => {
@@ -731,6 +743,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.labels{
+  font-size:16px; 
+  font-weight:600; 
+}
 .container {
   padding-top: 50px;
   padding-right: 80px;
@@ -779,17 +795,11 @@ width:135px
   padding-top:40px
 }
 .div-2{
-  display:inline-block; 
+  margin:0 auto;
   width:750px;
-  border-width:2px; 
-  border-color:#0f3a5d; 
-  border-radius: 1.95rem;
-  border-style: solid; 
   margin-bottom: 1px
 }
-.div-3{
-  text-align:center
-}
+
 .width{
   width:100%
 }
@@ -846,9 +856,7 @@ width:700px
   text-align:left; 
   margin-top:14px
 }
-.div-5{
-  padding-top:0px
-}
+
 .right{
   text-align:right
 }
@@ -858,6 +866,14 @@ width:700px
 .div-6{
   text-align:center; 
   padding-top:10px
+}
+#location{
+  margin-top:20px;
+   width:100%
+ 
+}
+.no-pad{
+  padding-bottom:0px
 }
 </style>
 
