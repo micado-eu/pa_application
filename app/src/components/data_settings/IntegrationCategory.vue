@@ -48,8 +48,18 @@
               filled
               dense
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title"
+              :readonly="!(int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
               :label="$t('input_labels.category_placeholder')"
             />
+            <div>
+              <TranslateStateButton
+                v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :isForDefaultLanguage="language.lang===activeLanguage"
+                :objectId="int_cat_shell.id"
+                :readonly="!(language.lang===activeLanguage)"
+                @micado-change="translationChange"
+              />
+            </div>
           </q-tab-panel>
         </q-tab-panels>
         <q-tabs
@@ -150,6 +160,7 @@
 import editEntityMixin from '../../mixin/editEntityMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import UploadButton from '../UploadButton'
+import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
 
 export default {
   name: "InterventionCategory",
@@ -173,7 +184,8 @@ export default {
     }
   },
   components: {
-    UploadButton
+    UploadButton,
+    TranslateStateButton
   },
   methods: {
     /* isPublished(value, event){
@@ -229,7 +241,7 @@ export default {
       this.int_cat_shell = { id: -1, translations: [] }
       this.languages.forEach(l => {
         //       console.log(l)
-        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null })
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null, translationState: 0 })
       })
     },
     mergeCategory (category) {
@@ -253,6 +265,18 @@ export default {
       console.log(this.int_cat_shell)
 
 
+    },
+    translationChange (id) {
+      console.log("received also micado-change")
+      console.log(id)
+      this.changeTranslationState(this.int_cat_shell, id.state)
+    },
+    changeTranslationState (element, state) {
+      console.log(element)
+      element.translations.forEach(el => {
+        el.translationState = state
+      })
+      console.log(element)
     }
   },
   //store.commit('increment', 10)

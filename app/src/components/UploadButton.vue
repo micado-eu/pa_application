@@ -57,8 +57,13 @@ export default {
   props: {
     entity: {
       type: String,
-      default: ''
+      default: '',
+      validator: function (value) {
+        // The value must match one of these strings
+        return ['glossary', 'intervention_category'].indexOf(value) !== -1
+      }
     }
+
   },
   computed: {
     staticUrl () { return "/statics/csv/" + this.entity + ".csv" }
