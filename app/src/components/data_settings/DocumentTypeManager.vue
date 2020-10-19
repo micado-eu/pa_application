@@ -68,6 +68,7 @@
               filled
               dense
               maxlength="20"
+              :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
               v-model="int_doc_shell.issuer"
               :label="$t('input_labels.issuer')"
             />
@@ -103,7 +104,7 @@
                   class="negative-button"
                   filled
                   color="accent"
-                  @click="removeIcon()"
+                  @click="removePicture(image)"
                   :label="$t('button.remove')"
                 />
               </span>
@@ -151,11 +152,11 @@
                 />
               </span>
             </q-item-section>
-            <q-dialog v-model="hotimage" @hide="hotspotConfig.data = []">
+            <q-dialog v-model="hotimage">
               <q-card>
                 <v-hotspot
                   :init-options="hotspotConfig"
-                  @save-data="saveHotspot"
+                  @save-data="saveData"
                 />
 
               </q-card>
@@ -316,8 +317,7 @@ export default {
       fetchDocumentType: 'document_type/fetchDocumentType',
       saveDocumentType: 'document_type/saveDocumentType',
       editDocumentType: 'document_type/editDocumentType',
-      fetchHotspots: 'picture_hotspots/fetchHotspots',
-      fetchHotspotsById: 'picture_hotspots/fetchHotspotsById'
+      fetchHotspots: 'picture_hotspots/fetchHotspots'
   }
   })],
   components: {
@@ -341,7 +341,12 @@ export default {
         editable: true,
         interactivity: 'hover',
         data: [
-          
+          {
+            Message: 'A prepopulated hotspot', Title: 'Vue Hotspot 1', x: 33.3, y: 58.33
+          },
+          {
+            Message: 'Another prepopulated hotspot', Title: 'Vue Hotspot 2', x: 53.3, y: 78.3
+          }
         ],
         hotspotColor: '#85ce61',
         messageBoxColor: '#409eff',
@@ -353,40 +358,8 @@ export default {
   },
   
   methods: {
-    saveHotspot(value){
+    saveData(){
       console.log("saving hotspot")
-      console.log(value)
-      console.log(value[0].x)
-      console.log(Math.floor(value[0].y))
-      var the_picture = this.int_doc_shell.pictures.filter((pic)=>{
-          return pic.image == this.hotspotConfig.image
-        })[0]
-      value.forEach((spot) => {
-        var hotspot_translations = []
-        this.languages.forEach(l => {
-        if(l.lang == this.activeLanguage){
-        hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message })
-        }
-        else{
-          hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '' })
-        }
-      });
-      console.log(spot)
-        the_picture.hotspots.push({
-          id:-1,
-          x : Math.floor(spot.x),
-          y : Math.floor(spot.y),
-          pictureId : the_picture.id,
-          translations: hotspot_translations
-        })
-      })
-      this.hotimage = false
-      this.hotspotConfig.data = []
-      console.log("this is the hotspot data")
-      console.log(this.hotspotConfig.data)
-
-      console.log("this is the doc shell")
-      console.log(this.int_doc_shell)
     },
     editingDoc (doc) {
       this.isNew = false;
@@ -396,35 +369,18 @@ export default {
     deletingDoc (doc) {
       //we will need to filter through the hotspots and send those to because they need to be deleted and we can't delete 
       //hotspots translations without having hotspots ids
-      console.log(doc)
-      if(doc.pictures){
-          console.log(doc.pictures)
-
+      console.log(doc.pictures)
       doc.pictures.forEach((pic) =>{
         var spots = this.hotspots.filter((spot)=>{
           return spot.pictureId == pic.id
         })[0]
-        if(spots!= null){
         this.deleting_hotspots.push(spots)
-        }
         })
-      
       console.log("i am deleting hotspots")
       console.log(this.deleting_hotspots)
-      }
-    
       //this.$store.dispatch("topic/deleteTopic", index);
-      var payload = {index:doc.id, hotspots:this.deleting_hotspots}
-      console.log(payload.hotspots.length != 0)
-     this.deleteDocumentType(payload)
+      this.deleteDocumentType({index:doc.id, hotspots:this.deleting_hotspots})
       this.deleting_hotspots=[]
-      
-      
-      
-    },
-    removeIcon(){
-      this.icon = null
-      this.int_doc_shell.icon = ''
     },
     cancelDoc () {
       this.isNew = false;
@@ -522,9 +478,8 @@ export default {
         this.int_doc_shell.pictures.push({
           id: -1,
           image: fileInfo.base64,
-          documentTypeId: this.int_doc_shell.id,
-          order: null,
-          hotspots:[]
+          documentTypeId: -1,
+          order: null
         })
         this.myimage = fileInfo.base64
         this.hotspotConfig.image = fileInfo.base64
@@ -543,35 +498,7 @@ export default {
          console.log(pic == String(picture))
          return pic == String(picture)
        })[0]
-      console.log("this is the selected pic")
-      console.log(selected_picture)
-
         this.hotspotConfig.image = selected_picture
-      console.log("this is the do shell I'm working on")
-      console.log(this.int_doc_shell)
-        var spots = this.int_doc_shell.pictures.filter((the_pic) =>{
-          console.log("i am picture in filter")
-          console.log(the_pic)
-          return the_pic.image == String(picture)
-        })[0].hotspots
-        if(spots.length !=0){
-          console.log("These are the spots")
-        console.log(spots)
-        spots.forEach((spot)=>{
-          var message = spot.translations.filter((transl)=>{
-            return transl.lang == this.activeLanguage
-          })[0]
-          this.hotspotConfig.data.push({
-            Message:message.message,
-            Title:message.title,
-            x: spot.x,
-            y: spot.y
-          })
-        })
-        console.log("i am data for hotspot")
-        console.log(this.hotspotConfig.data)
-        }
-        
        this.hotimage = true
      },
   
@@ -588,15 +515,6 @@ export default {
       this.int_doc_shell.validable = doc.validable
       if(doc.pictures != null){
         this.int_doc_shell.pictures = doc.pictures
-        this.int_doc_shell.pictures.forEach((pic)=>{
-          console.log("in int doc picture foreach")
-          pic.hotspots = []
-          this.fetchHotspotsById(pic.id).then((spots) => {
-            console.log("after fetch spots")
-            console.log(spots)
-            pic.hotspots = spots
-          })
-        })
       }
       else{
         this.int_doc_shell.pictures = []
@@ -634,20 +552,18 @@ export default {
         if(this.isNew){
           console.log("I am the document")
           console.log(this.int_doc_shell)
-          this.saveDocumentType(this.int_doc_shell).then((doc)=>{
-            console.log("I am the saved document in the store")
-            console.log(doc)
-          }
-        )
+          this.saveDocumentType(this.int_doc_shell)
+          //this.$store.dispatch('document_type/saveDocumentType', value)
+          console.log(this.$store.state.document_type)
+         
         }
         else{
           this.editDocumentType(this.int_doc_shell)
           //this.$store.dispatch('document_type/editDocumentType', value);
-          console.log("In edit")
       console.log(this.int_doc_shell)
-    
+      console.log(this.document_types)
+      console.log(this.$store.state.document_type)
         }
-      
       this.uploaded_images=[]
       this.icon= null
       this.hideAdd = false
