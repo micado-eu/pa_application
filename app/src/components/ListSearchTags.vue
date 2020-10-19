@@ -1,7 +1,8 @@
 <template>
   <div>
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(title)}}</div>
-    <div class="row">
+    <span v-if="loading">Loading...</span>
+    <div class="row" v-if=!loading>
       <div class="col q-mt-md q-ml-md">
         <q-list
           bordered
@@ -255,6 +256,7 @@
                   {{ item.title }}
                 </q-item-label>
                 <glossary-editor-viewer
+                  class="viewer"
                   :content="item.description"
                   v-if="!loading"
                   glossary_fetched
@@ -450,6 +452,7 @@ export default {
   methods: {
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
+    ...mapActions('glossary', ['fetchGlossary']),
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -704,12 +707,12 @@ export default {
     this.loading = true
     this.lang = this.$i18n.locale
     const promises = []
-    promises.push(this.fetchGlossary)
+    promises.push(this.fetchGlossary())
     if (this.topics_enabled) {
-      promises.push(this.fetchTopic)
+      promises.push(this.fetchTopic())
     }
     if (this.user_types_enabled) {
-      promises.push(this.fetchUserType)
+      promises.push(this.fetchUserType())
     }
     Promise.all(promises).then(() => this.initializeList())
   }
@@ -788,5 +791,8 @@ $btn_secondary: #cdd0d2;
 .filter-icon {
   max-height: 30px;
   max-width: 30px;
+}
+.viewer {
+  max-width: 100%;
 }
 </style>
