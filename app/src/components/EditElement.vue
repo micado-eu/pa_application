@@ -12,6 +12,7 @@
           class="title_input q-mb-xl"
           outlined
           v-model="internalTitle"
+          :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
         />
       </div>
       <div class="q-ml-xl">
@@ -569,7 +570,6 @@ export default {
     },
     checkErrors() {
       if (this.internalTitle.length <= 0) {
-        window.alert(this.$t('error_messages.title_empty'))
         return true
       }
       if (
@@ -577,7 +577,6 @@ export default {
         && Object.keys(this.selectedCategoryObject).length === 0
         && this.selectedCategoryObject.constructor === Object
       ) {
-        window.alert(this.$t('error_messages.category_empty'))
         return true
       }
       return false
