@@ -7,7 +7,7 @@
       size="9px"
       @click="show_dialog=true"
     />
-    <a href="/statics/csv/intervention_category.csv">download template</a>
+    <a :href="staticUrl">download template</a>
 
     <q-dialog
       v-model="show_dialog"
@@ -60,6 +60,10 @@ export default {
       default: ''
     }
   },
+  computed: {
+    staticUrl () { return "/statics/csv/" + this.entity + ".csv" }
+  },
+
   methods: {
     uploadFile: function () {
       let formData = new FormData()
