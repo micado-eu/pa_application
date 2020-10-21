@@ -31,6 +31,7 @@
               outlined
               filled
               dense
+              counter
               maxlength="20"
               :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
               v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"
@@ -67,6 +68,7 @@
               outlined
               filled
               dense
+              counter
               maxlength="20"
               v-model="int_doc_shell.issuer"
               :label="$t('input_labels.issuer')"

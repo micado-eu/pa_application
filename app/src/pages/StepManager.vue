@@ -52,6 +52,7 @@
                 bg-color="grey-3"
                 standout
                 outlined
+                counter
                 maxlength="50"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
@@ -87,6 +88,7 @@
                 standout
                 outlined
                 @blur="updateField()"
+                counter
                 maxlength="50"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="step_shell.location"

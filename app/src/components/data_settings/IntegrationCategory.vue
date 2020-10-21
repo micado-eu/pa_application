@@ -42,6 +42,7 @@
           >
             <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
+            counter
               maxlength="30"
               :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
               outlined

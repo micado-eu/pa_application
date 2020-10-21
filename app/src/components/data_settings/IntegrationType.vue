@@ -33,6 +33,7 @@
             style=""
           > {{$t('input_labels.intervention_type')}} </div>
           <q-input
+          counter
             maxlength="100"
             :rules="[ val => val.length <= 100 || 'Please use maximum 100 characters']"
             outlined

@@ -31,6 +31,7 @@
                 standout
                 outlined
                 maxlength="50"
+                counter
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
                 :label="$t('input_labels.process_name')"
