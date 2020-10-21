@@ -1,186 +1,196 @@
   <template>
   <div>
-  <div class="title" >{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
-  <div class="container">
-    <div>
+    <div class="title">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
+    <div class="container">
+      <div>
         <q-card
-        v-if="this.editing"
-        class="div-2"
-      >
-        <div
-          class=" q-pa-lg "
+          v-if="this.editing"
+          class="div-2"
         >
-          <div
-            class=" q-pa-xsm row "
-          >
-            <q-tabs
-              v-model="langTab"
-              dense
-              class="bg-grey-2 width"
-              active-color="accent"
-              indicator-color="accent"
-              align="justify"
-              narrow-indicator
-            >
-              <q-tab
-                v-for="language in languages"
-                :key="language.lang"
-                :name="language.name"
-                :label="language.name"
-              />
-            </q-tabs>
-            <q-tab-panels
-              v-model="langTab"
-              animated
-               class="bg-grey-2 inset-shadow width "
-            >
-              <q-tab-panel
-                v-for="language in languages"
-                :key="language.lang"
-                :name="language.name"
-                
+          <div class=" q-pa-lg ">
+            <div class=" q-pa-xsm row ">
+              <q-tabs
+                v-model="langTab"
+                dense
+                class="bg-grey-2 width"
+                active-color="accent"
+                indicator-color="accent"
+                align="justify"
+                narrow-indicator
               >
-               <div
-            class=" q-pa-xsm "
-            id="div-2"
-          >
-            
-             <div class="labels">{{$t('input_labels.process_name')}} </div>
-            
-              <q-input
-                dense
-                bg-color="grey-3"
-                standout
-                outlined
-                counter
-                maxlength="50"
-                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
-                v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
-                :label="$t('input_labels.process_name')"
-              />
-          </div>
-
-          <div id="div-4" class="q-pa-xsm">
-           
-              <div class="labels" > {{$t('input_labels.process_description')}} </div>
-            <GlossaryEditor
-           
-        class="desc-editor"
-        v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-        :lang="language.lang"
-        ref="editor" />
-             
-            </div>
-
-              </q-tab-panel>
-            </q-tab-panels>
-             <div
-          id="location"
-          style="width:100%"
-        >
-            
-             <div class="labels">{{$t('input_labels.step_location')}} </div>
-            
-              <q-input
-                dense
-                class="no-pad"
-                bg-color="grey-3"
-                standout
-                outlined
-                @blur="updateField()"
-                counter
-                maxlength="50"
-                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
-                v-model="step_shell.location"
-                :label="$t('input_labels.step_location')"
-              />
-          </div>
-           <div
-          id="location"
-          style="width:100%"
-        >
-            
-             <div class="labels">{{$t('input_labels.step_cost')}} </div>
-            
-              <q-input
-                dense
-                class="no-pad"
-                bg-color="grey-3"
-                standout
-                outlined
-                @blur="updateField()"
-                maxlength="50"
-                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
-                v-model="step_shell.cost"
-                :label="$t('input_labels.step_cost')"
-              />
-          </div>
-           
-
-            
-            
-            <div class="row width-2" >
-              <q-btn
-                class="add-step-document"
-                color="accent"
-                no-caps
-                unelevated
-                :label="$t('button.add_document')"
-                @click="addStepDocument()"
-              />
-            </div>
-           
-              
-              <div class="row width-3" v-if="stepdocadd">
-                <div class="col-6">
-                <q-select
-                  filled
-                  dense
-                  clearable
-                  v-model="step_doc_shell.idDocument"
-                  emit-value
-                  map-options
-                  id="select"
-                  :options="filtered_t_docs"
-                  :label="$t('input_labels.required_documents')"
+                <q-tab
+                  v-for="language in languages"
+                  :key="language.lang"
+                  :name="language.name"
+                  :label="language.name"
                 />
-                </div>
-                <div class="col-3" >
+              </q-tabs>
+              <q-tab-panels
+                v-model="langTab"
+                animated
+                class="bg-grey-2 inset-shadow width "
+              >
+                <q-tab-panel
+                  v-for="language in languages"
+                  :key="language.lang"
+                  :name="language.name"
+                >
+                  <div
+                    class=" q-pa-xsm "
+                    id="div-2"
+                  >
+
+                    <div class="labels">{{$t('input_labels.process_name')}} </div>
+
+                    <q-input
+                      dense
+                      bg-color="grey-3"
+                      standout
+                      outlined
+                      counter
+                      maxlength="50"
+                      :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                      :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
+                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
+                      :label="$t('input_labels.process_name')"
+                    />
+                  </div>
+
+                  <div
+                    id="div-4"
+                    class="q-pa-xsm"
+                  >
+
+                    <div class="labels"> {{$t('input_labels.process_description')}} </div>
+                    <GlossaryEditor
+                      class="desc-editor"
+                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+                      :lang="language.lang"
+                      ref="editor"
+                    />
+
+                  </div>
+                  <div>
+                    <TranslateStateButton
+                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                      :isForDefaultLanguage="language.lang===activeLanguage"
+                      :objectId="step_shell.id"
+                      :readonly="!(language.lang===activeLanguage)"
+                      @micado-change="(id) => {changeTranslationState(step_shell, id.state)}"
+                    />
+                  </div>
+                </q-tab-panel>
+              </q-tab-panels>
+              <div
+                id="location"
+                style="width:100%"
+              >
+
+                <div class="labels">{{$t('input_labels.step_location')}} </div>
+
                 <q-input
-                  class="input"
-                  :label="$t('input_labels.doc_cost')"
                   dense
+                  class="no-pad"
                   bg-color="grey-3"
                   standout
                   outlined
-                  v-model="step_doc_shell.cost"
+                  @blur="updateField()"
+                  counter
+                  maxlength="50"
+                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                  v-model="step_shell.location"
+                  :label="$t('input_labels.step_location')"
                 />
+              </div>
+              <div
+                id="location"
+                style="width:100%"
+              >
+
+                <div class="labels">{{$t('input_labels.step_cost')}} </div>
+
+                <q-input
+                  dense
+                  class="no-pad"
+                  bg-color="grey-3"
+                  standout
+                  outlined
+                  @blur="updateField()"
+                  maxlength="50"
+                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                  v-model="step_shell.cost"
+                  :label="$t('input_labels.step_cost')"
+                />
+              </div>
+
+              <div class="row width-2">
+                <q-btn
+                  class="add-step-document"
+                  color="accent"
+                  no-caps
+                  unelevated
+                  :label="$t('button.add_document')"
+                  @click="addStepDocument()"
+                />
+              </div>
+
+              <div
+                class="row width-3"
+                v-if="stepdocadd"
+              >
+                <div class="col-6">
+                  <q-select
+                    filled
+                    dense
+                    clearable
+                    v-model="step_doc_shell.idDocument"
+                    emit-value
+                    map-options
+                    id="select"
+                    :options="filtered_t_docs"
+                    :label="$t('input_labels.required_documents')"
+                  />
                 </div>
                 <div class="col-3">
-                <q-btn
-                id="save-step-document"
-                color="accent"
-                no-caps
-                unelevated
-                :label="$t('button.save_document')"
-                @click="saveStepDocument()"
-              />
+                  <q-input
+                    class="input"
+                    :label="$t('input_labels.doc_cost')"
+                    dense
+                    bg-color="grey-3"
+                    standout
+                    outlined
+                    v-model="step_doc_shell.cost"
+                  />
+                </div>
+                <div class="col-3">
+                  <q-btn
+                    id="save-step-document"
+                    color="accent"
+                    no-caps
+                    unelevated
+                    :label="$t('button.save_document')"
+                    @click="saveStepDocument()"
+                  />
                 </div>
               </div>
-            
-              <div v-if="step_shell.documents != null " class="row " style="width:100%">
-                
-    <div class="col-9 flex flex-left labels">
-      {{$t('input_labels.doc')}}
-    </div>
-    <div class="col-2 flex flex-center labels ">
-      {{$t('input_labels.cost')}}
-    </div> 
-    <div class="col-1 flex flex-center labels" >
-      {{$t('input_labels.delete')}}
-    </div>
-      </div>
-              <q-list  id="list">
+
+              <div
+                v-if="step_shell.documents != null "
+                class="row "
+                style="width:100%"
+              >
+
+                <div class="col-9 flex flex-left labels">
+                  {{$t('input_labels.doc')}}
+                </div>
+                <div class="col-2 flex flex-center labels ">
+                  {{$t('input_labels.cost')}}
+                </div>
+                <div class="col-1 flex flex-center labels">
+                  {{$t('input_labels.delete')}}
+                </div>
+              </div>
+              <q-list id="list">
                 <StepDocumentElement
                   v-for="stepdoc in step_shell.documents"
                   :key="stepdoc.id"
@@ -192,14 +202,14 @@
               <!--
                
     -->
-             <div
-          id="location"
-          style="width:100%"
-        >
-            
-             <div class="labels">{{$t('input_labels.related_processes')}} </div>
-            
-              <q-select
+              <div
+                id="location"
+                style="width:100%"
+              >
+
+                <div class="labels">{{$t('input_labels.related_processes')}} </div>
+
+                <q-select
                   filled
                   dense
                   clearable
@@ -207,47 +217,42 @@
                   multiple
                   :options="processes_list"
                   :label="$t('input_labels.related_processes')"
-                 
                 />
-          </div>
-          </div>
-         
+              </div>
+            </div>
 
-          <div class="row">
-            <div class="q-pa-md col-4 left">
-              <q-btn
-                color="accent"
-                no-caps
-                unelevated
-                :label="$t('button.save')"
-                @click="saveStep()"
-                class="button"
-              />
-            </div>
-            <div
-              class="q-pa-md col-4 left"
-            >
-              <q-btn
-                class="delete-button"
-                no-caps
-                unelevated
-                :label="$t('button.back')"
-                @click="cancelEditStep()"
-              />
-            </div>
-            <div
-              class="q-pa-md col-4 left"
-            >
-              <q-btn
-                class="delete-button"
-                no-caps
-                unelevated
-                :label="$t('button.delete')"
-                @click="deleteElement()"/>
+            <div class="row">
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  color="accent"
+                  no-caps
+                  unelevated
+                  :label="$t('button.save')"
+                  @click="saveStep()"
+                  class="button"
+                />
+              </div>
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  class="delete-button"
+                  no-caps
+                  unelevated
+                  :label="$t('button.back')"
+                  @click="cancelEditStep()"
+                />
+              </div>
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  class="delete-button"
+                  no-caps
+                  unelevated
+                  :label="$t('button.delete')"
+                  @click="deleteElement()"
+                />
+              </div>
             </div>
           </div>
-        </div>
-         </q-card>
+        </q-card>
       </div>
       <q-card class="my-card">
         <q-card-section>
@@ -279,7 +284,7 @@
           :label="$t('button.back')"
           @click="cancelStep"
         />
-</div>
+      </div>
       <div class="col center">
         <q-btn
           color="secondary"
@@ -291,9 +296,9 @@
           @click="addingNode"
         />
       </div>
-      <div class="col left" >
+      <div class="col left">
         <q-btn
-        class="button-2"
+          class="button-2"
           color="accent"
           unelevated
           :label="$t('button.save_graph')"
@@ -303,8 +308,7 @@
         />
 
       </div>
-      
-      
+
     </div>
   </div>
   </div>
@@ -315,11 +319,12 @@
 import Step from 'components/Step'
 import configcy from '../configs/cytoscapeConfig'
 import edgeHandles from 'cytoscape-edgehandles'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 import editEntityMixin from '../mixin/editEntityMixin'
 import StepDocumentElement from 'components/StepDocumentElement'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
+import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 
 
@@ -330,30 +335,31 @@ export default {
 
   props: ["processId"],
   mixins: [editEntityMixin,
-  storeMappingMixin({
-    getters: {
-      processes: 'flows/processes',
-      steps: 'steps/steps',
-      steplinks: 'steplinks/steplinks',
-      graphs: 'graphs/graphs',
-      elements: 'graphs/elements',
-      document_types: 'document_type/document_types'
-    }, actions: {
-      changeNode: 'graphs/changeNode',
-      addNode: 'graphs/addNode',
-      deleteNode: 'graphs/deleteNode',
-      addEdge: 'graphs/addEdge',
-      saveGraph: 'graphs/saveGraph',
-      fetchGraphs: 'graphs/fetchGraphs',
-      changeStep: 'steps/changeStep',
-      addStep: 'steps/addStep',
-      deleteStep: 'steps/deleteStep',
-      fetchStepsByProcessId: 'steps/fetchStepsByProcessId',
-      addStepLink: 'steplinks/addStepLink',
-      fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
-      fetchDocumentType: 'document_type/fetchDocumentType'
-  }
-  })],
+    translatedButtonMixin,
+    storeMappingMixin({
+      getters: {
+        processes: 'flows/processes',
+        steps: 'steps/steps',
+        steplinks: 'steplinks/steplinks',
+        graphs: 'graphs/graphs',
+        elements: 'graphs/elements',
+        document_types: 'document_type/document_types'
+      }, actions: {
+        changeNode: 'graphs/changeNode',
+        addNode: 'graphs/addNode',
+        deleteNode: 'graphs/deleteNode',
+        addEdge: 'graphs/addEdge',
+        saveGraph: 'graphs/saveGraph',
+        fetchGraphs: 'graphs/fetchGraphs',
+        changeStep: 'steps/changeStep',
+        addStep: 'steps/addStep',
+        deleteStep: 'steps/deleteStep',
+        fetchStepsByProcessId: 'steps/fetchStepsByProcessId',
+        addStepLink: 'steplinks/addStepLink',
+        fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
+        fetchDocumentType: 'document_type/fetchDocumentType'
+      }
+    })],
 
   components: {
     Step,
@@ -375,7 +381,7 @@ export default {
       stepdocadd: false,
       filtered_t_docs: [],
       step_doc_shell: null,
-      steplink_shell: null, 
+      steplink_shell: null,
       model_docs: [],
       processes_list: [
         "How to certify education degree",
@@ -397,7 +403,7 @@ export default {
         step_shell: {},
         group: "",
         position: {}
-      },
+      }
     }
   },
 
@@ -405,8 +411,8 @@ export default {
 
 
   computed: {
-    title (){
-      var temp =  this.processes.filter((a_proc) =>{
+    title () {
+      var temp = this.processes.filter((a_proc) => {
         return a_proc.id == this.processId
       })[0]
       console.log("i am temp")
@@ -419,14 +425,14 @@ export default {
       this.$refs.cyRef.instance.layout({
         name: 'breadthfirst',
         avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-        directed: true,
-      }).run();
-      this.$refs.cyRef.instance.resize();
+        directed: true
+      }).run()
+      this.$refs.cyRef.instance.resize()
     }
   },
 
   methods: {
-    updateField(){
+    updateField () {
       //console.log(this.step_shell)
       //console.log(this)
       this.$forceUpdate()
@@ -439,8 +445,8 @@ export default {
     generateShell (id = -1) {
       let newstep = { id: id, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false, is_edited: false }
       this.languages.forEach(l => {
-        newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null })
-      });
+        newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null, translationState: 0 })
+      })
       return newstep
     },
 
@@ -456,7 +462,7 @@ export default {
     },
 
     preConfig (cytoscape) {
-      console.log("calling pre-config");
+      console.log("calling pre-config")
 
       // register edgehandles extension
       if (typeof cytoscape('core', 'edgehandles') !== 'function') {
@@ -470,7 +476,7 @@ export default {
       if (node.group == "nodes") {
         console.log("editing")
 
-        
+
 
         if (node.data.is_new) {
           console.log("NEW NODE")
@@ -509,7 +515,7 @@ export default {
     },
     addingNode (event, cy) {
       let new_id = uuidv4()
-     
+
       this.addNode({
         group: 'nodes',
         data: {
@@ -523,7 +529,8 @@ export default {
           cost: "",
           required_documents: [],
           linked_processes: [],
-          description: ""        },
+          description: ""
+        }
         //      position: { x: 150, y: 150 },
       })
         .then(ret => {
@@ -545,24 +552,24 @@ export default {
     deleteElement () {
       this.deleteStep(this.step_shell.id)
         .then(ret => {
-        console.log("DELETED STEP")
-        console.log(this.steps)
+          console.log("DELETED STEP")
+          console.log(this.steps)
         })
       this.deleteNode(this.step_shell.id)
         .then(res => {
-            })
+        })
       console.log("MANAGE EDGES")
-      this.editing = false      
+      this.editing = false
     },
 
-    generateStepLink(id_edge, fromStep_edge, toStep_edge){
-      this.steplink_shell ={id : id_edge, is_new:true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited:false, idProcess:Number(this.processId), translations:[]}
+    generateStepLink (id_edge, fromStep_edge, toStep_edge) {
+      this.steplink_shell = { id: id_edge, is_new: true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
       this.languages.forEach(l => {
         this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '' })
-      });
+      })
       return this.steplink_shell
 
-    }, 
+    },
 
     addingEdge (sourceNode, targetNode, addedEles) {
       console.log("ADDING EDGE")
@@ -576,18 +583,18 @@ export default {
       let newKey = ''
       let value = ''
       for ([newKey, value] of addedEles._private.map.entries()) {
-        console.log(newKey);
-        console.log(value);
+        console.log(newKey)
+        console.log(value)
       }
       console.log("Elementds in cytoscape")
       console.log(this.$refs.cyRef.instance.elements())
       console.log("Elementds in store")
       console.log(this.elements)
 
-      this.$refs.cyRef.instance.elements().remove();
-      
-      this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id )
-      this.addStepLink( this.steplink_shell)
+      this.$refs.cyRef.instance.elements().remove()
+
+      this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id)
+      this.addStepLink(this.steplink_shell)
       this.addEdge({
         group: 'edges',
         data: {
@@ -596,13 +603,14 @@ export default {
           source: sourceNode._private.data.id,
           target: targetNode._private.data.id,
           is_edited: false,
-          description: ""        },
+          description: ""
+        }
         //      position: { x: 150, y: 150 },
       })
         .then(ret => {
           console.log("ADDED A EDGE")
 
-          this.$refs.cyRef.instance.add(this.elements);
+          this.$refs.cyRef.instance.add(this.elements)
           console.log("Elementds in cytoscape")
           console.log(this.$refs.cyRef.instance.elements())
           console.log("Elementds in store")
@@ -611,22 +619,22 @@ export default {
           this.$refs.cyRef.instance.layout({
             name: 'breadthfirst',
             avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-            directed: true,
-          }).run();
-          this.$refs.cyRef.instance.resize();
+            directed: true
+          }).run()
+          this.$refs.cyRef.instance.resize()
         })
     },
 
     afterCreated (cy) {
       // cy: this is the cytoscape instance
 
-      console.log("after created", cy);
+      console.log("after created", cy)
       console.log(this.testdata)
 
       let defaults = {
         complete: (sourceNode, targetNode, addedEles) => this.addingEdge(sourceNode, targetNode, addedEles)
       }
-      cy.edgehandles(defaults);
+      cy.edgehandles(defaults)
       console.log("i'm here")
     },
 
@@ -644,9 +652,9 @@ export default {
       console.log("IN REMOVED")
       console.log(element)
     },
-    async  asyncForEach (array, callback) {
+    async asyncForEach (array, callback) {
       for (let index = 0; index < array.length; index++) {
-        await callback(array[index], index, array);
+        await callback(array[index], index, array)
       }
     },
 
@@ -663,10 +671,10 @@ export default {
       this.stepdocadd = true
       this.step_doc_shell = this.generateStepDocShell(null, this.step_shell.id)
       let docs_in_step = []
-      if(this.step_shell.documents != null){
-      this.step_shell.documents.forEach((doc) => {
-        docs_in_step.push(doc.idDocument)
-      });
+      if (this.step_shell.documents != null) {
+        this.step_shell.documents.forEach((doc) => {
+          docs_in_step.push(doc.idDocument)
+        })
       }
       console.log(docs_in_step)
       this.filtered_t_docs = this.t_docs.filter(adoc => {
@@ -675,8 +683,8 @@ export default {
       console.log(this.filtered_t_docs)
     },
     saveStepDocument () {
-      if(this.step_shell.documents == null){
-          this.step_shell.documents =[]
+      if (this.step_shell.documents == null) {
+        this.step_shell.documents = []
       }
       this.step_shell.documents.push(this.step_doc_shell)
       console.log(this.step_shell)
@@ -706,7 +714,7 @@ export default {
         console.log(steps)
         this.loading = false
       })
-    this.fetchSteplinksByProcessId( Number(this.processId))
+    this.fetchSteplinksByProcessId(Number(this.processId))
       .then(steplinks => {
         console.log("THE STEPLINKS")
         console.log(steplinks)
@@ -714,17 +722,17 @@ export default {
       })
 
 
-      this.fetchGraphs({ id: this.processId, userLang: this.$userLang })
+    this.fetchGraphs({ id: this.processId, userLang: this.$userLang })
       .then(graphs => {
         this.$refs.cyRef.instance.layout({
           name: 'breadthfirst',
           avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-          directed: true,
-        }).run();
+          directed: true
+        }).run()
         console.log("THE GRAPH")
 
         console.log(graphs)
-        this.$refs.cyRef.instance.resize();
+        this.$refs.cyRef.instance.resize()
         this.refresher += 1
 
         console.log(this.refresher)
@@ -739,15 +747,15 @@ export default {
         })
 
       })
-  },
+  }
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.labels{
-  font-size:16px; 
-  font-weight:600; 
+.labels {
+  font-size: 16px;
+  font-weight: 600;
 }
 .container {
   padding-top: 50px;
@@ -755,127 +763,126 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-.title{
+.title {
   font-style: normal;
-  height:72px;
-  text-align: center; 
-  padding-top:15px;
+  height: 72px;
+  text-align: center;
+  padding-top: 15px;
   font-weight: bold;
   font-size: 30px;
   line-height: 41px;
-  color:white; 
-  background-color:#FF7C44
+  color: white;
+  background-color: #ff7c44;
 }
 .delete-button {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width:150px;
-  border-radius:2px
+  width: 150px;
+  border-radius: 2px;
 }
-.delete-button-2{
+.delete-button-2 {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width:135px;
-  border-radius:5px
+  width: 135px;
+  border-radius: 5px;
 }
-.button{
-  width:150px;
-  border-radius:2px
+.button {
+  width: 150px;
+  border-radius: 2px;
 }
-.button-2{
-border-radius:5px; 
-width:135px
+.button-2 {
+  border-radius: 5px;
+  width: 135px;
 }
-.button-3{
-  border-radius:5px; 
-  width:170px
+.button-3 {
+  border-radius: 5px;
+  width: 170px;
 }
-#div-1{
-  text-align:center; 
-  padding-top:40px
+#div-1 {
+  text-align: center;
+  padding-top: 40px;
 }
-.div-2{
-  margin:0 auto;
-  width:750px;
-  margin-bottom: 1px
+.div-2 {
+  margin: 0 auto;
+  width: 750px;
+  margin-bottom: 1px;
 }
 
-.width{
-  width:100%
+.width {
+  width: 100%;
 }
-.width-2{
-width:100%; 
-padding-top:10px
+.width-2 {
+  width: 100%;
+  padding-top: 10px;
 }
-.width-3{
-width:100%; 
-padding-top:10px; 
-padding-bottom:10px
+.width-3 {
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
-.width-4{
-  width: 450px
+.width-4 {
+  width: 450px;
 }
-.header{
-  text-align:left; 
-  margin-bottom:0px
+.header {
+  text-align: left;
+  margin-bottom: 0px;
 }
-.under-header{
+.under-header {
   margin: auto;
   display: block;
-  margin-bottom:0px
+  margin-bottom: 0px;
 }
-.add-step-document{
-  width:150px;
-  border-radius:2px
+.add-step-document {
+  width: 150px;
+  border-radius: 2px;
 }
-#select{
-  width:350px
+#select {
+  width: 350px;
 }
-.input{
-  width:100px;
-  margin:0 auto
+.input {
+  width: 100px;
+  margin: 0 auto;
 }
-.input-2{
-  padding-top:10px
+.input-2 {
+  padding-top: 10px;
 }
-#save-step-document{
-width:150px;
-border-radius:2px
+#save-step-document {
+  width: 150px;
+  border-radius: 2px;
 }
-.div-4{
-  padding-top:10px; 
-  padding-bottom:10px
+.div-4 {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
-#list{
-width:700px
+#list {
+  width: 700px;
 }
-.center{
+.center {
   text-align: center;
 }
-#header-2{
-  text-align:left; 
-  margin-top:14px
+#header-2 {
+  text-align: left;
+  margin-top: 14px;
 }
 
-.right{
-  text-align:right
+.right {
+  text-align: right;
 }
-.left{
+.left {
   text-align: left;
 }
-.div-6{
-  text-align:center; 
-  padding-top:10px
+.div-6 {
+  text-align: center;
+  padding-top: 10px;
 }
-#location{
-  margin-top:20px;
-   width:100%
- 
+#location {
+  margin-top: 20px;
+  width: 100%;
 }
-.no-pad{
-  padding-bottom:0px
+.no-pad {
+  padding-bottom: 0px;
 }
 </style>
 

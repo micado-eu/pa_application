@@ -33,12 +33,13 @@
             style=""
           > {{$t('input_labels.intervention_type')}} </div>
           <q-input
-          counter
+            counter
             maxlength="100"
             :rules="[ val => val.length <= 100 || 'Please use maximum 100 characters']"
             outlined
             filled
             dense
+            :readonly="!(int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
             :label="$t('input_labels.type_placeholder')"
           />
@@ -49,6 +50,15 @@
             :lang="language.lang"
             ref="editor"
           />
+          <div>
+            <TranslateStateButton
+              v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+              :isForDefaultLanguage="language.lang===activeLanguage"
+              :objectId="int_type_shell.id"
+              :readonly="!(language.lang===activeLanguage)"
+              @micado-change="(id) => {changeTranslationState(int_type_shell, id.state)}"
+            />
+          </div>
         </q-tab-panel>
       </q-tab-panels>
       <q-tabs
@@ -174,10 +184,12 @@ import FileUploader from 'components/FileUploader'
 import GlossaryEditor from 'components/GlossaryEditor'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 
 export default {
   name: 'InterventionType',
   mixins: [editEntityMixin,
+    translatedButtonMixin,
     storeMappingMixin({
       getters: {
         intervention_types: 'integration_type/intervention_types',
@@ -262,7 +274,7 @@ export default {
       }
       this.languages.forEach((l) => {
         this.int_type_shell.translations.push({
-          id: -1, lang: l.lang, interventionTitle: '', description: '', translationDate: null
+          id: -1, lang: l.lang, interventionTitle: '', description: '', translationDate: null, translationState: 0
         })
       })
     },
