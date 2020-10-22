@@ -1,46 +1,69 @@
 <template>
-  <div :id="$options.name" class="q-pa-md">
-    <div class="row">
-    <router-link class="col-6" :to="'#'+$options.name">
-      <h5  @click="onClickTitle()">{{$options.name}}</h5>
-    </router-link>
-    <div class="col-6 div-1">
-       <q-btn 
-       color="info"
-       no-caps
-       :label="$t('button.add_category')"
-       @click="newIntegrationCategory()"
-       :disable="hideAdd"
-       class="add-button"/>
+  <div
+    :id="$options.name"
+    class="q-pa-md"
+  >
+    <div class="row wrap justify-start items-start content-center">
+      <div class="col">
+        <router-link :to="'#'+$options.name">
+          <h5 @click="onClickTitle()">{{$options.name}}</h5>
+        </router-link>
+      </div>
+      <div class="full-height col">
+        <div class="row  justify-end items-center ">
+          <UploadButton entity="intervention_category" />
+          <q-btn
+            color="info"
+            no-caps
+            :label="$t('button.add_category')"
+            @click="newIntegrationCategory()"
+            :disable="hideAdd"
+            class="add-button"
+          />
+        </div>
+      </div>
     </div>
-    </div>
-  <q-card class="my-card">
-      
-      <q-card-section :hidden="hideForm" class="div-2">
-        
-      <q-tab-panels
-        v-model="langTab"
-        class="bg-grey-2 inset-shadow "
-        animated
+    <q-card class="my-card">
+
+      <q-card-section
+        :hidden="hideForm"
+        class="div-2"
       >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
+
+        <q-tab-panels
+          v-model="langTab"
+          class="bg-grey-2 inset-shadow "
+          animated
         >
-        <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
+            <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
-            maxlength="30"
-            :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
+              counter
+              maxlength="30"
+              :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
               outlined
               filled
               dense
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].title"
+              :readonly="!(int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
               :label="$t('input_labels.category_placeholder')"
             />
-         </q-tab-panel>
+            <div>
+              <TranslateStateButton
+                v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :isForDefaultLanguage="language.lang===activeLanguage"
+                :objectId="int_cat_shell.id"
+                :readonly="!(language.lang===activeLanguage)"
+                @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
+              />
+            </div>
+          </q-tab-panel>
         </q-tab-panels>
-       <q-tabs
+        <q-tabs
           v-model="langTab"
           dense
           class="bg-grey-2"
@@ -56,151 +79,172 @@
             :label="language.name"
           />
         </q-tabs>
-      </q-tabs>
-      <hr id="hr" >
+        <hr id="hr">
         <q-btn
-        class="button"
-        color="accent" 
-        no-caps 
-        unelevated 
-        rounded  
-        :label="$t('button.save')" 
-        @click="savingIntegrationCategory()" />
-        <q-btn 
-        class="delete-button" 
-        no-caps 
-        unelevated 
-        rounded 
-        :label="$t('button.cancel')" 
-        @click="cancelIntegrationCategory()" />
+          class="button"
+          color="accent"
+          no-caps
+          unelevated
+          rounded
+          :label="$t('button.save')"
+          @click="savingIntegrationCategory()"
+        />
+        <q-btn
+          class="delete-button"
+          no-caps
+          unelevated
+          rounded
+          :label="$t('button.cancel')"
+          @click="cancelIntegrationCategory()"
+        />
       </q-card-section>
     </q-card>
-       <div class="row div-5">
-    
-    <div class="col-9 flex flex-left div-6">
-      {{$t('input_labels.name')}}
-    </div>
-    <div class="col-1 flex flex-left">
-     <!-- {{$t('input_labels.is_published')}}-->
-    </div>
-    <div class="col-1 flex flex-center div-7">
-      {{$t('input_labels.edit')}}
-    </div> 
-    <div class="col-1 flex flex-center div-8">
-      {{$t('input_labels.delete')}} 
-    </div>
+    <div class="row div-5">
+
+      <div class="col-9 flex flex-left div-6">
+        {{$t('input_labels.name')}}
       </div>
-    <q-list bordered separator>
+      <div class="col-1 flex flex-left">
+        <!-- {{$t('input_labels.is_published')}}-->
+      </div>
+      <div class="col-1 flex flex-center div-7">
+        {{$t('input_labels.edit')}}
+      </div>
+      <div class="col-1 flex flex-center div-8">
+        {{$t('input_labels.delete')}}
+      </div>
+    </div>
+    <q-list
+      bordered
+      separator
+    >
       <q-item
         clickable
         v-ripple
         v-for="a_integration_category in intervention_categories"
         :key="a_integration_category.id"
       >
-        <q-item-section class="col-9 flex flex-left div-3" >{{showCategoryLabel(a_integration_category)}}</q-item-section>
+        <q-item-section class="col-9 flex flex-left div-3">{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-         <!-- <q-toggle
+          <!-- <q-toggle
             v-model="a_integration_category.published"
             color="green"
             disable
           />-->
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
-           <q-icon id="icon" style="margin-right:10px;" name="img:statics/icons/Edit.png" size="md" @click.stop="editIntegrationCategory(a_integration_category)" />
-         
-        </q-item-section>
-           <q-item-section class="col-1 flex flex-center">
+          <q-icon
+            id="icon"
+            style="margin-right:10px;"
+            name="img:statics/icons/Edit.png"
+            size="md"
+            @click.stop="editIntegrationCategory(a_integration_category)"
+          />
 
-          <q-icon  name="img:statics/icons/Icon - Delete.svg"  @click.stop="deletingIntegrationCategory(a_integration_category.id)" size="md" />
-          
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center">
+
+          <q-icon
+            name="img:statics/icons/Icon - Delete.svg"
+            @click.stop="deletingIntegrationCategory(a_integration_category.id)"
+            size="md"
+          />
+
         </q-item-section>
       </q-item>
     </q-list>
-    
+
   </div>
 </template>
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
+import UploadButton from '../UploadButton'
+//import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
 
 export default {
   name: "InterventionCategory",
   mixins: [editEntityMixin,
-  storeMappingMixin({
-    getters: {
-      intervention_categories: 'integration_category/intervention_categories'
-    }, actions: {
-      deleteIntegrationCategory: 'integration_category/deleteIntegrationCategory',
-      saveIntegrationCategory: 'integration_category/saveIntegrationCategory',
-      editCategoryTypeElement: 'integration_category/editCategoryTypeElement',
-      fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory'
-  }
-  })],
-  data() {
+    translatedButtonMixin,
+    storeMappingMixin({
+      getters: {
+        intervention_categories: 'integration_category/intervention_categories'
+      }, actions: {
+        deleteIntegrationCategory: 'integration_category/deleteIntegrationCategory',
+        saveIntegrationCategory: 'integration_category/saveIntegrationCategory',
+        editCategoryTypeElement: 'integration_category/editCategoryTypeElement',
+        fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory'
+      }
+    })],
+  data () {
     return {
-      int_cat_shell: { id: -1,  translations:[] },
+      int_cat_shell: { id: -1, translations: [] },
       hideForm: true,
       hideAdd: false,
       isNew: false
-    };
+    }
+  },
+  components: {
+    UploadButton
   },
   methods: {
-   /* isPublished(value, event){
-      this.int_cat_shell.published = value
-    },*/
-    onClickTitle: function() {
-      this.$emit("scroll", "#" + this.$options.name);
+    /* isPublished(value, event){
+       this.int_cat_shell.published = value
+     },*/
+    onClickTitle: function () {
+      this.$emit("scroll", "#" + this.$options.name)
     },
-    deletingIntegrationCategory(index) {
-      console.log(index);
+    deletingIntegrationCategory (index) {
+      console.log(index)
       this.deleteIntegrationCategory(index)
     },
     showCategoryLabel (workingCat) {
-     
+
       return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].title
     },
-    savingIntegrationCategory() {
+    savingIntegrationCategory () {
       if (this.isNew) {
         // we are adding a new instance
         this.saveIntegrationCategory(this.int_cat_shell)
           .then(int_cat => {
-            console.log("saved");
-          });
+            console.log("saved")
+          })
       } else {
         // we are updating the exsisting
         this.editCategoryTypeElement(this.int_cat_shell)
           .then(int_cat => {
-            console.log("updated");
-          });
+            console.log("updated")
+          })
       }
-      this.hideForm = true;
+      this.hideForm = true
       this.hideAdd = false
       this.createShell()
     },
-    newIntegrationCategory() {
+    newIntegrationCategory () {
       this.createShell()
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
     },
-    cancelIntegrationCategory() {
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
+    cancelIntegrationCategory () {
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
     },
-    editIntegrationCategory(integration_category) {
-      this.isNew = false;
-      this.hideForm = false;
+    editIntegrationCategory (integration_category) {
+      this.isNew = false
+      this.hideForm = false
       //this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
       this.mergeCategory(integration_category)
     },
-      createShell () {
-      this.int_cat_shell = { id: -1,  translations: [] }
+    createShell () {
+      this.int_cat_shell = { id: -1, translations: [] }
       this.languages.forEach(l => {
         //       console.log(l)
-        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null })
-      });
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null, translationState: 0 })
+      })
     },
     mergeCategory (category) {
       console.log(category)
@@ -213,30 +257,28 @@ export default {
 
         for (var i = 0; i < this.int_cat_shell.translations.length; i++) {
           if (this.int_cat_shell.translations[i].lang == tr.lang) {
-            this.int_cat_shell.translations.splice(i, 1);
+            this.int_cat_shell.translations.splice(i, 1)
             this.int_cat_shell.translations.push(JSON.parse(JSON.stringify(tr)))
-            break;
+            break
           }
         }
-      });
+      })
 
       console.log(this.int_cat_shell)
-
-
-    },
+    }
   },
   //store.commit('increment', 10)
-  created() {
+  created () {
     this.createShell()
-    this.loading = true;
-    console.log(this.$store);
+    this.loading = true
+    console.log(this.$store)
     this.fetchIntegrationCategory()
       .then(processes => {
-        this.loading = false;
-      });
-      
+        this.loading = false
+      })
+
   }
-};
+}
 </script>
 <style scoped>
 a {
@@ -247,58 +289,58 @@ a {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width:100px;
-  border-radius:2px;
-  margin-right:15px; 
-  margin-left:10px; 
-  margin-top:30px
+  width: 100px;
+  border-radius: 2px;
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-top: 30px;
 }
 h5 {
   font-weight: bold;
 }
-.div-1{
-  margin-top:40px;
-  margin-bottom:40px; 
-  text-align:right
+.div-1 {
+  margin-top: 40px;
+  margin-bottom: 40px;
+  text-align: right;
 }
-.div-2{
-  margin-bottom:100px
+.div-2 {
+  margin-bottom: 100px;
 }
-#add-button{
-  width:200px;
+#add-button {
+  width: 200px;
 }
-.button{
-  width:100px;
-  border-radius:2px;
-  margin-right:15px; 
-  margin-left:10px; 
-  margin-top:30px
+.button {
+  width: 100px;
+  border-radius: 2px;
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-top: 30px;
 }
-.div-3{
-  font-size:16px; 
-  font-weight:600; 
+.div-3 {
+  font-size: 16px;
+  font-weight: 600;
 }
-#hr{
-  margin-left:15px;
-  margin-right:15px;
-  border: 1px solid #DADADA
+#hr {
+  margin-left: 15px;
+  margin-right: 15px;
+  border: 1px solid #dadada;
 }
-.div-4{
-padding-left:20px; 
+.div-4 {
+  padding-left: 20px;
 }
-.div-5{
-padding-bottom:10px
+.div-5 {
+  padding-bottom: 10px;
 }
-.div-6{
-padding-left:15px;
+.div-6 {
+  padding-left: 15px;
 }
-.div-7{
-  margin-left:0px
+.div-7 {
+  margin-left: 0px;
 }
-.div-8{
-padding-left:20px
+.div-8 {
+  padding-left: 20px;
 }
-#icon{
-  margin-right:10px;
+#icon {
+  margin-right: 10px;
 }
 </style>

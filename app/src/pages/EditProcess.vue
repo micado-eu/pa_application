@@ -1,58 +1,75 @@
 <template>
-<div>
-    <div v-if="theprocess!=null" class="banner" >{{$t('input_labels.edit_process')}} - {{this.title}}</div>
-    <div v-else class="banner">{{$t('input_labels.add_new_process')}}</div>
+  <div>
+    <div
+      v-if="theprocess!=null"
+      class="banner"
+    >{{$t('input_labels.edit_process')}} - {{this.title}}</div>
+    <div
+      v-else
+      class="banner"
+    >{{$t('input_labels.add_new_process')}}</div>
 
-  <div id="div-1">
-    <q-card
-      class="container"
-    >
-      
-      <q-tab-panels
-        v-model="langTab"
-        class="bg-grey-2 inset-shadow  "
-        animated
-      >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
+    <div id="div-1">
+      <q-card class="container">
+
+        <q-tab-panels
+          v-model="langTab"
+          class="bg-grey-2 inset-shadow  "
+          animated
         >
-          <div
-            class=" q-pa-xsm "
-            id="div-2"
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
           >
-            
-             <div id="div-3">{{$t('input_labels.process_name')}} </div>
-            
+            <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+
+              <div id="div-3">{{$t('input_labels.process_name')}} </div>
+
               <q-input
                 dense
                 bg-color="grey-3"
                 standout
                 outlined
                 maxlength="50"
+                counter
+                :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
                 :label="$t('input_labels.process_name')"
               />
-          </div>
-
-          <div id="div-4" class="q-pa-xsm">
-           
-              <div id="div-5" > {{$t('input_labels.process_description')}} </div>
-            <GlossaryEditor
-           
-        class="desc-editor"
-        v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
-        :lang="language.lang"
-        ref="editor" />
-             
             </div>
-          
-        </q-tab-panel>
-      </q-tab-panels>
-     <q-separator/>
-          <q-tabs
+
+            <div
+              id="div-4"
+              class="q-pa-xsm"
+            >
+
+              <div id="div-5"> {{$t('input_labels.process_description')}} </div>
+              <GlossaryEditor
+                class="desc-editor"
+                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
+                :lang="language.lang"
+                ref="editor"
+              />
+
+            </div>
+            <div>
+              <TranslateStateButton
+                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :isForDefaultLanguage="language.lang===activeLanguage"
+                :objectId="edit_process.id"
+                :readonly="!(language.lang===activeLanguage)"
+                @micado-change="(id) => {changeTranslationState(edit_process, id.state)}"
+              />
+            </div>
+          </q-tab-panel>
+        </q-tab-panels>
+        <q-separator />
+        <q-tabs
           v-model="langTab"
           dense
           class="bg-grey-2"
@@ -72,8 +89,8 @@
           id="div-6"
           class=" q-pa-xsm row"
         >
-         <div class="col-6 tag" > {{$t('input_labels.generated_docs')}} </div>
-         <q-select
+          <div class="col-6 tag"> {{$t('input_labels.generated_docs')}} </div>
+          <q-select
             filled
             dense
             clearable
@@ -88,140 +105,145 @@
             :label="$t('input_labels.generated_docs')"
             class="select"
           />
-          <div class="col-6 tag" > {{$t('input_labels.user_tags')}} </div>
-          <div class="col-6 tag" > {{$t('input_labels.topic_tags')}} </div>
+          <div class="col-6 tag"> {{$t('input_labels.user_tags')}} </div>
+          <div class="col-6 tag"> {{$t('input_labels.topic_tags')}} </div>
         </div>
-        <div class="q-pa-xsm row" id="div-7">
         <div
-          class="col-6 div-8"
-
+          class="q-pa-xsm row"
+          id="div-7"
         >
-          <q-select
-            filled
-            dense
-            clearable
-            v-model="edit_process.applicableUsers"
-            @add="addUserTag($event)"
-            @remove="removeUserTag($event)"
-            @clear="clearAllUsers()"
-            multiple
-            emit-value
-            map-options
-            :options="this.u_tags"
-            :label="$t('input_labels.user_tags')"
-            class="select"
-          />
-          <q-chip v-for="tag in selected_u_tags" dense :key="tag">{{tag}}</q-chip>
+          <div class="col-6 div-8">
+            <q-select
+              filled
+              dense
+              clearable
+              v-model="edit_process.applicableUsers"
+              @add="addUserTag($event)"
+              @remove="removeUserTag($event)"
+              @clear="clearAllUsers()"
+              multiple
+              emit-value
+              map-options
+              :options="this.u_tags"
+              :label="$t('input_labels.user_tags')"
+              class="select"
+            />
+            <q-chip
+              v-for="tag in selected_u_tags"
+              dense
+              :key="tag"
+            >{{tag}}</q-chip>
+          </div>
+
+          <div class="col-6 div-9">
+            <q-select
+              filled
+              dense
+              clearable
+              v-model="edit_process.processTopics"
+              @add="addTopicTag($event)"
+              @remove="removeTopicTag($event)"
+              @clear="clearAllTopics()"
+              multiple
+              emit-value
+              map-options
+              :options="this.t_tags"
+              :label="$t('input_labels.topic_tags')"
+              class="select"
+            />
+            <q-chip
+              v-for="tag in selected_t_tags"
+              dense
+              :key="tag"
+            >{{tag}}</q-chip>
+          </div>
         </div>
 
-        <div
-          class="col-6 div-9"
-        >
-          <q-select
-            filled
-            dense
-            clearable
-            v-model="edit_process.processTopics"
-            @add="addTopicTag($event)"
-            @remove="removeTopicTag($event)"
-            @clear="clearAllTopics()"
-            multiple
-            emit-value
-            map-options
-            :options="this.t_tags"
-            :label="$t('input_labels.topic_tags')"
-            class="select"
-          />
-          <q-chip v-for="tag in selected_t_tags" dense :key="tag">{{tag}}</q-chip>
+        <hr id="hr-2">
+        <div id="div-10">
+          <div class="q-pa-md q-gutter-md col-4 div-11">
+            <q-btn
+              class="delete-button"
+              no-caps
+              rounded
+              :label="$t('button.back')"
+              unelevated
+              style=""
+              to="/guided_process_editor"
+            />
+            <q-btn
+              color="secondary"
+              no-caps
+              rounded
+              :label="$t('button.manage_steps')"
+              unelevated
+              :disable="this.disabled"
+              class="button"
+              @click="manageProcess()"
+            />
+
+            <q-btn
+              color="accent"
+              no-caps
+              rounded
+              :label="$t('button.save')"
+              unelevated
+              class="button"
+              @click="savingProcess(edit_process)"
+            />
+
+          </div>
         </div>
-      </div>
+      </q-card>
 
-      <hr id="hr-2">
-      <div id="div-10">
-      <div
-        class="q-pa-md q-gutter-md col-4 div-11"
-      >
-         <q-btn
-          class="delete-button"
-          no-caps
-          rounded
-          :label="$t('button.back')"
-          unelevated
-          style=""
-          to="/guided_process_editor"
-        />
-        <q-btn
-          color="secondary"
-          no-caps
-          rounded
-          :label="$t('button.manage_steps')"
-          unelevated
-          :disable="this.disabled"
-          class="button"
-          @click="manageProcess()"
-        />
-
-        <q-btn
-          color="accent"
-          no-caps
-          rounded
-          :label="$t('button.save')"
-          unelevated
-          class="button"
-          @click="savingProcess(edit_process)"
-        />
-
-     
-      </div>
     </div>
-    </q-card>
-    
   </div>
-</div>
 </template>
 
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'PageIndex',
   mixins: [editEntityMixin,
-  storeMappingMixin({
-    getters: {
-      processes: 'flows/processes',
-      topic: 'topic/topic',
-      user: 'user_type/user',
-      documents: 'document_type/document_types'
-    }, actions: {
-      saveProcess: 'flows/saveProcess',
-      fetchFlows: 'flows/fetchFlows',
-      editProcess: 'flows/editProcess',
-      fetchTopic: 'topic/fetchTopic',
-      fetchUserType: 'user_type/fetchUserType',
-      fetchDocumentType: 'document_type/fetchDocumentType'
-    }
-  })],
+    translatedButtonMixin,
+    storeMappingMixin({
+      getters: {
+        processes: 'flows/processes',
+        topic: 'topic/topic',
+        user: 'user_type/user',
+        documents: 'document_type/document_types'
+      }, actions: {
+        saveProcess: 'flows/saveProcess',
+        fetchFlows: 'flows/fetchFlows',
+        editProcess: 'flows/editProcess',
+        fetchTopic: 'topic/fetchTopic',
+        fetchUserType: 'user_type/fetchUserType',
+        fetchDocumentType: 'document_type/fetchDocumentType'
+      }
+    })],
   props: ["theprocessid"],
-  components: { 
+  components: {
     GlossaryEditor
   },
   data () {
     return {
-      theprocess:null,
+      theprocess: null,
       id: this.$route.params.id,
       is_new: true,
       edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "" },
       u_tags: [
 
       ],
-      selected_u_tags:[],
+      selected_u_tags: [],
       t_tags: [
       ],
-      selected_t_tags:[],
-      docOptions:[], 
-      selectedDocs:[]
+      selected_t_tags: [],
+      docOptions: [],
+      selectedDocs: []
     }
   },
   computed: {
@@ -240,68 +262,68 @@ export default {
 
   },
   methods: {
-    manageProcess(){
+    manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
     },
-    addDoc(value){
+    addDoc (value) {
       console.log(value)
-     
-     var doc =  this.documents.filter((a_doc) => {
+
+      var doc = this.documents.filter((a_doc) => {
         return a_doc.id == value.value
       })[0]
       var the_doc_transl = doc.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document
       this.selectedDocs.push(the_doc_transl)
-      
+
     },
-    removeDoc(value){
+    removeDoc (value) {
       console.log(value)
       var idx = this.selectedDocs.indexOf(value)
       this.selectedDocs.splice(value.index, 1)
     },
-    clearAllDocs(){
+    clearAllDocs () {
       this.selectedDocs = []
     },
-    addUserTag(value){
+    addUserTag (value) {
       console.log(value)
-     
-     var the_user =  this.user.filter((a_user) => {
+
+      var the_user = this.user.filter((a_user) => {
         return a_user.id == value.value
       })[0]
       var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
       this.selected_u_tags.push(the_user_transl)
-      
+
     },
-    removeUserTag(value){
+    removeUserTag (value) {
       console.log(value)
       var idx = this.selected_u_tags.indexOf(value)
       this.selected_u_tags.splice(value.index, 1)
     },
-    clearAllUsers(){
+    clearAllUsers () {
       this.selected_u_tags = []
     },
-    addTopicTag(value){
+    addTopicTag (value) {
       console.log(value)
-     
-     var the_topic =  this.topic.filter((a_topic) => {
+
+      var the_topic = this.topic.filter((a_topic) => {
         return a_topic.id == value.value
       })[0]
       var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
       this.selected_t_tags.push(the_topic_transl)
-      
+
     },
-    removeTopicTag(value){
+    removeTopicTag (value) {
       console.log(value)
-     
+
       this.selected_t_tags.splice(value.index, 1)
     },
-    clearAllTopics(){
+    clearAllTopics () {
       this.selected_t_tags = []
     },
-   async savingProcess (value) {
-      let workingProcess = JSON.parse(JSON.stringify(this.edit_process));
+    async savingProcess (value) {
+      let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
       if (this.is_new) {
-       await this.saveProcess(workingProcess)
+        await this.saveProcess(workingProcess)
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
       }
@@ -313,14 +335,14 @@ export default {
         console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
-      this.$router.push({path: '/guided_process_editor'})
+      this.$router.push({ path: '/guided_process_editor' })
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [],  translations: [], processTopics: [], producedDoc:[], link: "" }
+      this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], producedDoc: [], link: "" }
       this.languages.forEach(l => {
-        this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null })
-      });
+        this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null, translationState: 0 })
+      })
     },
     mergeProcess (process) {
       console.log("MERGING")
@@ -336,20 +358,20 @@ export default {
 
         for (var i = 0; i < this.edit_process.translations.length; i++) {
           if (this.edit_process.translations[i].lang == pr.lang) {
-            this.edit_process.translations.splice(i, 1);
+            this.edit_process.translations.splice(i, 1)
             this.edit_process.translations.push(JSON.parse(JSON.stringify(pr)))
-            break;
+            break
           }
         }
-      });
-            console.log("pre-topics foreach")
- if (process.producedDoc != null) {
+      })
+      console.log("pre-topics foreach")
+      if (process.producedDoc != null) {
         process.producedDoc.forEach(the_doc => {
           this.edit_process.producedDoc.push(the_doc.idDocument)
 
-          var the_doc =  this.documents.filter((a_doc) => {
+          var the_doc = this.documents.filter((a_doc) => {
             return a_doc.id == the_doc.idDocument
-            })[0]
+          })[0]
           var the_doc_transl = the_doc.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document
           this.selectedDocs.push(the_doc_transl)
         })
@@ -359,9 +381,9 @@ export default {
         process.processTopics.forEach(the_topic => {
           this.edit_process.processTopics.push(the_topic.idTopic)
 
-          var the_topic =  this.topic.filter((a_topic) => {
+          var the_topic = this.topic.filter((a_topic) => {
             return a_topic.id == the_topic.idTopic
-            })[0]
+          })[0]
           var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
           this.selected_t_tags.push(the_topic_transl)
         })
@@ -371,7 +393,7 @@ export default {
         process.applicableUsers.forEach(the_user => {
           this.edit_process.applicableUsers.push(the_user.idUserTypes)
 
-          var the_user =  this.user.filter((a_user) => {
+          var the_user = this.user.filter((a_user) => {
             return a_user.id == the_user.idUserTypes
           })[0]
           var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
@@ -382,15 +404,15 @@ export default {
 
       console.log("THE MERGED OBJECT")
       console.log(this.edit_process)
-      
 
-     
+
+
 
     }
   },
   async created () {
     this.loading = true
-    console.log(this.$defaultLangString);
+    console.log(this.$defaultLangString)
     this.createShell()
     await this.fetchFlows()
       .then(flows => {
@@ -423,7 +445,7 @@ export default {
           this.u_tags.push(the_user)
         })
       })
-       await this.fetchDocumentType()
+    await this.fetchDocumentType()
       .then(docs => {
         console.log(docs)
 
@@ -433,15 +455,15 @@ export default {
         })
         console.log(this.docOptions)
       })
-   console.log("THEPROCESS:")
+    console.log("THEPROCESS:")
     console.log(this.theprocess)
-    if (this.theprocess != null ) {
+    if (this.theprocess != null) {
       this.is_new = false
       this.mergeProcess(this.theprocess)
       console.log(this.edit_process)
     }
     // }
-  },
+  }
 
 }
 </script>
@@ -450,96 +472,94 @@ export default {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width:150px;
-  border-radius:2px
+  width: 150px;
+  border-radius: 2px;
 }
-.button{
-  width:150px;
-  border-radius:2px
+.button {
+  width: 150px;
+  border-radius: 2px;
 }
-.banner{
+.banner {
   font-style: normal;
-  height:72px;
-  text-align: center; 
-  padding-top:15px;
+  height: 72px;
+  text-align: center;
+  padding-top: 15px;
   font-weight: bold;
   font-size: 30px;
   line-height: 41px;
-  color:white; 
-  background-color:#FF7C44
+  color: white;
+  background-color: #ff7c44;
 }
-.container{
-  display:inline-block;
-  margin-bottom: 1px; 
-  width:80%
+.container {
+  display: inline-block;
+  margin-bottom: 1px;
+  width: 80%;
 }
-.tag{
-  text-align:left;
-  font-size:15px;
+.tag {
+  text-align: left;
+  font-size: 15px;
 }
-#div-1{
-  text-align:center; 
-  padding-top:40px
+#div-1 {
+  text-align: center;
+  padding-top: 40px;
 }
-#div-2{
-  padding-bottom:20px; 
-  padding-top:20px;
-  padding-left:150px; 
-  padding-right:150px
+#div-2 {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
 }
-#div-3{
-  font-size:16px; 
-  font-weight:600; 
-  text-align:left; 
-  padding-bottom:15px
+#div-3 {
+  font-size: 16px;
+  font-weight: 600;
+  text-align: left;
+  padding-bottom: 15px;
 }
-#div-4{
-  padding-bottom:20px; 
-  padding-left:150px; 
-  padding-right:150px
+#div-4 {
+  padding-bottom: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
 }
-#div-5{
-  text-align:left;
-  font-size:16px; 
-  font-weight:600; 
-  padding-bottom:15px
+#div-5 {
+  text-align: left;
+  font-size: 16px;
+  font-weight: 600;
+  padding-bottom: 15px;
 }
-#div-6{
-  padding-top:20px;
-  padding-left:150px; 
-  padding-right:150px
+#div-6 {
+  padding-top: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
 }
-#div-7{
-  padding-left:150px; 
-  padding-right:150px
+#div-7 {
+  padding-left: 150px;
+  padding-right: 150px;
 }
-.div-8{
-  padding-left:0px; 
-  padding-top:15px
+.div-8 {
+  padding-left: 0px;
+  padding-top: 15px;
 }
-.select{
-  width: 90%
+.select {
+  width: 90%;
 }
-.div-9{
-  padding-right:45px; 
-  padding-top:15px
+.div-9 {
+  padding-right: 45px;
+  padding-top: 15px;
 }
-#hr-1{
-  width:85%;
-  border: 0.999px solid #DADADA;
-  margin-top:90px
+#hr-1 {
+  width: 85%;
+  border: 0.999px solid #dadada;
+  margin-top: 90px;
 }
-#hr-2{
-  width:85%;
-  border: 0.999px solid #DADADA;
+#hr-2 {
+  width: 85%;
+  border: 0.999px solid #dadada;
 }
-#div-10{
-  text-align:left; 
-  padding-left:150px
+#div-10 {
+  text-align: left;
+  padding-left: 150px;
 }
-.div-11{
-  display:inline-block;
+.div-11 {
+  display: inline-block;
 }
-
-
 </style>

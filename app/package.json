@@ -11,6 +11,7 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@bit/micado.shared.translatestatebutton": "0.0.1",
     "@quasar/extras": "^1.9.5",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",

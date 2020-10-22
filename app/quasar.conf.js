@@ -61,7 +61,7 @@ module.exports = function (ctx) {
       },
 
       components: [
-        'QChatMessage'],
+        'QChatMessage', 'QBtnToggle'],
       directives: [],
 
       // Quasar plugins

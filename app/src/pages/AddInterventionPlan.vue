@@ -9,7 +9,7 @@
                       <h5 id="header-1"> Title: </h5>
                     </div>
                     <div id="div-7" class="col-8">
-                      <q-input dense bg-color="grey-3" maxlength="100" standout outlined v-model="plan_shell.title" />
+                      <q-input dense bg-color="grey-3" counter maxlength="100" standout outlined v-model="plan_shell.title" />
                     </div>
                     <div id="div-8">
                      <q-btn id="add-button" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
@@ -50,15 +50,15 @@
         <div id="div-10">
     <div id="div-11" class="q-pa-xsm row">
       <div id="div-12" class=" q-pa-xsm col-4">
-        <h5 class="header-2"> Title </h5>
+        <h5 class="header-2"> {{$t('input_labels.title')}} </h5>
       </div>
       <div id="div-13" class="col-8">
-        <q-input  dense   bg-color="white" standout outlined v-model="intervention_shell.title" />
+        <q-input  dense max-length="100" counter  bg-color="white" standout outlined v-model="intervention_shell.title" />
       </div>
     </div>
     <div id="div-14" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
-        <h5 class="header-2"> Description </h5>
+        <h5 class="header-2"> {{$t('input_labels.description')}} </h5>
       </div>
       <div id="div-15" class="col-8">
         <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="intervention_shell.description" />
@@ -66,7 +66,7 @@
     </div>
    <div id="div-16" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
-        <h5 class="header-3"> Related processes </h5>
+        <h5 class="header-3"> {{$t('input_labels.related_processes')}} </h5>
       </div>
       <div id="div-17" class=" q-pa-md col-8">
      <q-select
@@ -83,7 +83,7 @@
       </div>
        <div id="div-18" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
-        <h5 class="header-3">  Category </h5>
+        <h5 class="header-3">  {{$t('input_labels.type')}} </h5>
       </div>
       <div id="div-19" class=" q-pa-md col-8">
      <q-select
