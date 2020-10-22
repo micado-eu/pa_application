@@ -53,6 +53,7 @@
     "view": "View",
     "add_glossary": "Add Term",
     "add_event": "Add Event",
+    "add_information": "Add Information",
     "categories": "Categories",
     "remove": "Remove",
     "migrant_data": "Data"
@@ -136,8 +137,8 @@
   },
   "information_centre": {
     "list_title": "Information centre",
-    "add_new": "Add New Event to the Information Centre",
-    "edit": "Edit Event from the Information Centre",
+    "add_new": "Add New Information to the Information Centre",
+    "edit": "Edit Information from the Information Centre",
     "categories_title": "Information Centre - Categories",
     "categories_error": "Cannot delete a category when an item has this category"
   },
