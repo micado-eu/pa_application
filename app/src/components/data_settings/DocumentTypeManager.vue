@@ -48,7 +48,6 @@
             :lang="language.lang"
             ref="editor"
           />
-          <div>
             <TranslateStateButton
               v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
               :isForDefaultLanguage="language.lang===activeLanguage"
@@ -56,6 +55,8 @@
               :readonly="!(language.lang===activeLanguage)"
               @micado-change="(id) => {changeTranslationState(int_doc_shell, id.state)}"
             />
+        </q-tab-panel>
+      </q-tab-panels>
        <q-card class="my-card">
           <q-card-section class="section">
               <div class="field"> {{$t('input_labels.icon')}} </div>
@@ -69,7 +70,7 @@
             emit-value
             map-options
             :options="this.icons"
-            :label="$t('input_labels.generated_docs')"
+            :label="$t('input_labels.icon')"
             class="select"
           />
             <!--<q-file
@@ -138,6 +139,7 @@
               />
 
             </q-item-section>
+          </div>
           </q-card>
         </q-card-section>
         <q-card-section class="section">
@@ -341,6 +343,7 @@ import storeMappingMixin from '../../mixin/storeMappingMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import VueHotspot from 'vue-hotspot'
 import DocumentTypeIcons from '../../mixin/DocumentTypeIcons.json'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 
 
 
