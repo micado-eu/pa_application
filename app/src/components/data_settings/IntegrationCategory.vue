@@ -42,7 +42,7 @@
           >
             <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
             <q-input
-            counter
+              counter
               maxlength="30"
               :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
               outlined
@@ -58,7 +58,7 @@
                 :isForDefaultLanguage="language.lang===activeLanguage"
                 :objectId="int_cat_shell.id"
                 :readonly="!(language.lang===activeLanguage)"
-                @micado-change="translationChange"
+                @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
               />
             </div>
           </q-tab-panel>
@@ -159,13 +159,15 @@
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import UploadButton from '../UploadButton'
-import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
+//import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
 
 export default {
   name: "InterventionCategory",
   mixins: [editEntityMixin,
+    translatedButtonMixin,
     storeMappingMixin({
       getters: {
         intervention_categories: 'integration_category/intervention_categories'
@@ -185,8 +187,7 @@ export default {
     }
   },
   components: {
-    UploadButton,
-    TranslateStateButton
+    UploadButton
   },
   methods: {
     /* isPublished(value, event){
@@ -264,20 +265,6 @@ export default {
       })
 
       console.log(this.int_cat_shell)
-
-
-    },
-    translationChange (id) {
-      console.log("received also micado-change")
-      console.log(id)
-      this.changeTranslationState(this.int_cat_shell, id.state)
-    },
-    changeTranslationState (element, state) {
-      console.log(element)
-      element.translations.forEach(el => {
-        el.translationState = state
-      })
-      console.log(element)
     }
   },
   //store.commit('increment', 10)
