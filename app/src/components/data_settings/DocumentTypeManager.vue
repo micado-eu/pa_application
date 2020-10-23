@@ -76,7 +76,20 @@
        <q-card class="my-card">
           <q-card-section class="section">
               <div class="field"> {{$t('input_labels.icon')}} </div>
-            <q-file
+              <q-select
+            filled
+            dense
+            clearable
+            v-model="int_doc_shell.icon"
+            @input="addIcon($event)"
+            @remove="removeIcon($event)"
+            emit-value
+            map-options
+            :options="this.icons"
+            :label="$t('input_labels.generated_docs')"
+            class="select"
+          />
+            <!--<q-file
               @input="getFilesIcon($event)"
               bg-color="grey-3"
               dense
@@ -111,7 +124,7 @@
               </span>
               
             </q-item-section>
-            </q-card>
+            </q-card>-->
           </q-card-section>
           <q-card-section class="section">
             <div class="field"> {{$t('input_labels.doc_pics')}} </div>
@@ -303,6 +316,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import VueHotspot from 'vue-hotspot'
+import DocumentTypeIcons from '../../mixin/DocumentTypeIcons.json'
 
 
 
@@ -327,6 +341,7 @@ export default {
   },
   data() {
     return {
+      icons: DocumentTypeIcons,
       deleting_hotspots:[],
       hideForm: true,
       hideAdd: false,
@@ -356,6 +371,16 @@ export default {
   },
   
   methods: {
+    addIcon(value){
+      this.int_doc_shell.icon = value
+      console.log("I am doc shel after adding icon ")
+      console.log(this.int_doc_shell)
+    },
+    removeIcon(value){
+      this.int_doc_shell.icon = ""
+      console.log("I am doc shel after removing icon ")
+      console.log(this.int_doc_shell)
+    },
     saveHotspot(value){
       console.log("saving hotspot")
       console.log(value)

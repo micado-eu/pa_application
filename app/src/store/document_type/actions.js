@@ -37,7 +37,7 @@ export  function saveDocumentType (state, doc_element) {
       console.log(transl)
     })
     Promise.all(promiseTransl).then(()=>{
-      if(doc_element.pictures){
+      if(doc_element.pictures.length >0){
         doc_element.pictures.forEach((pic)=>{
           promisePics.push(client.saveDocumentTypePictures(pic, doc_element.id, pic.order))
         })
@@ -66,7 +66,7 @@ export  function saveDocumentType (state, doc_element) {
           }
         })
           Promise.all(promiseSpot).then((spotvalues)=>{
-            if(spotvalues != []){
+            if(spotvalues.length > 0){
               console.log("i am spotvalues")
               console.log(spotvalues)
               doc_element.pictures.forEach((pic)=>{
@@ -102,12 +102,20 @@ export  function saveDocumentType (state, doc_element) {
                 })
               })
             }
+            else {
+              console.log("this is if there are no hotspots")
+              state.commit('saveDocumentType',doc_element)
+            }
               
                 
               })
             
             
           })
+        }
+        else{
+          console.log("This is if there are no pictures")
+          state.commit('saveDocumentType',doc_element)
         }        
         })
 
