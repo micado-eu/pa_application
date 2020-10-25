@@ -16,7 +16,7 @@ import InformationEditPage from '../pages/information_centre/InformationEditPage
 import EventListPage from '../pages/events/EventListPage.vue'
 import EventNewPage from '../pages/events/EventNewPage.vue'
 import EventEditPage from '../pages/events/EventEditPage.vue'
-import MigrationSitMap from '../components/migration_monitor/map/Map.vue'
+import MasterPortal from '../components/migration_monitor/map/MasterPortal.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
@@ -98,7 +98,7 @@ const routes = [
         component: MigrationSituation,
         children: [
           { path: 'editor', component: MigrationSitEditor },
-          { path: 'map', component: MigrationSitMap },
+          { path: 'map', component: MasterPortal },
           { path: ':board', component: Board }
         ]
       },
