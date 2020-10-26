@@ -4,7 +4,10 @@
        <q-expansion-item 
         group="somegroup"
         :label="title"
-        :header-class="{ 'bg-green text-white' : intervention.completed }"
+        :header-class="{
+          'bg-green text-black' : intervention.completed,
+          'bg-yellow text-black': (!intervention.completed && intervention.validationRequestDate != null)
+         }"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.completed}"
          @click="cancelIntervention"
@@ -38,11 +41,15 @@
                 </a> -->
                 <span class="span" v-if="readMoreActivated" v-html="description"></span>
               </q-item-section>
+              
               <q-item-section class="col section-3">
                 <q-btn size="11px" class="button-1" no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
                 <q-btn size="11px" class="button-2" no-caps  unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
               </q-item-section>
             </div>
+             <div v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:center; font-weight:bold">
+                To be validated by {{this.tenants.filter((tenant)=>{return tenant.id == intervention.validatingUserTenant})[0].name}}
+                </div>
             <div class=" q-gutter-sm  col pad-left">
               <q-card-section :hidden="hideForm" class="section">
                 <div class="div-3" >
@@ -133,7 +140,7 @@ export default {
     }
   },
   components: {},
-  props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories", "completionDoc"],
+  props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories", "completionDoc", "tenants"],
   computed: {},
   mounted() {},
   methods: {
