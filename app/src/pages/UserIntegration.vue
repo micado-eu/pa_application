@@ -49,6 +49,7 @@
             :the_processes_list="processes_list"
             :model="intervention_shell"
             :hideForm="hideForm"
+            :tenants="tenants"
             :completionDoc="findDoc(intervention.id)"
             :intervention_categories="types"
             @editIntervention="editIntervention"
@@ -97,7 +98,8 @@ export default {
       intervention_plans: 'intervention_plan/intervention_plans',
       users: 'user/users',
       documents: 'documents/my_documents',
-      completion_docs: 'documents/completion_documents'
+      completion_docs: 'documents/completion_documents',
+      tenants: 'tenant/tenants'
     }, actions: {
       saveIntervention: 'intervention_plan/saveIntervention',
       editIntervention: 'intervention_plan/editIntervention',
@@ -105,7 +107,8 @@ export default {
       fetchSpecificUser: 'user/fetchSpecificUser',
       fetchIntegrationType: 'integration_type/fetchIntegrationType',
       fetchDocuments: 'documents/fetchDocuments',
-      fetchCompletionDocuments: 'documents/fetchCompletionDocuments'
+      fetchCompletionDocuments: 'documents/fetchCompletionDocuments',
+      fetchTenants: 'tenant/fetchTenants'
   }
   })
   ],
@@ -368,6 +371,7 @@ export default {
       })
       console.log("i am intervention_categories")
       console.log(this.intervention_types)
+      this.fetchTenants()
   }
 }
 </script>

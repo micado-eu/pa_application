@@ -40,7 +40,7 @@
                     id="div-2"
                   >
 
-                    <div class="labels">{{$t('input_labels.process_name')}} </div>
+                    <div class="labels">{{$t('input_labels.step_name')}} </div>
 
                     <q-input
                       dense
@@ -61,7 +61,7 @@
                     class="q-pa-xsm"
                   >
 
-                    <div class="labels"> {{$t('input_labels.process_description')}} </div>
+                    <div class="labels"> {{$t('input_labels.step_description')}} </div>
                     <GlossaryEditor
                       class="desc-editor"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
