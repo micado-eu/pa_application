@@ -191,17 +191,158 @@ export function deleteDocumentType (state, payload) {
 export function editDocumentType (state, doc_element) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(doc_element)
+  var promiseTransl = []
+  var spots =[]
+  var promisePicsDelete =[]
+var promiseSpotsDelete = []
+var promiseSpotsTranslDelete =[]
+var promisePics =[]
+var promiseSpot = []
+var promiseSpotsTransl =[]
   // update translations
   return client
     .updateDocumentType(doc_element).then(function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
       doc_element.translations.forEach(function (aTranslation) {
-        client.updateDocumentTypeTranslation(aTranslation).then(function (update_translation_return) {
-          console.log(update_translation_return)
-        })
+        promiseTransl.push(client.updateDocumentTypeTranslation(aTranslation))
       })
+        Promise.all(promiseTransl).then(function (update_translation_return) {
+          console.log(update_translation_return)
+          console.log("after promise all deleted doc tarnslations")
+     
+
+  doc_element.pictures.forEach((pic)=>{
+    pic.hotspots.forEach((spot) => {
+      console.log("i am spot id in foreach")
+      console.log(spot.id)
+      if(spot.id != -1){
+      
+        spots.push(spot)
+      }
     })
+  })
+  console.log(spots)
+  console.log("after promise all deleted doc tarnslations")
+  spots.forEach((spot)=>{
+    promiseSpotsTranslDelete.push(client.deleteHotpotTranslation(spot.id))
+    console.log("i am deleting translation for spot")
+    console.log(spot)
+    console.log("deleted transl")
+  })
+  console.log("deleted spot translation")
+  Promise.all(promiseSpotsTranslDelete).then((valuesspottransl)=>{
+    console.log("i am valuesspottransl")
+    console.log(valuesspottransl)
+    console.log("after promis all deleted spot translation")
+    spots.forEach((spot)=>{
+      promiseSpotsDelete.push(client.deleteHotspot(spot.id))
+      console.log("i am deleting  spot")
+    console.log(spot)
+    console.log("deleted spot")
+    })
+    console.log("deleted spots")
+    Promise.all(promiseSpotsDelete).then((valuesspots) =>{
+      console.log("i am doc element hotspots")
+      console.log(doc_element.pictures)
+      console.log("i am valuesspots")
+      console.log(valuesspots)
+      promisePicsDelete.push(client.deleteDocumentTypePictures(doc_element.id))
+      Promise.all(promisePicsDelete).then((delete_pic)=>{
+        if(doc_element.pictures.length >0){
+          doc_element.pictures.forEach((pic)=>{
+            promisePics.push(client.saveDocumentTypePictures(pic, doc_element.id, pic.order))
+          })
+          Promise.all(promisePics)
+          .then((values)=>{
+            //In order to give object the proper id I make a check on the picture
+            console.log("inside firts promis all")
+            console.log(values)
+          values.forEach((value)=>{
+            doc_element.pictures.forEach((pic)=>{
+              if(value.image == pic.image){
+                pic.id = value.id
+              }
+            })
+          })
+          console.log("i am doc element picture")
+          console.log(doc_element.pictures)
+          doc_element.pictures.forEach((pic)=>{
+            if(pic.hotspots){
+              pic.hotspots.forEach((spot) =>{
+                spot.pictureId = pic.id
+                console.log("I am the spot")
+                console.log(spot)
+                promiseSpot.push(client.saveHotspots(spot))
+              })
+            }
+          })
+            Promise.all(promiseSpot).then((spotvalues)=>{
+              if(spotvalues.length > 0){
+                console.log("i am spotvalues")
+                console.log(spotvalues)
+                doc_element.pictures.forEach((pic)=>{
+                 //In order to give hotspots the proper id i check that the return elemnt from save and the element in the payload have same pictureId,
+                 //x, and y. Since on a single picture there is only one spot that can have these x and y, it should identify it uniquely
+                  for(var i = 0; i <spotvalues.length; i++){
+                    for(var j = 0; j < pic.hotspots.length; j++){
+                      if(spotvalues[i].pictureId == pic.hotspots[j].pictureId && spotvalues[i].x == pic.hotspots[j].x && spotvalues[i].y == pic.hotspots[j].y){
+                        pic.hotspots[j].id = spotvalues[i].id
+                      }
+                    }
+                  }
+                })
+                
+                doc_element.pictures.forEach((pict)=>{
+                  pict.hotspots.forEach((hspot)=>{
+                    console.log("i am hspot")
+                    console.log(hspot)
+                    hspot.translations.forEach((transl)=>{
+                      promiseSpotsTransl.push(client.saveHotspotTranslation(transl, hspot.id))
+                    })
+                    Promise.all(promiseSpotsTransl).then((translreturn)=>{
+                      console.log("in transl return")
+                      console.log(translreturn)
+                      console.log(spotvalues[spotvalues.length-1])
+                      if(translreturn[0].phtId == spotvalues[spotvalues.length-1].id){
+                        console.log("this is if there are hotspots")
+                        state.commit('editDocumentType',doc_element)
+                        state.commit('picture_hotspots/setHotspots', spotvalues, { root: true })
+                      }
+                    })
+                    promiseSpotsTransl = []
+                    promiseSpot = []
+                  })
+                })
+              }
+              else {
+                console.log("this is if there are no hotspots")
+                state.commit('editDocumentType',doc_element)
+              }
+                
+                  
+                })
+              
+              
+            })
+          }
+          else{
+            console.log("This is if there are no pictures")
+            state.commit('editDocumentType',doc_element)
+          }
+      })
+    
+      
+      
+      
+    })
+    
+  })
+  
+})
+      
+    })
+ 
 }
 
 async function asyncForEach (array, callback) {

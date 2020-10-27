@@ -57,6 +57,15 @@
             />
         </q-tab-panel>
       </q-tab-panels>
+      <div class="div-3" style="padding-top:10px"> {{$t('input_labels.issuer')}} </div>
+            <q-input
+              outlined
+              filled
+              dense
+              maxlength="20"
+              v-model="int_doc_shell.issuer"
+              :label="$t('input_labels.issuer')"
+            />
        <q-card class="my-card">
           <q-card-section class="section">
               <div class="field"> {{$t('input_labels.icon')}} </div>
@@ -110,38 +119,7 @@
             </q-item-section>
             </q-card>-->
           </q-card-section>
-          <q-card-section class="section">
-            <div class="field"> {{$t('input_labels.doc_pics')}} </div>
-            <q-file
-              @input="getFilesPics($event)"
-              bg-color="grey-3"
-              dense
-              :label="$t('input_labels.upload_doc_pics')"
-              standout
-              outlined
-              accept=".jpg, image/*" 
-              @rejected="onRejected"
-            >
-
-            </q-file>
-            <q-card class="pictures-card">
-          <div class="row">
-            <q-item-section
-              class="col-4 pictures-section"
-              v-for="image in uploaded_images"
-              :key="image"
-            >
-              <q-img
-                :src="image"
-                spinner-color="white"
-                class="image"
-                @click="addHotspot(image)"
-              />
-
-            </q-item-section>
-          </div>
-          </q-card>
-        </q-card-section>
+          
         <q-card-section class="section">
           <div class="field"> {{$t('input_labels.doc_pics')}} </div>
           <q-file
@@ -417,8 +395,25 @@ export default {
       var the_picture = this.int_doc_shell.pictures.filter((pic) => {
         return pic.image == this.hotspotConfig.image
       })[0]
+      var originalHotspots =[]
+      if(the_picture.hotspots.length > 0){
+        the_picture.hotspots.forEach((hspott)=>{
+          originalHotspots.push(hspott)
+        })
+      }
+      console.log(originalHotspots)
+      originalHotspots.forEach((spot)=>{
+        var to_remove=value.filter(((hspot)=>{
+          return (spot.x== hspot.x && spot.y == hspot.y)
+        }))[0]
+        var index = value.findIndex(val => val.x == to_remove.x && val.y == to_remove.y)
+        value.splice(index, 1)
+
+      })
+      console.log("i am values after removing the ones that were present already")
+      console.log(value)
       value.forEach((spot) => {
-        var hotspot_translations = []
+             var hotspot_translations = []
         this.languages.forEach(l => {
           if (l.lang == this.activeLanguage) {
             hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message })
@@ -427,7 +422,6 @@ export default {
             hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '' })
           }
         })
-        console.log(spot)
         the_picture.hotspots.push({
           id: -1,
           x: Math.floor(spot.x),
