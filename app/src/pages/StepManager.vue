@@ -49,6 +49,7 @@
                       outlined
                       counter
                       maxlength="50"
+                      @blur="updateField()"
                       :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                       :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
@@ -199,27 +200,8 @@
                   @deleteDoc="deleteDoc"
                 />
               </q-list>
-              <!--
-               
-    -->
-              <div
-                id="location"
-                style="width:100%"
-              >
-
-                <div class="labels">{{$t('input_labels.related_processes')}} </div>
-
-                <q-select
-                  filled
-                  dense
-                  clearable
-                  v-model="step_shell.linked_processes"
-                  multiple
-                  :options="processes_list"
-                  :label="$t('input_labels.related_processes')"
-                />
-              </div>
             </div>
+            <hr>
 
             <div class="row">
               <div class="q-pa-md col-4 left">
@@ -396,7 +378,6 @@ export default {
           location: "",
           cost: "",
           required_documents: [],
-          linked_processes: [],
           description: "",
           process_id: []
         },
@@ -528,7 +509,6 @@ export default {
           location: "",
           cost: "",
           required_documents: [],
-          linked_processes: [],
           description: ""
         }
         //      position: { x: 150, y: 150 },

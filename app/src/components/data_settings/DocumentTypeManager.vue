@@ -66,6 +66,26 @@
               v-model="int_doc_shell.issuer"
               :label="$t('input_labels.issuer')"
             />
+            <div class="q-gutter-sm">
+              <q-checkbox class="div-3" color="accent" style="padding-top:10px" left-label v-model="int_doc_shell.validable" :label="$t('input_labels.validable')" />
+            </div>
+             <div v-if="int_doc_shell.validable" class="field"> {{$t('input_labels.validators')}} </div>
+              <q-select
+              v-if="int_doc_shell.validable"
+              multiple
+              filled
+              dense
+              clearable
+              v-model="int_doc_shell.validators"
+              @input="addValidators($event)"
+              @remove="removeValidator($event)"
+              @clear="clearValidators()"
+              emit-value
+              map-options
+              :options="this.validatorList"
+              :label="$t('input_labels.validators')"
+              class="select"
+          />
        <q-card class="my-card">
           <q-card-section class="section">
               <div class="field"> {{$t('input_labels.icon')}} </div>
@@ -332,14 +352,16 @@ export default {
     storeMappingMixin({
       getters: {
         document_types: 'document_type/document_types',
-        hotspots: 'picture_hotspots/hotspots'
+        hotspots: 'picture_hotspots/hotspots',
+        tenants: 'tenant/tenants'
       }, actions: {
         deleteDocumentType: 'document_type/deleteDocumentType',
         fetchDocumentType: 'document_type/fetchDocumentType',
         saveDocumentType: 'document_type/saveDocumentType',
         editDocumentType: 'document_type/editDocumentType',
         fetchHotspots: 'picture_hotspots/fetchHotspots',
-        fetchHotspotsById: 'picture_hotspots/fetchHotspotsById'
+        fetchHotspotsById: 'picture_hotspots/fetchHotspotsById',
+        fetchTenants: 'tenant/fetchTenants'
       }
     })],
   components: {
@@ -372,7 +394,8 @@ export default {
         opacity: 0.9
       },
       icon: null,
-      order: 0
+      order: 0, 
+      validatorList:[]
     }
   },
 
@@ -381,12 +404,18 @@ export default {
       this.int_doc_shell.icon = value
       console.log("I am doc shel after adding icon ")
       console.log(this.int_doc_shell)
-    },
-    removeIcon(value){
-      this.int_doc_shell.icon = ""
-      console.log("I am doc shel after removing icon ")
-      console.log(this.int_doc_shell)
-    },
+    }, 
+     addValidators(value){
+       console.log(value)
+       this.int_doc_shell.validators = value
+      /* value.forEach((validator)=>{
+         this.int_doc_shell.validators.push(value)
+       })*/
+      //this.int_doc_shell.validators.push(value)
+      console.log("I am doc shel after adding validators ")
+      console.log(this.int_doc_shell.validators)
+    }, 
+    
     saveHotspot(value){
       console.log("saving hotspot")
       console.log(value)
@@ -481,10 +510,21 @@ export default {
       this.icon = null
       this.int_doc_shell.icon = ''
     },
+    removeValidator (value) {
+      console.log(value)
+      var idx = this.int_doc_shell.validators.indexOf(value)
+      console.log(idx)
+      this.int_doc_shell.validators.splice(idx, 1)
+      console.log(this.int_doc_shell.validators)
+    },
+    clearValidators(){
+      this.int_doc_shell.validators = []
+    },
     cancelDoc () {
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false
+      this.int_doc_shell.validators = []
       this.uploaded_images = []
       this.icon = null
       this.order = 0
@@ -589,7 +629,7 @@ export default {
       }
     },
     createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], icon: "", model: null, validable: false }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: null, validable: false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null, translationState: 0 })
@@ -643,6 +683,12 @@ export default {
       this.int_doc_shell.issuer = doc.issuer
       this.int_doc_shell.model = doc.model
       this.int_doc_shell.validable = doc.validable
+      if(doc.validators!= null){
+        doc.validators.forEach((validator)=>{
+          this.int_doc_shell.validators.push(validator.validableByTenant)
+        })
+        
+      }
       if (doc.pictures != null) {
         this.int_doc_shell.pictures = doc.pictures
         this.int_doc_shell.pictures.forEach((pic) => {
@@ -748,6 +794,16 @@ export default {
       .then(document_types => {
         this.loading = false
       })
+    this.fetchTenants().then((tenants)=>{
+      console.log(tenants)
+      tenants.forEach((tenant)=>{
+        this.validatorList.push({
+          label: tenant.name,
+          value:tenant.id
+        })
+
+      })
+    })
   }
 }
 

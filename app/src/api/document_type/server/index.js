@@ -28,6 +28,13 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  saveDocumentTypeValidators(docid, validatorid){
+    const doc_validator = {validableByTenant:validatorid }
+    return axiosInstance
+      .post(`/backend/1.0.0/document-types/${docid}/document-type-validators`, doc_validator)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   saveDocumentTypeTranslation (translation, id) {
     translation.id = id
     const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description']))
@@ -86,6 +93,12 @@ export default {
   deleteDocumentTypeTranslation (id) {
     return axiosInstance
       .delete(`/backend/1.0.0/document-types/${id}/document-type-translations`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  deleteDocumentTypeValidators (id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/document-types/${id}/document-type-validators`)
       .then((response) => response.data)
       .catch(error_handler)
   },
