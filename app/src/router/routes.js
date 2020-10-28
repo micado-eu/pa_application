@@ -91,7 +91,7 @@ const routes = [
         path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name: process
       },
 
-      { path: '/dashboard', component: () => import('components/Dashboard.vue') },
+      { path: '/dashboard', component: () => import('pages/Stats.vue') },
       { path: '/map', component: () => import('components/Map.vue') },
       {
         path: '/situation',

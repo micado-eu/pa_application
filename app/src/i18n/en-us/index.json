@@ -190,6 +190,12 @@
   "consent": {
     "title": "Consent management information"
   },
+  "stats": {
+    "avg_requests": "Avg. request received",
+    "avg_time": "Avg session duration",
+    "new_users": "new visitors",
+    "total_users": "total visitors"
+  },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
     "category_empty": "Please select a category.",
