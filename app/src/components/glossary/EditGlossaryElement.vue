@@ -17,15 +17,15 @@ export default {
   },
   props: {
     "elem": {
-      type: Object,
+      type: Object
     },
     "pagetitle": {
       type: String
-    },
+    }
   },
   methods: {
-    saveGlossaryItem(title, desc, lang, tags) {
-      this.$emit('save', { title: title, description: desc, lang })
+    saveGlossaryItem(translations) {
+      this.$emit('save', translations)
     }
   }
 }

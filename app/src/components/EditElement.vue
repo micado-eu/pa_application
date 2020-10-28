@@ -586,14 +586,21 @@ export default {
         this.saveContent()
         for (const language of this.languages) {
           if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
-            this.savedTranslations.push({
+            const emptyTranslation = {
               title: '',
               description: '',
-              lang: language.lang,
-              category: this.selectedCategoryObject,
-              topics: this.selectedTopicsObjects,
-              userTypes: this.selectedUserTypesObjects
-            })
+              lang: language.lang
+            }
+            if (this.categories_enabled) {
+              emptyTranslation.category = this.selectedCategoryObject
+            }
+            if (this.topics_enabled) {
+              emptyTranslation.topics = this.selectedTopicsObjects
+            }
+            if (this.user_types_enabled) {
+              emptyTranslation.userTypes = this.selectedUserTypesObjects
+            }
+            this.savedTranslations.push(emptyTranslation)
           }
         }
         if (this.tags_enabled) {

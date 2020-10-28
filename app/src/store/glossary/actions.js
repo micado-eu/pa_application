@@ -15,6 +15,12 @@ export function saveNewGlossaryItem(state, data) {
 export function editGlossaryItem(state, data) {
   data.translationState = 0
   return client
+    .editGlossaryItem(data)
+}
+
+export function editGlossaryItemTranslation(state, data) {
+  data.translationState = 0
+  return client
     .editGlossaryItemTranslation(data)
 }
 
