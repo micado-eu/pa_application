@@ -60,6 +60,9 @@
     "migrant_data": "Data"
   },
   "data_settings": {
+    "manage_languages": "Manage languages in the platform",
+    "manage_translations": "Manage translations",
+    "send_to_translation": "Send to translation platform",
     "data_management": "Data management",
     "settings": "Settings",
     "language": "Language",
@@ -128,8 +131,8 @@
     "doc_cost": "Document cost",
     "doc": "Document",
     "cost": "Cost",
-    "validable":"Validable",
-    "validators":"Validators"
+    "validable": "Validable",
+    "validators": "Validators"
   },
   "profile": {
     "username": "Username",
