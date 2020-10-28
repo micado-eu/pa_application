@@ -21,7 +21,7 @@ export  function saveDocumentType (state, doc_element) {
   console.log(doc_element)
   let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable']));
   console.log(savingDoc)
-
+  var promiseValidators =[]
   var promiseDoc = []
   var promiseTransl =[]
   var promiseSpotsTransl=[]
@@ -32,6 +32,12 @@ export  function saveDocumentType (state, doc_element) {
     console.log("i am docvalue")
     console.log(docvalue)
     doc_element.id = docvalue[0].id
+    doc_element.validators.forEach((validator)=>{
+      promiseValidators.push(client.saveDocumentTypeValidators(doc_element.id, validator))
+    })
+    Promise.all(promiseValidators).then((validator_return)=>{
+      console.log(validator_return)
+    
     doc_element.translations.forEach((transl)=>{
       promiseTransl.push(client.saveDocumentTypeTranslation(transl,doc_element.id))
       console.log(transl)
@@ -118,7 +124,7 @@ export  function saveDocumentType (state, doc_element) {
           state.commit('saveDocumentType',doc_element)
         }        
         })
-
+      })
 })
   }
 
@@ -130,6 +136,7 @@ export function deleteDocumentType (state, payload) {
   console.log(payload.index)
   console.log("I am hotspots")
   console.log(payload.hotspots)
+  var promiseValidators= []
   var promiseTransl = []
   var promisePics =[]
   var promiseSpots = []
@@ -169,14 +176,19 @@ export function deleteDocumentType (state, payload) {
         console.log("i am valuepic")
         console.log(valuepic)
         console.log("after promise all deleted pictures")
-        promiseDoc.push(client.deleteDocumentType(payload.index))
-        console.log("deleted doc")
-        Promise.all(promiseDoc).then((valuedoc)=>{
-          console.log("i am valuedoc")
-          console.log(valuedoc)
-          console.log("after promise all deleted doc")
-          state.commit('deleteDocumentType', payload.index)
+        promiseValidators.push(client.deleteDocumentTypeValidators(payload.index))
+        Promise.all(promiseValidators).then((validator_return)=>{
+          console.log(validator_return)
+          promiseDoc.push(client.deleteDocumentType(payload.index))
+          console.log("deleted doc")
+          Promise.all(promiseDoc).then((valuedoc)=>{
+            console.log("i am valuedoc")
+            console.log(valuedoc)
+            console.log("after promise all deleted doc")
+            state.commit('deleteDocumentType', payload.index)
+          })
         })
+      
        
       })
       
@@ -193,6 +205,8 @@ export function editDocumentType (state, doc_element) {
   console.log(doc_element)
   var promiseTransl = []
   var spots =[]
+  var promiseValidators=[]
+  var promiseValidatorsDelete=[]
   var promisePicsDelete =[]
 var promiseSpotsDelete = []
 var promiseSpotsTranslDelete =[]
@@ -247,8 +261,16 @@ var promiseSpotsTransl =[]
       console.log(doc_element.pictures)
       console.log("i am valuesspots")
       console.log(valuesspots)
+      promiseValidatorsDelete.push(client.deleteDocumentTypeValidators(doc_element.id))
+      Promise.all(promiseValidatorsDelete).then((validator_return)=>{
+        console.log(validator_return)
       promisePicsDelete.push(client.deleteDocumentTypePictures(doc_element.id))
       Promise.all(promisePicsDelete).then((delete_pic)=>{
+        doc_element.validators.forEach((validator)=>{
+          promiseValidators.push(client.saveDocumentTypeValidators(doc_element.id, validator))
+        })
+        Promise.all(promiseValidators).then((validator_return)=>{
+          console.log(validator_return)
         if(doc_element.pictures.length >0){
           doc_element.pictures.forEach((pic)=>{
             promisePics.push(client.saveDocumentTypePictures(pic, doc_element.id, pic.order))
@@ -331,10 +353,10 @@ var promiseSpotsTransl =[]
             state.commit('editDocumentType',doc_element)
           }
       })
-    
+      })
       
       
-      
+    })
     })
     
   })

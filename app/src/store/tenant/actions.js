@@ -7,7 +7,10 @@ export function someAction (context) {
 export function fetchTenants (state, data) {
   return client
     .fetchTenants()
-    .then((tenants) => state.commit('setTenants', tenants))
+    .then((tenants) => {
+      state.commit('setTenants', tenants)
+      return tenants
+    })
 }
 /*
 export function editComments (state, payload) {

@@ -127,7 +127,9 @@
     "doc_pics": "Document pictures",
     "doc_cost": "Document cost",
     "doc": "Document",
-    "cost": "Cost"
+    "cost": "Cost",
+    "validable":"Validable",
+    "validators":"Validators"
   },
   "profile": {
     "username": "Username",
