@@ -27,11 +27,16 @@ export default {
       this.saveNewGlossaryItem(glossaryData)
         .then((newData) => {
           id = newData.id
-          const dataWithId = Object.assign(translationData, { id })
-          return this.addNewGlossaryItemTranslation(dataWithId)
-        })
-        .then(() => {
-          router.push({ path: '/glossary' })
+          console.log(translationData)
+          for (let i = 0; i < translationData.length; i+=1) {
+            const translation = translationData[i]
+            const dataWithId = Object.assign(translation, { id })
+            this.addNewGlossaryItemTranslation(dataWithId).then(() => {
+              if (i === translationData.length - 1) {
+                router.push({ path: '/glossary' })
+              }
+            })
+          }
         })
         .catch(() => {
           if (id !== -1) {

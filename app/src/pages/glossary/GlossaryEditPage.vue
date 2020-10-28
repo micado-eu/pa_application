@@ -25,18 +25,17 @@ export default {
     'edit-glossary': require('components/glossary/EditGlossaryElement.vue').default
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossary', 'editGlossaryItem', 'addNewGlossaryItemTranslation']),
+    ...mapActions('glossary', ['fetchGlossary', 'editGlossaryItemTranslation']),
     editGlossaryItemAndReturn(data) {
       const router = this.$router
-      const dataWithId = Object.assign(data, { id: parseInt(this.$route.params.id) })
       const idx = this.elem.translations.findIndex((t) => t.lang === data.lang)
-      if (idx !== -1) {
-        this.editGlossaryItem(dataWithId).then(() => {
-          router.push({ path: '/glossary' })
-        })
-      } else {
-        this.addNewGlossaryItemTranslation(dataWithId).then(() => {
-          router.push({ path: '/glossary' })
+      for (let i = 0; i < data.length; i += 1) {
+        const translation = data[i]
+        const dataWithId = Object.assign(translation, { id: parseInt(this.$route.params.id) })
+        this.editGlossaryItemTranslation(dataWithId).then(() => {
+          if (i === data.length - 1) {
+            router.push({ path: '/glossary' })
+          }
         })
       }
     }
