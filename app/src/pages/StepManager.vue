@@ -49,6 +49,7 @@
                       outlined
                       counter
                       maxlength="50"
+                      @blur="updateField()"
                       :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                       :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
