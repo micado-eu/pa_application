@@ -50,7 +50,7 @@
 
               <div id="div-5"> {{$t('input_labels.process_description')}} </div>
               <GlossaryEditor
-                class="desc-editor"
+                class="left"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
                 ref="editor"
@@ -561,5 +561,8 @@ export default {
 }
 .div-11 {
   display: inline-block;
+}
+.left{
+  text-align: left;
 }
 </style>
