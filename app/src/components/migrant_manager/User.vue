@@ -13,9 +13,9 @@
         <span class="span">{{this.Gender}}</span>
       </div>
       <div class="q-pa-md q-gutter-sm  col button-container">
-      <q-btn size="11px" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.integration')" @click="interventionPlan()"  />
-      <q-btn size="11px" no-caps class="button" unelevated rounded color="negative" :label="$t('button.delete')" @click="remove_user($event)" />
-      <q-btn size="11px" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.migrant_data')" @click="migrantData()"  />
+      <q-btn size="11px" :data-cy="'interventionplan'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.integration')" @click="interventionPlan()"  />
+      <q-btn size="11px" :data-cy="'deleteuser'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="negative" :label="$t('button.delete')" @click="remove_user($event)" />
+      <q-btn size="11px" :data-cy="'userdata'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.migrant_data')" @click="migrantData()"  />
       
       </div>
     </div>

@@ -6,10 +6,11 @@
         <q-btn
           color="info"
           no-caps
+          :data-cy="'addtype'"
           :label="$t('button.add_type')"
           @click="newDoc()"
           :disable="hideAdd"
-          id="add-button"
+          class="add-button"
         />
       </div>
     </div>
@@ -216,6 +217,7 @@
       <q-btn
         no-caps
         class="delete-button"
+        :data-cy="'canceldoc'"
         unelevated
         rounded
         :label="$t('button.cancel')"
@@ -223,6 +225,7 @@
       />
       <q-btn
         no-caps
+        :data-cy="'savedoc'"
         color="accent"
         unelevated
         rounded
@@ -277,6 +280,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'editdoc'.concat(document_type.id)"
             id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
@@ -285,6 +289,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'deletedoc'.concat(document_type.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingDoc(document_type)"
             size="md"
@@ -837,7 +842,7 @@ h5 {
 .div-2 {
   margin-bottom: 100px;
 }
-#add-button {
+.add-button {
   width: 200px;
 }
 .button {

@@ -4,7 +4,8 @@
       <h5 class="col-6">{{$options.name}}</h5>
       <div class="col-6 div-1">
         <q-btn
-          id="add-button"
+        :data-cy="'addusertype'"
+          class="add-button"
           color="info"
           no-caps
           :label="$t('button.add_type')"
@@ -89,6 +90,7 @@
       </FileUploader>
       <hr id="hr">
       <q-btn
+      :data-cy="'cancelusertype'"
         no-caps
         class="delete-button"
         unelevated
@@ -98,6 +100,7 @@
         @click="cancelUserType()"
       />
       <q-btn
+      :data-cy="'saveusertype'"
         no-caps
         color="accent"
         unelevated
@@ -152,6 +155,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'edituser'.concat(a_user_type.id)"
             id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
@@ -160,6 +164,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'deleteuser'.concat(a_user_type.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingUserType(a_user_type.id)"
             size="md"
@@ -349,7 +354,7 @@ h5 {
 .div-2 {
   margin-bottom: 100px;
 }
-#add-button {
+.add-button {
   width: 200px;
 }
 .button {

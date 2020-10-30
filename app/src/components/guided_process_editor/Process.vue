@@ -7,13 +7,13 @@
           <div class="col-8 flex flex-left title" >{{ this.Title }}</div>
          
             <q-item-section class="col-1.3 flex flex-center margin">
-              <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" />
+              <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )" />
             </q-item-section>
             <q-item-section class="col-1.3 flex flex-center top" >
-              <q-icon name="img:statics/icons/Icon - manage (guided processes).png"  @click.stop="manageProcess()" size="md" />
+              <q-icon name="img:statics/icons/Icon - manage (guided processes).png" :data-cy="'manageprocess'.concat(theProcess.id )" @click.stop="manageProcess()" size="md" />
             </q-item-section>
             <q-item-section class="col-1.3 flex flex-center top" >
-              <q-icon name="img:statics/icons/Icon - Delete.svg"  @click.stop="remove_process($event)" size="md" />
+              <q-icon name="img:statics/icons/Icon - Delete.svg" :data-cy="'deleteprocess'.concat(theProcess.id )" @click.stop="remove_process($event)" size="md" />
             </q-item-section>
       </div>
        <div class="row pad">

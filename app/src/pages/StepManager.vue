@@ -208,6 +208,7 @@
                 <q-btn
                   color="accent"
                   no-caps
+                  :data-cy="'savestep'"
                   unelevated
                   :label="$t('button.save')"
                   @click="saveStep()"
@@ -219,12 +220,14 @@
                   class="delete-button"
                   no-caps
                   unelevated
+                  :data-cy="'back_to_graph'"
                   :label="$t('button.back')"
                   @click="cancelEditStep()"
                 />
               </div>
               <div class="q-pa-md col-4 left">
                 <q-btn
+                  :data-cy="'deletestep'"
                   class="delete-button"
                   no-caps
                   unelevated
@@ -260,6 +263,7 @@
     <div class="row div-6">
       <div class="col right">
         <q-btn
+        :data-cy="'back_to_process'"
           class="delete-button-2"
           no-caps
           unelevated
@@ -269,6 +273,7 @@
       </div>
       <div class="col center">
         <q-btn
+        :data-cy="'addstep'"
           color="secondary"
           unelevated
           :label="$t('button.add_step')"
@@ -280,6 +285,7 @@
       </div>
       <div class="col left">
         <q-btn
+        :data-cy="'savegraph'"
           class="button-2"
           color="accent"
           unelevated

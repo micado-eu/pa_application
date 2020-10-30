@@ -27,6 +27,7 @@
         class="col-2"
       >
         <q-btn
+          :data-cy="'addprocess'"
           id="button"
           color="secondary"
           unelevated

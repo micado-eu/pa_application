@@ -22,6 +22,7 @@
             >
               <q-item
                 v-for="setting in data_settings"
+                :data-cy="setting.label.replace('.', '_')"
                 :key="setting.label"
                 :header-inset-level="1"
                 clickable
@@ -35,6 +36,7 @@
             <q-separator class="bg-dark-separator" />
           </template>
           <q-item
+          :data-cy="'data_settings.settings'.replace('.', '_')"
             clickable
             to="/data_settings/settings"
             class="situation-menu-item"
@@ -43,6 +45,7 @@
             <q-item-section>{{ $t('data_settings.settings') }}</q-item-section>
           </q-item>
           <q-item
+           :data-cy="'data_settings.language'.replace('.', '_')"
             clickable
             to="/data_settings/language"
             class="situation-menu-item"

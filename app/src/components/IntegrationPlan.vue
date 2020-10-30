@@ -8,6 +8,7 @@
           'bg-green text-black' : intervention.completed,
           'bg-yellow text-black': (!intervention.completed && intervention.validationRequestDate != null)
          }"
+        :data-cy="'intervention'.concat(intervention.id)"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.completed}"
          @click="cancelIntervention"
@@ -115,8 +116,8 @@
         <div class="q-gutter-sm">
          </div>
         <div class=center>
-        <q-btn class="delete-button" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
-        <q-btn  class="button" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
+        <q-btn class="delete-button" :data-cy="'cancelintervention'.concat(intervention.id)" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
+        <q-btn  class="button" :data-cy="'saveintervention'.concat(intervention.id)" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
         </div>
           </div>
           </div>

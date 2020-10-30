@@ -163,6 +163,7 @@
         <div id="div-10">
           <div class="q-pa-md q-gutter-md col-4 div-11">
             <q-btn
+            :data-cy="'back_to_process'.concat(theprocessid)"
               class="delete-button"
               no-caps
               rounded
@@ -172,6 +173,7 @@
               to="/guided_process_editor"
             />
             <q-btn
+            :data-cy="'manageprocess'.concat(theprocessid)"
               color="secondary"
               no-caps
               rounded
@@ -183,6 +185,7 @@
             />
 
             <q-btn
+            :data-cy="'saveprocess'.concat(theprocessid)"
               color="accent"
               no-caps
               rounded

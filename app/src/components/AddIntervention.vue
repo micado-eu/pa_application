@@ -83,6 +83,7 @@
           </div>
           <div class="center">
             <q-btn
+            :data-cy="'cancelintervention'"
               class="delete-button"
               unelevated
               no-caps
@@ -91,6 +92,7 @@
             />
             <q-btn
               class="button"
+              :data-cy="'saveintervention'"
               unelevated
               no-caps
               color="accent"

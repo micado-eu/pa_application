@@ -14,6 +14,7 @@
           <UploadButton entity="intervention_category" />
           <q-btn
             color="info"
+            :data-cy="'addcategory'"
             no-caps
             :label="$t('button.add_category')"
             @click="newIntegrationCategory()"
@@ -81,6 +82,7 @@
         </q-tabs>
         <hr id="hr">
         <q-btn
+        :data-cy="'savecategory'"
           class="button"
           color="accent"
           no-caps
@@ -90,6 +92,7 @@
           @click="savingIntegrationCategory()"
         />
         <q-btn
+          :data-cy="'cancelcategory'"
           class="delete-button"
           no-caps
           unelevated
@@ -134,6 +137,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'editcategory'.concat(a_integration_category.id)"
             id="icon"
             style="margin-right:10px;"
             name="img:statics/icons/Edit.png"
@@ -145,6 +149,7 @@
         <q-item-section class="col-1 flex flex-center">
 
           <q-icon
+          :data-cy="'deletecategory'.concat(a_integration_category.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingIntegrationCategory(a_integration_category.id)"
             size="md"

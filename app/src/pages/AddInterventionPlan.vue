@@ -12,7 +12,7 @@
                       <q-input dense bg-color="grey-3" counter maxlength="100" standout outlined v-model="plan_shell.title" />
                     </div>
                     <div id="div-8">
-                     <q-btn id="add-button" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
+                     <q-btn id="add-button" :data-cy="'addintervention'" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
                     </div>
                   </div>
     </div>
@@ -103,15 +103,15 @@
         <div class="q-gutter-sm">
          </div>
          <div id="div-20">
-        <q-btn class="form-delete-button" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
-        <q-btn  class="form-save-button"  unelevated no-caps color="accent" :label="$t('button.save')" :id="plan_shell.id" @click="saveAction()" />
+        <q-btn class="form-delete-button" :data-cy="'cancelintervention'" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
+        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.save')" :id="plan_shell.id" @click="saveAction()" />
         </div>
         </div>
       </q-card-section>
     </q-card>
      <div id="div-21">
-     <q-btn class="page-button" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan()" />
-     <q-btn class="page-button" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.back')" @click="goBack" />
+     <q-btn class="page-button" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan()" />
+     <q-btn class="page-button" :data-cy="'cancelinterventionplan'" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.back')" @click="goBack" />
   </div>
     </div>
 

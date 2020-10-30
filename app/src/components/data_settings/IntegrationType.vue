@@ -4,12 +4,13 @@
       <h5 class="col-6">{{$options.name}}</h5>
       <div class="col-6 div-1">
         <q-btn
+        :data-cy="'addtype'"
           color="info"
           no-caps
           :label="$t('button.add_type')"
           @click="newIntegrationType()"
           :disable="hideAdd"
-          id="add-button"
+          class="add-button"
         />
       </div>
     </div>
@@ -106,6 +107,7 @@
       </div>
       <hr id="hr">
       <q-btn
+      :data-cy="'canceltype'"
         no-caps
         class="delete-button"
         unelevated
@@ -114,6 +116,7 @@
         @click="cancelIntegrationType()"
       />
       <q-btn
+      :data-cy="'savetype'"
         no-caps
         color="accent"
         unelevated
@@ -158,6 +161,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'edittype'.concat(a_integration_type.id)"
             id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
@@ -166,6 +170,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'deletetype'.concat(a_integration_type.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingIntegrationType(a_integration_type.id)"
             size="md"
@@ -361,7 +366,7 @@ h5 {
 .div-2 {
   margin-bottom: 100px;
 }
-#add-button {
+.add-button {
   width: 200px;
 }
 .button {

@@ -4,12 +4,13 @@
       <h5 class="col-6">{{$options.name}}</h5>
       <div class="col-6 div-1">
         <q-btn
+        :data-cy="'addtopic'"
           color="info"
           no-caps
           :label="$t('button.add_type')"
           @click="newTopic()"
           :disable="hideAdd"
-          id="add-button"
+          class="add-button"
         />
       </div>
     </div>
@@ -80,6 +81,7 @@
 
       <hr id="hr">
       <q-btn
+      :data-cy="'canceltopic'"
         no-caps
         class="delete-button"
         unelevated
@@ -88,6 +90,7 @@
         @click="cancelTopic()"
       />
       <q-btn
+      :data-cy="'savetopic'"
         no-caps
         color="accent"
         unelevated
@@ -143,6 +146,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'edittopic'.concat(a_topic.id)"
             id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
@@ -151,6 +155,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
+          :data-cy="'deletetopic'.concat(a_topic.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingTopic(a_topic.id)"
             size="md"
@@ -334,7 +339,7 @@ h5 {
 .div-2 {
   margin-bottom: 100px;
 }
-#add-button {
+.add-button {
   width: 200px;
 }
 .button {
