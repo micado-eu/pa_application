@@ -1,6 +1,6 @@
 <template>
   <svg :width="width" :height="height" :id="id">
-    <g :transform="`translate( ${ width/2 },${ height/2})`">
+    <g v-if="sizeSet" :transform="`translate( ${ width/2 },${ height/2})`">
       <g v-for="(d,i) in pie(pieData)" :key="i">
         <path :d="pathArc(d)" :fill="interpolateGnBu(color(d.data[labelColumn]))" />
         <text :transform="drawLabel(d)" text-anchor="middle" font-size="17">{{d.data[labelColumn]}}</text>
@@ -9,7 +9,7 @@
   </svg>
 </template>
 <script>
-import { arc, pie, interpolateGnBu, scaleBand } from "d3";
+import { arc, pie, interpolateGnBu, scaleBand } from "d3"
 
 export default {
   name: "pieChart",
@@ -25,50 +25,52 @@ export default {
       id: "pieSvg",
       radius: "150",
       width: "100%",
-      height: "85%"
-    };
+      height: "85%",
+      sizeSet: false
+    }
   },
   computed: {
     svg: function() {
-      return select("#" + this.id);
+      return select("#" + this.id)
     },
     pie: function() {
-      return pie().value(d => parseInt(d[this.valueColumn]));
+      return pie().value(d => parseInt(d[this.valueColumn]))
     },
     pathArc: function() {
       return arc()
         .outerRadius(this.radius)
-        .innerRadius(0);
+        .innerRadius(0)
     },
     labelArc: function() {
       return arc()
         .outerRadius(1.5 * this.radius)
-        .innerRadius(1.5 * this.radius);
+        .innerRadius(1.5 * this.radius)
     },
     color: function() {
       return scaleBand()
         .domain(this.pieData.map(d => d[this.labelColumn]))
-        .range([0, 1]);
+        .range([0, 1])
     },
     drawLabel: function() {
-      return d => "translate(" + this.labelArc.centroid(d) + ")";
+      return d => "translate(" + this.labelArc.centroid(d) + ")"
     },
     interpolateGnBu: function() {
-      return interpolateGnBu;
+      return interpolateGnBu
     }
   },
   methods: {
     updateGraph: function() {
-      const client = this.$el.getBoundingClientRect();
-      this.width = client.width - 20;
-      this.height = client.height;
+      const client = this.$el.getBoundingClientRect()
+      this.width = client.width - 20
+      this.height = client.height
     }
   },
   mounted: function() {
     // window.resize event listener
-    this.updateGraph();
+    this.updateGraph()
+    this.sizeSet = true
   }
-};
+}
 </script>
 <style scoped>
 svg {

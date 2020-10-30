@@ -6,7 +6,7 @@
         <h5>{{category}}&nbsp;&nbsp;</h5>
         <q-btn
           id="printbtn"
-          color="info"
+          color="amber"
           icon="print"
           round
           title="print this page"

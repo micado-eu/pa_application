@@ -10,7 +10,7 @@
       <q-scroll-area class="fit">
         <q-list>
           <template v-for="(board,i) in boards">
-            <q-separator class="bg-dark-separator" :key="'sep' + i" />
+            <q-separator class="bg-dark-separator" :key="'sep_u_' + i" />
             <q-expansion-item
               class="situation-menu-expansion-item"
               :key="i"
@@ -32,7 +32,7 @@
                 <q-item-section>{{ c.category }}</q-item-section>
               </q-item>
             </q-expansion-item>
-            <q-separator class="bg-dark-separator" :key="'sep' + i" />
+            <q-separator class="bg-dark-separator" :key="'sep_b_' + i" />
           </template>
         </q-list>
       </q-scroll-area>
@@ -79,9 +79,14 @@ export default {
     this.$q.loading.show({
       delay: 400
     })
-    this.$store.dispatch('statistics/fetchStatistics').then(() => {
+    if(true){
+    this.$store.dispatch('statistics/fetchStatistics').then((res) => {
       this.$q.loading.hide()
+      console.log("statistics: ",this.$store.state.statistics)
     })
+    }else{
+      this.$q.loading.hide()
+    }
   }
 }
 </script>

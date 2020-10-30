@@ -29,8 +29,8 @@
 <script>
 export default {
   name: "Modal",
-  props: ["graphData"],
-};
+  props: ["graphData"]
+}
 </script>
 
 <style scoped>

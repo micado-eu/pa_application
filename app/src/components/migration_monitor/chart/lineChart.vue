@@ -1,7 +1,7 @@
 <template>
   <svg :width="width" :height="height" :id="id">
     <g
-      v-if="typeof width!=='string'"
+      v-if="sizeSet"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
       <path :d="drawLine(lineData)" fill="none" stroke="#99e6b4" stroke-width="3px" />
@@ -47,25 +47,26 @@
       />
     </g>
     <text
-      v-if="typeof width!=='string'"
+      v-if="sizeSet"
       :x="-margin.top - height/2"
       :y="margin.left/2"
       text-anchor="middle"
       transform="rotate(-90)"
     >{{valueColumn}}</text>
     <text
-      v-if="typeof width!=='string'"
+      v-if="sizeSet"
       :x="width/2 "
       :y="height - margin.bottom/2.4"
       text-anchor="middle"
     >{{timeColumn}}</text>
     <ChartAxisBottom
-      v-if="typeof width!=='string'"
+      v-if="sizeSet"
       :scaleX="scaleX"
       :key="xid"
       :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"
     />
     <ChartAxisLeft
+      v-if="sizeSet"
       :scaleY="scaleY"
       :key="yid"
       :transform="'translate(' + margin.left + ', ' + margin.top + ')'"
@@ -107,10 +108,12 @@ export default {
         bottom: 60
       },
       width: '100%',
-      height: '85%',
+      height: '70%',
       xid: 'x0',
       yid: 'y0',
-      timeout: false
+      timeout: false,
+      sizeSet: false,
+      rangeTimeout: false
     }
   },
   computed: {
@@ -157,8 +160,7 @@ export default {
       this.width = client.width
       this.height = client.height
       // force axes to update according to the size
-      this.xid = this.xid === 'x_0' ? 'x_1' : 'x_0'
-      this.yid = this.yid === 'y_0' ? 'y_1' : 'y_0'
+      this.refreshAxes()
     },
     onResize() {
       // clear the timeout
@@ -177,12 +179,24 @@ export default {
       const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
       label.style.opacity = 0
       labelLine.style.opacity = 0
+    },
+    refreshAxes(){
+      // force axes to update according to the size
+      this.xid = this.xid === 'x_0' ? 'x_1' : 'x_0'
+      this.yid = this.yid === 'y_0' ? 'y_1' : 'y_0'
+    }
+  },
+  watch: {
+    lineData: function (val) {
+      clearTimeout(this.rangeTimeout)
+      this.rangeTimeout = setTimeout(this.refreshAxes, 250)
     }
   },
   mounted() {
     // window.resize event listener
     window.addEventListener('resize', this.onResize)
     this.updateGraph()
+    this.sizeSet = true
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.onResize)
@@ -201,7 +215,7 @@ div {
   transition: 0.2s;
 }
 .line {
-  stroke: #f5b642;
+  stroke: #ffc107;
 }
 rect {
   pointer-events: all;

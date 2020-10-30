@@ -1,30 +1,41 @@
 <template>
-  <div id="card" :style="{ 'height': height }" @click="$emit('chart-clicked',graphData.id)">
+  <div id="card" :style="{ 'height': height }" @click="$emit('chart-clicked', graph.id)">
+    <h6>{{graph.title}}</h6>
     <lineChart
-      v-if="graphData.type==='LINE'"
+      v-if="graph.type==='LINE'"
       class="chart"
-      :lineData="graphData.content"
-      :timeColumn="graphData.x"
-      :valueColumn="graphData.y"
-      :xistime="graphData.xistime"
+      :lineData="content"
+      :timeColumn="graph.x"
+      :valueColumn="graph.y"
+      :xistime="graph.xistime"
     />
     <barChart
-      v-if="graphData.type==='BAR'"
+      v-if="graph.type==='BAR'"
       class="chart"
-      :lineData="graphData.content"
-      :timeColumn="graphData.x"
-      :valueColumn="graphData.y"
-      :xistime="graphData.xistime"
+      :lineData="content"
+      :timeColumn="graph.x"
+      :valueColumn="graph.y"
+      :xistime="graph.xistime"
     />
     <pieChart
-      v-if="graphData.type==='PIE'"
+      v-if="graph.type==='PIE'"
       class="chart"
-      :pieData="graphData.content"
-      :labelColumn="graphData.x"
-      :valueColumn="graphData.y"
+      :pieData="graph.content"
+      :labelColumn="graph.x"
+      :valueColumn="graph.y"
     />
-    <mapChart v-if="graphData.type==='MAP'" class="chart" />
-    <h6>{{graphData.title}}</h6>
+    <mapChart v-if="graph.type==='MAP'" class="chart" />
+    <div v-if="['LINE','BAR'].indexOf(graph.type) > -1" class="q-pa-md">
+      <q-badge color='amber' >
+        Model: {{ lower }} to {{ upper }} ({{min}} to {{ max }})
+      </q-badge>
+      <q-range
+        v-model="range"
+        :min="0"
+        :max="graph.content.length-1"
+        color="amber"
+      />
+    </div>
   </div>
 </template>
 
@@ -45,12 +56,36 @@ export default {
   props: ['graphData'],
   data() {
     return {
-      height: '350px'
+      height: '400px',
+      range: { min: 0, max: 0 },
+      graph: this.graphData
     }
   },
-  computed: {},
+  computed: {
+    d: function(){
+      return this.graphData
+    },
+    min:function(){
+      return this.graphData.content[0][ this.graphData.x]
+    },
+    max: function () {
+      return  this.graphData.content[ this.graphData.content.length-1][this.graphData.x] 
+    },
+    lower: function (){
+      return this.graphData.content[this.range.min][this.graphData.x] 
+    },
+    upper: function (){
+      return this.graphData.content[this.range.max][this.graphData.x] 
+    },
+    content: function (){
+      const content = this.graph.content.filter((c,i)=> i >= this.range.min && i <= this.range.max)
+      return content
+    }
+  },
   created() {
     if (this.graphData.type === 'MAP' || this.graphData.type === 'PIE') this.height = '600px'
+    this.range.max = this.graphData.content.length - 1 
+  
   }
 }
 </script>
@@ -68,11 +103,15 @@ export default {
   /* margin: 50px; */
 }
 h6 {
-  margin: 0;
+  padding: 20px 0 0 0;
+  margin:0;
   text-align: center;
 }
 .chart {
   display: block;
   margin: auto;
+}
+.q-pa-md{
+  padding: 0px 16px
 }
 </style>
