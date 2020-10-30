@@ -44,6 +44,7 @@
         <q-item-label header>{{ $t('menu.title') }}</q-item-label>
         <q-item
           clickable
+          :data-cy="nav.label.replace('.', '_')"
           exact
           dark
           active
