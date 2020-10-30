@@ -1,3 +1,4 @@
 export default {
-  features: []
+  features: [],
+  featuresFlag: []
 }

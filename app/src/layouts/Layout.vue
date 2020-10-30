@@ -1,6 +1,9 @@
 <template>
   <q-layout view="hHh lpR fFf">
-    <q-header elevated class="bg-accent">
+    <q-header
+      elevated
+      class="bg-accent"
+    >
       <q-toolbar>
         <q-btn
           flat
@@ -44,6 +47,7 @@
           exact
           dark
           active
+          v-feature-flipping="nav.feature"
           active-class="my-menu-link"
           v-for="(nav) in navs"
           @click="changeIcon(nav.label)"
@@ -52,7 +56,10 @@
           style="padding-top:16px; padding-bottom:16px"
         >
           <q-item-section avatar>
-            <q-icon :key="nav.label" :name="(selectedKey == nav.label) ? nav.active_icon : nav.icon " />
+            <q-icon
+              :key="nav.label"
+              :name="(selectedKey == nav.label) ? nav.active_icon : nav.icon "
+            />
           </q-item-section>
           <q-item-section>
             <q-item-label>{{ $t( nav.label) }}</q-item-label>
@@ -61,14 +68,17 @@
         </q-item>
         <br />
         <div class="row justify-center full-height full-width text-center">
-          <img alt="Powered by Micado" src="~assets/powered_Micado_white.png" />
+          <img
+            alt="Powered by Micado"
+            src="~assets/powered_Micado_white.png"
+          />
         </div>
       </q-list>
     </q-drawer>
 
     <q-page-container>
       <q-page>
-      <router-view />
+        <router-view />
       </q-page>
     </q-page-container>
   </q-layout>
@@ -85,7 +95,7 @@ export default {
     AuthMenu
   },
 
-  data() {
+  data () {
     return {
       leftDrawerOpen: false,
       navs: [
@@ -94,6 +104,7 @@ export default {
           icon: 'img:statics/icons/Icon - Home.png',
           active_icon: 'img:statics/icons/Icon - Home (selected).png',
           to: '/',
+          feature: "FEAT_DEFAULT",
           description: 'menu.home_desc'
         },
         {
@@ -101,6 +112,7 @@ export default {
           icon: 'img:statics/icons/Icon - Migration Situation Monitor.png',
           active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).png',
           to: '/situation/editor',
+          feature: "FEAT_DEFAULT",
           description: 'menu.situation_desc'
         },
         {
@@ -108,6 +120,7 @@ export default {
           icon: 'img:statics/icons/Icon - Migrant Management.png',
           active_icon: 'img:statics/icons/Icon - Migrant Management (selected).png',
           to: '/migrant',
+          feature: "FEAT_DEFAULT",
           description: 'menu.migrant_desc'
         },
         {
@@ -115,6 +128,7 @@ export default {
           icon: 'img:statics/icons/Icon - CSO Admin Management.png',
           active_icon: 'img:statics/icons/Icon - CSO Admin Management (selected).png',
           to: '/cso',
+          feature: "FEAT_DEFAULT",
           description: 'menu.cso_desc'
         },
         {
@@ -122,6 +136,7 @@ export default {
           icon: 'img:statics/icons/Icon - Guided Processes.png',
           active_icon: 'img:statics/icons/Icon - Guided Processes (selected).png',
           to: '/guided_process_editor',
+          feature: "FEAT_PROCESSES",
           description: 'menu.process_desc'
         },
         {
@@ -129,6 +144,7 @@ export default {
           icon: 'img:statics/icons/Icon - Information Centre.png',
           active_icon: 'img:statics/icons/Icon - Information Centre (selected).png',
           to: '/information',
+          feature: "FEAT_EVENTS",
           description: 'menu.information_centre_desc'
         },
         {
@@ -136,6 +152,7 @@ export default {
           icon: 'img:statics/icons/Icon - Events (45x45).png',
           active_icon: 'img:statics/icons/Icon - Events (45x45).png',
           to: '/events',
+          feature: "FEAT_EVENTS",
           description: 'menu.events_desc'
         },
         {
@@ -143,6 +160,7 @@ export default {
           icon: 'img:statics/icons/Icon - Micado Stats.png',
           active_icon: 'img:statics/icons/Icon - Micado Stats (selected).png',
           to: '/dashboard',
+          feature: "FEAT_DEFAULT",
           description: 'menu.usage_desc'
         },
         {
@@ -150,6 +168,7 @@ export default {
           icon: 'img:statics/icons/Icon - Glossary.png',
           active_icon: 'img:statics/icons/Icon - Glossary (selected).png',
           to: '/glossary',
+          feature: "FEAT_GLOSSARY",
           description: 'menu.glossary_desc'
         },
         {
@@ -157,6 +176,7 @@ export default {
           icon: 'img:statics/icons/Icon - Chatbot.png',
           active_icon: 'img:statics/icons/Icon - Chatbot (selected).png',
           to: '/chatbot',
+          feature: "FEAT_ASSISTANT",
           description: 'menu.chatbot_desc'
         },
         {
@@ -164,6 +184,7 @@ export default {
           icon: 'img:statics/icons/Icon - Settings.png',
           active_icon: 'img:statics/icons/Icon - Settings (selected).png',
           to: '/data_settings/document_types',
+          feature: "FEAT_DEFAULT",
           description: 'menu.setting_desc'
         }
       ],
@@ -171,7 +192,7 @@ export default {
     }
   },
   methods: {
-    changeIcon(key) {
+    changeIcon (key) {
       console.log('selected key')
       this.selectedKey = key
     }

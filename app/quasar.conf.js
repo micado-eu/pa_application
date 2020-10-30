@@ -12,6 +12,7 @@ module.exports = function (ctx) {
       'mermaid',
       'axios',
       'loadData',
+      'featureflag',
       'countly'
     ],
 
