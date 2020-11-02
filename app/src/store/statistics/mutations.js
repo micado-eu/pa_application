@@ -9,9 +9,7 @@ export function setCharts(state, charts) {
        * format all strings
        */
       Object.keys(c).forEach((key) => {
-        if (typeof c[key] === 'string') {
-          c[key] = c[key].trim()
-        }
+        c[key] = typeof c[key] === 'string' ? c[key].trim() : c[key]
       })
       if (typeof c.content === 'string') {
         try {
@@ -60,5 +58,11 @@ export function setCategories(state, charts) {
     const list = charts.map((g) => ({ category: g.category, board: g.board }))
     const uniqueList = Array.from(new Set(list.map((d) => JSON.stringify(d))))
     state.categories = uniqueList.map((d) => JSON.parse(d))
+  }
+}
+
+export function setLastRefresh (state, last_refresh) {
+  if (last_refresh) {
+    state.last_refresh = last_refresh
   }
 }

@@ -1,3 +1,6 @@
 export function getStats(state) {
-  return state.statistics
+  return state
+}
+export function last_refresh (state) {
+  return state.last_refresh
 }
