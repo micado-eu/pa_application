@@ -2,8 +2,20 @@
   <svg :width="width" :height="height" :id="id">
     <g v-if="sizeSet" :transform="`translate( ${ width/2 },${ height/2})`">
       <g v-for="(d,i) in pie(pieData)" :key="i">
-        <path :d="pathArc(d)" :fill="interpolateGnBu(color(d.data[labelColumn]))" />
-        <text :transform="drawLabel(d)" text-anchor="middle" font-size="17">{{d.data[labelColumn]}}</text>
+        <path 
+          :d="pathArc(d)" 
+          :fill="interpolateGnBu(color(d.data[labelColumn]))" 
+          @mouseover="onMouseOver"
+          @mouseleave="onMouseLeave"  
+          :id="d.data[labelColumn]+'_arc'"
+        />
+        <text 
+          class="label" 
+          :ref="d.data[labelColumn]+'_label'" 
+          :key="d.data[labelColumn]+'_label'" 
+          :transform="drawLabel(d)" text-anchor="middle" 
+          font-size="17">{{d.data[labelColumn]}} - {{d.data[valueColumn]}}
+        </text>
       </g>
     </g>
   </svg>
@@ -63,6 +75,14 @@ export default {
       const client = this.$el.getBoundingClientRect()
       this.width = client.width - 20
       this.height = client.height
+    },
+    onMouseOver(event) {
+      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
+      label.style.opacity = 1
+    },
+    onMouseLeave(event) {
+      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
+      label.style.opacity = 0.2
     }
   },
   mounted: function() {
@@ -73,19 +93,15 @@ export default {
 }
 </script>
 <style scoped>
-svg {
-  /* background-color: null;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
-    0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
-    0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
-    0 100px 80px rgba(0, 0, 0, 0.12);
-  border-radius: 5px; */
-}
 div {
   background: white;
 }
 path {
   stroke: white;
   stroke-width: 1px;
+}
+.label {
+  opacity: 0.2;
+  transition: 0.2s;
 }
 </style>

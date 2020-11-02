@@ -52,7 +52,8 @@ export default {
       const boards = this.$store.state.statistics.boards.map((b) => ({ title: b, link: `/situation/${b}` }))
       boards.push(
         { title: 'Master Portal', link: '/situation/map' },
-        { title: 'editor', link: '/situation/editor' }
+        // { title: 'LGV data', link: '/situation/lgv' },
+        { title: 'Editor', link: '/situation/editor' }
       )
       return boards
     }

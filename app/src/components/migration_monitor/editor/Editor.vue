@@ -11,18 +11,18 @@
 
 <script>
 // import Category from "./Category";
-import AddNew from "./AddNew";
+import AddNew from "./AddNew"
 
 export default {
   name: "MigrationMonitorEditor",
   components: {
     // Category,
-    AddNew,
+    AddNew
   },
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 <style scoped>
 </style>

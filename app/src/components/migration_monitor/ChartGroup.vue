@@ -6,7 +6,7 @@
         <h5>{{category}}&nbsp;&nbsp;</h5>
         <q-btn
           id="printbtn"
-          color="amber"
+          color="grey"
           icon="print"
           round
           title="print this page"
@@ -42,16 +42,16 @@ export default {
     charts() {
       return [
         ...this.$store.state.statistics.charts,
-        // FIXME: mockdata for map chart
-        {
-          board: 'hamburg',
-          category: 'incoming',
-          content: '',
-          description: 'bla',
-          format: 'csv',
-          title: 'TEST MAP',
-          type: 'MAP'
-        }
+        // // FIXME: mockdata for map chart
+        // {
+        //   board: 'hamburg',
+        //   category: 'incoming',
+        //   content: '',
+        //   description: 'bla',
+        //   format: 'csv',
+        //   title: 'TEST MAP',
+        //   type: 'MAP'
+        // }
       ]
     }
   },

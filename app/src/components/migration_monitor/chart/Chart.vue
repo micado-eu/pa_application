@@ -26,14 +26,14 @@
     />
     <mapChart v-if="graph.type==='MAP'" class="chart" />
     <div v-if="['LINE','BAR'].indexOf(graph.type) > -1" class="q-pa-md">
-      <q-badge color='amber' >
+      <q-badge color='grey' >
         Model: {{ lower }} to {{ upper }} ({{min}} to {{ max }})
       </q-badge>
       <q-range
         v-model="range"
         :min="0"
         :max="graph.content.length-1"
-        color="amber"
+        color="grey"
       />
     </div>
   </div>

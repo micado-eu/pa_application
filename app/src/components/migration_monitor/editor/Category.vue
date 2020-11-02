@@ -34,23 +34,23 @@ export default {
       hideForm: true,
       hideAdd: false,
       isNew: false
-    };
+    }
   },
   computed: {
     category() {
-      return this.$store.state.statistics.categories.map(d => d.category);
+      return this.$store.state.statistics.categories.map(d => d.category)
     }
   },
   methods: {
     onClickTitle: function() {
-      this.$emit("scroll", "#" + this.$options.name);
+      this.$emit("scroll", "#" + this.$options.name)
     },
     deleteIntegrationCategory(index) {
-      console.log(index);
+      console.log(index)
       this.$store.dispatch(
         "integration_category/deleteIntegrationCategory",
         index
-      );
+      )
     },
     saveIntegrationCategory() {
       if (this.isNew) {
@@ -61,8 +61,8 @@ export default {
             this.int_cat_shell
           )
           .then(int_cat => {
-            console.log("saved");
-          });
+            console.log("saved")
+          })
       } else {
         // we are updating the exsisting
         this.$store
@@ -71,39 +71,39 @@ export default {
             this.int_cat_shell
           )
           .then(int_cat => {
-            console.log("updated");
-          });
+            console.log("updated")
+          })
       }
-      this.hideForm = true;
-      this.int_cat_shell = { id: -1, title: "" };
+      this.hideForm = true
+      this.int_cat_shell = { id: -1, title: "" }
     },
     newIntegrationCategory() {
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
     },
     cancelIntegrationCategory() {
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
     },
     edit(integration_category) {
-      this.isNew = false;
-      this.hideForm = false;
-      this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
+      this.isNew = false
+      this.hideForm = false
+      this.int_cat_shell = JSON.parse(JSON.stringify(integration_category))
     }
   },
   //store.commit('increment', 10)
   created() {
-    this.loading = true;
-    console.log(this.$store);
+    this.loading = true
+    console.log(this.$store)
     this.$store
       .dispatch("integration_category/fetchIntegrationCategory")
       .then(processes => {
-        this.loading = false;
-      });
+        this.loading = false
+      })
   }
-};
+}
 </script>
 <style scoped>
 a {

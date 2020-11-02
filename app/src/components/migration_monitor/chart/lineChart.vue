@@ -8,7 +8,7 @@
       <circle
         v-for="(d,i) in lineData"
         :key="i"
-        :cx="scaleX(d[timeColumn])"
+        :cx="scaleX(d[timeColumn])+barWidth/2"
         :cy="scaleY(d[valueColumn])"
         :r="2"
         fill="#3490DC"
@@ -39,8 +39,8 @@
         class="line"
         :key="i+'_line'"
         :ref="i+'_line'"
-        :x1="scaleX(d[timeColumn])"
-        :x2="scaleX(d[timeColumn])"
+        :x1="scaleX(d[timeColumn])+barWidth/2"
+        :x2="scaleX(d[timeColumn])+barWidth/2"
         :y1="height-margin.top-margin.bottom"
         :y2="scaleY(d[valueColumn])"
         stroke-width="2"
@@ -143,7 +143,7 @@ export default {
     },
     drawLine() {
       return line()
-        .x((d) => this.scaleX(d[this.timeColumn]))
+        .x((d) => this.scaleX(d[this.timeColumn]) + this.barWidth/2) 
         .y((d) => this.scaleY(d[this.valueColumn]))
         .curve(curveCardinal)
     },

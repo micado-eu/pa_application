@@ -8,7 +8,6 @@
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="title"
@@ -23,7 +22,6 @@
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="category"
@@ -52,7 +50,6 @@
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="board"
@@ -61,7 +58,7 @@
             />
           </div>
         </div>
-        <div class="q-pa-xsm q-mt-md row" style="text-align:center; padding-right:45px">
+        <div v-if="type!=='PIE'" class="q-pa-xsm q-mt-md row" style="text-align:center; padding-right:45px">
           <div class="col-6 q-pl-xl q-mr-l">
             <p class='label'>x Axis</p>
           </div>
@@ -70,7 +67,6 @@
           </div>
           <div class="col-6 q-pl-xl" >
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="x"
@@ -79,7 +75,6 @@
           </div>
           <div class="col-6 q-pl-xl" style="margin: auto;display: block;">
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="y"
@@ -93,7 +88,7 @@
             <p class='label'>Chart Description</p>
           </div>
           <div class="col-12 q-pl-xl">
-            <q-input type="textarea" bg-color="grey-3" standout v-model="description" placeholder="Describe your Chart"/>
+            <q-input type="textarea" standout v-model="description" placeholder="Describe your Chart"/>
           </div>
         </div>
 
@@ -124,7 +119,6 @@
             <q-file
               v-model="filename"
               @input="getFiles"
-              bg-color="grey-3"
               dense
               standout
               :rules="[val => !!val || 'Field is required']"
@@ -144,7 +138,6 @@
             <q-file
               v-model="filename"
               @input="getFiles"
-              bg-color="grey-3"
               dense
               standout
               :rules="[val => !!val || 'Field is required']"
@@ -162,7 +155,6 @@
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
-              bg-color="grey-3"
               dense
               standout
               v-model="url"
@@ -196,6 +188,32 @@
         </div>
       </div>
     </div>
+    <q-dialog v-model="succeed">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Success</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          Upload succeeded! Please check the corresponding board to see the new chart.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="black" v-close-popup @click="!succeed"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="fail">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Error</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          Upload succeeded! Please check the corresponding board to see the new chart.
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="black" v-close-popup @click="!fail"/>
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -218,7 +236,9 @@ export default {
       types: ["BAR", "LINE", "PIE"],
       board: "",
       content: null,
-      filename: null
+      filename: null,
+      succeed: false,
+      fail: false
     }
   },
   computed: {
@@ -240,18 +260,16 @@ export default {
         y: this.y,
         board: this.board
       }
+      this.$q.loading.show({ delay: 400 })
       this.$store
         .dispatch("statistics/addChart", data)
-        .then(() => {
-          this.$q.dialog({
-            message: "upload succeeds, please refresh to see new charts"
-          })
-          // this.$router.push("/situation/editor");
+        .then((res) => {
+          this.$q.loading.hide()
+          this.succeed = true
         })
         .catch((err) => {
-          this.$q.dialog({
-            message: err
-          })
+          this.$q.loading.hide()
+          this.fail = true
         })
     },
     reset: function () {
@@ -316,5 +334,8 @@ $btn_secondary: #cdd0d2;
 }
 .q-btn{
   width: 135px;
+}
+.text-primary{
+  color: none
 }
 </style>
