@@ -44,9 +44,9 @@ export default {
   mixins:[
     storeMappingMixin({
     getters: {
-      tenants: 'ngo_user/tenants'
+     tenants: 'tenant/tenants'
     }, actions: {
-      fetchTenant: 'ngo_user/fetchTenant'
+      fetchTenant: 'tenant/fetchTenants'
     }
   })
   ],

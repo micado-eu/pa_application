@@ -5,7 +5,7 @@ export default {
   fetchTenants () {
     return axiosInstance
       .get('/backend/1.0.0/tenants')
-      .then((response) => response.data)
+      .then((response) => {return response.data})
       .catch(error_handler)
   }
   /* ,
