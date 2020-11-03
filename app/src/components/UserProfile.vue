@@ -3,7 +3,7 @@
    <div class="row container">
      <h3 class="header">{{user.umUserName}}</h3>
      <span class="top-span">
-     <q-btn class=add-button unelevated color="accent" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
+     <q-btn class=add-button unelevated color="secondary" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
      </span >
     <q-card class="my-card" flat >
       <q-card-section horizontal>
@@ -59,7 +59,7 @@ export default {
 
 <style scoped>
 .container{
-  width:750px
+  width:100%
 }
 .header{
   margin-bottom:30px;
@@ -82,7 +82,7 @@ export default {
   border-radius:2px
 }
 .my-card{
-width:750px; 
+width:100%; 
 margin-left:10px
 }
 .section{

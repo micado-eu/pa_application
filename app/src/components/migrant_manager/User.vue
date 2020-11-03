@@ -1,27 +1,37 @@
 <template>
-<q-item class="item">
-        <div>
+<div>
+<div class="item">
         
-          <div class="username">{{ this.Username }}</div>
+        
+    <div class="col-12 username ">{{ this.Username }}</div>
         
     <div class="row width">
-       <div class=" q-pa-md  col container" >
+       <div class=" q-pa-md  col-8 container" >
         <span class="span">{{this.Age}}</span>
         <span class="span">|</span>
         <span class="span">{{this.Nationality}}</span>
         <span class="span">|</span>
         <span class="span">{{this.Gender}}</span>
       </div>
-      <div class="q-pa-md q-gutter-sm  col button-container">
-      <q-btn size="11px" :data-cy="'interventionplan'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.integration')" @click="interventionPlan()"  />
-      <q-btn size="11px" :data-cy="'deleteuser'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="negative" :label="$t('button.delete')" @click="remove_user($event)" />
-      <q-btn size="11px" :data-cy="'userdata'.concat(theUser.umId)" no-caps class="button" unelevated rounded color="secondary" :label="$t('button.migrant_data')" @click="migrantData()"  />
-      
+      <div class="q-pa-md q-gutter-sm  col-4 button-container">
+        <div class="row">
+          <div class="col-4">
+      <q-icon name="img:statics/icons/Icon - Integration.svg" size="md" :data-cy="'interventionplan'.concat(theUser.umId)" @click="interventionPlan()"  />
+          </div>
+          <div class="col-4">
+            <q-icon name="img:statics/icons/Icon - Data.svg" size="md" :data-cy="'userdata'.concat(theUser.umId)"  @click="migrantData()"  />
+          </div>
+          <div class="col-4">
+            <q-icon name="img:statics/icons/Icon - Delete.svg" size="md" :data-cy="'deleteuser'.concat(theUser.umId)"  @click="remove_user($event)" />
+          </div>
+        </div>
       </div>
     </div>
-    <hr class="hr">
-    </div>
-  </q-item>
+    
+    
+  </div>
+  <hr class="hr">
+</div>
 </template>
 
 <script>
@@ -53,18 +63,19 @@ export default {
 <style scoped>
 .item{
   padding-top:16px;
-  padding-bottom:0px
+  padding-bottom:0px;
+  width:98%
 }
 .username{
  font-size:20px; 
  text-align:left; 
  font-size:18px;
- width:750px; 
+ width:100%; 
  padding-bottom:0px; 
  padding-left:0px
 }
 .width{
-  width:750px
+  width:100%
 }
 .container{
   text-align:left; 
@@ -78,7 +89,7 @@ export default {
 .button-container{
   padding-top:0px; 
   padding-bottom:0px; 
-  text-align:right
+  text-align:right;
 }
 .button{
   width:70px;

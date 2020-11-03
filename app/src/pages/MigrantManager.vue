@@ -7,8 +7,7 @@
         class="col"
       >
         <q-input
-          id="input"
-          dense
+          class="input"
           items-center
           filled
           v-model="search"
@@ -22,7 +21,25 @@
         </q-input>
       </div>
     </div>
-
+    <div>
+    <div class="row labels">
+      
+      <div class="col-9 flex flex-left div-6">
+        <!--{{$t('input_labels.name')}}-->
+      </div>
+      <div class="col-1" style="text-align:left">
+        {{$t('button.integration')}}
+      </div>
+      <div class="col-1  div-7" style="text-align:center">
+        {{$t('button.migrant_data')}}
+      </div>
+      <div class="col-1  div-8" style="text-align:right">
+        {{$t('input_labels.delete')}}
+      </div>
+    </div>
+    
+    </div>
+    <hr style="width:100%;border: 0.999px solid #424244;">
     <div class="center" >
       <q-list id="list">
         <User
@@ -121,15 +138,26 @@ export default {
 #div-1{
   display:inline-block;
   padding-right:20px;
-  padding-left:20px
+  padding-left:20px;
+  width:90%;
+  padding-bottom:40px
 }
-#input{
+.input{
   border-radius:10px; 
-  width:590px;
+  
   font-size:18px
 }
 #list{
+  padding-top:20px;
   display:inline-block;
-  width:750px
+  width:100%
 }
+.labels{
+   width:93%; 
+   margin: 0 auto;
+  
+}
+
+
+
 </style>

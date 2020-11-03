@@ -1,9 +1,13 @@
 <template>
-  <q-card>
-    <q-card-section>
-      <div class="text-h6">{{$t("consent.title")}}</div>
+  <div>
+    <div class="row">
+    <q-card-section class="col">
+      <div class="title">{{$t("consent.title")}}</div>
     </q-card-section>
+    <div class="q-pa-lg col" style="text-align:right">
     {{formattedConsentTimestamp}}
+    </div>
+    </div>
     <q-card-section>
       <q-list style="width:100%; margin:0 auto">
         <ConsentElement
@@ -14,7 +18,7 @@
         />
       </q-list>
     </q-card-section>
-  </q-card>
+  </div>
 
 </template>
 
@@ -50,3 +54,12 @@ export default {
   }
 }
 </script>
+<style scoped>
+.title{
+font-family: Nunito;
+font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 41px;
+}
+</style>

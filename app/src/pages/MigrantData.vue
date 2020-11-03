@@ -1,5 +1,5 @@
 <template>
-  <div id="first-div">
+  <div class="q-pa-md first-div">
     <div
       class="q-pa-md col"
       id="second-div"
@@ -7,7 +7,9 @@
       <UserProfile :user="the_user">
       </UserProfile>
     </div>
+    <hr>
     <ConsentPanel :receipt="theReceipt" />
+    <hr>
     <q-list style="width:100%; margin:0 auto">
       <Document
         v-for="document in documents"
@@ -106,12 +108,13 @@ export default {
 }
 </script>
 <style scoped>
-#first-div {
-  padding-left: 25px;
+.first-div {
+  padding-left: 40px;
+  padding-right: 40px;
 }
 
 #second-div {
-  width: 800px;
+  width: 100%;
   margin: 0 auto;
 }
 </style>
