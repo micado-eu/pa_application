@@ -64,23 +64,6 @@
         <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="intervention_shell.description" />
       </div>
     </div>
-   <div id="div-16" class=" q-pa-xsm row">
-      <div class=" q-pa-xsm col-4">
-        <h5 class="header-3"> {{$t('input_labels.related_processes')}} </h5>
-      </div>
-      <div id="div-17" class=" q-pa-md col-8">
-     <q-select
-        class="select"
-        filled
-        clearable
-        v-model="intervention_shell.linked_processes_id"
-        multiple
-        :options="processes_list"
-        bg-color="white"
-        :label="$t('input_labels.related_processes')"
-      />
-      </div>
-      </div>
        <div id="div-18" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
         <h5 class="header-3">  {{$t('input_labels.type')}} </h5>
@@ -166,10 +149,10 @@ export default {
         title:"",
         description:"", 
         completed:false,
-        validatingUserId: this.theuserid,
+        validatingUserId: null,
         validatingUserTenant: Number(this.$migrant_tenant),
-        assignmentDate: '2016-06-22 19:10:25-07', 
-        validationRequestDate:'2016-06-22 19:10:25-07', 
+        assignmentDate: null, 
+        validationRequestDate:null 
       },
      types:[]
     };
@@ -200,10 +183,10 @@ export default {
         description:"",
         validationDate:null, 
         completed:false,
-        validatingUserId: this.theuserid,
+        validatingUserId:  Number(this.theuserid),
         validatingUserTenant: Number(this.$migrant_tenant),
-        assignmentDate: '2016-06-22 19:10:25-07', 
-        validationRequestDate:'2016-06-22 19:10:25-07', }
+        assignmentDate: null, 
+        validationRequestDate:null }
     },
 
  mergeIntervention (intervention) {

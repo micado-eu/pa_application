@@ -3,6 +3,7 @@
       <q-separator />
        <q-expansion-item 
         group="somegroup"
+        :duration="100"
         :label="title"
         :header-class="{
           'bg-green text-black' : intervention.completed,
@@ -11,7 +12,8 @@
         :data-cy="'intervention'.concat(intervention.id)"
         header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
         :expand-icon-class="{'text-white' : intervention.completed}"
-         @click="cancelIntervention"
+        @before-show="fetchPic($event, intervention)"
+        @hide ="cancelIntervention($event);"
         class="width-1"
       >
         <q-card>
@@ -49,7 +51,7 @@
               </q-item-section>
             </div>
              <div v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:center; font-weight:bold">
-                To be validated by {{this.tenants.filter((tenant)=>{return tenant.id == intervention.validatingUserTenant})[0].name}}
+                To be validated by {{this.theTenant}}
                 </div>
             <div class=" q-gutter-sm  col pad-left">
               <q-card-section :hidden="hideForm" class="section">
@@ -142,7 +144,16 @@ export default {
   },
   components: {},
   props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories", "completionDoc", "tenants"],
-  computed: {},
+  computed: {
+    theTenant(){
+      if(this.intervention.validatingUserTenant!=null){
+        return this.tenants.filter((tenant)=>{return tenant.id == this.intervention.validatingUserTenant})[0].name
+      }
+      else{
+        return 'Placeholder'
+      }
+    }
+  },
   mounted() {},
   methods: {
      activateReadMore(){
@@ -168,12 +179,19 @@ export default {
 
     },
     cancelIntervention(event){
-      let targetId = event.currentTarget.id
-      console.log("I am")
-      console.log(targetId)
+      console.log("canceling)")
       this.$emit('cancelIntervention')
 
     },
+    fetchPic(event, value){
+      console.log("fetching")
+      if(this.intervention.completed){
+        console.log("inside if")
+        console.log(value)
+         this.$emit('fetchPic', value)
+      }
+     
+    }
   }
 };
 </script>
