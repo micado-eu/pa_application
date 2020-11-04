@@ -129,8 +129,8 @@ import {
   Bold,
   Italic
 } from 'tiptap-extensions'
-import Image from 'components/Image'
-import { Converter } from 'showdown'
+import Image from 'components/editor_plugins/Image'
+import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 
 export default {
   name: 'GlossaryEditor',
@@ -140,7 +140,7 @@ export default {
   },
   props: {
     value: {
-      type: String | Object,
+      type: String | Object, 
       default: ''
     },
     lang: {
@@ -172,11 +172,9 @@ export default {
     getHTML() {
       return this.editor.getHTML()
     },
-    getMarkdown() {
-      return this.converter.makeMarkdown(this.getHTML())
-    },
     getContent() {
-      return this.getJSON()
+      console.log(this.getHTML())
+      return this.getHTML()
     },
     setContent(content) {
       return this.editor.setContent(content)
@@ -191,7 +189,8 @@ export default {
           new Italic(),
           new Link(),
           new History(),
-          new Image(null, null, this.uploadImage)
+          new Image(null, null, this.uploadImage),
+          new GlossaryMention()
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true
@@ -222,7 +221,6 @@ export default {
   created() {
     this.loading = true
     this.internalLang = this.lang
-    this.converter = new Converter()
     this.fetchGlossary()
       .then(() => {
         this.createEditor()
