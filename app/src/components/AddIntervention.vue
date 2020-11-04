@@ -42,24 +42,6 @@
 
             <div class=" q-pa-xsm row center">
               <div class=" q-pa-xsm col-4">
-                <h5 class="header-2"> {{$t('input_labels.related_processes')}} </h5>
-              </div>
-              <div class=" q-pa-md col-8 div-6">
-                <q-select
-                  filled
-                  clearable
-                  v-model="model.linked_processes_id"
-                  multiple
-                  :options="the_processes_list"
-                  bg-color="white"
-                  :label="$t('input_labels.related_processes')"
-                  class="width"
-                />
-              </div>
-            </div>
-
-            <div class=" q-pa-xsm row center">
-              <div class=" q-pa-xsm col-4">
                 <h5 class="header-2"> {{$t('input_labels.type')}} </h5>
               </div>
               <div class=" q-pa-md col-8 div-6">

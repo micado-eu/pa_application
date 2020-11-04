@@ -85,9 +85,11 @@ export default {
       .then((users) => {
         console.log('fetchSpecificUser - page')
         console.log(users)
-        this.loading = false
-        const temp = this.users.filter((filt) => filt.umId == this.theuserid)
-        this.the_user = temp[0]
+       this.the_user = users
+        console.log("return from fetch specific user")
+        console.log(users)
+        /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
+        this.the_user = temp[0]*/
         this.fetchReceipt({ tenant: users.tenant.umDomainName, principal: users.umUserName })
           .then((receipt) => {
             console.log(receipt)

@@ -50,8 +50,9 @@
             :model="intervention_shell"
             :hideForm="hideForm"
             :tenants="tenants"
-            :completionDoc="findDoc(intervention.id)"
+            :completionDoc="the_pic"
             :intervention_categories="types"
+            @fetchPic="findDoc"
             @editIntervention="editIntervention"
             @cancelIntervention="cancelIntervention"
             @saveIntervention="savingIntervention"
@@ -81,7 +82,6 @@
 <script>
 import IntegrationPlan from 'components/IntegrationPlan'
 import AddIntervention from 'components/AddIntervention'
-import UserProfile from 'components/UserProfile'
 import editEntityMixin from '../mixin/editEntityMixin'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 
@@ -151,12 +151,13 @@ export default {
 
       selected_plan: null,
       validation: null,
-      types: []
+      types: [], 
+      the_pic: null
 
     }
   },
   components: {
-    IntegrationPlan, AddIntervention, UserProfile
+    IntegrationPlan, AddIntervention
   },
   computed: {
     filteredplans () {
@@ -172,17 +173,26 @@ export default {
     }
   },
   methods: {
-    findDoc(id){
-      console.log(id)
+    findDoc(intervention){
+      console.log("fetching doc")
+      this.the_pic = null
+      //console.log(id)
       var intervention_doc = this.completion_docs.filter((doc)=>{
-        return doc.idIntervention == id
+        return doc.idIntervention == intervention.id
       })[0]
       if(intervention_doc!= null){
         var the_doc= this.documents.filter((document) => {
         return document.id == intervention_doc.idDocument
       })[0]
+      console.log(the_doc)
       if(the_doc != null){
-         return the_doc.pictures[0].picture
+        console.log("inside if")
+         this.the_pic = the_doc.pictures[0].picture
+      }
+      else{
+                console.log("inside if")
+
+        this.the_pic = null
       }
       }
       
@@ -336,31 +346,28 @@ export default {
     }
   },
   created () {
-    var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
-    this.fetchSpecificUser(payload)
-      .then(users => {
-        this.loading = false
-        var temp = this.users.filter((filt) => {
-          return filt.umId == this.theuserid
-        })
-        this.the_user = temp[0]
-      })
-    console.log(this.$store);
-    this.fetchDocuments(this.theuserid).then(docs =>{
-      console.log("I am the docs of this user")
-      console.log(docs)
-    })
-    this.fetchCompletionDocuments().then(completion_docs =>{
+    var promise= []
+    promise.push(this.fetchTenants())
+    promise.push(this.fetchCompletionDocuments())
+    /*.then(completion_docs =>{
       console.log("I am the completion documents")
       console.log(completion_docs)
-    })
-    this.fetchInterventionPlan(this.theuserid)
-      .then(intervention_plans => {
+    })*/
+     promise.push(this.fetchDocuments(this.theuserid))
+     /*.then(docs =>{
+      console.log("I am the docs of this user")
+      console.log(docs)
+    })*/
+    promise.push(this.fetchInterventionPlan(this.theuserid))
+      /*.then(intervention_plans => {
         console.log("these are the returned plans")
         console.log(intervention_plans)
         this.loading = false
-      })
-      this.fetchIntegrationType()
+      })*/
+      Promise.all(promise).then((promise_return)=>{
+        console.log(this.intervention_plans)
+        console.log("returned all promises")
+         this.fetchIntegrationType()
       .then(integration_types => {
         console.log("got integration types")
         console.log(integration_types)
@@ -369,9 +376,20 @@ export default {
           this.types.push(the_integration_types)
         })
       })
-      console.log("i am intervention_categories")
-      console.log(this.intervention_types)
-      this.fetchTenants()
+    
+      
+    
+    var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    this.fetchSpecificUser(payload)
+      .then(users => {
+        this.the_user = users
+        console.log("return from fetch specific user")
+        console.log(users)
+      })  
+      })
+      console.log("FINISHED CREATED")
+      
+    
   }
 }
 </script>

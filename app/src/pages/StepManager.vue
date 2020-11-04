@@ -344,6 +344,7 @@ export default {
         deleteStep: 'steps/deleteStep',
         fetchStepsByProcessId: 'steps/fetchStepsByProcessId',
         addStepLink: 'steplinks/addStepLink',
+        fetchFlows: 'flows/fetchFlows',
         fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
         fetchDocumentType: 'document_type/fetchDocumentType'
       }
@@ -363,6 +364,7 @@ export default {
       graph_id: null,
       testdata: [],
       refresher: 0,
+      title:null,
       editing: false,
       selected_node: "",
       t_docs: [],
@@ -398,14 +400,7 @@ export default {
 
 
   computed: {
-    title () {
-      var temp = this.processes.filter((a_proc) => {
-        return a_proc.id == this.processId
-      })[0]
-      console.log("i am temp")
-      console.log(temp)
-      return temp.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
-    }
+    
   },
   watch: {
     refresher: function () {
@@ -694,6 +689,15 @@ export default {
     console.log(this.step_shell)
     console.log("in created")
     console.log(this.processId)
+    this.fetchFlows().then((flows)=>{
+      console.log(flows)
+       var temp = flows.filter((a_proc) => {
+        return a_proc.id == this.processId
+      })[0]
+      console.log("i am temp")
+      console.log(temp)
+      this.title = temp.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
+    })
     this.fetchStepsByProcessId(Number(this.processId))
       .then(steps => {
         console.log("THE STEPS")
