@@ -2,7 +2,10 @@
   <div>
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(title)}}</div>
     <span v-if="loading">Loading...</span>
-    <div class="row" v-if=!loading>
+    <div
+      class="row"
+      v-if=!loading
+    >
       <div class="col q-mt-md q-ml-md">
         <q-list
           bordered
@@ -109,6 +112,9 @@
                 :label="topic.topic"
                 @input="filterByTopics()"
               />
+              <span class="q-mt-sm">
+                {{topic.translations.filter(t => t.lang ===  lang)[0].topic}}
+              </span>
               <q-img
                 :src="topic.icon"
                 spinner-color="white"
@@ -149,6 +155,9 @@
                 :label="userType.user_type"
                 @input="filterByUserTypes()"
               />
+              <span class="q-mt-sm">
+                {{userType.translations.filter(t => t.lang ===  lang)[0].userType}}
+              </span>
               <q-img
                 :src="userType.icon"
                 spinner-color="white"
@@ -178,25 +187,23 @@
             filled
             outlined
             :label='$t("input_labels.search")'
-            class="col-10"
+            class="col-10 search-bar"
           >
             <template v-slot:append>
               <q-icon name="search" />
             </template>
           </q-input>
           <q-btn
-            outlined
             no-caps
             :label='$t("button.categories")'
-            class="add-btn col q-ml-md"
+            class="cat-btn col q-ml-md"
             :to="categories_url"
             v-if="categories_enabled"
           />
           <q-btn
-            outlined
             no-caps
             :label='$t(add_label)'
-            class="add-btn col q-ml-md"
+            class="add-btn col q-ml-md q-my-lg margin-right-btn"
             :to="new_url"
           />
         </div>
@@ -234,14 +241,13 @@
             {{$t("lists.user_types")}}
           </span>
         </div>
-        <div class="row">
+        <div class="row q-mb-sm">
           <q-separator
-            v-if="categories_enabled || tags_enabled"
-            style="max-width: 91.7%"
+            style="max-width: 91.7%; background-color: black"
           />
         </div>
         <div class="row">
-          <q-list class="q-mt-md col-11 element-list">
+          <q-list class="col-11 element-list" separator>
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -251,7 +257,7 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
-              <q-item-section class="title_section">
+              <q-item-section class="title_section q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
@@ -262,10 +268,16 @@
                   glossary_fetched
                   :lang="lang"
                 />
-                <span class="filter-text" v-if="is_event">
+                <span
+                  class="filter-text"
+                  v-if="is_event"
+                >
                   {{$t("lists.start_date")}}: {{item.startDate}}
                 </span>
-                <span class="filter-text" v-if="is_event">
+                <span
+                  class="filter-text"
+                  v-if="is_event"
+                >
                   {{$t("lists.end_date")}}: {{item.endDate}}
                 </span>
               </q-item-section>
@@ -275,7 +287,10 @@
               >
                 {{item.category.category}}
               </q-item-section>
-              <q-item-section class="tag_btn_section">
+              <q-item-section
+                class="tag_btn_section"
+                v-if="tags_enabled"
+              >
                 <q-btn
                   no-caps
                   v-for="tag in item.tags"
@@ -284,7 +299,10 @@
                   class="q-mb-sm tag_btn"
                 />
               </q-item-section>
-              <q-item-section class="tag_btn_section">
+              <q-item-section
+                class="tag_btn_section"
+                v-if="topics_enabled"
+              >
                 <q-img
                   v-for="topic in item.topics"
                   :key="topic.id"
@@ -295,7 +313,10 @@
                   class="filter-icon"
                 />
               </q-item-section>
-              <q-item-section class="tag_btn_section">
+              <q-item-section
+                class="tag_btn_section"
+                v-if="user_types_enabled"
+              >
                 <q-img
                   v-for="userType in item.userTypes"
                   :key="userType.id"
@@ -314,14 +335,14 @@
                 <q-btn
                   round
                   class="item-btn"
-                  icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
+                  icon="img:statics/icons/Icon - edit - orange (600x600).png"
                   :to="edit_url_fn(item.id)"
                 />
                 <br>
                 <q-btn
                   round
                   class="item-btn"
-                  icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+                  icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
                   @click="delete_fn(item)"
                 />
               </q-item-section>
@@ -634,17 +655,17 @@ export default {
           }
           if (this.is_event) {
             const startDate = new Date(e.startDate)
-            translation.startDate = `${startDate.getUTCFullYear()}-` + 
-              `${startDate.getUTCMonth() + 1}-` + 
+            translation.startDate = `${startDate.getUTCFullYear()}-` +
+              `${startDate.getUTCMonth() + 1}-` +
               `${startDate.getUTCDate()} ` +
-              `${startDate.getUTCHours().toLocaleString(undefined, {minimumIntegerDigits: 2})}:`+
-              `${startDate.getUTCMinutes().toLocaleString(undefined, {minimumIntegerDigits: 2})}`
+              `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+              `${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
             const finishDate = new Date(e.endDate)
-            translation.endDate = `${finishDate.getUTCFullYear()}-` + 
-              `${finishDate.getUTCMonth() + 1}-` + 
-              `${finishDate.getUTCDate()} ` + 
-              `${finishDate.getUTCHours().toLocaleString(undefined, {minimumIntegerDigits: 2})}:` + 
-              `${finishDate.getUTCMinutes().toLocaleString(undefined, {minimumIntegerDigits: 2})}`
+            translation.endDate = `${finishDate.getUTCFullYear()}-` +
+              `${finishDate.getUTCMonth() + 1}-` +
+              `${finishDate.getUTCDate()} ` +
+              `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
+              `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           }
         }
         return translation
@@ -731,9 +752,19 @@ export default {
 $accent_list: #ff7c44;
 $btn_secondary: #cdd0d2;
 .add-btn {
-  color: $accent_list;
-  border: 1px solid $accent_list;
-  border-radius: 2px;
+  background-color: $primary;
+  color: white;
+  border-radius: 5px;
+  margin-right: 85px;
+  margin-top: 65px;
+  margin-bottom: 75px;
+}
+.cat-btn {
+  background-color: $accent_list;
+  color: white;
+  border-radius: 5px;
+  margin-top: 65px;
+  margin-bottom: 75px;
 }
 .toolbar-list {
   background-color: $accent_list;
@@ -745,7 +776,7 @@ $btn_secondary: #cdd0d2;
   font-size: 15pt;
 }
 .item-btn {
-  background-color: $btn_secondary;
+  background-color: white;
 }
 .tag_btn {
   background-color: $primary;
@@ -802,5 +833,11 @@ $btn_secondary: #cdd0d2;
 }
 .viewer {
   max-width: 100%;
+}
+.search-bar {
+  border-radius: 5px;
+  margin-top: 65px;
+  margin-bottom: 75px;
+  max-width: 75%
 }
 </style>
