@@ -634,9 +634,17 @@ export default {
           }
           if (this.is_event) {
             const startDate = new Date(e.startDate)
-            translation.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+            translation.startDate = `${startDate.getUTCFullYear()}-` + 
+              `${startDate.getUTCMonth() + 1}-` + 
+              `${startDate.getUTCDate()} ` +
+              `${startDate.getUTCHours().toLocaleString(undefined, {minimumIntegerDigits: 2})}:`+
+              `${startDate.getUTCMinutes().toLocaleString(undefined, {minimumIntegerDigits: 2})}`
             const finishDate = new Date(e.endDate)
-            translation.endDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+            translation.endDate = `${finishDate.getUTCFullYear()}-` + 
+              `${finishDate.getUTCMonth() + 1}-` + 
+              `${finishDate.getUTCDate()} ` + 
+              `${finishDate.getUTCHours().toLocaleString(undefined, {minimumIntegerDigits: 2})}:` + 
+              `${finishDate.getUTCMinutes().toLocaleString(undefined, {minimumIntegerDigits: 2})}`
           }
         }
         return translation
