@@ -5,7 +5,7 @@
     <q-list
       bordered
       separator
-      class="q-pa-md"
+      class="q-pa-sm q-ma-xl element-list"
     >
       <q-item
         clickable
@@ -13,15 +13,17 @@
         v-for="a_event_category in event_category"
         :key="a_event_category.id"
       >
-        <q-item-section>{{showCategoryLabel(a_event_category)}}</q-item-section>
+        <q-item-section class="category-title">{{showCategoryLabel(a_event_category)}}</q-item-section>
         <q-item-section
           side
           class="icon_btn_section"
         >
           <q-btn
+            no-caps
+            unelevated
             round
             class="item-btn"
-            icon="img:statics/icons/MICADO-Edit Icon - Black (600x600) transparent.png"
+            icon="img:statics/icons/Icon - edit - orange (600x600).png"
             @click="editEventCategory(a_event_category)"
           />
         </q-item-section>
@@ -30,26 +32,31 @@
           class="icon_btn_section"
         >
           <q-btn
+            no-caps
+            unelevated
             round
             class="item-btn"
-            icon="img:statics/icons/MICADO Delete Icon - Black (600x600) transparent.png"
+            icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
             @click="deleteEventCategory(a_event_category.id)"
           />
         </q-item-section>
       </q-item>
     </q-list>
-    <q-card class="my-card">
+    <q-card
+      flat
+      class="my-card"
+    >
       <q-card-section align="center">
         <q-btn
-          class="q-mr-sm"
-          outline
-          color="accent"
+          no-caps
+          class="q-mr-sm go-back-btn"
           :label="$t('button.go_back')"
           @click="$router.go(-1)"
         />
         <q-btn
-          color="accent"
-          :label="$t('button.add')"
+          no-caps
+          class="add-btn"
+          :label="$t('button.add_category')"
           @click="newEventCategory()"
         />
       </q-card-section>
@@ -58,8 +65,8 @@
           v-model="langTab"
           dense
           class="text-grey"
-          active-color="primary"
-          indicator-color="primary"
+          active-color="black"
+          indicator-color="black"
           align="justify"
           narrow-indicator
         >
@@ -94,6 +101,7 @@
         </div>
         <div align="center">
           <q-btn
+            no-caps
             class="button q-mr-sm"
             unelevated
             rounded
@@ -102,7 +110,8 @@
             @click="cancelEventCategory()"
           />
           <q-btn
-            color="accent"
+            no-caps
+            class="add-btn"
             unelevated
             rounded
             style="width:70px;border-radius:2px"
@@ -252,5 +261,21 @@ a {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
+}
+.element-list {
+  overflow-y: scroll;
+  max-height: 75vh;
+}
+.category-title {
+  font-weight: 600;
+  font-family: "Nunito";
+}
+.add-btn {
+  color: white;
+  background-color: #0B91CE;
+}
+.go-back-btn {
+  color: white;
+  background-color: #9E1F63;
 }
 </style>
