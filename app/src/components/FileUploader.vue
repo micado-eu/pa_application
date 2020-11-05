@@ -1,7 +1,11 @@
 <template>
     <q-card class="my-card">
           <q-card-section class="section">
-            <div class="field"> {{$t('input_labels.upload_icon')}} </div>
+            <div class="row items-center all-pointer-events field" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.upload_icon')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{this.label}}</q-tooltip>
+            </div> 
             <q-file
               @input="getFiles($event)"
               bg-color="grey-3"
@@ -29,7 +33,7 @@
 export default {
   name: "FileUploader",
   components: {},
-  props: ["Image",  "published", "publicationDate", "icon"],
+  props: ["Image",  "published", "publicationDate", "icon", "label"],
   computed: {},
   mounted() {},
   methods: {

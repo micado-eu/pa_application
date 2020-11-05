@@ -1,14 +1,18 @@
 <template>
   <div id="div-2">
   <div id="div-3">
-      Add Intervention Plan
+    {{$t('input_labels.add_intervention_plan')}}
   </div>
     <div id="div-4">
                   <div id="div-5" class=" q-pa-xsm row">
-                    <div  id="div-6" class=" q-pa-xsm col-2">
-                      <h5 id="header-1"> Title: </h5>
+                    <div  id="div-6" class=" q-pa-xsm col-6">
+                      <div class="row items-center all-pointer-events header-1" >
+                      <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                      {{$t('input_labels.title')}}
+                      <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_plan_title')}}</q-tooltip>
+                      </div>  
                     </div>
-                    <div id="div-7" class="col-8">
+                    <div id="div-7" class="col-4">
                       <q-input dense bg-color="grey-3" counter maxlength="100" standout outlined v-model="plan_shell.title" />
                     </div>
                     <div id="div-8">
@@ -50,24 +54,36 @@
         <div id="div-10">
     <div id="div-11" class="q-pa-xsm row">
       <div id="div-12" class=" q-pa-xsm col-4">
-        <h5 class="header-2"> {{$t('input_labels.title')}} </h5>
-      </div>
+            <div class="row items-center all-pointer-events header-2" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.title')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_title')}}</q-tooltip>
+            </div>       
+            </div>
       <div id="div-13" class="col-8">
         <q-input  dense max-length="100" counter  bg-color="white" standout outlined v-model="intervention_shell.title" />
       </div>
     </div>
     <div id="div-14" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
-        <h5 class="header-2"> {{$t('input_labels.description')}} </h5>
-      </div>
+            <div class="row items-center all-pointer-events header-2" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_description')}}</q-tooltip>
+            </div>       
+            </div>
       <div id="div-15" class="col-8">
         <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="intervention_shell.description" />
       </div>
     </div>
        <div id="div-18" class=" q-pa-xsm row">
       <div class=" q-pa-xsm col-4">
-        <h5 class="header-3">  {{$t('input_labels.type')}} </h5>
-      </div>
+            <div class="row items-center all-pointer-events header-3" >
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_assigned_type')}}</q-tooltip>
+            </div>      
+            </div>
       <div id="div-19" class=" q-pa-md col-8">
      <q-select
         class="select"
@@ -356,12 +372,12 @@ export default {
   padding-left:40px
 }
 #div-6{
-  width:65px
+  width:15%
 }
 #div-7{
   display: block;
   margin-bottom:0px;
-  width:455px;
+  width:58%;
   padding-right:0px;
 }
 #div-8 {
@@ -424,10 +440,11 @@ export default {
 #div-21{
   text-align:center; padding-bottom:10px
 }
-#header-1{
+.header-1{
   text-align:left;
   margin-bottom:0px;
-  margin-top:5px;
+  margin-top:0px;
+  padding-top:8px;
   font-size:15pt
 }
 #item-section-1{
@@ -446,8 +463,12 @@ export default {
   font-size:15pt
 }
 .header-3{
-  text-align:left; 
-  padding-left:30px
+  text-align: left;
+  margin-bottom: 0px;
+  margin-top: 14px;
+  padding-top: 22px;
+  font-size: 15pt;
+  padding-left: 30px;
 }
 .select{
   width: 450px

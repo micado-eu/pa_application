@@ -41,7 +41,12 @@
             :key="language.lang"
             :name="language.name"
           >
-            <div class="div-3"> {{$t('input_labels.intervention_category')}} </div>
+           <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.intervention_category')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_category')}}</q-tooltip>
+            </div> 
+            
             <q-input
               counter
               maxlength="30"

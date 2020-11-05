@@ -26,8 +26,12 @@
               class=" q-pa-xsm "
               id="div-2"
             >
-
-              <div id="div-3">{{$t('input_labels.process_name')}} </div>
+            <div class="row items-center all-pointer-events div-3">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.process_name')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_name')}}</q-tooltip>
+            </div>
+            <!--  <div id="div-3">{{$t('input_labels.process_name')}} </div>-->
 
               <q-input
                 dense
@@ -47,8 +51,11 @@
               id="div-4"
               class="q-pa-xsm"
             >
-
-              <div id="div-5"> {{$t('input_labels.process_description')}} </div>
+            <div class="row items-center all-pointer-events div-5">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.process_description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_description')}}</q-tooltip>
+            </div>
               <GlossaryEditor
                 class="left"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -86,10 +93,14 @@
           />
         </q-tabs>
         <div
-          id="div-6"
-          class=" q-pa-xsm row"
+          id=""
+          class=" q-pa-xsm row div-6"
         >
-          <div class="col-6 tag"> {{$t('input_labels.generated_docs')}} </div>
+          <div class="row items-center all-pointer-events tag">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.generated_docs')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.generated_docs')}}</q-tooltip>
+            </div>
           <q-select
             filled
             dense
@@ -105,8 +116,22 @@
             :label="$t('input_labels.generated_docs')"
             class="select"
           />
-          <div class="col-6 tag"> {{$t('input_labels.user_tags')}} </div>
-          <div class="col-6 tag"> {{$t('input_labels.topic_tags')}} </div>
+        </div>
+        <div  class=" q-pa-xsm row div-6">
+          <div class="col-6 tag">
+            <div class="row items-center all-pointer-events tag">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.user_tags')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_tags')}}</q-tooltip>
+            </div> 
+          </div>
+          <div class="col-6 tag">
+            <div class="row items-center all-pointer-events tag">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.topic_tags')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.topic_tags')}}</q-tooltip>
+            </div>
+          </div> 
         </div>
         <div
           class="q-pa-xsm row"
@@ -326,6 +351,7 @@ export default {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
       if (this.is_new) {
+        console.log(workingProcess)
         await this.saveProcess(workingProcess)
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
@@ -529,7 +555,7 @@ export default {
   font-weight: 600;
   padding-bottom: 15px;
 }
-#div-6 {
+.div-6 {
   padding-top: 20px;
   padding-left: 150px;
   padding-right: 150px;
