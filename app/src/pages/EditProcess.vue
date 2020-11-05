@@ -27,7 +27,7 @@
               id="div-2"
             >
             <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.process_name')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_name')}}</q-tooltip>
             </div>
@@ -52,7 +52,7 @@
               class="q-pa-xsm"
             >
             <div class="row items-center all-pointer-events div-5">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.process_description')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_description')}}</q-tooltip>
             </div>
@@ -97,7 +97,7 @@
           class=" q-pa-xsm row div-6"
         >
           <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.generated_docs')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.generated_docs')}}</q-tooltip>
             </div>
@@ -120,14 +120,14 @@
         <div  class=" q-pa-xsm row div-6">
           <div class="col-6 tag">
             <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.user_tags')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_tags')}}</q-tooltip>
             </div> 
           </div>
           <div class="col-6 tag">
             <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.topic_tags')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.topic_tags')}}</q-tooltip>
             </div>

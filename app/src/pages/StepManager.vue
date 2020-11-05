@@ -40,7 +40,7 @@
                     id="div-2"
                   >
                     <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     {{$t('input_labels.step_name')}}
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_name')}}</q-tooltip>
                     </div>
@@ -65,7 +65,7 @@
                     class="q-pa-xsm"
                   >
                     <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     {{$t('input_labels.step_description')}}
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_description')}}</q-tooltip>
                     </div>
@@ -93,7 +93,7 @@
                 style="width:100%"
               >
                 <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     {{$t('input_labels.step_location')}}
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_location')}}</q-tooltip>
                     </div>
@@ -117,7 +117,7 @@
                 style="width:100%"
               >
                 <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     {{$t('input_labels.step_cost')}}
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_cost')}}</q-tooltip>
                 </div>
@@ -137,7 +137,7 @@
               </div>
 
               <div class="row width-2">
-                <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.required_documents')}}</q-tooltip>
                 <q-btn
                   class="add-step-document"

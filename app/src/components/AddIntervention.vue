@@ -10,7 +10,7 @@
             <div class=" q-pa-xsm row div-3">
               <div class=" q-pa-xsm col-4">
                 <div class="row items-center all-pointer-events header" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.title')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_title')}}</q-tooltip>
             </div> 
@@ -32,7 +32,7 @@
             <div class=" q-pa-xsm row div-5">
               <div class=" q-pa-xsm col-4">
                 <div class="row items-center all-pointer-events header" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.description')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_description')}}</q-tooltip>
             </div> 
@@ -52,7 +52,7 @@
             <div class=" q-pa-xsm row center">
               <div class=" q-pa-xsm col-4">
                  <div class="row items-center all-pointer-events header-2" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.type')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_assigned_type')}}</q-tooltip>
             </div>

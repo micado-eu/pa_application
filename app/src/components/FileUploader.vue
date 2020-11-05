@@ -2,7 +2,7 @@
     <q-card class="my-card">
           <q-card-section class="section">
             <div class="row items-center all-pointer-events field" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.upload_icon')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{this.label}}</q-tooltip>
             </div> 

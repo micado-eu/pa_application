@@ -29,7 +29,7 @@
           :name="language.name"
         >
           <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.user_type')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type')}}</q-tooltip>
             </div> 
@@ -51,7 +51,7 @@
           label="Description"
         />-->
           <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.description')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type_description')}}</q-tooltip>
             </div> 

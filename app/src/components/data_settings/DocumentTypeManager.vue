@@ -31,7 +31,7 @@
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
           <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.doc_type')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type')}}</q-tooltip>
             </div> 
@@ -47,7 +47,7 @@
             :label="$t('input_labels.doc_type_placeholder')"
           />
           <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.description')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_description')}}</q-tooltip>
             </div> 
@@ -67,7 +67,7 @@
         </q-tab-panel>
       </q-tab-panels>
             <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.issuer')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.issuer')}}</q-tooltip>
             </div> 
@@ -80,12 +80,12 @@
               :label="$t('input_labels.issuer')"
             />
             <div class="q-gutter-sm">
-              <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+              <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validable')}}</q-tooltip>
               <q-checkbox class="div-3" color="accent" style="padding-top:10px" left-label v-model="int_doc_shell.validable" :label="$t('input_labels.validable')" />
             </div>
             <div  v-if="int_doc_shell.validable" class="row items-center all-pointer-events field" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.validators')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validators')}}</q-tooltip>
             </div> 
@@ -109,7 +109,7 @@
        
           <q-card-section class="section">
              <div class="row items-center all-pointer-events field" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.icon')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_icon')}}</q-tooltip>
             </div> 
@@ -166,7 +166,7 @@
           
         <q-card-section class="section">
            <div class="row items-center all-pointer-events field" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.doc_pics')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_pics')}}</q-tooltip>
             </div> 
@@ -225,7 +225,7 @@
         </q-card-section>
         <q-card-section class="section">
            <div class="row items-center all-pointer-events field">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
             {{$t('input_labels.upload_model')}}
             <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.upload_model')}}</q-tooltip>
             </div> 
