@@ -6,7 +6,7 @@
       class="row"
       v-if=!loading
     >
-      <div class="col q-mt-md q-ml-md">
+      <div class="col q-ml-md filter-list">
         <q-list
           bordered
           v-if="tags_enabled || categories_enabled || topics_enabled || user_types_enabled"
@@ -179,7 +179,7 @@
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
-        <div class="q-my-md q-mr-md row">
+        <div class="q-mr-md row">
           <q-input
             color="accent"
             v-model="search"
@@ -261,6 +261,18 @@
                 <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
+                <span
+                  class="date-text q-mt-sm"
+                  v-if="is_event"
+                >
+                  {{$t("lists.start_date")}}: {{item.startDate}}
+                </span>
+                <span
+                  class="date-text q-mb-sm"
+                  v-if="is_event"
+                >
+                  {{$t("lists.end_date")}}: {{item.endDate}}
+                </span>
                 <glossary-editor-viewer
                   class="viewer"
                   :content="item.description"
@@ -268,18 +280,6 @@
                   glossary_fetched
                   :lang="lang"
                 />
-                <span
-                  class="filter-text"
-                  v-if="is_event"
-                >
-                  {{$t("lists.start_date")}}: {{item.startDate}}
-                </span>
-                <span
-                  class="filter-text"
-                  v-if="is_event"
-                >
-                  {{$t("lists.end_date")}}: {{item.endDate}}
-                </span>
               </q-item-section>
               <q-item-section
                 class="category_section"
@@ -823,6 +823,10 @@ $btn_secondary: #cdd0d2;
   font-family: "Nunito";
   font-weight: normal;
 }
+.date-text {
+  font-family: "Nunito";
+  font-weight: 300;
+}
 .element-list {
   overflow-y: scroll;
   max-height: 75vh;
@@ -839,5 +843,8 @@ $btn_secondary: #cdd0d2;
   margin-top: 65px;
   margin-bottom: 75px;
   max-width: 75%
+}
+.filter-list {
+  margin-top: 65px;
 }
 </style>

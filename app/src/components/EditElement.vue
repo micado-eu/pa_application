@@ -82,132 +82,149 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-md q-ml-lg tag_list col">
+          <div class="q-my-md q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
-            <q-input
-              filled
-              v-model="startDate"
-            >
-              <template v-slot:prepend>
-                <q-icon
-                  name="event"
-                  class="cursor-pointer"
-                >
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
+            <div class="row">
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="startDate"
+                class="col q-mr-md"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="event"
+                    class="cursor-pointer"
                   >
-                    <q-date
-                      v-model="startDate"
-                      mask="YYYY-MM-DD HH:mm"
-                      color="accent"
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
                     >
-                      <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          :label="$t('date_selector.close')"
-                          color="accent"
-                          flat
-                        />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-
-              <template v-slot:append>
-                <q-icon
-                  name="access_time"
-                  class="cursor-pointer"
-                >
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
+                      <q-date
+                        v-model="startDate"
+                        mask="YYYY-MM-DD"
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="startTime"
+                class="col"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="access_time"
+                    class="cursor-pointer"
                   >
-                    <q-time
-                      v-model="startDate"
-                      mask="YYYY-MM-DD HH:mm"
-                      format24h
-                      color="accent"
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
                     >
-                      <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          :label="$t('date_selector.close')"
-                          color="accent"
-                          flat
-                        />
-                      </div>
-                    </q-time>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
+                      <q-time
+                        v-model="startTime"
+                        mask="HH:mm"
+                        format24h
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
           </div>
-          <div
-            v-if="is_event"
-            class="q-my-md q-ml-lg tag_list col"
-          >
-            <span class="q-my-lg label-edit">{{$t('input_labels.finish_date')}}</span>
-            <q-input
-              filled
-              v-model="finishDate"
-            >
-              <template v-slot:prepend>
-                <q-icon
-                  name="event"
-                  class="cursor-pointer"
-                >
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
+          <div class="q-my-md tag_list col">
+            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <div class="row">
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="finishDate"
+                class="col q-mr-md"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="event"
+                    class="cursor-pointer"
                   >
-                    <q-date
-                      v-model="finishDate"
-                      mask="YYYY-MM-DD HH:mm"
-                      color="accent"
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
                     >
-                      <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          :label="$t('date_selector.close')"
-                          color="accent"
-                          flat
-                        />
-                      </div>
-                    </q-date>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-
-              <template v-slot:append>
-                <q-icon
-                  name="access_time"
-                  class="cursor-pointer"
-                >
-                  <q-popup-proxy
-                    transition-show="scale"
-                    transition-hide="scale"
+                      <q-date
+                        v-model="finishDate"
+                        mask="YYYY-MM-DD"
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="finishTime"
+                class="col"
+              >
+                <template v-slot:prepend>
+                  <q-icon
+                    name="access_time"
+                    class="cursor-pointer"
                   >
-                    <q-time
-                      v-model="finishDate"
-                      mask="YYYY-MM-DD HH:mm"
-                      format24h
-                      color="accent"
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
                     >
-                      <div class="row items-center justify-end">
-                        <q-btn
-                          v-close-popup
-                          :label="$t('date_selector.close')"
-                          color="accent"
-                          flat
-                        />
-                      </div>
-                    </q-time>
-                  </q-popup-proxy>
-                </q-icon>
-              </template>
-            </q-input>
+                      <q-time
+                        v-model="finishTime"
+                        mask="HH:mm"
+                        format24h
+                        color="accent"
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                          />
+                        </div>
+                      </q-time>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>
           </div>
         </div>
         <div class="row tag_category_selectors">
@@ -392,7 +409,9 @@ export default {
       selectedUserType: '',
       selectedUserTypesObjects: [],
       startDate: '',
+      startTime: '',
       finishDate: '',
+      finishTime: '',
       savedTranslations: []
     }
   },
@@ -441,8 +460,8 @@ export default {
         translation.userTypes = this.selectedUserTypesObjects
       }
       if (this.is_event) {
-        translation.startDate = new Date(this.startDate).toISOString()
-        translation.finishDate = new Date(this.finishDate).toISOString()
+        translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
+        translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
@@ -654,9 +673,11 @@ export default {
         }
         if (this.is_event) {
           const startDate = new Date(this.elem.startDate)
-          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()} ${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+          this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
+          this.startTime = `${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
           const finishDate = new Date(this.elem.endDate)
-          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()} ${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
+          this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
         }
       }
       if (this.categories.length > 0) {
