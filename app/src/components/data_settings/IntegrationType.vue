@@ -29,10 +29,12 @@
           :key="language.lang"
           :name="language.name"
         >
-          <div
-            class="div-3"
-            style=""
-          > {{$t('input_labels.intervention_type')}} </div>
+        <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.intervention_type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_type')}}</q-tooltip>
+            </div> 
+
           <q-input
             counter
             maxlength="100"
@@ -44,7 +46,11 @@
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
             :label="$t('input_labels.type_placeholder')"
           />
-          <div class="div-3"> {{$t('input_labels.description')}} </div>
+          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_type_description')}}</q-tooltip>
+            </div> 
           <GlossaryEditor
             class="desc-editor"
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -79,7 +85,11 @@
         />
       </q-tabs>
       <div class="q-gutter-sm">
-        <div id="div-4"> {{$t('input_labels.category_type')}} </div>
+        <div class="row items-center all-pointer-events div-4" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.category_type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_category_type')}}</q-tooltip>
+            </div> 
         <q-select
           filled
           clearable
@@ -92,7 +102,11 @@
         />
       </div>
       <div class="q-gutter-sm">
-        <div id="div-4"> {{$t('input_labels.integration_type_validators')}} </div>
+        <div class="row items-center all-pointer-events div-4" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.integration_type_validators')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.integration_type_validators')}}</q-tooltip>
+            </div>
         <q-select
           filled
           clearable
@@ -385,7 +399,7 @@ h5 {
   margin-right: 15px;
   border: 1px solid #dadada;
 }
-#div-4 {
+.div-4 {
   font-size: 16px;
   font-weight: 600;
   padding-top: 10px;

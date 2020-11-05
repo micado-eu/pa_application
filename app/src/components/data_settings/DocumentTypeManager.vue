@@ -30,7 +30,11 @@
           :name="language.name"
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-          <div class="div-3"> {{$t('input_labels.doc_type')}} </div>
+          <div class="row items-center all-pointer-events div-3">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.doc_type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type')}}</q-tooltip>
+            </div> 
           <q-input
             outlined
             filled
@@ -42,7 +46,11 @@
             :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.doc_type_placeholder')"
           />
-          <div class="div-3"> {{$t('input_labels.description')}} </div>
+          <div class="row items-center all-pointer-events div-3">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_description')}}</q-tooltip>
+            </div> 
           <GlossaryEditor
             class="desc-editor"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -58,7 +66,11 @@
             />
         </q-tab-panel>
       </q-tab-panels>
-      <div class="div-3" style="padding-top:10px"> {{$t('input_labels.issuer')}} </div>
+            <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.issuer')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.issuer')}}</q-tooltip>
+            </div> 
             <q-input
               outlined
               filled
@@ -68,9 +80,16 @@
               :label="$t('input_labels.issuer')"
             />
             <div class="q-gutter-sm">
+              <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validable')}}</q-tooltip>
               <q-checkbox class="div-3" color="accent" style="padding-top:10px" left-label v-model="int_doc_shell.validable" :label="$t('input_labels.validable')" />
             </div>
-             <div v-if="int_doc_shell.validable" class="field"> {{$t('input_labels.validators')}} </div>
+            <div  v-if="int_doc_shell.validable" class="row items-center all-pointer-events field" >
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.validators')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validators')}}</q-tooltip>
+            </div> 
+             
               <q-select
               v-if="int_doc_shell.validable"
               multiple
@@ -87,9 +106,13 @@
               :label="$t('input_labels.validators')"
               class="select"
           />
-       <q-card class="my-card">
+       
           <q-card-section class="section">
-              <div class="field"> {{$t('input_labels.icon')}} </div>
+             <div class="row items-center all-pointer-events field" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.icon')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_icon')}}</q-tooltip>
+            </div> 
               <q-select
             filled
             dense
@@ -142,7 +165,11 @@
           </q-card-section>
           
         <q-card-section class="section">
-          <div class="field"> {{$t('input_labels.doc_pics')}} </div>
+           <div class="row items-center all-pointer-events field" >
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.doc_pics')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_pics')}}</q-tooltip>
+            </div> 
           <q-file
             @input="getFilesPics($event)"
             bg-color="grey-3"
@@ -197,7 +224,11 @@
           </q-card>
         </q-card-section>
         <q-card-section class="section">
-          <div class="field"> {{$t('input_labels.upload_model')}} </div>
+           <div class="row items-center all-pointer-events field">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.upload_model')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.upload_model')}}</q-tooltip>
+            </div> 
           <q-file
             @input="getFilesModel($event)"
             bg-color="grey-3"
@@ -211,7 +242,7 @@
 
           </q-file>
         </q-card-section>
-      </q-card>
+      
 
       <hr id="hr">
       <q-btn
@@ -876,6 +907,8 @@ h5 {
 .section {
   font-size: 16px;
   font-weight: 600;
+  padding-left: 0px;
+  padding-right: 0px;
 }
 #icon {
   margin-right: 10px;

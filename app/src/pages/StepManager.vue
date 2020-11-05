@@ -39,8 +39,11 @@
                     class=" q-pa-xsm "
                     id="div-2"
                   >
-
-                    <div class="labels">{{$t('input_labels.step_name')}} </div>
+                    <div class="row items-center all-pointer-events labels">
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    {{$t('input_labels.step_name')}}
+                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_name')}}</q-tooltip>
+                    </div>
 
                     <q-input
                       dense
@@ -61,8 +64,11 @@
                     id="div-4"
                     class="q-pa-xsm"
                   >
-
-                    <div class="labels"> {{$t('input_labels.step_description')}} </div>
+                    <div class="row items-center all-pointer-events labels">
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    {{$t('input_labels.step_description')}}
+                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_description')}}</q-tooltip>
+                    </div>
                     <GlossaryEditor
                       class="desc-editor"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -86,8 +92,11 @@
                 id="location"
                 style="width:100%"
               >
-
-                <div class="labels">{{$t('input_labels.step_location')}} </div>
+                <div class="row items-center all-pointer-events labels">
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    {{$t('input_labels.step_location')}}
+                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_location')}}</q-tooltip>
+                    </div>
 
                 <q-input
                   dense
@@ -107,8 +116,11 @@
                 id="location"
                 style="width:100%"
               >
-
-                <div class="labels">{{$t('input_labels.step_cost')}} </div>
+                <div class="row items-center all-pointer-events labels">
+                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    {{$t('input_labels.step_cost')}}
+                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_cost')}}</q-tooltip>
+                </div>
 
                 <q-input
                   dense
@@ -125,6 +137,8 @@
               </div>
 
               <div class="row width-2">
+                <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.required_documents')}}</q-tooltip>
                 <q-btn
                   class="add-step-document"
                   color="accent"
@@ -133,6 +147,7 @@
                   :label="$t('button.add_document')"
                   @click="addStepDocument()"
                 />
+                
               </div>
 
               <div

@@ -30,7 +30,11 @@
           :name="language.name"
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-          <div id="div-3"> {{$t('input_labels.topic')}} </div>
+          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.topic')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.topic')}}</q-tooltip>
+            </div> 
           <q-input
             outlined
             filled
@@ -75,6 +79,7 @@
         :Image="topicimage"
         :icon="int_topic_shell.icon"
         @upload="getFiles"
+        :label="$t('help.topic_icon')"
       >
 
       </FileUploader>

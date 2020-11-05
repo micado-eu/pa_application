@@ -9,7 +9,12 @@
           <div class="div-2">
             <div class=" q-pa-xsm row div-3">
               <div class=" q-pa-xsm col-4">
-                <h5 class="header"> {{$t('input_labels.title')}} </h5>
+                <div class="row items-center all-pointer-events header" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.title')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_title')}}</q-tooltip>
+            </div> 
+                
               </div>
               <div class="col-8 div-4">
                 <q-input
@@ -26,7 +31,11 @@
 
             <div class=" q-pa-xsm row div-5">
               <div class=" q-pa-xsm col-4">
-                <h5 class="header"> {{$t('input_labels.description')}} </h5>
+                <div class="row items-center all-pointer-events header" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_description')}}</q-tooltip>
+            </div> 
               </div>
               <div class="col-8 div-4">
                 <q-input
@@ -42,7 +51,11 @@
 
             <div class=" q-pa-xsm row center">
               <div class=" q-pa-xsm col-4">
-                <h5 class="header-2"> {{$t('input_labels.type')}} </h5>
+                 <div class="row items-center all-pointer-events header-2" >
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_assigned_type')}}</q-tooltip>
+            </div>
               </div>
               <div class=" q-pa-md col-8 div-6">
                 <q-select
@@ -193,6 +206,10 @@ export default {
 }
 .header-2 {
   text-align: left;
+  margin-bottom: 0px;
+  margin-top: 14px;
+  padding-top: 22px;
+  font-size: 15pt;
   padding-left: 30px;
 }
 .div-6 {

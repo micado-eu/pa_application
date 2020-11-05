@@ -28,7 +28,11 @@
           :key="language.lang"
           :name="language.name"
         >
-          <div class="div-3"> {{$t('input_labels.user_type')}} </div>
+          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.user_type')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type')}}</q-tooltip>
+            </div> 
           <q-input
             outlined
             filled
@@ -46,7 +50,11 @@
           type="textarea"
           label="Description"
         />-->
-          <div class=div-3> {{$t('input_labels.description')}} </div>
+          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.svg" />
+            {{$t('input_labels.description')}}
+            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type_description')}}</q-tooltip>
+            </div> 
           <GlossaryEditor
             class="desc-editor"
             v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -84,6 +92,7 @@
       </q-tabs>
       <FileUploader
         :Image="userimage"
+        :label="$t('help.user_type_icon')"
         :icon="int_user_type_shell.icon"
         @upload="getFiles"
       >
