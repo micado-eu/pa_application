@@ -26,13 +26,11 @@
               class=" q-pa-xsm "
               id="div-2"
             >
-            <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.process_name')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_name')}}</q-tooltip>
-            </div>
-            <!--  <div id="div-3">{{$t('input_labels.process_name')}} </div>-->
-
+            <HelpLabel
+            :fieldLabel="$t('input_labels.process_name')"
+            :helpLabel="$t('help.process_name')"
+            class="div-3" />
+           
               <q-input
                 dense
                 bg-color="grey-3"
@@ -51,11 +49,11 @@
               id="div-4"
               class="q-pa-xsm"
             >
-            <div class="row items-center all-pointer-events div-5">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.process_description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.process_description')}}</q-tooltip>
-            </div>
+             <HelpLabel
+            :fieldLabel="$t('input_labels.process_description')"
+            :helpLabel="$t('help.process_description')"
+            class="div-5" />
+            
               <GlossaryEditor
                 class="left"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -96,11 +94,10 @@
           id=""
           class=" q-pa-xsm row div-6"
         >
-          <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.generated_docs')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.generated_docs')}}</q-tooltip>
-            </div>
+        <HelpLabel
+            :fieldLabel="$t('input_labels.generated_docs')"
+            :helpLabel="$t('help.generated_docs')"
+            class="tag" />
           <q-select
             filled
             dense
@@ -119,18 +116,17 @@
         </div>
         <div  class=" q-pa-xsm row div-6">
           <div class="col-6 tag">
-            <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.user_tags')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_tags')}}</q-tooltip>
-            </div> 
+            <HelpLabel
+            :fieldLabel="$t('input_labels.user_tags')"
+            :helpLabel="$t('help.user_tags')"
+            class="tag" />
+            
           </div>
           <div class="col-6 tag">
-            <div class="row items-center all-pointer-events tag">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.topic_tags')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.topic_tags')}}</q-tooltip>
-            </div>
+            <HelpLabel
+            :fieldLabel="$t('input_labels.topic_tags')"
+            :helpLabel="$t('help.topic_tags')"
+            class="tag" />
           </div> 
         </div>
         <div
@@ -185,6 +181,10 @@
         </div>
 
         <hr id="hr-2">
+        <CommentList 
+        style="text-align:left; padding-left:20px; padding-right:20px"
+        :selected_process_comments="selected_process_comments"/>
+        <hr id="hr-2">
         <div id="div-10">
           <div class="q-pa-md q-gutter-md col-4 div-11">
             <q-btn
@@ -233,6 +233,9 @@ import editEntityMixin from '../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
+import CommentList from 'components/CommentList'
+import HelpLabel from 'components/HelpLabel'
+
 
 export default {
   name: 'PageIndex',
@@ -243,19 +246,23 @@ export default {
         processes: 'flows/processes',
         topic: 'topic/topic',
         user: 'user_type/user',
-        documents: 'document_type/document_types'
+        documents: 'document_type/document_types',
+        process_comments: 'comments/process_comments',
+        comments: 'comments/comments',
       }, actions: {
         saveProcess: 'flows/saveProcess',
         fetchFlows: 'flows/fetchFlows',
         editProcess: 'flows/editProcess',
         fetchTopic: 'topic/fetchTopic',
         fetchUserType: 'user_type/fetchUserType',
-        fetchDocumentType: 'document_type/fetchDocumentType'
+        fetchDocumentType: 'document_type/fetchDocumentType',
+        fetchCommentsByProcess: 'comments/fetchCommentsByProcess',
+        fetchComments: 'comments/fetchComments'
       }
     })],
   props: ["theprocessid"],
   components: {
-    GlossaryEditor
+    GlossaryEditor,CommentList,HelpLabel
   },
   data () {
     return {
@@ -271,7 +278,8 @@ export default {
       ],
       selected_t_tags: [],
       docOptions: [],
-      selectedDocs: []
+      selectedDocs: [],
+      selected_process_comments:[]
     }
   },
   computed: {
@@ -486,10 +494,31 @@ export default {
       })
     console.log("THEPROCESS:")
     console.log(this.theprocess)
+    
     if (this.theprocess != null) {
+      this.fetchComments().then((commentlist)=>{
+      console.log(commentlist)
+      this.fetchCommentsByProcess(this.theprocessid).then((the_comments)=>{
+        the_comments.forEach((comment) =>{
+                  console.log("INSIDE FOREACH")
+                  console.log(comment)
+                  for(var i = 0; i < this.comments.length; i++){
+                    console.log("INSIDE FOR")
+                    if(comment.idcomment == this.comments[i].id){
+                      console.log("INSIDE IF")
+                      this.selected_process_comments.push(this.comments[i])
+                      console.log(this.selected_process_comments)
+                    }
+                  }
+                    })
+      })
+    })
+    
       this.is_new = false
       this.mergeProcess(this.theprocess)
       console.log(this.edit_process)
+      console.log
+      
     }
     // }
   }

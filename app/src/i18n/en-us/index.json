@@ -167,7 +167,8 @@
     "cost": "Cost",
     "validable": "Validable",
     "validators": "Validators",
-    "add_intervention_plan":"Add intervention plan"
+    "add_intervention_plan":"Add intervention plan",
+    "comments":"Comments"
   },
   "profile": {
     "username": "Username",

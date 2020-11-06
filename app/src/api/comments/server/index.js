@@ -4,7 +4,13 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchComments() {
     return axiosInstance
-      .get('/backend/1.0.0/comments?filter[include][0][relation]=translations')
+      .get('/backend/1.0.0/comments?filter[include][0][relation]=translations&filter[include][1][relation]=tenant')
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
+  fetchCommentsByProcess(process_id) {
+    return axiosInstance
+      .get('/backend/1.0.0/processes/' + process_id + '/process-comments')
       .then(response => { return response.data })
       .catch(error_handler);
   },

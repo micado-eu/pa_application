@@ -45,7 +45,6 @@
           :fieldLabel="$t('input_labels.intervention_category')"
           :helpLabel ="$t('help.intervention_category')"
           />
-           
             
             <q-input
               counter

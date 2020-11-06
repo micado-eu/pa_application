@@ -7,7 +7,18 @@ export function someAction (context) {
 export function fetchComments(state, data) {
   return client
     .fetchComments()
-    .then(comments => state.commit('setComments', comments))
+    .then(comments => {
+      state.commit('setComments', comments)
+      return comments
+    })
+}
+export function fetchCommentsByProcess(state, process_id) {
+  return client
+    .fetchCommentsByProcess(process_id)
+    .then(process_comments => {
+      state.commit('setProcessComments', process_comments)
+      return process_comments
+    })
 }
 
 export function editComments (state, payload) {
