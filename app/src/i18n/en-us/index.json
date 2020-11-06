@@ -32,7 +32,15 @@
     "intervention_title":"Write a title for the intervention",
     "intervention_description":"Describe the intervention",
     "intervention_assigned_type":"Select the type of this intervention",
-    "intervention_plan_title":"Write a title for the intervention plan"
+    "intervention_plan_title":"Write a title for the intervention plan",
+    "element_title": "Write a title",
+    "element_description": "Write a description",
+    "element_tags": "Write new tags",
+    "element_category": "Select a category",
+    "element_topic": "Select a topic",
+    "element_user_type": "Select an user type",
+    "element_start_date": "Select the starting date",
+    "element_end_date": "Select the ending date"
   },
   "menu": {
     "title": "My Tools",

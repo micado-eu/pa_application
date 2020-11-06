@@ -8,7 +8,12 @@
     >
       <div class="center-edit q-ma-xl">
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.title')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.title')"
+              :helpLabel="$t('help.element_title')"
+            ></help-label>
+          </span>
           <q-input
             class="title_input q-mb-xl"
             outlined
@@ -18,7 +23,12 @@
           />
         </div>
         <div>
-          <span class="q-my-xl label-edit">{{$t('input_labels.description')}}</span>
+          <span class="q-my-xl label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.description')"
+              :helpLabel="$t('help.element_description')"
+            ></help-label>
+          </span>
           <glossary-editor
             class="desc-editor q-mb-xl"
             v-model="internalDescription"
@@ -30,7 +40,12 @@
             v-if="tags_enabled"
             class="q-my-md tag_list col"
           >
-            <span class="q-my-xl label-edit">{{$t('input_labels.tags')}}</span>
+            <span class="q-my-xl label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.tags')"
+                :helpLabel="$t('help.element_tags')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 color="accent"
@@ -70,7 +85,12 @@
             v-if="categories_enabled"
             class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_category')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_category')"
+                :helpLabel="$t('help.element_category')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedCategory"
               :options="internalCategories"
@@ -83,7 +103,12 @@
           v-if="is_event"
         >
           <div class="q-my-md q-mr-lg tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.start_date')"
+                :helpLabel="$t('help.element_start_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -155,7 +180,12 @@
             </div>
           </div>
           <div class="q-my-md tag_list col">
-            <span class="q-my-lg label-edit">{{$t('input_labels.start_date')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.finish_date')"
+                :helpLabel="$t('help.element_end_date')"
+              ></help-label>
+            </span>
             <div class="row">
               <q-input
                 outlined
@@ -232,7 +262,12 @@
             v-if="topics_enabled"
             class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_topic')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_topic')"
+                :helpLabel="$t('help.element_topic')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedTopic"
               :options="internalTopics"
@@ -255,7 +290,12 @@
             v-if="user_types_enabled"
             class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">{{$t('input_labels.select_user_type')}}</span>
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.select_user_type')"
+                :helpLabel="$t('help.element_user_type')"
+              ></help-label>
+            </span>
             <q-select
               v-model="selectedUserType"
               :options="internalUserTypes"
@@ -327,9 +367,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
+import HelpLabel from './HelpLabel'
+import GlossaryEditor from './GlossaryEditor'
 
 export default {
   name: 'EditElement',
+  components: {
+    'help-label': HelpLabel,
+    'glossary-editor': GlossaryEditor
+  },
   props: {
     pagetitle: {
       type: String,
@@ -649,9 +695,6 @@ export default {
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user'])
   },
-  components: {
-    'glossary-editor': require('components/GlossaryEditor.vue').default
-  },
   created() {
     this.loading = true
     const al = this.$i18n.locale
@@ -793,7 +836,6 @@ $title_font_size: 16px;
 .center-edit {
   max-width: 100%;
 }
-
 </style>
 <style>
 .desc-editor .editor-options {
