@@ -30,11 +30,13 @@
           :name="language.name"
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.topic')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.topic')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.topic')"
+          :helpLabel ="$t('help.topic')"
+          class="div-3"
+          style="padding-top:10px"
+          />
+          
           <q-input
             outlined
             filled
@@ -179,6 +181,8 @@ import FileUploader from 'components/FileUploader'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import HelpLabel from '../HelpLabel'
+
 
 
 export default {
@@ -205,7 +209,7 @@ export default {
     }
   },
   components: {
-    FileUploader
+    FileUploader, HelpLabel
   },
 
   methods: {

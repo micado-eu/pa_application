@@ -43,7 +43,10 @@
     "element_end_date": "Select the ending date",
     "edit_process": "Edit process",
     "manage_process":"Manage process",
-    "delete_process":"Delete process"
+    "delete_process":"Delete process",
+    "integration":"Go to intervention plans",
+    "migrant_data":"Go to migrant data",
+    "delete_user":"Delete migrant user"
   },
   "menu": {
     "title": "My Tools",

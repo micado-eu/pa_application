@@ -29,12 +29,11 @@
           :key="language.lang"
           :name="language.name"
         >
-        <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.intervention_type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_type')}}</q-tooltip>
-            </div> 
-
+        <HelpLabel
+          :fieldLabel="$t('input_labels.intervention_type')"
+          :helpLabel ="$t('help.intervention_type')"
+          class=" div-3"
+          />
           <q-input
             counter
             maxlength="100"
@@ -46,11 +45,12 @@
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
             :label="$t('input_labels.type_placeholder')"
           />
-          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_type_description')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.description')"
+          :helpLabel ="$t('help.intervention_type_description')"
+          class=" div-3"
+          style="padding-top:10px"
+          />
           <GlossaryEditor
             class="desc-editor"
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -84,12 +84,14 @@
           :label="language.name"
         />
       </q-tabs>
+       
       <div class="q-gutter-sm">
-        <div class="row items-center all-pointer-events div-4" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.category_type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_category_type')}}</q-tooltip>
-            </div> 
+        <HelpLabel
+          :fieldLabel="$t('input_labels.category_type')"
+          :helpLabel ="$t('help.intervention_category_type')"
+          class=" div-4"
+          style="padding-top:10px"
+          />
         <q-select
           filled
           clearable
@@ -102,11 +104,12 @@
         />
       </div>
       <div class="q-gutter-sm">
-        <div class="row items-center all-pointer-events div-4" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.integration_type_validators')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.integration_type_validators')}}</q-tooltip>
-            </div>
+        <HelpLabel
+          :fieldLabel="$t('input_labels.integration_type_validators')"
+          :helpLabel ="$t('help.integration_type_validators')"
+          class=" div-4"
+          style="padding-top:10px"
+          />
         <q-select
           filled
           clearable
@@ -204,6 +207,8 @@ import GlossaryEditor from 'components/GlossaryEditor'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import HelpLabel from '../HelpLabel'
+
 
 export default {
   name: 'InterventionType',
@@ -235,7 +240,7 @@ export default {
     }
   },
   components: {
-    GlossaryEditor
+    GlossaryEditor,HelpLabel
   },
   methods: {
     /* isPublished(value, event){

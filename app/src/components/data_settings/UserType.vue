@@ -28,11 +28,13 @@
           :key="language.lang"
           :name="language.name"
         >
-          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.user_type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type')}}</q-tooltip>
-            </div> 
+        <HelpLabel
+          :fieldLabel="$t('input_labels.user_type')"
+          :helpLabel ="$t('help.user_type')"
+          style="padding-top:10px"
+          class="div-3"
+          />
+          
           <q-input
             outlined
             filled
@@ -44,17 +46,12 @@
             :readonly="!(int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.user_type_placeholder')"
           />
-          <!-- <q-input
-          v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-          filled
-          type="textarea"
-          label="Description"
-        />-->
-          <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.user_type_description')}}</q-tooltip>
-            </div> 
+        <HelpLabel
+          :fieldLabel="$t('input_labels.description')"
+          :helpLabel ="$t('help.user_type_description')"
+          style="padding-top:10px"
+          class="div-3"
+          />
           <GlossaryEditor
             class="desc-editor"
             v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -191,6 +188,8 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import HelpLabel from '../HelpLabel'
+
 
 
 
@@ -219,7 +218,8 @@ export default {
   },
   components: {
     FileUploader,
-    GlossaryEditor
+    GlossaryEditor,
+    HelpLabel
   },
 
   methods: {

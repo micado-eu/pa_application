@@ -39,11 +39,12 @@
                     class=" q-pa-xsm "
                     id="div-2"
                   >
-                    <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                    {{$t('input_labels.step_name')}}
-                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_name')}}</q-tooltip>
-                    </div>
+                  <HelpLabel
+                    :fieldLabel="$t('input_labels.step_name')"
+                    :helpLabel ="$t('help.step_name')"
+                    class="labels"
+                  />
+                    
 
                     <q-input
                       dense
@@ -64,11 +65,12 @@
                     id="div-4"
                     class="q-pa-xsm"
                   >
-                    <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                    {{$t('input_labels.step_description')}}
-                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_description')}}</q-tooltip>
-                    </div>
+                   <HelpLabel
+                    :fieldLabel="$t('input_labels.step_description')"
+                    :helpLabel ="$t('help.step_description')"
+                    class="labels"
+                  />
+                   
                     <GlossaryEditor
                       class="desc-editor"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -92,12 +94,11 @@
                 id="location"
                 style="width:100%"
               >
-                <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                    {{$t('input_labels.step_location')}}
-                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_location')}}</q-tooltip>
-                    </div>
-
+                  <HelpLabel
+                    :fieldLabel="$t('input_labels.step_location')"
+                    :helpLabel ="$t('help.step_location')"
+                    class="labels"
+                  />
                 <q-input
                   dense
                   class="no-pad"
@@ -116,12 +117,11 @@
                 id="location"
                 style="width:100%"
               >
-                <div class="row items-center all-pointer-events labels">
-                    <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                    {{$t('input_labels.step_cost')}}
-                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.step_cost')}}</q-tooltip>
-                </div>
-
+              <HelpLabel
+                    :fieldLabel="$t('input_labels.step_cost')"
+                    :helpLabel ="$t('help.step_cost')"
+                    class="labels"
+                  />
                 <q-input
                   dense
                   class="no-pad"
@@ -328,6 +328,8 @@ import StepDocumentElement from 'components/StepDocumentElement'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
+import HelpLabel from 'components/HelpLabel'
+
 
 
 
@@ -368,7 +370,8 @@ export default {
   components: {
     Step,
     StepDocumentElement,
-    GlossaryEditor
+    GlossaryEditor,
+    HelpLabel
   },
   data () {
     return {

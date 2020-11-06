@@ -24,18 +24,25 @@
     <div>
     <div class="row labels">
       
-      <div class="col-9 flex flex-left div-6">
+      <div class="col-8" style="min-height:21px; vertical-align: top">
+        &nbsp;
         <!--{{$t('input_labels.name')}}-->
       </div>
-      <div class="col-1" style="text-align:left">
+      
+
+      <div class="q-pa-md q-gutter-sm  col-4 button-container">
+        <div class="row ">
+      <div class="col-5" style="padding-right:25px">
         {{$t('button.integration')}}
       </div>
-      <div class="col-1  div-7" style="text-align:center">
+      <div class="col-3 " >
         {{$t('button.migrant_data')}}
       </div>
-      <div class="col-1  div-8" style="text-align:right">
+      <div class="col-4" >
         {{$t('input_labels.delete')}}
       </div>
+    </div>
+    </div>
     </div>
     
     </div>
@@ -148,14 +155,20 @@ export default {
   font-size:18px
 }
 #list{
-  padding-top:20px;
+  padding-top:0px;
   display:inline-block;
   width:100%
 }
 .labels{
-   width:93%; 
+   width:100%; 
    margin: 0 auto;
   
+}
+.button-container{
+  padding-top:0px; 
+  padding-right:0px;
+  padding-bottom:0px; 
+  text-align:right;
 }
 
 

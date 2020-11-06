@@ -8,7 +8,6 @@
          
             <q-item-section class="col-1.3 flex flex-center margin">
               <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.edit_process')" @click.native="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )"/>
-             <!-- <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )" />-->
             </q-item-section>
             <q-item-section class="col-1.3 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - manage (guided processes).png'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>

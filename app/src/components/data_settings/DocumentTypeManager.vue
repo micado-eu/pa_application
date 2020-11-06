@@ -30,11 +30,12 @@
           :name="language.name"
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-          <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.doc_type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.doc_type')"
+          :helpLabel ="$t('help.doc_type')"
+          class="div-3"
+          />
+         
           <q-input
             outlined
             filled
@@ -46,11 +47,12 @@
             :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.doc_type_placeholder')"
           />
-          <div class="row items-center all-pointer-events div-3">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_description')}}</q-tooltip>
-            </div> 
+           <HelpLabel
+          :fieldLabel="$t('input_labels.description')"
+          :helpLabel ="$t('help.doc_type_description')"
+          class="div-3"
+          />
+          
           <GlossaryEditor
             class="desc-editor"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
@@ -66,11 +68,12 @@
             />
         </q-tab-panel>
       </q-tab-panels>
-            <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.issuer')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.issuer')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.issuer')"
+          :helpLabel ="$t('help.issuer')"
+          class="div-3"
+          style="padding-top:10px"
+          />
             <q-input
               outlined
               filled
@@ -79,17 +82,21 @@
               v-model="int_doc_shell.issuer"
               :label="$t('input_labels.issuer')"
             />
-            <div class="q-gutter-sm">
-              <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validable')}}</q-tooltip>
-              <q-checkbox class="div-3" color="accent" style="padding-top:10px" left-label v-model="int_doc_shell.validable" :label="$t('input_labels.validable')" />
+            <div class="q-gutter-sm row">
+               <HelpLabel
+          :fieldLabel="$t('input_labels.validable')"
+          :helpLabel ="$t('help.validable')"
+          class="col-1.5 field"
+          style="padding-top:10px"
+          /> 
+              <q-checkbox class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
             </div>
-            <div  v-if="int_doc_shell.validable" class="row items-center all-pointer-events field" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.validators')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.validators')}}</q-tooltip>
-            </div> 
-             
+            <HelpLabel
+            v-if="int_doc_shell.validable" 
+          :fieldLabel="$t('input_labels.validators')"
+          :helpLabel ="$t('help.validators')"
+          class="field"
+          /> 
               <q-select
               v-if="int_doc_shell.validable"
               multiple
@@ -108,11 +115,13 @@
           />
        
           <q-card-section class="section">
-             <div class="row items-center all-pointer-events field" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.icon')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_type_icon')}}</q-tooltip>
-            </div> 
+            <HelpLabel
+          :fieldLabel="$t('input_labels.icon')"
+          :helpLabel ="$t('help.doc_type_icon')"
+          class="field"
+          style="padding-top:10px"
+          /> 
+             
               <q-select
             filled
             dense
@@ -165,11 +174,12 @@
           </q-card-section>
           
         <q-card-section class="section">
-           <div class="row items-center all-pointer-events field" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.doc_pics')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.doc_pics')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.doc_pics')"
+          :helpLabel ="$t('help.doc_pics')"
+          class="field"
+          /> 
+          
           <q-file
             @input="getFilesPics($event)"
             bg-color="grey-3"
@@ -224,11 +234,12 @@
           </q-card>
         </q-card-section>
         <q-card-section class="section">
-           <div class="row items-center all-pointer-events field">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.upload_model')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.upload_model')}}</q-tooltip>
-            </div> 
+           <HelpLabel
+          :fieldLabel="$t('input_labels.upload_model')"
+          :helpLabel ="$t('help.upload_model')"
+          class="field"
+          /> 
+          
           <q-file
             @input="getFilesModel($event)"
             bg-color="grey-3"
@@ -378,6 +389,8 @@ import GlossaryEditor from 'components/GlossaryEditor'
 import VueHotspot from 'vue-hotspot'
 import DocumentTypeIcons from '../../mixin/DocumentTypeIcons.json'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import HelpLabel from '../HelpLabel'
+
 
 
 
@@ -401,7 +414,7 @@ export default {
       }
     })],
   components: {
-    ListItem, 'v-hotspot': VueHotspot, GlossaryEditor
+    ListItem, 'v-hotspot': VueHotspot, GlossaryEditor,HelpLabel
   },
   data () {
     return {

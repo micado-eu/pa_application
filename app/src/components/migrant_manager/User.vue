@@ -1,6 +1,6 @@
 <template>
 <div>
-<div class="item">
+<div class="item" style="margin-right:0px">
         
         
     <div class="col-12 username ">{{ this.Username }}</div>
@@ -14,15 +14,15 @@
         <span class="span">{{this.Gender}}</span>
       </div>
       <div class="q-pa-md q-gutter-sm  col-4 button-container">
-        <div class="row">
-          <div class="col-4">
-      <q-icon name="img:statics/icons/Icon - Integration.svg" size="md" :data-cy="'interventionplan'.concat(theUser.umId)" @click="interventionPlan()"  />
+        <div class="row ">
+          <div class="col-4"  style="text-align:right;">
+      <IconWithTooltip style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
           </div>
           <div class="col-4">
-            <q-icon name="img:statics/icons/Icon - Data.svg" size="md" :data-cy="'userdata'.concat(theUser.umId)"  @click="migrantData()"  />
+      <IconWithTooltip style="float:right" :icon="'img:statics/icons/Icon - Data.svg'" :tooltip="$t('help.migrant_data')" @click.native="migrantData()" :data-cy="'userdata'.concat(theUser.umId)"/>
           </div>
           <div class="col-4">
-            <q-icon name="img:statics/icons/Icon - Delete.svg" size="md" :data-cy="'deleteuser'.concat(theUser.umId)"  @click="remove_user($event)" />
+      <IconWithTooltip  style="float:right" :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_user')" @click.native="remove_user($event)" :data-cy="'deleteuser'.concat(theUser.umId)"/>
           </div>
         </div>
       </div>
@@ -35,11 +35,15 @@
 </template>
 
 <script>
+import IconWithTooltip from '../IconWithTooltip'
 export default {
   name: 'Process',
   props: ["Username",  "Age", "Nationality", "Gender", "Path", "theUser"], 
   data() {
     return {};
+  },
+  components:{
+    IconWithTooltip
   },
 
   methods: {
@@ -64,7 +68,7 @@ export default {
 .item{
   padding-top:16px;
   padding-bottom:0px;
-  width:98%
+  width:100%
 }
 .username{
  font-size:20px; 
@@ -88,8 +92,9 @@ export default {
 }
 .button-container{
   padding-top:0px; 
+  padding-right:0px;
   padding-bottom:0px; 
-  text-align:right;
+  text-align:center;
 }
 .button{
   width:70px;

@@ -1,11 +1,13 @@
 <template>
     <q-card class="my-card">
           <q-card-section class="section">
-            <div class="row items-center all-pointer-events field" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.upload_icon')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{this.label}}</q-tooltip>
-            </div> 
+            <HelpLabel
+          :fieldLabel="$t('input_labels.upload_icon')"
+          :helpLabel ="this.label"
+          class="field"
+          style="padding-top:10px"
+          />
+            
             <q-file
               @input="getFiles($event)"
               bg-color="grey-3"
@@ -30,9 +32,11 @@
 </template>
 
 <script>
+import HelpLabel from './HelpLabel'
+
 export default {
   name: "FileUploader",
-  components: {},
+  components: {HelpLabel},
   props: ["Image",  "published", "publicationDate", "icon", "label"],
   computed: {},
   mounted() {},
