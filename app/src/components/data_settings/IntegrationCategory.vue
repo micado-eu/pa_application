@@ -41,11 +41,11 @@
             :key="language.lang"
             :name="language.name"
           >
-           <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.intervention_category')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_category')}}</q-tooltip>
-            </div> 
+          <HelpLabel
+          :fieldLabel="$t('input_labels.intervention_category')"
+          :helpLabel ="$t('help.intervention_category')"
+          />
+           
             
             <q-input
               counter
@@ -172,6 +172,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import UploadButton from '../UploadButton'
+import HelpLabel from '../HelpLabel'
 //import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
 
 export default {
@@ -197,7 +198,7 @@ export default {
     }
   },
   components: {
-    UploadButton
+    UploadButton, HelpLabel
   },
   methods: {
     /* isPublished(value, event){
