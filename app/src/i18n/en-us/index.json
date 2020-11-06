@@ -32,7 +32,10 @@
     "intervention_title":"Write a title for the intervention",
     "intervention_description":"Describe the intervention",
     "intervention_assigned_type":"Select the type of this intervention",
-    "intervention_plan_title":"Write a title for the intervention plan"
+    "intervention_plan_title":"Write a title for the intervention plan",
+    "edit_process": "Edit process",
+    "manage_process":"Manage process",
+    "delete_process":"Delete process"
   },
   "menu": {
     "title": "My Tools",
