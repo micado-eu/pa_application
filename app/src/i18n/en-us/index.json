@@ -40,7 +40,10 @@
     "element_topic": "Select a topic",
     "element_user_type": "Select an user type",
     "element_start_date": "Select the starting date",
-    "element_end_date": "Select the ending date"
+    "element_end_date": "Select the ending date",
+    "edit_process": "Edit process",
+    "manage_process":"Manage process",
+    "delete_process":"Delete process"
   },
   "menu": {
     "title": "My Tools",

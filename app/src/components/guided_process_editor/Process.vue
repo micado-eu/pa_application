@@ -7,13 +7,14 @@
           <div class="col-8 flex flex-left title" >{{ this.Title }}</div>
          
             <q-item-section class="col-1.3 flex flex-center margin">
-              <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )" />
+              <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.edit_process')" @click.native="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )"/>
+             <!-- <q-icon  name="img:statics/icons/Edit.png" size="md" @click.stop="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )" />-->
             </q-item-section>
             <q-item-section class="col-1.3 flex flex-center top" >
-              <q-icon name="img:statics/icons/Icon - manage (guided processes).png" :data-cy="'manageprocess'.concat(theProcess.id )" @click.stop="manageProcess()" size="md" />
+              <IconWithTooltip :icon="'img:statics/icons/Icon - manage (guided processes).png'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
             </q-item-section>
             <q-item-section class="col-1.3 flex flex-center top" >
-              <q-icon name="img:statics/icons/Icon - Delete.svg" :data-cy="'deleteprocess'.concat(theProcess.id )" @click.stop="remove_process($event)" size="md" />
+              <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_process')" @click.native="remove_process($event)" :data-cy="'deleteprocess'.concat(theProcess.id )"/>
             </q-item-section>
       </div>
        <div class="row pad">
@@ -37,12 +38,14 @@
 </template>
 
 <script>
+import IconWithTooltip from '../IconWithTooltip'
 export default {
   name: 'Process',
   props: ["Title", "Topics", "Users", "Link", "Path", "theProcess", "processTopics", "processUsers"],
   data () {
     return {};
   },
+  components:{IconWithTooltip},
   methods: {
     remove_process (event) {
       let target = event.currentTarget.id
