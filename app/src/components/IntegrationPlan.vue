@@ -4,19 +4,27 @@
        <q-expansion-item 
         group="somegroup"
         :duration="100"
-        :label="title"
-        :header-class="{
-          'bg-green text-black' : intervention.completed,
-          'bg-yellow text-black': (!intervention.completed && intervention.validationRequestDate != null)
-         }"
         :data-cy="'intervention'.concat(intervention.id)"
-        header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px"
-        :expand-icon-class="{'text-white' : intervention.completed}"
+        header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px;"
         @before-show="fetchPic($event, intervention)"
         @hide ="cancelIntervention($event);"
         class="width-1"
       >
-        <q-card>
+      <template v-slot:header>
+          
+
+          <q-item-section>
+            {{title}}
+          </q-item-section>
+
+          <q-item-section side>
+            <div class="row items-center">
+              <q-icon v-if="intervention.completed" name="stop_circle" color="green" size="24px" />
+              <q-icon v-else-if="(!intervention.completed && intervention.validationRequestDate != null)" name="circle" color="yellow" size="24px" />
+              <q-icon v-else  name="panorama_fish_eye" color="yellow" size="24px" />
+            </div>
+          </q-item-section>
+        </template>
           <q-card-section  v-if="intervention.completed">
             <div class="row" style="text-align:center">
               <div class="col">
@@ -28,15 +36,12 @@
             </div>
           </q-card-section>
           <q-card-section v-else class="section" >
-            <div class="div-1">
-              Related Processes:  <q-chip class="chip" dense v-for="tag in intervention.linked_processes_id" :label="tag" :key="tag"></q-chip>
-            </div>
             <div class="div-2">
-              Description:
+              {{$t('input_labels.description')}}:
               <br>
             </div>
             <div class="row">
-              <q-item-section class="col-9 section-2">
+              <q-item-section class="col-12 section-2">
               {{this.description}}
                <!-- <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{this.intervention.interventionType.slice(0, 200)}}   </span>
                 <a class="" style="font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
@@ -44,65 +49,69 @@
                 </a> -->
                 <span class="span" v-if="readMoreActivated" v-html="description"></span>
               </q-item-section>
-              
-              <q-item-section class="col section-3">
-                <q-btn size="11px" class="button-1" no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
-                <q-btn size="11px" class="button-2" no-caps  unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
-              </q-item-section>
             </div>
-             <div v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:center; font-weight:bold">
-                To be validated by {{this.theTenant}}
+            <div class="row section-3">
+              <div class="col-2" style="text-align:center;padding-left:15px">
+                <q-btn size="11px" class="button-1 " no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
+              </div>
+              <div class="col-2" style="text-align:left; width:120px">
+                <q-btn size="11px" class="button-2 " no-caps  unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
+              </div>
+                <div class="col-8" v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:left; font-weight:bold;padding-top:4px; word-break:break-all">
+                *{{$t('input_labels.validator')}} {{this.theTenant}}
                 </div>
+              </div>
+                    
+             
             <div class=" q-gutter-sm  col pad-left">
               <q-card-section :hidden="hideForm" class="section">
+                <q-separator />
                 <div class="div-3" >
-                  <div class="div-4">
-                    Edit {{intervention.title}}
-                  </div>
+                  <h5 class="div-4">
+                    {{$t('input_labels.edit')}} {{intervention.title}}
+                  </h5>
                   <div class="div-5">
                   <div class=" q-pa-xsm row div-6" >
-                    <div class=" q-pa-xsm col-4">
-                      <h5 class="header"> Title </h5>
+                    <div class=" q-pa-xsm col-3">
+                      <HelpLabel
+                      :fieldLabel="$t('input_labels.title')"
+                      :helpLabel ="$t('help.intervention_title')"
+                      class="header"
+                      style="padding-top:10px;font-size:16px"
+                      />
                     </div>
-                    <div class="col-8 div-7">
-                      <q-input  dense   bg-color="white" standout outlined v-model="model.title" />
+                    <div class="col-9 div-7">
+                      <q-input  dense  maxlength="100" counter bg-color="white" standout outlined v-model="model.title" />
                     </div>
                   </div>
 
                 <div class=" q-pa-xsm row div-6">
-                  <div class=" q-pa-xsm col-4">
-                    <h5 class="header"> Description </h5>
-                  </div>
-                  <div class="col-8 div-8" >
-                    <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="model.description" />
-                  </div>
-                </div>
-
-                <div class=" q-pa-xsm row center" >
-                  <div class=" q-pa-xsm col-4">
-                    <h5 class="header-2"> Related processes </h5>
-                  </div>
-                  <div class=" q-pa-md col-8 div-9">
-                    <q-select
-                        filled
-                        clearable
-                        v-model="model.linked_processes_id"
-                        multiple
-                        :options="the_processes_list"
-                        bg-color="white"
-                        :label="$t('input_labels.related_processes')"
-                        class="width-2"
+                  <div class=" q-pa-xsm col-3">
+                     <HelpLabel
+                      :fieldLabel="$t('input_labels.description')"
+                      :helpLabel ="$t('help.intervention_description')"
+                      class="header"
+                      style="padding-top:10px;font-size:16px"
                       />
+                  </div>
+                  <div class="col-9 div-8" >
+                    <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="model.description" />
                   </div>
                 </div>
       
                 <div class=" q-pa-xsm row center" >
-                  <div class=" q-pa-xsm col-4">
-                    <h5 class="header-2">  Type </h5>
+                  <div class=" q-pa-xsm col-3">
+                     <HelpLabel
+                      :fieldLabel="$t('input_labels.type')"
+                      :helpLabel ="$t('help.intervention_assigned_type')"
+                      class="header-2"
+                      style="font-size:16px"
+                      />
                   </div>
-                  <div class=" q-pa-md col-8 div-9" >
+                  <div class=" q-pa-md col-9 div-9" >
                     <q-select
                         filled
+                        dense
                         emit-value
                         map-options
                         clearable
@@ -117,9 +126,9 @@
 
         <div class="q-gutter-sm">
          </div>
-        <div class=center>
+        <div class="center" style="padding-top:30px">
         <q-btn class="delete-button" :data-cy="'cancelintervention'.concat(intervention.id)" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
-        <q-btn  class="button" :data-cy="'saveintervention'.concat(intervention.id)" unelevated no-caps color="accent" :label="$t('button.save')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
+        <q-btn  class="button" :data-cy="'saveintervention'.concat(intervention.id)" unelevated no-caps color="accent" :label="$t('button.save_changes')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
         </div>
           </div>
           </div>
@@ -130,11 +139,12 @@
         </q-card>
       </q-expansion-item>
       
-      <q-separator />
     </div>
 </template>
 
 <script>
+import HelpLabel from './HelpLabel'
+
 export default {
   name: "InterventionPlan",
   data(){
@@ -155,6 +165,7 @@ export default {
     }
   },
   mounted() {},
+  components:{HelpLabel},
   methods: {
      activateReadMore(){
         this.readMoreActivated = true;
@@ -220,28 +231,29 @@ margin-bottom:10px
   width:105px;
   margin-bottom:10px;
   border-radius:2px;
-  margin-left:45px; 
-  margin-right:30px
+ 
 }
 .button-2{
   width:105px;
   margin-bottom:0px;
   border-radius:2px;
-  margin-left:45px; 
-  margin-right:30px
+  
 }
 .center{
   text-align: center;
 }
 .width-1{
-  width: 750px;
+  width: 900px;
+   border-radius:10px
 }
 .width-2{
-  width: 450px;
+  width: 622px;
 }
 .section{
   padding-left:0px; 
-  padding-right:0px
+  padding-right:0px;
+  padding-bottom:0px;
+  padding-top:0px
 }
 .div-1{
   padding-top:10px;
@@ -259,8 +271,8 @@ margin-bottom:10px
 }
 .section-2{
   padding-left:30px; 
-  font-size:15pt; 
-  width:570px
+  padding-right:30px;
+  font-size:16px; 
 }
 .span{
   width:540px; 
@@ -268,26 +280,30 @@ margin-bottom:10px
   font-weight:300
 }
 .section-3{
-  text-align:right; 
-  margin-left:0px
+  margin-left:0px;
+  padding-bottom:10px
 }
 .pad-left{
   padding-left:0px; 
   text-align:left;
 }
 .div-3{
-  background-color:#efefef; 
+  background-color:#FFF2EC; 
   padding-left:0px; 
-  padding-right:0px
+  padding-right:0px;
+  border-radius:10px
 }
 .div-4{
   padding-left:30px; 
-  font-size:15pt; 
-  padding-top:20px
+  font-size:25px; 
+  padding-top:40px;
+  font-weight: 600;
+  font-size: 25px;
+  margin-top:0px
 }
 .div-5{
   display:inline-block; 
-  width:750px;
+  width:900px;
   border-width:2px;  
   margin-bottom: 1px
 }
@@ -314,13 +330,19 @@ margin-bottom:10px
   padding-top:10px
 }
 .header-2{
-  text-align:left; 
-  padding-left:30px
+   margin-bottom: 0px;
+  margin-top: 14px;
+  padding-top: 22px;
+  font-size: 15pt;
+  padding-left: 30px;
 }
 .div-9{
-  margin-top:14px; 
-  margin-bottom:0px; 
-  padding-bottom:0px
+   margin-top: 14px;
+   padding-top:0px;
+  margin-bottom: 0px;
+  padding-bottom: 0px;
+  padding-left:20px
+
 }
 </style>
 

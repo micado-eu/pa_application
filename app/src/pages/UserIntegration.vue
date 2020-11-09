@@ -7,10 +7,31 @@
       <div class="row container">
      <h3 class=" col-6 header">{{the_user.umUserName}}</h3>
      <span class="col-6 top-span">
-     <q-btn class=add-button unelevated color="accent" :data-cy="'interventionplan'.concat(theuserid)" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
+     <q-btn class=add-button unelevated color="info" :data-cy="'interventionplan'.concat(theuserid)" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
      </span >
+       <div class="row">
+       <q-item >
+      <q-item-section  avatar style="padding-right:0px; margin-right:-30px">
+          <q-icon color="yellow" name="panorama_fish_eye" />
+        </q-item-section>
+        <q-item-section>{{$t('input_labels.todo')}}</q-item-section>
+      </q-item>
+      <q-item >
+        <q-item-section  avatar style="padding-right:0px; margin-right:-30px">
+          <q-icon color="yellow" name="circle" />
+        </q-item-section>
+        <q-item-section>{{$t('input_labels.validation_requested')}}</q-item-section>
+      </q-item>
+      <q-item >
+        <q-item-section avatar style="padding-right:0px; margin-right:-30px">
+          <q-icon  color="green" name="circle" />
+        </q-item-section>
+        <q-item-section>{{$t('input_labels.validated')}}</q-item-section>
+      </q-item>
       </div>
     </div>
+      </div>
+    
     <div >
       <div
         class="q-pa-md"
@@ -19,9 +40,8 @@
         :key="intervention_plan.id"
       >
         <q-list
-          id="list"
           bordered
-          class="rounded-borders"
+          class="rounded-borders list"
         >
           <h4 id="header">
             <span id="first-span">
@@ -31,7 +51,7 @@
               <q-btn
                 id="button"
                 icon-right="add"
-                color="accent"
+                color="secondary"
                 no-caps
                 :label="$t('button.add_intervention')"
                 :disable="hideAdd"
@@ -61,6 +81,7 @@
           </IntegrationPlan>
         </q-list>
         <AddIntervention
+        
           ref="add"
           :hideAdd="hideAdd"
           :model="intervention_shell"
@@ -399,18 +420,20 @@ export default {
 }
 
 #second-div {
-  width:800px;
+  width:900px;
   margin:0 auto;
+  padding-left:0px;
+  padding-right:0px
 }
 
 #third-div {
-  width:750px;
+  width:900px;
   margin:0 auto;
   padding-left:0px;
 }
 
-#list{
-  width:750px;
+.list{
+  width:900px;
   border-radius:10px;
 }
 
@@ -422,7 +445,7 @@ export default {
   margin-top:0px;
   height:60px;
   margin-bottom:0px;
-  width:750px;
+  width:900px;
   padding-left:5px;
   background-color:#0f3a5d;
   color:white;
@@ -444,7 +467,7 @@ export default {
   border-radius:2px;
 }
 .header{
-  margin-bottom:30px;
+  margin-bottom:0px;
   padding-left:12px;
   width:65%; 
   font-size:25pt; 
@@ -457,7 +480,7 @@ export default {
   vertical-align:middle
 }
 .add-button{
-  width:250px; 
+  width:150px; 
   margin-top:37px; 
   margin-bottom:30px;
   margin-left:5px; 

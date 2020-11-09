@@ -1,99 +1,99 @@
 <template>
-  <div id="div-2">
+<div>
+  <div class="div-2">
   <div id="div-3">
     {{$t('input_labels.add_intervention_plan')}}
   </div>
     <div id="div-4">
                   <div id="div-5" class=" q-pa-xsm row">
-                    <div  id="div-6" class=" q-pa-xsm col-6">
-                      <div class="row items-center all-pointer-events header-1" >
-                      <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                      {{$t('input_labels.title')}}
-                      <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_plan_title')}}</q-tooltip>
-                      </div>  
+                    <div   class=" q-pa-xsm col-2">
+                      <HelpLabel
+                      :fieldLabel="$t('input_labels.title')"
+                      :helpLabel ="$t('help.intervention_plan_title')"
+                      class="header-1"
+                      style="padding-top:5px"
+                      />  
                     </div>
-                    <div id="div-7" class="col-4">
+                    <div id="div-7" class="col-9">
                       <q-input dense bg-color="grey-3" counter maxlength="100" standout outlined v-model="plan_shell.title" />
-                    </div>
-                    <div id="div-8">
-                     <q-btn id="add-button" :data-cy="'addintervention'" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
                     </div>
                   </div>
     </div>
     <q-list id="list" bordered separator>
       <q-item
+      style="padding-left:60px; padding-right:60px"
         v-for="an_action in plan_shell.interventions"
         :key="an_action.id"
       >
-        <q-item-section id="item-section-1">{{an_action.title}}</q-item-section>
-        <q-item-section side>
-          <q-btn
-            class="delete-button"
-            :label="$t('button.delete')"
-            size="12px"
-            unelevated
-            no-caps
-            :id="an_action.id"
-            @click="deleteAction($event)"
-          />
-          <q-btn
-            color="info"
-            class="edit-button"
-            :label="$t('button.edit')"
-            size="12px"
-            no-caps
-            :id="an_action.id"
-            @click="editAction($event, an_action)"
-          />
-        </q-item-section>
+        <q-item-section class="col-10" id="item-section-1">{{an_action.title}}</q-item-section>
+          <q-item-section class="col-1 flex flex-center margin">
+              <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :id="an_action.id" :tooltip="$t('help.edit_intervention')" @click.native="editAction($event, an_action)" />
+            </q-item-section>
+            <q-item-section class="col-1 flex flex-center margin" >
+              <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :id="an_action.id" :tooltip="$t('help.delete_intervention')" @click.native="deleteAction($event)" />
+            </q-item-section>
       </q-item>
     </q-list>
+    
+     <div id="div-21">
+     <q-btn class="page-button" style="width:110px" :data-cy="'cancelinterventionplan'" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.go_back')" @click="goBack" />
+     <q-btn class="page-button" style="width:140px" :data-cy="'addintervention'" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
+     <q-btn class="page-button" style="width:140px" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save_plan')" @click="savePlan()" />
+  </div>
+  
+  
+    </div>
+    <div class="div-2" :hidden="hideForm">
     <q-card class="my-card">
       <q-card-section id="card-section" :hidden="hideForm">
          <div id="div-9">
+           <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
         <div id="div-10">
     <div id="div-11" class="q-pa-xsm row">
-      <div id="div-12" class=" q-pa-xsm col-4">
-            <div class="row items-center all-pointer-events header-2" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.title')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_title')}}</q-tooltip>
-            </div>       
+      <div id="div-12" class=" q-pa-xsm col-3">
+            <HelpLabel
+                :fieldLabel="$t('input_labels.title')"
+                :helpLabel ="$t('help.intervention_title')"
+                class="header-2"
+                style="padding-top:10px;font-size:16px"
+                />     
             </div>
-      <div id="div-13" class="col-8">
-        <q-input  dense max-length="100" counter  bg-color="white" standout outlined v-model="intervention_shell.title" />
+      <div id="div-13" class="col-9">
+        <q-input bg-color="grey-3" dense maxlength="100" counter   standout outlined v-model="intervention_shell.title" />
       </div>
     </div>
     <div id="div-14" class=" q-pa-xsm row">
-      <div class=" q-pa-xsm col-4">
-            <div class="row items-center all-pointer-events header-2" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_description')}}</q-tooltip>
-            </div>       
+      <div class=" q-pa-xsm col-3">
+            <HelpLabel
+                  :fieldLabel="$t('input_labels.description')"
+                  :helpLabel ="$t('help.intervention_description')"
+                  class="header-2"
+                  style="font-size:16px"
+                  />      
             </div>
-      <div id="div-15" class="col-8">
-        <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="intervention_shell.description" />
+      <div id="div-15" class="col-9">
+        <q-input  bg-color="grey-3" dense  type="textarea"  standout outlined v-model="intervention_shell.description" />
       </div>
     </div>
        <div id="div-18" class=" q-pa-xsm row">
-      <div class=" q-pa-xsm col-4">
-            <div class="row items-center all-pointer-events header-3" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_assigned_type')}}</q-tooltip>
-            </div>      
+      <div class=" q-pa-xsm col-3">
+           <HelpLabel
+                :fieldLabel="$t('input_labels.type')"
+                :helpLabel ="$t('help.intervention_assigned_type')"
+                class="header-3"
+                style="font-size:16px"
+                />    
             </div>
-      <div id="div-19" class=" q-pa-md col-8">
+      <div id="div-19" class=" q-pa-md col-9">
      <q-select
         class="select"
         filled
+        dense
         clearable
         emit-value
         map-options
         v-model="intervention_shell.interventionType"
         :options="types"
-        bg-color="white"
         :label="$t('input_labels.intervention_type')"
       />
       </div>
@@ -103,22 +103,21 @@
          </div>
          <div id="div-20">
         <q-btn class="form-delete-button" :data-cy="'cancelintervention'" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
-        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.save')" :id="plan_shell.id" @click="saveAction()" />
+        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.add_intervention')" :id="plan_shell.id" @click="saveAction()" />
         </div>
         </div>
       </q-card-section>
     </q-card>
-     <div id="div-21">
-     <q-btn class="page-button" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save')" @click="savePlan()" />
-     <q-btn class="page-button" :data-cy="'cancelinterventionplan'" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.back')" @click="goBack" />
   </div>
-    </div>
-
+</div>
 </template>
 
 <script>
 import editEntityMixin from '../mixin/editEntityMixin'
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import HelpLabel from 'components/HelpLabel'
+import IconWithTooltip from 'components/IconWithTooltip'
+
 
 export default {
   name: "IntegrationType",
@@ -133,6 +132,7 @@ export default {
     }
   })
   ],
+  components:{HelpLabel,IconWithTooltip},
   data() {
     return {
       hideForm: true,
@@ -293,7 +293,8 @@ export default {
 </script>
 <style scoped>
 .my-card{
-  width:746px
+  width:798px;
+  border-radius:10px
 }
 .edit-button{
   width:70px;
@@ -302,7 +303,7 @@ export default {
   margin-right:10px
 }
 #list{
-  width:746px
+  width:798px
 }
 #add-button{
   border-radius:2px;
@@ -342,15 +343,15 @@ export default {
   border-radius:2px;
   margin-right:10px;
   margin-bottom:10px;
-  width:135px;
+  width:140px;
   font-weight:600
 }
-#div-2{
+.div-2{
   margin:0 auto;
   margin-top:80px;
-  width:750px;
-  border-width:2px;
-  border-color:#0f3a5d;
+  width:800px;
+  border-width:1px;
+  border-color:#C4C4C4;
   border-radius: 10px;
   border-style: solid;
 }
@@ -363,21 +364,18 @@ export default {
 }
 #div-4{
   display:inline-block;
-  width:750px;border-width:2px;
+  width:800px;border-width:2px;
   margin-bottom: 1px;
   padding-bottom:20px
 }
 #div-5{
   text-align:center;
-  padding-left:40px
+  padding-left:60px
 }
-#div-6{
-  width:15%
-}
+
 #div-7{
   display: block;
   margin-bottom:0px;
-  width:58%;
   padding-right:0px;
 }
 #div-8 {
@@ -389,13 +387,13 @@ export default {
   margin-right:27px;
 }
 #div-9{
-  background-color:#efefef;
+  border-radius:10px;
   padding-left:0px;
   padding-right:0px
 }
 #div-10{
   display:inline-block;
-  width:750px;border-width:2px;
+  width:800px;border-width:2px;
   margin-bottom: 1px
 }
 #div-11{
@@ -432,10 +430,13 @@ export default {
 #div-19{
   margin-top:14px;
   margin-bottom:0px;
-  padding-bottom:0px
+  padding-left:20px;
+  padding-bottom:0px;
+  padding-top:0px
 }
 #div-20{
-  text-align:center
+  text-align:center;
+  padding-top:30px
 }
 #div-21{
   text-align:center; padding-bottom:10px
@@ -444,11 +445,11 @@ export default {
   text-align:left;
   margin-bottom:0px;
   margin-top:0px;
-  padding-top:8px;
+  padding-top:0px;
   font-size:15pt
 }
 #item-section-1{
-  font-size:18pt; 
+  font-size:20px; 
   font-weight:600
 }
 #card-section{
@@ -471,6 +472,14 @@ export default {
   padding-left: 30px;
 }
 .select{
-  width: 450px
+  width: 548px
+}
+.title{
+  padding-left:30px;
+  margin-top:0px; 
+  font-size:25px; 
+  padding-top:40px;
+  font-weight: 600;
+  font-size: 25px;
 }
 </style>

@@ -46,7 +46,9 @@
     "delete_process":"Delete process",
     "integration":"Go to intervention plans",
     "migrant_data":"Go to migrant data",
-    "delete_user":"Delete migrant user"
+    "delete_user":"Delete migrant user",
+    "edit_intervention":"Edit intervention",
+    "delete_intervention":"Delete intervention"
   },
   "menu": {
     "title": "My Tools",
@@ -81,6 +83,8 @@
     "delete": "Delete",
     "manage": "Manage",
     "save": "Save",
+    "save_plan":"Save plan",
+    "save_changes":"Save changes",
     "cancel": "Cancel",
     "upload": "Upload",
     "back": "Back",
@@ -121,6 +125,7 @@
     "user_types": "User Types"
   },
   "input_labels": {
+    "validator":"To be validated by",
     "category_placeholder": "Enter category title here",
     "publication_date": "Publication Date",
     "event": "Event",
@@ -182,7 +187,11 @@
     "validable": "Validable",
     "validators": "Validators",
     "add_intervention_plan":"Add intervention plan",
-    "comments":"Comments"
+    "comments":"Comments",
+    "todo":"To do",
+    "validated":"Validated",
+    "validation_requested":"Requested validation",
+    "new_intervention":"Add new intervention to the plan"
   },
   "profile": {
     "username": "Username",

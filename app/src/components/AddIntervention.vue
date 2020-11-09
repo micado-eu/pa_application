@@ -1,24 +1,25 @@
 <template>
-  <div class=container>
+  <q-card class="container"  :hidden="showAddForm" >
     <div>
+     <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
       <q-card-section
-        :hidden="showAddForm"
+        
         class="card"
       >
         <div class="div-1">
           <div class="div-2">
             <div class=" q-pa-xsm row div-3">
-              <div class=" q-pa-xsm col-4">
-                <div class="row items-center all-pointer-events header" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.title')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_title')}}</q-tooltip>
-            </div> 
-                
+              <div class=" q-pa-xsm col-3">
+                <HelpLabel
+                :fieldLabel="$t('input_labels.title')"
+                :helpLabel ="$t('help.intervention_title')"
+                class="header"
+                style="padding-top:10px;font-size:16px"
+                />
               </div>
-              <div class="col-8 div-4">
+              <div class="col-9 div-4">
                 <q-input
-                  max-length="100"
+                  maxlength="100"
                   counter
                   dense
                   bg-color="white"
@@ -30,14 +31,15 @@
             </div>
 
             <div class=" q-pa-xsm row div-5">
-              <div class=" q-pa-xsm col-4">
-                <div class="row items-center all-pointer-events header" style="padding-top:10px">
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.description')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_description')}}</q-tooltip>
-            </div> 
+              <div class=" q-pa-xsm col-3">
+                 <HelpLabel
+                  :fieldLabel="$t('input_labels.description')"
+                  :helpLabel ="$t('help.intervention_description')"
+                  class="header"
+                  style="padding-top:10px;font-size:16px"
+                  />
               </div>
-              <div class="col-8 div-4">
+              <div class="col-9 div-4">
                 <q-input
                   dense
                   type="textarea"
@@ -49,17 +51,20 @@
               </div>
             </div>
 
-            <div class=" q-pa-xsm row center">
-              <div class=" q-pa-xsm col-4">
-                 <div class="row items-center all-pointer-events header-2" >
-            <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-            {{$t('input_labels.type')}}
-            <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.intervention_assigned_type')}}</q-tooltip>
-            </div>
+            <div class=" q-pa-xsm row div-5">
+              <div class=" q-pa-xsm col-3">
+                <HelpLabel
+                :fieldLabel="$t('input_labels.type')"
+                :helpLabel ="$t('help.intervention_assigned_type')"
+                class="header-2"
+                style="font-size:16px"
+                />
+
               </div>
-              <div class=" q-pa-md col-8 div-6">
+              <div class=" q-pa-md col-9 div-6">
                 <q-select
                   filled
+                  dense
                   clearable
                   emit-value
                   map-options
@@ -76,7 +81,7 @@
           <div class="q-gutter-sm">
 
           </div>
-          <div class="center">
+          <div class="center" style="padding-top:30px">
             <q-btn
             :data-cy="'cancelintervention'"
               class="delete-button"
@@ -91,7 +96,7 @@
               unelevated
               no-caps
               color="accent"
-              :label="$t('button.save')"
+              :label="$t('button.add_intervention')"
               :id="the_intervention_plan.id"
               @click="saveIntervention($event, model)"
             />
@@ -102,10 +107,12 @@
     </div>
 
     <br>
-  </div>
+  </q-card>
 </template>
 
 <script>
+import HelpLabel from './HelpLabel'
+
 export default {
   name: "AddIntervention",
   data () {
@@ -115,6 +122,7 @@ export default {
   },
   components: {},
   props: ["hideAdd", "model", "the_processes_list", "the_intervention_plan", "intervention_categories", "showAddForm"],
+  components:{HelpLabel},
   computed: {
 
   },
@@ -164,20 +172,26 @@ export default {
   margin-bottom: 10px;
 }
 .container {
-  width: 750px;
+  background-color: #FFF2EC;
+  width: 900px;
+  margin-top:30px
 }
 .card {
   padding-left: 0px;
   padding-right: 0px;
+  padding-top:0px;
+  padding-bottom:0px;
+  width:900px
 }
 .div-1 {
-  background-color: #efefef;
+  background-color: #FFF2EC;
   padding-left: 0px;
   padding-right: 0px;
+  width:900px
 }
 .div-2 {
   display: inline-block;
-  width: 750px;
+  width: 900px;
   border-width: 2px;
   margin-bottom: 1px;
 }
@@ -205,7 +219,7 @@ export default {
   text-align: center;
 }
 .header-2 {
-  text-align: left;
+  
   margin-bottom: 0px;
   margin-top: 14px;
   padding-top: 22px;
@@ -216,8 +230,17 @@ export default {
   margin-top: 14px;
   margin-bottom: 0px;
   padding-bottom: 0px;
+  padding-left:0px;
+  padding-top:0px
 }
 .width {
-  width: 450px;
+  width: 622px;
+}
+.title{
+  padding-left:30px; 
+  font-size:25px; 
+  padding-top:40px;
+  font-weight: 600;
+font-size: 25px;
 }
 </style>
