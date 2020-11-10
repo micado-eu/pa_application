@@ -1,7 +1,8 @@
 import { axiosInstance } from 'boot/axios'
 import { error_handler, isJSON } from '../../../helper/utility'
+import * as xml2js from 'xml2js'
 
-const UNHCR_API = {
+const unhcrAPI = {
   Spain: {
     sea: {
       link: 'https://data2.unhcr.org/population/get/timeseries?widget_id=190477&geo_id=729&sv_id=11&population_group=4797&frequency=month&fromDate=2018-01-01',
@@ -41,91 +42,39 @@ const UNHCR_API = {
     }
   }
 }
-
-function fetchLocalCharts() {
-  return axiosInstance
-    .get('/backend/1.0.0/charts')
-    .then((response) => response.data)
-    .catch(error_handler)
-}
-
-function parse_UNHCR_bar(data) {
-  // add date
-  for (let i = 0; i < data.data.timeseries.length; i++) {
-    const d = data.data.timeseries[i]
-    d.date = `${d.year}.${d.month}`
-  }
-  return {
-    board: 'UNHCR',
-    category: data.data.geoMasterId.name,
-    content: JSON.stringify(data.data.timeseries),
-    description: data.situation_view_description,
-    format: null,
-    title: data.title_language_en,
-    type: 'BAR',
-    x: 'date',
-    y: 'individuals',
-    xistime: false
-  }
-}
-
-function parse_UNHCR_pie(data) {
-  return {
-    board: 'UNHCR',
-    category: data.data[0].geomaster_name,
-    content: JSON.stringify(data.data),
-    description: data.situation_view_description,
-    format: null,
-    title: data.title_language_en,
-    type: 'PIE',
-    x: 'pop_origin_name',
-    y: 'individuals',
-    xistime: false
-  }
-}
-
-function fetch_UNHCR(url) {
-  return fetch(url)
-    .then((response) => response.json())
-}
-
-function csvToJSON(csv) {
-  const lines = csv.replace(/\r/g, '').split('\n').filter((line) => line)
-  const result = []
-  const headers = lines[0].split(',')
-
-  for (let i = 1; i < lines.length; i++) {
-    const obj = {}
-    const currentline = lines[i].split(',')
-    for (let j = 0; j < headers.length; j++) {
-      obj[headers[j]] = currentline[j]
-    }
-    result.push(obj)
-  }
-  return JSON.stringify(result) // JSON
-}
+const hamburgAPI = [
+  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_ausserhalb_HH?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuzuege',
+  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuwanderung',
+  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_Auszuege_oerU?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuzuege_Auszuege_oerU'
+]
 
 export default {
   fetchStatistics() {
     return Promise.all([
       fetchLocalCharts(),
-      fetch_UNHCR(UNHCR_API.Spain.sea.link),
-      fetch_UNHCR(UNHCR_API.Spain.land.link),
-      fetch_UNHCR(UNHCR_API.Greece.sea.link),
-      fetch_UNHCR(UNHCR_API.Greece.land.link),
-      fetch_UNHCR(UNHCR_API.Italy.sea.link),
-      fetch_UNHCR(UNHCR_API.Spain.nationalities.link),
-      fetch_UNHCR(UNHCR_API.Greece.nationalities.link),
-      fetch_UNHCR(UNHCR_API.Italy.nationalities.link)
-    ]).then(([localCharts, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
-      localCharts.push(parse_UNHCR_bar(Spain_sea))
-      localCharts.push(parse_UNHCR_bar(Spain_land))
-      localCharts.push(parse_UNHCR_bar(Greece_sea))
-      localCharts.push(parse_UNHCR_bar(Greece_land))
-      localCharts.push(parse_UNHCR_bar(Italy_sea))
-      localCharts.push(parse_UNHCR_pie(Spain_nat))
-      localCharts.push(parse_UNHCR_pie(Greece_nat))
-      localCharts.push(parse_UNHCR_pie(Italy_nat))
+      fetchXML(hamburgAPI[0]),
+      fetchXML(hamburgAPI[1]),
+      fetchXML(hamburgAPI[2]),
+      fetchJSON(unhcrAPI.Spain.sea.link),
+      fetchJSON(unhcrAPI.Spain.land.link),
+      fetchJSON(unhcrAPI.Greece.sea.link),
+      fetchJSON(unhcrAPI.Greece.land.link),
+      fetchJSON(unhcrAPI.Italy.sea.link),
+      fetchJSON(unhcrAPI.Spain.nationalities.link),
+      fetchJSON(unhcrAPI.Greece.nationalities.link),
+      fetchJSON(unhcrAPI.Italy.nationalities.link)
+    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
+      localCharts.push(...parseHamburg(hamburg0))
+      localCharts.push(...parseHamburg(hamburg1))
+      localCharts.push(...parseHamburg(hamburg2))
+      localCharts.push(parseUnhcrBar(Spain_sea))
+      localCharts.push(parseUnhcrBar(Spain_land))
+      localCharts.push(parseUnhcrBar(Greece_sea))
+      localCharts.push(parseUnhcrBar(Greece_land))
+      localCharts.push(parseUnhcrBar(Italy_sea))
+      localCharts.push(parseUnhcrPie(Spain_nat))
+      localCharts.push(parseUnhcrPie(Greece_nat))
+      localCharts.push(parseUnhcrPie(Italy_nat))
       return {
         charts: localCharts
       }
@@ -155,3 +104,111 @@ export default {
     return Promise.reject('Error: the file format/data formats is wrong')
   }
 }
+
+function fetchLocalCharts() {
+  return axiosInstance
+    .get('/backend/1.0.0/charts')
+    .then((response) => response.data)
+    .catch(error_handler)
+}
+
+function parseUnhcrBar(data) {
+  // add date
+  for (let i = 0; i < data.data.timeseries.length; i++) {
+    const d = data.data.timeseries[i]
+    d.date = `${d.year}.${d.month}`
+  }
+  return {
+    board: 'UNHCR',
+    category: data.data.geoMasterId.name,
+    content: JSON.stringify(data.data.timeseries),
+    description: data.situation_view_description,
+    format: null,
+    title: data.title_language_en,
+    type: 'BAR',
+    x: 'date',
+    y: 'individuals',
+    xistime: false
+  }
+}
+
+function parseUnhcrPie(data) {
+  return {
+    board: 'UNHCR',
+    category: data.data[0].geomaster_name,
+    content: JSON.stringify(data.data),
+    description: data.situation_view_description,
+    format: null,
+    title: data.title_language_en,
+    type: 'PIE',
+    x: 'pop_origin_name',
+    y: 'individuals',
+    xistime: false
+  }
+}
+
+function parseHamburg(json) {
+  const board = 'Hamburg'
+  const category = Object.keys(json['wfs:FeatureCollection']['wfs:member'][0])[0]
+  let data = json['wfs:FeatureCollection']['wfs:member'][0][category][0]
+
+  const result = []
+  Object.keys(data).forEach(key => {
+    if (key != '$') {
+      const content = data[key][0]['mic:zeitreihe'][0]['mic:zeitreihen-element']
+      for (let [i, c] of content.entries()) {
+        if (c["mic:datum"] != undefined && c["mic:wert"] != undefined) {
+          c["mic:datum"] = c["mic:datum"][0]
+          c["mic:wert"] = c["mic:wert"][0]
+        } else {
+          content.splice(i, 1)
+        }
+      }
+      result.push({
+        board,
+        title: key,
+        description: "",
+        category: category,
+        format: "API",
+        url: "",
+        type: "BAR",
+        xIsTime: false,
+        x: "mic:datum",
+        y: "mic:wert",
+        content: JSON.stringify(content)
+      })
+    }
+  })
+  return result
+}
+
+function fetchJSON(url) {
+  return fetch(url)
+    .then((response) => response.json())
+}
+
+function fetchXML(url) {
+  return fetch(url)
+    .then(res => res.text())
+    .then(res => {
+      const parser = new xml2js.Parser()
+      return parser.parseStringPromise(res)
+    })
+}
+
+function csvToJSON(csv) {
+  const lines = csv.replace(/\r/g, '').split('\n').filter((line) => line)
+  const result = []
+  const headers = lines[0].split(',')
+
+  for (let i = 1; i < lines.length; i++) {
+    const obj = {}
+    const currentline = lines[i].split(',')
+    for (let j = 0; j < headers.length; j++) {
+      obj[headers[j]] = currentline[j]
+    }
+    result.push(obj)
+  }
+  return JSON.stringify(result) // JSON
+}
+

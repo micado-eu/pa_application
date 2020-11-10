@@ -5,23 +5,23 @@ const charts_request = new Request('http://localhost:3000/charts', {
     method: 'GET',
     headers: new Headers(),
     mode: 'cors',
-    cache: 'default',
-});
+    cache: 'default'
+})
 
 function csvToJSON(csv) {
     const lines = csv.split("\n").filter(line => line),
         result = [],
-        headers = lines[0].split(",");
+        headers = lines[0].split(",")
 
     for (let i = 1; i < lines.length; i++) {
         let obj = {},
-            currentline = lines[i].split(",");
+            currentline = lines[i].split(",")
         for (let j = 0; j < headers.length; j++) {
-            obj[headers[j]] = currentline[j];
+            obj[headers[j]] = currentline[j]
         }
-        result.push(obj);
+        result.push(obj)
     }
-    return JSON.stringify(result); //JSON
+    return JSON.stringify(result) //JSON
 }
 
 export default {
@@ -29,10 +29,10 @@ export default {
         return fetch(charts_request)
             .then(async (res) => {
                 return {
-                    charts: await res.json(),
-                };
+                    charts: await res.json()
+                }
             })
-            .catch(error_handler);
+            .catch(error_handler)
     },
     addChart(chart) {
 
@@ -55,7 +55,7 @@ export default {
                     }
                 })
                 .then(response => response.data)
-                .catch(error_handler);
+                .catch(error_handler)
         } else {
             return Promise.reject('Error: your format is wrong')
         }
