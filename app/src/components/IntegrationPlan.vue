@@ -50,7 +50,7 @@
                 <span class="span" v-if="readMoreActivated" v-html="description"></span>
               </q-item-section>
             </div>
-            <div class="row section-3">
+            <div class="row section-3" style="padding-top:40px">
               <div class="col-2" style="text-align:center;padding-left:15px">
                 <q-btn size="11px" class="button-1 " no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
               </div>

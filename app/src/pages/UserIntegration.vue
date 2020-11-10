@@ -164,10 +164,10 @@ export default {
         completed: false,
         title:"",
         description:"",
-        validatingUserId: 1,
-        validatingUserTenant: -1234,
-        assignmentDate: '2016-06-22 19:10:25-07',
-        validationRequestDate: '2016-06-22 19:10:25-07',
+        validatingUserId:  Number(this.theuserid),
+        validatingUserTenant: Number(this.$migrant_tenant),
+        assignmentDate: null,
+        validationRequestDate: null
       },
 
       selected_plan: null,
@@ -256,10 +256,10 @@ export default {
         description:"",
         validationDate: null,
         completed: false,
-        validatingUserId: 1,
-        validatingUserTenant: -1234,
-        assignmentDate: '2016-06-22 19:10:25-07',
-        validationRequestDate: '2016-06-22 19:10:25-07',
+        validatingUserId: Number(this.theuserid),
+        validatingUserTenant: Number(this.$migrant_tenant),
+        assignmentDate: null,
+        validationRequestDate: null
       }
     },
 
