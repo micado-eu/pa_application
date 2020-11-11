@@ -258,7 +258,13 @@
     "avg_requests": "Avg. request received",
     "avg_time": "Avg session duration",
     "new_users": "new visitors",
-    "total_users": "total visitors"
+    "total_users": "total visitors",
+    "7days": "7 Days",
+    "30days": "30 Days",
+    "today": "Today",
+    "total_sessions": "total sessions",
+    "time_spent": "time spent"
+
   },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
