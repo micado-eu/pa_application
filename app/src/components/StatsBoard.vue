@@ -1,9 +1,4 @@
 <template>
-
-
-
-
-
   <div>
     <q-btn-toggle
       v-model="statsIndex"
@@ -45,7 +40,6 @@
           :data="selectedStats.dashboard.avg_requests"
           :title="$t('stats.avg_requests')"
         />
-
       </q-card-section>
     </q-card>
   </div>
