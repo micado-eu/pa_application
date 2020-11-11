@@ -52,10 +52,10 @@
             </div>
             <div class="row section-3" style="padding-top:40px">
               <div class="col-2" style="text-align:center;padding-left:15px">
-                <q-btn size="11px" class="button-1 " no-caps  unelevated rounded color="info"  :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
+                <q-btn size="11px" class="button-1 " no-caps  unelevated rounded color="info" :data-cy="'edit_intervention'.concat(intervention.id)" :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
               </div>
               <div class="col-2" style="text-align:left; width:120px">
-                <q-btn size="11px" class="button-2 " no-caps  unelevated rounded color="accent" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
+                <q-btn size="11px" class="button-2 " no-caps  unelevated rounded color="accent" :data-cy="'validate_intervention'.concat(intervention.id)" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
               </div>
                 <div class="col-8" v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:left; font-weight:bold;padding-top:4px; word-break:break-all">
                 *{{$t('input_labels.validator')}} {{this.theTenant}}

@@ -2,9 +2,7 @@
 <div>
    <div class="row container">
      <h3 class="header">{{user.umUserName}}</h3>
-     <span class="top-span">
-     <q-btn class=add-button unelevated color="secondary" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
-     </span >
+     
     <q-card class="my-card" flat >
       <q-card-section horizontal>
         <q-card-section class="section">

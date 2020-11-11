@@ -53,6 +53,7 @@
                 icon-right="add"
                 color="secondary"
                 no-caps
+                :data-cy="'add_intervention_to_plan'.concat(intervention_plan.id)"
                 :label="$t('button.add_intervention')"
                 :disable="hideAdd"
                 @click="button_id = intervention_plan.id;addIntervention()"
