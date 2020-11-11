@@ -1,8 +1,9 @@
 <template>
   <q-card class="stat-element">
     <q-card-section>
-      <div class="text-h6">{{ title }}</div>
-      <div class="text-h4">{{ data.total }}</div>
+      <div class="text-h6 text-center">{{ title }}</div>
+      <div class="text-h4 text-center">{{ data.total }}</div>
+      <div class="text-subtitle1 text-center">{{ data.change }}</div>
     </q-card-section>
   </q-card>
 </template>
