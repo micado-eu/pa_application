@@ -112,7 +112,7 @@ export default {
           label: 'menu.situation',
           icon: 'img:statics/icons/Icon - Migration Situation Monitor.png',
           active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).png',
-          to: '/situation/editor',
+          to: '/situation/',
           feature: "FEAT_DEFAULT",
           description: 'menu.situation_desc'
         },

@@ -25,7 +25,7 @@
       :valueColumn="graph.y"
     />
     <mapChart v-if="graph.type==='MAP'" class="chart" />
-    <div v-if="['LINE','BAR'].indexOf(graph.type) > -1" class="q-pa-md">
+    <div v-if="['LINE','BAR'].indexOf(graph.type) > -1" class="q-px-lg q-mx-lg">
       <q-badge color='grey' >
         Model: {{ lower }} to {{ upper }} ({{min}} to {{ max }})
       </q-badge>

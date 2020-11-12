@@ -1,35 +1,46 @@
 <template>
-  <q-layout id="migration-situation-container" v-if="boards.length>2">
+  <q-layout id="migration-situation-container" v-if="boards.length > 2">
     <q-drawer
       key="situation-drawer"
       show-if-above
       bordered
-      :content-style="{backgroundColor: '#DCE4E8',border: 'none'}"
+      :content-style="{ backgroundColor: '#DCE4E8', border: 'none' }"
       class="situation-drawer"
     >
       <q-scroll-area class="fit">
         <q-list>
-          <template v-for="(board,i) in boards">
+          <template v-for="(menuItem, i) in menuItems">
             <q-separator class="bg-dark-separator" :key="'sep_u_' + i" />
+            <q-item
+              v-if="menuItem.title !=='Dashboards'"
+              :key="i + '_category'"
+              :header-inset-level="1"
+              clickable
+              :to="menuItem.link"
+              class="text-weight-bold"
+            >
+              <q-item-section>{{ menuItem.title }}</q-item-section>
+            </q-item>
             <q-expansion-item
-              class="situation-menu-expansion-item"
+              class="text-weight-bold"
+              v-if="menuItem.title ==='Dashboards'"
               :key="i"
-              :to="board.link"
+              :to="menuItem.link"
               active-class="my-menu-link"
               expand-separator
-              :label="board.title"
+              :label="menuItem.title"
               caption
               clickable
             >
               <q-item
-                v-for="(c,i) in getCategory(board)"
-                :key="i+'_category'"
+                v-for="(c, i) in menuItem.children"
+                :key="i + '_category'"
                 :header-inset-level="1"
                 clickable
-                :to="onClickNav(board.title, c.category)"
-                class="situation-menu-item"
+                :to="c.link"
+                class="text-weight-regular"
               >
-                <q-item-section>{{ c.category }}</q-item-section>
+                <q-item-section>{{ c.title }}</q-item-section>
               </q-item>
             </q-expansion-item>
             <q-separator class="bg-dark-separator" :key="'sep_b_' + i" />
@@ -46,16 +57,28 @@
 </template>
 <script>
 export default {
-  name: 'MigrationSituation',
+  name: "MigrationSituation",
+  data: function () {
+    return {}
+  },
   computed: {
     boards() {
-      const boards = this.$store.state.statistics.boards.map((b) => ({ title: b, link: `/situation/${b}` }))
-      boards.push(
-        { title: 'Master Portal', link: '/situation/map' },
-        // { title: 'LGV data', link: '/situation/lgv' },
-        { title: 'Editor', link: '/situation/editor' }
-      )
-      return boards
+      return this.$store.state.statistics.boards.map((b) => ({
+        title: b,
+        link: `/situation/${b}`
+      }))
+    },
+    menuItems() {
+      return [
+        { title: "Overview", link: "/situation/overview", children: [] },
+        { title: "Upload", link: "/situation/editor", children: [] },
+        { title: "Map", link: "/situation/map", children: [] },
+        {
+          title: "Dashboards",
+          link: "/situation/bla",
+          children: [...this.boards]
+        }
+      ]
     }
   },
   methods: {
@@ -70,7 +93,7 @@ export default {
     onClickNav(board, category) {
       const baseURL = this.$route.path.substring(
         0,
-        this.$route.path.indexOf('situation') + 10
+        this.$route.path.indexOf("situation") + 10
       )
       // location.href = baseURL + board + "#" + category;
       return `${baseURL + board}#${category}`
@@ -80,12 +103,11 @@ export default {
     this.$q.loading.show({
       delay: 400
     })
-    if(true){
-    this.$store.dispatch('statistics/fetchStatistics').then((res) => {
-      this.$q.loading.hide()
-      console.log("statistics: ",this.$store.state.statistics)
-    })
-    }else{
+    if (true) {
+      this.$store.dispatch("statistics/fetchStatistics").then((res) => {
+        this.$q.loading.hide()
+      })
+    } else {
       this.$q.loading.hide()
     }
   }
@@ -101,26 +123,18 @@ export default {
   text-decoration: none;
 }
 .nav-active {
-  background-color: white;
+  /* background-color: white; */
   color: black;
-}
-.situation-menu-expansion-item {
-  /* background-color: #0b91ce; */
-  font-weight: bold;
-}
-.situation-menu-item {
-  background-color: #dce4e8;
-  font-weight: normal;
 }
 .q-list {
   /* align with the main menu bar */
   margin-top: 177px;
 }
-#migration-situation-container{
+#migration-situation-container {
   margin-top: -50px;
   /* height: calc(100vh - 50px); */
 }
-.q-page-container{
-  margin-top:50px;
+.q-page-container {
+  margin-top: 50px;
 }
 </style>

@@ -61,8 +61,15 @@ export function setCategories(state, charts) {
   }
 }
 
-export function setLastRefresh (state, last_refresh) {
+export function setLastRefresh(state, last_refresh) {
   if (last_refresh) {
     state.last_refresh = last_refresh
   }
+}
+
+export function deleteChart(state, index) {
+  const idx = state.charts.findIndex(chart => chart.id === index)
+  console.log("found ID: ", idx)
+  console.log("found ID: ", state.charts[idx])
+  if (idx !== -1) state.charts.splice(idx, 1)
 }

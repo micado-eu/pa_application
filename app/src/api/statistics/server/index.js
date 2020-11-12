@@ -102,6 +102,12 @@ export default {
         .catch(error_handler)
     }
     return Promise.reject('Error: the file format/data formats is wrong')
+  },
+  deleteChart(id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/charts/' + id)
+      .then(response => response.data)
+      .catch(error_handler)
   }
 }
 
@@ -120,10 +126,11 @@ function parseUnhcrBar(data) {
   }
   return {
     board: 'UNHCR',
+    id: data.title_language_en,
     category: data.data.geoMasterId.name,
     content: JSON.stringify(data.data.timeseries),
     description: data.situation_view_description,
-    format: null,
+    format: 'API',
     title: data.title_language_en,
     type: 'BAR',
     x: 'date',
@@ -138,7 +145,7 @@ function parseUnhcrPie(data) {
     category: data.data[0].geomaster_name,
     content: JSON.stringify(data.data),
     description: data.situation_view_description,
-    format: null,
+    format: 'API',
     title: data.title_language_en,
     type: 'PIE',
     x: 'pop_origin_name',
@@ -165,6 +172,7 @@ function parseHamburg(json) {
         }
       }
       result.push({
+        id: key,
         board,
         title: key,
         description: "",
@@ -211,4 +219,5 @@ function csvToJSON(csv) {
   }
   return JSON.stringify(result) // JSON
 }
+
 

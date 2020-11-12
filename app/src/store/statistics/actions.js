@@ -32,3 +32,8 @@ export function addChart(store, chart) {
       store.commit('setLastRefresh', now)
     })
 }
+export function deleteChart(state, index) {
+  return client.deleteChart(index).then(res => {
+    state.commit('deleteChart', index)
+  })
+}

@@ -146,6 +146,8 @@
     "name": "Name",
     "edit": "Edit",
     "delete": "Delete",
+    "board": "Board",
+    "category": "Category",
     "topic_placeholder": "Enter topic title here",
     "upload_icon": "Upload your icon",
     "upload_new_docs": "Upload new documents",
