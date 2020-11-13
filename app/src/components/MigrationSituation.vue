@@ -71,7 +71,6 @@ export default {
     menuItems() {
       return [
         { title: "Overview", link: "/situation/overview", children: [] },
-        { title: "Upload", link: "/situation/editor", children: [] },
         { title: "Map", link: "/situation/map", children: [] },
         {
           title: "Dashboards",

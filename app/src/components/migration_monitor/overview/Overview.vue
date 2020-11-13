@@ -16,6 +16,14 @@
       Overview
     </div>
     <div class="q-pa-md">
+      <div class="row justify-start q-pb-lg">
+          <q-btn
+            color="info"
+            no-caps
+            :label="$t('button.add_new_chart')"
+            to="/situation/editor"
+          />
+      </div>
       <List />
     </div>
   </div>
