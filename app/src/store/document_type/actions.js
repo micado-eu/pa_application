@@ -19,7 +19,7 @@ export  function saveDocumentType (state, doc_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions saveDocumentType:")
   console.log(doc_element)
-  let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable']));
+  let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable', 'model']));
   console.log(savingDoc)
   var promiseValidators =[]
   var promiseDoc = []

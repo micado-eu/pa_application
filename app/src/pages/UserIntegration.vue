@@ -12,13 +12,13 @@
        <div class="row">
        <q-item >
       <q-item-section  avatar style="padding-right:0px; margin-right:-30px">
-          <q-icon color="yellow" name="panorama_fish_eye" />
+          <q-icon class="icon" name="panorama_fish_eye" />
         </q-item-section>
         <q-item-section>{{$t('input_labels.todo')}}</q-item-section>
       </q-item>
       <q-item >
         <q-item-section  avatar style="padding-right:0px; margin-right:-30px">
-          <q-icon color="yellow" name="circle" />
+          <q-icon class="icon" name="circle" />
         </q-item-section>
         <q-item-section>{{$t('input_labels.validation_requested')}}</q-item-section>
       </q-item>
@@ -456,6 +456,7 @@ export default {
 
 #first-span{
   padding-left:30px;
+  font-size:25px
 }
 
 #second-span{
@@ -486,5 +487,8 @@ export default {
   margin-bottom:30px;
   margin-left:5px; 
   border-radius:2px
+}
+.icon{
+  color:#ffd02c
 }
 </style>

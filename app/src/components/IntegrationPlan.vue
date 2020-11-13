@@ -13,15 +13,15 @@
       <template v-slot:header>
           
 
-          <q-item-section>
+          <q-item-section style="font-size:20px">
             {{title}}
           </q-item-section>
 
           <q-item-section side>
             <div class="row items-center">
               <q-icon v-if="intervention.completed" name="stop_circle" color="green" size="24px" />
-              <q-icon v-else-if="(!intervention.completed && intervention.validationRequestDate != null)" name="circle" color="yellow" size="24px" />
-              <q-icon v-else  name="panorama_fish_eye" color="yellow" size="24px" />
+              <q-icon v-else-if="(!intervention.completed && intervention.validationRequestDate != null)" name="circle" class="icon" size="24px" />
+              <q-icon v-else  name="panorama_fish_eye" class="icon" size="24px" />
             </div>
           </q-item-section>
         </template>
@@ -267,7 +267,7 @@ margin-bottom:10px
 }
 .div-2{
   padding-left:30px; 
-  font-size:15pt
+  font-size:16px
 }
 .section-2{
   padding-left:30px; 
@@ -343,6 +343,9 @@ margin-bottom:10px
   padding-bottom: 0px;
   padding-left:20px
 
+}
+.icon{
+  color:#ffd02c
 }
 </style>
 

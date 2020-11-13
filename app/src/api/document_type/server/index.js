@@ -126,7 +126,7 @@ export default {
     const whereClause = {
       id: { eq: doc.id }
     }
-    const updatingDocumentType = JSON.parse(JSON.stringify(doc, ['id', 'icon']))
+    const updatingDocumentType = JSON.parse(JSON.stringify(doc, ['id', 'icon', 'model']))
 
     return axiosInstance
       .patch(`/backend/1.0.0/document-types?where=${JSON.stringify(whereClause)}`, updatingDocumentType)

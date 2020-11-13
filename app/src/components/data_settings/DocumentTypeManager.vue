@@ -252,7 +252,27 @@
           >
 
           </q-file>
+          <q-item v-if="int_doc_shell.model" class="col-6">
+        <q-item-section avatar>
+          <q-icon  name="note_add"/>
+        </q-item-section>
+        <q-item-section>{{this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document}} model</q-item-section>
+        <q-item-section>
+           <q-btn
+        no-caps
+        dense
+        class="delete-button"
+        :data-cy="'cancelmodel'"
+        unelevated
+        rounded
+        :label="$t('button.remove')"
+        @click="cancelModel()"
+      />
+        </q-item-section>
+      </q-item>
         </q-card-section>
+        
+
       
 
       <hr id="hr">
@@ -426,7 +446,7 @@ export default {
       uploaded_images: [],
       int_doc_shell:
       {
-        id: -1, issuer: null, translations: [], icon: "", model: null, validable: false
+        id: -1, issuer: null, translations: [], icon: "", model: "", validable: false
       },
       hotimage: false,
       myimage: null,
@@ -443,12 +463,17 @@ export default {
         opacity: 0.9
       },
       icon: null,
+      the_model:null, 
       order: 0, 
       validatorList:[]
     }
   },
 
   methods: {
+    cancelModel(){
+      this.int_doc_shell.model = ""
+      this.the_model = ""
+    },
     addIcon(value){
       this.int_doc_shell.icon = value
       console.log("I am doc shel after adding icon ")
@@ -576,6 +601,7 @@ export default {
       this.int_doc_shell.validators = []
       this.uploaded_images = []
       this.icon = null
+      this.the_model = null
       this.order = 0
     },
     onRejected (rejectedEntries) {
@@ -615,6 +641,27 @@ export default {
       console.log(this)
       console.log(self)
       console.log("getting model")
+       const reader = new FileReader()
+
+      // Convert the file to base64 text
+      reader.readAsDataURL(files)
+
+      // on reader load somthing...
+      reader.onload = () => {
+        // Make a fileInfo Object
+        const fileInfo = {
+          name: files.name,
+          type: files.type,
+          size: `${Math.round(files.size / 1000)} kB`,
+          base64: reader.result,
+          file: files
+        }
+        console.log(this.uploaded_images)
+        this.the_model = files
+        this.int_doc_shell.model = fileInfo.base64
+        console.log(this.int_doc_shell)
+        console.log(fileInfo)
+      }
 
       /*const reader = new FileReader()
 
@@ -678,7 +725,7 @@ export default {
       }
     },
     createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: null, validable: false }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: "", validable: false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null, translationState: 0 })
@@ -727,6 +774,9 @@ export default {
       this.int_doc_shell.id = doc.id
       this.int_doc_shell.icon = doc.icon
       this.icon = doc.icon
+      //var model = atob(doc.model.replace('data:application/pdf;base64,',''))
+      //console.log("i am the model")
+      //console.log(model)
       //this.int_doc_shell.published = doc.published
       //this.int_doc_shell.publicationDate = doc.publicationDate
       this.int_doc_shell.issuer = doc.issuer
