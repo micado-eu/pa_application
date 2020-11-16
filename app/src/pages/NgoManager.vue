@@ -22,6 +22,57 @@
       </div>
     </div>
 
+    <q-card :hidden="hideData">
+      <div class="row">
+        <div class="col">
+          <q-input
+            v-model="new_admin_name"
+            :label="$t('ngo.adminName')"
+          />
+        </div>
+        <div class="col">
+          <q-input
+            v-model="new_admin_name"
+            :label="$t('ngo.adminSurname')"
+          />
+        </div>
+        <div class="col">
+          <q-input
+            v-model="new_admin_surname"
+            :label="$t('ngo.adminMail')"
+          />
+        </div>
+        <div class="col">
+          <q-input
+            v-model="new_admin_pwd"
+            :label="$t('ngo.adminPwd')"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <q-input
+            v-model="new_ngo_address"
+            :label="$t('ngo.address')"
+          />
+        </div>
+        <div class="col">
+          <q-input
+            v-model="new_ngo_contact_mail"
+            :label="$t('ngo.contactMail')"
+          />
+        </div>
+        <div class="col">
+          <q-input
+            v-model="new_ngo_tenant"
+            :label="$t('ngo.tenant')"
+          />
+        </div>
+        <div class="col">
+        </div>
+      </div>
+    </q-card>
+
     <div class="center">
       <q-list id="list">
         <User
@@ -60,6 +111,14 @@ export default {
   data () {
     return {
       search: " ",
+      hideData: false,
+      new_admin_email: "",
+      new_admin_name: "",
+      new_admin_surname: "",
+      new_admin_pwd: "",
+      new_ngo_address: "",
+      new_ngo_contact_mail: "",
+      new_ngo_tenant: "",
       wso2Tenants: [],
       wso2TenantsDetails: []
     }

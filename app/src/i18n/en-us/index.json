@@ -271,8 +271,12 @@
   },
   "ngo": {
     "fulluser": "Admin name",
-    "emailAdmin": "Admin email",
+    "adminMail": "Admin email",
     "contactMail": "Contact email",
+    "adminName": "Admin name",
+    "adminSurname": "Admin surname",
+    "adminPwd": "Admin password",
+    "tenant": "Contact email",
     "address": "Address"
   },
   "error_messages": {

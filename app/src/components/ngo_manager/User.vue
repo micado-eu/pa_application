@@ -41,7 +41,7 @@
             </template>
           </q-field>
           <q-field
-            :label="$t('ngo.emailAdmin')"
+            :label="$t('ngo.adminMail')"
             stack-label
           >
             <template v-slot:control>
