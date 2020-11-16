@@ -1,0 +1,27 @@
+{
+  "baseUrl": "http://localhost:8080/",
+  "fixturesFolder": "test/cypress/fixtures",
+  "integrationFolder": "test/cypress/integration",
+  "pluginsFile": false,
+  "screenshotsFolder": "test/cypress/screenshots",
+  "supportFile": "test/cypress/support/index.js",
+  "videosFolder": "test/cypress/videos",
+  "videoCompression": 1,
+  "pageLoadTimeout": 1500000,
+  "defaultCommandTimeout": 100000,
+  "viewportHeight": 768,
+  "viewportWidth": 1024,
+  "video": true,
+  "nodeVersion": "system",
+  "env": {
+    "cypress-movie": {
+      "enabled": true,
+      "cursorTracking": {
+        "enabled": false,
+        "shape": "dot"
+      },
+      "width": 1920,
+      "height": 640
+    }
+  }
+}

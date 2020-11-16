@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   pa_app_dev:
-    image: micadoproject/quasar:1.1.2
+    image: micadoproject/quasar:1.1.2-cypress
     stdin_open: true
     tty: true
     labels:
