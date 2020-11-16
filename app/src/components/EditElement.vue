@@ -322,7 +322,6 @@
           >
           <q-tabs
             v-model="langTab"
-            @input="changeLanguage"
             dense
             class="text-grey"
             active-color="black"
@@ -465,33 +464,41 @@ export default {
     ...mapActions('language', ['fetchLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage(al) {
-      this.saveContent()
-      this.changeLanguageAux(al)
+    changeLanguage(newLang, oldLang) {
+      this.saveContent(oldLang)
+      this.changeLanguageAux(newLang)
     },
     changeLanguageAux(al) {
-      if (this.elem) {
-        const idx = this.elem.translations.findIndex((t) => t.lang === al)
-        if (idx !== -1) {
-          this.internalTitle = this.elem.translations[idx].title
-          const parsedJson = this.elem.translations[idx].description
-          this.internalDescription = parsedJson
-          if (this.$refs.editor) {
-            this.$refs.editor.setContent(parsedJson)
+      const idx = this.savedTranslations.findIndex((t) => t.lang === al)
+      if (idx !== -1) {
+        const element = this.savedTranslations[idx]
+        this.setContent(element, al)
+      } else {
+        if (this.elem) {
+          const idx = this.elem.translations.findIndex((t) => t.lang === al)
+          if (idx !== -1) {
+            this.setContent(this.elem.translations[idx], al)
+          } else {
+            this.resetFields(al)
           }
         } else {
           this.resetFields(al)
         }
-      } else {
-        this.resetFields(al)
       }
     },
-    saveContent() {
-      const idx = this.savedTranslations.findIndex((t) => t.lang === this.langTab)
+    setContent(element, al) {
+      this.internalTitle = element.title
+      this.internalDescription = element.description
+      if (this.$refs.editor) {
+        this.$refs.editor.setContent(this.internalDescription)
+      }
+    },
+    saveContent(lang) {
+      const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang: this.langTab
+        lang
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
@@ -518,13 +525,6 @@ export default {
     resetFields(al) {
       this.internalTitle = ''
       this.internalDescription = ''
-      this.internalTags = []
-      this.tagInput = ''
-      this.setInternalCategorySelector(al)
-      this.selectedTopic = ''
-      this.setInternalTopicSelector(al)
-      this.selectedUserType = ''
-      this.setInternalUserTypeSelector(al)
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
@@ -648,9 +648,9 @@ export default {
     },
     callSaveFn() {
       if (!this.checkErrors()) {
-        this.saveContent()
+        this.saveContent(this.langTab)
         for (const language of this.languages) {
-          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) == -1) {
+          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
             const emptyTranslation = {
               title: '',
               description: '',
@@ -693,7 +693,22 @@ export default {
   computed: {
     ...mapGetters('language', ['languages']),
     ...mapGetters('topic', ['topic']),
-    ...mapGetters('user_type', ['user'])
+    ...mapGetters('user_type', ['user']),
+    maxTags: function () {
+      let maxTagsElem = 0
+      if (this.tags) {
+        maxTagsElem = this.tags.length
+      }
+      let maxTagsSaved = 0
+      return Math.max(maxTagsElem, maxTagsSaved)
+    }
+  },
+  watch: {
+    langTab: function (newVal, oldVal) {
+      if (newVal && oldVal) {
+        this.changeLanguage(newVal, oldVal)
+      }
+    }
   },
   created() {
     this.loading = true
