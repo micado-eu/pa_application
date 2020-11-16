@@ -1,20 +1,20 @@
 <template>
   <svg :width="width" :height="height" :id="id">
     <g v-if="sizeSet" :transform="`translate( ${ width/2 },${ height/2})`">
-      <g v-for="(d,i) in pie(pieData)" :key="i">
+      <g v-for="(d,i) in pie(content)" :key="i">
         <path 
           :d="pathArc(d)" 
-          :fill="interpolateGnBu(color(d.data[labelColumn]))" 
+          :fill="interpolateGnBu(color(d.data[catAxis]))" 
           @mouseover="onMouseOver"
           @mouseleave="onMouseLeave"  
-          :id="d.data[labelColumn]+'_arc'"
+          :id="d.data[catAxis]+'_arc'"
         />
         <text 
           class="label" 
-          :ref="d.data[labelColumn]+'_label'" 
-          :key="d.data[labelColumn]+'_label'" 
+          :ref="d.data[catAxis]+'_label'" 
+          :key="d.data[catAxis]+'_label'" 
           :transform="drawLabel(d)" text-anchor="middle" 
-          font-size="17">{{d.data[labelColumn]}} - {{d.data[valueColumn]}}
+          font-size="17">{{d.data[catAxis]}} - {{d.data[valAxis]}}
         </text>
       </g>
     </g>
@@ -27,9 +27,9 @@ export default {
   name: "pieChart",
   components: {},
   props: {
-    pieData: Array,
-    labelColumn: String,
-    valueColumn: String
+    content: Array,
+    catAxis: String,
+    valAxis: String
   },
   data: function() {
     return {
@@ -46,7 +46,7 @@ export default {
       return select("#" + this.id)
     },
     pie: function() {
-      return pie().value(d => parseInt(d[this.valueColumn]))
+      return pie().value(d => parseInt(d[this.valAxis]))
     },
     pathArc: function() {
       return arc()
@@ -60,7 +60,7 @@ export default {
     },
     color: function() {
       return scaleBand()
-        .domain(this.pieData.map(d => d[this.labelColumn]))
+        .domain(this.content.map(d => d[this.catAxis]))
         .range([0, 1])
     },
     drawLabel: function() {

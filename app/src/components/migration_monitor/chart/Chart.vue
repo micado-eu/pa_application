@@ -4,25 +4,25 @@
     <lineChart
       v-if="graph.type==='LINE'"
       class="chart"
-      :lineData="content"
-      :timeColumn="graph.x"
-      :valueColumn="graph.y"
+      :content="content"
+      :catAxis="graph.x"
+      :valAxis="graph.y"
       :xistime="graph.xistime"
     />
     <barChart
       v-if="graph.type==='BAR'"
       class="chart"
-      :lineData="content"
-      :timeColumn="graph.x"
-      :valueColumn="graph.y"
+      :content="content"
+      :catAxis="graph.x"
+      :valAxis="graph.y"
       :xistime="graph.xistime"
     />
     <pieChart
       v-if="graph.type==='PIE'"
       class="chart"
-      :pieData="graph.content"
-      :labelColumn="graph.x"
-      :valueColumn="graph.y"
+      :content="graph.content"
+      :catAxis="graph.x"
+      :valAxis="graph.y"
     />
     <mapChart v-if="graph.type==='MAP'" class="chart" />
     <div v-if="['LINE','BAR'].indexOf(graph.type) > -1" class="q-px-lg q-mx-lg">

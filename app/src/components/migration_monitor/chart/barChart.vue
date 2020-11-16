@@ -5,14 +5,14 @@
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
       <rect
-        v-for="(d,i) in lineData"
+        v-for="(d,i) in content"
         :key="i+'_rect'"
         :id="i+'_rect'"
         :ref="i+'_rect'"
-        :x="scaleX(d[timeColumn])"
-        :y="scaleY(d[valueColumn])"
+        :x="scaleX(d[catAxis])"
+        :y="scaleY(d[valAxis])"
         :width="barWidth"
-        :height="height - scaleY(d[valueColumn]) - margin.top - margin.bottom"
+        :height="height - scaleY(d[valAxis]) - margin.top - margin.bottom"
         fill='#99e6b4'
         stroke='white'
         stroke-width='1px'
@@ -20,14 +20,14 @@
         @mouseleave="onMouseLeave"
       />
       <text
-        v-for="(d,i) in lineData"
+        v-for="(d,i) in content"
         :key="i+'_label'"
         :ref="i+'_label'"
         class="label"
-        :x="scaleX(d[timeColumn])+barWidth/2"
-        :y="scaleY(d[valueColumn])"
+        :x="scaleX(d[catAxis])+barWidth/2"
+        :y="scaleY(d[valAxis])"
         text-anchor="middle"
-      >{{d[valueColumn]}}</text>
+      >{{d[valAxis]}}</text>
     </g>
     <text
       v-if="sizeSet"
@@ -35,13 +35,13 @@
       :y="margin.left/2"
       text-anchor="middle"
       transform="rotate(-90)"
-    >{{valueColumn}}</text>
+    >{{valAxis}}</text>
     <text
       v-if="sizeSet"
       :x="width/2 "
       :y="height - margin.bottom/2.4"
       text-anchor="middle"
-    >{{timeColumn}}</text>
+    >{{catAxis}}</text>
     <ChartAxisBottom
       v-if="sizeSet"
       :scaleX="scaleX"
@@ -74,9 +74,9 @@ export default {
     ChartAxisLeft
   },
   props: {
-    lineData: Array,
-    timeColumn: String,
-    valueColumn: String,
+    content: Array,
+    catAxis: String,
+    valAxis: String,
     xistime: Boolean
   },
   data() {
@@ -104,20 +104,20 @@ export default {
     scaleX() {
       if (this.xistime) {
         return scaleTime()
-          .domain(extent(this.lineData, (d) => d[this.timeColumn]))
+          .domain(extent(this.content, (d) => d[this.catAxis]))
           .range([0, this.width - this.margin.left - this.margin.right])
       }
       return scaleBand()
-        .domain(this.lineData.map((d) => d[this.timeColumn]))
+        .domain(this.content.map((d) => d[this.catAxis]))
         .range([0, this.width - this.margin.left - this.margin.right])
     },
     scaleY() {
       return (
         scaleLinear()
-          // .domain(extent(this.lineData, d => d[this.valueColumn]))
+          // .domain(extent(this.content, d => d[this.valAxis]))
           .domain([
             0,
-            Math.max(...this.lineData.map((d) => d[this.valueColumn]))
+            Math.max(...this.content.map((d) => d[this.valAxis]))
           ])
           .range([this.height - this.margin.top - this.margin.bottom, 0])
       )
@@ -125,7 +125,7 @@ export default {
     barWidth() {
       return (
         (this.width - this.margin.left - this.margin.right)
-        / this.lineData.length
+        / this.content.length
       )
     }
   },
@@ -157,7 +157,7 @@ export default {
     }
   },
   watch: {
-    lineData: function (val) {
+    content: function (val) {
       clearTimeout(this.rangeTimeout)
       this.rangeTimeout = setTimeout(this.refreshAxes, 250)
     }

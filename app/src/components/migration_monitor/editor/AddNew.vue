@@ -2,6 +2,61 @@
   <div :id="$options.name" class="q-pa-md">
     <div style="text-align: center; padding-top: 30px" class="main">
       <div class="q-pa-lg edit-element-component">
+                <div
+          class="q-pa-xsm q-mt-md row"
+          style="text-align: center; padding-right: 45px"
+        >
+          <div class="col-12 q-pl-xl">
+            <p class="label">Data Format</p>
+          </div>
+          <div class="col-12 q-pl-xl">
+            <q-select
+              v-model="data_format"
+              filled
+              :options="formats"
+              label="Standard"
+              @input="onChangeFileType"
+              :rules="[(val) => !!val || 'Field is required']"
+            />
+          </div>
+        </div>
+        <div
+          v-if="data_format === 'csv'"
+          class="q-pa-xsm q-mt-md row"
+          style="text-align: center; padding-right: 45px"
+        >
+          <div class="col-12 q-pl-xl">
+            <p class="label">Choose csv</p>
+          </div>
+          <div class="col-12 q-pl-xl">
+            <q-file
+              v-model="filename"
+              @input="getFiles"
+              dense
+              filled
+              :rules="[(val) => !!val || 'Field is required']"
+            ></q-file>
+          </div>
+        </div>
+
+        <div
+          v-if="data_format === 'JSON'"
+          class="q-pa-xsm q-mt-md row"
+          style="text-align: center; padding-right: 45px"
+        >
+          <div class="col-12 q-pl-xl">
+            <p class="label">Choose JSON</p>
+          </div>
+          <div class="col-12 q-pl-xl">
+            <q-file
+              v-model="filename"
+              @input="getFiles"
+              dense
+              filled
+              :rules="[(val) => !!val || 'Field is required']"
+            ></q-file>
+          </div>
+        </div>
         <div
           class="q-pa-xsm q-mt-md row"
           style="text-align: center; padding-right: 45px"
@@ -139,62 +194,6 @@
               v-model="description"
               placeholder="Describe your Chart"
             />
-          </div>
-        </div>
-
-        <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">Data Format</p>
-          </div>
-          <div class="col-12 q-pl-xl">
-            <q-select
-              v-model="data_format"
-              filled
-              :options="formats"
-              label="Standard"
-              @input="onChangeFileType"
-              :rules="[(val) => !!val || 'Field is required']"
-            />
-          </div>
-        </div>
-        <div
-          v-if="data_format === 'csv'"
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">Choose csv</p>
-          </div>
-          <div class="col-12 q-pl-xl">
-            <q-file
-              v-model="filename"
-              @input="getFiles"
-              dense
-              filled
-              :rules="[(val) => !!val || 'Field is required']"
-            ></q-file>
-          </div>
-        </div>
-
-        <div
-          v-if="data_format === 'JSON'"
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">Choose JSON</p>
-          </div>
-          <div class="col-12 q-pl-xl">
-            <q-file
-              v-model="filename"
-              @input="getFiles"
-              dense
-              filled
-              :rules="[(val) => !!val || 'Field is required']"
-            ></q-file>
           </div>
         </div>
       </div>
