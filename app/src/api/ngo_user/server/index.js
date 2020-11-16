@@ -6,6 +6,6 @@ export default {
     return axiosInstance
       .get('/backend/1.0.0/tenants')
       .then(response => { return response.data })
-      .catch(error_handler);
-  },
+      .catch(error_handler)
+  }
 }

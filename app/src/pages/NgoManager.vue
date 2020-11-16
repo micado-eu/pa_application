@@ -1,7 +1,10 @@
   <template>
   <div class="container">
     <div class="center">
-      <div class="col" id="div-1">
+      <div
+        class="col"
+        id="div-1"
+      >
         <q-input
           id="input"
           dense
@@ -12,7 +15,7 @@
         >
           <template v-slot:append>
             <q-avatar>
-               <q-icon name="search" />
+              <q-icon name="search" />
             </q-avatar>
           </template>
         </q-input>
@@ -24,9 +27,8 @@
         <User
           v-for="user in filteredUsers"
           :key="user.id"
-          :name="user.name"
-          :type="user.email"
-          :Path="user.id"
+          :user="user"
+          :wso2User="getWso2Tenant(user.id)"
           @remove="deleteUser"
         ></User>
       </q-list>
@@ -36,68 +38,98 @@
 
 
 <script>
-import User from "components/ngo_manager/User";
+import User from "components/ngo_manager/User"
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import identityClient from 'api-identity-client'
+
 
 export default {
   name: "NgoManager",
-  mixins:[
+  mixins: [
     storeMappingMixin({
-    getters: {
-     tenants: 'tenant/tenants'
-    }, actions: {
-      fetchTenant: 'tenant/fetchTenants'
-    }
-  })
+      getters: {
+        tenants: 'tenant/tenants'
+      }, actions: {
+        fetchTenant: 'tenant/fetchTenants'
+      }
+    })
   ],
   components: {
     User
   },
-  data() {
+  data () {
     return {
-      search: " "
-    };
+      search: " ",
+      wso2Tenants: [],
+      wso2TenantsDetails: []
+    }
   },
   computed: {
-    filteredUsers() {
+    filteredUsers () {
       //if none of the fields is filled in it will give the full list of processes
       if (this.search == "") {
         return this.tenants
       } else {
         return this.tenants.filter(filt => {
           //Splits the search field and puts the words in an array
-          var searchArray = this.search.split(" ");
+          var searchArray = this.search.split(" ")
           if (
             searchArray.every(string =>
               filt.name.toLowerCase().includes(string)
             )
           ) {
-            return true;
+            return true
           }
-        });
+        })
+      }
+    },
+    getWso2Tenant () {
+      return (id) => {
+        return this.wso2TenantsDetails.filter(aTenant => { return aTenant.tenantId == id })[0]
       }
     }
   },
   methods: {
-    deleteUser(value) {
+    deleteUser (value) {
       var deletedUser = this.users.filter(filt => {
-        return filt.id == value;
-      });
-      this.$store.commit("ngo_user/deleteUser", deletedUser[0].id);
+        return filt.id == value
+      })
+      this.$store.commit("ngo_user/deleteUser", deletedUser[0].id)
     }
+
   },
 
-  created() {
-    this.loading = true;
-    console.log(this.$store);
+  //  async created () {
+
+  // },
+  created () {
+    this.loading = true
+    console.log(this.$store)
+
     this.fetchTenant()
-    .then(users => {
-      console.log("i am tenants")
-      console.log(users)
-      this.loading = false;
-    });
+      .then(users => {
+        console.log("i got tenants from API")
+        console.log(users)
+        this.loading = false
+        return identityClient.getTenant()
+      })
+      .then(wso2_tenants => {
+        console.log("i got wso2_tenants from API")
+        console.log(wso2_tenants)
+        this.wso2Tenants = wso2_tenants.retrieveTenantsResponse.return
+        this.wso2Tenants.forEach(element => {
+          identityClient.getTenantDetail(element.tenantDomain)
+            .then(res => {
+              console.log(res)
+              this.wso2TenantsDetails.push(res.getTenantResponse.return)
+            })
+        })
+      })
+
+
+
   }
-};
+}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -108,21 +140,21 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-.center{
-  text-align:center
+.center {
+  text-align: center;
 }
-#div-1{
-  display:inline-block;
-  padding-right:20px;
-  padding-left:20px
+#div-1 {
+  display: inline-block;
+  padding-right: 20px;
+  padding-left: 20px;
 }
-#input{
-  border-radius:10px; 
-  width:590px;
-  font-size:18px
+#input {
+  border-radius: 10px;
+  width: 590px;
+  font-size: 18px;
 }
-#list{
-  display:inline-block;
-  width:750px
+#list {
+  display: inline-block;
+  width: 750px;
 }
 </style>

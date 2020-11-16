@@ -118,6 +118,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-comments-client', 'src/api/comments/server')
         chain.resolve.alias.set('api-consent-client', 'src/api/consent/server')
         chain.resolve.alias.set('api-countly-client', 'src/api/countly/server')
+        chain.resolve.alias.set('api-identity-client', 'src/api/identity/server')
         chain.resolve.alias.set('api-weblate-client', 'src/api/weblate/server')
         chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server')
       }

@@ -1,11 +1,9 @@
 <template>
-  <q-item  class="item">
+  <q-item class="item">
     <div>
-      <div class="username">{{ this.name }}</div> 
+
       <div class="row width">
-        <div class="q-pa-md col container">
-          <span class="span">{{this.type}}</span>
-        </div>
+        <div class="col h6 right">{{ this.user.name }}</div>
         <div class="q-pa-md q-gutter-sm col button-container">
           <q-btn
             size="11px"
@@ -14,8 +12,8 @@
             unelevated
             rounded
             color="secondary"
-            :label="$t('button.view')"
-            :to="'#'"
+            :label="showLabel"
+            @click="showData()"
           />
           <q-btn
             size="11px"
@@ -29,6 +27,54 @@
           />
         </div>
       </div>
+      <q-card :hidden="hideData">
+        <div class="row q-gutter-sm">
+          <q-field
+            :label="$t('ngo.fulluser')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ wso2FullUser}}</div>
+            </template>
+          </q-field>
+          <q-field
+            :label="$t('ngo.emailAdmin')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ wso2Email }}</div>
+            </template>
+          </q-field>
+          <q-field
+            :label="$t('ngo.contactMail')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ user.email}}</div>
+            </template>
+          </q-field>
+          <q-field
+            :label="$t('ngo.address')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ user.address}}</div>
+            </template>
+          </q-field>
+        </div>
+      </q-card>
       <hr class="hr" />
     </div>
   </q-item>
@@ -36,56 +82,80 @@
 
 <script>
 export default {
-  name: "Process",
-  props: ["name", "type", "theUser"],
-  data() {
-    return {};
+  name: "User",
+  props: ["user", "wso2User", "theUser"],
+  data () {
+    return {
+      hideData: true,
+      showLabel: this.$t('button.view')
+    }
+  },
+  computed: {
+    wso2Email () {
+      return this.wso2User != undefined ? this.wso2User.email : ''
+    },
+    wso2FullUser () {
+      return this.wso2User != undefined ? this.wso2User.firstname + ' ' + this.wso2User.lastname : ''
+    }
   },
   methods: {
-    remove_user(event) {
-      let target = event.currentTarget.id;
-      console.log(this.Path);
-      this.$emit("remove", this.Path);
+    remove_user (event) {
+      let target = event.currentTarget.id
+      console.log(this.Path)
+      this.$emit("remove", this.Path)
     },
+    showData () {
+      console.log(this)
+      if (this.hideData) {
+        this.hideData = false
+        this.showLabel = this.$t('button.hide')
+      } else {
+        this.hideData = true
+        this.showLabel = this.$t('button.view')
+      }
+      //      this.hideData = false
+      //      console.log(this.user)
+      //      console.log(this.wso2User)
+    }
   }
-};
+}
 </script>
 <style scoped>
-.item{
-  padding-top:16px;
-  padding-bottom:0px
+.item {
+  padding-top: 16px;
+  padding-bottom: 0px;
 }
-.username{
- font-size:20px; 
- text-align:left; 
- font-size:18px;
- width:750px; 
- padding-bottom:0px; 
- padding-left:0px
+.username {
+  font-size: 20px;
+  text-align: left;
+  font-size: 18px;
+  width: 750px;
+  padding-bottom: 0px;
+  padding-left: 0px;
 }
-.width{
-  width:750px
+.width {
+  width: 750px;
 }
-.container{
-  text-align:left; 
-  padding-top:0px;
-  padding-bottom:0px;
-  padding-left:0px
+.container {
+  text-align: left;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0px;
 }
-.span{
-  padding-right:5px
+.span {
+  padding-right: 5px;
 }
-.button-container{
-  padding-top:0px; 
-  padding-bottom:0px; 
-  text-align:right
+.button-container {
+  padding-top: 0px;
+  padding-bottom: 0px;
+  text-align: right;
 }
-.button{
-  width:70px;
-  margin-bottom:5px;
-  border-radius:2px
+.button {
+  width: 70px;
+  margin-bottom: 5px;
+  border-radius: 2px;
 }
-.hr{
-  margin:0px
+.hr {
+  margin: 0px;
 }
 </style>
