@@ -83,6 +83,7 @@
     "delete": "Delete",
     "manage": "Manage",
     "save": "Save",
+    "reset": "Reset",
     "save_plan": "Save plan",
     "save_changes": "Save changes",
     "cancel": "Cancel",
@@ -271,12 +272,13 @@
   },
   "ngo": {
     "fulluser": "Admin name",
+    "addNgo": "Add new CSO",
     "adminMail": "Admin email",
     "contactMail": "Contact email",
     "adminName": "Admin name",
     "adminSurname": "Admin surname",
     "adminPwd": "Admin password",
-    "tenant": "Contact email",
+    "tenant": "CSO tenant",
     "address": "Address"
   },
   "error_messages": {

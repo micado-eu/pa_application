@@ -1,6 +1,6 @@
   <template>
   <div class="container">
-    <div class="center">
+    <div class=" row center">
       <div
         class="col"
         id="div-1"
@@ -20,57 +20,120 @@
           </template>
         </q-input>
       </div>
+      <div class="col">
+        <q-btn
+          :label="$t('ngo.addNgo')"
+          color="info"
+          @click="hideData=false"
+        />
+      </div>
     </div>
 
     <q-card :hidden="hideData">
-      <div class="row">
-        <div class="col">
-          <q-input
-            v-model="new_admin_name"
-            :label="$t('ngo.adminName')"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model="new_admin_name"
-            :label="$t('ngo.adminSurname')"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model="new_admin_surname"
-            :label="$t('ngo.adminMail')"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model="new_admin_pwd"
-            :label="$t('ngo.adminPwd')"
-          />
-        </div>
-      </div>
-      <div class="row">
-        <div class="col">
-          <q-input
-            v-model="new_ngo_address"
-            :label="$t('ngo.address')"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model="new_ngo_contact_mail"
-            :label="$t('ngo.contactMail')"
-          />
-        </div>
-        <div class="col">
-          <q-input
-            v-model="new_ngo_tenant"
-            :label="$t('ngo.tenant')"
-          />
-        </div>
-        <div class="col">
-        </div>
-      </div>
+      <q-card-section>
+        <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class="q-gutter-md"
+        >
+
+          <div class="row">
+            <div class="col">
+              <q-input
+                ref="new_admin_name"
+                :rules="[val => !!val || 'Field is required']"
+                v-model="new_admin_name"
+                :label="$t('ngo.adminName')"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="new_admin_surname"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_admin_surname"
+                :label="$t('ngo.adminSurname')"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="new_admin_email"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_admin_email"
+                type="email"
+                :label="$t('ngo.adminMail')"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="new_admin_pwd"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_admin_pwd"
+                :type="isPwd ? 'password' : 'text'"
+                :label="$t('ngo.adminPwd')"
+              >
+                <template v-slot:append>
+                  <q-icon
+                    :name="isPwd ? 'visibility_off' : 'visibility'"
+                    class="cursor-pointer"
+                    @click="isPwd = !isPwd"
+                  />
+                </template>
+              </q-input>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <q-input
+                ref="new_ngo_address"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_ngo_address"
+                :label="$t('ngo.address')"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="new_ngo_contact_mail"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_ngo_contact_mail"
+                type="email"
+                :label="$t('ngo.contactMail')"
+              />
+            </div>
+            <div class="col">
+              <q-input
+                ref="new_ngo_tenant"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_ngo_tenant"
+                :label="$t('ngo.tenant')"
+              />
+            </div>
+            <div class="col">
+            </div>
+          </div>
+          <div class="row pa-md">
+            <q-btn
+              :label="$t('button.save')"
+              type="submit"
+              color="info"
+            />
+            <q-btn
+              :label="$t('button.reset')"
+              type="reset"
+              color="info"
+              flat
+              class="q-ml-sm"
+            />
+            <q-btn
+              :label="$t('button.cancel')"
+              color="info"
+              @click="onReset();hideData=true"
+              flat
+              class="q-ml-sm"
+            />
+          </div>
+
+        </form>
+      </q-card-section>
     </q-card>
 
     <div class="center">
@@ -111,7 +174,8 @@ export default {
   data () {
     return {
       search: " ",
-      hideData: false,
+      isPwd: true,
+      hideData: true,
       new_admin_email: "",
       new_admin_name: "",
       new_admin_surname: "",
@@ -154,7 +218,39 @@ export default {
         return filt.id == value
       })
       this.$store.commit("ngo_user/deleteUser", deletedUser[0].id)
+    },
+    onSubmit () {
+      this.$refs.new_admin_name.validate()
+      this.$refs.new_admin_surname.validate()
+      this.$refs.new_admin_email.validate()
+      this.$refs.new_admin_pwd.validate()
+      this.$refs.new_ngo_address.validate()
+      this.$refs.new_ngo_contact_mail.validate()
+      this.$refs.new_ngo_tenant.validate()
+
+      if (this.$refs.new_admin_name.hasError || this.$refs.new_admin_surname.hasError || this.$refs.new_admin_email.hasError || this.$refs.new_admin_pwd.hasError || this.$refs.new_ngo_address.hasError || this.$refs.new_ngo_contact_mail.hasError || this.$refs.new_ngo_tenant.hasError) {
+        this.formHasError = true
+      }
+    },
+
+    onReset () {
+      this.new_admin_name = null
+      this.new_admin_surname = null
+      this.new_admin_email = null
+      this.new_admin_pwd = null
+      this.new_ngo_address = null
+      this.new_ngo_contact_mail = null
+      this.new_ngo_tenant = null
+
+      this.$refs.new_admin_name.resetValidation()
+      this.$refs.new_admin_surname.resetValidation()
+      this.$refs.new_admin_email.resetValidation()
+      this.$refs.new_admin_pwd.resetValidation()
+      this.$refs.new_ngo_address.resetValidation()
+      this.$refs.new_ngo_contact_mail.resetValidation()
+      this.$refs.new_ngo_tenant.resetValidation()
     }
+
 
   },
 
