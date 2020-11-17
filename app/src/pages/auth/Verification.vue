@@ -64,14 +64,16 @@ export default {
             token: identity_response,
             rememberMe: false
           })
+          this.message = "Welcome " + id_token.given_name + " you have " + (this.$store.getters['auth/check']("Application/micado_superadmin") ? "superadmin" : "no rights")
+          console.log(this.message)
         })
-
-      this.$store.commit('auth/setUser', id_token)
-      this.$store.dispatch('auth/setToken', {
-        token: identity_response,
-        rememberMe: false
-      })
-
+      /*
+            this.$store.commit('auth/setUser', id_token)
+            this.$store.dispatch('auth/setToken', {
+              token: identity_response,
+              rememberMe: false
+            })
+      */
 
       /*
             this.token = this.$route.query.token

@@ -39,15 +39,15 @@
       bordered
       content-class="bg-accent text-white"
     >
-      <auth-menu />
       <q-list dark>
         <q-item-label header>{{ $t('menu.title') }}</q-item-label>
         <q-item
-          clickable
+          :disable="nav.auth != undefined ? !check(nav.auth) : false"
           :data-cy="nav.label.replace('.', '_')"
           exact
           dark
           active
+          clickable
           v-feature-flipping="nav.feature"
           active-class="my-menu-link"
           v-for="(nav) in navs"
@@ -86,16 +86,19 @@
 </template>
 
 <script>
-import AuthMenu from './auth/AuthMenu'
 // import ListenToggle from 'components/ListenToggle'
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 export default {
   name: 'Layout',
-
+  mixins: [
+    storeMappingMixin({
+      getters: {
+        check: 'auth/check'
+      }
+    })],
   components: {
-    AuthMenu
   },
-
   data () {
     return {
       leftDrawerOpen: false,
@@ -130,7 +133,8 @@ export default {
           active_icon: 'img:statics/icons/Icon - CSO Admin Management (selected).png',
           to: '/cso',
           feature: "FEAT_DEFAULT",
-          description: 'menu.cso_desc'
+          description: 'menu.cso_desc',
+          auth: "Application/micado_superadmin"
         },
         {
           label: 'menu.process',
@@ -197,7 +201,6 @@ export default {
       console.log('selected key')
       this.selectedKey = key
     }
-
   }
 
 }

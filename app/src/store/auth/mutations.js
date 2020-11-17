@@ -8,7 +8,7 @@ export function setUser (state, data) {
       lastname: data.family_name,
       gender: data.gender,
       country: data.country,
-      roleNames: null
+      roleNames: data.groups
     }
   } else {
     state.user = null
