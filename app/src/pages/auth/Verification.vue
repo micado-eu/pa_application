@@ -56,8 +56,8 @@ export default {
           console.log("response from getting internal user id")
           console.log(response)
           id_token.umid = response[0].umId
-          id_token.email = response[0].attributes.filter(att => { return att.umAttrName == "mail" })[0].umAttrValue
-          id_token.given_name = response[0].attributes.filter(att => { return att.umAttrName == "givenName" })[0].umAttrValue
+          id_token.email = response[0].attributes.filter(att => { return att.umAttrName == "mail" })[0] != undefined ? response[0].attributes.filter(att => { return att.umAttrName == "mail" })[0].umAttrValue : ""
+          id_token.given_name = response[0].attributes.filter(att => { return att.umAttrName == "givenName" })[0] != undefined ? response[0].attributes.filter(att => { return att.umAttrName == "givenName" })[0].umAttrValue : ""
           console.log(id_token)
           this.$store.commit('auth/setUser', id_token)
           this.$store.dispatch('auth/setToken', {
