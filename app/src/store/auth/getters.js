@@ -19,13 +19,13 @@ export const check = state => roles => {
   if (user) {
     if (Array.isArray(roles) && roles.length) {
       for (let role of roles) {
-        if (!user.roleNames.includes(role)) {
+        if ((user.roleNames != undefined) && !user.roleNames.includes(role)) {
           console.log("returning false")
           return false
         }
       }
     } else if (roles) {
-      if (!user.roleNames.includes(roles)) {
+      if ((user.roleNames != undefined) && !user.roleNames.includes(roles)) {
         console.log("returning false")
         return false
       }
