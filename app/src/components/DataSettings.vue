@@ -25,6 +25,7 @@
                 :data-cy="setting.label.replace('.', '_')"
                 :key="setting.label"
                 :header-inset-level="1"
+                :disable="setting.auth != undefined ? !check(setting.auth) : false"
                 clickable
                 :to=" '/data_settings' + setting.link"
                 class="sub-item"
@@ -36,19 +37,21 @@
             <q-separator class="bg-dark-separator" />
           </template>
           <q-item
-          :data-cy="'data_settings.settings'.replace('.', '_')"
+            :data-cy="'data_settings.settings'.replace('.', '_')"
             clickable
             to="/data_settings/settings"
             class="situation-menu-item"
+            :disable="!check('Application/micado_superadmin')"
             active-class="my-menu-link"
           >
             <q-item-section>{{ $t('data_settings.settings') }}</q-item-section>
           </q-item>
           <q-item
-           :data-cy="'data_settings.language'.replace('.', '_')"
+            :data-cy="'data_settings.language'.replace('.', '_')"
             clickable
             to="/data_settings/language"
             class="situation-menu-item"
+            :disable="!check('Application/micado_superadmin')"
             active-class="my-menu-link"
           >
             <q-item-section>{{ $t('data_settings.language') }}</q-item-section>
@@ -72,6 +75,7 @@ import Topic from './data_settings/Topic'
 import UserType from './data_settings/UserType'
 import ActiveLanguageSelector from './settings/ActiveLanguageSelector.vue'
 import FunctionConfiguration from '../pages/settings/FunctionConfiguration.vue'
+import storeMappingMixin from '../mixin/storeMappingMixin'
 
 const TIMEOUT = 1
 
@@ -86,6 +90,12 @@ export default {
     ActiveLanguageSelector,
     FunctionConfiguration
   },
+  mixins: [
+    storeMappingMixin({
+      getters: {
+        check: 'auth/check'
+      }
+    })],
   data () {
     return {
       open: true,
@@ -107,11 +117,15 @@ export default {
         },
         {
           label: 'data_settings.topics',
-          link: '/topics'
+          link: '/topics',
+          auth: "Application/micado_superadmin"
+
         },
         {
           label: 'data_settings.user_types',
-          link: '/user_types'
+          link: '/user_types',
+          auth: "Application/micado_superadmin"
+
         }
       ]
     }
