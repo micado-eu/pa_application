@@ -78,6 +78,7 @@
             @cancelIntervention="cancelIntervention"
             @saveIntervention="savingIntervention"
             @validated="validateIntervention"
+            @deleteIntervention="deleteIntervention"
           >
           </IntegrationPlan>
         </q-list>
@@ -95,7 +96,16 @@
           :showAddForm="button_id != intervention_plan.id"
         >
         </AddIntervention>
-
+        <q-btn
+                id="button"
+                icon-right="add"
+                color="secondary"
+                no-caps
+                :data-cy="'delete_olan'.concat(intervention_plan.id)"
+                :label="$t('button.delete')"
+                :disable="hideAdd"
+                @click="deletePlan(intervention_plan.id)"
+              />
       </div>
     </div>
   </div>
@@ -130,7 +140,9 @@ export default {
       fetchIntegrationType: 'integration_type/fetchIntegrationType',
       fetchDocuments: 'documents/fetchDocuments',
       fetchCompletionDocuments: 'documents/fetchCompletionDocuments',
-      fetchTenants: 'tenant/fetchTenants'
+      fetchTenants: 'tenant/fetchTenants',
+      deletingIntervention: 'intervention_plan/deleteIntervention',
+      deleteInterventionPlan: 'intervention_plan/deleteInterventionPlan'
   }
   })
   ],
@@ -224,6 +236,11 @@ export default {
        console.log(this.user)
       this.$router.push({ name: 'addinterventionplan', params: { theuser: this.the_user, theuserid: this.the_user.umId } })
     },
+    deletePlan(id){
+      console.log("inside deleting plan")
+      console.log(id)
+      this.deleteInterventionPlan(id)
+    },
     
     getTitle(id){
       console.log(id)
@@ -280,6 +297,16 @@ export default {
       this.intervention_shell.description = intervention.description
       console.log("merged intervention")
       console.log(this.intervention_shell)
+    },
+    deleteIntervention(value){
+      console.log("in delete")
+      console.log(value)
+      var editing = this.intervention_plans.filter((filt) => {
+        return filt.id == value.listId
+
+      })
+      this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+      this.deletingIntervention({intervention_id: value.id, plan_id:this.selected_plan.id})
     },
     savingIntervention (value) {
 

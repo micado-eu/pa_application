@@ -37,6 +37,12 @@ export default {
           .then(response => response.data)
           .catch(error_handler);
         },
+        deleteIntervention(intervention_id){
+          return axiosInstance
+          .delete('/backend/1.0.0/individual-intervention-plan-interventions/' + id)
+          .then(response => response.data)
+          .catch(error_handler);
+        },
     saveIntegrationCategory(integration_category) {
       console.log("fake call to save to DB")
       console.log(integration_category)
