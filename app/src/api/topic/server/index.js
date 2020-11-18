@@ -26,6 +26,29 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  saveTopicTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/topics/' + id + '/topic-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteTopicTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/topics/' + id + '/topic-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchTopicTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/topics/' + id + '/topic-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
   deleteTopicTranslations (id) {
     return axiosInstance
@@ -63,5 +86,12 @@ export default {
       .patch('/backend/1.0.0/topics/' + translation.id + '/topic-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
+  }, 
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/topics?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler);
+
   }
 }

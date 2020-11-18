@@ -116,7 +116,7 @@
         {{$t('input_labels.name')}}
       </div>
       <div class="col-1 flex flex-left">
-        <!--{{$t('input_labels.is_published')}}-->
+        {{$t('input_labels.is_published')}}
       </div>
       <div class="col-1 flex flex-center div-5">
         {{$t('input_labels.edit')}}
@@ -145,11 +145,12 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{showTopicLabel(a_topic)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <!-- <q-toggle
+          <q-toggle
             v-model="a_topic.published"
             color="green"
-            disable
-          />-->
+            :id="a_topic.id"
+            @input="isPublished($event, a_topic.id)"
+          />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
@@ -196,7 +197,10 @@ export default {
         deleteTopic: 'topic/deleteTopic',
         saveTopic: 'topic/saveTopic',
         editTopic: 'topic/editTopic',
-        fetchTopic: 'topic/fetchTopic'
+        fetchTopic: 'topic/fetchTopic',
+        updatePublished: 'topic/updatePublished',
+        saveTranslationProd: 'topic/saveTranslationProd',
+        deleteTranslationProd: 'topic/deleteTranslationProd'
       }
     })],
   data () {
@@ -239,12 +243,28 @@ export default {
       this.hideForm = true
       this.createShell()
     },
-    /*isPublished (value) {
-      console.log("publishing")
-      this.int_topic_shell.published = value
-      console.log(this.int_topic_shell.published)
+    isPublished (event, value) {
+      console.log("event ")
+      console.log(event)
+      console.log("topic id")
+      var publishing_topic =  this.topic.filter((top)=>{
+        return top.id == value
+      })[0]
+      console.log(value)
+      if( event == true){
+        this.updatePublished({topic:publishing_topic, published: event})
+        this.saveTranslationProd(value)
 
-    },*/
+        //save stuff in prod tables
+      }
+      else{
+        this.updatePublished({topic:publishing_topic, published: event})
+        this.deleteTranslationProd(value)
+        //delete stuff from prod table
+      }
+      
+
+    },
     newTopic () {
       this.createShell()
       this.isNew = true

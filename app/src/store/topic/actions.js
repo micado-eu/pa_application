@@ -72,7 +72,27 @@ export function saveTopic (state, topic_element) {
       .then(topic_return => state.commit('saveTopic', topic_return))
       */
 }
-
+export function updatePublished(state, payload){
+  client.updatePublished(payload.topic.id, payload.published).then(()=>{
+    state.commit('editTopic', payload.topic)
+  })
+}
+export function saveTranslationProd(state, id){
+  client.fetchTopicTranslated(id).then((translations)=>{
+    console.log("i am the return from the fetch")
+    console.log(translations)
+    translations.forEach((transl)=>{
+      if(transl.translationState == 3){
+        console.log("inside if translated")
+        client.saveTopicTranslationProd(transl, id)
+      }
+    })
+  })
+}
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteTopicTranslationProd(id)
+}
 export function deleteTopic (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(index)
