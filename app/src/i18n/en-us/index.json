@@ -274,6 +274,8 @@
     "fulluser": "Admin name",
     "addNgo": "Add new CSO",
     "adminMail": "Admin email",
+    "ngoName": "CSO name",
+    "link": "CSO web site",
     "contactMail": "Contact email",
     "adminName": "Admin name",
     "adminSurname": "Admin surname",
