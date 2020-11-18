@@ -12,6 +12,13 @@ export function editInterventionPlan(state, intervention_plan) {
   const index = state.intervention_plan.findIndex(item => item.id === intervention_plan.id);
   if (index !== -1) state.intervention_plan.splice(index, 1, intervention_plan);
 }
+export function deleteIntervention(state, payload){
+  const index = state.intervention_plan.findIndex(item => item.id === payload.plan_id);
+  if (index !== -1){
+    const intervention_index = state.intervention_plan[index].interventions.findIndex(item => item.id === payload.intervention_id);
+    if (index !== -1) state.intervention_plan[index].interventions.splice(index, 1);
+  }
+}
 
 export function saveInterventionPlan(state, intervention_plan) {
   console.log("save to the state")

@@ -20,6 +20,11 @@ export function saveIntervention(state, payload) {
     .saveIntervention(payload.plan.id,payload.intervention)
     .then(intervention_plan_return => state.commit('editInterventionPlan', payload.plan))
 }
+export function deleteIntervention(state, payload){
+  return client
+    .deleteIntervention(payload.intervention_id)
+    .then(intervention_plan_return => state.commit('deleteIntervention', {plan_id:payload.plan_id, intervention_id:payload.intevention_id}))
+}
 export function editIntervention(state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log( payload.intervention)
@@ -71,12 +76,17 @@ export function saveInterventionPlan (state, intervention_plan) {
     })
 }
 
-export function deleteInterventionPlan(state, intervention_plan) {
+export function deleteInterventionPlan(state, plan_id) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(intervention_plan)
-  return client
-    .deleteInterventionPlan(intervention_plan)
-    .then(intervention_plan_return => state.commit('deleteInterventionPlan', intervention_plan_return))
+  var promise_intervention = []
+  var promise_plan = []
+  promise_intervention.push(client.deleteInterventionByPlan(plan_id))
+  Promise.all(promise_intervention).then(intervention_plan_return => {
+    promise_plan.push(client.deleteInterventionPlan(plan_id))
+    Promise.all(promise_plan).then(() =>{
+      state.commit('deleteInterventionPlan', plan_id)})
+
+    })
 }
 
 async function asyncForEach (array, callback) {

@@ -10,6 +10,15 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
     },
+    deleteInterventionPlan (id) {
+      console.log(id)
+      console.log("CALLING API!!!!Delete")
+      
+      return axiosInstance
+        .delete('/backend/1.0.0/individual-intervention-plans/' + id)
+        .then(response => response.data)
+        .catch(error_handler);
+      },
     saveIntervention (id, intervention) {
       console.log(id)
       console.log("CALLING API!!!! INTERVENTION")
@@ -31,6 +40,19 @@ export default {
        
         return axiosInstance
           .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
+          .then(response => response.data)
+          .catch(error_handler);
+        },
+        deleteIntervention(intervention_id){
+          return axiosInstance
+          .delete('/backend/1.0.0/individual-intervention-plan-interventions/' + intervention_id)
+          .then(response => response.data)
+          .catch(error_handler);
+        },
+        deleteInterventionByPlan(plan_id){
+  
+          return axiosInstance
+          .delete('/backend/1.0.0/individual-intervention-plans/' + plan_id + '/individual-intervention-plan-interventions?[where][listId]='+ plan_id)
           .then(response => response.data)
           .catch(error_handler);
         },
