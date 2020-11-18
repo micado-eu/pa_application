@@ -13,5 +13,11 @@ export default {
             .get('/backend/1.0.0/getTenant/' + id)
             .then(response => { return response.data })
             .catch(error_handler)
+    },
+    addTenant (tenantDomain, password, email, firstname, lastname, tenantname, link, address, contactmail) {
+        return axiosInstance
+            .post('/backend/1.0.0/addTenantPlusDB?tenant=' + tenantDomain + '&password=' + password + '&email=' + email + '&firstname=' + firstname + '&lastname=' + lastname + '&tenantname=' + tenantname + '&link=' + link + '&address=' + address + '&contactmail=' + contactmail)
+            .then(response => { return response.data })
+            .catch(error_handler)
     }
 }

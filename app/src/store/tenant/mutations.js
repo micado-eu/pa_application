@@ -6,6 +6,15 @@ export function someMutation (state) {
 export function setTenants (state, tenants) {
   state.tenants = tenants
 }
+
+export function saveTenants (state, tenants) {
+  console.log("save to the state")
+  console.log(tenants)
+
+  state.tenants.push(tenants)
+  console.log(state.tenants)
+}
+
 /*
 export function editComments(state, comments) {
   console.log("update the state")
@@ -15,13 +24,6 @@ export function editComments(state, comments) {
   console.log(state.comments)
 }
 
-export function saveComments(state, comments) {
-  console.log("save to the state")
-  console.log(comments)
-
-  state.comments.push(comments);
-  console.log(state.comments)
-}
 
 export function deleteComments(state, index){
   const idx = state.comments.findIndex(item => item.id === index);

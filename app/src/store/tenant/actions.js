@@ -12,6 +12,29 @@ export function fetchTenants (state, data) {
       return tenants
     })
 }
+
+export function saveTenants (state, payload) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log("in actions save tenant:")
+  console.log(payload)
+  //  let savingTenant = JSON.parse(JSON.stringify(payload.comment, ['']))
+  //  console.log(savingComment)
+  //  var the_process = payload.process
+  //  console.log(the_process)
+  /*
+    // we need to save first the topic
+    client.saveTenant(savingTenant)
+      .then(function (tenant_return) {
+        console.log("returned cleint from saving tenant")
+        console.log(tenant_return)
+        // in topic_return we have the ID that we need in the following cycle
+  */
+  state.commit('saveTenants', payload)
+  //  }
+
+  // )
+}
+
 /*
 export function editComments (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state

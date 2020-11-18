@@ -40,6 +40,14 @@
           <div class="row">
             <div class="col">
               <q-input
+                ref="new_ngo_name"
+                :rules="[val => !!val || 'Field is required']"
+                v-model="new_ngo_name"
+                :label="$t('ngo.ngoName')"
+              />
+            </div>
+            <div class="col">
+              <q-input
                 ref="new_admin_name"
                 :rules="[val => !!val || 'Field is required']"
                 v-model="new_admin_name"
@@ -108,6 +116,14 @@
               />
             </div>
             <div class="col">
+              <q-input
+                ref="new_ngo_link"
+                :rules="[val => !!val || '* Required']"
+                v-model="new_ngo_link"
+                :label="$t('ngo.link')"
+              />
+            </div>
+            <div class="col">
             </div>
           </div>
           <div class="row pa-md">
@@ -164,7 +180,8 @@ export default {
       getters: {
         tenants: 'tenant/tenants'
       }, actions: {
-        fetchTenant: 'tenant/fetchTenants'
+        fetchTenants: 'tenant/fetchTenants',
+        saveTenants: 'tenant/saveTenants'
       }
     })
   ],
@@ -183,6 +200,8 @@ export default {
       new_ngo_address: "",
       new_ngo_contact_mail: "",
       new_ngo_tenant: "",
+      new_ngo_name: "",
+      new_ngo_link: "",
       wso2Tenants: [],
       wso2TenantsDetails: []
     }
@@ -227,10 +246,23 @@ export default {
       this.$refs.new_ngo_address.validate()
       this.$refs.new_ngo_contact_mail.validate()
       this.$refs.new_ngo_tenant.validate()
+      this.$refs.new_ngo_name.validate()
+      this.$refs.new_ngo_link.validate()
 
-      if (this.$refs.new_admin_name.hasError || this.$refs.new_admin_surname.hasError || this.$refs.new_admin_email.hasError || this.$refs.new_admin_pwd.hasError || this.$refs.new_ngo_address.hasError || this.$refs.new_ngo_contact_mail.hasError || this.$refs.new_ngo_tenant.hasError) {
+      if (this.$refs.new_admin_name.hasError || this.$refs.new_admin_surname.hasError || this.$refs.new_admin_email.hasError || this.$refs.new_admin_pwd.hasError || this.$refs.new_ngo_address.hasError || this.$refs.new_ngo_contact_mail.hasError || this.$refs.new_ngo_tenant.hasError || this.$refs.new_ngo_name.hasError || this.$refs.new_ngo_link.hasError) {
         this.formHasError = true
+        return false
       }
+      // here we need to call the API for create the tenant
+      identityClient.addTenant(this.new_ngo_tenant, this.new_admin_pwd, this.new_admin_email, this.new_admin_name, this.new_admin_surname, this.new_ngo_name, this.new_ngo_link, this.new_ngo_address, this.new_ngo_contact_mail)
+        .then((newTenant) => {
+          console.log(newTenant)
+          //now we can add the data in the DB with the rest of information
+
+          this.saveTenants(newTenant)
+        })
+
+
     },
 
     onReset () {
@@ -241,6 +273,8 @@ export default {
       this.new_ngo_address = null
       this.new_ngo_contact_mail = null
       this.new_ngo_tenant = null
+      this.new_ngo_name = null
+      this.new_ngo_link = null
 
       this.$refs.new_admin_name.resetValidation()
       this.$refs.new_admin_surname.resetValidation()
@@ -249,6 +283,8 @@ export default {
       this.$refs.new_ngo_address.resetValidation()
       this.$refs.new_ngo_contact_mail.resetValidation()
       this.$refs.new_ngo_tenant.resetValidation()
+      this.$refs.new_ngo_name.resetValidation()
+      this.$refs.new_ngo_link.resetValidation()
     }
 
 
@@ -261,7 +297,7 @@ export default {
     this.loading = true
     console.log(this.$store)
 
-    this.fetchTenant()
+    this.fetchTenants()
       .then(users => {
         console.log("i got tenants from API")
         console.log(users)

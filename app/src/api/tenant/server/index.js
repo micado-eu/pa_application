@@ -5,7 +5,14 @@ export default {
   fetchTenants () {
     return axiosInstance
       .get('/backend/1.0.0/tenants')
-      .then((response) => {return response.data})
+      .then((response) => { return response.data })
+      .catch(error_handler)
+  },
+  saveTenant (tenant) {
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/tenants', tenant)
+      .then(response => response.data)
       .catch(error_handler)
   }
   /* ,
