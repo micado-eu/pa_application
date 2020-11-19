@@ -18,12 +18,22 @@ export function saveIntervention(state, payload) {
   console.log( payload.intervention)
   return client
     .saveIntervention(payload.plan.id,payload.intervention)
-    .then(intervention_plan_return => state.commit('editInterventionPlan', payload.plan))
+    .then(intervention_plan_return => {
+      console.log("i am intervention plan return")
+      payload.plan.interventions.forEach(intervention => {
+        if(intervention.id == -1){
+          intervention.id = intervention_plan_return.id
+        }
+        
+      });
+      console.log(intervention_plan_return)
+      console.log(payload)
+      state.commit('editInterventionPlan', payload.plan)})
 }
 export function deleteIntervention(state, payload){
   return client
     .deleteIntervention(payload.intervention_id)
-    .then(intervention_plan_return => state.commit('deleteIntervention', {plan_id:payload.plan_id, intervention_id:payload.intevention_id}))
+    .then(intervention_plan_return => state.commit('deleteIntervention', {plan_id:payload.plan_id, intervention_id:payload.intervention_id}))
 }
 export function editIntervention(state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state

@@ -15,8 +15,15 @@ export function editInterventionPlan(state, intervention_plan) {
 export function deleteIntervention(state, payload){
   const index = state.intervention_plan.findIndex(item => item.id === payload.plan_id);
   if (index !== -1){
+    console.log("inside if")
+    console.log(state.intervention_plan[index])
+    console.log( state.intervention_plan[index].interventions)
+    console.log(payload.intervention_id)
     const intervention_index = state.intervention_plan[index].interventions.findIndex(item => item.id === payload.intervention_id);
-    if (index !== -1) state.intervention_plan[index].interventions.splice(index, 1);
+    console.log(intervention_index)
+    if (intervention_index !== -1) state.intervention_plan[index].interventions.splice(intervention_index, 1);
+    console.log(state.intervention_plan[index])
+
   }
 }
 
