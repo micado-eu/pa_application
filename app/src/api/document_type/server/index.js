@@ -155,5 +155,35 @@ export default {
       .patch(`/backend/1.0.0/document-types/${picture.id}/document-type-pictures?where=${JSON.stringify(whereClause)}`, updatingDocumentTypePictures)
       .then((response) => response.data)
       .catch(error_handler)
-  }
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/document-types?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler);
+
+  }, 
+  saveDocTypeTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'document', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/document-types/' + id + '/document-type-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteDocTypeTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/document-types/' + id + '/document-type-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchDocTypeTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/document-types/' + id + '/document-type-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 }

@@ -62,5 +62,35 @@ export default {
       .patch('/backend/1.0.0/user-types/' + translation.id + '/user-types-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
-  }
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/user-types?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler);
+
+  }, 
+  saveUserTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'userType', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/user-types/' + id + '/user-types-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteUserTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/user-types/' + id + '/user-types-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchUserTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/user-types/' + id + '/user-types-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 }

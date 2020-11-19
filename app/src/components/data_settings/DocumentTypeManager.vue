@@ -305,7 +305,7 @@
         {{$t('input_labels.name')}}
       </div>
       <div class="col-1 flex flex-left">
-        <!--{{$t('input_labels.is_published')}}-->
+        {{$t('input_labels.is_published')}}
       </div>
       <div class="col-1 flex flex-center div-5">
         {{$t('input_labels.edit')}}
@@ -334,11 +334,12 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <!-- <q-toggle
-            v-model="a_topic.published"
+           <q-toggle
+            v-model="document_type.published"
             color="green"
-            disable
-          />-->
+            @input="isPublished($event, document_type.id)"
+
+          />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
@@ -430,7 +431,12 @@ export default {
         editDocumentType: 'document_type/editDocumentType',
         fetchHotspots: 'picture_hotspots/fetchHotspots',
         fetchHotspotsById: 'picture_hotspots/fetchHotspotsById',
-        fetchTenants: 'tenant/fetchTenants'
+        fetchTenants: 'tenant/fetchTenants',
+        updatePublished: 'document_type/updatePublished',
+        saveTranslationProd: 'document_type/saveTranslationProd',
+        deleteTranslationProd: 'document_type/deleteTranslationProd',
+        saveSpotTranslationProd: 'picture_hotspots/saveTranslationProd',
+        deleteSpotTranslationProd: 'picture_hotspots/deleteTranslationProd'
       }
     })],
   components: {
@@ -470,6 +476,45 @@ export default {
   },
 
   methods: {
+     isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_doc =  this.document_types.filter((doc)=>{
+        return doc.id == value
+      })[0]
+      console.log("i am doc to publish")
+      console.log(publishing_doc)
+      var publishing_hotspots = []
+      if(publishing_doc.pictures){
+        publishing_doc.pictures.forEach((pic)=>{
+  
+       var pic_spots =  this.hotspots.filter((spot)=>{
+          return spot.pictureId == pic.id
+        })
+        if(pic_spots.lenght!=0){
+          pic_spots.forEach((spot)=>{
+            publishing_hotspots.push(spot)
+          })
+        }
+      })
+      }
+      console.log("i am hotspots to publish")
+      console.log(publishing_hotspots)
+      
+      if( event == true){
+        this.updatePublished({doc:publishing_doc, published: event})
+        this.saveTranslationProd(value)
+        this.saveSpotTranslationProd(publishing_hotspots)
+
+      }
+      else{
+        this.updatePublished({doc:publishing_doc, published: event})
+        this.deleteTranslationProd(value)
+        this.deleteSpotTranslationProd(publishing_hotspots)
+      }
+     },
     cancelModel(){
       this.int_doc_shell.model = ""
       this.the_model = ""

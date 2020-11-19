@@ -149,7 +149,7 @@
         {{$t('input_labels.name')}}
       </div>
       <div class="col-1 flex flex-left">
-        <!--{{$t('input_labels.is_published')}}-->
+        {{$t('input_labels.is_published')}}
       </div>
       <div class="col-1 flex flex-center div-9">
         {{$t('input_labels.edit')}}
@@ -170,11 +170,11 @@
       >
         <q-item-section class="col-9 flex flex-left section">{{showTypeLabel(a_integration_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <!--<q-toggle
+          <q-toggle
             v-model="a_integration_type.published"
             color="green"
-            disable
-          />-->
+            @input="isPublished($event, a_integration_type.id)"
+          />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
@@ -226,7 +226,10 @@ export default {
         editIntegrationTypeElement: 'integration_type/editIntegrationTypeElement',
         fetchIntegrationType: 'integration_type/fetchIntegrationType',
         fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory',
-        fetchTenants: 'tenant/fetchTenants'
+        fetchTenants: 'tenant/fetchTenants',
+        updatePublished: 'integration_type/updatePublished',
+        saveTranslationProd: 'integration_type/saveTranslationProd',
+        deleteTranslationProd: 'integration_type/deleteTranslationProd'
       }
     })],
   data () {
@@ -243,9 +246,24 @@ export default {
     GlossaryEditor,HelpLabel
   },
   methods: {
-    /* isPublished(value, event){
-      this.int_type_shell.published = value
-    }, */
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_type =  this.intervention_types.filter((type)=>{
+        return type.id == value
+      })[0]
+      if( event == true){
+        this.updatePublished({type:publishing_type, published: event})
+        this.saveTranslationProd(value)
+
+      }
+      else{
+        this.updatePublished({type:publishing_type, published: event})
+        this.deleteTranslationProd(value)
+      }
+   },
     deletingIntegrationType (index) {
       console.log(index)
       this.deleteIntegrationTypeElement(index)

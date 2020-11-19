@@ -58,6 +58,18 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  deleteInterventionByType(type){
+    return axiosInstance
+    .delete('/backend/1.0.0/individual-intervention-plan-interventions?[where][interventionType]='+ type)
+    .then(response => response.data)
+    .catch(error_handler);
+  },
+  deleteInterventionTypeValidators(id){
+    return axiosInstance
+    .delete('/backend/1.0.0/intervention-types/' + id + '/intervention-type-validators?[where][interventionTypeId]='+ id)
+    .then(response => response.data)
+    .catch(error_handler);
+  },
   saveIntegrationTypeValidators (validator, id) {
     //  translation.id = id
     let savingValidator = { tenantId: validator, interventionTypeId: id }
@@ -80,5 +92,35 @@ export default {
       .delete(`/backend/1.0.0/intervention-types/${id}`)
       .then((response) => response.data)
       .catch(error_handler)
-  }
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/intervention-types?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler);
+
+  }, 
+  saveTypeTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'interventionTitle', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/intervention-types/' + id + '/intervention-types-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteTypeTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/intervention-types/' + id + '/intervention-types-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchTypeTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/intervention-types/' + id + '/intervention-types-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 }

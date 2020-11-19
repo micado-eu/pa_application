@@ -76,3 +76,27 @@ export function deleteUserType (state, index) {
     })
   })
 }
+
+export function updatePublished(state, payload){
+  client.updatePublished(payload.user.id, payload.published).then(()=>{
+    state.commit('editUserType', payload.user)
+  })
+}
+
+export function saveTranslationProd(state, id){
+  client.fetchUserTranslated(id).then((translations)=>{
+    console.log("i am the return from the fetch")
+    console.log(translations)
+    translations.forEach((transl)=>{
+      if(transl.translationState == 3){
+        console.log("inside if translated")
+        client.saveUserTranslationProd(transl, id)
+      }
+    })
+  })
+}
+
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteUserTranslationProd(id)
+}

@@ -112,7 +112,7 @@
         {{$t('input_labels.name')}}
       </div>
       <div class="col-1 flex flex-left">
-        <!-- {{$t('input_labels.is_published')}}-->
+         {{$t('input_labels.is_published')}}
       </div>
       <div class="col-1 flex flex-center div-7">
         {{$t('input_labels.edit')}}
@@ -133,11 +133,11 @@
       >
         <q-item-section class="col-9 flex flex-left div-3">{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <!-- <q-toggle
+          <q-toggle
             v-model="a_integration_category.published"
             color="green"
-            disable
-          />-->
+            @input="isPublished($event, a_integration_category.id)"
+          />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
@@ -185,7 +185,10 @@ export default {
         deleteIntegrationCategory: 'integration_category/deleteIntegrationCategory',
         saveIntegrationCategory: 'integration_category/saveIntegrationCategory',
         editCategoryTypeElement: 'integration_category/editCategoryTypeElement',
-        fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory'
+        fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory',
+        updatePublished: 'integration_category/updatePublished',
+        saveTranslationProd: 'integration_category/saveTranslationProd',
+        deleteTranslationProd: 'integration_category/deleteTranslationProd'
       }
     })],
   data () {
@@ -200,9 +203,24 @@ export default {
     UploadButton, HelpLabel
   },
   methods: {
-    /* isPublished(value, event){
-       this.int_cat_shell.published = value
-     },*/
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_cat =  this.intervention_categories.filter((cat)=>{
+        return cat.id == value
+      })[0]
+      if( event == true){
+        this.updatePublished({cat:publishing_cat, published: event})
+        this.saveTranslationProd(value)
+
+      }
+      else{
+        this.updatePublished({cat:publishing_cat, published: event})
+        this.deleteTranslationProd(value)
+      }
+   },
     onClickTitle: function () {
       this.$emit("scroll", "#" + this.$options.name)
     },
