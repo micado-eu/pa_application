@@ -204,6 +204,7 @@
             no-caps
             :label='$t(add_label)'
             class="add-btn col q-ml-md q-my-lg margin-right-btn"
+            data-cy="add_element"
             :to="new_url"
           />
         </div>
@@ -337,6 +338,7 @@
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
                   :to="edit_url_fn(item.id)"
+                  :data-cy="'edit_button' + item.id"
                 />
                 <br>
                 <q-btn
@@ -344,6 +346,7 @@
                   class="item-btn"
                   icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
                   @click="delete_fn(item)"
+                  :data-cy="'delete_button' + item.id"
                 />
               </q-item-section>
             </q-item>
