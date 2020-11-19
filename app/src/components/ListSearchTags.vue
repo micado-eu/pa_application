@@ -187,7 +187,7 @@
             filled
             outlined
             :label='$t("input_labels.search")'
-            class="col-10 search-bar"
+            class="search-bar col"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -196,14 +196,14 @@
           <q-btn
             no-caps
             :label='$t("button.categories")'
-            class="cat-btn col q-ml-md"
+            class="cat-btn q-ml-md"
             :to="categories_url"
             v-if="categories_enabled"
           />
           <q-btn
             no-caps
             :label='$t(add_label)'
-            class="add-btn col q-ml-md q-my-lg margin-right-btn"
+            class="add-btn q-ml-md q-my-lg margin-right-btn"
             data-cy="add_element"
             :to="new_url"
           />
