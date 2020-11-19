@@ -4,15 +4,21 @@
     
     <div class="width">
       <div class="row">
-          <div class="col-8 flex flex-left title" >{{ this.Title }}</div>
-         
-            <q-item-section class="col-1.3 flex flex-center margin">
+          <div class="col-7 flex flex-left title" >{{ this.Title }}</div>
+            <q-item-section class="col-1 flex flex-center">
+            <q-toggle
+            v-model="theProcess.published"
+            color="green"
+            @input="isPublished($event, theProcess.id)"
+          />            
+          </q-item-section>
+            <q-item-section class="col-1 flex flex-center margin">
               <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.edit_process')" @click.native="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )"/>
             </q-item-section>
-            <q-item-section class="col-1.3 flex flex-center top" >
+            <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - manage (guided processes).png'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
             </q-item-section>
-            <q-item-section class="col-1.3 flex flex-center top" >
+            <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_process')" @click.native="remove_process($event)" :data-cy="'deleteprocess'.concat(theProcess.id )"/>
             </q-item-section>
       </div>
@@ -46,6 +52,11 @@ export default {
   },
   components:{IconWithTooltip},
   methods: {
+    isPublished(event, value){
+      console.log(event)
+      console.log(value)
+      this.$emit('publish', {isPublished: event, process_id: value})
+    },
     remove_process (event) {
       let target = event.currentTarget.id
       console.log(this.Link)

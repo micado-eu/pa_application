@@ -185,6 +185,36 @@ export default {
       .delete('/backend/1.0.0/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler);
-  }
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/processes?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler);
+
+  }, 
+  saveProcessTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/processes/' + id + '/process-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteProcessTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchProcessTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/processes/' + id + '/process-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
 }

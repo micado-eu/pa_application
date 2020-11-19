@@ -42,16 +42,19 @@
     <div class="center">
       <q-list id="list">
     <q-item class="row" id="item">
-    <q-item-section class="col-8 flex flex-left" id="left">
+    <q-item-section class="col-7 flex flex-left" id="left">
         {{$t('input_labels.name')}}
     </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center" id="section">
+    <q-item-section class="col-1 flex flex-left">
+        {{$t('input_labels.is_published')}}
+      </q-item-section>
+    <q-item-section class="col-1 flex flex-center" id="section">
        {{$t('input_labels.edit')}}
     </q-item-section>
-    <q-item-section class="col-1.3 flex flex-center">
+    <q-item-section class="col-1 flex flex-center">
     {{$t('input_labels.manage')}}
     </q-item-section> 
-    <q-item-section class="col-1.3 flex flex-center">
+    <q-item-section class="col-1 flex flex-center">
       {{$t('input_labels.delete')}}
     </q-item-section>
         </q-item>
@@ -68,6 +71,7 @@
           :theProcess="process"
           Path="guided_process_editor"
           @remove="deletingProcess"
+          @publish="isPublished"
         >
         </Process>
       </q-list>
@@ -102,7 +106,12 @@ export default {
       fetchSteplinks: 'steplinks/fetchSteplinks',
       fetchSteps: 'steps/fetchSteps',
       fetchTopic: 'topic/fetchTopic',
-      fetchUserType: 'user_type/fetchUserType'
+      fetchUserType: 'user_type/fetchUserType',
+      updatePublished: 'flows/updatePublished',
+      saveTranslationProd: 'flows/saveTranslationProd',
+      deleteTranslationProd: 'flows/deleteTranslationProd',
+      saveStepTranslationProd: 'steps/saveTranslationProd',
+      deleteStepTranslationProd: 'steps/deleteTranslationProd'
     }
   })],
   data () {
@@ -130,6 +139,31 @@ export default {
     }
   },
   methods: {
+     isPublished(value){
+       console.log(value)
+      var publishing_process =  this.processes.filter((process)=>{
+        return process.id == value.process_id
+      })[0]
+      console.log("i am process to publish")
+      console.log(publishing_process)
+      var publishing_steps = this.steps.filter((step)=>{
+        return step.idProcess == value.process_id
+      }) 
+      console.log("i am steps to publish")
+      console.log(publishing_steps)
+      
+      if( value.isPublished == true){
+        this.updatePublished({process:publishing_process, published: value.isPublished})
+        this.saveTranslationProd(value.process_id)
+        this.saveStepTranslationProd(publishing_steps)
+
+      }
+      else{
+        this.updatePublished({process:publishing_process, published: value.isPublished})
+        this.deleteTranslationProd(value.process_id)
+        this.deleteStepTranslationProd(publishing_steps)
+      }
+     },
     deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
@@ -248,7 +282,7 @@ export default {
   text-align:left
 }
 #section{
-  margin-left:30px
+  margin-left:20px
 }
 #hr{
   margin-bottom:60px

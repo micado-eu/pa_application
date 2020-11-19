@@ -80,6 +80,29 @@ async function asyncForEach (array, callback) {
     await callback(array[index], index, array);
   }
 }
+export function saveTranslationProd(state, steps){
+  steps.forEach((step)=>{
+    client.fetchStepTranslated(step.id).then((translations)=>{
+      console.log("i am the return from the fetch")
+      console.log(translations)
+      translations.forEach((transl)=>{
+        if(transl.translationState == 3){
+          console.log("inside if translated")
+          client.saveStepTranslationProd(transl, step.id)
+        }
+      })
+    })
+  })
+  
+}
+
+export function deleteTranslationProd(state, steps){
+  console.log("in delete transl prod")
+  steps.forEach((step)=>{
+    client.deleteStepTranslationProd(step.id)
+  })
+  
+}
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)

@@ -35,4 +35,27 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  saveStepTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'step', 'description']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/steps/' + id + '/step-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteStepTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/steps/' + id + '/step-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchStepTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/steps/' + id + '/step-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 }
