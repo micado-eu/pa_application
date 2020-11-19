@@ -340,6 +340,7 @@
             </div>
           </div>
         </div>
+        <span v-if="errorDefaultLangEmpty">{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
@@ -668,6 +669,9 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
+      if (this.errorDefaultLangEmpty) {
+        return true
+      }
       if (this.internalTitle.length <= 0) {
         return true
       }
@@ -735,6 +739,12 @@ export default {
       }
       let maxTagsSaved = 0
       return Math.max(maxTagsElem, maxTagsSaved)
+    },
+    errorDefaultLangEmpty: function() {
+      if (this.langTab !== this.$defaultLang) {
+        return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
+      }
+      return !this.internalTitle
     }
   },
   watch: {
