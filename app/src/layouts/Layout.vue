@@ -12,6 +12,7 @@
           @click="leftDrawerOpen = !leftDrawerOpen"
           icon="menu"
           aria-label="Menu"
+          data-cy="menu_button"
         />
 
         <q-toolbar-title>{{$t("application_title")}}</q-toolbar-title>

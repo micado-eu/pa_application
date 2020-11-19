@@ -16,6 +16,7 @@
           </span>
           <q-input
             class="title_input q-mb-xl"
+            data-cy="title_input"
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
@@ -31,6 +32,7 @@
           </span>
           <glossary-editor
             class="desc-editor q-mb-xl"
+            data-cy="description_input"
             v-model="internalDescription"
             ref="editor"
           />
@@ -54,12 +56,14 @@
                 label-color="accent"
                 v-model="tagInput"
                 class="col-10"
+                data-cy="add_tag_input"
               />
               <q-btn
                 no-caps
                 @click="addTag()"
                 :label="$t('button.add_tag')"
                 class="q-my-sm q-ml-sm add_tag_btn col"
+                data-cy="add_tag_button"
               />
               <span
                 v-if="tagError"
@@ -68,7 +72,10 @@
                 {{ $t(tagErrorMessage) }}
               </span>
             </div>
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="tag_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="tag in internalTags"
@@ -95,6 +102,7 @@
               v-model="selectedCategory"
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
+              data-cy="category_select"
             />
           </div>
         </div>
@@ -120,6 +128,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="start_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -136,6 +145,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -153,6 +163,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="start_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -170,6 +181,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -197,6 +209,7 @@
                   <q-icon
                     name="event"
                     class="cursor-pointer"
+                    data-cy="end_date_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -213,6 +226,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-date>
@@ -230,6 +244,7 @@
                   <q-icon
                     name="access_time"
                     class="cursor-pointer"
+                    data-cy="end_time_icon"
                   >
                     <q-popup-proxy
                       transition-show="scale"
@@ -247,6 +262,7 @@
                             :label="$t('date_selector.close')"
                             color="accent"
                             flat
+                            data-cy="close_date_menu"
                           />
                         </div>
                       </q-time>
@@ -272,8 +288,12 @@
               v-model="selectedTopic"
               :options="internalTopics"
               @input="setTopicObjectModel($event)"
+              data-cy="topic_select"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="topic_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(topic, idx) in selectedTopicsObjects"
@@ -300,8 +320,12 @@
               v-model="selectedUserType"
               :options="internalUserTypes"
               @input="setUserTypeObjectModel($event)"
+              data-cy="user_types_select"
             />
-            <div class="tag_list flex">
+            <div
+              class="tag_list flex"
+              data-cy="user_types_list"
+            >
               <div
                 class="tag_btn q-my-sm q-mr-sm"
                 v-for="(userType, idx) in selectedUserTypesObjects"
@@ -353,6 +377,7 @@
             unelevated
             no-caps
             color="accent"
+            data-cy="save_button"
             :label="$t('button.save')"
             @click="callSaveFn()"
             class="row edit-element-button"
