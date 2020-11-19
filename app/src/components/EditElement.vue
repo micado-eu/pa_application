@@ -20,7 +20,7 @@
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
-            :rules="[ val => val.length <= 20 || $t('error_messages.max_title')]"
+            :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
           />
         </div>
         <div>
@@ -34,6 +34,7 @@
             class="desc-editor q-mb-xl"
             data-cy="description_input"
             v-model="internalDescription"
+            :maxCharLimit="description_max_length"
             ref="editor"
           />
         </div>
@@ -454,6 +455,14 @@ export default {
     is_event: {
       type: Boolean,
       default: false
+    },
+    title_max_length: {
+      type: Number,
+      default: 20
+    },
+    description_max_length: {
+      type: Number,
+      default: 800
     }
   },
   data() {
