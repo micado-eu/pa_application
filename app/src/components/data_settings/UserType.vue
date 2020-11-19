@@ -125,7 +125,7 @@
         {{$t('input_labels.name')}}
       </div>
       <div class="col-1 flex flex-left">
-        <!--{{$t('input_labels.is_published')}}-->
+        {{$t('input_labels.is_published')}}
       </div>
       <div class="col-1 flex flex-center div-5">
         {{$t('input_labels.edit')}}
@@ -153,11 +153,11 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{showUserTypeLabel(a_user_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <!--<q-toggle
+          <q-toggle
             v-model="a_user_type.published"
             color="green"
-            disable
-          />-->
+            @input="isPublished($event, a_user_type.id)"
+          />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
@@ -204,7 +204,10 @@ export default {
         deleteUserType: 'user_type/deleteUserType',
         fetchUserType: 'user_type/fetchUserType',
         saveUserType: 'user_type/saveUserType',
-        editUserType: 'user_type/editUserType'
+        editUserType: 'user_type/editUserType', 
+        updatePublished: 'user_type/updatePublished',
+        saveTranslationProd: 'user_type/saveTranslationProd',
+        deleteTranslationProd: 'user_type/deleteTranslationProd'
       }
     })],
   data () {
@@ -318,12 +321,24 @@ export default {
         console.log(fileInfo)
       }
     },
-    /*isPublished(value){
-     console.log("publishing")
-     this.int_user_type_shell.published = value
-           console.log(this.int_user_type_shell.published)
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_user =  this.user.filter((user)=>{
+        return user.id == value
+      })[0]
+      if( event == true){
+        this.updatePublished({user:publishing_user, published: event})
+        this.saveTranslationProd(value)
 
-   },*/
+      }
+      else{
+        this.updatePublished({user:publishing_user, published: event})
+        this.deleteTranslationProd(value)
+      }
+   },
     cancelUserType () {
       this.isNew = false
       this.hideForm = true

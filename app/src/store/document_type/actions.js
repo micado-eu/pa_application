@@ -372,3 +372,27 @@ async function asyncForEach (array, callback) {
     await callback(array[index], index, array);
   }
 }
+
+export function updatePublished(state, payload){
+  client.updatePublished(payload.doc.id, payload.published).then(()=>{
+    state.commit('editDocumentType', payload.doc)
+  })
+}
+
+export function saveTranslationProd(state, id){
+  client.fetchDocTypeTranslated(id).then((translations)=>{
+    console.log("i am the return from the fetch")
+    console.log(translations)
+    translations.forEach((transl)=>{
+      if(transl.translationState == 3){
+        console.log("inside if translated")
+        client.saveDocTypeTranslationProd(transl, id)
+      }
+    })
+  })
+}
+
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteDocTypeTranslationProd(id)
+}

@@ -95,7 +95,6 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
     )
 }
 
-
 export function deleteIntegrationTypeElement (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(index)
@@ -106,4 +105,52 @@ export function deleteIntegrationTypeElement (state, index) {
       state.commit('deleteIntegrationTypeElement', index)
     })
   })
+}
+
+/*export function deleteIntegrationTypeElement (state, index) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(index)
+  var promise_type = []
+  var promise_validators = []
+  return client.deleteIntegrationTypeTranslations(index).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+    promise_type.push(client.deleteInterventionByType(index))
+    Promise.all(promise_type).then(()=>{
+      console.log("deleted associated interventions")
+      promise_validators.push(client.deleteInterventionTypeValidators(index))
+      Promise.all(promise_validators).then(()=>{
+        console.log("deleted validators")
+        client.deleteIntegrationType(index).then(function () {
+          state.commit('deleteIntegrationTypeElement', index)
+        })
+      })
+     
+    })
+    
+  })
+}*/
+
+export function updatePublished(state, payload){
+  client.updatePublished(payload.type.id, payload.published).then(()=>{
+    state.commit('editIntegrationTypeElement', payload.type)
+  })
+}
+
+export function saveTranslationProd(state, id){
+  client.fetchTypeTranslated(id).then((translations)=>{
+    console.log("i am the return from the fetch")
+    console.log(translations)
+    translations.forEach((transl)=>{
+      if(transl.translationState == 3){
+        console.log("inside if translated")
+        client.saveTypeTranslationProd(transl, id)
+      }
+    })
+  })
+}
+
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteTypeTranslationProd(id)
 }

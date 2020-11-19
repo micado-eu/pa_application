@@ -65,4 +65,34 @@ export default {
         .then(response => response.data)
         .catch(error_handler);
     },
+    updatePublished(id, is_published){
+      return axiosInstance
+      .patch('/backend/1.0.0/intervention-categories?[where][id]='+ id, {published: is_published})
+      .then(response => response.data)
+      .catch(error_handler);
+  
+    }, 
+    saveCategoryTranslationProd (translation, id) {
+      const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title']));
+  
+      // create fake id here
+      return axiosInstance
+        .post('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translation-prods', savingTranslation)
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+    deleteCategoryTranslationProd (id) {
+      // create fake id here
+      return axiosInstance
+        .delete('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translation-prods')
+        .then(response => response.data)
+        .catch(error_handler);
+    },
+    fetchCategoryTranslated (id) {
+  
+      return axiosInstance
+        .get('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translations')
+        .then(response => response.data)
+        .catch(error_handler);
+    },
   }

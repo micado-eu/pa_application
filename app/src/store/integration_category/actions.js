@@ -70,3 +70,27 @@ export function deleteIntegrationCategory (state, index) {
   })
 }
 
+export function updatePublished(state, payload){
+  client.updatePublished(payload.cat.id, payload.published).then(()=>{
+    state.commit('editCategoryTypeElement', payload.cat)
+  })
+}
+
+export function saveTranslationProd(state, id){
+  client.fetchCategoryTranslated(id).then((translations)=>{
+    console.log("i am the return from the fetch")
+    console.log(translations)
+    translations.forEach((transl)=>{
+      if(transl.translationState == 3){
+        console.log("inside if translated")
+        client.saveCategoryTranslationProd(transl, id)
+      }
+    })
+  })
+}
+
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteCategoryTranslationProd(id)
+}
+

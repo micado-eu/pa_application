@@ -27,6 +27,29 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  saveSpotTranslationProd (translation, id) {
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title', 'message']));
+
+    // create fake id here
+    return axiosInstance
+      .post('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translation-prods', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteSpotTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  fetchSpotTranslated (id) {
+
+    return axiosInstance
+      .get('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
 }
   
