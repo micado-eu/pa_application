@@ -288,5 +288,10 @@
     "category_empty": "Please select a category.",
     "max_char_limit": "Maximum number of characters reached: ",
     "fill_default_language": "Please fill the default language title: "
+  }, 
+  "warning":{
+    "topic":"Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
+    "user_type":"Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?",
+    "intervention_type":"Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?"
   }
 }

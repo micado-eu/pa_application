@@ -7,7 +7,10 @@ export function someAction (context) {
 export function fetchIntegrationCategory(state, data) {
   return client
     .fetchIntegrationCategory()
-    .then(integration_category => state.commit('setCategoryType', integration_category))
+    .then(integration_category => {
+      state.commit('setCategoryType', integration_category)
+      return integration_category
+    })
 }
 
 export function editCategoryTypeElement (state, integration_category) {
@@ -58,16 +61,53 @@ export function saveIntegrationCategory (state, integration_category) {
 }
 
 
-export function deleteIntegrationCategory (state, index) {
+export function deleteIntegrationCategory (state, category) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(index)
-  return client.deleteIntegrationCategoryTranslations(index).then(function (translations_delete_return) {
-    console.log("deleted the translations")
-    console.log(translations_delete_return)
-    client.deleteIntegrationCategory(index).then(function () {
-      state.commit('deleteIntegrationCategory', index)
+  var type_id = []
+  category.linkedInterventionType.forEach((type)=>{
+    type_id.push(type.id)
+  })
+  Promise.all(type_id.map(client.deleteInterventionByType)).then(()=>{
+    console.log("inside itnervention")
+    Promise.all(type_id.map(client.deleteInterventionTypeValidators)).then(()=>{
+      console.log("inside validator")
+      Promise.all(type_id.map(client.deleteIntegrationTypeTranslations)).then(()=>{
+        console.log("inside transl")
+        Promise.all(type_id.map(client.deleteIntegrationType)).then(()=>{
+          console.log("inside result then")
+          client.deleteIntegrationCategoryTranslations(category.id).then(() =>{
+            client.deleteIntegrationCategory(category.id).then(function () {
+              state.commit('deleteIntegrationCategory', category.id)
+            })
+          })
+        })
+      })
     })
   })
+  
+
+  /* client.deleteIntegrationCategoryTranslations(category.id).then(function (translations_delete_return) {
+    console.log("deleted the translations")
+    console.log(translations_delete_return)
+    category.linkedInterventionType.forEach((type)=>{
+      type_transl.push(client.deleteIntegrationTypeTranslations(type.id))
+      Promise.all(type_transl).then(()=>{
+        type_intervention.push(client.deleteInterventionByType(type.id))
+        Promise.all(type_intervention).then(()=>{
+          type_validator.push(client.deleteInterventionTypeValidators(type.id))
+          Promise.all(type_validator).then(()=>{
+            int_type.push(client.deleteIntegrationType(type.id))
+          })
+        })
+      })
+    })
+    Promise.all(type_intervention, type_transl, type_validator, int_type).then(()=>{
+      client.deleteIntegrationCategory(category.id).then(function () {
+        state.commit('deleteIntegrationCategory', category.id)
+      })
+    })
+    
+  })*/
 }
 
 export function updatePublished(state, payload){

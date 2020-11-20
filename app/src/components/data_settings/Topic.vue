@@ -218,9 +218,17 @@ export default {
 
   methods: {
     deletingTopic (index) {
-      console.log(index)
-      //this.$store.dispatch("topic/deleteTopic", index);
-      this.deleteTopic(index)
+       this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+            console.log(index)
+            this.deleteTopic(index) } },
+          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+        ]
+      })
+      
     },
     savingTopic () {
       //let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));

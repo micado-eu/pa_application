@@ -185,6 +185,7 @@ export function deleteDocumentType (state, payload) {
             console.log("i am valuedoc")
             console.log(valuedoc)
             client.deleteProcessProducedDocument(payload.index)
+            client.deleteStepDocument(payload.index)
             console.log("after promise all deleted doc")
             state.commit('deleteDocumentType', payload.index)
           })

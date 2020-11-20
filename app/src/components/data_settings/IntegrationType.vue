@@ -265,8 +265,17 @@ export default {
       }
    },
     deletingIntegrationType (index) {
-      console.log(index)
-      this.deleteIntegrationTypeElement(index)
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+            console.log(index)
+            this.deleteIntegrationTypeElement(index) } },
+          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+        ]
+      })
+      
     },
     savingIntegrationType () {
       if (this.isNew) {

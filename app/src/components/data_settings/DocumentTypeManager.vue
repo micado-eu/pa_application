@@ -619,8 +619,19 @@ export default {
       //this.$store.dispatch("topic/deleteTopic", index);
       var payload = { index: doc.id, hotspots: this.deleting_hotspots }
       console.log(payload.hotspots.length != 0)
-      this.deleteDocumentType(payload)
-      this.deleting_hotspots = []
+       this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Deleting a document type will also delete it from all the processes and steps where it appears. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+             this.deleteDocumentType(payload)
+              this.deleting_hotspots = [] } },
+          { label: 'Back', color: 'accent', handler: () => { 
+            console.log("not deleting")
+           this.deleting_hotspots = [] } }
+        ]
+      })
+     
 
 
 

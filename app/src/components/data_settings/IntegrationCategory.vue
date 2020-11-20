@@ -155,7 +155,7 @@
           <q-icon
           :data-cy="'deletecategory'.concat(a_integration_category.id)"
             name="img:statics/icons/Icon - Delete.svg"
-            @click.stop="deletingIntegrationCategory(a_integration_category.id)"
+            @click.stop="deletingIntegrationCategory(a_integration_category)"
             size="md"
           />
 
@@ -224,9 +224,17 @@ export default {
     onClickTitle: function () {
       this.$emit("scroll", "#" + this.$options.name)
     },
-    deletingIntegrationCategory (index) {
-      console.log(index)
-      this.deleteIntegrationCategory(index)
+    deletingIntegrationCategory (category) {
+      this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Deleting a category will also delete all the intervention type of that category with their related interventions. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+            console.log(category)
+            this.deleteIntegrationCategory(category) } },
+          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+        ]
+      })
     },
     showCategoryLabel (workingCat) {
 
@@ -302,7 +310,8 @@ export default {
     this.loading = true
     console.log(this.$store)
     this.fetchIntegrationCategory()
-      .then(processes => {
+      .then(categories => {
+        console.log(categories)
         this.loading = false
       })
 

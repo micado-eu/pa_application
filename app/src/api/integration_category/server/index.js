@@ -5,7 +5,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchIntegrationCategory () {
     return axiosInstance
-      .get('/backend/1.0.0/intervention-categories?filter[include][0][relation]=translations')
+      .get('/backend/1.0.0/intervention-categories?filter[include][0][relation]=translations&filter[include][1][relation]=linkedInterventionType')
       .then(response => { return response.data })
       .catch(error_handler);
   },
@@ -94,5 +94,30 @@ export default {
         .get('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translations')
         .then(response => response.data)
         .catch(error_handler);
+    },
+
+    deleteIntegrationTypeTranslations (id) {
+      return axiosInstance
+        .delete(`/backend/1.0.0/intervention-types/${id}/intervention-types-translations`)
+        .then((response) => response.data)
+        .catch(error_handler)
+    },
+    deleteInterventionByType(id){
+      return axiosInstance
+      .delete('/backend/1.0.0/intervention-types/' + id + '/individual-intervention-plan-interventions')
+      .then(response => response.data)
+      .catch(error_handler);
+    },
+    deleteInterventionTypeValidators(id){
+      return axiosInstance
+      .delete('/backend/1.0.0/intervention-types/' + id + '/intervention-type-validators?[where][interventionTypeId]='+ id)
+      .then(response => response.data)
+      .catch(error_handler);
+    },
+    deleteIntegrationType (id) {
+      return axiosInstance
+        .delete(`/backend/1.0.0/intervention-types/${id}`)
+        .then((response) => response.data)
+        .catch(error_handler)
     },
   }

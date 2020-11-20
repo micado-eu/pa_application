@@ -227,8 +227,17 @@ export default {
 
   methods: {
     deletingUserType (index) {
-      console.log(index)
-      this.deleteUserType(index)
+      this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+            console.log(index)
+            this.deleteUserType(index) } },
+          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+        ]
+      })
+      
     },
     savingUserType () {
       if (this.isNew) {
