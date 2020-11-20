@@ -32,6 +32,12 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  deleteProcessUserType (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/user-types/' + id + '/process-users')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
   deleteUserType (id) {
     return axiosInstance
@@ -44,7 +50,7 @@ export default {
     const whereClause = {
       id: { eq: user_type.id }
     },
-      updatingTopic =  JSON.parse(JSON.stringify(user_type, ['id', 'icon']))
+      updatingTopic =  JSON.parse(JSON.stringify(user_type, ['id', 'icon', 'published']))
 
     return axiosInstance
       .patch('/backend/1.0.0/user-types?where=' + JSON.stringify(whereClause), updatingTopic)

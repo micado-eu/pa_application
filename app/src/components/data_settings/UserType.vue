@@ -266,7 +266,7 @@ export default {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
     },
     createShell () {
-      this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "" }
+      this.int_user_type_shell = { id: -1, user_type: null, translations: [], icon: "", published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_user_type_shell.translations.push({ id: -1, lang: l.lang, userType: '', description: "", translationDate: null, translationState: 0 })
@@ -276,6 +276,7 @@ export default {
       console.log(user_type)
       this.int_user_type_shell.id = user_type.id
       this.int_user_type_shell.icon = user_type.icon
+      this.int_user_type_shell.published = user_type.published
       //this.int_user_type_shell.published = user_type.published
       //this.int_user_type_shell.publicationDate = user_type.publicationDate
       user_type.translations.forEach(tr => {

@@ -770,7 +770,7 @@ export default {
       }
     },
     createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: "", validable: false }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: "", validable: false, published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null, translationState: 0 })
@@ -819,6 +819,7 @@ export default {
       this.int_doc_shell.id = doc.id
       this.int_doc_shell.icon = doc.icon
       this.icon = doc.icon
+      this.int_doc_shell.published = doc.published
       //var model = atob(doc.model.replace('data:application/pdf;base64,',''))
       //console.log("i am the model")
       //console.log(model)

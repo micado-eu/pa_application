@@ -286,7 +286,7 @@ export default {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
     },
     createShell () {
-      this.int_topic_shell = { id: -1, translations: [], icon: "" }
+      this.int_topic_shell = { id: -1, translations: [], icon: "", published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_topic_shell.translations.push({ id: -1, lang: l.lang, topic: '', translationDate: null, translationState: 0 })
@@ -296,6 +296,7 @@ export default {
       console.log(topic)
       this.int_topic_shell.id = topic.id
       this.int_topic_shell.icon = topic.icon
+      this.int_topic_shell.published = topic.published
       //this.int_topic_shell.published = topic.published
       //this.int_topic_shell.publicationDate = topic.publicationDate
       topic.translations.forEach(tr => {

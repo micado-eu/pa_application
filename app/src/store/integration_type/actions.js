@@ -95,7 +95,7 @@ export function saveIntegrationTypeElement (state, integration_type_element) {
     )
 }
 
-export function deleteIntegrationTypeElement (state, index) {
+/*export function deleteIntegrationTypeElement (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(index)
   return client.deleteIntegrationTypeTranslations(index).then(function (translations_delete_return) {
@@ -105,9 +105,9 @@ export function deleteIntegrationTypeElement (state, index) {
       state.commit('deleteIntegrationTypeElement', index)
     })
   })
-}
+}*/
 
-/*export function deleteIntegrationTypeElement (state, index) {
+export function deleteIntegrationTypeElement (state, index) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(index)
   var promise_type = []
@@ -129,7 +129,7 @@ export function deleteIntegrationTypeElement (state, index) {
     })
     
   })
-}*/
+}
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.type.id, payload.published).then(()=>{

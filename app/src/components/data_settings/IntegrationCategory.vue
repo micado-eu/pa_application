@@ -268,7 +268,7 @@ export default {
       this.mergeCategory(integration_category)
     },
     createShell () {
-      this.int_cat_shell = { id: -1, translations: [] }
+      this.int_cat_shell = { id: -1, translations: [], published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_cat_shell.translations.push({ id: -1, lang: l.lang, title: '', translationDate: null, translationState: 0 })
@@ -277,6 +277,7 @@ export default {
     mergeCategory (category) {
       console.log(category)
       this.int_cat_shell.id = category.id
+      this.int_cat_shell.published = category.published
       //this.int_cat_shell.published = category.published
       //this.int_cat_shell.publicationDate = category.publicationDate
       category.translations.forEach(tr => {

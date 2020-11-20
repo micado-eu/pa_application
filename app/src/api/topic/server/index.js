@@ -63,12 +63,18 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  deleteProcessTopic (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/topics/' + id + '/process-topics')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
   updateTopic (topic) {
     const whereClause = {
       id: { eq: topic.id }
     },
-      updatingTopic = JSON.parse(JSON.stringify(topic, ['id', 'icon']))
+      updatingTopic = JSON.parse(JSON.stringify(topic, ['id', 'icon', 'published']))
 
     return axiosInstance
       .patch('/backend/1.0.0/topics?where=' + JSON.stringify(whereClause), updatingTopic)

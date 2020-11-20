@@ -102,6 +102,12 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  deleteProcessProducedDocument (id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/document-types/${id}/process-produced-documents`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
 
   deleteDocumentType (id) {
     return axiosInstance

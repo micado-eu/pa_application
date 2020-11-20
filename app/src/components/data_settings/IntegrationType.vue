@@ -312,7 +312,7 @@ export default {
     },
     createShell () {
       this.int_type_shell = {
-        id: -1, translations: [], categoryType: null, interventionTypeValidators: []
+        id: -1, translations: [], categoryType: null, interventionTypeValidators: [], published:false
       }
       this.languages.forEach((l) => {
         this.int_type_shell.translations.push({
@@ -325,6 +325,7 @@ export default {
       console.log(process)
       this.int_type_shell.id = intervention_type.id
       this.int_type_shell.link = intervention_type.link
+      this.int_type_shell.published = intervention_type.published
       // this.int_type_shell.published = intervention_type.published
       // this.int_type_shell.publicationDate = intervention_type.publicationDate
       this.int_type_shell.categoryType = intervention_type.categoryType

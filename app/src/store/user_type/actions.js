@@ -71,9 +71,12 @@ export function deleteUserType (state, index) {
   return client.deleteUserTypeTranslations(index).then(function (translations_delete_return) {
     console.log("deleted the translations")
     console.log(translations_delete_return)
-    client.deleteUserType(index).then(function () {
-      state.commit('deleteUserType', index)
+    client.deleteProcessUserType(index).then(() =>{
+      client.deleteUserType(index).then(function () {
+        state.commit('deleteUserType', index)
+      })
     })
+    
   })
 }
 

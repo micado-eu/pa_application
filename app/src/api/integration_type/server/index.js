@@ -15,7 +15,7 @@ export default {
     const whereClause = {
       id: { eq: integration_type.id }
     }
-    const updatingCategory = JSON.parse(JSON.stringify(integration_type, ['id', 'categoryType']))
+    const updatingCategory = JSON.parse(JSON.stringify(integration_type, ['id', 'categoryType', 'published']))
 
     return axiosInstance
       .patch(`/backend/1.0.0/intervention-types?where=${JSON.stringify(whereClause)}`, updatingCategory)
@@ -58,9 +58,9 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-  deleteInterventionByType(type){
+  deleteInterventionByType(id){
     return axiosInstance
-    .delete('/backend/1.0.0/individual-intervention-plan-interventions?[where][interventionType]='+ type)
+    .delete('/backend/1.0.0/intervention-types/' + id + '/individual-intervention-plan-interventions')
     .then(response => response.data)
     .catch(error_handler);
   },

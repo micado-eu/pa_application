@@ -99,9 +99,12 @@ export function deleteTopic (state, index) {
   return client.deleteTopicTranslations(index).then(function (translations_delete_return) {
     console.log("deleted the translations")
     console.log(translations_delete_return)
-    client.deleteTopic(index).then(function () {
-      state.commit('deleteTopic', index)
+    client.deleteProcessTopic(index).then(()=>{
+      client.deleteTopic(index).then(function () {
+        state.commit('deleteTopic', index)
+      })
     })
+    
   })
   /*
   return client
