@@ -275,7 +275,6 @@ a {
   background-color: #0B91CE;
 }
 .go-back-btn {
-  color: white;
-  background-color: #9E1F63;
+  color: #9E1F63;
 }
 </style>
