@@ -33,6 +33,7 @@
            
               <q-input
                 dense
+                data-cy="title_input"
                 bg-color="grey-3"
                 standout
                 outlined
@@ -55,6 +56,7 @@
             class="div-5" />
             
               <GlossaryEditor
+                data-cy="description_input"
                 class="left"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
@@ -99,6 +101,7 @@
             :helpLabel="$t('help.generated_docs')"
             class="tag" />
           <q-select
+            data-cy="add_produced_doc"
             filled
             dense
             clearable
@@ -137,6 +140,7 @@
             <q-select
               filled
               dense
+              data-cy="add_user"
               clearable
               v-model="edit_process.applicableUsers"
               @add="addUserTag($event)"
@@ -159,6 +163,7 @@
           <div class="col-6 div-9">
             <q-select
               filled
+              data-cy="add_topic"
               dense
               clearable
               v-model="edit_process.processTopics"

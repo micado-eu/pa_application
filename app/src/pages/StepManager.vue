@@ -48,6 +48,7 @@
 
                     <q-input
                       dense
+                      data-cy="title_input"
                       bg-color="grey-3"
                       standout
                       outlined
@@ -72,6 +73,7 @@
                   />
                    
                     <GlossaryEditor
+                      data-cy="description_input"
                       class="desc-editor"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
                       :lang="language.lang"
@@ -100,6 +102,7 @@
                     class="labels"
                   />
                 <q-input
+                  data-cy="location_input"
                   dense
                   class="no-pad"
                   bg-color="grey-3"
@@ -123,6 +126,7 @@
                     class="labels"
                   />
                 <q-input
+                  data-cy="cost_input"
                   dense
                   class="no-pad"
                   bg-color="grey-3"
@@ -140,6 +144,7 @@
                 <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.required_documents')}}</q-tooltip>
                 <q-btn
+                  data-cy="add_step_document"
                   class="add-step-document"
                   color="accent"
                   no-caps
@@ -156,6 +161,7 @@
               >
                 <div class="col-6">
                   <q-select
+                    data-cy="step_document_list"
                     filled
                     dense
                     clearable
@@ -169,6 +175,7 @@
                 </div>
                 <div class="col-3">
                   <q-input
+                    data-cy="doc_cost"
                     class="input"
                     :label="$t('input_labels.doc_cost')"
                     dense
@@ -180,6 +187,7 @@
                 </div>
                 <div class="col-3">
                   <q-btn
+                    data-cy="save_step_document"
                     id="save-step-document"
                     color="accent"
                     no-caps
