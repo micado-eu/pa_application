@@ -184,7 +184,21 @@
             >{{tag}}</q-chip>
           </div>
         </div>
-
+         <div class=" q-pa-xsm row div-6" >
+        <div class="col-2" style="min-width:130px; max-width:130px">
+          <HelpLabel
+            :fieldLabel="$t('input_labels.is_published')"
+            :helpLabel ="$t('help.is_published')"
+            class="tag"
+          />
+        </div>
+        <div class="col" style="padding-top:2px; text-align:left">
+          <q-toggle
+            v-model="edit_process.published"
+            color="green"
+          />
+        </div>
+      </div>
         <hr id="hr-2">
         <CommentList 
         style="text-align:left; padding-left:20px; padding-right:20px"
@@ -274,7 +288,7 @@ export default {
       theprocess: null,
       id: this.$route.params.id,
       is_new: true,
-      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "" },
+      edit_process: { id: -1, applicableUsers: [], translations: [], processTopics: [], link: "", published:false },
       u_tags: [
 
       ],
@@ -381,7 +395,7 @@ export default {
     },
 
     createShell () {
-      this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], producedDoc: [], link: "" }
+      this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], producedDoc: [], link: "", published:false }
       this.languages.forEach(l => {
         this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null, translationState: 0 })
       })
@@ -395,6 +409,7 @@ export default {
       //this.edit_process.publicationDate = process.publicationDate
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
+      this.edit_process.published = process.published
       process.translations.forEach(pr => {
         console.log(pr)
 

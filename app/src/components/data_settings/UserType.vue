@@ -94,6 +94,21 @@
         @upload="getFiles"
       >
       </FileUploader>
+      <div class="row">
+        <div class="col-2" style="min-width:130px; max-width:130px">
+          <HelpLabel
+            :fieldLabel="$t('input_labels.is_published')"
+            :helpLabel ="$t('help.is_published')"
+            style="padding-left:17px"
+          />
+        </div>
+        <div class="col" style="padding-top:2px">
+          <q-toggle
+            v-model="int_user_type_shell.published"
+            color="green"
+          />
+        </div>
+      </div>
       <hr id="hr">
       <q-btn
       :data-cy="'cancelusertype'"
