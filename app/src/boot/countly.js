@@ -9,8 +9,8 @@ import VueCountly from 'vue-countly'
 export default async ({ Vue }) => {
   // something to do
   Vue.use(VueCountly, Countly, {
-    app_key: 'eb86692cec343df4efb89ca7aaf4a0352621f45d',
-    url: 'https://monitoring.micadoproject.eu'
+    app_key: Vue.prototype.$envconfig.countlyApiKey,
+    url: 'https://' + Vue.prototype.$envconfig.monitoringUrl
   })
 
   console.log("Countly init")

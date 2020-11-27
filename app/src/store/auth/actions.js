@@ -18,7 +18,7 @@ export function login (state, data) {
   let d = new Date()
   let t = d.getTime()
   //  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "6E6Gps3pfRJbzdrjxBiRYSNUVuoa" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://migrants.micadoproject.eu/gioppo"
-  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "bELXHH3g8nvwytaSHRMWNjxe4WnD" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://pa.micadoproject.eu/verification"
+  let aut_url = "https://" + Vue.prototype.$envconfig.identityUrl + "/oauth2/authorize?client_id=" + Vue.prototype.$envconfig.identitySPclientId + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://" + Vue.prototype.$envconfig.paUrl + "/verification"
 
   // curl -X POST --basic -u "<client id>:<client secret>" -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -k -d "token=<token to revoke>&token_type_hint=access_token" https://localhost:9443/oauth2/revoke
 
