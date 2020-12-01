@@ -7,6 +7,7 @@ RUN npm install
 RUN quasar build
 
 FROM alpine
+RUN apk add --no-cache gettext
 COPY --from=build-stage /code/dist/spa /var/www/html2
 #COPY site/index.html /var/www/html2/index.html
 VOLUME /var/www/html2/
