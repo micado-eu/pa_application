@@ -463,7 +463,7 @@ export default {
     },
     description_max_length: {
       type: Number,
-      default: 800
+      default: null
     }
   },
   data() {

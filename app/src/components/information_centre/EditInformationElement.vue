@@ -15,7 +15,6 @@
       user_types_enabled
       :user_types="user_types"
       :title_max_length="255"
-      :description_max_length="999999999"
     />
   </div>
 </template>
