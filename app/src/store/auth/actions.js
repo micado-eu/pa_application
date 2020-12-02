@@ -15,10 +15,12 @@ export function register (state, data) {
 export function login (state, data) {
   console.log("before login")
   console.log(data)
+  console.log(this._vm)
+  console.log(this._vm.$envconfig.identityUrl)
   let d = new Date()
   let t = d.getTime()
   //  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "6E6Gps3pfRJbzdrjxBiRYSNUVuoa" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://migrants.micadoproject.eu/gioppo"
-  let aut_url = "https://" + Vue.prototype.$envconfig.identityUrl + "/oauth2/authorize?client_id=" + Vue.prototype.$envconfig.identitySPclientId + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://" + Vue.prototype.$envconfig.paUrl + "/verification"
+  let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oauth2/authorize?client_id=" + this._vm.$envconfig.identitySPclientId + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://" + this._vm.$envconfig.paUrl + "/verification"
 
   // curl -X POST --basic -u "<client id>:<client secret>" -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -k -d "token=<token to revoke>&token_type_hint=access_token" https://localhost:9443/oauth2/revoke
 
