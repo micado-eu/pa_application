@@ -13,7 +13,6 @@ export function saveNewGlossaryItem(state, data) {
 }
 
 export function editGlossaryItem(state, data) {
-  data.translationState = 0
   return client
     .editGlossaryItem(data)
 }
@@ -35,7 +34,10 @@ export function deleteGlossaryItem(state, data) {
     .deleteGlossaryItem(data)
 }
 
-export function updatePublishGlossaryItem(state, data) {
+export function updatePublished(state, data) {
   return client
-    .editGlossaryItem(data)
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
 }

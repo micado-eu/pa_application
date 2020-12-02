@@ -10,10 +10,20 @@
       <q-item
         clickable
         v-ripple
-        v-for="a_information_category in information_category"
+        v-for="a_information_category in informationCategories"
         :key="a_information_category.id"
       >
         <q-item-section class="category-title">{{showCategoryLabel(a_information_category)}}</q-item-section>
+        <q-item-section
+          side
+          class="icon_btn_section"
+        >
+          <q-toggle
+            v-model="a_information_category.published"
+            color="green"
+            @input="updatePublishedCat($event, a_information_category.id)"
+          />
+        </q-item-section>
         <q-item-section
           side
           class="icon_btn_section"
@@ -37,7 +47,7 @@
             round
             class="item-btn"
             icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
-            @click="deleteInformationCategory(a_information_category.id)"
+            @click="deleteOldInformationCategory(a_information_category.id)"
           />
         </q-item-section>
       </q-item>
@@ -94,6 +104,15 @@
           </q-tab-panel>
         </q-tab-panels>
         <div>
+          <help-label
+            :fieldLabel="$t('input_labels.is_published')"
+            :helpLabel="$t('help.is_published')"
+          ></help-label>
+          <q-toggle
+            v-model="add_published"
+            color="green"
+          ></q-toggle>
+          <br>
           <q-checkbox
             color="accent"
             v-model="linkable"
@@ -117,7 +136,7 @@
             rounded
             style="width:70px;border-radius:2px"
             :label="$t('button.save')"
-            @click="saveInformationCategory()"
+            @click="saveNewInformationCategory()"
           />
         </div>
       </q-card-section>
@@ -127,6 +146,8 @@
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
+import HelpLabel from '../HelpLabel'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: "InformationCategory",
@@ -139,31 +160,37 @@ export default {
       isNew: false,
       linkable: false,
       errorMessage: "",
-      disabledDelete: []
+      disabledDelete: [],
+      add_published: false
     }
+  },
+  components: {
+    'help-label': HelpLabel
   },
   computed: {
-    information_category() {
-      return this.$store.state.information_category.information_category
-    },
-    information() {
-      return this.$store.state.information.information
-    }
+    ...mapGetters('information_category', ['informationCategories']),
+    ...mapGetters('information', ['information'])
   },
   methods: {
+    ...mapActions('information_category', [
+      'deleteInformationCategory',
+      'saveInformationCategory',
+      'editCategoryTypeElement',
+      'fetchInformationCategory',
+      'updatePublished'
+    ]),
+    ...mapActions('information', ['fetchInformation']),
     onClickTitle: function () {
       this.$emit("scroll", "#" + this.$options.name)
     },
-    deleteInformationCategory(index) {
+    deleteOldInformationCategory(index) {
       if (this.disabledDelete.includes(index)) {
         this.errorMessage = "information_centre.categories_error"
       } else {
-        this.$store.dispatch(
-          "information_category/deleteInformationCategory",
-          index
-        ).catch(() => {
-          this.errorMessage = "information_centre.categories_error"
-        })
+        this.deleteInformationCategory(index)
+          .catch(() => {
+            this.errorMessage = "information_centre.categories_error"
+          })
       }
     },
     showCategoryLabel(workingCat) {
@@ -171,25 +198,18 @@ export default {
         return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].category
       }
     },
-    saveInformationCategory() {
+    saveNewInformationCategory() {
 
-      let content = { link_integration_plan: this.linkable, ...this.int_cat_shell }
+      let content = { link_integration_plan: this.linkable, published: this.add_published, ...this.int_cat_shell }
       if (this.isNew) {
         // we are adding a new instance
-        this.$store
-          .dispatch(
-            "information_category/saveInformationCategory",
-            content
-          )
+        this.saveInformationCategory(content)
       } else {
         // we are updating the exsisting
-        this.$store
-          .dispatch(
-            "information_category/editCategoryTypeElement",
-            content
-          )
+        this.editCategoryTypeElement(content)
       }
       this.linkable = false
+      this.add_published = false
       this.hideForm = true
       this.createShell()
     },
@@ -202,12 +222,14 @@ export default {
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false
+      this.add_published = false
       this.linkable = false
     },
     editInformationCategory(information_category) {
       this.isNew = false
       this.hideForm = false
       this.linkable = information_category.link_integration_plan
+      this.add_published = information_category.published
       //this.int_cat_shell = JSON.parse(JSON.stringify(information_category));
       this.mergeCategory(information_category)
     },
@@ -232,16 +254,18 @@ export default {
         }
       })
 
+    },
+    updatePublishedCat(value, id) {
+      this.updatePublished({ id, published: value })
     }
   },
   //store.commit('increment', 10)
   created() {
     this.createShell()
     this.loading = true
-    this.$store
-      .dispatch("information_category/fetchInformationCategory")
+    this.fetchInformationCategory()
       .then(processes => {
-        this.$store.dispatch("information/fetchInformation").then(() => {
+        this.fetchInformation().then(() => {
           for (let inf of this.information) {
             if (!this.disabledDelete.includes(inf.category)) {
               this.disabledDelete.push(inf.category)
@@ -274,9 +298,9 @@ a {
 }
 .add-btn {
   color: white;
-  background-color: #0B91CE;
+  background-color: #0b91ce;
 }
 .go-back-btn {
-  color: #9E1F63;
+  color: #9e1f63;
 }
 </style>

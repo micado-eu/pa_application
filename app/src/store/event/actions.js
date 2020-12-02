@@ -68,3 +68,11 @@ export function fetchEventUserTypes(state, id) {
     .fetchEventUserTypes(id)
     .then((eventUserTypes) => eventUserTypes)
 }
+
+export function updatePublished(state, data) {
+  return client
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
+}

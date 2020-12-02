@@ -30,7 +30,8 @@ export default {
       let id = -1
       const eventData = {
         startDate: translationData[0].startDate,
-        endDate: translationData[0].finishDate
+        endDate: translationData[0].finishDate,
+        published: translationData[0].published
       }
       if ('category' in translationData[0]) {
         eventData.category = translationData[0].category.id
@@ -54,6 +55,7 @@ export default {
                 const tagInfo = translation.tags
                 delete translation.tags
                 const dataWithId = Object.assign(translation, { id })
+                delete translation.published
                 delete translation.category
                 delete translation.topics
                 delete translation.userTypes

@@ -208,11 +208,11 @@
             :to="new_url"
           />
         </div>
-        <div
-          class="flex"
-          v-if="categories_enabled || tags_enabled"
-        >
+        <div class="flex">
           <!-- column title -->
+          <span>
+            {{$t("lists.published")}}
+          </span>
           <span
             v-if="categories_enabled"
             style="flex:4200"
@@ -243,12 +243,13 @@
           </span>
         </div>
         <div class="row q-mb-sm">
-          <q-separator
-            style="max-width: 91.7%; background-color: black"
-          />
+          <q-separator style="max-width: 91.7%; background-color: black" />
         </div>
         <div class="row">
-          <q-list class="col-11 element-list" separator>
+          <q-list
+            class="col-11 element-list"
+            separator
+          >
             <!-- items -->
             <q-item
               v-for="item in filteredElements"
@@ -258,6 +259,13 @@
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
+              <q-item-section class="publish_section q-mt-md">
+                <q-toggle
+                  v-model="item.published"
+                  @input="updatePublished($event, item.id)"
+                  color="green"
+                />
+              </q-item-section>
               <q-item-section class="title_section q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
@@ -400,6 +408,12 @@ export default {
         return () => ''
       }
     },
+    publish_fn: {
+      type: Function,
+      default() {
+        return () => ''
+      }
+    },
     title: {
       type: String,
       default: ''
@@ -477,6 +491,9 @@ export default {
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('glossary', ['fetchGlossary']),
+    updatePublished(value, id) {
+      this.publish_fn(value, id)
+    },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -671,6 +688,7 @@ export default {
               `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           }
         }
+        translation.published = e.published
         return translation
       })
       this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
@@ -845,7 +863,7 @@ $btn_secondary: #cdd0d2;
   border-radius: 5px;
   margin-top: 65px;
   margin-bottom: 75px;
-  max-width: 75%
+  max-width: 75%;
 }
 .filter-list {
   margin-top: 65px;

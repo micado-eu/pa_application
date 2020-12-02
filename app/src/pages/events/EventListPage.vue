@@ -7,6 +7,7 @@
       new_url="events/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedEvents"
       icon_name="document"
       add_label="button.add_event"
       title="events.list_title"
@@ -44,7 +45,8 @@ export default {
       'fetchEvent',
       'deleteEventItem',
       'fetchEventTopics',
-      'fetchEventUserTypes'
+      'fetchEventUserTypes',
+      'updatePublished'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     ...mapActions('event_tags', ['fetchEventTags', 'deleteEventTagsFromEvent']),
@@ -59,6 +61,11 @@ export default {
           setTimeout(() => this.updateContent(), 1000)
           // this.$router.go()
         })
+    },
+    updatePublishedEvents(published, id) {
+      this.updatePublished({id, published}).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
     },
     updateContent() {
       this.loading = true

@@ -51,5 +51,12 @@ export default {
       .delete(`/backend/1.0.0/information-categories/${id}`)
       .then((response) => response.data)
       .catch(error_handler)
+  },
+
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/information-categories?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler)
   }
 }

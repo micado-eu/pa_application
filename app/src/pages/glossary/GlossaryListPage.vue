@@ -7,6 +7,7 @@
       new_url="glossary/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedEvents"
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
       add_label="button.add_glossary"
       title="glossary.list_title"
@@ -34,7 +35,8 @@ export default {
   methods: {
     ...mapActions('glossary', [
       'fetchGlossary',
-      'deleteGlossaryItem'
+      'deleteGlossaryItem',
+      'updatePublished'
     ]),
     getEditRoute(id) {
       return `glossary/${id}/edit`
@@ -46,6 +48,11 @@ export default {
         .then(() => {
           this.loading = false
         })
+    },
+    updatePublishedEvents(published, id) {
+      this.updatePublished({id, published}).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
     }
   },
   created() {

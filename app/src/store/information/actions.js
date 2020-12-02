@@ -68,3 +68,11 @@ export function fetchInformationUserTypes(state, id) {
     .fetchInformationUserTypes(id)
     .then((informationUserTypes) => informationUserTypes)
 }
+
+export function updatePublished(state, data) {
+  return client
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
+}

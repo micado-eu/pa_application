@@ -98,5 +98,11 @@ export default {
       .get(`/backend/1.0.0/events/${id}/event-user-types`)
       .then((response) => response.data)
       .catch(error_handler)
+  },
+  updatePublished(id, is_published){
+    return axiosInstance
+    .patch('/backend/1.0.0/events?[where][id]='+ id, {published: is_published})
+    .then(response => response.data)
+    .catch(error_handler)
   }
 }

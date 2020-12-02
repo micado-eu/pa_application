@@ -7,6 +7,7 @@
       new_url="information/new"
       :edit_url_fn="getEditRoute"
       :delete_fn="deleteItem"
+      :publish_fn="updatePublishedInformation"
       icon_name="document"
       add_label="button.add_information"
       title="information_centre.list_title"
@@ -43,7 +44,8 @@ export default {
       'fetchInformation',
       'deleteInformationItem',
       'fetchInformationTopics',
-      'fetchInformationUserTypes'
+      'fetchInformationUserTypes',
+      'updatePublished'
     ]),
     ...mapActions('information_category', ['fetchInformationCategory']),
     ...mapActions('information_tags', ['fetchInformationTags', 'deleteInformationTagsFromInformation']),
@@ -58,6 +60,11 @@ export default {
           setTimeout(() => this.updateContent(), 1000)
           // this.$router.go()
         })
+    },
+    updatePublishedInformation(published, id) {
+      this.updatePublished({id, published}).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      })
     },
     updateContent() {
       this.loading = true

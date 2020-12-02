@@ -23,13 +23,14 @@ export default {
       const router = this.$router
       let id = -1
       const glossaryData = {
+        published: translationData[0].published
       }
       this.saveNewGlossaryItem(glossaryData)
         .then((newData) => {
           id = newData.id
-          console.log(translationData)
           for (let i = 0; i < translationData.length; i+=1) {
             const translation = translationData[i]
+            delete translation.published
             const dataWithId = Object.assign(translation, { id })
             this.addNewGlossaryItemTranslation(dataWithId).then(() => {
               if (i === translationData.length - 1) {

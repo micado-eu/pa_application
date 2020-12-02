@@ -367,6 +367,18 @@
             class="q-my-lg"
           >
         </div>
+        <div class="row">
+          <span class="label-edit">
+            <help-label
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+            ></help-label>
+            <q-toggle
+              v-model="published"
+              color="green"
+            ></q-toggle>
+          </span>
+        </div>
         <div class="row q-my-xl">
           <q-btn
             unelevated
@@ -492,7 +504,8 @@ export default {
       startTime: '',
       finishDate: '',
       finishTime: '',
-      savedTranslations: []
+      savedTranslations: [],
+      published: false
     }
   },
   methods: {
@@ -533,7 +546,8 @@ export default {
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang
+        lang,
+        published: this.published
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
@@ -740,7 +754,7 @@ export default {
       let maxTagsSaved = 0
       return Math.max(maxTagsElem, maxTagsSaved)
     },
-    errorDefaultLangEmpty: function() {
+    errorDefaultLangEmpty: function () {
       if (this.langTab !== this.$defaultLang) {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
       }
@@ -761,6 +775,7 @@ export default {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
         this.changeLanguageAux(al)
+        this.published = this.elem.published
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category

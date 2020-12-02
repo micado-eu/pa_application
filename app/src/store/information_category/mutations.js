@@ -9,3 +9,10 @@ export function setCategoryType(state, information_category) {
   }
   state.information_category = information_category
 }
+
+export function updatePublished(state, data) {
+  let idx = state.information_category.findIndex((i) => i.id === data.id)
+  if (idx !== -1) {
+    state.information_category[idx].published = data.published
+  }
+}

@@ -9,7 +9,11 @@ export function fetchEventCategory(state, data) {
 export function editCategoryTypeElement(state, event_category) {
   // update translations
   return client
-    .updateEventCategory({ id: event_category.id, link_integration_plan: event_category.link_integration_plan }).then((update_return) => {
+    .updateEventCategory({
+      id: event_category.id,
+      link_integration_plan: event_category.link_integration_plan,
+      published: event_category.published
+    }).then((update_return) => {
       // cycle in the translations and update each
       event_category.translations.forEach((aTranslation) => {
         aTranslation.translationState = 0
@@ -21,7 +25,10 @@ export function editCategoryTypeElement(state, event_category) {
     })
 }
 export function saveEventCategory(state, event_category) {
-  return client.saveEventCategory({ link_integration_plan: event_category.link_integration_plan })
+  return client.saveEventCategory({
+    link_integration_plan: event_category.link_integration_plan,
+    published: event_category.published
+  })
     .then((category_return) => {
       // in topic_return we have the ID that we need in the following cycle
       event_category.translations.forEach((transl, idx) => {
@@ -43,4 +50,12 @@ export function deleteEventCategory(state, index) {
       fetchEventCategory(state)
     })
   })
+}
+
+export function updatePublished(state, data) {
+  return client
+    .updatePublished(data.id, data.published)
+    .then(() => {
+      state.commit("updatePublished", data)
+    })
 }

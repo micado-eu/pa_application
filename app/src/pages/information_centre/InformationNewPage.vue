@@ -29,6 +29,7 @@ export default {
       const router = this.$router
       let id = -1
       const eventData = {
+        published: translationData[0].published
       }
       if ('category' in translationData[0]) {
         eventData.category = translationData[0].category.id
@@ -52,6 +53,7 @@ export default {
                 const tagInfo = translation.tags
                 delete translation.tags
                 const dataWithId = Object.assign(translation, { id })
+                delete translation.published
                 delete translation.category
                 delete translation.topics
                 delete translation.userTypes

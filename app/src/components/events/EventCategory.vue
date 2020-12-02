@@ -10,10 +10,20 @@
       <q-item
         clickable
         v-ripple
-        v-for="a_event_category in event_category"
+        v-for="a_event_category in eventCategories"
         :key="a_event_category.id"
       >
         <q-item-section class="category-title">{{showCategoryLabel(a_event_category)}}</q-item-section>
+        <q-item-section
+          side
+          class="icon_btn_section"
+        >
+          <q-toggle
+            v-model="a_event_category.published"
+            color="green"
+            @input="updatePublishedCat($event, a_event_category.id)"
+          />
+        </q-item-section>
         <q-item-section
           side
           class="icon_btn_section"
@@ -37,7 +47,7 @@
             round
             class="item-btn"
             icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
-            @click="deleteEventCategory(a_event_category.id)"
+            @click="deleteOldEventCategory(a_event_category.id)"
           />
         </q-item-section>
       </q-item>
@@ -50,6 +60,7 @@
         <q-btn
           no-caps
           class="q-mr-sm go-back-btn"
+          outline
           :label="$t('button.go_back')"
           @click="$router.go(-1)"
         />
@@ -93,6 +104,15 @@
           </q-tab-panel>
         </q-tab-panels>
         <div>
+          <help-label
+            :fieldLabel="$t('input_labels.is_published')"
+            :helpLabel="$t('help.is_published')"
+          ></help-label>
+          <q-toggle
+            v-model="add_published"
+            color="green"
+          ></q-toggle>
+          <br>
           <q-checkbox
             color="accent"
             v-model="linkable"
@@ -116,7 +136,7 @@
             rounded
             style="width:70px;border-radius:2px"
             :label="$t('button.save')"
-            @click="saveEventCategory()"
+            @click="saveNewEventCategory()"
           />
         </div>
       </q-card-section>
@@ -126,6 +146,8 @@
 
 <script>
 import editEntityMixin from '../../mixin/editEntityMixin'
+import HelpLabel from '../HelpLabel'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'EventCategory',
@@ -138,31 +160,38 @@ export default {
       isNew: false,
       linkable: false,
       errorMessage: '',
-      disabledDelete: []
+      disabledDelete: [],
+      add_published: false
     }
+  },
+  components: {
+    'help-label': HelpLabel
   },
   computed: {
-    event_category() {
-      return this.$store.state.event_category.event_category
-    },
-    event() {
-      return this.$store.state.event.event
-    }
+    ...mapGetters('event_category', ['eventCategories']),
+    ...mapGetters('event', ['event'])
   },
+
   methods: {
+    ...mapActions('event_category', [
+      'deleteEventCategory',
+      'saveEventCategory',
+      'editCategoryTypeElement',
+      'fetchEventCategory',
+      'updatePublished'
+    ]),
+    ...mapActions('event', ['fetchEvent']),
     onClickTitle() {
       this.$emit('scroll', `#${this.$options.name}`)
     },
-    deleteEventCategory(index) {
+    deleteOldEventCategory(index) {
       if (this.disabledDelete.includes(index)) {
         this.errorMessage = 'events.categories_error'
       } else {
-        this.$store.dispatch(
-          'event_category/deleteEventCategory',
-          index
-        ).catch(() => {
-          this.errorMessage = 'events.categories_error'
-        })
+        this.deleteEventCategory(index)
+          .catch(() => {
+            this.errorMessage = 'events.categories_error'
+          })
       }
     },
     showCategoryLabel(workingCat) {
@@ -170,24 +199,21 @@ export default {
         return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].category
       }
     },
-    saveEventCategory() {
-      const content = { link_integration_plan: this.linkable, ...this.int_cat_shell }
+    saveNewEventCategory() {
+      const content = { link_integration_plan: this.linkable, published: this.add_published, ...this.int_cat_shell }
       if (this.isNew) {
         // we are adding a new instance
-        this.$store
-          .dispatch(
-            'event_category/saveEventCategory',
-            content
-          )
+        this.saveEventCategory(
+          content
+        )
       } else {
         // we are updating the exsisting
-        this.$store
-          .dispatch(
-            'event_category/editCategoryTypeElement',
-            content
-          )
+        this.editCategoryTypeElement(
+          content
+        )
       }
       this.linkable = false
+      this.add_published = false
       this.hideForm = true
       this.createShell()
     },
@@ -200,12 +226,14 @@ export default {
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false
+      this.add_published = false
       this.linkable = false
     },
     editEventCategory(event_category) {
       this.isNew = false
       this.hideForm = false
       this.linkable = event_category.link_integration_plan
+      this.add_published = event_category.published
       // this.int_cat_shell = JSON.parse(JSON.stringify(event_category));
       this.mergeCategory(event_category)
     },
@@ -231,16 +259,18 @@ export default {
           }
         }
       })
+    },
+    updatePublishedCat(value, id) {
+      this.updatePublished({ id, published: value })
     }
   },
   // store.commit('increment', 10)
   created() {
     this.createShell()
     this.loading = true
-    this.$store
-      .dispatch('event_category/fetchEventCategory')
+    this.fetchEventCategory()
       .then((processes) => {
-        this.$store.dispatch('event/fetchEvent').then(() => {
+        this.fetchEvent().then(() => {
           for (const inf of this.event) {
             if (!this.disabledDelete.includes(inf.category)) {
               this.disabledDelete.push(inf.category)
@@ -272,9 +302,9 @@ a {
 }
 .add-btn {
   color: white;
-  background-color: #0B91CE;
+  background-color: #0b91ce;
 }
 .go-back-btn {
-  color: #9E1F63;
+  color: #9e1f63;
 }
 </style>

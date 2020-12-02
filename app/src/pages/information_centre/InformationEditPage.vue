@@ -55,7 +55,8 @@ export default {
       const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
-        category: categoryId
+        category: categoryId,
+        published: data[0].published
       }
       const tagArrayLength = data[0].tags.length
       const tagData = []
@@ -81,6 +82,7 @@ export default {
               const tagInfo = translation.tags
               delete translation.tags
               const dataWithId = Object.assign(translation, { id })
+              delete translation.published
               delete translation.category
               delete translation.topics
               delete translation.userTypes
