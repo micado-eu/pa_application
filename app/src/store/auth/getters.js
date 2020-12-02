@@ -19,19 +19,20 @@ export const check = state => roles => {
   if (user) {
     if (Array.isArray(roles) && roles.length) {
       for (let role of roles) {
-        if ((user.roleNames != null) && !user.roleNames.includes(role)) {
-          console.log("returning false")
-          return false
+        if ((user.roleNames != null) && user.roleNames.includes(role)) {
+          console.log("returning true since it has the role")
+          return true
         }
       }
     } else if (roles) {
-      if ((user.roleNames != null) && !user.roleNames.includes(roles)) {
-        console.log("returning false")
-        return false
+      if ((user.roleNames != null) && user.roleNames.includes(roles)) {
+        console.log("returning true since it has the role")
+        return true
       }
     }
-    console.log("returning true")
-    return true
+    console.log("returning false since it does not have the role")
+    return false
   }
+  console.log("returning false since user do not exist")
   return false
 }
