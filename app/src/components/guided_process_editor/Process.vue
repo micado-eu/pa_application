@@ -8,7 +8,8 @@
             <q-item-section class="col-1 flex flex-center">
             <q-toggle
             v-model="theProcess.published"
-            color="green"
+            color="orange"
+            disable
             @input="isPublished($event, theProcess.id)"
           />            
           </q-item-section>

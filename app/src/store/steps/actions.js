@@ -81,19 +81,17 @@ async function asyncForEach (array, callback) {
   }
 }
 export function saveTranslationProd(state, steps){
+  var promise_delete = []
   steps.forEach((step)=>{
-    client.fetchStepTranslated(step.id).then((translations)=>{
-      console.log("i am the return from the fetch")
-      console.log(translations)
-      translations.forEach((transl)=>{
-        if(transl.translationState == 3){
-          console.log("inside if translated")
-          client.saveStepTranslationProd(transl, step.id)
-        }
-      })
+    console.log("deleting translation with id:" + step.id)
+    promise_delete.push(client.deleteStepTranslationProd(step.id))
+  })
+  Promise.all(promise_delete).then(()=>{
+    steps.forEach((step)=>{
+      console.log("after deleting translation, saving new ones")
+      client.saveStepTranslationProd(step.id)
     })
   })
-  
 }
 
 export function deleteTranslationProd(state, steps){

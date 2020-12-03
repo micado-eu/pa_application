@@ -16,6 +16,7 @@ export function setNodePanelVisible (state, visible) {
 
 export function editProcess(state, process) {
   console.log("update the state")
+  console.log(process)
   const index = state.flows.findIndex(item => item.id === process.id);
   if (index !== -1) state.flows.splice(index, 1, process);
 }

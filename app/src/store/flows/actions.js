@@ -19,10 +19,10 @@ export function fetchDocuments (state, data) {
 }
 
 
-export function saveProcess (state, process) {
+export function saveProcess (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(process)
-  let savingProcess = JSON.parse(JSON.stringify(process, ['link']));
+  console.log(payload.process)
+  let savingProcess = JSON.parse(JSON.stringify(payload.process, ['link']));
   console.log(savingProcess)
 
   return client
@@ -31,14 +31,17 @@ export function saveProcess (state, process) {
       console.log("SAVED")
       console.log("returned from saving process")
       console.log(process_return)
-      process.translations.forEach(function (transl) {
+      for (var i = 0; i < payload.process.translations.length; i++) {
+        payload.process.translations[i].id = process_return.id
+      }
+      payload.process.translations.forEach(function (transl) {
         client.saveProcessTranslation(transl, process_return.id)
       }, process_return.id)
       // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
       console.log("after foreach save translation")
 
       const saveTopics = async () => {
-        await asyncForEach(process.processTopics, async (topic) => {
+        await asyncForEach(payload.process.processTopics, async (topic) => {
           console.log(topic)
           await client.saveProcessTopic(topic, process_return.id)
         })
@@ -47,7 +50,7 @@ export function saveProcess (state, process) {
       await saveTopics()
 
       const saveUsers = async () => {
-        await asyncForEach(process.applicableUsers, async (user) => {
+        await asyncForEach(payload.process.applicableUsers, async (user) => {
           console.log("IL PROCESS ID È: " + process_return.id)
           console.log(process.applicableUsers)
           console.log(user)
@@ -59,10 +62,10 @@ export function saveProcess (state, process) {
       await saveUsers()
 
       const saveProcessDocs = async () => {
-        await asyncForEach(process.producedDoc, async (doc) => {
+        await asyncForEach(payload.process.producedDoc, async (doc) => {
           console.log("IL PROCESS ID È: " + process_return.id)
           console.log("this is produced docs")
-          console.log(process.producedDoc)
+          console.log(payload.process.producedDoc)
           console.log(doc)
           await client.saveProcessProducedDocs(doc, process_return.id)
         })
@@ -79,12 +82,10 @@ export function saveProcess (state, process) {
             */
       console.log("after foreach save users")
 
-      process.id = process_return.id
+      payload.process.id = process_return.id
       // now we need to set the id for all translations
-      for (var i = 0; i < process.translations.length; i++) {
-        process.translations[i].id = process_return.id
-      }
-      state.commit('saveProcess', process)
+      
+      state.commit('saveProcess', payload.process)
     })
 }
 export function deleteProcess (state, payload) {
@@ -219,42 +220,42 @@ export function deleteProcess (state, payload) {
     .then(topic_return => state.commit('deleteTopic', topic_return))
     */
 }
-export function editProcess (state, process) {
+export function editProcess (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(process)
-  var workingId = process.id 
+  console.log(payload.process)
+  var workingId = payload.process.id 
   console.log("i am working id")
   console.log(workingId)
   // update translations
   client
-    .updateProcess(process).then(function (update_return) {
+    .updateProcess(payload.process).then(function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
-      process.translations.forEach(function (aTranslation) {
+      payload.process.translations.forEach(function (aTranslation) {
         client.updateProcessTranslation(aTranslation).then(function (update_translation_return) {
           console.log(update_translation_return)
         })
    })
      })
 
-      client.deleteProcessUser(process.id).then(function (param) {
-      client.deleteProcessTopic(process.id).then(function (param2) {
-        client.deleteProcessProducedDocs(process.id).then(function (param3) {
-        if (process.processTopics != null){
-          process.processTopics.forEach((topic) => {
+      client.deleteProcessUser(payload.process.id).then(function (param) {
+      client.deleteProcessTopic(payload.process.id).then(function (param2) {
+        client.deleteProcessProducedDocs(payload.process.id).then(function (param3) {
+        if (payload.process.processTopics != null){
+          payload.process.processTopics.forEach((topic) => {
             console.log("in saving topic")
           console.log(topic)
           client.saveProcessTopic(topic, workingId)
         })
       }
-        if (process.applicableUsers != null){
-          process.applicableUsers.forEach((user) => {
+        if (payload.process.applicableUsers != null){
+          payload.process.applicableUsers.forEach((user) => {
             console.log("in saving user")
             client.saveProcessUser(user, workingId)
           }) 
         }
-        if (process.producedDoc != null){
-          process.producedDoc.forEach((doc) => {
+        if (payload.process.producedDoc != null){
+          payload.process.producedDoc.forEach((doc) => {
             console.log("in saving produced doc")
             client.saveProcessProducedDocs(doc, workingId)
           })
@@ -344,7 +345,9 @@ else if (process.applicableUsersOrig != null){
   }
   })
 } */
-state.commit('editProcess', process)
+console.log("i am process being sent to store")
+console.log(payload.process)
+state.commit('editProcess', payload.process)
 }
 
 async function asyncForEach (array, callback) {
@@ -360,16 +363,10 @@ export function updatePublished(state, payload){
 }
 
 export function saveTranslationProd(state, id){
-  client.fetchProcessTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveProcessTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteProcessTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveProcessTranslationProd(id)
+   })
 }
 
 export function deleteTranslationProd(state, id){

@@ -266,6 +266,7 @@ export default {
         topic: 'topic/topic',
         user: 'user_type/user',
         documents: 'document_type/document_types',
+        steps: 'steps/steps',
         process_comments: 'comments/process_comments',
         comments: 'comments/comments',
       }, actions: {
@@ -276,6 +277,12 @@ export default {
         fetchUserType: 'user_type/fetchUserType',
         fetchDocumentType: 'document_type/fetchDocumentType',
         fetchCommentsByProcess: 'comments/fetchCommentsByProcess',
+        fetchSteps: 'steps/fetchSteps',
+        updatePublished: 'flows/updatePublished',
+        saveTranslationProd: 'flows/saveTranslationProd',
+        deleteTranslationProd: 'flows/deleteTranslationProd',
+        saveStepTranslationProd: 'steps/saveTranslationProd',
+        deleteStepTranslationProd: 'steps/deleteTranslationProd',
         fetchComments: 'comments/fetchComments'
       }
     })],
@@ -298,7 +305,8 @@ export default {
       selected_t_tags: [],
       docOptions: [],
       selectedDocs: [],
-      selected_process_comments:[]
+      selected_process_comments:[], 
+      publishedOrig:false
     }
   },
   computed: {
@@ -374,17 +382,45 @@ export default {
     clearAllTopics () {
       this.selected_t_tags = []
     },
+    isPublished(value){
+       console.log(value)
+      var publishing_process =  value
+      console.log("i am process to publish")
+      console.log(publishing_process)
+      var publishing_steps = this.steps.filter((step)=>{
+        return step.idProcess == value.id
+      }) 
+      console.log("i am steps to publish")
+      console.log(publishing_steps)
+      
+      if( value.published == true){
+        this.updatePublished({process:publishing_process, published: value.published})
+        this.saveTranslationProd(value.id)
+        this.saveStepTranslationProd(publishing_steps)
+
+      }
+      else{
+        this.updatePublished({process:publishing_process, published: value.published})
+      }
+     },
     async savingProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
       if (this.is_new) {
         console.log(workingProcess)
-        await this.saveProcess(workingProcess)
+        await this.saveProcess({process:workingProcess, defaultLang:this.$defaultLang})
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
       }
       else {
-        await this.editProcess(value)
+        await this.editProcess({process:value,defaultLang:this.$defaultLang })
+        console.log("i am ublished orig")
+        console.log(this.publishedOrig)
+        console.log("i am published of the form")
+        console.log(value.published)
+        if(value.published != this.publishedOrig){
+          this.isPublished(value)
+        }
         console.log("I am this is new")
         console.log(this.is_new)
         console.log(value)
@@ -468,9 +504,14 @@ export default {
     }
   },
   async created () {
-    this.loading = true
+    console.log(this.$defaultLang)
     console.log(this.$defaultLangString)
     this.createShell()
+     this.fetchSteps()
+      .then(steps => {
+        this.loading = false
+        console.log(this.steps)
+      })
     await this.fetchFlows()
       .then(flows => {
         console.log(this.processes)
@@ -481,6 +522,9 @@ export default {
         })[0]
         console.log(temp)
         this.theprocess = temp
+        if(temp != null){
+          this.publishedOrig = this.theprocess.published
+        }
         console.log("I am the process")
         console.log(this.theprocess)
       })

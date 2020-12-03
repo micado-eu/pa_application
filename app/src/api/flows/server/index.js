@@ -106,7 +106,6 @@ export default {
       .catch(error_handler);
   },
   saveProcessTranslation (translation, id) {
-    translation.id = id
     const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description']));
 
     // create fake id here
@@ -193,12 +192,21 @@ export default {
     .catch(error_handler);
 
   }, 
-  saveProcessTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description']));
-
+  saveProcessTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/processes/to-production?id='+ id)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  updateProcessTranslationProd (translation) {
+    const whereClause = {
+      id: { eq: translation.id }, lang: { eq: translation.lang }
+    },
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description'])) : translation
+
+    return axiosInstance
+      .patch('/backend/1.0.0/processes/' + translation.id + '/process-translation-prods?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler);
   },

@@ -35,12 +35,10 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
-  saveStepTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'step', 'description']));
-
+  saveStepTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/steps/' + id + '/step-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/steps/to-production?id=' + id)
       .then(response => response.data)
       .catch(error_handler);
   },
