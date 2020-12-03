@@ -21,10 +21,6 @@ export default {
       'setTopics',
       'setUserTypes'
     ]),
-    ...mapActions('event_tags', [
-      'saveEventTags',
-      'saveEventTagsTranslation'
-    ]),
     saveNewEventItemAndReturn(translationData) {
       const router = this.$router
       let id = -1
@@ -39,21 +35,11 @@ export default {
       this.saveNewEventItem(eventData)
         .then((newData) => {
           id = newData.id
-          const tagArrayLength = translationData[0].tags.length
-          const tagData = []
-          for (let k = 0; k < tagArrayLength; k += 1) {
-            tagData.push({
-              eventId: newData.id
-            })
-          }
           this.setTopics({ id, topics: translationData[0].topics })
             .then(() => this.setUserTypes({ id, userTypes: translationData[0].userTypes }))
-            .then(() => this.saveEventTags(tagData))
-            .then((newTags) => {
+            .then(() => {
               for (let i = 0; i < translationData.length; i += 1) {
                 const translation = translationData[i]
-                const tagInfo = translation.tags
-                delete translation.tags
                 const dataWithId = Object.assign(translation, { id })
                 delete translation.published
                 delete translation.category
@@ -61,13 +47,6 @@ export default {
                 delete translation.userTypes
                 delete translation.startDate
                 delete translation.finishDate
-                const newTagsWithTag = newTags.map((newTag, idx) => ({
-                  id: newTag.id,
-                  lang: translation.lang,
-                  tag: tagInfo[idx],
-                  translationState: 0
-                }))
-                this.saveEventTagsTranslation(newTagsWithTag).then()
                 this.addNewEventItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {

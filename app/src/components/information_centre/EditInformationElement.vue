@@ -5,9 +5,7 @@
       v-if="!loading"
       :elem="elem"
       :save_item_fn="saveInformationItem"
-      :tags="tags"
       :pagetitle="pagetitle"
-      tags_enabled
       :categories="informationCategories"
       categories_enabled
       topics_enabled
@@ -39,9 +37,6 @@ export default {
     },
     pagetitle: {
       type: String
-    },
-    tags: {
-      type: Array
     },
     topics: {
       type: Array

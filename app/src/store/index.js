@@ -24,12 +24,10 @@ import intervention_plan from './intervention_plan'
 import intervention from './intervention'
 import information from './information'
 import information_category from './information_category'
-import information_tags from './information_tags'
 import settings from './settings'
 import comments from './comments'
 import event from './event'
 import event_category from './event_category'
-import event_tags from './event_tags'
 import consent from './consent'
 import tenant from './tenant'
 import picture_hotspots from './picture_hotspots'
@@ -66,14 +64,12 @@ export default function (/* { ssrContext } */) {
       information,
       settings,
       information_category,
-      information_tags,
       intervention,
       comments,
       event,
       event_category,
       consent,
       tenant,
-      event_tags,
       picture_hotspots
     },
 

@@ -242,7 +242,6 @@
   "lists": {
     "published": "Published",
     "category": "Category",
-    "tags": "Tags",
     "topics": "Topics",
     "user_types": "User Types",
     "start_date": "Start date",
