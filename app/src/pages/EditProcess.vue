@@ -195,6 +195,7 @@
         <div class="col" style="padding-top:2px; text-align:left">
           <q-toggle
             v-model="edit_process.published"
+            :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             color="green"
           />
         </div>
