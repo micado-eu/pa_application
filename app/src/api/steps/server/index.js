@@ -27,7 +27,7 @@ export default {
   },
   saveStepTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'step', 'description']));
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'step', 'description', 'translationState']));
 
     // create fake id here
     return axiosInstance

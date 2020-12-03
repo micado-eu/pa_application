@@ -106,7 +106,7 @@ export default {
       .catch(error_handler);
   },
   saveProcessTranslation (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description']));
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState']));
 
     // create fake id here
     return axiosInstance
