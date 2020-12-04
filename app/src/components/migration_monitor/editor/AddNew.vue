@@ -2,7 +2,7 @@
   <div :id="$options.name" class="q-pa-md">
     <div style="text-align: center; padding-top: 30px" class="main">
       <div class="q-pa-lg edit-element-component">
-                <div
+        <div
           class="q-pa-xsm q-mt-md row"
           style="text-align: center; padding-right: 45px"
         >
@@ -247,12 +247,23 @@
         <q-card-section>
           <div class="text-h6">Error</div>
         </q-card-section>
-        <q-card-section class="q-pt-none">
-          Upload succeeded! Please check the corresponding board to see the new
-          chart.
+        <q-card-section class="q-pt-none"> 
+          Upload failed. Please check if the uploaded file has the correct format and content structure.<br />
+          This Error could also be caused by the server. In this case please contact the system administrator for assistance.
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="OK" color="black" v-close-popup @click="!fail" />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="empty">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Empty field detected</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none"> Please make sure all required fields are filled. </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="black" v-close-popup @click="!empty" />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -281,6 +292,7 @@ export default {
       filename: null,
       succeed: false,
       fail: false,
+      empty:false,
       boardOpts: [],
       catOpts: []
     }
@@ -319,6 +331,19 @@ export default {
       this.category = val
     },
     addChart: function () {
+      if (
+        !this.title.length ||
+        !this.content.length ||
+        !this.description.length ||
+        !this.data_format.length ||
+        !this.type.length ||
+        !this.x.length ||
+        !this.y.length ||
+        !this.board.length
+      ) {
+        this.empty = true
+        return
+      }
       const data = {
         title: this.title,
         content: this.content,
@@ -331,6 +356,7 @@ export default {
         y: this.y,
         board: this.board
       }
+
       this.$q.loading.show({ delay: 400 })
       this.$store
         .dispatch("statistics/addChart", data)
