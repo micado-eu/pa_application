@@ -39,6 +39,13 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  saveEventCategoryTranslationProd(translation, id) {
+    translation.id = id
+    return axiosInstance
+      .post(`/backend/1.0.0/event-categories/${id}/event-category-translation-prods`, translation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   deleteEventCategoryTranslations(id) {
     return axiosInstance
       .delete(`/backend/1.0.0/event-categories/${id}/event-category-translations`)
@@ -58,5 +65,11 @@ export default {
     .patch('/backend/1.0.0/event-categories?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
     .catch(error_handler)
+  },
+  deleteProdTranslations(state, data) {
+    return axiosInstance
+        .delete(`/backend/1.0.0/event-categories/${id}/event-category-translation-prods`)
+        .then((response) => response.data)
+        .catch(error_handler)
   }
 }

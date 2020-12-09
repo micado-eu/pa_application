@@ -7,6 +7,18 @@ export function fetchInformationCategory(state, data) {
 }
 
 export function editCategoryTypeElement(state, information_category) {
+  const old_ic = state.information_category.filter(ic => ic.id === information_category.id)
+  if (old_ic.published && information_category.translations[0].translationState === 0) {
+    deleteProdTranslations().then(() => {
+      console.log("Deleted prod translations")
+    })
+  }
+  if (old_ic.published && !information_category.published) {
+    // If published goes from true to false, all the content gets deleted from the translation prod table
+    deleteProdTranslations().then(() => {
+      console.log("Deleted prod translations")
+    })
+  }
   // update translations
   return client
     .updateInformationCategory({
@@ -16,10 +28,16 @@ export function editCategoryTypeElement(state, information_category) {
     }).then((update_return) => {
       // cycle in the translations and update each
       information_category.translations.forEach((aTranslation) => {
-        aTranslation.translationState = 0
         aTranslation.informationCategory = aTranslation.category
         delete aTranslation.category
         client.updateInformationCategoryTranslation(aTranslation)
+        if (!old_ic.published && information_category.published && aTranslation.translationState === 4) {
+          // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+          const prodTransl = Object.assign({}, aTranslation)
+          delete prodTransl.translationState
+          delete prodTransl.published
+          saveInformationCategoryTranslationProd(prodTransl).then(() => { })
+        }
       })
       fetchInformationCategory(state)
     })
@@ -32,7 +50,6 @@ export function saveInformationCategory(state, information_category) {
     .then((category_return) => {
       // in topic_return we have the ID that we need in the following cycle
       information_category.translations.forEach((transl, idx) => {
-        transl.translationState = 0
         transl.informationCategory = transl.category
         delete transl.category
         client.saveInformationCategoryTranslation(transl, category_return.id).then(() => {
@@ -59,3 +76,11 @@ export function updatePublished(state, data) {
       state.commit("updatePublished", data)
     })
 }
+
+export function deleteProdTranslations(state, data) {
+  return client.deleteProdTranslations()
+}
+
+export function saveInformationCategoryTranslationProd(state, data) {
+  return this.saveInformationCategoryTranslationProd(data)
+} 

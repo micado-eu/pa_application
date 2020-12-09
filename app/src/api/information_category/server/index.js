@@ -39,6 +39,13 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  saveInformationCategoryTranslationProd(translation, id) {
+    translation.id = id
+    return axiosInstance
+      .post(`/backend/1.0.0/information-categories/${id}/information-category-translation-prods`, translation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   deleteInformationCategoryTranslations(id) {
     return axiosInstance
       .delete(`/backend/1.0.0/information-categories/${id}/information-category-translations`)
@@ -58,5 +65,12 @@ export default {
     .patch('/backend/1.0.0/information-categories?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
     .catch(error_handler)
+  },
+
+  deleteProdTranslations(state, data) {
+    return axiosInstance
+        .delete(`/backend/1.0.0/information-categories/${id}/information-category-translation-prods`)
+        .then((response) => response.data)
+        .catch(error_handler)
   }
 }

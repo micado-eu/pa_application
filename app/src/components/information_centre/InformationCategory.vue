@@ -100,6 +100,14 @@
             <q-input
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].category"
               :label="$t('input_labels.event')"
+              class="q-mb-md"
+            />
+            <translate-state-button
+              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+              :isForDefaultLanguage="language.lang===activeLanguage"
+              :objectId="int_cat_shell.id"
+              :readonly="!(language.lang===activeLanguage)"
+              @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -148,10 +156,14 @@
 import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 
 export default {
   name: "InformationCategory",
-  mixins: [editEntityMixin],
+  mixins: [
+    editEntityMixin,
+    translatedButtonMixin
+  ],
   data() {
     return {
       int_cat_shell: { id: -1, translations: [] },
@@ -168,7 +180,7 @@ export default {
     'help-label': HelpLabel
   },
   computed: {
-    ...mapGetters('information_category', ['informationCategories']),
+    ...mapGetters('information_category', ['informationCategories', 'informationCategoryById']),
     ...mapGetters('information', ['information'])
   },
   methods: {
@@ -177,7 +189,9 @@ export default {
       'saveInformationCategory',
       'editCategoryTypeElement',
       'fetchInformationCategory',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'saveInformationCategoryTranslationProd'
     ]),
     ...mapActions('information', ['fetchInformation']),
     onClickTitle: function () {
@@ -237,7 +251,7 @@ export default {
       this.int_cat_shell = { id: -1, translations: [] }
       this.languages.forEach(l => {
         //       console.log(l)
-        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, category: '', translationDate: null })
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, category: '', translationDate: null, translationState: 0 })
       })
     },
     mergeCategory(category) {
@@ -256,6 +270,21 @@ export default {
 
     },
     updatePublishedCat(value, id) {
+      let infoElem = this.informationCategoryById(id)
+      if (infoElem.translations[0].translationState === 4 && infoElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < infoElem.translations.length; i += 1) {
+          const translation = Object.assign({}, infoElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewInformationItemTranslationProd(translation).then(() => { })
+        }
+      }
       this.updatePublished({ id, published: value })
     }
   },

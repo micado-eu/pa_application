@@ -14,7 +14,6 @@ export function saveNewEventItem(state, data) {
 export function addNewEventItemTranslation(state, data) {
   data.event = data.title
   delete data.title
-  data.translationState = 0
   return client
     .addNewEventItemTranslation(data)
 }
@@ -26,7 +25,6 @@ export function editEventItem(state, data) {
 export function editEventItemTranslation(state, data) {
   data.event = data.title
   delete data.title
-  data.translationState = 0
   return client
     .editEventItemTranslation(data)
 }
@@ -75,4 +73,15 @@ export function updatePublished(state, data) {
     .then(() => {
       state.commit("updatePublished", data)
     })
+}
+
+export function deleteProdTranslations(state, data) {
+  return client.deleteProdTranslations()
+}
+
+export function addNewEventItemTranslationProd(state, data) {
+  data.event = data.title
+  delete data.title
+  return client
+    .addNewEventItemTranslationProd(data)
 }
