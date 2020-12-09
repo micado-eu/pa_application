@@ -20,16 +20,9 @@ export function fetchHotspotsById(state, pic_id) {
 
 export function saveTranslationProd(state, spots){
   spots.forEach((spot)=>{
-    client.fetchSpotTranslated(spot.id).then((translations)=>{
-      console.log("i am the return from the fetch")
-      console.log(translations)
-      translations.forEach((transl)=>{
-        if(transl.translationState == 3){
-          console.log("inside if translated")
-          client.saveSpotTranslationProd(transl, spot.id)
-        }
-      })
-    })
+    client.deleteSpotTranslationProd(spot.id).then(()=>{
+      client.saveSpotTranslationProd(spot.id)
+     })
   })
   
 }

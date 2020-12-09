@@ -76,12 +76,9 @@ export default {
     .catch(error_handler);
 
   }, 
-  saveUserTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'userType', 'description']));
-
-    // create fake id here
+  saveUserTranslationProd (id) {
     return axiosInstance
-      .post('/backend/1.0.0/user-types/' + id + '/user-types-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/user-types/to-production?id=' + id)
       .then(response => response.data)
       .catch(error_handler);
   },

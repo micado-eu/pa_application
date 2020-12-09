@@ -106,6 +106,7 @@
           <q-toggle
             v-model="int_user_type_shell.published"
             color="green"
+            :disable="int_user_type_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
           />
         </div>
       </div>
@@ -171,7 +172,7 @@
           <q-toggle
             v-model="a_user_type.published"
             color="green"
-            @input="isPublished($event, a_user_type.id)"
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -231,7 +232,8 @@ export default {
       hideForm: true,
       hideAdd: false,
       isNew: false,
-      userimage: null
+      userimage: null,
+      publishedOrig:false
     }
   },
   components: {
@@ -268,6 +270,9 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
+           if(this.int_user_type_shell.published != this.publishedOrig){
+          this.isPublished(this.int_user_type_shell)
+        }
       }
       this.hideForm = true
       this.hideAdd = false
@@ -284,6 +289,7 @@ export default {
       this.hideForm = false
       //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
       this.mergeUserType(user_type)
+      this.publishedOrig = user_type.published
       console.log(this.int_user_type_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0])
     },
     showUserTypeLabel (workingTopic) {
@@ -346,22 +352,13 @@ export default {
         console.log(fileInfo)
       }
     },
-    isPublished(event,value){
-     console.log("event ")
-      console.log(event)
-      console.log("user id")
-      console.log(value)
-      var publishing_user =  this.user.filter((user)=>{
-        return user.id == value
-      })[0]
-      if( event == true){
-        this.updatePublished({user:publishing_user, published: event})
-        this.saveTranslationProd(value)
-
+    isPublished(value){
+      if( value.published == true){
+        this.updatePublished({user:value, published: value.published})
+        this.saveTranslationProd(value.id)
       }
       else{
-        this.updatePublished({user:publishing_user, published: event})
-        this.deleteTranslationProd(value)
+        this.updatePublished({user:value, published: value.published})
       }
    },
     cancelUserType () {

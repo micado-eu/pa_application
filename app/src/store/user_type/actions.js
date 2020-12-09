@@ -87,16 +87,10 @@ export function updatePublished(state, payload){
 }
 
 export function saveTranslationProd(state, id){
-  client.fetchUserTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveUserTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteUserTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveUserTranslationProd(id)
+   })
 }
 
 export function deleteTranslationProd(state, id){

@@ -97,6 +97,7 @@
           <q-toggle
             v-model="int_topic_shell.published"
             color="green"
+            :disable="int_topic_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
           />
         </div>
       </div>
@@ -163,7 +164,7 @@
             v-model="a_topic.published"
             color="green"
             :id="a_topic.id"
-            @input="isPublished($event, a_topic.id)"
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -223,7 +224,8 @@ export default {
       hideForm: true,
       hideAdd: false,
       isNew: false,
-      topicimage: null
+      topicimage: null,
+      publishedOrig:false
     }
   },
   components: {
@@ -260,32 +262,23 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
+          if(this.int_topic_shell.published != this.publishedOrig){
+          this.isPublished(this.int_topic_shell)
+        }
       }
       this.hideAdd = false
       this.hideForm = true
       this.createShell()
     },
-    isPublished (event, value) {
-      console.log("event ")
-      console.log(event)
-      console.log("topic id")
-      var publishing_topic =  this.topic.filter((top)=>{
-        return top.id == value
-      })[0]
+    isPublished (value) {
       console.log(value)
-      if( event == true){
-        this.updatePublished({topic:publishing_topic, published: event})
-        this.saveTranslationProd(value)
-
-        //save stuff in prod tables
+       if( value.published == true){
+        this.updatePublished({topic:value, published: value.published})
+        this.saveTranslationProd(value.id)
       }
       else{
-        this.updatePublished({topic:publishing_topic, published: event})
-        this.deleteTranslationProd(value)
-        //delete stuff from prod table
+        this.updatePublished({topic:value, published: value.published})
       }
-      
-
     },
     newTopic () {
       this.createShell()
@@ -302,6 +295,7 @@ export default {
       this.isNew = false
       this.hideForm = false
       this.mergeTopic(topic)
+      this.publishedOrig = topic.published
     },
 
     showTopicLabel (workingTopic) {

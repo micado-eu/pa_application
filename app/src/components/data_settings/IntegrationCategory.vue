@@ -96,6 +96,7 @@
           <q-toggle
             v-model="int_cat_shell.published"
             color="green"
+            :disable="int_cat_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
           />
         </div>
       </div>
@@ -151,7 +152,7 @@
           <q-toggle
             v-model="a_integration_category.published"
             color="green"
-            @input="isPublished($event, a_integration_category.id)"
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -211,29 +212,22 @@ export default {
       int_cat_shell: { id: -1, translations: [] },
       hideForm: true,
       hideAdd: false,
-      isNew: false
+      isNew: false,
+      publishedOrig:false
+
     }
   },
   components: {
     UploadButton, HelpLabel
   },
   methods: {
-    isPublished(event,value){
-     console.log("event ")
-      console.log(event)
-      console.log("user id")
-      console.log(value)
-      var publishing_cat =  this.intervention_categories.filter((cat)=>{
-        return cat.id == value
-      })[0]
-      if( event == true){
-        this.updatePublished({cat:publishing_cat, published: event})
-        this.saveTranslationProd(value)
-
+    isPublished(value){
+    if( value.published == true){
+        this.updatePublished({cat:value, published: value.published})
+        this.saveTranslationProd(value.id)
       }
       else{
-        this.updatePublished({cat:publishing_cat, published: event})
-        this.deleteTranslationProd(value)
+        this.updatePublished({cat:value, published: value.published})
       }
    },
     onClickTitle: function () {
@@ -268,6 +262,9 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
+          if(this.int_cat_shell.published != this.publishedOrig){
+          this.isPublished(this.int_cat_shell)
+        }
       }
       this.hideForm = true
       this.hideAdd = false
@@ -289,6 +286,8 @@ export default {
       this.hideForm = false
       //this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
       this.mergeCategory(integration_category)
+      this.publishedOrig = integration_category.published
+
     },
     createShell () {
       this.int_cat_shell = { id: -1, translations: [], published:false }

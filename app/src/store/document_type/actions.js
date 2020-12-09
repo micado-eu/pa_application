@@ -202,9 +202,9 @@ export function deleteDocumentType (state, payload) {
 
 }
 
-export function editDocumentType (state, doc_element) {
+export function editDocumentType (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(doc_element)
+  console.log(payload.doc_element)
   var promiseTransl = []
   var spots =[]
   var promiseValidators=[]
@@ -217,10 +217,10 @@ var promiseSpot = []
 var promiseSpotsTransl =[]
   // update translations
   return client
-    .updateDocumentType(doc_element).then(function (update_return) {
+    .updateDocumentType(payload.doc_element).then(function (update_return) {
       // cycle in the translations and update each
       console.log(update_return)
-      doc_element.translations.forEach(function (aTranslation) {
+      payload.doc_element.translations.forEach(function (aTranslation) {
         promiseTransl.push(client.updateDocumentTypeTranslation(aTranslation))
       })
         Promise.all(promiseTransl).then(function (update_translation_return) {
@@ -228,7 +228,7 @@ var promiseSpotsTransl =[]
           console.log("after promise all deleted doc tarnslations")
      
 
-  doc_element.pictures.forEach((pic)=>{
+          payload.doc_element.pictures.forEach((pic)=>{
     pic.hotspots.forEach((spot) => {
       console.log("i am spot id in foreach")
       console.log(spot.id)
@@ -260,22 +260,22 @@ var promiseSpotsTransl =[]
     console.log("deleted spots")
     Promise.all(promiseSpotsDelete).then((valuesspots) =>{
       console.log("i am doc element hotspots")
-      console.log(doc_element.pictures)
+      console.log(payload.doc_element.pictures)
       console.log("i am valuesspots")
       console.log(valuesspots)
-      promiseValidatorsDelete.push(client.deleteDocumentTypeValidators(doc_element.id))
+      promiseValidatorsDelete.push(client.deleteDocumentTypeValidators(payload.doc_element.id))
       Promise.all(promiseValidatorsDelete).then((validator_return)=>{
         console.log(validator_return)
-      promisePicsDelete.push(client.deleteDocumentTypePictures(doc_element.id))
+      promisePicsDelete.push(client.deleteDocumentTypePictures(payload.doc_element.id))
       Promise.all(promisePicsDelete).then((delete_pic)=>{
-        doc_element.validators.forEach((validator)=>{
-          promiseValidators.push(client.saveDocumentTypeValidators(doc_element.id, validator))
+        payload.doc_element.validators.forEach((validator)=>{
+          promiseValidators.push(client.saveDocumentTypeValidators(payload.doc_element.id, validator))
         })
         Promise.all(promiseValidators).then((validator_return)=>{
           console.log(validator_return)
-        if(doc_element.pictures.length >0){
-          doc_element.pictures.forEach((pic)=>{
-            promisePics.push(client.saveDocumentTypePictures(pic, doc_element.id, pic.order))
+        if(payload.doc_element.pictures.length >0){
+          payload.doc_element.pictures.forEach((pic)=>{
+            promisePics.push(client.saveDocumentTypePictures(pic, payload.doc_element.id, pic.order))
           })
           Promise.all(promisePics)
           .then((values)=>{
@@ -283,15 +283,15 @@ var promiseSpotsTransl =[]
             console.log("inside firts promis all")
             console.log(values)
           values.forEach((value)=>{
-            doc_element.pictures.forEach((pic)=>{
+            payload.doc_element.pictures.forEach((pic)=>{
               if(value.image == pic.image){
                 pic.id = value.id
               }
             })
           })
           console.log("i am doc element picture")
-          console.log(doc_element.pictures)
-          doc_element.pictures.forEach((pic)=>{
+          console.log(payload.doc_element.pictures)
+          payload.doc_element.pictures.forEach((pic)=>{
             if(pic.hotspots){
               pic.hotspots.forEach((spot) =>{
                 spot.pictureId = pic.id
@@ -305,7 +305,7 @@ var promiseSpotsTransl =[]
               if(spotvalues.length > 0){
                 console.log("i am spotvalues")
                 console.log(spotvalues)
-                doc_element.pictures.forEach((pic)=>{
+                payload.doc_element.pictures.forEach((pic)=>{
                  //In order to give hotspots the proper id i check that the return elemnt from save and the element in the payload have same pictureId,
                  //x, and y. Since on a single picture there is only one spot that can have these x and y, it should identify it uniquely
                   for(var i = 0; i <spotvalues.length; i++){
@@ -317,7 +317,7 @@ var promiseSpotsTransl =[]
                   }
                 })
                 
-                doc_element.pictures.forEach((pict)=>{
+                payload.doc_element.pictures.forEach((pict)=>{
                   pict.hotspots.forEach((hspot)=>{
                     console.log("i am hspot")
                     console.log(hspot)
@@ -325,12 +325,23 @@ var promiseSpotsTransl =[]
                       promiseSpotsTransl.push(client.saveHotspotTranslation(transl, hspot.id))
                     })
                     Promise.all(promiseSpotsTransl).then((translreturn)=>{
+                      if(payload.doc_element.published != payload.publishedOrig){
+                        if(payload.doc_element.published == true){
+                          console.log("i am hspot INSIDE FOREACH")
+                          console.log(hspot)
+                         
+                            client.deleteSpotTranslationProd(hspot.id).then(()=>{
+                              client.saveSpotTranslationProd(hspot.id)
+                             
+                          })
+                        }
+                      }
                       console.log("in transl return")
                       console.log(translreturn)
                       console.log(spotvalues[spotvalues.length-1])
                       if(translreturn[0].phtId == spotvalues[spotvalues.length-1].id){
                         console.log("this is if there are hotspots")
-                        state.commit('editDocumentType',doc_element)
+                        state.commit('editDocumentType',payload.doc_element)
                         state.commit('picture_hotspots/setHotspots', spotvalues, { root: true })
                       }
                     })
@@ -341,7 +352,7 @@ var promiseSpotsTransl =[]
               }
               else {
                 console.log("this is if there are no hotspots")
-                state.commit('editDocumentType',doc_element)
+                state.commit('editDocumentType',payload.doc_element)
               }
                 
                   
@@ -352,7 +363,7 @@ var promiseSpotsTransl =[]
           }
           else{
             console.log("This is if there are no pictures")
-            state.commit('editDocumentType',doc_element)
+            state.commit('editDocumentType',payload.doc_element)
           }
       })
       })
@@ -382,16 +393,10 @@ export function updatePublished(state, payload){
 }
 
 export function saveTranslationProd(state, id){
-  client.fetchDocTypeTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveDocTypeTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteDocTypeTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveDocTypeTranslationProd(id)
+   })
 }
 
 export function deleteTranslationProd(state, id){

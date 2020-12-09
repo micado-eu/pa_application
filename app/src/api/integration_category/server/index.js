@@ -72,12 +72,11 @@ export default {
       .catch(error_handler);
   
     }, 
-    saveCategoryTranslationProd (translation, id) {
-      const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title']));
+    saveCategoryTranslationProd (id) {
   
       // create fake id here
       return axiosInstance
-        .post('/backend/1.0.0/intervention-categories/' + id + '/intervention-category-translation-prods', savingTranslation)
+        .get('/backend/1.0.0/intervention-categories/to-production?id=' + id)
         .then(response => response.data)
         .catch(error_handler);
     },
