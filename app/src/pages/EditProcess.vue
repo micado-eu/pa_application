@@ -58,6 +58,7 @@
               <GlossaryEditor
                 data-cy="description_input"
                 class="left"
+                :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
                 ref="editor"

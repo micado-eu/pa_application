@@ -55,6 +55,7 @@
           
           <GlossaryEditor
             class="desc-editor"
+            :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
             :lang="language.lang"
             ref="editor"
@@ -75,6 +76,22 @@
             />
         </q-tab-panel>
       </q-tab-panels>
+      <q-tabs
+        v-model="langTab"
+        dense
+        class="bg-grey-2"
+        active-color="accent"
+        indicator-color="accent"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+          :label="language.name"
+        />
+      </q-tabs>
           <HelpLabel
           :fieldLabel="$t('input_labels.issuer')"
           :helpLabel ="$t('help.issuer')"

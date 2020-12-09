@@ -54,6 +54,7 @@
           />
           <GlossaryEditor
             class="desc-editor"
+            :readonly="!(int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
             :lang="language.lang"
             ref="editor"
