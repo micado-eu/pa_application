@@ -100,6 +100,14 @@
             <q-input
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].category"
               :label="$t('input_labels.event')"
+              class="q-mb-md"
+            />
+            <translate-state-button
+              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+              :isForDefaultLanguage="language.lang===activeLanguage"
+              :objectId="int_cat_shell.id"
+              :readonly="!(language.lang===activeLanguage)"
+              @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -148,10 +156,14 @@
 import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 
 export default {
   name: 'EventCategory',
-  mixins: [editEntityMixin],
+  mixins: [
+    editEntityMixin,
+    translatedButtonMixin
+  ],
   data() {
     return {
       int_cat_shell: { id: -1, translations: [] },
@@ -168,7 +180,7 @@ export default {
     'help-label': HelpLabel
   },
   computed: {
-    ...mapGetters('event_category', ['eventCategories']),
+    ...mapGetters('event_category', ['eventCategories', 'eventCategoryById']),
     ...mapGetters('event', ['event'])
   },
 
@@ -178,7 +190,9 @@ export default {
       'saveEventCategory',
       'editCategoryTypeElement',
       'fetchEventCategory',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'saveEventCategoryTranslationProd'
     ]),
     ...mapActions('event', ['fetchEvent']),
     onClickTitle() {
@@ -242,7 +256,7 @@ export default {
       this.languages.forEach((l) => {
         //       console.log(l)
         this.int_cat_shell.translations.push({
-          id: -1, lang: l.lang, category: '', translationDate: null
+          id: -1, lang: l.lang, category: '', translationDate: null, translationState: 0
         })
       })
     },
@@ -261,6 +275,21 @@ export default {
       })
     },
     updatePublishedCat(value, id) {
+      let eventElem = this.eventCategoryById(id)
+      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < eventElem.translations.length; i += 1) {
+          const translation = Object.assign({}, eventElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewEventItemTranslationProd(translation).then(() => { })
+        }
+      }
       this.updatePublished({ id, published: value })
     }
   },

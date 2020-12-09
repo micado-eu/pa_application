@@ -30,13 +30,15 @@ export default {
     'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters('glossary', ['glossary'])
+    ...mapGetters('glossary', ['glossary', 'glossaryElemById'])
   },
   methods: {
     ...mapActions('glossary', [
       'fetchGlossary',
       'deleteGlossaryItem',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'addNewGlossaryItemTranslationProd'
     ]),
     getEditRoute(id) {
       return `glossary/${id}/edit`
@@ -50,6 +52,21 @@ export default {
         })
     },
     updatePublishedEvents(published, id) {
+      let glossaryElem = this.glossaryElemById(id)
+      if (glossaryElem.translations[0].translationState === 4 && glossaryElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        })
+      } else if (glossaryElem.translations[0].translationState === 4 && !glossaryElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < glossaryElem.translations.length; i += 1) {
+          const translation = Object.assign({}, glossaryElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewGlossaryItemTranslationProd(translation).then(() => { })
+        }
+      }
       this.updatePublished({id, published}).then(() => {
         //console.log("new published value for " + id + ": " + published)
       })
