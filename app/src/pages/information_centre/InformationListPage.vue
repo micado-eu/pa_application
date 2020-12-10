@@ -82,7 +82,7 @@ export default {
     },
     updateContent() {
       this.loading = true
-      let promises = [this.fetchInformation, this.fetchTopic, this.fetchUserType, this.fetchInformationCategory]
+      let promises = [this.fetchInformation(), this.fetchTopic(), this.fetchUserType(), this.fetchInformationCategory()]
       Promise.all(promises)
         .then(() => this.fetchAllInformationTopics())
         .then((information_topics) => {
