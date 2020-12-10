@@ -11,10 +11,10 @@
 
     <div id="div-1">
       <q-card class="container">
-
+          <div class="form-help"> {{$t("help.form")}} {{this.$defaultLangString}} </div>
         <q-tab-panels
           v-model="langTab"
-          class="bg-grey-2 inset-shadow  "
+          class="  "
           animated
         >
           <q-tab-panel
@@ -42,13 +42,12 @@
                 :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
-                :label="$t('input_labels.process_name')"
               />
             </div>
 
             <div
               id="div-4"
-              class="q-pa-xsm"
+              class=""
             >
              <HelpLabel
             :fieldLabel="$t('input_labels.process_description')"
@@ -57,7 +56,8 @@
             
               <GlossaryEditor
                 data-cy="description_input"
-                class="left"
+                class="desc-editor "
+                style="width:100%"
                 :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
@@ -65,7 +65,7 @@
               />
 
             </div>
-            <div>
+            <div style="text-align:right;padding-left: 150px;padding-right: 150px;">
               <TranslateStateButton
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState"
                 :isForDefaultLanguage="language.lang===activeLanguage"
@@ -76,31 +76,14 @@
             </div>
           </q-tab-panel>
         </q-tab-panels>
-        <q-separator />
-        <q-tabs
-          v-model="langTab"
-          dense
-          class="bg-grey-2"
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
         <div
-          id=""
           class=" q-pa-xsm row div-6"
         >
         <HelpLabel
             :fieldLabel="$t('input_labels.generated_docs')"
             :helpLabel="$t('help.generated_docs')"
-            class="tag" />
+            class="tag"
+            style="padding-bottom:15px" />
           <q-select
             data-cy="add_produced_doc"
             filled
@@ -114,7 +97,6 @@
             emit-value
             map-options
             :options="this.docOptions"
-            :label="$t('input_labels.generated_docs')"
             class="select"
           />
         </div>
@@ -151,7 +133,6 @@
               emit-value
               map-options
               :options="this.u_tags"
-              :label="$t('input_labels.user_tags')"
               class="select"
             />
             <q-chip
@@ -175,7 +156,6 @@
               emit-value
               map-options
               :options="this.t_tags"
-              :label="$t('input_labels.topic_tags')"
               class="select"
             />
             <q-chip
@@ -185,7 +165,7 @@
             >{{tag}}</q-chip>
           </div>
         </div>
-         <div class=" q-pa-xsm row div-6" >
+         <div class=" q-pa-xsm row div-6" style="padding-bottom:20px">
         <div class="col-2" style="min-width:130px; max-width:130px">
           <HelpLabel
             :fieldLabel="$t('input_labels.is_published')"
@@ -197,15 +177,33 @@
           <q-toggle
             v-model="edit_process.published"
             :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
-            color="green"
+            color="orange"
           />
         </div>
       </div>
+      <div style="padding-left:166px; padding-right:150px">
+        <hr id="hr-2">
+        <q-tabs
+          v-model="langTab"
+          dense
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        
         <hr id="hr-2">
         <CommentList 
-        style="text-align:left; padding-left:20px; padding-right:20px"
+        style="text-align:left;"
         :selected_process_comments="selected_process_comments"/>
-        <hr id="hr-2">
+      </div>
         <div id="div-10">
           <div class="q-pa-md q-gutter-md col-4 div-11">
             <q-btn
@@ -640,7 +638,7 @@ export default {
   padding-bottom: 15px;
 }
 #div-4 {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
   padding-left: 150px;
   padding-right: 150px;
 }
@@ -652,7 +650,7 @@ export default {
 }
 .div-6 {
   padding-top: 20px;
-  padding-left: 150px;
+  padding-left: 166px;
   padding-right: 150px;
 }
 #div-7 {
@@ -660,14 +658,16 @@ export default {
   padding-right: 150px;
 }
 .div-8 {
-  padding-left: 0px;
+  padding-left: 16px;
   padding-top: 15px;
 }
 .select {
-  width: 90%;
+  width: 100%;
+  padding-right:16px
 }
 .div-9 {
-  padding-right: 45px;
+  padding-left:16px;
+  
   padding-top: 15px;
 }
 #hr-1 {
@@ -676,10 +676,11 @@ export default {
   margin-top: 90px;
 }
 #hr-2 {
-  width: 85%;
+  width: 100%;
   border: 0.999px solid #dadada;
 }
 #div-10 {
+  padding-top:30px;
   text-align: left;
   padding-left: 150px;
 }
@@ -688,5 +689,16 @@ export default {
 }
 .left{
   text-align: left;
+}
+.desc-editor .editor-options {
+  width: 100%;
+  margin-bottom:10px
+}
+.form-help{
+  padding-top:30px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
 }
 </style>

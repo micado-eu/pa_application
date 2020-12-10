@@ -1,6 +1,7 @@
 {
   "application_title": "MICADO app",
   "help": {
+    "form":"Please fill the form in the default language:",
     "process_name": "Write the name of the process",
     "process_description": "Describe your process",
     "generated_docs": "If the process generates a document, choose its type from the list below. If there is no matching type, choose 'other'. If the process does not generate a document, leave this space empty",
