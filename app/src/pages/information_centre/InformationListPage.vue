@@ -38,11 +38,13 @@ export default {
     ...mapGetters('information_category', ['informationCategories'])
   },
   methods: {
+    ...mapActions('topic', ['fetchTopic']),
+    ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('information', [
       'fetchInformation',
       'deleteInformationItem',
-      'fetchInformationTopics',
-      'fetchInformationUserTypes',
+      'fetchAllInformationTopics',
+      'fetchAllInformationUserTypes',
       'updatePublished',
       'deleteProdTranslations',
       'addNewInformationItemTranslationProd'
@@ -56,6 +58,11 @@ export default {
         .then(() => {
           this.updateContent()
           // this.$router.go()
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information: ${err}`
+          })
         })
     },
     updatePublishedInformation(published, id) {
@@ -64,6 +71,11 @@ export default {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information production translations: ${err}`
+          })
         })
       } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
@@ -71,46 +83,62 @@ export default {
           const translation = Object.assign({}, infoElem.translations[i])
           delete translation.translationState
           delete translation.published
-          this.addNewInformationItemTranslationProd(translation).then(() => { })
+          this.addNewInformationItemTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving information production translation ${translation.lang}: ${err}`
+            })
+          })
         }
       }
       this.updatePublished({ id, published }).then(() => {
         //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
       })
     },
     updateContent() {
       this.loading = true
-      this.fetchInformation().then(() => {
-        this.fetchInformationCategory().then(() => {
-          this.informationElems = JSON.parse(JSON.stringify(this.information))
-          const informationCategoryElems = [...this.informationCategories]
-          if (this.informationElems.length > 0) {
-            for (let i = 0; i < this.informationElems.length; i += 1) {
-              const elem = this.informationElems[i]
-              // Set categories-elements relations
-              const idxCat = elem.category
-              const idxCategoryObject = informationCategoryElems.findIndex(
-                (ic) => ic.id === idxCat
-              )
-              elem.category = informationCategoryElems[idxCategoryObject]
-
-              this.fetchInformationTopics(elem.id).then((topics) => {
-                elem.topics = topics.filter((topic) => topic.idInformation === elem.id)
-                return this.fetchInformationUserTypes(elem.id)
-              }).then((userTypes) => {
-                elem.userTypes = userTypes.filter(
-                  (userType) => userType.idInformation === elem.id
+      let promises = [this.fetchInformation(), this.fetchTopic(), this.fetchUserType(), this.fetchInformationCategory()]
+      Promise.all(promises)
+        .then(() => this.fetchAllInformationTopics())
+        .then((information_topics) => {
+          this.fetchAllInformationUserTypes().then((information_uts) => {
+            this.informationElems = JSON.parse(JSON.stringify(this.information))
+            const informationCategoryElems = [...this.informationCategories]
+            if (this.informationElems.length > 0) {
+              for (let i = 0; i < this.informationElems.length; i += 1) {
+                const elem = this.informationElems[i]
+                // Set categories-elements relations
+                const idxCat = elem.category
+                const idxCategoryObject = informationCategoryElems.findIndex(
+                  (ic) => ic.id === idxCat
                 )
+                elem.category = informationCategoryElems[idxCategoryObject]
+                elem.topics = information_topics.filter((topic) => topic.idInformation === elem.id)
+                elem.userTypes = information_uts.filter((userType) => userType.idInformation === elem.id)
                 if (i >= this.informationElems.length - 1) {
                   this.loading = false
                 }
-              })
+              }
+            } else {
+              this.loading = false
             }
-          } else {
-            this.loading = false
-          }
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while deleting fetching information: ${err}`
+            })
+          })
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching information: ${err}`
+          })
         })
-      })
     }
   },
   created() {

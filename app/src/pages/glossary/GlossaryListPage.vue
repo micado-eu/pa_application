@@ -49,6 +49,11 @@ export default {
         .then(this.fetchGlossary)
         .then(() => {
           this.loading = false
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting glossary term: ${err}`
+          })
         })
     },
     updatePublishedEvents(published, id) {
@@ -57,6 +62,11 @@ export default {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting glossary production translations: ${err}`
+          })
         })
       } else if (glossaryElem.translations[0].translationState === 4 && !glossaryElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
@@ -64,11 +74,19 @@ export default {
           const translation = Object.assign({}, glossaryElem.translations[i])
           delete translation.translationState
           delete translation.published
-          this.addNewGlossaryItemTranslationProd(translation).then(() => { })
+          this.addNewGlossaryItemTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving glossary production translation ${translation.lang}: ${err}`
+            })
+          })
         }
       }
-      this.updatePublished({id, published}).then(() => {
-        //console.log("new published value for " + id + ": " + published)
+      this.updatePublished({ id, published }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
       })
     }
   },
@@ -76,6 +94,11 @@ export default {
     this.loading = true
     this.fetchGlossary().then(() => {
       this.loading = false
+    }).catch((err) => {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while fetching glossary: ${err}`
+      })
     })
   }
 }

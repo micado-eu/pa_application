@@ -7,18 +7,22 @@
       v-else
     >
       <div class="center-edit q-ma-xl">
-        <span
-          class="warning-error"
-          v-if="errorDefaultLangEmpty"
-        >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
-        <span
-          class="warning-error"
-          v-if="selectedTranslationState === 3"
-        >{{$t("error_messages.in_translation")}}</span>
-        <span
-          class="warning-error"
-          v-if="(selectedTranslationState === 4) && elem.published"
-        >{{$t("error_messages.change_translated")}}</span>
+        <div class="warning-error-row row">
+          <span class="col"></span>
+          <span
+            class="warning-error col"
+            v-if="errorDefaultLangEmpty"
+          >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
+          <span
+            class="warning-error col"
+            v-if="selectedTranslationState === 3"
+          >{{$t("error_messages.in_translation")}}</span>
+          <span
+            class="warning-error col"
+            v-if="(selectedTranslationState === 4) && elem.published"
+          >{{$t("error_messages.change_translated")}}</span>
+          <span class="col"></span>
+        </div>
         <div>
           <span class="q-my-xl label-edit">
             <help-label
@@ -32,6 +36,8 @@
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
+            counter
+            :maxlength="title_max_length"
             :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
           />
         </div>
@@ -48,21 +54,21 @@
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
             ref="editor"
-          />
-        </div>
-        <div class="row tag_category_selectors">
-          <translate-state-button
+          >
+            <translate-state-button
             v-model="selectedTranslationState"
             :isForDefaultLanguage="langTab===$defaultLang"
             :objectId="elemId"
             :readonly="!(langTab===$defaultLang)"
             @micado-change="(a) => {selectedTranslationState = a.state}"
+            class="q-my-sm"
           />
+          </glossary-editor>
         </div>
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -75,6 +81,7 @@
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
               data-cy="category_select"
+              bg-color="grey-3"
             />
           </div>
         </div>
@@ -82,7 +89,7 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-md q-mr-lg tag_list col">
+          <div class="q-my-xl q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.start_date')"
@@ -163,7 +170,7 @@
               </q-input>
             </div>
           </div>
-          <div class="q-my-md tag_list col">
+          <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.finish_date')"
@@ -248,7 +255,7 @@
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-md tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -261,6 +268,7 @@
               :options="internalTopics"
               @input="setTopicObjectModel($event)"
               data-cy="topic_select"
+              bg-color="grey-3"
             />
             <div
               class="tag_list flex"
@@ -280,7 +288,7 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl q-ml-lg tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -293,6 +301,7 @@
               :options="internalUserTypes"
               @input="setUserTypeObjectModel($event)"
               data-cy="user_types_select"
+              bg-color="grey-3"
             />
             <div
               class="tag_list flex"
@@ -314,7 +323,7 @@
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
-            class="q-my-lg"
+            class="q-mb-lg q-mt-xl"
           >
           <q-tabs
             v-model="langTab"
@@ -324,6 +333,7 @@
             indicator-color="black"
             align="justify"
             narrow-indicator
+            no-caps
           >
             <q-tab
               v-for="language in languages"
@@ -334,7 +344,7 @@
           </q-tabs>
           <hr
             style="border: 0.999px solid #DADADA"
-            class="q-my-lg"
+            class="q-mt-lg q-mb-xl"
           >
         </div>
         <div class="row">
@@ -343,11 +353,11 @@
               :fieldLabel="$t('input_labels.is_published')"
               :helpLabel="$t('help.is_published')"
             ></help-label>
-            <q-toggle
-              v-model="published"
-              color="green"
-            ></q-toggle>
           </span>
+          <q-toggle
+            v-model="published"
+            color="green"
+          ></q-toggle>
         </div>
         <div class="row q-my-xl">
           <q-btn
@@ -377,15 +387,15 @@
 import { mapGetters, mapActions } from 'vuex'
 import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
-import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
+import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'EditElement',
   components: {
     'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor,
-    'translate-state-button': TranslateStateButton
+    'glossary-editor': GlossaryEditor
   },
+  mixins: [translatedButtonMixin],
   props: {
     pagetitle: {
       type: String,
@@ -691,6 +701,9 @@ export default {
       if (newVal && oldVal) {
         this.changeLanguage(newVal, oldVal)
       }
+    },
+    selectedTranslationState: function() {
+      console.log(this.selectedTranslationState)
     }
   },
   created() {
@@ -833,7 +846,9 @@ $title_font_size: 16px;
 }
 
 .warning-error {
-  font-weight: bold;
+  font-weight: 700;
+  font-family: Nunito;
+  font-size: 16px;
 }
 </style>
 <style>

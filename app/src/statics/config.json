@@ -3,7 +3,7 @@
     "apiUrl": "api.micadoproject.eu",
     "monitoringUrl": "monitoring.micadoproject.eu",
     "identityUrl": "identity.micadoproject.eu",
-    "countlyApiKey": "eb86692cec343df4efb89ca7aaf4a0352621f45d",
+    "countlyAppKey": "eb86692cec343df4efb89ca7aaf4a0352621f45d",
     "identitySPclientId": "bELXHH3g8nvwytaSHRMWNjxe4WnD",
     "paUrl": "pa.micadoproject.eu"
 }

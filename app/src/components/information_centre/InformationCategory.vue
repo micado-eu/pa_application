@@ -217,10 +217,20 @@ export default {
       let content = { link_integration_plan: this.linkable, published: this.add_published, ...this.int_cat_shell }
       if (this.isNew) {
         // we are adding a new instance
-        this.saveInformationCategory(content)
+        this.saveInformationCategory(content).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information category: ${err}`
+          })
+        })
       } else {
         // we are updating the exsisting
-        this.editCategoryTypeElement(content)
+        this.editCategoryTypeElement(content).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information category: ${err}`
+          })
+        })
       }
       this.linkable = false
       this.add_published = false
@@ -275,6 +285,11 @@ export default {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information category production translations: ${err}`
+          })
         })
       } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
@@ -282,10 +297,20 @@ export default {
           const translation = Object.assign({}, infoElem.translations[i])
           delete translation.translationState
           delete translation.published
-          this.addNewInformationItemTranslationProd(translation).then(() => { })
+          this.saveInformationCategoryTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving information category production translation ${translation.lang}: ${err}`
+            })
+          })
         }
       }
-      this.updatePublished({ id, published: value })
+      this.updatePublished({ id, published: value }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
     }
   },
   //store.commit('increment', 10)
@@ -301,6 +326,16 @@ export default {
             }
           }
           this.loading = false
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching information: ${err}`
+          })
+        })
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching information categories: ${err}`
         })
       })
 

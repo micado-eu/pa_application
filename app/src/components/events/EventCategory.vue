@@ -219,12 +219,22 @@ export default {
         // we are adding a new instance
         this.saveEventCategory(
           content
-        )
+        ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event category: ${err}`
+          })
+        })
       } else {
         // we are updating the exsisting
         this.editCategoryTypeElement(
           content
-        )
+        ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving event category: ${err}`
+          })
+        })
       }
       this.linkable = false
       this.add_published = false
@@ -280,6 +290,11 @@ export default {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations().then(() => {
           console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event category production translations: ${err}`
+          })
         })
       } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
@@ -287,10 +302,20 @@ export default {
           const translation = Object.assign({}, eventElem.translations[i])
           delete translation.translationState
           delete translation.published
-          this.addNewEventItemTranslationProd(translation).then(() => { })
+          this.saveEventCategoryTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving event category production translation ${translation.lang}: ${err}`
+            })
+          })
         }
       }
-      this.updatePublished({ id, published: value })
+      this.updatePublished({ id, published: value }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
     }
   },
   // store.commit('increment', 10)
@@ -306,6 +331,16 @@ export default {
             }
           }
           this.loading = false
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching events: ${err}`
+          })
+        })
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching event categories: ${err}`
         })
       })
   }
