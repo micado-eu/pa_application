@@ -3,7 +3,7 @@
     "apiUrl": "$API_HOSTNAME",
     "monitoringUrl": "$ANALYTIC_HOSTNAME",
     "identityUrl": "$IDENTITY_HOSTNAME",
-    "countlyApiKey": "$COUNTLY_MIGRANTS_API_KEY",
+    "countlyAppKey": "$COUNTLY_PA_APP_KEY",
     "identitySPclientId": "$IDENTITY_SP_PA_CLIENT_ID",
     "paUrl": "$PA_HOSTNAME"
 }
