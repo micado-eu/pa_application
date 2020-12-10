@@ -96,6 +96,8 @@
           <q-toggle
             v-model="int_cat_shell.published"
             color="green"
+            :disable="int_cat_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event,int_cat_shell.id)"
           />
         </div>
       </div>
@@ -103,6 +105,7 @@
         <q-btn
         :data-cy="'savecategory'"
           class="button"
+          :disable="int_cat_shell.published"
           color="accent"
           no-caps
           unelevated
@@ -151,7 +154,7 @@
           <q-toggle
             v-model="a_integration_category.published"
             color="green"
-            @input="isPublished($event, a_integration_category.id)"
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -211,31 +214,55 @@ export default {
       int_cat_shell: { id: -1, translations: [] },
       hideForm: true,
       hideAdd: false,
-      isNew: false
+      isNew: false,
+      publishedOrig:false
+
     }
   },
   components: {
     UploadButton, HelpLabel
   },
   methods: {
-    isPublished(event,value){
+     isPublished(event,value){
      console.log("event ")
       console.log(event)
       console.log("user id")
       console.log(value)
-      var publishing_cat =  this.intervention_categories.filter((cat)=>{
-        return cat.id == value
+      var publishing_cat_temp =  this.intervention_categories.filter((type)=>{
+        return type.id == value
       })[0]
+      var publishing_cat = JSON.parse(JSON.stringify(publishing_cat_temp))
       if( event == true){
-        this.updatePublished({cat:publishing_cat, published: event})
-        this.saveTranslationProd(value)
-
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the category type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({cat:publishing_cat, published: event})
+            this.saveTranslationProd(value)
+            this.cancelIntegrationCategory()
+             }},
+          { label: 'No', color: 'red', handler: () => { 
+            this.this.int_cat_shell.published = false } }
+        ]
+      })
+       
       }
       else{
-        this.updatePublished({cat:publishing_cat, published: event})
-        this.deleteTranslationProd(value)
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the category type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({cat:publishing_cat, published:event})
+            this.deleteTranslationProd(value)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.this.int_cat_shell.published = true } }
+        ]
+      })
+       
       }
-   },
+     },
     onClickTitle: function () {
       this.$emit("scroll", "#" + this.$options.name)
     },
@@ -268,6 +295,7 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
+         
       }
       this.hideForm = true
       this.hideAdd = false
@@ -289,6 +317,8 @@ export default {
       this.hideForm = false
       //this.int_cat_shell = JSON.parse(JSON.stringify(integration_category));
       this.mergeCategory(integration_category)
+      this.publishedOrig = integration_category.published
+
     },
     createShell () {
       this.int_cat_shell = { id: -1, translations: [], published:false }

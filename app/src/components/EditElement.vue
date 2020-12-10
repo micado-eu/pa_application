@@ -7,6 +7,22 @@
       v-else
     >
       <div class="center-edit q-ma-xl">
+        <div class="warning-error-row row">
+          <span class="col"></span>
+          <span
+            class="warning-error col"
+            v-if="errorDefaultLangEmpty"
+          >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
+          <span
+            class="warning-error col"
+            v-if="selectedTranslationState === 3"
+          >{{$t("error_messages.in_translation")}}</span>
+          <span
+            class="warning-error col"
+            v-if="(selectedTranslationState === 4) && elem.published"
+          >{{$t("error_messages.change_translated")}}</span>
+          <span class="col"></span>
+        </div>
         <div>
           <span class="q-my-xl label-edit">
             <help-label
@@ -20,6 +36,8 @@
             outlined
             v-model="internalTitle"
             bg-color="grey-3"
+            counter
+            :maxlength="title_max_length"
             :rules="[ val => val.length <= title_max_length || $t('error_messages.max_char_limit') + title_max_length]"
           />
         </div>
@@ -36,12 +54,21 @@
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
             ref="editor"
+          >
+            <translate-state-button
+            v-model="selectedTranslationState"
+            :isForDefaultLanguage="langTab===$defaultLang"
+            :objectId="elemId"
+            :readonly="!(langTab===$defaultLang)"
+            @micado-change="(a) => {selectedTranslationState = a.state}"
+            class="q-my-sm"
           />
+          </glossary-editor>
         </div>
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -54,6 +81,7 @@
               :options="internalCategories"
               @input="setCategoryObjectModel($event)"
               data-cy="category_select"
+              bg-color="grey-3"
             />
           </div>
         </div>
@@ -61,7 +89,7 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-md q-mr-lg tag_list col">
+          <div class="q-my-xl q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.start_date')"
@@ -142,7 +170,7 @@
               </q-input>
             </div>
           </div>
-          <div class="q-my-md tag_list col">
+          <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.finish_date')"
@@ -227,7 +255,7 @@
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-md tag_list col"
+            class="q-my-xl tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -240,6 +268,7 @@
               :options="internalTopics"
               @input="setTopicObjectModel($event)"
               data-cy="topic_select"
+              bg-color="grey-3"
             />
             <div
               class="tag_list flex"
@@ -259,7 +288,7 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-md q-ml-lg tag_list col"
+            class="q-my-xl q-ml-lg tag_list col"
           >
             <span class="q-my-lg label-edit">
               <help-label
@@ -272,6 +301,7 @@
               :options="internalUserTypes"
               @input="setUserTypeObjectModel($event)"
               data-cy="user_types_select"
+              bg-color="grey-3"
             />
             <div
               class="tag_list flex"
@@ -290,11 +320,10 @@
             </div>
           </div>
         </div>
-        <span v-if="errorDefaultLangEmpty">{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
         <div class="language_selector">
           <hr
             style="border: 0.999px solid #DADADA;"
-            class="q-my-lg"
+            class="q-mb-lg q-mt-xl"
           >
           <q-tabs
             v-model="langTab"
@@ -304,6 +333,7 @@
             indicator-color="black"
             align="justify"
             narrow-indicator
+            no-caps
           >
             <q-tab
               v-for="language in languages"
@@ -314,7 +344,7 @@
           </q-tabs>
           <hr
             style="border: 0.999px solid #DADADA"
-            class="q-my-lg"
+            class="q-mt-lg q-mb-xl"
           >
         </div>
         <div class="row">
@@ -323,11 +353,11 @@
               :fieldLabel="$t('input_labels.is_published')"
               :helpLabel="$t('help.is_published')"
             ></help-label>
-            <q-toggle
-              v-model="published"
-              color="green"
-            ></q-toggle>
           </span>
+          <q-toggle
+            v-model="published"
+            color="green"
+          ></q-toggle>
         </div>
         <div class="row q-my-xl">
           <q-btn
@@ -357,6 +387,7 @@
 import { mapGetters, mapActions } from 'vuex'
 import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
+import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'EditElement',
@@ -364,6 +395,7 @@ export default {
     'help-label': HelpLabel,
     'glossary-editor': GlossaryEditor
   },
+  mixins: [translatedButtonMixin],
   props: {
     pagetitle: {
       type: String,
@@ -436,6 +468,8 @@ export default {
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
+      selectedTranslationState: 0,
+      elemId: -1,
       startDate: '',
       startTime: '',
       finishDate: '',
@@ -483,7 +517,8 @@ export default {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
         lang,
-        published: this.published
+        published: this.published,
+        translationState: this.selectedTranslationState
       }
       if (this.categories_enabled) {
         translation.category = this.selectedCategoryObject
@@ -603,6 +638,9 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
+      if (this.selectedTranslationState >= 3) {
+        return true
+      }
       if (this.errorDefaultLangEmpty) {
         return true
       }
@@ -626,7 +664,8 @@ export default {
             const emptyTranslation = {
               title: '',
               description: '',
-              lang: language.lang
+              lang: language.lang,
+              translationState: this.selectedTranslationState
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -662,6 +701,9 @@ export default {
       if (newVal && oldVal) {
         this.changeLanguage(newVal, oldVal)
       }
+    },
+    selectedTranslationState: function() {
+      console.log(this.selectedTranslationState)
     }
   },
   created() {
@@ -672,6 +714,8 @@ export default {
       if (this.elem) {
         this.changeLanguageAux(al)
         this.published = this.elem.published
+        this.elemId = this.elem.id
+        this.selectedTranslationState = this.elem.translations[0].translationState
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
@@ -718,7 +762,7 @@ export default {
                 for (let i = 0; i < this.user_types.length; i += 1) {
                   const idUserType = this.user_types[i]
                   const idxUserType = this.user.findIndex((t) => t.id === idUserType)
-                  const idxUserTypeTranslation = this.topic[idxUserType]
+                  const idxUserTypeTranslation = this.user[idxUserType]
                     .translations
                     .findIndex((t) => t.lang === al)
                   this.selectedUserTypesObjects
@@ -799,6 +843,12 @@ $title_font_size: 16px;
 
 .center-edit {
   max-width: 100%;
+}
+
+.warning-error {
+  font-weight: 700;
+  font-family: Nunito;
+  font-size: 16px;
 }
 </style>
 <style>

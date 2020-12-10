@@ -53,6 +53,7 @@
           />
           <GlossaryEditor
             class="desc-editor"
+            :readonly="!(int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
             :lang="language.lang"
             ref="editor"
@@ -94,6 +95,7 @@
           />
         <q-select
           filled
+          :readonly="int_type_shell.published"
           clearable
           v-model="int_type_shell.categoryType"
           emit-value
@@ -113,6 +115,7 @@
         <q-select
           filled
           clearable
+          :readonly="int_type_shell.published"
           multiple
           v-model="int_type_shell.interventionTypeValidators"
           emit-value
@@ -134,6 +137,8 @@
           <q-toggle
             v-model="int_type_shell.published"
             color="green"
+            :disable="int_type_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event,int_type_shell.id)"
           />
         </div>
       </div>
@@ -150,6 +155,7 @@
       <q-btn
       :data-cy="'savetype'"
         no-caps
+        :disable="int_type_shell.published"
         color="accent"
         unelevated
         rounded
@@ -188,7 +194,7 @@
           <q-toggle
             v-model="a_integration_type.published"
             color="green"
-            @input="isPublished($event, a_integration_type.id)"
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -254,31 +260,54 @@ export default {
       hideAdd: false,
       isNew: false,
       options: [],
-      validatorsOptions: []
+      validatorsOptions: [],
+      publishedOrig:false
     }
   },
   components: {
     GlossaryEditor,HelpLabel
   },
   methods: {
-    isPublished(event,value){
+     isPublished(event,value){
      console.log("event ")
       console.log(event)
       console.log("user id")
       console.log(value)
-      var publishing_type =  this.intervention_types.filter((type)=>{
+      var publishing_type_temp =  this.intervention_types.filter((type)=>{
         return type.id == value
       })[0]
+      var publishing_type = JSON.parse(JSON.stringify(publishing_type_temp))
       if( event == true){
-        this.updatePublished({type:publishing_type, published: event})
-        this.saveTranslationProd(value)
-
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the intervention type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({type:publishing_type, published: event})
+            this.saveTranslationProd(value)
+            this.cancelIntegrationType()
+             }},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_topic_shell.published = false } }
+        ]
+      })
+       
       }
       else{
-        this.updatePublished({type:publishing_type, published: event})
-        this.deleteTranslationProd(value)
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the intervention type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({type:publishing_type, published:event})
+            this.deleteTranslationProd(value)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_topic_shell.published = true } }
+        ]
+      })
+       
       }
-   },
+     },
     deletingIntegrationType (index) {
         this.$q.notify({
         type: 'warning',
@@ -330,6 +359,7 @@ export default {
       this.hideAdd = true
       // this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
       this.mergeType(integration_type)
+      this.publishedOrig = integration_type.published
     },
     showTypeLabel (workingType) {
       return workingType.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle

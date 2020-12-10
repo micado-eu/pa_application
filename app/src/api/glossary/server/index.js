@@ -25,6 +25,15 @@ export default {
       .then(response => response.data)
       .catch(error_handler)
   },
+  addNewGlossaryItemTranslationProd(translation) {
+    if (!translation.translationDate) {
+      translation.translationDate = new Date().toISOString()
+    }
+    return axiosInstance
+      .post(`/backend/1.0.0/glossaries/${translation.id}/glossary-translation-prods`, translation)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   editGlossaryItem(newItem) {
     return axiosInstance
       .patch('/backend/1.0.0/glossaries/' + newItem.id, newItem)
@@ -48,11 +57,20 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete('/backend/1.0.0/glossaries/' + item.id + '/glossary-translations')
+      // .then(
+      //   () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      // )
       .then(
         response => {
           return axiosInstance.delete('/backend/1.0.0/glossaries/' + item.id)
         }
       ).then(response => response.data)
+      .catch(error_handler)
+  },
+  deleteProdTranslations(item) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/glossaries/${item.id}/glossary-translation-prods`)
+      .then((response) => response.data)
       .catch(error_handler)
   },
   updatePublished(id, is_published){

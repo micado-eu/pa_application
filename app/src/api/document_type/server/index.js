@@ -37,7 +37,7 @@ export default {
   },
   saveDocumentTypeTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description']))
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState']))
 
     // create fake id here
     return axiosInstance
@@ -64,7 +64,7 @@ export default {
   },
   saveHotspotTranslation (translation, id) {
     translation.phtId = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'title', 'message']))
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'title', 'message', 'translationState']))
 
     // create fake id here
     return axiosInstance
@@ -150,7 +150,7 @@ export default {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
-    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description'])) : translation
+    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState'])) : translation
 
     return axiosInstance
       .patch(`/backend/1.0.0/document-types/${translation.id}/document-type-translations?where=${JSON.stringify(whereClause)}`, updatingTranslation)
@@ -175,12 +175,11 @@ export default {
     .catch(error_handler);
 
   }, 
-  saveDocTypeTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'document', 'description']));
+  saveDocTypeTranslationProd (id) {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/document-types/' + id + '/document-type-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/document-types/to-production?id=' + id)
       .then(response => response.data)
       .catch(error_handler);
   },
@@ -195,6 +194,21 @@ export default {
 
     return axiosInstance
       .get('/backend/1.0.0/document-types/' + id + '/document-type-translations')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  saveSpotTranslationProd (id) {
+
+    // create fake id here
+    return axiosInstance
+      .get('/backend/1.0.0/picture-hotspots/to-production?pht_id=' + id)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
+  deleteSpotTranslationProd (id) {
+    // create fake id here
+    return axiosInstance
+      .delete('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translation-prods')
       .then(response => response.data)
       .catch(error_handler);
   },

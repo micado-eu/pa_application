@@ -35,16 +35,20 @@ export default {
     'list-search-tags': ListSearchTags
   },
   computed: {
-    ...mapGetters('event', ['event']),
+    ...mapGetters('event', ['event', 'eventElemById']),
     ...mapGetters('event_category', ['eventCategories'])
   },
   methods: {
+    ...mapActions('topic', ['fetchTopic']),
+    ...mapActions('user_type', ['fetchUserType']),
     ...mapActions('event', [
       'fetchEvent',
       'deleteEventItem',
-      'fetchEventTopics',
-      'fetchEventUserTypes',
-      'updatePublished'
+      'fetchAllEventTopics',
+      'fetchAllEventUserTypes',
+      'updatePublished',
+      'deleteProdTranslations',
+      'addNewEventItemTranslationProd'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute(id) {
@@ -55,44 +59,87 @@ export default {
         .then(() => {
           this.updateContent()
           // this.$router.go()
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event: ${err}`
+          })
         })
     },
     updatePublishedEvents(published, id) {
+      let eventElem = this.eventElemById(id)
+      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting event production translations: ${err}`
+          })
+        })
+      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < eventElem.translations.length; i += 1) {
+          const translation = Object.assign({}, eventElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.addNewEventItemTranslationProd(translation).then(() => { }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving event production translation ${translation.lang}: ${err}`
+            })
+          })
+        }
+      }
       this.updatePublished({ id, published }).then(() => {
         //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
       })
     },
     updateContent() {
       this.loading = true
-      this.fetchEvent().then(() => {
-        this.fetchEventCategory().then(() => {
-          this.eventElems = JSON.parse(JSON.stringify(this.event))
-          const eventCategoryElems = [...this.eventCategories]
-          if (this.eventElems.length > 0) {
-            for (let i = 0; i < this.eventElems.length; i += 1) {
-              const elem = this.eventElems[i]
-              // Set categories-elements relations
-              const idxCat = elem.category
-              const idxCategoryObject = eventCategoryElems.findIndex(
-                (ic) => ic.id === idxCat
-              )
-              elem.category = eventCategoryElems[idxCategoryObject]
-
-              this.fetchEventTopics(elem.id).then((topics) => {
-                elem.topics = topics.filter((topic) => topic.idEvent === elem.id)
-                return this.fetchEventUserTypes(elem.id)
-              }).then((userTypes) => {
-                elem.userTypes = userTypes.filter((userType) => userType.idEvent === elem.id)
+      let promises = [this.fetchTopic(), this.fetchUserType(), this.fetchEvent(), this.fetchEventCategory()]
+      Promise.all(promises)
+        .then(() => this.fetchAllEventTopics())
+        .then((event_topics) => {
+          this.fetchAllEventUserTypes().then((events_uts) => {
+            this.eventElems = JSON.parse(JSON.stringify(this.event))
+            const eventCategoryElems = [...this.eventCategories]
+            if (this.eventElems.length > 0) {
+              for (let i = 0; i < this.eventElems.length; i += 1) {
+                const elem = this.eventElems[i]
+                // Set categories-elements relations
+                const idxCat = elem.category
+                const idxCategoryObject = eventCategoryElems.findIndex(
+                  (ic) => ic.id === idxCat
+                )
+                elem.category = eventCategoryElems[idxCategoryObject]
+                elem.topics = event_topics.filter((topic) => topic.idEvent === elem.id)
+                elem.userTypes = events_uts.filter((userType) => userType.idEvent === elem.id)
                 if (i >= this.eventElems.length - 1) {
                   this.loading = false
                 }
-              })
+              }
+            } else {
+              this.loading = false
             }
-          } else {
-            this.loading = false
-          }
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while fetching events: ${err}`
+            })
+          })
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching events: ${err}`
+          })
         })
-      })
     }
   },
   created() {

@@ -26,12 +26,11 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
-  saveTopicTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic']));
+  saveTopicTranslationProd (id) {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/topics/' + id + '/topic-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/topics/to-production?id='+ id)
       .then(response => response.data)
       .catch(error_handler);
   },

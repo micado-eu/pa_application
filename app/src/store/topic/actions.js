@@ -74,20 +74,15 @@ export function saveTopic (state, topic_element) {
 }
 export function updatePublished(state, payload){
   client.updatePublished(payload.topic.id, payload.published).then(()=>{
+    payload.topic.published = payload.published
     state.commit('editTopic', payload.topic)
   })
 }
 export function saveTranslationProd(state, id){
-  client.fetchTopicTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveTopicTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteTopicTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveTopicTranslationProd(id)
+   })
 }
 export function deleteTranslationProd(state, id){
   console.log("in delete transl prod")

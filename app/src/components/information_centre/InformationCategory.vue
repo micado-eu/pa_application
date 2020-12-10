@@ -100,6 +100,14 @@
             <q-input
               v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].category"
               :label="$t('input_labels.event')"
+              class="q-mb-md"
+            />
+            <translate-state-button
+              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+              :isForDefaultLanguage="language.lang===activeLanguage"
+              :objectId="int_cat_shell.id"
+              :readonly="!(language.lang===activeLanguage)"
+              @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
             />
           </q-tab-panel>
         </q-tab-panels>
@@ -148,10 +156,14 @@
 import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
 
 export default {
   name: "InformationCategory",
-  mixins: [editEntityMixin],
+  mixins: [
+    editEntityMixin,
+    translatedButtonMixin
+  ],
   data() {
     return {
       int_cat_shell: { id: -1, translations: [] },
@@ -168,7 +180,7 @@ export default {
     'help-label': HelpLabel
   },
   computed: {
-    ...mapGetters('information_category', ['informationCategories']),
+    ...mapGetters('information_category', ['informationCategories', 'informationCategoryById']),
     ...mapGetters('information', ['information'])
   },
   methods: {
@@ -177,7 +189,9 @@ export default {
       'saveInformationCategory',
       'editCategoryTypeElement',
       'fetchInformationCategory',
-      'updatePublished'
+      'updatePublished',
+      'deleteProdTranslations',
+      'saveInformationCategoryTranslationProd'
     ]),
     ...mapActions('information', ['fetchInformation']),
     onClickTitle: function () {
@@ -203,10 +217,20 @@ export default {
       let content = { link_integration_plan: this.linkable, published: this.add_published, ...this.int_cat_shell }
       if (this.isNew) {
         // we are adding a new instance
-        this.saveInformationCategory(content)
+        this.saveInformationCategory(content).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information category: ${err}`
+          })
+        })
       } else {
         // we are updating the exsisting
-        this.editCategoryTypeElement(content)
+        this.editCategoryTypeElement(content).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving information category: ${err}`
+          })
+        })
       }
       this.linkable = false
       this.add_published = false
@@ -237,7 +261,7 @@ export default {
       this.int_cat_shell = { id: -1, translations: [] }
       this.languages.forEach(l => {
         //       console.log(l)
-        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, category: '', translationDate: null })
+        this.int_cat_shell.translations.push({ id: -1, lang: l.lang, category: '', translationDate: null, translationState: 0 })
       })
     },
     mergeCategory(category) {
@@ -256,7 +280,37 @@ export default {
 
     },
     updatePublishedCat(value, id) {
-      this.updatePublished({ id, published: value })
+      let infoElem = this.informationCategoryById(id)
+      if (infoElem.translations[0].translationState === 4 && infoElem.published && !published) {
+        // If published goes from true to false, all the content gets deleted from the translation prod table
+        this.deleteProdTranslations().then(() => {
+          console.log("Deleted prod translations")
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while deleting information category production translations: ${err}`
+          })
+        })
+      } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        for (let i = 0; i < infoElem.translations.length; i += 1) {
+          const translation = Object.assign({}, infoElem.translations[i])
+          delete translation.translationState
+          delete translation.published
+          this.saveInformationCategoryTranslationProd(translation).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while saving information category production translation ${translation.lang}: ${err}`
+            })
+          })
+        }
+      }
+      this.updatePublished({ id, published: value }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
     }
   },
   //store.commit('increment', 10)
@@ -272,6 +326,16 @@ export default {
             }
           }
           this.loading = false
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching information: ${err}`
+          })
+        })
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching information categories: ${err}`
         })
       })
 

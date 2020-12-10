@@ -1,6 +1,6 @@
 <template>
 <div class="comments">
-     <h5 class="header"> {{ $t('input_labels.comments') }} </h5>
+     <p class="header"> {{ $t('input_labels.comments') }} </p>
       <div
       style="padding-top:10px"
       v-for="comment in selected_process_comments"
@@ -32,11 +32,11 @@ export default {
 </script>
 <style scoped>
 .comments{
-  margin-top:20px;
-  padding-left:20px
+  margin-top:5px;
 }
 .header{
-  margin-top:10px;
   margin-bottom:10px;
+  font-weight: 600;
+  font-size: 16px;
 }
 </style>

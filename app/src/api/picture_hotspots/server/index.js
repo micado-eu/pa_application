@@ -27,12 +27,11 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
-  saveSpotTranslationProd (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title', 'message']));
+  saveSpotTranslationProd (id) {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translation-prods', savingTranslation)
+      .get('/backend/1.0.0/picture-hotspots/to-production?pht_id=' + id)
       .then(response => response.data)
       .catch(error_handler);
   },

@@ -55,6 +55,7 @@
           
           <GlossaryEditor
             class="desc-editor"
+            :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
             :lang="language.lang"
             ref="editor"
@@ -64,10 +65,33 @@
               :isForDefaultLanguage="language.lang===activeLanguage"
               :objectId="int_doc_shell.id"
               :readonly="!(language.lang===activeLanguage)"
-              @micado-change="(id) => {changeTranslationState(int_doc_shell, id.state)}"
+              @micado-change="(id) => {
+                changeTranslationState(int_doc_shell, id.state)
+                int_doc_shell.pictures.forEach((pic)=>{
+                  pic.hotspots.forEach((spot)=>{
+                    changeTranslationState(spot, id.state)
+                  })
+                })
+              }"
             />
         </q-tab-panel>
       </q-tab-panels>
+      <q-tabs
+        v-model="langTab"
+        dense
+        class="bg-grey-2"
+        active-color="accent"
+        indicator-color="accent"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab
+          v-for="language in languages"
+          :key="language.lang"
+          :name="language.name"
+          :label="language.name"
+        />
+      </q-tabs>
           <HelpLabel
           :fieldLabel="$t('input_labels.issuer')"
           :helpLabel ="$t('help.issuer')"
@@ -76,6 +100,7 @@
           />
             <q-input
               outlined
+              :readonly="int_doc_shell.published"
               filled
               dense
               maxlength="20"
@@ -89,7 +114,7 @@
           class="col-1.5 field"
           style="padding-top:10px"
           /> 
-              <q-checkbox class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
+              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
             </div>
             <HelpLabel
             v-if="int_doc_shell.validable" 
@@ -100,6 +125,7 @@
               <q-select
               v-if="int_doc_shell.validable"
               multiple
+              :readonly="int_doc_shell.published"
               filled
               dense
               clearable
@@ -126,6 +152,7 @@
             filled
             dense
             clearable
+            :readonly="int_doc_shell.published"
             v-model="int_doc_shell.icon"
             @input="addIcon($event)"
             @remove="removeIcon($event)"
@@ -186,6 +213,7 @@
             dense
             :label="$t('input_labels.upload_doc_pics')"
             standout
+            :disable="int_doc_shell.published"
             outlined
             accept=".jpg, image/*"
             @rejected="onRejected"
@@ -244,6 +272,7 @@
             @input="getFilesModel($event)"
             bg-color="grey-3"
             dense
+            :disable="int_doc_shell.published"
             :label="$t('input_labels.upload_model')"
             standout
             outlined
@@ -284,6 +313,8 @@
           <q-toggle
             v-model="int_doc_shell.published"
             color="green"
+            :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event, int_doc_shell.id)"
           />
         </div>
       </div>
@@ -301,6 +332,7 @@
       />
       <q-btn
         no-caps
+        :disable="int_doc_shell.published"
         :data-cy="'savedoc'"
         color="accent"
         unelevated
@@ -351,8 +383,7 @@
            <q-toggle
             v-model="document_type.published"
             color="green"
-            @input="isPublished($event, document_type.id)"
-
+            disable
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
@@ -485,12 +516,13 @@ export default {
       icon: null,
       the_model:null, 
       order: 0, 
-      validatorList:[]
+      validatorList:[],
+      publishedOrig:false
     }
   },
 
   methods: {
-     isPublished(event,value){
+    isPublished(event,value){
      console.log("event ")
       console.log(event)
       console.log("user id")
@@ -498,8 +530,6 @@ export default {
       var publishing_doc =  this.document_types.filter((doc)=>{
         return doc.id == value
       })[0]
-      console.log("i am doc to publish")
-      console.log(publishing_doc)
       var publishing_hotspots = []
       if(publishing_doc.pictures){
         publishing_doc.pictures.forEach((pic)=>{
@@ -514,21 +544,44 @@ export default {
         }
       })
       }
-      console.log("i am hotspots to publish")
-      console.log(publishing_hotspots)
-      
+      console.log("i am doc to publish")
+      console.log(publishing_doc)
+      var docs = JSON.parse(JSON.stringify(publishing_doc))
+      var spots= JSON.parse(JSON.stringify(publishing_hotspots))
       if( event == true){
-        this.updatePublished({doc:publishing_doc, published: event})
-        this.saveTranslationProd(value)
-        this.saveSpotTranslationProd(publishing_hotspots)
-
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.saveTranslationProd(value)
+            this.saveSpotTranslationProd(spots)
+            this.cancelDoc()
+             } },
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = false } }
+        ]
+      })
+       
       }
       else{
-        this.updatePublished({doc:publishing_doc, published: event})
-        this.deleteTranslationProd(value)
-        this.deleteSpotTranslationProd(publishing_hotspots)
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the document type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.deleteTranslationProd(value)
+            this.deleteSpotTranslationProd(spots)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = true } }
+        ]
+      })
+       
       }
      },
+     
     cancelModel(){
       this.int_doc_shell.model = ""
       this.the_model = ""
@@ -578,10 +631,10 @@ export default {
              var hotspot_translations = []
         this.languages.forEach(l => {
           if (l.lang == this.activeLanguage) {
-            hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message })
+            hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message, translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState })
           }
           else {
-            hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '' })
+            hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '', translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState  })
           }
         })
         the_picture.hotspots.push({
@@ -604,6 +657,7 @@ export default {
       this.isNew = false
       this.hideForm = false
       this.mergeDoc(doc)
+      this.publishedOrig = doc.published
     },
     deletingDoc (doc) {
       //we will need to filter through the hotspots and send those to because they need to be deleted and we can't delete 
@@ -903,6 +957,7 @@ export default {
       this.int_doc_shell.pictures.splice(doc_idx, 1)
       console.log(this.int_doc_shell.pictures)
     },
+
     async savingDoc () {
       if (this.isNew) {
         console.log("I am the document")
@@ -916,10 +971,14 @@ export default {
         )
       }
       else {
-        this.editDocumentType(this.int_doc_shell)
-        //this.$store.dispatch('document_type/editDocumentType', value);
-        console.log("In edit")
+        this.editDocumentType({doc_element:this.int_doc_shell, publishedOrig: this.publishedOrig}).then(()=>{
+          console.log("In edit")
         console.log(this.int_doc_shell)
+        if(this.int_doc_shell.published != this.publishedOrig){
+          this.isPublished(this.int_doc_shell)
+        }
+        })
+        
 
       }
 
@@ -927,7 +986,7 @@ export default {
       this.icon = null
       this.hideAdd = false
       this.hideForm = true
-      this.createShell()
+      //this.createShell()
     },
     newDoc () {
       this.uploaded_images = []

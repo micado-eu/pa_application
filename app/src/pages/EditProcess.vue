@@ -11,10 +11,10 @@
 
     <div id="div-1">
       <q-card class="container">
-
+          <div class="form-help"> {{$t("help.form")}} {{this.$defaultLangString}} </div>
         <q-tab-panels
           v-model="langTab"
-          class="bg-grey-2 inset-shadow  "
+          class="  "
           animated
         >
           <q-tab-panel
@@ -42,13 +42,12 @@
                 :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
-                :label="$t('input_labels.process_name')"
               />
             </div>
 
             <div
               id="div-4"
-              class="q-pa-xsm"
+              class=""
             >
              <HelpLabel
             :fieldLabel="$t('input_labels.process_description')"
@@ -57,29 +56,37 @@
             
               <GlossaryEditor
                 data-cy="description_input"
-                class="left"
+                class="desc-editor "
+                style="width:100%"
+                :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
                 ref="editor"
               />
 
             </div>
-            <div>
+            <div style="text-align:right;padding-left: 150px;padding-right: 150px;">
               <TranslateStateButton
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState"
                 :isForDefaultLanguage="language.lang===activeLanguage"
                 :objectId="edit_process.id"
                 :readonly="!(language.lang===activeLanguage)"
-                @micado-change="(id) => {changeTranslationState(edit_process, id.state)}"
+                @micado-change="(id) => {
+                  changeTranslationState(edit_process, id.state)
+                  if(id.state == 0 && edit_process.id !=-1){
+                    deleteTranslationProd(edit_process.id)
+                    edit_process.published = false
+                  }
+                }"
               />
             </div>
           </q-tab-panel>
         </q-tab-panels>
-        <q-separator />
+         <div style="padding-left:166px; padding-right:166px">
+        <hr id="hr-2">
         <q-tabs
           v-model="langTab"
           dense
-          class="bg-grey-2"
           active-color="accent"
           indicator-color="accent"
           align="justify"
@@ -92,19 +99,23 @@
             :label="language.name"
           />
         </q-tabs>
+        
+        <hr id="hr-2">
+         </div>
         <div
-          id=""
           class=" q-pa-xsm row div-6"
         >
         <HelpLabel
             :fieldLabel="$t('input_labels.generated_docs')"
             :helpLabel="$t('help.generated_docs')"
-            class="tag" />
+            class="tag"
+            style="padding-bottom:15px" />
           <q-select
             data-cy="add_produced_doc"
             filled
             dense
             clearable
+            :readonly="edit_process.published == true"
             v-model="edit_process.producedDoc"
             @add="addDoc($event)"
             @remove="removeDoc($event)"
@@ -113,7 +124,6 @@
             emit-value
             map-options
             :options="this.docOptions"
-            :label="$t('input_labels.generated_docs')"
             class="select"
           />
         </div>
@@ -140,6 +150,7 @@
             <q-select
               filled
               dense
+              :readonly="edit_process.published == true"
               data-cy="add_user"
               clearable
               v-model="edit_process.applicableUsers"
@@ -150,7 +161,6 @@
               emit-value
               map-options
               :options="this.u_tags"
-              :label="$t('input_labels.user_tags')"
               class="select"
             />
             <q-chip
@@ -165,6 +175,7 @@
               filled
               data-cy="add_topic"
               dense
+              :readonly="edit_process.published == true"
               clearable
               v-model="edit_process.processTopics"
               @add="addTopicTag($event)"
@@ -174,7 +185,6 @@
               emit-value
               map-options
               :options="this.t_tags"
-              :label="$t('input_labels.topic_tags')"
               class="select"
             />
             <q-chip
@@ -184,7 +194,7 @@
             >{{tag}}</q-chip>
           </div>
         </div>
-         <div class=" q-pa-xsm row div-6" >
+         <div class=" q-pa-xsm row div-6" style="padding-bottom:20px">
         <div class="col-2" style="min-width:130px; max-width:130px">
           <HelpLabel
             :fieldLabel="$t('input_labels.is_published')"
@@ -196,15 +206,19 @@
           <q-toggle
             v-model="edit_process.published"
             :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
-            color="green"
+            @input="isPublished($event, edit_process.id)"
+            color="orange"
           />
         </div>
       </div>
+      <div style="padding-left:166px; padding-right:166px">
+       
+        
         <hr id="hr-2">
         <CommentList 
-        style="text-align:left; padding-left:20px; padding-right:20px"
+        style="text-align:left;"
         :selected_process_comments="selected_process_comments"/>
-        <hr id="hr-2">
+      </div>
         <div id="div-10">
           <div class="q-pa-md q-gutter-md col-4 div-11">
             <q-btn
@@ -224,7 +238,7 @@
               rounded
               :label="$t('button.manage_steps')"
               unelevated
-              :disable="this.disabled"
+              :disable="this.disabled || edit_process.published"
               class="button"
               @click="manageProcess()"
             />
@@ -234,6 +248,7 @@
               color="accent"
               no-caps
               rounded
+              :disable="edit_process.published"
               :label="$t('button.save')"
               unelevated
               class="button"
@@ -326,6 +341,9 @@ export default {
 
   },
   methods: {
+    test(value){
+      console.log(value)
+    },
     manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
     },
@@ -383,7 +401,54 @@ export default {
     clearAllTopics () {
       this.selected_t_tags = []
     },
-    isPublished(value){
+   isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_process =  this.processes.filter((doc)=>{
+        return doc.id == value
+      })[0]
+      console.log("i am doc to publish")
+      console.log(publishing_process)
+      var publishing_steps = this.steps.filter((step)=>{
+        return step.idProcess == value.id
+      }) 
+      console.log("i am steps to publish")
+      console.log(publishing_steps)
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event})
+            this.saveTranslationProd(value)
+            this.saveStepTranslationProd(publishing_steps)
+            setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300); } },
+          { label: 'No', color: 'red', handler: () => { 
+            this.edit_process.published = false } }
+        ]
+      })
+       
+      }
+      else{
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event})
+            this.deleteTranslationProd(value)
+            this.deleteStepTranslationProd(publishing_steps)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.edit_process.published = true } }
+        ]
+      })
+       
+      }
+     },
+    /*isPublished(value){
        console.log(value)
       var publishing_process =  value
       console.log("i am process to publish")
@@ -403,7 +468,7 @@ export default {
       else{
         this.updatePublished({process:publishing_process, published: value.published})
       }
-     },
+     },*/
     async savingProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
@@ -419,16 +484,17 @@ export default {
         console.log(this.publishedOrig)
         console.log("i am published of the form")
         console.log(value.published)
-        if(value.published != this.publishedOrig){
+        /*if(value.published != this.publishedOrig){
           this.isPublished(value)
-        }
+        }*/
         console.log("I am this is new")
         console.log(this.is_new)
         console.log(value)
         console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
-      this.$router.push({ path: '/guided_process_editor' })
+      setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 500);
+      
     },
 
     createShell () {
@@ -639,7 +705,7 @@ export default {
   padding-bottom: 15px;
 }
 #div-4 {
-  padding-bottom: 20px;
+  padding-bottom: 5px;
   padding-left: 150px;
   padding-right: 150px;
 }
@@ -651,7 +717,7 @@ export default {
 }
 .div-6 {
   padding-top: 20px;
-  padding-left: 150px;
+  padding-left: 166px;
   padding-right: 150px;
 }
 #div-7 {
@@ -659,14 +725,16 @@ export default {
   padding-right: 150px;
 }
 .div-8 {
-  padding-left: 0px;
+  padding-left: 16px;
   padding-top: 15px;
 }
 .select {
-  width: 90%;
+  width: 100%;
+  padding-right:16px
 }
 .div-9 {
-  padding-right: 45px;
+  padding-left:16px;
+  
   padding-top: 15px;
 }
 #hr-1 {
@@ -675,10 +743,11 @@ export default {
   margin-top: 90px;
 }
 #hr-2 {
-  width: 85%;
+  width: 100%;
   border: 0.999px solid #dadada;
 }
 #div-10 {
+  padding-top:30px;
   text-align: left;
   padding-left: 150px;
 }
@@ -687,5 +756,16 @@ export default {
 }
 .left{
   text-align: left;
+}
+.desc-editor .editor-options {
+  width: 100%;
+  margin-bottom:10px
+}
+.form-help{
+  padding-top:30px;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  text-align: center;
 }
 </style>

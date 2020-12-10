@@ -64,9 +64,12 @@ export function saveIntegrationCategory (state, integration_category) {
 export function deleteIntegrationCategory (state, category) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   var type_id = []
-  category.linkedInterventionType.forEach((type)=>{
-    type_id.push(type.id)
-  })
+  if(category.linkedInterventionType){
+    category.linkedInterventionType.forEach((type)=>{
+      type_id.push(type.id)
+    })
+  }
+  
   Promise.all(type_id.map(client.deleteInterventionByType)).then(()=>{
     console.log("inside itnervention")
     Promise.all(type_id.map(client.deleteInterventionTypeValidators)).then(()=>{
@@ -112,21 +115,16 @@ export function deleteIntegrationCategory (state, category) {
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.cat.id, payload.published).then(()=>{
+    payload.cat.published = payload.published
     state.commit('editCategoryTypeElement', payload.cat)
   })
 }
 
 export function saveTranslationProd(state, id){
-  client.fetchCategoryTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveCategoryTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteCategoryTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveCategoryTranslationProd(id)
+   })
 }
 
 export function deleteTranslationProd(state, id){

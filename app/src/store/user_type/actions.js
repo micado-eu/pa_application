@@ -81,22 +81,20 @@ export function deleteUserType (state, index) {
 }
 
 export function updatePublished(state, payload){
-  client.updatePublished(payload.user.id, payload.published).then(()=>{
+  client.updatePublished(payload.user.id, payload.published).then((updated)=>{
+    console.log(payload.user)
+    console.log("i am updated")
+    console.log(updated)
+    payload.user.published = payload.published
     state.commit('editUserType', payload.user)
   })
 }
 
 export function saveTranslationProd(state, id){
-  client.fetchUserTranslated(id).then((translations)=>{
-    console.log("i am the return from the fetch")
-    console.log(translations)
-    translations.forEach((transl)=>{
-      if(transl.translationState == 3){
-        console.log("inside if translated")
-        client.saveUserTranslationProd(transl, id)
-      }
-    })
-  })
+  client.deleteUserTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveUserTranslationProd(id)
+   })
 }
 
 export function deleteTranslationProd(state, id){

@@ -18,13 +18,11 @@ export function editGlossaryItem(state, data) {
 }
 
 export function editGlossaryItemTranslation(state, data) {
-  data.translationState = 0
   return client
     .editGlossaryItemTranslation(data)
 }
 
 export function addNewGlossaryItemTranslation(state, data) {
-  data.translationState = 0
   return client
     .addNewGlossaryItemTranslation(data)
 }
@@ -40,4 +38,13 @@ export function updatePublished(state, data) {
     .then(() => {
       state.commit("updatePublished", data)
     })
+}
+
+export function deleteProdTranslations(state, data) {
+  return client.deleteProdTranslations()
+}
+
+export function addNewGlossaryItemTranslationProd(state, data) {
+  return client
+    .addNewGlossaryItemTranslationProd(data)
 }

@@ -1,8 +1,31 @@
   <template>
   <div>
     <div class="title">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
-    <div class="container">
-      <div>
+    <div class="container row">
+      
+      <q-card class="col-4" >
+        <q-card-section>
+          <cytoscape
+            ref="cyRef"
+            :config="configcy"
+            :preConfig="preConfig"
+            :afterCreated="afterCreated"
+          >
+            <cy-element
+              v-for="def in elements"
+              :key="`${def.data.id}`"
+              :definition="def"
+              v-on:tap="editStep($event, def)"
+              v-on:click="editStep($event, def)"
+              v-on:remove="removeElement($event,def)"
+              v-on:ehcomplete="addingEdge"
+            />
+
+          </cytoscape>
+        </q-card-section>
+      </q-card>
+      <div class="col-8"           
+      >
         <q-card
           v-if="this.editing"
           class="div-2"
@@ -262,26 +285,6 @@
           </div>
         </q-card>
       </div>
-      <q-card class="my-card">
-        <q-card-section>
-          <cytoscape
-            ref="cyRef"
-            :config="configcy"
-            :preConfig="preConfig"
-            :afterCreated="afterCreated"
-          >
-            <cy-element
-              v-for="def in elements"
-              :key="`${def.data.id}`"
-              :definition="def"
-              v-on:click="editStep($event, def)"
-              v-on:remove="removeElement($event,def)"
-              v-on:ehcomplete="addingEdge"
-            />
-
-          </cytoscape>
-        </q-card-section>
-      </q-card>
     </div>
     <div class="row div-6">
       <div class="col right">
@@ -794,27 +797,27 @@ export default {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width: 150px;
+  max-width: 150px;
   border-radius: 2px;
 }
 .delete-button-2 {
   background-color: white;
   color: black;
   border: 1px solid #c71f40;
-  width: 135px;
+  max-width: 135px;
   border-radius: 5px;
 }
 .button {
-  width: 150px;
+  max-width: 150px;
   border-radius: 2px;
 }
 .button-2 {
   border-radius: 5px;
-  width: 135px;
+  max-width: 135px;
 }
 .button-3 {
   border-radius: 5px;
-  width: 170px;
+  max-width: 170px;
 }
 #div-1 {
   text-align: center;
@@ -822,7 +825,7 @@ export default {
 }
 .div-2 {
   margin: 0 auto;
-  width: 750px;
+  max-width: 100%;
   margin-bottom: 1px;
 }
 
@@ -839,7 +842,7 @@ export default {
   padding-bottom: 10px;
 }
 .width-4 {
-  width: 450px;
+  max-width: 450px;
 }
 .header {
   text-align: left;
@@ -865,7 +868,7 @@ export default {
   padding-top: 10px;
 }
 #save-step-document {
-  width: 150px;
+  max-width: 150px;
   border-radius: 2px;
 }
 .div-4 {
@@ -873,7 +876,7 @@ export default {
   padding-bottom: 10px;
 }
 #list {
-  width: 700px;
+  max-width: 700px;
 }
 .center {
   text-align: center;
