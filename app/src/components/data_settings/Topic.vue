@@ -82,6 +82,7 @@
         :icon="int_topic_shell.icon"
         @upload="getFiles"
         :label="$t('help.topic_icon')"
+        :published="int_topic_shell.published"
       >
 
       </FileUploader>
@@ -98,6 +99,7 @@
             v-model="int_topic_shell.published"
             color="green"
             :disable="int_topic_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event,int_topic_shell.id) "
           />
         </div>
       </div>
@@ -117,6 +119,7 @@
         color="accent"
         unelevated
         rounded
+        :disable="int_topic_shell.published"
         :label="$t('button.save')"
         class="button"
         @click="savingTopic()"
@@ -262,15 +265,55 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
-          if(this.int_topic_shell.published != this.publishedOrig){
+          /*if(this.int_topic_shell.published != this.publishedOrig){
           this.isPublished(this.int_topic_shell)
-        }
+        }*/
       }
       this.hideAdd = false
       this.hideForm = true
       this.createShell()
     },
-    isPublished (value) {
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_topic_temp =  this.topic.filter((topic)=>{
+        return topic.id == value
+      })[0]
+      var publishing_topic = JSON.parse(JSON.stringify(publishing_topic_temp))
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the topic will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({topic:publishing_topic, published: event})
+            this.saveTranslationProd(value)
+            this.cancelTopic()
+             }},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_topic_shell.published = false } }
+        ]
+      })
+       
+      }
+      else{
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the topic will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({topic:publishing_topic, published:event})
+            this.deleteTranslationProd(value)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_topic_shell.published = true } }
+        ]
+      })
+       
+      }
+     },
+   /* isPublished (value) {
       console.log(value)
        if( value.published == true){
         this.updatePublished({topic:value, published: value.published})
@@ -279,7 +322,7 @@ export default {
       else{
         this.updatePublished({topic:value, published: value.published})
       }
-    },
+    },*/
     newTopic () {
       this.createShell()
       this.isNew = true

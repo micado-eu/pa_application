@@ -388,6 +388,7 @@ async function asyncForEach (array, callback) {
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.doc.id, payload.published).then(()=>{
+    payload.doc.published = payload.published
     state.commit('editDocumentType', payload.doc)
   })
 }

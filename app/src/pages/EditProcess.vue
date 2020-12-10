@@ -71,11 +71,37 @@
                 :isForDefaultLanguage="language.lang===activeLanguage"
                 :objectId="edit_process.id"
                 :readonly="!(language.lang===activeLanguage)"
-                @micado-change="(id) => {changeTranslationState(edit_process, id.state)}"
+                @micado-change="(id) => {
+                  changeTranslationState(edit_process, id.state)
+                  if(id.state == 0 && edit_process.id !=-1){
+                    deleteTranslationProd(edit_process.id)
+                    edit_process.published = false
+                  }
+                }"
               />
             </div>
           </q-tab-panel>
         </q-tab-panels>
+         <div style="padding-left:166px; padding-right:166px">
+        <hr id="hr-2">
+        <q-tabs
+          v-model="langTab"
+          dense
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        
+        <hr id="hr-2">
+         </div>
         <div
           class=" q-pa-xsm row div-6"
         >
@@ -89,6 +115,7 @@
             filled
             dense
             clearable
+            :readonly="edit_process.published == true"
             v-model="edit_process.producedDoc"
             @add="addDoc($event)"
             @remove="removeDoc($event)"
@@ -123,6 +150,7 @@
             <q-select
               filled
               dense
+              :readonly="edit_process.published == true"
               data-cy="add_user"
               clearable
               v-model="edit_process.applicableUsers"
@@ -147,6 +175,7 @@
               filled
               data-cy="add_topic"
               dense
+              :readonly="edit_process.published == true"
               clearable
               v-model="edit_process.processTopics"
               @add="addTopicTag($event)"
@@ -177,27 +206,13 @@
           <q-toggle
             v-model="edit_process.published"
             :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event, edit_process.id)"
             color="orange"
           />
         </div>
       </div>
-      <div style="padding-left:166px; padding-right:150px">
-        <hr id="hr-2">
-        <q-tabs
-          v-model="langTab"
-          dense
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
+      <div style="padding-left:166px; padding-right:166px">
+       
         
         <hr id="hr-2">
         <CommentList 
@@ -223,7 +238,7 @@
               rounded
               :label="$t('button.manage_steps')"
               unelevated
-              :disable="this.disabled"
+              :disable="this.disabled || edit_process.published"
               class="button"
               @click="manageProcess()"
             />
@@ -233,6 +248,7 @@
               color="accent"
               no-caps
               rounded
+              :disable="edit_process.published"
               :label="$t('button.save')"
               unelevated
               class="button"
@@ -325,6 +341,9 @@ export default {
 
   },
   methods: {
+    test(value){
+      console.log(value)
+    },
     manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
     },
@@ -382,7 +401,54 @@ export default {
     clearAllTopics () {
       this.selected_t_tags = []
     },
-    isPublished(value){
+   isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_process =  this.processes.filter((doc)=>{
+        return doc.id == value
+      })[0]
+      console.log("i am doc to publish")
+      console.log(publishing_process)
+      var publishing_steps = this.steps.filter((step)=>{
+        return step.idProcess == value.id
+      }) 
+      console.log("i am steps to publish")
+      console.log(publishing_steps)
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event})
+            this.saveTranslationProd(value)
+            this.saveStepTranslationProd(publishing_steps)
+            setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300); } },
+          { label: 'No', color: 'red', handler: () => { 
+            this.edit_process.published = false } }
+        ]
+      })
+       
+      }
+      else{
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event})
+            this.deleteTranslationProd(value)
+            this.deleteStepTranslationProd(publishing_steps)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.edit_process.published = true } }
+        ]
+      })
+       
+      }
+     },
+    /*isPublished(value){
        console.log(value)
       var publishing_process =  value
       console.log("i am process to publish")
@@ -402,7 +468,7 @@ export default {
       else{
         this.updatePublished({process:publishing_process, published: value.published})
       }
-     },
+     },*/
     async savingProcess (value) {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
@@ -418,16 +484,17 @@ export default {
         console.log(this.publishedOrig)
         console.log("i am published of the form")
         console.log(value.published)
-        if(value.published != this.publishedOrig){
+        /*if(value.published != this.publishedOrig){
           this.isPublished(value)
-        }
+        }*/
         console.log("I am this is new")
         console.log(this.is_new)
         console.log(value)
         console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
-      this.$router.push({ path: '/guided_process_editor' })
+      setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 500);
+      
     },
 
     createShell () {

@@ -115,6 +115,7 @@ export function deleteIntegrationCategory (state, category) {
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.cat.id, payload.published).then(()=>{
+    payload.cat.published = payload.published
     state.commit('editCategoryTypeElement', payload.cat)
   })
 }

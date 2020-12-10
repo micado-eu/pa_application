@@ -100,6 +100,7 @@
           />
             <q-input
               outlined
+              :readonly="int_doc_shell.published"
               filled
               dense
               maxlength="20"
@@ -113,7 +114,7 @@
           class="col-1.5 field"
           style="padding-top:10px"
           /> 
-              <q-checkbox class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
+              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
             </div>
             <HelpLabel
             v-if="int_doc_shell.validable" 
@@ -124,6 +125,7 @@
               <q-select
               v-if="int_doc_shell.validable"
               multiple
+              :readonly="int_doc_shell.published"
               filled
               dense
               clearable
@@ -150,6 +152,7 @@
             filled
             dense
             clearable
+            :readonly="int_doc_shell.published"
             v-model="int_doc_shell.icon"
             @input="addIcon($event)"
             @remove="removeIcon($event)"
@@ -210,6 +213,7 @@
             dense
             :label="$t('input_labels.upload_doc_pics')"
             standout
+            :disable="int_doc_shell.published"
             outlined
             accept=".jpg, image/*"
             @rejected="onRejected"
@@ -268,6 +272,7 @@
             @input="getFilesModel($event)"
             bg-color="grey-3"
             dense
+            :disable="int_doc_shell.published"
             :label="$t('input_labels.upload_model')"
             standout
             outlined
@@ -309,6 +314,7 @@
             v-model="int_doc_shell.published"
             color="green"
             :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event, int_doc_shell.id)"
           />
         </div>
       </div>
@@ -326,6 +332,7 @@
       />
       <q-btn
         no-caps
+        :disable="int_doc_shell.published"
         :data-cy="'savedoc'"
         color="accent"
         unelevated
@@ -515,12 +522,14 @@ export default {
   },
 
   methods: {
-     isPublished(value){
-     
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
       console.log(value)
-      var publishing_doc = value
-      console.log("i am doc to publish")
-      console.log(publishing_doc)
+      var publishing_doc =  this.document_types.filter((doc)=>{
+        return doc.id == value
+      })[0]
       var publishing_hotspots = []
       if(publishing_doc.pictures){
         publishing_doc.pictures.forEach((pic)=>{
@@ -535,17 +544,44 @@ export default {
         }
       })
       }
-      console.log("i am hotspots to publish")
-      console.log(publishing_hotspots)
-      if( value.published == true){
-        this.updatePublished({doc:value, published: value.published})
-        this.saveTranslationProd(value.id)
-        //this.saveSpotTranslationProd(publishing_hotspots)
+      console.log("i am doc to publish")
+      console.log(publishing_doc)
+      var docs = JSON.parse(JSON.stringify(publishing_doc))
+      var spots= JSON.parse(JSON.stringify(publishing_hotspots))
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.saveTranslationProd(value)
+            this.saveSpotTranslationProd(spots)
+            this.cancelDoc()
+             } },
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = false } }
+        ]
+      })
+       
       }
       else{
-        this.updatePublished({doc:value, published: value.published})
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the document type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.deleteTranslationProd(value)
+            this.deleteSpotTranslationProd(spots)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = true } }
+        ]
+      })
+       
       }
      },
+     
     cancelModel(){
       this.int_doc_shell.model = ""
       this.the_model = ""

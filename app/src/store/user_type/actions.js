@@ -81,7 +81,11 @@ export function deleteUserType (state, index) {
 }
 
 export function updatePublished(state, payload){
-  client.updatePublished(payload.user.id, payload.published).then(()=>{
+  client.updatePublished(payload.user.id, payload.published).then((updated)=>{
+    console.log(payload.user)
+    console.log("i am updated")
+    console.log(updated)
+    payload.user.published = payload.published
     state.commit('editUserType', payload.user)
   })
 }

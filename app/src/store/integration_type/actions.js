@@ -133,6 +133,7 @@ export function deleteIntegrationTypeElement (state, index) {
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.type.id, payload.published).then(()=>{
+    payload.type.published = payload.published
     state.commit('editIntegrationTypeElement', payload.type)
   })
 }
