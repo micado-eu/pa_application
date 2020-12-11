@@ -9,7 +9,13 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-
+  fetchPAUser (tenant) {
+    console.log(tenant)
+    return axiosInstance
+      .get(`/backend/1.0.0/users?filter[include][0][relation]=attributes&filter[where][and][0][umUserName][neq]=admin&filter[where][and][1][umTenantId]=${tenant}`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
   fetchSpecificUser (tenant, id) {
     console.log(tenant)
     return axiosInstance

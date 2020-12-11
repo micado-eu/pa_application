@@ -22,32 +22,37 @@
       </div>
     </div>
     <div>
-    <div class="row labels">
-      
-      <div class="col-8" style="min-height:21px; vertical-align: top">
-        &nbsp;
-        <!--{{$t('input_labels.name')}}-->
-      </div>
-      
+      <div class="row labels">
 
-      <div class="q-pa-md q-gutter-sm  col-4 button-container">
-        <div class="row ">
-      <div class="col-5" style="padding-right:25px">
-        {{$t('button.integration')}}
+        <div
+          class="col-8"
+          style="min-height:21px; vertical-align: top"
+        >
+          &nbsp;
+          <!--{{$t('input_labels.name')}}-->
+        </div>
+
+        <div class="q-pa-md q-gutter-sm  col-4 button-container">
+          <div class="row ">
+            <div
+              class="col-5"
+              style="padding-right:25px"
+            >
+              {{$t('button.integration')}}
+            </div>
+            <div class="col-3 ">
+              {{$t('button.migrant_data')}}
+            </div>
+            <div class="col-4">
+              {{$t('input_labels.delete')}}
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-3 " >
-        {{$t('button.migrant_data')}}
-      </div>
-      <div class="col-4" >
-        {{$t('input_labels.delete')}}
-      </div>
-    </div>
-    </div>
-    </div>
-    
+
     </div>
     <hr style="width:100%;border: 0.999px solid #424244;">
-    <div class="center" >
+    <div class="center">
       <q-list id="list">
         <User
           v-for="user in filteredUsers"
@@ -79,14 +84,15 @@ export default {
       search: ' '
     }
   },
-   mixins: [
-   storeMappingMixin({
-    getters: {
-      users: 'user/users',
-    }, actions: {
-      fetchUser: 'user/fetchUser'
-    }
-  })],
+  mixins: [
+    storeMappingMixin({
+      getters: {
+        users: 'user/users'
+      },
+      actions: {
+        fetchUser: 'user/fetchUser'
+      }
+    })],
   computed: {
     filteredUsers () {
       //if none of the fields is filled in it will give the full list of processes
@@ -98,7 +104,7 @@ export default {
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
           if (searchArray.every(string => filt.umUserName.toLowerCase().includes(string))) {
-            return true;
+            return true
           }
         })
       }
@@ -121,7 +127,7 @@ export default {
 
   created () {
     this.loading = true
-    console.log(this.$store);
+    console.log(this.$store)
     this.fetchUser(this.$migrant_tenant)
       .then(users => {
         console.log(users)
@@ -139,38 +145,34 @@ export default {
   padding-bottom: 50px;
   padding-left: 80px;
 }
-.center{
-  text-align:center;
+.center {
+  text-align: center;
 }
-#div-1{
-  display:inline-block;
-  padding-right:20px;
-  padding-left:20px;
-  width:90%;
-  padding-bottom:40px
+#div-1 {
+  display: inline-block;
+  padding-right: 20px;
+  padding-left: 20px;
+  width: 90%;
+  padding-bottom: 40px;
 }
-.input{
-  border-radius:10px; 
-  
-  font-size:18px
-}
-#list{
-  padding-top:0px;
-  display:inline-block;
-  width:100%
-}
-.labels{
-   width:100%; 
-   margin: 0 auto;
-  
-}
-.button-container{
-  padding-top:0px; 
-  padding-right:0px;
-  padding-bottom:0px; 
-  text-align:right;
-}
+.input {
+  border-radius: 10px;
 
-
-
+  font-size: 18px;
+}
+#list {
+  padding-top: 0px;
+  display: inline-block;
+  width: 100%;
+}
+.labels {
+  width: 100%;
+  margin: 0 auto;
+}
+.button-container {
+  padding-top: 0px;
+  padding-right: 0px;
+  padding-bottom: 0px;
+  text-align: right;
+}
 </style>

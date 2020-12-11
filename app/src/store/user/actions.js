@@ -14,6 +14,16 @@ export function fetchUser (state, data) {
     })
 }
 
+export function fetchPAUser (state, data) {
+  console.log(data)
+  return client
+    .fetchPAUser(data)
+    .then((pauser) => {
+      state.commit('setPAUser', pauser)
+      return pauser
+    })
+}
+
 export function fetchSpecificUser (state, data) {
   console.log(data)
   // probably we could use the store and do a get but for now will do

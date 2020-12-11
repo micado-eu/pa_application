@@ -56,6 +56,16 @@
           >
             <q-item-section>{{ $t('data_settings.language') }}</q-item-section>
           </q-item>
+          <q-item
+            :data-cy="'data_settings.usermgmt'.replace('.', '_')"
+            clickable
+            to="/data_settings/usermgmt"
+            class="situation-menu-item"
+            :disable="check('Application/micado_superadmin')"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.usermgmt') }}</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

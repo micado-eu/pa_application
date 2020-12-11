@@ -1,7 +1,7 @@
 {
   "application_title": "MICADO app",
   "help": {
-    "form":"Please fill the form in the default language:",
+    "form": "Please fill the form in the default language:",
     "process_name": "Write the name of the process",
     "process_description": "Describe your process",
     "generated_docs": "If the process generates a document, choose its type from the list below. If there is no matching type, choose 'other'. If the process does not generate a document, leave this space empty",
@@ -50,7 +50,7 @@
     "delete_user": "Delete migrant user",
     "edit_intervention": "Edit intervention",
     "delete_intervention": "Delete intervention",
-    "is_published":"Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished"
+    "is_published": "Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished"
   },
   "menu": {
     "title": "My Tools",
@@ -106,6 +106,7 @@
     "add_category": "Add Category",
     "save_document": "Save document",
     "add_type": "Add Type",
+    "add_user": "Add User",
     "add_new_chart": "Add New Chart",
     "view": "View",
     "add_glossary": "Add Term",
@@ -127,6 +128,7 @@
     "topics": "Topics",
     "intervention_categories": "Intervention Categories",
     "intervention_types": "Intervention Types",
+    "usermgmt": "PA users management",
     "user_types": "User Types"
   },
   "input_labels": {
@@ -291,10 +293,10 @@
     "fill_default_language": "Please fill the default language title: ",
     "in_translation": "This content is waiting translation. The edited content will not be saved.",
     "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
-  }, 
-  "warning":{
-    "topic":"Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
-    "user_type":"Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?",
-    "intervention_type":"Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?"
+  },
+  "warning": {
+    "topic": "Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
+    "user_type": "Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?",
+    "intervention_type": "Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?"
   }
 }
