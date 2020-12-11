@@ -220,7 +220,66 @@ export function deleteProcess (state, payload) {
     .then(topic_return => state.commit('deleteTopic', topic_return))
     */
 }
+
 export function editProcess (state, payload) {
+  var workingId = payload.process.id 
+  var promiseProc =[]
+  var promiseProcTransl =[]
+  var promiseDeleteUser =[]
+  var promiseDeleteTopic =[]
+  var promiseDeleteDoc =[]
+  var promiseSaveUser =[]
+  var promiseSaveTopic =[]
+  var promiseSaveDoc =[]
+  promiseProc.push(client.updateProcess(payload.process))
+  Promise.all(promiseProc).then(()=>{
+    payload.process.translations.forEach((aTranslation)=>{
+      promiseProcTransl.push(client.updateProcessTranslation(aTranslation))
+    })
+    Promise.all(promiseProcTransl).then(()=>{
+      promiseDeleteUser.push(client.deleteProcessUser(payload.process.id))
+      Promise.all(promiseDeleteUser).then(()=>{
+        promiseDeleteTopic.push(client.deleteProcessTopic(payload.process.id))
+        Promise.all(promiseDeleteTopic).then(()=>{
+          promiseDeleteDoc.push(client.deleteProcessProducedDocs(payload.process.id))
+          Promise.all(promiseDeleteDoc).then(()=>{
+          if(payload.process.processTopics != null){
+              payload.process.processTopics.forEach((topic) => {
+              console.log("in saving topic")
+              console.log(topic)
+              promiseSaveTopic.push(client.saveProcessTopic(topic, workingId))
+            })
+          }
+          Promise.all(promiseSaveTopic).then(()=>{
+                if (payload.process.applicableUsers != null){
+                  payload.process.applicableUsers.forEach((user) => {
+                    console.log("in saving user")
+                    promiseSaveUser.push(client.saveProcessUser(user, workingId)) 
+                  }) 
+                }
+          Promise.all(promiseSaveUser).then(() =>{
+            if (payload.process.producedDoc != null){
+              payload.process.producedDoc.forEach((doc) => {
+                console.log("in saving produced doc")
+                promiseSaveDoc.push(client.saveProcessProducedDocs(doc, workingId))
+              })
+            }
+            Promise.all(promiseSaveDoc).then(()=>{
+              state.commit('editProcess', payload.process)
+            })
+          })   
+              })
+            
+          })
+        })
+      })
+    })
+  })
+}
+
+
+
+/*export function editProcess (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload.process)
   var workingId = payload.process.id 
@@ -344,11 +403,11 @@ else if (process.applicableUsersOrig != null){
     client.deleteSingleProcessUser(workingId, starting_user)
   }
   })
-} */
+} 
 console.log("i am process being sent to store")
 console.log(payload.process)
 state.commit('editProcess', payload.process)
-}
+}*/
 
 async function asyncForEach (array, callback) {
   for (let index = 0; index < array.length; index++) {

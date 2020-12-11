@@ -15,6 +15,7 @@
               :label="$t('input_labels.upload_icon')"
               standout
               outlined
+              :disable="this.published"
               accept=".jpg, image/*" 
               @rejected="onRejected"
             >

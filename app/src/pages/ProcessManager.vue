@@ -199,7 +199,7 @@ export default {
 
 
   created () {
-
+    console.log("in process list")
     this.fetchFlows()
       .then(processes => {
         this.loading = false

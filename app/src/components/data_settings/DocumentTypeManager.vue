@@ -31,11 +31,11 @@
         >
           <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
           <HelpLabel
-            :fieldLabel="$t('input_labels.doc_type')"
-            :helpLabel="$t('help.doc_type')"
-            class="div-3"
+          :fieldLabel="$t('input_labels.doc_type')"
+          :helpLabel ="$t('help.doc_type')"
+          class="div-3"
           />
-
+         
           <q-input
             outlined
             filled
@@ -47,12 +47,12 @@
             :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.doc_type_placeholder')"
           />
-          <HelpLabel
-            :fieldLabel="$t('input_labels.description')"
-            :helpLabel="$t('help.doc_type_description')"
-            class="div-3"
+           <HelpLabel
+          :fieldLabel="$t('input_labels.description')"
+          :helpLabel ="$t('help.doc_type_description')"
+          class="div-3"
           />
-
+          
           <GlossaryEditor
             class="desc-editor"
             :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
@@ -60,12 +60,12 @@
             :lang="language.lang"
             ref="editor"
           />
-          <TranslateStateButton
-            v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-            :isForDefaultLanguage="language.lang===activeLanguage"
-            :objectId="int_doc_shell.id"
-            :readonly="!(language.lang===activeLanguage)"
-            @micado-change="(id) => {
+            <TranslateStateButton
+              v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+              :isForDefaultLanguage="language.lang===activeLanguage"
+              :objectId="int_doc_shell.id"
+              :readonly="!(language.lang===activeLanguage)"
+              @micado-change="(id) => {
                 changeTranslationState(int_doc_shell, id.state)
                 int_doc_shell.pictures.forEach((pic)=>{
                   pic.hotspots.forEach((spot)=>{
@@ -73,7 +73,7 @@
                   })
                 })
               }"
-          />
+            />
         </q-tab-panel>
       </q-tab-panels>
       <q-tabs
@@ -92,79 +92,77 @@
           :label="language.name"
         />
       </q-tabs>
-      <HelpLabel
-        :fieldLabel="$t('input_labels.issuer')"
-        :helpLabel="$t('help.issuer')"
-        class="div-3"
-        style="padding-top:10px"
-      />
-      <q-input
-        outlined
-        filled
-        dense
-        maxlength="20"
-        v-model="int_doc_shell.issuer"
-        :label="$t('input_labels.issuer')"
-      />
-      <div class="q-gutter-sm row">
-        <HelpLabel
+          <HelpLabel
+          :fieldLabel="$t('input_labels.issuer')"
+          :helpLabel ="$t('help.issuer')"
+          class="div-3"
+          style="padding-top:10px"
+          />
+            <q-input
+              outlined
+              :readonly="int_doc_shell.published"
+              filled
+              dense
+              maxlength="20"
+              v-model="int_doc_shell.issuer"
+              :label="$t('input_labels.issuer')"
+            />
+            <div class="q-gutter-sm row">
+               <HelpLabel
           :fieldLabel="$t('input_labels.validable')"
-          :helpLabel="$t('help.validable')"
+          :helpLabel ="$t('help.validable')"
           class="col-1.5 field"
           style="padding-top:10px"
-        />
-        <q-checkbox
-          class=" col-1 div-3"
-          color="accent"
-          style="padding-top:10px"
-          v-model="int_doc_shell.validable"
-        />
-      </div>
-      <HelpLabel
-        v-if="int_doc_shell.validable"
-        :fieldLabel="$t('input_labels.validators')"
-        :helpLabel="$t('help.validators')"
-        class="field"
-      />
-      <q-select
-        v-if="int_doc_shell.validable"
-        multiple
-        filled
-        dense
-        clearable
-        v-model="int_doc_shell.validators"
-        @input="addValidators($event)"
-        @remove="removeValidator($event)"
-        @clear="clearValidators()"
-        emit-value
-        map-options
-        :options="this.validatorList"
-        :label="$t('input_labels.validators')"
-        class="select"
-      />
-
-      <q-card-section class="section">
-        <HelpLabel
+          /> 
+              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
+            </div>
+            <HelpLabel
+            v-if="int_doc_shell.validable" 
+          :fieldLabel="$t('input_labels.validators')"
+          :helpLabel ="$t('help.validators')"
+          class="field"
+          /> 
+              <q-select
+              v-if="int_doc_shell.validable"
+              multiple
+              :readonly="int_doc_shell.published"
+              filled
+              dense
+              clearable
+              v-model="int_doc_shell.validators"
+              @input="addValidators($event)"
+              @remove="removeValidator($event)"
+              @clear="clearValidators()"
+              emit-value
+              map-options
+              :options="this.validatorList"
+              :label="$t('input_labels.validators')"
+              class="select"
+          />
+       
+          <q-card-section class="section">
+            <HelpLabel
           :fieldLabel="$t('input_labels.icon')"
-          :helpLabel="$t('help.doc_type_icon')"
+          :helpLabel ="$t('help.doc_type_icon')"
           class="field"
           style="padding-top:10px"
-        />
-
-        <q-select
-          filled
-          dense
-          clearable
-          v-model="int_doc_shell.icon"
-          @input="addIcon($event)"
-          @remove="removeIcon($event)"
-          emit-value
-          map-options
-          :options="this.icons"
-          :label="$t('input_labels.icon')"
-          class="select"
-        />
-        <!--<q-file
+          /> 
+             
+              <q-select
+            filled
+            dense
+            clearable
+            :readonly="int_doc_shell.published"
+            v-model="int_doc_shell.icon"
+            @input="addIcon($event)"
+            @remove="removeIcon($event)"
+            emit-value
+            map-options
+            :options="this.icons"
+            :label="$t('input_labels.icon')"
+            class="select"
+          />
+            <!--<q-file
               @input="getFilesIcon($event)"
               bg-color="grey-3"
               dense
@@ -200,132 +198,127 @@
               
             </q-item-section>
             </q-card>-->
-      </q-card-section>
-
-      <q-card-section class="section">
-        <HelpLabel
+          </q-card-section>
+          
+        <q-card-section class="section">
+          <HelpLabel
           :fieldLabel="$t('input_labels.doc_pics')"
-          :helpLabel="$t('help.doc_pics')"
+          :helpLabel ="$t('help.doc_pics')"
           class="field"
-        />
+          /> 
+          
+          <q-file
+            @input="getFilesPics($event)"
+            bg-color="grey-3"
+            dense
+            :label="$t('input_labels.upload_doc_pics')"
+            standout
+            :disable="int_doc_shell.published"
+            outlined
+            accept=".jpg, image/*"
+            @rejected="onRejected"
+          >
 
-        <q-file
-          @input="getFilesPics($event)"
-          bg-color="grey-3"
-          dense
-          :label="$t('input_labels.upload_doc_pics')"
-          standout
-          outlined
-          accept=".jpg, image/*"
-          @rejected="onRejected"
-        >
-
-        </q-file>
-        <q-card class="pictures-card">
-          <div class="row">
-            <q-item-section
-              class="col-4 pictures-section"
-              v-for="image in uploaded_images"
-              :key="image"
-            >
-              <q-img
-                :src="image"
-                spinner-color="white"
-                class="image"
-                @click="addHotspot(image)"
-              />
-
-              <span class="span">
-                <q-btn
-                  no-caps
-                  rounded
-                  class="negative-button"
-                  filled
-                  color="accent"
-                  @click="removePicture(image)"
-                  :label="$t('button.remove')"
-                />
-              </span>
-            </q-item-section>
-            <q-dialog
-              v-model="hotimage"
-              @hide="hotspotConfig.data = []"
-            >
-              <q-card>
-                <v-hotspot
-                  :init-options="hotspotConfig"
-                  @save-data="saveHotspot"
+          </q-file>
+          <q-card class="pictures-card">
+            <div class="row">
+              <q-item-section
+                class="col-4 pictures-section"
+                v-for="image in uploaded_images"
+                :key="image"
+              >
+                <q-img
+                  :src="image"
+                  spinner-color="white"
+                  class="image"
+                  @click="addHotspot(image)"
                 />
 
-              </q-card>
-            </q-dialog>
-          </div>
-        </q-card>
-      </q-card-section>
-      <q-card-section class="section">
-        <HelpLabel
+                <span class="span">
+                  <q-btn
+                    no-caps
+                    rounded
+                    class="negative-button"
+                    filled
+                    color="accent"
+                    @click="removePicture(image)"
+                    :label="$t('button.remove')"
+                  />
+                </span>
+              </q-item-section>
+              <q-dialog
+                v-model="hotimage"
+                @hide="hotspotConfig.data = []"
+              >
+                <q-card>
+                  <v-hotspot
+                    :init-options="hotspotConfig"
+                    @save-data="saveHotspot"
+                  />
+
+                </q-card>
+              </q-dialog>
+            </div>
+          </q-card>
+        </q-card-section>
+        <q-card-section class="section">
+           <HelpLabel
           :fieldLabel="$t('input_labels.upload_model')"
-          :helpLabel="$t('help.upload_model')"
+          :helpLabel ="$t('help.upload_model')"
           class="field"
-        />
+          /> 
+          
+          <q-file
+            @input="getFilesModel($event)"
+            bg-color="grey-3"
+            dense
+            :disable="int_doc_shell.published"
+            :label="$t('input_labels.upload_model')"
+            standout
+            outlined
+            accept=".pdf"
+            @rejected="onRejected"
+          >
 
-        <q-file
-          @input="getFilesModel($event)"
-          bg-color="grey-3"
-          dense
-          :label="$t('input_labels.upload_model')"
-          standout
-          outlined
-          accept=".pdf"
-          @rejected="onRejected"
-        >
-
-        </q-file>
-        <q-item
-          v-if="int_doc_shell.model"
-          class="col-6"
-        >
-          <q-item-section avatar>
-            <q-icon name="note_add" />
-          </q-item-section>
-          <q-item-section>{{this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document}} model</q-item-section>
-          <q-item-section>
-            <q-btn
-              no-caps
-              dense
-              class="delete-button"
-              :data-cy="'cancelmodel'"
-              unelevated
-              rounded
-              :label="$t('button.remove')"
-              @click="cancelModel()"
-            />
-          </q-item-section>
-        </q-item>
-      </q-card-section>
-
-      <div class="row">
-        <div
-          class="col-2"
-          style="min-width:130px; max-width:130px"
-        >
+          </q-file>
+          <q-item v-if="int_doc_shell.model" class="col-6">
+        <q-item-section avatar>
+          <q-icon  name="note_add"/>
+        </q-item-section>
+        <q-item-section>{{this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document}} model</q-item-section>
+        <q-item-section>
+           <q-btn
+        no-caps
+        dense
+        class="delete-button"
+        :data-cy="'cancelmodel'"
+        unelevated
+        rounded
+        :label="$t('button.remove')"
+        @click="cancelModel()"
+      />
+        </q-item-section>
+      </q-item>
+        </q-card-section>
+        
+       <div class="row">
+        <div class="col-2" style="min-width:130px; max-width:130px">
           <HelpLabel
             :fieldLabel="$t('input_labels.is_published')"
-            :helpLabel="$t('help.is_published')"
+            :helpLabel ="$t('help.is_published')"
             style="padding-left:17px"
           />
         </div>
-        <div
-          class="col"
-          style="padding-top:2px"
-        >
+        <div class="col" style="padding-top:2px">
           <q-toggle
             v-model="int_doc_shell.published"
             color="green"
             :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event, int_doc_shell.id)"
           />
         </div>
       </div>
+      
 
       <hr id="hr">
       <q-btn
@@ -339,6 +332,7 @@
       />
       <q-btn
         no-caps
+        :disable="int_doc_shell.published"
         :data-cy="'savedoc'"
         color="accent"
         unelevated
@@ -386,7 +380,7 @@
         </q-item-section>
         <q-item-section class="col-8 flex flex-left section">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
         <q-item-section class="col-1 flex flex-left">
-          <q-toggle
+           <q-toggle
             v-model="document_type.published"
             color="green"
             disable
@@ -394,7 +388,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
-            :data-cy="'editdoc'.concat(document_type.id)"
+          :data-cy="'editdoc'.concat(document_type.id)"
             id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
@@ -403,7 +397,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center">
           <q-icon
-            :data-cy="'deletedoc'.concat(document_type.id)"
+          :data-cy="'deletedoc'.concat(document_type.id)"
             name="img:statics/icons/Icon - Delete.svg"
             @click.stop="deletingDoc(document_type)"
             size="md"
@@ -491,12 +485,12 @@ export default {
       }
     })],
   components: {
-    ListItem, 'v-hotspot': VueHotspot, GlossaryEditor, HelpLabel
+    ListItem, 'v-hotspot': VueHotspot, GlossaryEditor,HelpLabel
   },
   data () {
     return {
       icons: DocumentTypeIcons,
-      deleting_hotspots: [],
+      deleting_hotspots:[],
       hideForm: true,
       hideAdd: false,
       isNew: false,
@@ -520,66 +514,95 @@ export default {
         opacity: 0.9
       },
       icon: null,
-      the_model: null,
-      order: 0,
-      validatorList: [],
-      publishedOrig: false
+      the_model:null, 
+      order: 0, 
+      validatorList:[],
+      publishedOrig:false
     }
   },
 
   methods: {
-    isPublished (value) {
-
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
       console.log(value)
-      var publishing_doc = value
+      var publishing_doc =  this.document_types.filter((doc)=>{
+        return doc.id == value
+      })[0]
+      var publishing_hotspots = []
+      if(publishing_doc.pictures){
+        publishing_doc.pictures.forEach((pic)=>{
+  
+       var pic_spots =  this.hotspots.filter((spot)=>{
+          return spot.pictureId == pic.id
+        })
+        if(pic_spots.lenght!=0){
+          pic_spots.forEach((spot)=>{
+            publishing_hotspots.push(spot)
+          })
+        }
+      })
+      }
       console.log("i am doc to publish")
       console.log(publishing_doc)
-      var publishing_hotspots = []
-      if (publishing_doc.pictures) {
-        publishing_doc.pictures.forEach((pic) => {
-
-          var pic_spots = this.hotspots.filter((spot) => {
-            return spot.pictureId == pic.id
-          })
-          if (pic_spots.lenght != 0) {
-            pic_spots.forEach((spot) => {
-              publishing_hotspots.push(spot)
-            })
-          }
-        })
+      var docs = JSON.parse(JSON.stringify(publishing_doc))
+      var spots= JSON.parse(JSON.stringify(publishing_hotspots))
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.saveTranslationProd(value)
+            this.saveSpotTranslationProd(spots)
+            this.cancelDoc()
+             } },
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = false } }
+        ]
+      })
+       
       }
-      console.log("i am hotspots to publish")
-      console.log(publishing_hotspots)
-      if (value.published == true) {
-        this.updatePublished({ doc: value, published: value.published })
-        this.saveTranslationProd(value.id)
-        //this.saveSpotTranslationProd(publishing_hotspots)
+      else{
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the document type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({doc:docs, published:event})
+            this.deleteTranslationProd(value)
+            this.deleteSpotTranslationProd(spots)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_doc_shell.published = true } }
+        ]
+      })
+       
       }
-      else {
-        this.updatePublished({ doc: value, published: value.published })
-      }
-    },
-    cancelModel () {
+     },
+     
+    cancelModel(){
       this.int_doc_shell.model = ""
       this.the_model = ""
     },
-    addIcon (value) {
+    addIcon(value){
       this.int_doc_shell.icon = value
       console.log("I am doc shel after adding icon ")
       console.log(this.int_doc_shell)
-    },
-    addValidators (value) {
-      console.log(value)
-      this.int_doc_shell.validators = value
+    }, 
+     addValidators(value){
+       console.log(value)
+       this.int_doc_shell.validators = value
       /* value.forEach((validator)=>{
          this.int_doc_shell.validators.push(value)
        })*/
       //this.int_doc_shell.validators.push(value)
       console.log("I am doc shel after adding validators ")
       console.log(this.int_doc_shell.validators)
-    },
-
-    saveHotspot (value) {
+    }, 
+    
+    saveHotspot(value){
       console.log("saving hotspot")
       console.log(value)
       console.log(value[0].x)
@@ -587,16 +610,16 @@ export default {
       var the_picture = this.int_doc_shell.pictures.filter((pic) => {
         return pic.image == this.hotspotConfig.image
       })[0]
-      var originalHotspots = []
-      if (the_picture.hotspots.length > 0) {
-        the_picture.hotspots.forEach((hspott) => {
+      var originalHotspots =[]
+      if(the_picture.hotspots.length > 0){
+        the_picture.hotspots.forEach((hspott)=>{
           originalHotspots.push(hspott)
         })
       }
       console.log(originalHotspots)
-      originalHotspots.forEach((spot) => {
-        var to_remove = value.filter(((hspot) => {
-          return (spot.x == hspot.x && spot.y == hspot.y)
+      originalHotspots.forEach((spot)=>{
+        var to_remove=value.filter(((hspot)=>{
+          return (spot.x== hspot.x && spot.y == hspot.y)
         }))[0]
         var index = value.findIndex(val => val.x == to_remove.x && val.y == to_remove.y)
         value.splice(index, 1)
@@ -605,13 +628,13 @@ export default {
       console.log("i am values after removing the ones that were present already")
       console.log(value)
       value.forEach((spot) => {
-        var hotspot_translations = []
+             var hotspot_translations = []
         this.languages.forEach(l => {
           if (l.lang == this.activeLanguage) {
-            hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message, translationState: this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState })
+            hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message, translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState })
           }
           else {
-            hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '', translationState: this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState })
+            hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '', translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState  })
           }
         })
         the_picture.hotspots.push({
@@ -664,25 +687,19 @@ export default {
       //this.$store.dispatch("topic/deleteTopic", index);
       var payload = { index: doc.id, hotspots: this.deleting_hotspots }
       console.log(payload.hotspots.length != 0)
-      this.$q.notify({
+       this.$q.notify({
         type: 'warning',
         message: 'Warning: Deleting a document type will also delete it from all the processes and steps where it appears. Proceed?',
         actions: [
-          {
-            label: 'Delete', color: 'red', handler: () => {
-              this.deleteDocumentType(payload)
-              this.deleting_hotspots = []
-            }
-          },
-          {
-            label: 'Back', color: 'accent', handler: () => {
-              console.log("not deleting")
-              this.deleting_hotspots = []
-            }
-          }
+          { label: 'Delete', color: 'red', handler: () => { 
+             this.deleteDocumentType(payload)
+              this.deleting_hotspots = [] } },
+          { label: 'Back', color: 'accent', handler: () => { 
+            console.log("not deleting")
+           this.deleting_hotspots = [] } }
         ]
       })
-
+     
 
 
 
@@ -698,7 +715,7 @@ export default {
       this.int_doc_shell.validators.splice(idx, 1)
       console.log(this.int_doc_shell.validators)
     },
-    clearValidators () {
+    clearValidators(){
       this.int_doc_shell.validators = []
     },
     cancelDoc () {
@@ -748,7 +765,7 @@ export default {
       console.log(this)
       console.log(self)
       console.log("getting model")
-      const reader = new FileReader()
+       const reader = new FileReader()
 
       // Convert the file to base64 text
       reader.readAsDataURL(files)
@@ -832,7 +849,7 @@ export default {
       }
     },
     createShell () {
-      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators: [], icon: "", model: "", validable: false, published: false }
+      this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: "", validable: false, published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null, translationState: 0 })
@@ -890,11 +907,11 @@ export default {
       this.int_doc_shell.issuer = doc.issuer
       this.int_doc_shell.model = doc.model
       this.int_doc_shell.validable = doc.validable
-      if (doc.validators != null) {
-        doc.validators.forEach((validator) => {
+      if(doc.validators!= null){
+        doc.validators.forEach((validator)=>{
           this.int_doc_shell.validators.push(validator.validableByTenant)
         })
-
+        
       }
       if (doc.pictures != null) {
         this.int_doc_shell.pictures = doc.pictures
@@ -954,14 +971,14 @@ export default {
         )
       }
       else {
-        this.editDocumentType({ doc_element: this.int_doc_shell, publishedOrig: this.publishedOrig }).then(() => {
+        this.editDocumentType({doc_element:this.int_doc_shell, publishedOrig: this.publishedOrig}).then(()=>{
           console.log("In edit")
-          console.log(this.int_doc_shell)
-          if (this.int_doc_shell.published != this.publishedOrig) {
-            this.isPublished(this.int_doc_shell)
-          }
+        console.log(this.int_doc_shell)
+        if(this.int_doc_shell.published != this.publishedOrig){
+          this.isPublished(this.int_doc_shell)
+        }
         })
-
+        
 
       }
 
@@ -1006,12 +1023,12 @@ export default {
       .then(document_types => {
         this.loading = false
       })
-    this.fetchTenants().then((tenants) => {
+    this.fetchTenants().then((tenants)=>{
       console.log(tenants)
-      tenants.forEach((tenant) => {
+      tenants.forEach((tenant)=>{
         this.validatorList.push({
           label: tenant.name,
-          value: tenant.id
+          value:tenant.id
         })
 
       })

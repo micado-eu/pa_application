@@ -16,8 +16,7 @@ export default {
   methods: {
     ...mapActions('glossary', [
       'saveNewGlossaryItem',
-      'addNewGlossaryItemTranslation',
-      'deleteGlossaryItem'
+      'addNewGlossaryItemTranslation'
     ]),
     saveNewGlossaryItemAndReturn(translationData) {
       const router = this.$router
@@ -28,7 +27,7 @@ export default {
       this.saveNewGlossaryItem(glossaryData)
         .then((newData) => {
           id = newData.id
-          for (let i = 0; i < translationData.length; i+=1) {
+          for (let i = 0; i < translationData.length; i += 1) {
             const translation = translationData[i]
             delete translation.published
             const dataWithId = Object.assign(translation, { id })
@@ -36,13 +35,18 @@ export default {
               if (i === translationData.length - 1) {
                 router.push({ path: '/glossary' })
               }
+            }).catch((err) => {
+              this.$q.notify({
+                type: 'negative',
+                message: `Error while saving glossary term translation ${dataWithId.lang}: ${err}`
+              })
             })
           }
-        })
-        .catch(() => {
-          if (id !== -1) {
-            this.deleteGlossaryItem({ id })
-          }
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving glossary term: ${err}`
+          })
         })
     }
   }

@@ -93,6 +93,7 @@
         :label="$t('help.user_type_icon')"
         :icon="int_user_type_shell.icon"
         @upload="getFiles"
+        :published="int_user_type_shell.published"
       >
       </FileUploader>
       <div class="row">
@@ -108,6 +109,7 @@
             v-model="int_user_type_shell.published"
             color="green"
             :disable="int_user_type_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+            @input="isPublished($event,int_user_type_shell.id)"
           />
         </div>
       </div>
@@ -124,6 +126,7 @@
       />
       <q-btn
       :data-cy="'saveusertype'"
+      :disable="int_user_type_shell.published"
         no-caps
         color="accent"
         unelevated
@@ -271,9 +274,9 @@ export default {
           .then(int_cat => {
             console.log("updated")
           })
-           if(this.int_user_type_shell.published != this.publishedOrig){
+           /*if(this.int_user_type_shell.published != this.publishedOrig){
           this.isPublished(this.int_user_type_shell)
-        }
+        }*/
       }
       this.hideForm = true
       this.hideAdd = false
@@ -353,7 +356,47 @@ export default {
         console.log(fileInfo)
       }
     },
-    isPublished(value){
+    isPublished(event,value){
+     console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_user_temp =  this.user.filter((user)=>{
+        return user.id == value
+      })[0]
+      var publishing_user = JSON.parse(JSON.stringify(publishing_user_temp))
+      if( event == true){
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Publishing the user type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({user:publishing_user, published: event})
+            this.saveTranslationProd(value)
+            this.cancelUserType()
+             }},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_user_type_shell.published = false } }
+        ]
+      })
+       
+      }
+      else{
+        this.$q.notify({
+        type: 'warning',
+        message: 'Warning: Unpublishing the user type will delete all existing translations. Proceed?',
+        actions: [
+          { label: 'Yes', color: 'accent', handler: () => { 
+            this.updatePublished({user:publishing_user, published:event})
+            this.deleteTranslationProd(value)}},
+          { label: 'No', color: 'red', handler: () => { 
+            this.int_user_type_shell.published = true } }
+        ]
+      })
+       
+      }
+     },
+    /*isPublished(value){
       if( value.published == true){
         this.updatePublished({user:value, published: value.published})
         this.saveTranslationProd(value.id)
@@ -361,7 +404,7 @@ export default {
       else{
         this.updatePublished({user:value, published: value.published})
       }
-   },
+   },*/
     cancelUserType () {
       this.isNew = false
       this.hideForm = true

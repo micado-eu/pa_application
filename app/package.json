@@ -13,7 +13,7 @@
     "test:e2e:ci": "cross-env E2E_TEST=true start-test 'quasar dev' http-get://localhost:8080 'cypress run'"
   },
   "dependencies": {
-    "@bit/micado.shared.translatestatebutton": "0.0.1",
+    "@bit/micado.shared.translatestatebutton": "0.0.2",
     "@quasar/extras": "^1.9.5",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
@@ -70,6 +70,7 @@
     "yarn": ">= 1.6.0"
   },
   "browserslist": [
-    "last 1 version, not dead, ie >= 11"
+    "last 1 version, not dead, ie >= 11",
+    "ie 11"
   ]
 }
