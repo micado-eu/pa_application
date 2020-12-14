@@ -9,13 +9,13 @@ export function fetchEventCategory(state, data) {
 export function editCategoryTypeElement(state, event_category) {
   const old_ec = state.event_category.filter(ic => ic.id === event_category.id)
   if (old_ec.published && event_category.translations[0].translationState === 0) {
-    deleteProdTranslations().then(() => {
+    deleteProdTranslations(state, event_category.id).then(() => {
       console.log("Deleted prod translations")
     })
   }
   if (old_ec.published && !event_category.published) {
     // If published goes from true to false, all the content gets deleted from the translation prod table
-    deleteProdTranslations().then(() => {
+    deleteProdTranslations(state, event_category.id).then(() => {
       console.log("Deleted prod translations")
     })
   }
@@ -77,8 +77,8 @@ export function updatePublished(state, data) {
     })
 }
 
-export function deleteProdTranslations(state, data) {
-  return client.deleteProdTranslations()
+export function deleteProdTranslations(state, id) {
+  return client.deleteProdTranslations(id)
 }
 
 export function saveEventCategoryTranslationProd(state, data) {

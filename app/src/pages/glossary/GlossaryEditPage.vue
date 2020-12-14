@@ -40,7 +40,7 @@ export default {
         published: data[0].published
       }
       if (this.elem.published && data[0].translationState === 0) {
-        this.deleteProdTranslations().then(() => {
+        this.deleteProdTranslations(id).then(() => {
           console.log("Deleted prod translations")
         }).catch((err) => {
           this.$q.notify({
@@ -51,7 +51,7 @@ export default {
       }
       if (this.elem.published && !glossaryData.published) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations().then(() => {
+        this.deleteProdTranslations(id).then(() => {
           console.log("Deleted prod translations")
         }).catch((err) => {
           this.$q.notify({

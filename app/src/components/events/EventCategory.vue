@@ -288,7 +288,7 @@ export default {
       let eventElem = this.eventCategoryById(id)
       if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations().then(() => {
+        this.deleteProdTranslations(id).then(() => {
           console.log("Deleted prod translations")
         }).catch((err) => {
           this.$q.notify({

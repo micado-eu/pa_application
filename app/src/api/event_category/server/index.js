@@ -66,7 +66,7 @@ export default {
     .then(response => response.data)
     .catch(error_handler)
   },
-  deleteProdTranslations(state, data) {
+  deleteProdTranslations(state, id) {
     return axiosInstance
         .delete(`/backend/1.0.0/event-categories/${id}/event-category-translation-prods`)
         .then((response) => response.data)

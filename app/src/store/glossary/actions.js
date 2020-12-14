@@ -40,8 +40,8 @@ export function updatePublished(state, data) {
     })
 }
 
-export function deleteProdTranslations(state, data) {
-  return client.deleteProdTranslations()
+export function deleteProdTranslations(state, id) {
+  return client.deleteProdTranslations(id)
 }
 
 export function addNewGlossaryItemTranslationProd(state, data) {
