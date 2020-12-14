@@ -5,6 +5,7 @@
       :save_item_fn="saveGlossaryItem"
       :pagetitle="pagetitle"
       :description_max_length="800"
+      :title_max_length="255"
     />
   </div>
 </template>
