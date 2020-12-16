@@ -120,6 +120,7 @@ module.exports = function (ctx) {
         chain.resolve.alias.set('api-identity-client', 'src/api/identity/server')
         chain.resolve.alias.set('api-weblate-client', 'src/api/weblate/server')
         chain.resolve.alias.set('api-tenant-client', 'src/api/tenant/server')
+        chain.resolve.alias.set('api-images-client', 'src/api/images/server')
       }
     },
 

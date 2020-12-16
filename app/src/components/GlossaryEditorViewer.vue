@@ -158,4 +158,8 @@ export default {
 .mention {
   text-decoration: underline;
 }
+
+img {
+  width: 100%;
+}
 </style>

@@ -4,9 +4,7 @@
     padding
   >
     <div class="editor-options">
-      <div
-        class="editor"
-      >
+      <div class="editor">
         <editor-content
           class="editor_content"
           :editor="editor"
@@ -39,10 +37,16 @@
             />
             <span style="flex: 10"></span>
             <slot style="flex: 3"></slot>
-            <span class="error-message" v-if="errorMessage">{{errorMessage}}</span>
+            <span
+              class="error-message"
+              v-if="errorMessage"
+            >
+              {{errorMessage}}
+            </span>
             <!-- Image upload dialog -->
             <q-dialog
               v-model="showUploadModal"
+              ref="uploadDialog"
               persistent
             >
               <q-card style="width: 500px">
@@ -83,12 +87,10 @@
                 >
                   <q-tab-panel name="upload">
                     <q-card-section class="row items-center">
-                      <!-- TODO: Upload -->
-                      <q-uploader
-                        :label="$t('upload_modal.upload_label')"
-                        color="accent"
-                        style="width: 500px"
-                      />
+                      <image-uploader
+                        class="uploader"
+                        @onUpload="onUploadImage($event, commands)"
+                      ></image-uploader>
                     </q-card-section>
                   </q-tab-panel>
                   <q-tab-panel name="url">
@@ -132,16 +134,19 @@ import {
 import Image from 'components/editor_plugins/Image'
 import GlossaryMention from 'components/editor_plugins/GlossaryMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
+import imageUpload from '../mixin/imageUpload'
+import ImageUploader from './ImageUploader.vue'
 
 export default {
   name: 'GlossaryEditor',
   components: {
     EditorContent,
-    EditorMenuBar
+    EditorMenuBar,
+    ImageUploader
   },
   props: {
     value: {
-      type: String, 
+      type: String,
       default: ''
     },
     readonly: {
@@ -157,7 +162,10 @@ export default {
       default: null
     }
   },
-  mixins: [markdownConverterMixin],
+  mixins: [
+    markdownConverterMixin,
+    imageUpload
+  ],
   data() {
     return {
       editor: null,
@@ -211,11 +219,9 @@ export default {
         content: currentContent
       })
     },
-    uploadImage(file) {
-      const formData = new FormData()
-      formData.append('file', file)
-      const headers = { 'Content-Type': 'multipart/form-data' }
-      // TODO: implement when decision is made
+    onUploadImage(event, commands) {
+      commands.image({ src: event })
+      this.$refs.uploadDialog.hide()
     },
     hasError() {
       return this.errorMessage.length > 0
@@ -241,7 +247,7 @@ export default {
     },
     readonly(val) {
       console.log("readonly: " + val)
-      this.editor.setOptions({editable: !val})
+      this.editor.setOptions({ editable: !val })
     }
   },
   beforeDestroy() {
@@ -257,13 +263,16 @@ export default {
   font-size: 13pt;
   background-color: $grey-3;
   border: 1px solid $grey-5;
-  border-radius: 4px
+  border-radius: 4px;
 }
 
 .error-message {
-  color: red
+  color: red;
 }
 
+.uploader {
+  width: 100%
+}
 </style>
 
 <style>
@@ -272,4 +281,9 @@ export default {
   width: 80%;
   vertical-align: top;
 }
+
+img {
+  width: 100%;
+}
+
 </style>
