@@ -25,41 +25,6 @@
           <q-separator />
           <q-expansion-item
             expand-separator
-            v-if="categories_enabled"
-          >
-            <template v-slot:header>
-              <q-item-section>
-                <q-item-label class="filter-title">
-                  {{$t("filters.category_title")}}
-                </q-item-label>
-              </q-item-section>
-            </template>
-            <q-item
-              v-for="category in filterCategories"
-              :key="category.id"
-            >
-              <q-radio
-                color="accent"
-                v-model="selectedCategory"
-                :val="category"
-                :label="category.category"
-                @input="filterByCategory()"
-                class="filter-text"
-              />
-            </q-item>
-            <q-item v-if="!isMaxShowMoreCategories">
-              <a
-                href="javascript:void(0)"
-                class="show_more"
-                @click="showMoreCategories()"
-              >
-                {{$t("filters.show_more")}}
-              </a>
-            </q-item>
-          </q-expansion-item>
-          <q-separator />
-          <q-expansion-item
-            expand-separator
             v-if="topics_enabled"
           >
             <template v-slot:header>
@@ -97,6 +62,41 @@
                 href="javascript:void(0)"
                 class="show_more"
                 @click="showMoreTopics()"
+              >
+                {{$t("filters.show_more")}}
+              </a>
+            </q-item>
+          </q-expansion-item>
+          <q-separator />
+          <q-expansion-item
+            expand-separator
+            v-if="categories_enabled"
+          >
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="filter-title">
+                  {{$t("filters.category_title")}}
+                </q-item-label>
+              </q-item-section>
+            </template>
+            <q-item
+              v-for="category in filterCategories"
+              :key="category.id"
+            >
+              <q-radio
+                color="accent"
+                v-model="selectedCategory"
+                :val="category"
+                :label="category.category"
+                @input="filterByCategory()"
+                class="filter-text"
+              />
+            </q-item>
+            <q-item v-if="!isMaxShowMoreCategories">
+              <a
+                href="javascript:void(0)"
+                class="show_more"
+                @click="showMoreCategories()"
               >
                 {{$t("filters.show_more")}}
               </a>
@@ -213,12 +213,6 @@
                 >
                   <span
                     class="q-mr-md tags_text"
-                    v-if="categories_enabled"
-                  >
-                    {{$t("lists.category")}}: {{item.category.category}}
-                  </span>
-                  <span
-                    class="q-mr-md tags_text"
                     v-if="topics_enabled"
                   >
                     {{$t("lists.topics")}}:
@@ -231,6 +225,12 @@
                       :alt="topic.topic"
                       class="filter-icon"
                     />
+                  </span>
+                  <span
+                    class="q-mr-md tags_text"
+                    v-if="categories_enabled"
+                  >
+                    {{$t("lists.category")}}: {{item.category.category}}
                   </span>
                   <span
                     v-if="user_types_enabled"
