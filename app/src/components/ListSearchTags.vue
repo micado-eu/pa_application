@@ -402,8 +402,8 @@ export default {
       translatedElements: [],
       filteredElementsBySearch: [],
       filteredElementsByCategory: [],
-      filteredElementsByTopic: [],
-      filteredElementsByUserType: [],
+      filteredElementsByTopics: [],
+      filteredElementsByUserTypes: [],
       searchText: '',
       topics: [],
       userTypes: [],
@@ -448,7 +448,7 @@ export default {
         this.filteredElementsByCategory = this.translatedElements
       }
     },
-    filterByTopic() {
+    filterByTopics() {
       if (this.selectedTopics.length > 0) {
         this.filteredElementsByTopics = []
         for (const e of this.translatedElements) {
@@ -473,7 +473,7 @@ export default {
         this.filteredElementsByTopics = this.translatedElements
       }
     },
-    filterByUserType() {
+    filterByUserTypes() {
       if (this.selectedUserTypes.length > 0) {
         this.filteredElementsByUserTypes = []
         for (const e of this.translatedElements) {
@@ -491,11 +491,11 @@ export default {
             }
           }
           if (matchedUserTypes.length == this.selectedUserTypes.length) {
-            this.filteredElementsByTopics.push(e)
+            this.filteredElementsByUserTypes.push(e)
           }
         }
       } else {
-        this.filteredElementsByTopics = this.translatedElements
+        this.filteredElementsByUserTypes = this.translatedElements
       }
     },
     compare(a, b) {
@@ -510,8 +510,8 @@ export default {
     clearFilters() {
       this.selectedCategory = undefined
       this.filteredElementsByCategory = this.translatedElements
-      this.filteredElementsByTopic = this.translatedElements
-      this.filteredElementsByUserType = this.translatedElements
+      this.filteredElementsByTopics = this.translatedElements
+      this.filteredElementsByUserTypes = this.translatedElements
       this.selectedTopics = []
       this.selectedUserTypes = []
     },
@@ -597,8 +597,8 @@ export default {
       }
       this.filteredElementsBySearch = this.translatedElements
       this.filteredElementsByCategory = this.translatedElements
-      this.filteredElementsByTopic = this.translatedElements
-      this.filteredElementsByUserType = this.translatedElements
+      this.filteredElementsByTopics = this.translatedElements
+      this.filteredElementsByUserTypes = this.translatedElements
       this.loading = false
     }
   },
@@ -626,12 +626,12 @@ export default {
     },
     filteredElements() {
       const { filteredElementsByCategory } = this
-      const { filteredElementsByTopic } = this
-      const { filteredElementsByUserType } = this
+      const { filteredElementsByTopics } = this
+      const { filteredElementsByUserTypes } = this
       return this.filteredElementsBySearch.filter(
         (n) => filteredElementsByCategory.indexOf(n) !== -1
-          && filteredElementsByTopic.indexOf(n) !== -1
-          && filteredElementsByUserType.indexOf(n) !== -1
+          && filteredElementsByTopics.indexOf(n) !== -1
+          && filteredElementsByUserTypes.indexOf(n) !== -1
       )
     },
     filterCategories() {

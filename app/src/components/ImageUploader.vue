@@ -6,7 +6,7 @@
     filled
     use-chips
     v-model="file"
-    label="Upload image (Max 25 MB)"
+    :label="$t('upload_modal.uploader_label')"
     accept=".jpg, image/*"
     max-file-size="26214400"
     counter
