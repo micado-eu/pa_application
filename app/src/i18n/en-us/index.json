@@ -115,7 +115,8 @@
     "categories": "Categories",
     "remove": "Remove",
     "migrant_data": "Data",
-    "hide": "Hide"
+    "hide": "Hide",
+    "read_more": "Read more"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",
