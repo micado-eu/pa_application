@@ -40,6 +40,7 @@
     "uppy": "^1.6.0",
     "uuid": "^8.2.0",
     "validator": "^11.1.0",
+    "vue-countable": "^1.0.9",
     "vue-countly": "^1.0.0",
     "vue-cytoscape": "^1.0.8",
     "vue-form-json-schema": "^2.5.0",
