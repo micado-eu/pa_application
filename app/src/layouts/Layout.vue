@@ -156,8 +156,8 @@ export default {
         },
         {
           label: 'menu.events',
-          icon: 'img:statics/icons/Icon - Events (45x45).png',
-          active_icon: 'img:statics/icons/Icon - Events (45x45).png',
+          icon: 'img:statics/icons/Icon - Events (30x30).png',
+          active_icon: 'img:statics/icons/Icon - Events (selected) (30x30).png',
           to: '/events',
           feature: "FEAT_EVENTS",
           description: 'menu.events_desc'
