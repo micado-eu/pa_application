@@ -412,7 +412,7 @@ export default {
       console.log("i am doc to publish")
       console.log(publishing_process)
       var publishing_steps = this.steps.filter((step)=>{
-        return step.idProcess == value.id
+        return step.idProcess == value
       }) 
       console.log("i am steps to publish")
       console.log(publishing_steps)
