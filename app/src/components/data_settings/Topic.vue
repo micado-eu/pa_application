@@ -55,6 +55,11 @@
               :objectId="int_topic_shell.id"
               :readonly="!(language.lang===activeLanguage)"
               @micado-change="(id) => {changeTranslationState(int_topic_shell, id.state)}"
+              @return-to-edit="(id) => {
+                  changeTranslationState(int_topic_shell, id.state)
+                  deleteTranslationProd(int_topic_shell.id)
+                  int_topic_shell.published = false
+                }"
             />
           </div>
 

@@ -73,6 +73,11 @@
                   })
                 })
               }"
+              @return-to-edit="(id) => {
+                  changeTranslationState(int_doc_shell, id.state)
+                  deleteTranslationProd(int_doc_shell.id)
+                  int_doc_shell.published = false
+                }"
             />
         </q-tab-panel>
       </q-tab-panels>

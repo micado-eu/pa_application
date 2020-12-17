@@ -64,6 +64,11 @@
                 :objectId="int_cat_shell.id"
                 :readonly="!(language.lang===activeLanguage)"
                 @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
+                @return-to-edit="(id) => {
+                  changeTranslationState(int_cat_shell, id.state)
+                  deleteTranslationProd(int_cat_shell.id)
+                  int_cat_shell.published = false
+                }"
               />
             </div>
           </q-tab-panel>

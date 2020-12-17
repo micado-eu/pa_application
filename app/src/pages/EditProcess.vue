@@ -73,10 +73,11 @@
                 :readonly="!(language.lang===activeLanguage)"
                 @micado-change="(id) => {
                   changeTranslationState(edit_process, id.state)
-                  if(id.state == 0 && edit_process.id !=-1){
-                    deleteTranslationProd(edit_process.id)
-                    edit_process.published = false
-                  }
+                }"
+                @return-to-edit="(id) => {
+                  changeTranslationState(edit_process, id.state)
+                  deleteTranslationProd(edit_process.id)
+                  edit_process.published = false
                 }"
               />
             </div>

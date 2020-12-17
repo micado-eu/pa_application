@@ -146,7 +146,7 @@ export default {
     const whereClause = {
       id: { eq: process.id }
     },
-      updatingProcess= JSON.parse(JSON.stringify(process, ['id', 'link']))
+      updatingProcess= JSON.parse(JSON.stringify(process, ['id', 'link', 'published']))
 
     return axiosInstance
       .patch('/backend/1.0.0/processes?where=' + JSON.stringify(whereClause), updatingProcess)
