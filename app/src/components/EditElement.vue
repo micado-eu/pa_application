@@ -367,7 +367,6 @@
             color="accent"
             @input="showWarningPublish($event)"
             :disabled="publishToggleState"
-            :readonly="published"
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
