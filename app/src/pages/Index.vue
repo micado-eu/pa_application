@@ -8,6 +8,7 @@
       <div>
         PA Application
       </div>
+      <div class="h6">Build: {{buildDate}}</div>
     </div>
     <div
       class="h4"
@@ -24,6 +25,11 @@
 <script>
 export default {
   name: 'PageIndex',
+  data () {
+    return {
+      buildDate: Date(process.env.APP_BUILD_DATE)
+    }
+  },
   methods: {
     toLogin () {
       this.$auth.login()

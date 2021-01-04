@@ -79,6 +79,9 @@ module.exports = function (ctx) {
       scopeHoisting: true,
       vueRouterMode: 'history',
       vueCompiler: true,
+      env: {
+        APP_BUILD_DATE: Date.now()
+      },
       //transpileDependencies: ['@bit/micado.shared.translatestatebutton'],
       // showProgress: false,
       // gzip: true,
