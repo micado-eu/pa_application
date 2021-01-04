@@ -166,7 +166,7 @@ export default {
         description:"", 
         completed:false,
         validatingUserId: null,
-        validatingUserTenant: Number(this.$migrant_tenant),
+        validatingUserTenant: null,
         assignmentDate: null, 
         validationRequestDate:null 
       },
@@ -199,8 +199,8 @@ export default {
         description:"",
         validationDate:null, 
         completed:false,
-        validatingUserId:  Number(this.theuserid),
-        validatingUserTenant: Number(this.$migrant_tenant),
+        validatingUserId:  null,
+        validatingUserTenant: null,
         assignmentDate: null, 
         validationRequestDate:null }
     },

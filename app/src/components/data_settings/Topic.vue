@@ -102,7 +102,7 @@
         <div class="col" style="padding-top:2px">
           <q-toggle
             v-model="int_topic_shell.published"
-            color="green"
+            color="accent"
             :disable="int_topic_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event,int_topic_shell.id) "
           />
@@ -170,7 +170,7 @@
         <q-item-section class="col-1 flex flex-left">
           <q-toggle
             v-model="a_topic.published"
-            color="green"
+            color="accent"
             :id="a_topic.id"
             disable
           />

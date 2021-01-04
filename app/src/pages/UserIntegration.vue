@@ -274,8 +274,8 @@ export default {
         description:"",
         validationDate: null,
         completed: false,
-        validatingUserId: Number(this.theuserid),
-        validatingUserTenant: Number(this.$migrant_tenant),
+        validatingUserId: null,
+        validatingUserTenant: null,
         assignmentDate: null,
         validationRequestDate: null
       }

@@ -57,7 +57,7 @@
               <GlossaryEditor
                 data-cy="description_input"
                 class="desc-editor "
-                style="width:100%"
+                style="width:100%; text-align:left"
                 :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
                 :lang="language.lang"
@@ -208,7 +208,7 @@
             v-model="edit_process.published"
             :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event, edit_process.id)"
-            color="orange"
+            color="accent"
           />
         </div>
       </div>

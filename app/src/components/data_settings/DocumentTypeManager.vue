@@ -317,7 +317,7 @@
         <div class="col" style="padding-top:2px">
           <q-toggle
             v-model="int_doc_shell.published"
-            color="green"
+            color="accent"
             :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event, int_doc_shell.id)"
           />
@@ -387,7 +387,7 @@
         <q-item-section class="col-1 flex flex-left">
            <q-toggle
             v-model="document_type.published"
-            color="green"
+            color="accent"
             disable
           />
         </q-item-section>
