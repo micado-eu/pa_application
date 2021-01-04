@@ -1,4 +1,4 @@
-import TranslateStateButton from '@bit/micado.shared.translatestatebutton'
+import { TranslateStateButton } from '@bit/micado.shared.translatestatebutton'
 
 export default {
     components: {

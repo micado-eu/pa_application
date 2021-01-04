@@ -72,13 +72,14 @@ module.exports = function (ctx) {
     },
 
     // https://quasar.dev/quasar-cli/cli-documentation/supporting-ie
-    supportIE: false,
+    supportIE: true,
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
       scopeHoisting: true,
       vueRouterMode: 'history',
       vueCompiler: true,
+      //transpileDependencies: ['@bit/micado.shared.translatestatebutton'],
       // showProgress: false,
       // gzip: true,
       // analyze: true,
