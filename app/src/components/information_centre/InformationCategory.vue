@@ -20,7 +20,7 @@
         >
           <q-toggle
             v-model="a_information_category.published"
-            color="green"
+            color="accent"
             @input="updatePublishedCat($event, a_information_category.id)"
           />
         </q-item-section>
