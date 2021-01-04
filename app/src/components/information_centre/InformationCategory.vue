@@ -22,6 +22,7 @@
             v-model="a_information_category.published"
             color="accent"
             @input="updatePublishedCat($event, a_information_category.id)"
+            disabled
           />
         </q-item-section>
         <q-item-section
@@ -109,24 +110,25 @@
               :readonly="!(language.lang===activeLanguage)"
               @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
             />
+            <div>
+              <help-label
+                :fieldLabel="$t('input_labels.is_published')"
+                :helpLabel="$t('help.is_published')"
+              ></help-label>
+              <q-toggle
+                v-model="add_published"
+                color="green"
+                :disable="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState < 2"
+              ></q-toggle>
+              <br>
+              <q-checkbox
+                color="accent"
+                v-model="linkable"
+                :label="$t('input_labels.event_checkbox')"
+              />
+            </div>
           </q-tab-panel>
         </q-tab-panels>
-        <div>
-          <help-label
-            :fieldLabel="$t('input_labels.is_published')"
-            :helpLabel="$t('help.is_published')"
-          ></help-label>
-          <q-toggle
-            v-model="add_published"
-            color="green"
-          ></q-toggle>
-          <br>
-          <q-checkbox
-            color="accent"
-            v-model="linkable"
-            :label="$t('input_labels.event_checkbox')"
-          />
-        </div>
         <div align="center">
           <q-btn
             no-caps
@@ -295,14 +297,16 @@ export default {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
         for (let i = 0; i < infoElem.translations.length; i += 1) {
           const translation = Object.assign({}, infoElem.translations[i])
-          delete translation.translationState
-          delete translation.published
-          this.saveInformationCategoryTranslationProd(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving information category production translation ${translation.lang}: ${err}`
+          if (translation.translationState > 2) {
+            delete translation.translationState
+            delete translation.published
+            this.saveInformationCategoryTranslationProd(translation).catch((err) => {
+              this.$q.notify({
+                type: 'negative',
+                message: `Error while saving information category production translation ${translation.lang}: ${err}`
+              })
             })
-          })
+          }
         }
       }
       this.updatePublished({ id, published: value }).catch((err) => {

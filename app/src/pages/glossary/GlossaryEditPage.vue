@@ -7,6 +7,8 @@
       pagetitle="glossary.edit"
       v-on:save="editGlossaryItemAndReturn($event)"
       :elem="elem"
+      :on_publish="onPublish"
+      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -30,8 +32,49 @@ export default {
       'editGlossaryItem',
       'editGlossaryItemTranslation',
       'deleteProdTranslations',
-      'addNewGlossaryItemTranslationProd'
+      'addNewGlossaryItemTranslationProd',
+      'updatePublished'
     ]),
+    onPublish(id) {
+      let glossaryElem = this.glossaryElemById(id)
+      for (let i = 0; i < glossaryElem.translations.length; i += 1) {
+        const translation = Object.assign({}, glossaryElem.translations[i])
+        delete translation.translationState
+        delete translation.published
+        this.addNewGlossaryItemTranslationProd(translation).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving glossary production translation ${translation.lang}: ${err}`
+          })
+        })
+      }
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
+    onUnpublish(id) {
+      this.deleteProdTranslations(id).then(() => {
+        console.log("Deleted prod translations")
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while deleting glossary production translations: ${err}`
+        })
+      })
+      this.updatePublished({ id, published }).then(() => {
+        //console.log("new published value for " + id + ": " + published)
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while updating published state: ${err}`
+        })
+      })
+    },
     editGlossaryItemAndReturn(data) {
       const router = this.$router
       const id = parseInt(this.$route.params.id, 10)
@@ -39,44 +82,12 @@ export default {
         id,
         published: data[0].published
       }
-      if (this.elem.published && data[0].translationState === 0) {
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting glossary production translations: ${err}`
-          })
-        })
-      }
-      if (this.elem.published && !glossaryData.published) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting glossary production translations: ${err}`
-          })
-        })
-      }
       this.editGlossaryItem(glossaryData).then(() => {
         for (let i = 0; i < data.length; i += 1) {
           const translation = data[i]
           delete translation.published
           const dataWithId = Object.assign(translation, { id: parseInt(this.$route.params.id) })
           this.editGlossaryItemTranslation(dataWithId).then(() => {
-            if (!this.elem.published && glossaryData.published && dataWithId.translationState === 4) {
-              // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-              delete dataWithId.translationState
-              delete dataWithId.published
-              this.addNewGlossaryItemTranslationProd(dataWithId).catch((err) => {
-                this.$q.notify({
-                  type: 'negative',
-                  message: `Error while saving glossary term production translation ${dataWithId.lang}: ${err}`
-                })
-              })
-            }
             if (i === data.length - 1) {
               router.push({ path: '/glossary' })
             }
