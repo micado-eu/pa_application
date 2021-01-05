@@ -82,7 +82,8 @@ module.exports = function (ctx) {
       env: {
         APP_BUILD_DATE: Date.now()
       },
-      //transpileDependencies: ['@bit/micado.shared.translatestatebutton'],
+      transpile: true,
+      transpileDependencies: ['fuse.js'],
       // showProgress: false,
       // gzip: true,
       // analyze: true,
