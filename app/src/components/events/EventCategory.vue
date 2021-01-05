@@ -22,7 +22,7 @@
             v-model="a_event_category.published"
             color="accent"
             @input="updatePublishedCat($event, a_event_category.id)"
-            disabled
+            disable
           />
         </q-item-section>
         <q-item-section

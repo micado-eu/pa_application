@@ -366,7 +366,7 @@
             v-model="published"
             color="accent"
             @input="showWarningPublish($event)"
-            :disabled="publishToggleState"
+            :disable="publishToggleState"
           ></q-toggle>
         </div>
         <div class="row q-my-xl">
