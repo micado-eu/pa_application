@@ -40,6 +40,7 @@
       </div>
     </div>
     <div class="center">
+      <UploadButton entity="process" />
       <q-list id="list">
     <q-item class="row" id="item">
     <q-item-section class="col-7 flex flex-left" id="left">
@@ -85,12 +86,14 @@
 import Process from 'components/guided_process_editor/Process'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import editEntityMixin from '../mixin/editEntityMixin'
+import UploadButton from 'components/UploadButton'
+
 
 
 export default {
   name: 'ProcessManager',
   components: {
-    Process
+    Process,UploadButton
   },
   mixins: [editEntityMixin,
    storeMappingMixin({

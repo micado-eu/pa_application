@@ -60,7 +60,7 @@ export default {
       default: '',
       validator: function (value) {
         // The value must match one of these strings
-        return ['glossary', 'intervention_category', 'event'].indexOf(value) !== -1
+        return ['glossary', 'intervention_category', 'event', 'process'].indexOf(value) !== -1
       }
     }
 
