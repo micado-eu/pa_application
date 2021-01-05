@@ -16,22 +16,25 @@
       user_types_enabled
       is_event
     />
+    <UploadButton entity="event" />
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ListSearchTags from 'components/ListSearchTags'
+import UploadButton from 'components/UploadButton'
 
 export default {
-  data() {
+  data () {
     return {
       loading: true,
       eventElems: []
     }
   },
   components: {
-    'list-search-tags': ListSearchTags
+    'list-search-tags': ListSearchTags, UploadButton
   },
   computed: {
     ...mapGetters('event', ['event', 'eventElemById']),
@@ -47,10 +50,10 @@ export default {
       'fetchAllEventUserTypes'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
-    getEditRoute(id) {
+    getEditRoute (id) {
       return `events/${id}/edit`
     },
-    deleteItem(item) {
+    deleteItem (item) {
       this.deleteEventItem(item)
         .then(() => {
           this.updateContent()
@@ -62,7 +65,7 @@ export default {
           })
         })
     },
-    updateContent() {
+    updateContent () {
       this.loading = true
       let promises = [this.fetchTopic(), this.fetchUserType(), this.fetchEvent(), this.fetchEventCategory()]
       Promise.all(promises)
@@ -103,7 +106,7 @@ export default {
         })
     }
   },
-  created() {
+  created () {
     this.updateContent()
   }
 }
