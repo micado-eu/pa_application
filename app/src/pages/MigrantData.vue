@@ -7,11 +7,12 @@
       id="second-div"
     >
       <UserProfile 
-      :umUserName="username"
+      :umUserName="the_user.umUserName"
       :fullname="legalName"
       :dateOfBirth="dateOfBirth"
       :nationality="nationality"
-      :gender="gender">
+      :gender="gender"
+      :userPicture="picture">
       </UserProfile>
     </div>
     <hr>
@@ -69,9 +70,17 @@ export default {
   },
   computed :{
     username () {
-      return this.the_user.attributes.filter((attr)=>{
+      /*return this.the_user.attributes.filter((attr)=>{
         return attr.umAttrName == "uid"
-      })[0].umAttrValue
+      })[0].umAttrValue*/
+    },
+    picture () {
+      if(this.the_user.userPicture){
+        return this.the_user.userPicture.picture
+      }
+      else{
+        return null
+      }
     },
     legalName () {
       var name = ""
@@ -143,7 +152,6 @@ export default {
        this.the_user = users
         console.log("return from fetch specific user")
         console.log(users)
-        this.loading=false
         /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
         this.the_user = temp[0]*/
         this.fetchReceipt({ tenant: users.tenant.umDomainName, principal: users.umUserName })
@@ -151,6 +159,7 @@ export default {
             console.log(receipt)
             this.theReceipt = receipt
           })
+        this.loading=false
       })
     this.fetchDocuments(this.theuserid)
       // this.$store.dispatch("documents/fetchDocuments")
@@ -163,7 +172,6 @@ export default {
     console.log(this.theuserid)
     
 
-    this.loading = true
     console.log(this.$store)
 
     this.fetchDocumentType()

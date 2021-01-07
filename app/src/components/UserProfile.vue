@@ -24,10 +24,18 @@
         </q-card-section >
 <div class="image-container">
         <img
+          v-if="userPicture == null"
           width="250px"
           height="250px"
           class="col-6 image"
           src="~assets/UserProfile.png"
+        />
+        <img
+          v-else
+          width="250px"
+          height="250px"
+          class="col-6 image"
+          :src="userPicture"
         />
     </div>
       </q-card-section>
@@ -39,7 +47,7 @@
 <script>
 export default {
   name: "UserProfile",
-  props:["umUserName", "fullname","dateOfBirth", "nationality", "gender"],
+  props:["umUserName", "fullname","dateOfBirth", "nationality", "gender", "userPicture"],
   components: {},
   computed: {},
   mounted() {},
