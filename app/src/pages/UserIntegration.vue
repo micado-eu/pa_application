@@ -130,7 +130,7 @@ export default {
       intervention_plans: 'intervention_plan/intervention_plans',
       users: 'user/users',
       documents: 'documents/my_documents',
-      completion_docs: 'documents/completion_documents',
+      completion_documents: 'documents/completion_documents',
       tenants: 'tenant/tenants'
     }, actions: {
       saveIntervention: 'intervention_plan/saveIntervention',
@@ -209,9 +209,11 @@ export default {
   methods: {
     findDoc(intervention){
       console.log("fetching doc")
+      console.log(this.$store.state.documents.completion_documents)
+      console.log(this.completion_documents)
       this.the_pic = null
       //console.log(id)
-      var intervention_doc = this.completion_docs.filter((doc)=>{
+      var intervention_doc = this.completion_documents.filter((doc)=>{
         return doc.idIntervention == intervention.id
       })[0]
       if(intervention_doc!= null){
@@ -237,9 +239,18 @@ export default {
       this.$router.push({ name: 'addinterventionplan', params: { theuser: this.the_user, theuserid: this.the_user.umId } })
     },
     deletePlan(id){
-      console.log("inside deleting plan")
-      console.log(id)
-      this.deleteInterventionPlan(id)
+       this.$q.notify({
+        type: 'warning',
+        message: 'Warning: This will delete the plan and all of its interventions. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+             console.log("inside deleting plan")
+             console.log(id)
+             this.deleteInterventionPlan(id) } },
+          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+        ]
+      })
+     
     },
     
     getTitle(id){
@@ -415,6 +426,8 @@ export default {
       })*/
       Promise.all(promise).then((promise_return)=>{
         console.log(this.intervention_plans)
+        console.log(this.completion_docs)
+        console.log(promise_return)
         console.log("returned all promises")
          this.fetchIntegrationType()
       .then(integration_types => {
@@ -436,6 +449,7 @@ export default {
         console.log(users)
       })  
       })
+      console.log(this.completion_docs)
       console.log("FINISHED CREATED")
       
     

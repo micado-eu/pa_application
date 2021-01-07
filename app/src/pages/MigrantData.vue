@@ -1,10 +1,17 @@
 <template>
-  <div class="q-pa-md first-div">
+<div>
+<span v-if="loading">Loading...</span>
+  <div v-if="!loading" class="q-pa-md first-div">
     <div
       class="q-pa-md col"
       id="second-div"
     >
-      <UserProfile :user="the_user">
+      <UserProfile 
+      :umUserName="username"
+      :fullname="legalName"
+      :dateOfBirth="dateOfBirth"
+      :nationality="nationality"
+      :gender="gender">
       </UserProfile>
     </div>
     <hr>
@@ -21,6 +28,7 @@
       >
       </Document>
     </q-list>
+  </div>
   </div>
 </template>
 
@@ -55,7 +63,63 @@ export default {
   data () {
     return {
       the_user: null,
-      theReceipt: null
+      theReceipt: null,
+      loading:true
+    }
+  },
+  computed :{
+    username () {
+      return this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "uid"
+      })[0].umAttrValue
+    },
+    legalName () {
+      var name = ""
+      var surname = ""
+      var name_arr = this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "givenName"
+      })
+      if(name_arr.length>0){
+        name = name_arr[0].umAttrValue 
+      }
+      var surname_arr = this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "sn"
+      })
+      if(name_arr.length>0){
+        surname = surname_arr[0].umAttrValue 
+      }
+      var fullname = name + " " + surname
+      return fullname
+    },
+    dateOfBirth () {
+      var dob=""
+      var dob_arr =  this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "dateOfBirth"
+      })
+      if(dob_arr.length>0){
+        dob = dob_arr[0].umAttrValue 
+      }
+      return dob
+    },
+    nationality () {
+      var country = ""
+      var country_arr = this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "country"
+      })
+      if(country_arr.length>0){
+        country = country_arr[0].umAttrValue 
+      }
+      return country
+    },
+    gender () {
+      var gender =""
+      var gender_arr =  this.the_user.attributes.filter((attr)=>{
+        return attr.umAttrName == "gender"
+      })
+      if(gender_arr.length>0){
+        gender = gender_arr[0].umAttrValue 
+      }
+      return gender
     }
   },
   methods: {
@@ -71,6 +135,23 @@ export default {
     }
   },
   created () {
+    const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    this.fetchSpecificUser(payload)
+      .then((users) => {
+        console.log('fetchSpecificUser - page')
+        console.log(users)
+       this.the_user = users
+        console.log("return from fetch specific user")
+        console.log(users)
+        this.loading=false
+        /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
+        this.the_user = temp[0]*/
+        this.fetchReceipt({ tenant: users.tenant.umDomainName, principal: users.umUserName })
+          .then((receipt) => {
+            console.log(receipt)
+            this.theReceipt = receipt
+          })
+      })
     this.fetchDocuments(this.theuserid)
       // this.$store.dispatch("documents/fetchDocuments")
       .then((documents) => {
@@ -80,22 +161,7 @@ export default {
       })
     console.log('userid=principal??')
     console.log(this.theuserid)
-    const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
-    this.fetchSpecificUser(payload)
-      .then((users) => {
-        console.log('fetchSpecificUser - page')
-        console.log(users)
-       this.the_user = users
-        console.log("return from fetch specific user")
-        console.log(users)
-        /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
-        this.the_user = temp[0]*/
-        this.fetchReceipt({ tenant: users.tenant.umDomainName, principal: users.umUserName })
-          .then((receipt) => {
-            console.log(receipt)
-            this.theReceipt = receipt
-          })
-      })
+    
 
     this.loading = true
     console.log(this.$store)

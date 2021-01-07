@@ -1,28 +1,25 @@
 <template>
 <div>
    <div class="row container">
-     <h3 class="header">{{user.umUserName}}</h3>
+     <h3 class="header">{{this.umUserName}}</h3>
      
     <q-card class="my-card" flat >
       <q-card-section horizontal>
         <q-card-section class="section">
          <div>
-      <span class="span-1">{{$t('profile.username')}}: </span><span class="span-2">{{user.umUserName}}</span>
+      <span class="span-1">{{$t('profile.username')}}: </span><span class="span-2">{{this.umUserName}}</span>
   </div>
   <div>
-      <span class="span-1">{{$t('profile.legal_name')}}: </span><span class="span-2">{{user.username}}</span>
+      <span class="span-1">{{$t('profile.legal_name')}}: </span><span class="span-2">{{this.fullname}}</span>
   </div>
   <div>
-      <span class="span-1">{{$t('profile.age')}}: </span><span class="span-2">{{user.age}}</span>
+      <span class="span-1">{{$t('profile.age')}}: </span><span class="span-2">{{this.dateOfBirth}}</span>
   </div>
   <div>
-      <span class="span-1">{{$t('profile.nationality')}}: </span><span class="span-2">{{user.nationality}}</span>
+      <span class="span-1">{{$t('profile.nationality')}}: </span><span class="span-2">{{this.nationality}}</span>
   </div>
   <div>
-      <span class="span-1">{{$t('profile.gender')}}: </span><span class="span-2">{{user.gender}}</span>
-  </div>
-  <div>
-      <span class="span-1">{{$t('profile.status')}}: </span><span class="span-2">{{user.user_type}}</span>
+      <span class="span-1">{{$t('profile.gender')}}: </span><span class="span-2">{{this.gender}}</span>
   </div>
         </q-card-section >
 <div class="image-container">
@@ -42,7 +39,7 @@
 <script>
 export default {
   name: "UserProfile",
-  props:["user"],
+  props:["umUserName", "fullname","dateOfBirth", "nationality", "gender"],
   components: {},
   computed: {},
   mounted() {},
