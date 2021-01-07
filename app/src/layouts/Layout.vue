@@ -40,7 +40,48 @@
       bordered
       content-class="bg-accent text-white"
     >
-      <q-list dark>
+      <div class="column flex-center q-gutter-y-md">
+        <q-btn
+          round
+          class="q-gutter-y-md"
+          v-if="isLoggedIn"
+        >
+          <q-avatar size="42px">
+            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+          </q-avatar>
+        </q-btn>
+      </div>
+
+      <q-item
+        clickable
+        @click="toLogin()"
+        v-if="!isLoggedIn"
+      >
+        <q-item-section avatar>
+          <q-icon name="exit_to_app" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('menu.login') }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item
+        clickable
+        @click="toLogout()"
+        v-if="isLoggedIn"
+      >
+        <q-item-section avatar>
+          <q-icon name="power_settings_new" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ $t('menu.logout') }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-list
+        dark
+        v-if="isLoggedIn"
+      >
         <q-item-label header>{{ $t('menu.title') }}</q-item-label>
         <q-item
           :disable="nav.auth != undefined ? !check(nav.auth) : false"
@@ -99,6 +140,16 @@ export default {
       }
     })],
   components: {
+  },
+  computed: {
+    isLoggedIn () {
+      console.log("called isloggedin")
+      return this.$auth.loggedIn()
+    }
+  },
+  created () {
+    console.log("AUTH IN LAYOUT")
+    console.log(this.$auth.loggedIn())
   },
   data () {
     return {
@@ -199,6 +250,12 @@ export default {
     }
   },
   methods: {
+    toLogin () {
+      this.$auth.login()
+    },
+    toLogout () {
+      this.$auth.logout()
+    },
     changeIcon (key) {
       console.log('selected key')
       this.selectedKey = key
