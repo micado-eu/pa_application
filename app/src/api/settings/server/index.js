@@ -9,6 +9,15 @@ export default {
             .then((response) => {
                 return response.data
             })
-            .catch(error_handler);
+            .catch(error_handler)
+    },
+    updateSingleSetting (data) {
+
+        return axiosInstance
+            .patch('/backend/1.0.0/settings/' + data.key, data)
+            .then((response) => {
+                return response.data
+            })
+            .catch(error_handler)
     }
 }

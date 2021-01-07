@@ -136,6 +136,8 @@
     "intervention_categories": "Intervention Categories",
     "intervention_types": "Intervention Types",
     "usermgmt": "PA users management",
+    "default_language": "Default base language for MICADO platform",
+    "set_default_language": "Set language",
     "user_types": "User Types"
   },
   "input_labels": {

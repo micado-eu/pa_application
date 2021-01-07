@@ -22,6 +22,32 @@
     </q-card>
     <q-card>
       <q-card-section>
+        <div class="text-h4">{{$t('data_settings.default_language')}}</div>
+      </q-card-section>
+      <q-card-section>
+
+        <q-select
+          filled
+          v-model="def_lang"
+          :options="langOptions"
+          option-value="lang"
+          option-label="name"
+          option-disable="inactive"
+          emit-value
+          map-options
+          @input="updateDefLang"
+          style="min-width: 250px; max-width: 300px"
+        />
+        <q-btn
+          :label="$t('data_settings.set_default_language')"
+          @click="saveDefLang"
+        ></q-btn>
+
+      </q-card-section>
+
+    </q-card>
+    <q-card>
+      <q-card-section>
         <div class="text-h4">{{$t('data_settings.manage_translations')}}</div>
       </q-card-section>
       <q-card-section>
@@ -41,11 +67,20 @@ import weblateClient from 'api-weblate-client'
 
 export default {
   name: "LanguageSettings",
+  data () {
+    return {
+      def_lang: this.$defaultLang
+    }
+  },
   computed: {
-    ...mapGetters("language", ["languages"])
+    ...mapGetters("language", ["languages"]),
+    langOptions () {
+      return this.languages
+    }
   },
   methods: {
     ...mapActions("language", ["fetchLanguages", "setLanguageActive"]),
+    ...mapActions("settings", ["updateSetting"]),
     setActive (language) {
       let newLanguage = {
         lang: language.lang,
@@ -54,6 +89,19 @@ export default {
         active: !language.active
       }
       this.setLanguageActive(newLanguage)
+    },
+    updateDefLang (val) {
+      console.log(val)
+    },
+    saveDefLang () {
+      console.log(this.def_lang)
+      let setting = { key: "default_language", value: this.def_lang }
+      this.updateSetting(setting)
+        .then((result) => {
+          console.log(result)
+          //       window.location.reload()
+        })
+
     },
     sendToTranslation () {
       weblateClient.sendToTranslation()

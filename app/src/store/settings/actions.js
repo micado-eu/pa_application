@@ -3,7 +3,7 @@ import client from 'api-settings-client'
 export function someAction (context) {
 }
 */
-export function fetchSettings(store, data) {
+export function fetchSettings (store, data) {
   const now = new Date().getTime()
   console.log(now)
   console.log(store.state.last_refresh)
@@ -22,4 +22,17 @@ export function fetchSettings(store, data) {
   console.log('getting data from cache')
   console.log(store)
   return store.getters.settings
+}
+
+export function updateSetting (store, data) {
+  console.log(data)
+  client.updateSingleSetting(data)
+    .then((res) => {
+      console.log(res)
+      //      console.log(store.state.settings)
+      store.commit('setSetting', data)
+      console.log(store.state.settings)
+
+      return res
+    })
 }
