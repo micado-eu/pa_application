@@ -138,6 +138,8 @@
     "usermgmt": "PA users management",
     "default_language": "Default base language for MICADO platform",
     "set_default_language": "Set language",
+    "feature_settings": "MICADO applications' configuration",
+    "pa_logo": "Logo of the hosting Public Administration",
     "user_types": "User Types"
   },
   "input_labels": {

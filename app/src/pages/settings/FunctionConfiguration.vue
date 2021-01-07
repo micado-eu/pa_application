@@ -1,9 +1,9 @@
 <template>
   <div class="q-pa-md">
-    <h5>{{$options.name}}</h5>
+    <h5>{{$t('data_settings.settings')}}</h5>
     <q-card class="my-card">
       <q-card-section>
-        <div class="text-h6">Migrant application configuration</div>
+        <div class="text-h6">{{$t('data_settings.feature_settings')}}</div>
       </q-card-section>
       <q-card-section>
         <FeaturesElement
@@ -19,29 +19,50 @@
         />
       </q-card-section>
     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.pa_logo')}}</div>
+      </q-card-section>
+      <q-card-section>
+        <croppa
+          v-model="myCroppa"
+          :width="150"
+          :height="150"
+          :quality="1"
+        ></croppa>
+        <q-btn
+          color="accent"
+          glossy
+          label="Save"
+          @click="saveLogo"
+        />
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import FeaturesElement from '../../components/settings/FeaturesElement'
-
-
+//import Croppa from 'vue-croppa'
+import 'vue-croppa/dist/vue-croppa.css'
 export default {
   name: "FunctionConfiguration",
   data () {
     return {
       group: ["FEAT_SERVICES"],
-      workingFeatures: []
-    };
+      workingFeatures: [],
+      myCroppa: {}
+    }
   },
   mixins: [
     storeMappingMixin({
       getters: {
-        features: 'features/features',
+        features: 'features/features'
       }, actions: {
         fetchFeatures: 'features/fetchFeatures',
-        updateAllFeatures: 'features/updateAllFeatures'
+        updateAllFeatures: 'features/updateAllFeatures',
+        updateSetting: 'settings/updateSetting'
       }
     })],
   components: {
@@ -84,14 +105,23 @@ export default {
         });
         */
       this.updateAllFeatures(this.workingFeatures)
-      console.log("posted");
+      console.log("posted")
       this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+    },
+    saveLogo () {
+      console.log(this.myCroppa.generateDataUrl())
+      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() }
+      this.updateSetting(setting)
+        .then((result) => {
+          console.log(result)
+          //       window.location.reload()
+        })
     }
 
   },
   created () {
     console.log("created")
-    console.log(this.features);
+    console.log(this.features)
     this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     /*
     this.fetchFeatures()
@@ -103,5 +133,5 @@ export default {
       */
 
   }
-};
+}
 </script>
