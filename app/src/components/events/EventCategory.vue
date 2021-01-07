@@ -2,10 +2,16 @@
   <div :id="$options.name">
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t("events.categories_title")}}</div>
     <span v-if="errorMessage">{{$t(errorMessage)}}</span>
+    <upload-button
+      entity="event_category"
+      class="q-mt-xl q-mx-xl q-mb-md"
+      @uploadSuccess="initialize()"
+      @uploadError="printBatchError($event)"
+    ></upload-button>
     <q-list
       bordered
       separator
-      class="q-pa-sm q-ma-xl element-list"
+      class="q-pa-sm q-mx-xl q-mb-xl element-list"
     >
       <q-item
         clickable
@@ -159,6 +165,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import UploadButton from 'components/UploadButton'
 
 export default {
   name: 'EventCategory',
@@ -179,7 +186,8 @@ export default {
     }
   },
   components: {
-    'help-label': HelpLabel
+    'help-label': HelpLabel,
+    'upload-button': UploadButton
   },
   computed: {
     ...mapGetters('event_category', ['eventCategories', 'eventCategoryById']),
@@ -320,33 +328,42 @@ export default {
           message: `Error while updating published state: ${err}`
         })
       })
+    },
+    initialize() {
+      this.createShell()
+      this.loading = true
+      this.fetchEventCategory()
+        .then((processes) => {
+          this.fetchEvent().then(() => {
+            for (const inf of this.event) {
+              if (!this.disabledDelete.includes(inf.category)) {
+                this.disabledDelete.push(inf.category)
+              }
+            }
+            this.loading = false
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while fetching events: ${err}`
+            })
+          })
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching event categories: ${err}`
+          })
+        })
+    },
+    printBatchError(error) {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while uploading: ${error}`
+      })
     }
   },
   // store.commit('increment', 10)
   created() {
-    this.createShell()
-    this.loading = true
-    this.fetchEventCategory()
-      .then((processes) => {
-        this.fetchEvent().then(() => {
-          for (const inf of this.event) {
-            if (!this.disabledDelete.includes(inf.category)) {
-              this.disabledDelete.push(inf.category)
-            }
-          }
-          this.loading = false
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while fetching events: ${err}`
-          })
-        })
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while fetching event categories: ${err}`
-        })
-      })
+    this.initialize()
   }
 }
 </script>

@@ -48,7 +48,7 @@
 import FormData from 'form-data'
 export default {
   name: 'UploadButton',
-  data () {
+  data() {
     return {
       files: null,
       show_dialog: false
@@ -60,13 +60,21 @@ export default {
       default: '',
       validator: function (value) {
         // The value must match one of these strings
-        return ['glossary', 'intervention_category', 'event', 'process'].indexOf(value) !== -1
+        return [
+          'glossary',
+          'intervention_category',
+          'event',
+          'process',
+          'information',
+          'information_category',
+          'event_category'
+        ].indexOf(value) !== -1
       }
     }
 
   },
   computed: {
-    staticUrl () { return "/statics/csv/" + this.entity + ".csv" }
+    staticUrl() { return "/statics/csv/" + this.entity + ".csv" }
   },
 
   methods: {
@@ -81,7 +89,7 @@ export default {
 
 
       //      console.log(formData.getHeaders())
-
+      const self = this
       this.$axios.post('/backend/1.0.0/files',
         formData,
         {
@@ -89,11 +97,11 @@ export default {
         }
       ).then(function () {
         console.log('SUCCESS!!')
+        self.$emit("uploadSuccess", true)
+      }).catch(function (err) {
+        console.log('FAILURE!!')
+        self.$emit("uploadError", err)
       })
-        .catch(function () {
-          console.log('FAILURE!!')
-
-        })
 
     }
   }
