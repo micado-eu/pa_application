@@ -34,6 +34,7 @@
           <q-btn
             flat
             :label="$t('button.upload')"
+            :disable="files == null"
             color="alert"
             @click="uploadFile()"
             v-close-popup
