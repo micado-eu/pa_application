@@ -5,5 +5,6 @@
     "identityUrl": "$IDENTITY_HOSTNAME",
     "countlyAppKey": "$COUNTLY_PA_APP_KEY",
     "identitySPclientId": "$IDENTITY_SP_PA_CLIENT_ID",
+    "appBuildDate": "$APP_BUILD_DATE",
     "paUrl": "$PA_HOSTNAME"
 }
