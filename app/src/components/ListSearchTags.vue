@@ -176,10 +176,17 @@
           <q-btn
             no-caps
             :label='$t(add_label)'
-            class="add-btn q-ml-md q-my-lg margin-right-btn"
+            class="add-btn q-ml-md"
             data-cy="add_element"
             :to="new_url"
           />
+        </div>
+        <div class="row">
+          <upload-button
+            :entity="entity"
+            @uploadSuccess="batchUploadSuccess($event)"
+            @uploadError="batchUploadError($event)"
+          ></upload-button>
         </div>
         <div class="flex">
           <!-- column title -->
@@ -231,7 +238,7 @@
                   </span>
                   <span
                     class="q-mr-md tags_text"
-                    v-if="categories_enabled"
+                    v-if="categories_enabled && item.category"
                   >
                     {{$t("lists.category")}}: {{item.category.category}}
                   </span>
@@ -269,7 +276,7 @@
                     >
                       {{$t("lists.start_date")}}: {{item.startDate}}
                     </span>
-                    <br/>
+                    <br />
                     <span
                       class="date-text q-mb-sm"
                       v-if="is_event && showDates[item.id]"
@@ -335,6 +342,7 @@
 import { mapActions, mapGetters } from 'vuex'
 import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
+import UploadButton from 'components/UploadButton'
 
 export default {
   name: 'ListSearchTags',
@@ -396,6 +404,9 @@ export default {
     is_event: {
       type: Boolean,
       default: false
+    },
+    entity: {
+      type: String
     }
   },
   data() {
@@ -425,7 +436,8 @@ export default {
     }
   },
   components: {
-    'glossary-editor-viewer': GlossaryEditorViewer
+    'glossary-editor-viewer': GlossaryEditorViewer,
+    'upload-button': UploadButton
   },
   methods: {
     ...mapActions('glossary', ['fetchGlossary']),
@@ -528,6 +540,15 @@ export default {
     toggleDate(id) {
       this.showDates[id] = !this.showDates[id]
     },
+    batchUploadSuccess(success) {
+      this.$emit("batchUpload")
+    },
+    batchUploadError(error) {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while uploading: ${err}`
+      })
+    },
     initializeList() {
       this.translatedElements = this.elements.map((e) => {
         let translation
@@ -536,7 +557,7 @@ export default {
           if (idx !== -1) {
             translation = { ...e.translations[idx] }
             translation.id = e.id // In case of errors we still have the id
-            if (this.categories_enabled) {
+            if (this.categories_enabled && e.category) {
               const idxCat = e.category.translations.findIndex((t) => t.lang === this.lang)
               translation.category = e.category.translations[idxCat]
               if (this.translatedCategories.indexOf(translation.category) == -1) {
@@ -675,14 +696,14 @@ $btn_secondary: #cdd0d2;
   border-radius: 5px;
   margin-right: 85px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
 }
 .cat-btn {
   background-color: $accent_list;
   color: white;
   border-radius: 5px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
 }
 .toolbar-list {
   background-color: $accent_list;
@@ -763,7 +784,7 @@ $btn_secondary: #cdd0d2;
 .search-bar {
   border-radius: 5px;
   margin-top: 65px;
-  margin-bottom: 75px;
+  margin-bottom: 25px;
   max-width: 75%;
 }
 .filter-list {
