@@ -15,16 +15,15 @@
       topics_enabled
       user_types_enabled
       is_event
+      entity="event"
+      @batchUpload="updateContent()"
     />
-    <UploadButton entity="event" />
-
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import ListSearchTags from 'components/ListSearchTags'
-import UploadButton from 'components/UploadButton'
 
 export default {
   data () {
@@ -34,7 +33,7 @@ export default {
     }
   },
   components: {
-    'list-search-tags': ListSearchTags, UploadButton
+    'list-search-tags': ListSearchTags
   },
   computed: {
     ...mapGetters('event', ['event', 'eventElemById']),

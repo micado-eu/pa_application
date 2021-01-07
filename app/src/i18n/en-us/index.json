@@ -77,7 +77,9 @@
     "chatbot": "MICADO Bot",
     "chatbot_desc": "Manage and train the MICADO Bot",
     "events": "Events",
-    "events_desc": "Manage the events"
+    "events_desc": "Manage the events",
+    "login": "Login",
+    "logout": "Logout"
   },
   "button": {
     "add_document": "Add Document",

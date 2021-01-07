@@ -7,6 +7,9 @@ RUN npm install
 RUN quasar build
 
 FROM alpine
+ARG APP_BUILD_DATE
+ENV APP_BUILD_DATE=${APP_BUILD_DATE:-0}
+LABEL org.label-schema.build-date=$APP_BUILD_DATE 
 RUN apk add --no-cache gettext
 COPY --from=build-stage /code/dist/spa /var/www/html2
 #COPY site/index.html /var/www/html2/index.html

@@ -11,6 +11,8 @@
       add_label="button.add_glossary"
       title="glossary.list_title"
       alphabetical_sorting
+      entity="glossary"
+      @batchUpload="updateContent()"
     />
   </div>
 </template>
@@ -51,18 +53,21 @@ export default {
             message: `Error while deleting glossary term: ${err}`
           })
         })
+    },
+    updateContent() {
+      this.loading = true
+      this.fetchGlossary().then(() => {
+        this.loading = false
+      }).catch((err) => {
+        this.$q.notify({
+          type: 'negative',
+          message: `Error while fetching glossary: ${err}`
+        })
+      })
     }
   },
   created() {
-    this.loading = true
-    this.fetchGlossary().then(() => {
-      this.loading = false
-    }).catch((err) => {
-      this.$q.notify({
-        type: 'negative',
-        message: `Error while fetching glossary: ${err}`
-      })
-    })
+    this.updateContent()
   }
 }
 </script>

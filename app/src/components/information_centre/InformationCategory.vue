@@ -2,6 +2,12 @@
   <div :id="$options.name">
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t("information_centre.categories_title")}}</div>
     <span v-if="errorMessage">{{$t(errorMessage)}}</span>
+    <upload-button
+      entity="information_category"
+      class="q-mt-xl q-mx-xl q-mb-md"
+      @uploadSuccess="initialize()"
+      @uploadError="printBatchError($event)"
+    ></upload-button>
     <q-list
       bordered
       separator
@@ -159,6 +165,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import UploadButton from 'components/UploadButton'
 
 export default {
   name: "InformationCategory",
@@ -179,7 +186,8 @@ export default {
     }
   },
   components: {
-    'help-label': HelpLabel
+    'help-label': HelpLabel,
+    'upload-button': UploadButton
   },
   computed: {
     ...mapGetters('information_category', ['informationCategories', 'informationCategoryById']),
@@ -315,34 +323,42 @@ export default {
           message: `Error while updating published state: ${err}`
         })
       })
+    },
+    initialize() {
+      this.createShell()
+      this.loading = true
+      this.fetchInformationCategory()
+        .then(processes => {
+          this.fetchInformation().then(() => {
+            for (let inf of this.information) {
+              if (!this.disabledDelete.includes(inf.category)) {
+                this.disabledDelete.push(inf.category)
+              }
+            }
+            this.loading = false
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while fetching information: ${err}`
+            })
+          })
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while fetching information categories: ${err}`
+          })
+        })
+    },
+    printBatchError(error) {
+      this.$q.notify({
+        type: 'negative',
+        message: `Error while uploading: ${error}`
+      })
     }
   },
   //store.commit('increment', 10)
   created() {
-    this.createShell()
-    this.loading = true
-    this.fetchInformationCategory()
-      .then(processes => {
-        this.fetchInformation().then(() => {
-          for (let inf of this.information) {
-            if (!this.disabledDelete.includes(inf.category)) {
-              this.disabledDelete.push(inf.category)
-            }
-          }
-          this.loading = false
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while fetching information: ${err}`
-          })
-        })
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while fetching information categories: ${err}`
-        })
-      })
-
+    this.initialize()
   }
 }
 </script>
