@@ -4,14 +4,14 @@
     <div class="group" ref="group">
       <div class="row" id="header">
         <h5>{{category}}&nbsp;&nbsp;</h5>
-        <q-btn
+        <!-- <q-btn
           id="printbtn"
           color="grey"
           icon="print"
           round
           title="print this page"
           @click="printPNG()"
-        />
+        /> -->
       </div>
       <div class="row">
         <div v-for="(d,i) in graph_data" :key="i" class="col-12">
@@ -41,7 +41,7 @@ export default {
   computed: {
     charts() {
       return [
-        ...this.$store.state.statistics.charts,
+        ...this.$store.state.statistics.charts
         // // FIXME: mockdata for map chart
         // {
         //   board: 'hamburg',
