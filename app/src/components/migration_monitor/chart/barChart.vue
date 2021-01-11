@@ -44,6 +44,7 @@
     >{{catAxis}}</text>
     <ChartAxisBottom
       v-if="sizeSet"
+      :length="content.length"
       :scaleX="scaleX"
       :key="xid"
       :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"

@@ -5,11 +5,11 @@
 
 <script>
 
-import { Style, Stroke, Fill } from "ol/style.js";
-import * as mpapi from "masterportalAPI";
-import services from "../../api/map/config/services.json";
-import portalConfig from "../../api/map/config/portal.json";
-import localGeoJSON from "../../api/map/config/localGeoJSON.js";
+import { Style, Stroke, Fill } from "ol/style.js"
+import * as mpapi from "masterportalAPI"
+import services from "../../api/map/config/services.json"
+import portalConfig from "../../api/map/config/portal.json"
+import localGeoJSON from "../../api/map/config/localGeoJSON.js"
 
 
 export default {
@@ -19,18 +19,18 @@ export default {
   },
   computed: {
     timeseries: function() {
-      return this.$store.state.statistics.timeseries.data.timeseries;
+      return this.$store.state.statistics.timeseries.data.timeseries
     },
     origins: function() {
-      return this.$store.state.statistics.origin.data;
+      return this.$store.state.statistics.origin.data
     },
     migrants: function() {
-      return this.$store.state.statistics.migrants.data.migrants;
+      return this.$store.state.statistics.migrants.data.migrants
     }
   },
   mounted: function() {
   }
-};
+}
 </script>
 
 <style scoped>

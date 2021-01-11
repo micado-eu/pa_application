@@ -229,14 +229,14 @@ export default {
           feature: "FEAT_GLOSSARY",
           description: 'menu.glossary_desc'
         },
-        {
+        /*{
           label: 'menu.chatbot',
           icon: 'img:statics/icons/Icon - Chatbot.png',
           active_icon: 'img:statics/icons/Icon - Chatbot (selected).png',
           to: '/chatbot',
           feature: "FEAT_ASSISTANT",
           description: 'menu.chatbot_desc'
-        },
+        },*/
         {
           label: 'menu.setting',
           icon: 'img:statics/icons/Icon - Settings.png',

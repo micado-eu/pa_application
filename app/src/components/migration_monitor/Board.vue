@@ -1,10 +1,35 @@
 <template>
   <div class="board">
-    <div class="charts" ref="charts">
+    <div id="header" class="q-pa-md row">
+      <div id="header-content">
+        <q-select
+          class="col-10"
+          outlined
+          v-model="printList"
+          multiple
+          :options="categories.map((c) => c.category)"
+          label="Select categories to print"
+          style="width: 250px"
+        />
+        <q-btn
+          no-caps
+          class="q-ml-md"
+          label="print"
+          color="info"
+          size="lg"
+          v-close-popup
+          @click="printPNG()"
+        />
+      </div>
+    </div>
+
+    <div class="charts">
       <ChartGroup
-        v-for="(c,i) in categories"
-        :key="board+'_'+i"
+        v-for="(c, i) in categories"
+        ref="group"
+        :key="board + '_' + i"
         :category="c.category"
+        :id="c.category"
         :board="board"
         @group-clicked="renderModal"
       />
@@ -14,11 +39,13 @@
 </template>
 
 <script>
-import ChartGroup from './ChartGroup'
-import Modal from './modal/Modal'
+import ChartGroup from "./ChartGroup"
+import Modal from "./modal/Modal"
+import htmlToImage from "html-to-image"
+import download from "downloadjs"
 
 export default {
-  name: 'Board',
+  name: "Board",
   components: {
     ChartGroup,
     Modal
@@ -26,7 +53,8 @@ export default {
   data() {
     return {
       showModal: false,
-      grahDataId: null
+      grahDataId: null,
+      printList: []
     }
   },
   computed: {
@@ -48,6 +76,15 @@ export default {
     renderModal(grahDataId) {
       this.grahDataId = grahDataId
       this.showModal = true
+    },
+    printPNG() {
+      this.$refs.group.forEach((group) => {
+        if (this.printList.indexOf(group.category) > -1) {
+          htmlToImage.toPng(group.$el, {}).then((dataUrl) => {
+            download(dataUrl, `${group.category}.png`)
+          })
+        }
+      })
     }
   }
 }
@@ -64,18 +101,22 @@ export default {
   padding-bottom: 10rem;
 }
 
-.col {
-  flex: 1;
-  text-decoration: none;
-  color: black;
-  display: flex;
-  justify-content: center;
-}
-
 p {
   margin: 0;
 }
+
 .q-icon {
   font-size: 24px;
+}
+
+#header {
+  position: fixed;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100%;
+}
+
+#header-content {
+  display: flex;
+  margin-left: 5%;
 }
 </style>
