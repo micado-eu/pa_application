@@ -11,6 +11,7 @@
           :key="language.isoCode"
           :outline="!language.active"
           :style="language.active"
+          :disable="language.lang===def_lang"
           class="q-mx-sm language_btn"
           :label="language.name"
           @click="setActive(language)"
