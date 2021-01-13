@@ -1,5 +1,5 @@
 <template>
-  <div class="row items-center all-pointer-events div-3" style="padding-top:10px">
+  <div class="row items-center all-pointer-events div-3" style="padding-top:10px; font-size:16px">
     <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
       {{this.fieldLabel}}
     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">
