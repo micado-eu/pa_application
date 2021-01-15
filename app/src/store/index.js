@@ -77,7 +77,7 @@ export default function (/* { ssrContext } */) {
     // for dev mode only
     strict: process.env.DEV,
     plugins: [createPersistedState({
-      paths: ['auth.user']
+      paths: ['auth']
     })]
   })
 
