@@ -32,6 +32,7 @@ import IntegrationType from '../components/data_settings/IntegrationType'
 import FunctionConfiguration from '../pages/settings/FunctionConfiguration'
 import UserManagement from '../pages/settings/UserManagement'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
+import ProfileSettings from '../pages/ProfileSettings'
 
 const routes = [
   {
@@ -50,6 +51,7 @@ const routes = [
           { path: 'user_types', component: UserType },
           { path: 'settings', component: FunctionConfiguration },
           { path: 'usermgmt', component: UserManagement },
+          { path: 'profile_settings', component: ProfileSettings },
           { path: 'language', component: ActiveLanguageSelector }
         ]
       },

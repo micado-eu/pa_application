@@ -140,7 +140,8 @@
     "set_default_language": "Set language",
     "feature_settings": "MICADO applications' configuration",
     "pa_logo": "Logo of the hosting Public Administration",
-    "user_types": "User Types"
+    "user_types": "User Types",
+    "profile_settings":"Profile settings"
   },
   "input_labels": {
     "validator": "To be validated by",
@@ -220,6 +221,18 @@
     "age": "Age",
     "gender": "Gender",
     "status": "Status"
+  },
+  "pa_profile":{
+    "change_pic": "Change picture",
+    "username": "Username",
+    "password": "Password",
+    "legal_name": "Legal Name",
+    "country": "Country",
+    "dob": "Date of Birth",
+    "gender": "Gender",
+    "personal_profile": "Personal Profile",
+    "phone_number":"Phone Number",
+    "mail":"Email"
   },
   "information_centre": {
     "list_title": "Information centre",

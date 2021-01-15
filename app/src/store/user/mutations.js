@@ -10,6 +10,11 @@ export function setUser (state, user) {
 export function setPAUser (state, pauser) {
   state.pauser = pauser
 }
+
+export function setPAUserProfile (state, paUserProfile) {
+  console.log("in pa user mutation")
+  state.paUserProfile = paUserProfile
+}
 export function editUser (state, user) {
   console.log("update the state")
   const index = state.user.findIndex(item => item.id === user.id)

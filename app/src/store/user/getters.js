@@ -8,6 +8,10 @@ export function UserById (state) {
 export function users (state) {
   return state.user
 }
+export function paUserProfile (state) {
+  console.log("aske for pa user profile")
+  return state.paUserProfile
+}
 
 export function pausers (state) {
   return state.pauser

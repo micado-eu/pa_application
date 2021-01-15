@@ -1,5 +1,6 @@
 export default {
   //
   user: [],
-  pauser: []
+  pauser: [],
+  paUserProfile:[]
 }

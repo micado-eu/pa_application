@@ -66,6 +66,15 @@
           >
             <q-item-section>{{ $t('data_settings.usermgmt') }}</q-item-section>
           </q-item>
+          <q-item
+            :data-cy="'data_settings.profile_settings'.replace('.', '_')"
+            clickable
+            to="/data_settings/profile_settings"
+            class="situation-menu-item"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.profile_settings') }}</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>
