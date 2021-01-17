@@ -21,6 +21,7 @@ import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import MigrationSitOverview from '../components/migration_monitor/overview/Overview.vue'
+import MigrationSitMain from '../components/migration_monitor/Main.vue'
 import chatBot from '../components/ChatBot.vue'
 import InformationCategory from '../components/information_centre/InformationCategory.vue'
 import EventCategory from '../components/events/EventCategory.vue'
@@ -102,6 +103,7 @@ const routes = [
         path: '/situation',
         component: MigrationSituation,
         children: [
+          { path: 'main', component: MigrationSitMain },
           { path: 'editor', component: MigrationSitEditor },
           { path: 'overview', component: MigrationSitOverview },
           { path: 'map', component: MasterPortal },

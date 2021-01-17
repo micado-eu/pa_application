@@ -12,7 +12,7 @@
           <template v-for="(menuItem, i) in menuItems">
             <q-separator class="bg-dark-separator" :key="'sep_u_' + i" />
             <q-item
-              v-if="menuItem.title !=='Dashboards'"
+              v-if="menuItem.title !== 'Dashboards'"
               :key="i + '_category'"
               :header-inset-level="1"
               clickable
@@ -23,7 +23,7 @@
             </q-item>
             <q-expansion-item
               class="text-weight-bold"
-              v-if="menuItem.title ==='Dashboards'"
+              v-if="menuItem.title === 'Dashboards'"
               :key="i"
               :to="menuItem.link"
               active-class="my-menu-link"
@@ -70,6 +70,7 @@ export default {
     },
     menuItems() {
       return [
+        { title: "Main page", link: "/situation/main", children: [] },
         { title: "Overview", link: "/situation/overview", children: [] },
         { title: "Map", link: "/situation/map", children: [] },
         {

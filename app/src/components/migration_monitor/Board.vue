@@ -110,13 +110,11 @@ p {
 }
 
 #header {
-  position: fixed;
   background-color: rgba(255, 255, 255, 0.6);
   width: 100%;
 }
 
 #header-content {
   display: flex;
-  margin-left: 5%;
 }
 </style>

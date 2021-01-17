@@ -110,19 +110,12 @@ export default {
 </script>
 
 <style scoped>
-#card {
-  margin: auto;
-  width: 97%;
-  margin-top: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
-}
 .info-content {
   font-size: 1rem;
   /* margin: 50px; */
 }
 h6 {
-  padding: 20px 0 0 0;
+  padding: 0;
   margin: 0;
   text-align: center;
 }
@@ -134,6 +127,7 @@ h6 {
   padding: 0px 16px;
 }
 #header{
+  padding:0;
   display: flex;
   justify-content: center;
   align-items: center;

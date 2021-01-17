@@ -1,9 +1,8 @@
 <template>
   <div :id="category">
-
     <div class="group" ref="group">
       <div class="row" id="header">
-        <h5>{{category}}&nbsp;&nbsp;</h5>
+        <h1>{{category}}&nbsp;&nbsp;</h1>
         <!-- <q-btn
           id="printbtn"
           color="grey"
@@ -14,7 +13,7 @@
         /> -->
       </div>
       <div class="row">
-        <div v-for="(d,i) in graph_data" :key="i" class="col-12">
+        <div v-for="(d,i) in graph_data" :key="i" class="col-6">
           <Chart :graph-data="d" @chart-clicked="sendData" />
         </div>
       </div>
@@ -80,11 +79,15 @@ export default {
 <style scoped>
 .group{
   background-color: white;
-  padding:20px;
+  margin: auto;
+  width: 97%;
+  margin-top: 20px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 }
-h5 {
-  margin: 0;
-  padding-top: 75px;
+h1 {
+  font-size:2rem;
+  margin: 0 auto;
 }
 h6 {
   display: inline-block;
@@ -117,11 +120,6 @@ p {
 }
 .q-icon {
   font-size: 24px;
-}
-#header{
-  display:flex;
-  align-items: flex-end;
-  justify-content: space-between;
 }
 #printbtn{
   height:42px;

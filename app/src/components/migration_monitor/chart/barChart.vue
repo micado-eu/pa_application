@@ -90,7 +90,7 @@ export default {
         bottom: 60
       },
       width: '100%',
-      height: '70%',
+      height: '60%',
       xid: 'x0',
       yid: 'y0',
       resizeTimeout: false,
