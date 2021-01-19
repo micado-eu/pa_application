@@ -527,34 +527,39 @@ export default {
       if (this.$refs.editor) {
         this.$refs.editor.setContent(this.internalDescription)
       }
-      this.selectedTranslationState = element.translationState
     },
     saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang,
-        published: this.published,
-        translationState: this.selectedTranslationState
-      }
-      if (this.categories_enabled) {
-        translation.category = this.selectedCategoryObject
-      }
-      if (this.topics_enabled) {
-        translation.topics = this.selectedTopicsObjects
-      }
-      if (this.user_types_enabled) {
-        translation.userTypes = this.selectedUserTypesObjects
-      }
-      if (this.is_event) {
-        translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
-        translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
+        lang
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
       } else {
         this.savedTranslations.push(translation)
+      }
+      for (const savedTranslation of this.savedTranslations) {
+        savedTranslation.published = this.published
+        savedTranslation.translationState = this.selectedTranslationState
+        if (this.categories_enabled) {
+          translation.category = this.selectedCategoryObject
+        }
+        if (this.topics_enabled) {
+          translation.topics = this.selectedTopicsObjects
+        }
+        if (this.user_types_enabled) {
+          translation.userTypes = this.selectedUserTypesObjects
+        }
+        if (this.is_event && this.startDate && this.startTime) {
+          if (this.startDate && this.startTime) {
+            translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
+          }
+          if (this.finishDate && this.finishTime) {
+            translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
+          }
+        }
       }
     },
     resetFields(al) {
@@ -563,7 +568,6 @@ export default {
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
-      this.selectedTranslationState = 0
     },
     setInternalCategorySelector(al) {
       this.internalCategories = this.categories.map((ic) => {
@@ -684,7 +688,7 @@ export default {
               title: '',
               description: '',
               lang: language.lang,
-              translationState: 0
+              translationState: this.selectedTranslationState
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -794,7 +798,7 @@ export default {
         if (sTSIdx !== -1) {
           this.selectedTranslationState = this.elem.translations[sTSIdx].translationState
         }
-        if (this.categories_enabled) {
+        if (this.categories_enabled && this.elem.category !== null) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category
           )
