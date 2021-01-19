@@ -296,7 +296,7 @@ export default {
     },
     updatePublishedCat(value, id) {
       let eventElem = this.eventCategoryById(id)
-      if (eventElem.translations[0].translationState === 4 && eventElem.published && !published) {
+      if (eventElem.translations[0].translationState === 3 && eventElem.published && !published) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations(id).then(() => {
           console.log("Deleted prod translations")
@@ -306,7 +306,7 @@ export default {
             message: `Error while deleting event category production translations: ${err}`
           })
         })
-      } else if (eventElem.translations[0].translationState === 4 && !eventElem.published && published) {
+      } else if (eventElem.translations[0].translationState === 3 && !eventElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
         for (let i = 0; i < eventElem.translations.length; i += 1) {
           const translation = Object.assign({}, eventElem.translations[i])

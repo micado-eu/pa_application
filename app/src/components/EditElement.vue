@@ -15,11 +15,11 @@
           >{{$t("error_messages.fill_default_language")}} {{$defaultLangString}}</span>
           <span
             class="warning-error col"
-            v-if="selectedTranslationState === 3"
+            v-if="selectedTranslationState === 2"
           >{{$t("error_messages.in_translation")}}</span>
           <span
             class="warning-error col"
-            v-if="(selectedTranslationState === 4) && elem.published"
+            v-if="(selectedTranslationState === 3) && elem.published"
           >{{$t("error_messages.change_translated")}}</span>
           <span class="col"></span>
         </div>
@@ -657,7 +657,7 @@ export default {
       this.$router.go(-1)
     },
     checkErrors() {
-      if (this.selectedTranslationState >= 3) {
+      if (this.selectedTranslationState >= 2) {
         return true
       }
       if (this.errorDefaultLangEmpty) {
@@ -766,7 +766,7 @@ export default {
         }
         return translation.translationState < 2
       } else {
-        return this.selectedTranslationState
+        return true
       }
     }
   },
@@ -786,10 +786,14 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
+        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
-        this.selectedTranslationState = this.elem.translations[0].translationState
+        const sTSIdx = this.elem.translations.findIndex((t) => t.lang === this.langTab)
+        if (sTSIdx !== -1) {
+          this.selectedTranslationState = this.elem.translations[sTSIdx].translationState
+        }
         if (this.categories_enabled) {
           const idxCat = this.categories.findIndex(
             (ic) => ic.id === this.elem.category

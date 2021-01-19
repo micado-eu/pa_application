@@ -31,7 +31,7 @@ export function editCategoryTypeElement(state, event_category) {
         aTranslation.eventCategory = aTranslation.category
         delete aTranslation.category
         client.updateEventCategoryTranslation(aTranslation)
-        if (!old_ec.published && event_category.published && aTranslation.translationState === 4) {
+        if (!old_ec.published && event_category.published && aTranslation.translationState === 3) {
           // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
           const prodTransl = Object.assign({}, aTranslation)
           delete prodTransl.translationState

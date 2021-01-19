@@ -291,7 +291,7 @@ export default {
     },
     updatePublishedCat(value, id) {
       let infoElem = this.informationCategoryById(id)
-      if (infoElem.translations[0].translationState === 4 && infoElem.published && !published) {
+      if (infoElem.translations[0].translationState === 3 && infoElem.published && !published) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
         this.deleteProdTranslations(id).then(() => {
           console.log("Deleted prod translations")
@@ -301,7 +301,7 @@ export default {
             message: `Error while deleting information category production translations: ${err}`
           })
         })
-      } else if (infoElem.translations[0].translationState === 4 && !infoElem.published && published) {
+      } else if (infoElem.translations[0].translationState === 3 && !infoElem.published && published) {
         // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
         for (let i = 0; i < infoElem.translations.length; i += 1) {
           const translation = Object.assign({}, infoElem.translations[i])
