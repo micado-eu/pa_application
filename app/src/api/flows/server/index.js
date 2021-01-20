@@ -224,5 +224,11 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  fetchProcessProducedDocuments () {
+    return axiosInstance
+      .get('/backend/1.0.0/process-produced-documents')
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
 }

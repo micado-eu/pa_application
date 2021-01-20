@@ -27,7 +27,7 @@ export default {
       const whereClause = {
         id: { eq: translation.id }, lang: { eq: translation.lang }
       },
-        updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title'])) : translation
+        updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'title', 'translationState'])) : translation
   
       return axiosInstance
         .patch('/backend/1.0.0/intervention-categories/' + translation.id + '/intervention-category-translations?where=' + JSON.stringify(whereClause), updatingTranslation)

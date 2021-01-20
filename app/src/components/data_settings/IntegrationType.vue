@@ -243,7 +243,7 @@ export default {
     storeMappingMixin({
       getters: {
         intervention_types: 'integration_type/intervention_types',
-        intervention_categories: 'integration_category/intervention_categories',
+        intervention_categories: 'integration_category/intervention_categories_published',
         tenants: 'tenant/tenants'
       },
       actions: {

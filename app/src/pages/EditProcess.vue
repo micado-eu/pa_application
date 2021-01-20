@@ -280,7 +280,7 @@ export default {
     storeMappingMixin({
       getters: {
         processes: 'flows/processes',
-        topic: 'topic/topic',
+        topic: 'topic/topic_published',
         user: 'user_type/user',
         documents: 'document_type/document_types',
         steps: 'steps/steps',
@@ -545,6 +545,7 @@ export default {
           var the_topic = this.topic.filter((a_topic) => {
             return a_topic.id == the_topic.idTopic
           })[0]
+          console.log(the_topic)
           var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
           this.selected_t_tags.push(the_topic_transl)
         })
@@ -597,9 +598,10 @@ export default {
         console.log(this.theprocess)
       })
     await this.fetchTopic()
-      .then(topics => {
+      .then((topics) => {
         console.log(topics)
-        topics.forEach(topic => {
+         var published_topics = topics.filter((top)=>{return top.published == true})
+        published_topics.forEach(topic => {
           var the_topic = { label: topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic, value: topic.id }
           this.t_tags.push(the_topic)
         })
@@ -608,8 +610,8 @@ export default {
     await this.fetchUserType()
       .then(user_type => {
         console.log(user_type)
-
-        user_type.forEach(ut => {
+        var published_user_type= user_type.filter((top)=>{return top.published == true})
+        published_user_type.forEach(ut => {
           var the_user = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType, value: ut.id }
           this.u_tags.push(the_user)
         })
@@ -617,8 +619,8 @@ export default {
     await this.fetchDocumentType()
       .then(docs => {
         console.log(docs)
-
-        docs.forEach(ut => {
+        var published_docs= docs.filter((top)=>{return top.published == true})
+        published_docs.forEach(ut => {
           var doc = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: ut.id }
           this.docOptions.push(doc)
         })

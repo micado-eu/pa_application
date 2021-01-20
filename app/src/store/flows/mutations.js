@@ -6,6 +6,11 @@ export function setFlows (state, flows) {
   state.flows = flows
 }
 
+export function setFlowsDocs (state, flowsDocs) {
+  state.flowsDocs = flowsDocs
+}
+
+
 export function setTheFlows (state, flows) {
   state.theFlow = flows
 }

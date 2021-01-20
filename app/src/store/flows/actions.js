@@ -11,6 +11,14 @@ export function fetchFlows (state, data) {
       return flows
     })
 }
+export function fetchFlowsDocs (state, data) {
+  return client
+    .fetchProcessProducedDocuments()
+    .then(flows => {
+      state.commit('setFlowsDocs', flows)
+      return flows
+    })
+}
 
 export function fetchDocuments (state, data) {
   return client

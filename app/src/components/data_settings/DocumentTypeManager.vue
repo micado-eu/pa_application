@@ -473,8 +473,12 @@ export default {
       getters: {
         document_types: 'document_type/document_types',
         hotspots: 'picture_hotspots/hotspots',
-        tenants: 'tenant/tenants'
+        tenants: 'tenant/tenants',
+        flowsDocs: 'flows/processes',
+        steps: 'steps/steps',
       }, actions: {
+        fetchSteps: 'steps/fetchSteps',
+        fetchFlowsDocs:'flows/fetchFlows',
         deleteDocumentType: 'document_type/deleteDocumentType',
         fetchDocumentType: 'document_type/fetchDocumentType',
         saveDocumentType: 'document_type/saveDocumentType',
@@ -483,8 +487,11 @@ export default {
         fetchHotspotsById: 'picture_hotspots/fetchHotspotsById',
         fetchTenants: 'tenant/fetchTenants',
         updatePublished: 'document_type/updatePublished',
+        updatePublishedFlows: 'flows/updatePublished',
+        deleteStepTranslationProd: 'steps/deleteTranslationProd',
         saveTranslationProd: 'document_type/saveTranslationProd',
         deleteTranslationProd: 'document_type/deleteTranslationProd',
+        deleteTranslationProdFlows: 'flows/deleteTranslationProd',
         saveSpotTranslationProd: 'picture_hotspots/saveTranslationProd',
         deleteSpotTranslationProd: 'picture_hotspots/deleteTranslationProd'
       }
@@ -573,9 +580,37 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
-        message: 'Warning: Unpublishing the document type will delete all existing translations. Proceed?',
+        message: 'Warning: Unpublishing the document type will delete all existing translations and unpublish all related processes. Proceed?',
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: 'Yes', color: 'accent', handler: () => {
+            console.log("inside unublishing stuff")
+            console.log(this.flowsDocs)
+            var related_processes =[]
+             this.flowsDocs.forEach((flow)=>{
+               console.log("inside foreach")
+               console.log(flow)
+              if(flow.producedDoc){
+                console.log("flows has documents")
+                var temp = flow.producedDoc.filter((fl)=>{
+                  return fl.idDocument == publishing_doc.id
+                })
+                if(temp.length>0){
+                  console.log("flow has the document i am unpublishing")
+                  related_processes.push(flow)
+                }
+              }
+            })
+            if(related_processes.length>0){
+              related_processes.forEach((process)=>{
+                console.log("in unpublishing flow")
+                this.updatePublishedFlows({process:process, published:false})
+                this.deleteTranslationProdFlows(process.id)
+                var publishing_steps = this.steps.filter((step)=>{
+                    return step.idProcess == process.id
+                  })
+                this.deleteStepTranslationProd(publishing_steps) 
+              })
+            }
             this.updatePublished({doc:docs, published:event})
             this.deleteTranslationProd(value)
             this.deleteSpotTranslationProd(spots)}},
@@ -1023,9 +1058,19 @@ export default {
     this.createShell()
     this.fetchHotspots()
     this.loading = true
+    this.fetchSteps()
+      .then(steps => {
+        this.loading = false
+        console.log(this.steps)
+      })
+    this.fetchFlowsDocs().then((flows)=>{
+      console.log("i amflow doscs")
+      console.log(flows)
+    })
     console.log(this.$store)
     this.fetchDocumentType()
       .then(document_types => {
+        console.log(document_types)
         this.loading = false
       })
     this.fetchTenants().then((tenants)=>{
