@@ -124,6 +124,8 @@
                     :helpLabel ="$t('help.step_location')"
                     class="labels"
                   />
+                <div class="row">
+                  <div class="col-11">
                 <q-input
                   data-cy="location_input"
                   dense
@@ -138,6 +140,16 @@
                   v-model="step_shell.location"
                   :label="$t('input_labels.step_location')"
                 />
+                  </div>
+                  <div class="col-1" style="text-align:center">
+                <a  :href="gmap_location(step_shell.location)" target="_blank">
+                <q-icon size="40px" class="icon" name="img:statics/icons/location.svg" />
+                <q-tooltip>
+                        {{$t('help.location_maps')}}
+                </q-tooltip>
+                </a>
+                  </div>
+                </div>
               </div>
               <div
                 id="location"
@@ -443,6 +455,9 @@ export default {
   },
 
   methods: {
+    gmap_location(location) {
+      return "https://www.google.com/maps/search/?api=1&query=" + location
+    },
     updateField () {
       //console.log(this.step_shell)
       //console.log(this)

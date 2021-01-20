@@ -51,7 +51,8 @@
     "edit_intervention": "Edit intervention",
     "delete_intervention": "Delete intervention",
     "is_published": "Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished",
-    "word_count": "Number of words in the description"
+    "word_count": "Number of words in the description",
+    "location_maps":"Click here to preview the search results of this location on Google Maps"
   },
   "menu": {
     "title": "My Tools",
