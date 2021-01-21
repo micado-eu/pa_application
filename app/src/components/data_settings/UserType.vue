@@ -283,6 +283,7 @@ export default {
           this.isPublished(this.int_user_type_shell)
         }*/
       }
+      this.userimage=null
       this.hideForm = true
       this.hideAdd = false
       this.createShell()
@@ -411,6 +412,7 @@ export default {
       }
    },*/
     cancelUserType () {
+      this.userimage=null
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false

@@ -274,6 +274,7 @@ export default {
           this.isPublished(this.int_topic_shell)
         }*/
       }
+      this.topicimage = null
       this.hideAdd = false
       this.hideForm = true
       this.createShell()
@@ -335,6 +336,7 @@ export default {
       this.hideAdd = true
     },
     cancelTopic () {
+      this.topicimage = null
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false
