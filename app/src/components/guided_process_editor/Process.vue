@@ -24,18 +24,25 @@
             </q-item-section>
       </div>
        <div class="row pad">
-            <img
+            <q-img
                 class="image"
                 v-for="tag in Topics"
                 :src="processTopics.filter(topic => topic.id == tag.idTopic)[0].icon"
                 :key="'topic'.concat(tag.idTopic)">
-              </img>
+                 <q-tooltip  :key="'topic_tooltip'.concat(tag.idTopic)">
+                        {{topicTransl(tag.idTopic)}}
+                </q-tooltip>
+              </q-img>
+             
                <q-img
                 class="image"
                 v-for="tag in Users"
                 :src="processUsers.filter(user => user.id == tag.idUserTypes)[0].icon"
                 :key="'user'.concat(tag.idUserTypes)"
               >
+                <q-tooltip  :key="'user_tooltip'.concat(tag.idUserTypes)">
+                {{userTransl(tag.idUserTypes)}}
+                </q-tooltip>
               </q-img>  
             </div>
       <hr class="hr">
@@ -45,14 +52,28 @@
 
 <script>
 import IconWithTooltip from '../IconWithTooltip'
+import editEntityMixin from '../../mixin/editEntityMixin'
 export default {
   name: 'Process',
   props: ["Title", "Topics", "Users", "Link", "Path", "theProcess", "processTopics", "processUsers"],
+  mixins: [editEntityMixin],
   data () {
     return {};
   },
   components:{IconWithTooltip},
   methods: {
+    topicTransl(topic_id){
+      var working_topic = this.processTopics.filter(topic => topic.id == topic_id)[0]
+      return working_topic.translations.filter((tr)=>{
+        return tr.lang == this.activeLanguage
+      })[0].topic
+    },
+      userTransl(user_id){
+      var working_user = this.processUsers.filter(topic => topic.id == user_id)[0]
+      return working_user.translations.filter((tr)=>{
+        return tr.lang == this.activeLanguage
+      })[0].userType
+    },
     isPublished(event, value){
       console.log(event)
       console.log(value)
