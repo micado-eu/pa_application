@@ -22,6 +22,7 @@
 
             </q-file>
             <q-img
+            v-if="this.Image!=null"
               :src="this.Image"
               spinner-color="white"
               class="image"
