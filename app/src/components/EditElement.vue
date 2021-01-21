@@ -113,6 +113,25 @@
               :readonly="published"
             />
           </div>
+          <div
+            v-if="is_event"
+            class="q-my-xl q-ml-lg tag_list col"
+          >
+            <span class="q-my-lg label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.location')"
+                :helpLabel="$t('help.location')"
+              ></help-label>
+            </span>
+            <q-input
+              class="title_input q-mb-xl"
+              data-cy="location_input"
+              outlined
+              v-model="location"
+              bg-color="grey-3"
+              :readonly="published"
+            />
+          </div>
         </div>
         <div
           class="row tag_category_selectors"
@@ -420,7 +439,7 @@ export default {
     },
     categories: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -434,7 +453,7 @@ export default {
     },
     topics: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -444,7 +463,7 @@ export default {
     },
     user_types: {
       type: Array,
-      default() {
+      default () {
         return []
       }
     },
@@ -467,7 +486,7 @@ export default {
       type: Function
     }
   },
-  data() {
+  data () {
     return {
       loading: true,
       internalTitle: '',
@@ -492,18 +511,19 @@ export default {
       finishDate: '',
       finishTime: '',
       savedTranslations: [],
-      published: false
+      published: false,
+      location: ''
     }
   },
   methods: {
     ...mapActions('language', ['fetchLanguages']),
     ...mapActions('topic', ['fetchTopic']),
     ...mapActions('user_type', ['fetchUserType']),
-    changeLanguage(newLang, oldLang) {
+    changeLanguage (newLang, oldLang) {
       this.saveContent(oldLang)
       this.changeLanguageAux(newLang)
     },
-    changeLanguageAux(al) {
+    changeLanguageAux (al) {
       let idx = this.savedTranslations.findIndex((t) => t.lang === al)
       if (idx !== -1) {
         const element = this.savedTranslations[idx]
@@ -521,14 +541,14 @@ export default {
         }
       }
     },
-    setContent(element, al) {
+    setContent (element, al) {
       this.internalTitle = element.title
       this.internalDescription = element.description
       if (this.$refs.editor) {
         this.$refs.editor.setContent(this.internalDescription)
       }
     },
-    saveContent(lang) {
+    saveContent (lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
@@ -559,17 +579,18 @@ export default {
           if (this.finishDate && this.finishTime) {
             translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
           }
+          translation.location = this.location
         }
       }
     },
-    resetFields(al) {
+    resetFields (al) {
       this.internalTitle = ''
       this.internalDescription = ''
       if (this.$refs.editor) {
         this.$refs.editor.setContent('')
       }
     },
-    setInternalCategorySelector(al) {
+    setInternalCategorySelector (al) {
       this.internalCategories = this.categories.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -584,7 +605,7 @@ export default {
         return category
       })
     },
-    setInternalTopicSelector(al) {
+    setInternalTopicSelector (al) {
       this.internalTopics = this.topic.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -602,7 +623,7 @@ export default {
         return topic
       })
     },
-    setInternalUserTypeSelector(al) {
+    setInternalUserTypeSelector (al) {
       this.internalUserTypes = this.user.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
@@ -620,13 +641,13 @@ export default {
         return userType
       })
     },
-    setCategoryObjectModel(category) {
+    setCategoryObjectModel (category) {
       const idx = this.internalCategoriesObjects.findIndex(
         (t) => t.category === category
       )
       this.selectedCategoryObject = this.internalCategoriesObjects[idx]
     },
-    setTopicObjectModel(topic) {
+    setTopicObjectModel (topic) {
       const idx = this.internalTopicsObjects.findIndex(
         (t) => t.topic === topic
       )
@@ -636,7 +657,7 @@ export default {
         this.selectedTopicsObjects.push(topicObj)
       }
     },
-    setUserTypeObjectModel(userType) {
+    setUserTypeObjectModel (userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
       )
@@ -647,20 +668,20 @@ export default {
         this.selectedUserTypesObjects.push(userTypeObj)
       }
     },
-    removeTopic(idx) {
+    removeTopic (idx) {
       this.selectedTopicsObjects.splice(
         idx, 1
       )
     },
-    removeUserType(idx) {
+    removeUserType (idx) {
       this.selectedUserTypesObjects.splice(
         idx, 1
       )
     },
-    goBack() {
+    goBack () {
       this.$router.go(-1)
     },
-    checkErrors() {
+    checkErrors () {
       if (this.selectedTranslationState >= 2) {
         return true
       }
@@ -679,7 +700,7 @@ export default {
       }
       return this.$refs.editor.hasError()
     },
-    callSaveFn() {
+    callSaveFn () {
       if (!this.checkErrors()) {
         this.saveContent(this.langTab)
         for (const language of this.languages) {
@@ -707,7 +728,7 @@ export default {
         )
       }
     },
-    showWarningPublish(event, id) {
+    showWarningPublish (event, id) {
       if (event == true) {
         this.$q.notify({
           type: 'warning',
@@ -784,7 +805,7 @@ export default {
       console.log(this.selectedTranslationState)
     }
   },
-  created() {
+  created () {
     this.loading = true
     const al = this.$i18n.locale
     this.fetchLanguages().then(() => {
@@ -817,6 +838,7 @@ export default {
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
           this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.location = this.elem.location
         }
       }
       if (this.categories.length > 0) {

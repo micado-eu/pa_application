@@ -52,7 +52,8 @@
     "delete_intervention": "Delete intervention",
     "is_published": "Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished",
     "word_count": "Number of words in the description",
-    "location_maps":"Click here to preview the search results of this location on Google Maps"
+    "location_maps":"Click here to preview the search results of this location on Google Maps",
+    "location": "Write the location of the event"
   },
   "menu": {
     "title": "My Tools",
@@ -214,7 +215,8 @@
     "todo": "To do",
     "validated": "Validated",
     "validation_requested": "Requested validation",
-    "new_intervention": "Add new intervention to the plan"
+    "new_intervention": "Add new intervention to the plan",
+    "location": "Location"
   },
   "profile": {
     "username": "Username",
@@ -277,7 +279,8 @@
     "topics": "Topics",
     "user_types": "User Types",
     "start_date": "Start date",
-    "end_date": "End date"
+    "end_date": "End date",
+    "location": "Location"
   },
   "upload_modal": {
     "upload_label": "Upload",
