@@ -325,7 +325,8 @@
     "max_char_limit": "Maximum number of characters reached: ",
     "fill_default_language": "Please fill the default language title: ",
     "in_translation": "This content is waiting translation. The edited content will not be saved.",
-    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted."
+    "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted.",
+    "date_time_empty": "Please fill the start and end dates and times."
   },
   "warning": {
     "topic": "Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
