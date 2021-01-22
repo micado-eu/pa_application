@@ -1,5 +1,10 @@
 <template>
   <q-card class="container"  :hidden="showAddForm" >
+     <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class="q-gutter-md"
+        >
     <div>
      <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
       <q-card-section
@@ -19,6 +24,11 @@
               </div>
               <div class="col-9 div-4">
                 <q-input
+                  :rules="[
+                  val => val.length <= 100 || 'Please use maximum 100 characters',
+                  val => !!val || 'Field is required'
+                  ]"
+                  ref="title_ref"
                   maxlength="100"
                   counter
                   dense
@@ -63,6 +73,10 @@
               </div>
               <div class=" q-pa-md col-9 div-6">
                 <q-select
+                  :rules="[ 
+                  val => val != null || 'Field is required'
+                  ]"
+                  ref="type_ref"
                   filled
                   dense
                   clearable
@@ -88,6 +102,7 @@
               unelevated
               no-caps
               :label="$t('button.cancel')"
+              type="reset"
               @click="cancelIntervention($event)"
             />
             <q-btn
@@ -98,7 +113,7 @@
               color="accent"
               :label="$t('button.add_intervention')"
               :id="the_intervention_plan.id"
-              @click="saveIntervention($event, model)"
+              type="submit"
             />
           </div>
         </div>
@@ -107,6 +122,7 @@
     </div>
 
     <br>
+     </form>
   </q-card>
 </template>
 
@@ -128,8 +144,28 @@ export default {
   },
   mounted () { },
   methods: {
-    saveIntervention (event, value) {
-      let targetId = event.currentTarget.id
+     onSubmit () {
+      this.$refs.title_ref.validate()
+      this.$refs.type_ref.validate()
+      if (this.$refs.type_ref.hasError || this.$refs.title_ref.hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.saveIntervention(this.model)
+        this.onReset()
+      }
+    },
+        onReset () {
+       this.$refs.type_ref.resetValidation()
+       this.$refs.title_ref.resetValidation()
+    },
+    saveIntervention (value) {
       console.log("I am")
       console.log(value)
       this.$emit('saveIntervention', value)

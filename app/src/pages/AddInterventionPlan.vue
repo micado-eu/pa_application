@@ -1,10 +1,16 @@
 <template>
 <div>
   <div class="div-2">
+    <form
+          @submit.prevent.stop="onSubmitPlan"
+          @reset.prevent.stop="onResetPlan"
+          class=""
+        >
   <div id="div-3">
     {{$t('input_labels.add_intervention_plan')}}
   </div>
     <div id="div-4">
+       
                   <div id="div-5" class=" q-pa-xsm row">
                     <div   class=" q-pa-xsm col-2">
                       <HelpLabel
@@ -15,7 +21,19 @@
                       />  
                     </div>
                     <div id="div-7" class="col-9">
-                      <q-input dense bg-color="grey-3" counter maxlength="100" standout outlined v-model="plan_shell.title" />
+                      <q-input 
+                      dense 
+                      bg-color="grey-3" 
+                      :rules="[
+                      val => val.length <= 100 || 'Please use maximum 100 characters',
+                      val => !!val || 'Field is required'
+                      ]"
+                      ref="title_plan" 
+                      counter 
+                      maxlength="100" 
+                      standout 
+                      outlined 
+                      v-model="plan_shell.title" />
                     </div>
                   </div>
     </div>
@@ -38,13 +56,17 @@
      <div id="div-21">
      <q-btn class="page-button" style="width:110px" :data-cy="'cancelinterventionplan'" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.go_back')" @click="goBack" />
      <q-btn class="page-button" style="width:140px" :data-cy="'addintervention'" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
-     <q-btn class="page-button" style="width:140px" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save_plan')" @click="savePlan()" />
+     <q-btn class="page-button" style="width:140px" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save_plan')" type="submit" />
   </div>
-  
-  
-    </div>
+    </form>
+  </div>
     <div class="div-2" :hidden="hideForm">
     <q-card class="my-card">
+       <form
+          @submit.prevent.stop="onSubmitIntervention"
+          @reset.prevent.stop="onResetIntervention"
+          class=""
+        >
       <q-card-section id="card-section" :hidden="hideForm">
          <div id="div-9">
            <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
@@ -59,7 +81,19 @@
                 />     
             </div>
       <div id="div-13" class="col-9">
-        <q-input bg-color="grey-3" dense maxlength="100" counter   standout outlined v-model="intervention_shell.title" />
+        <q-input 
+          bg-color="grey-3" 
+          ref="title_action"
+          :rules="[
+          val => val.length <= 100 || 'Please use maximum 100 characters',
+          val => !!val || 'Field is required'
+          ]"
+          dense
+          maxlength="100"
+          counter 
+          standout
+          outlined
+          v-model="intervention_shell.title" />
       </div>
     </div>
     <div id="div-14" class=" q-pa-xsm row">
@@ -87,8 +121,11 @@
       <div id="div-19" class=" q-pa-md col-9">
      <q-select
         class="select"
+        ref="type_action"
         filled
         dense
+        :lazy-rules="true"
+        :rules="[val => val != null || 'Field is required']"
         clearable
         emit-value
         map-options
@@ -102,11 +139,12 @@
         <div class="q-gutter-sm">
          </div>
          <div id="div-20">
-        <q-btn class="form-delete-button" :data-cy="'cancelintervention'" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelAction($event)" />
-        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.add_intervention')" :id="plan_shell.id" @click="saveAction()" />
+        <q-btn class="form-delete-button" :data-cy="'cancelintervention'" unelevated  no-caps  :label="$t('button.cancel')" type="reset" @click="cancelAction($event)" />
+        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.add_intervention')" :id="plan_shell.id" type="submit" />
         </div>
         </div>
       </q-card-section>
+       </form>
     </q-card>
   </div>
 </div>
@@ -174,6 +212,51 @@ export default {
     };
   },
   methods: {
+    onSubmitPlan () {
+      console.log("submitting plan")
+      console.log(this.$refs.title_plan)
+      this.$refs.title_plan.validate()
+      if (this.$refs.title_plan.hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savePlan()
+        this.onResetPlan()
+      }
+    },
+    onSubmitIntervention () {
+      console.log("submitting intervention")
+      console.log(this.$refs.title_action)
+      console.log(this.$refs.type_action)
+      this.$refs.title_action.validate()
+      this.$refs.type_action.validate()
+      if (this.$refs.title_action.hasError || this.$refs.type_action.hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.saveAction()
+        this.onResetIntervention()
+      }
+    },
+        onResetPlan () {
+       this.$refs.title_plan.resetValidation()
+    },
+    onResetIntervention () {
+       this.$refs.title_action.resetValidation()
+       this.$refs.type_action.resetValidation()
+    },
     goBack(){
     this.$router.push({ name: 'interventionplan', params: { theuserid: this.theuserid } })
     },
@@ -194,7 +277,7 @@ export default {
       this.intervention_shell = {  
         id:this.fakeId,
         listId:-1,
-        interventionType:[],
+        interventionType:null,
         title:"",
         description:"",
         validationDate:null, 
