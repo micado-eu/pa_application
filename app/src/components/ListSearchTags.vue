@@ -56,7 +56,11 @@
                 :alt="topic.topic"
                 class="q-ml-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
-              />
+              >
+                <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
+                  {{topicTransl(topic)}}
+                </q-tooltip>
+              </q-img>
             </q-item>
             <q-item v-if="!isMaxShowMoreTopics">
               <a
@@ -124,7 +128,7 @@
                 v-model="selectedUserTypes"
                 :val="userType.id"
                 class="filter-text"
-                :label="userType.user_type"
+                :label="userTypeTransl(userType)"
                 @input="filterByUserTypes()"
               />
               <span class="q-mt-sm">
@@ -134,10 +138,14 @@
                 :src="userType.icon"
                 spinner-color="white"
                 id="image"
-                :alt="userType.user_type"
+                :alt="userTypeTransl(userType)"
                 class="q-ml-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
-              />
+              >
+                <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
+                  {{userTypeTransl(userType)}}
+                </q-tooltip>
+              </q-img>
             </q-item>
             <q-item v-if="!isMaxShowMoreUserTypes">
               <a
@@ -234,7 +242,11 @@
                       :alt="topic.topic"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.topics.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    />
+                    >
+                      <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
+                        {{topicTransl(topic)}}
+                      </q-tooltip>
+                    </q-img>
                   </span>
                   <span
                     v-if="user_types_enabled && item.userTypes.length > 0"
@@ -247,10 +259,14 @@
                       :src="userType.icon"
                       spinner-color="white"
                       id="image"
-                      :alt="userType.topic"
+                      :alt="userType.user_type"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    />
+                    >
+                      <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
+                        {{userTypeTransl(userType)}}
+                      </q-tooltip>
+                    </q-img>
                   </span>
                   <span
                     class="tags_text"
@@ -650,6 +666,14 @@ export default {
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
       this.loading = false
+    },
+    topicTransl (topic) {
+      const idx = topic.translations.findIndex((t) => t.lang === this.lang)
+      return idx !== -1 ? topic.translations[idx].topic : ''
+    },
+    userTypeTransl (userType) {
+      const idx = userType.translations.findIndex((t) => t.lang === this.lang)
+      return idx !== -1 ? userType.translations[idx].userType : ''
     }
   },
   computed: {
