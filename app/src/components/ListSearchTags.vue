@@ -290,8 +290,8 @@
                       <q-img
                         src="statics/icons/Icon - Calender.svg"
                         spinner-color="white"
-                        :img-style="{'max-width': '24px', 'max-height': '24px'}"
-                        class="filter-icon"
+                        :img-style="{'max-width': '14px', 'max-height': '14px'}"
+                        class="extra-info-icon"
                         v-if="is_event && showExtraInfo[item.id]"
                       />
                       <span
@@ -311,8 +311,8 @@
                       <q-img
                         src="statics/icons/Icon - Location Pin.svg"
                         spinner-color="white"
-                        :img-style="{'max-width': '24px', 'max-height': '24px'}"
-                        class="filter-icon"
+                        :img-style="{'max-width': '14px', 'max-height': '14px'}"
+                        class="extra-info-icon"
                         v-if="is_event && item.location && showExtraInfo[item.id]"
                       />
                       <span
@@ -824,6 +824,10 @@ $btn_secondary: #cdd0d2;
 .filter-icon {
   max-height: 24px;
   max-width: 24px;
+}
+.extra-info-icon {
+  max-height: 14px;
+  max-width: 14px;
 }
 .viewer {
   max-width: 100%;
