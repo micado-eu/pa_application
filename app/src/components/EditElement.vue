@@ -871,10 +871,10 @@ export default {
         if (this.is_event) {
           const startDate = new Date(this.elem.startDate)
           this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
-          this.startTime = `${startDate.getUTCHours()}:${startDate.getUTCMinutes()}`
+          this.startTime = `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
-          this.finishTime = `${finishDate.getUTCHours()}:${finishDate.getUTCMinutes()}`
+          this.finishTime = `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
         }
       }
