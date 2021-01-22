@@ -18,6 +18,11 @@
       class="q-pa-md div-2"
       :hidden="hideForm"
     >
+    <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
       <q-tab-panels
         v-model="langTab"
         class="bg-grey-2 inset-shadow "
@@ -40,8 +45,10 @@
             filled
             dense
             counter
+            ref="user_type"
             maxlength="20"
-            :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
+            :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters',
+            val => !!val || 'Field is required']"
             v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
             :readonly="!(int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.user_type_placeholder')"
@@ -127,6 +134,7 @@
         rounded
         style=""
         :label="$t('button.cancel')"
+        type="reset"
         @click="cancelUserType()"
       />
       <q-btn
@@ -138,9 +146,9 @@
         rounded
         class="button"
         :label="$t('button.save')"
-        @click="savingUserType()"
+        type="submit"
       />
-
+    </form>
     </q-card>
     <div class="row div-4">
       <div class="col-1 flex flex-left">
@@ -252,6 +260,29 @@ export default {
   },
 
   methods: {
+    onSubmit () {
+      console.log(this.$refs.user_type)
+      this.$refs.user_type[0].validate()
+      if (this.$refs.user_type[0].hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingUserType()
+        this.onReset()
+      }
+    },
+      onReset () {
+       //this.$refs.topic[0].validate()
+
+       this.$refs.user_type[0].resetValidation()
+
+    },
     deletingUserType (index) {
       this.$q.notify({
         type: 'warning',

@@ -18,7 +18,11 @@
       class="q-pa-xl div-2"
       :hidden="hideForm"
     >
-
+        <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
       <q-tab-panels
         v-model="langTab"
         class="bg-grey-2 inset-shadow "
@@ -41,9 +45,13 @@
             outlined
             filled
             dense
+            ref="topic"
             counter
             maxlength="20"
-            :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
+            :rules="[ 
+            val => val.length <= 20 || 'Please use maximum 20 characters',
+            val => !!val || 'Field is required'
+            ]"
             v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"
             :readonly="!(int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.topic_placeholder')"
@@ -88,6 +96,7 @@
         @upload="getFiles"
         :label="$t('help.topic_icon')"
         :published="int_topic_shell.published"
+        style="padding-bottom:10px"
       >
 
       </FileUploader>
@@ -116,6 +125,7 @@
         unelevated
         rounded
         :label="$t('button.cancel')"
+        type="reset"
         @click="cancelTopic()"
       />
       <q-btn
@@ -127,9 +137,9 @@
         :disable="int_topic_shell.published"
         :label="$t('button.save')"
         class="button"
-        @click="savingTopic()"
+        type="input"
       />
-
+        </form>
     </q-card>
     <div class="row div-4">
       <div class="col-1 flex flex-left">
@@ -241,6 +251,29 @@ export default {
   },
 
   methods: {
+    onSubmit () {
+      console.log(this.$refs.topic)
+      this.$refs.topic[0].validate()
+      if (this.$refs.topic[0].hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingTopic()
+        this.onReset()
+      }
+    },
+      onReset () {
+       //this.$refs.topic[0].validate()
+
+       this.$refs.topic[0].resetValidation()
+
+    },
     deletingTopic (index) {
        this.$q.notify({
         type: 'warning',

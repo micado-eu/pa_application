@@ -18,6 +18,11 @@
       class="q-pa-md div-2"
       :hidden="hideForm"
     >
+    <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
 
       <q-tab-panels
         v-model="langTab"
@@ -36,8 +41,12 @@
           />
           <q-input
             counter
+            ref="type_title"
             maxlength="100"
-            :rules="[ val => val.length <= 100 || 'Please use maximum 100 characters']"
+            :rules="[
+            val => val.length <= 100 || 'Please use maximum 100 characters',
+            val => !!val || 'Field is required'
+            ]"
             outlined
             filled
             dense
@@ -100,6 +109,10 @@
           />
         <q-select
           filled
+          :rules="[ 
+                val => !!val || 'Field is required'
+          ]"
+          ref="category_type"
           :readonly="int_type_shell.published"
           clearable
           v-model="int_type_shell.categoryType"
@@ -119,6 +132,11 @@
           />
         <q-select
           filled
+          :lazy-rules="true"
+          :rules="[ 
+                val => val.length > 0 || 'Field is required'
+          ]"
+          ref="validators"
           clearable
           :readonly="int_type_shell.published"
           multiple
@@ -155,6 +173,7 @@
         unelevated
         rounded
         :label="$t('button.cancel')"
+        type="reset"
         @click="cancelIntegrationType()"
       />
       <q-btn
@@ -166,9 +185,9 @@
         rounded
         class="button"
         :label="$t('button.save')"
-        @click="savingIntegrationType()"
+        type="submit"
       />
-
+    </form>
     </q-card>
     <div class="row div-7">
       <div class="col-9 flex flex-left div-8">
@@ -273,6 +292,35 @@ export default {
     GlossaryEditor,HelpLabel
   },
   methods: {
+    onSubmit () {
+      console.log(this.$refs.validators)
+      console.log(this.$refs.validators.hasError)
+      this.$refs.category_type.validate()
+      this.$refs.validators.validate()
+      this.$refs.type_title[0].validate()
+      if (this.$refs.type_title[0].hasError || this.$refs.validators.hasError || this.$refs.category_type.hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingIntegrationType()
+        this.onReset()
+      }
+    },
+        onReset () {
+       this.$refs.type_title[0].validate()
+       this.$refs.category_type.validate()
+       this.$refs.validators.validate()
+
+       this.$refs.type_title[0].resetValidation()
+       this.$refs.category_type.resetValidation()
+       this.$refs.validators.resetValidation()
+    },
      isPublished(event,value){
      console.log("event ")
       console.log(event)
@@ -351,6 +399,7 @@ export default {
       this.hideAdd = true
     },
     cancelIntegrationType () {
+      this.onReset()
       console.log(this.normalizedOptions)
       this.isNew = false
       this.hideForm = true

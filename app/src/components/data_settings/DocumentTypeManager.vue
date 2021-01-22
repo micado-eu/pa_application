@@ -18,6 +18,11 @@
       class="q-pa-xl div-2"
       :hidden="hideForm"
     >
+    <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
 
       <q-tab-panels
         v-model="langTab"
@@ -40,9 +45,13 @@
             outlined
             filled
             dense
+            ref="doc_type"
             counter
             maxlength="20"
-            :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters']"
+            :rules="[ 
+            val => val.length <= 20 || 'Please use maximum 20 characters',
+            val => !!val || 'Field is required'
+            ]"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"
             :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
             :label="$t('input_labels.doc_type_placeholder')"
@@ -156,7 +165,11 @@
               <q-select
             filled
             dense
+            ref="icon"
             clearable
+            :rules="[ 
+                val => val.length > 0 || 'Field is required'
+                ]"
             :readonly="int_doc_shell.published"
             v-model="int_doc_shell.icon"
             @input="addIcon($event)"
@@ -344,9 +357,10 @@
         rounded
         :label="$t('button.save')"
         class="button"
-        @click="savingDoc()"
+        type="submit"
+        
       />
-
+    </form>
     </q-card>
     <div class="row div-4">
       <div class="col-1 flex flex-left">
@@ -534,6 +548,32 @@ export default {
   },
 
   methods: {
+    onSubmit () {
+      console.log(this.$refs.doc_type)
+      console.log(this.$refs.icon)
+      this.$refs.icon.validate()
+      this.$refs.doc_type[0].validate()
+      console.log(this.$refs.icon.hasError)
+      if (this.$refs.doc_type[0].hasError || this.$refs.icon.hasError ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingDoc()
+      }
+    },
+        onReset () {
+       this.$refs.doc_type[0].validate()
+       this.$refs.icon.validate()
+
+       this.$refs.doc_type[0].resetValidation()
+       this.$refs.icon.resetValidation()
+    },
     isPublished(event,value){
      console.log("event ")
       console.log(event)
@@ -759,6 +799,7 @@ export default {
       this.int_doc_shell.validators = []
     },
     cancelDoc () {
+      this.onReset()
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false

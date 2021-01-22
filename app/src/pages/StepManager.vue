@@ -30,6 +30,11 @@
           v-if="this.editing"
           class="div-2"
         >
+        <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
           <div class=" q-pa-lg ">
             <div class=" q-pa-xsm row ">
               <q-tabs
@@ -72,13 +77,15 @@
                     <q-input
                       dense
                       data-cy="title_input"
+                      ref="title_input"
                       bg-color="grey-3"
                       standout
                       outlined
                       counter
                       maxlength="50"
                       @blur="updateField()"
-                      :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                      :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
+                      val=> !!val || 'Field is required']"
                       :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
                       :label="$t('input_labels.process_name')"
@@ -129,6 +136,7 @@
                 <q-input
                   data-cy="location_input"
                   dense
+                  ref="location_input"
                   class="no-pad"
                   bg-color="grey-3"
                   standout
@@ -136,7 +144,8 @@
                   @blur="updateField()"
                   counter
                   maxlength="50"
-                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters',
+                  val=> !!val || 'Field is required']"
                   v-model="step_shell.location"
                   :label="$t('input_labels.step_location')"
                 />
@@ -269,7 +278,7 @@
                   :data-cy="'savestep'"
                   unelevated
                   :label="$t('button.save')"
-                  @click="saveStep()"
+                  type="submit"
                   class="button"
                 />
               </div>
@@ -280,6 +289,7 @@
                   unelevated
                   :data-cy="'back_to_graph'"
                   :label="$t('button.back')"
+                  type="reset"
                   @click="cancelEditStep()"
                 />
               </div>
@@ -295,6 +305,7 @@
               </div>
             </div>
           </div>
+        </form>
         </q-card>
       </div>
     </div>
@@ -455,6 +466,30 @@ export default {
   },
 
   methods: {
+    onSubmit () {
+      console.log(this.$refs.title_input)
+            console.log(this.$refs.location_input)
+
+      this.$refs.location_input.validate()
+      this.$refs.title_input[0].validate()
+      if (this.$refs.title_input[0].hasError || this.$refs.location_input.hasError ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.saveStep()
+      }
+    },
+        onReset () {
+
+       this.$refs.title_input[0].resetValidation()
+       this.$refs.location_input.resetValidation()
+    },
     gmap_location(location) {
       return "https://www.google.com/maps/search/?api=1&query=" + location
     },

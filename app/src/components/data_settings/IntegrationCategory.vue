@@ -25,12 +25,16 @@
       </div>
     </div>
     <q-card class="my-card">
-
+        <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
       <q-card-section
         :hidden="hideForm"
         class="div-2"
       >
-
+      
         <q-tab-panels
           v-model="langTab"
           class="bg-grey-2 inset-shadow "
@@ -49,7 +53,11 @@
             <q-input
               counter
               maxlength="30"
-              :rules="[ val => val.length <= 30 || 'Please use maximum 30 characters']"
+              :rules="[
+              val => val.length <= 30 || 'Please use maximum 30 characters',
+              val => !!val || 'Field is required'
+              ]"
+              ref="intervention_type"
               outlined
               filled
               dense
@@ -116,7 +124,7 @@
           unelevated
           rounded
           :label="$t('button.save')"
-          @click="savingIntegrationCategory()"
+          type="submit"
         />
         <q-btn
           :data-cy="'cancelcategory'"
@@ -128,6 +136,7 @@
           @click="cancelIntegrationCategory()"
         />
       </q-card-section>
+    </form>
     </q-card>
     <div class="row div-5">
 
@@ -228,6 +237,27 @@ export default {
     UploadButton, HelpLabel
   },
   methods: {
+    onSubmit () {
+      console.log(this.$refs.intervention_type[0])
+      this.$refs.intervention_type[0].validate()
+      if (this.$refs.intervention_type[0].hasError) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingIntegrationCategory()
+      }
+    },
+        onReset () {
+       this.$refs.intervention_type[0].validate()
+
+       this.$refs.intervention_type[0].resetValidation()
+    },
      isPublished(event,value){
      console.log("event ")
       console.log(event)

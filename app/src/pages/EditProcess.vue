@@ -12,6 +12,11 @@
     <div id="div-1">
       <q-card class="container">
           <div class="form-help"> {{$t("help.form")}} {{this.$defaultLangString}} </div>
+       <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
         <q-tab-panels
           v-model="langTab"
           class="  "
@@ -36,11 +41,15 @@
                 data-cy="title_input"
                 bg-color="grey-3"
                 standout
+                ref="process_name"
                 outlined
                 maxlength="50"
                 counter
                 :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-                :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
               />
             </div>
@@ -115,6 +124,10 @@
             data-cy="add_produced_doc"
             filled
             dense
+            ref="produced_doc"
+            :rules="[ 
+                val => val.length > 0 || 'Field is required'
+                ]"
             clearable
             :readonly="edit_process.published == true"
             v-model="edit_process.producedDoc"
@@ -253,11 +266,13 @@
               :label="$t('button.save')"
               unelevated
               class="button"
-              @click="savingProcess(edit_process)"
+              type="submit"
+              
             />
 
           </div>
         </div>
+       </form>
       </q-card>
 
     </div>
@@ -342,8 +357,30 @@ export default {
 
   },
   methods: {
-    test(value){
-      console.log(value)
+    onSubmit () {
+      console.log(this.$refs.produced_doc)
+      this.$refs.produced_doc.validate()
+      this.$refs.process_name[0].validate()
+      console.log(this.$refs.produced_doc.hasError)
+      if (this.$refs.process_name[0].hasError || this.$refs.produced_doc.hasError ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingProcess(this.edit_process)
+      }
+    },
+        onReset () {
+       this.$refs.process_name[0].validate()
+       this.$refs.produced_doc.validate()
+
+       this.$refs.process_name[0].resetValidation()
+       this.$refs.produced_doc.resetValidation()
     },
     manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
