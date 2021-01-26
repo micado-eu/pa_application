@@ -60,7 +60,8 @@
     "pa_surname":"Write the surname of the user",
     "pa_external_id":"Write, if avalaible, the external ID of the user",
     "pa_admin":"Choose if this account will have admin powers",
-    "pa_mig_tenant":"Choose if this account will be a migrant tenant"
+    "pa_mig_tenant":"Choose if this account will be a migrant tenant",
+    "pa_email":"Please insert the user's email"
   },
   "menu": {
     "title": "My Tools",
@@ -255,7 +256,8 @@
     "surname":"Surname",
     "external_id":"External ID",
     "admin":"Admin",
-    "mig_tenant":"Migrant Tenant"
+    "mig_tenant":"Migrant Tenant",
+    "email": "Email"
   },
 
   "information_centre": {

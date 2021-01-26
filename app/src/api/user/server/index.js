@@ -61,5 +61,11 @@ export default {
     .get(`/backend/1.0.0/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture`)
     .then((response) => response.data)
     .catch(error_handler)
-  }
+  },
+  savePAUser(user, roles, tenant, token){
+    return axiosInstance
+      .post('/backend/1.0.0/wso2UserComplete?username=' + user.username + '&password=' + user.password + '&name=' + user.givenName+ '&surname=' + user.familyName + '&email=' + user.email + '&roles=' + roles + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
+      .then(response => { return response.data })
+      .catch(error_handler);
+  },
 }

@@ -134,6 +134,30 @@
                 v-model="new_user.familyName"
               />
             </div>
+             <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.email')"
+            :helpLabel="$t('help.pa_email')"
+            class="div-3" />
+              <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                ref="familyName"
+                outlined
+                maxlength="50"
+                counter
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
+                v-model="new_user.email"
+              />
+            </div>
             <div
               class=" q-pa-xsm "
               id="div-2"
@@ -234,6 +258,7 @@ export default {
         external_id:'',
         admin:false,
         migrant_tenant:false,
+        roles:[]
       },
       workingFeatures: []
     }
@@ -241,10 +266,12 @@ export default {
   mixins: [
     storeMappingMixin({
       getters: {
-        pausers: 'user/pausers'
+        pausers: 'user/pausers',
+        token: 'auth/token'
       },
       actions: {
-        fetchPAUser: 'user/fetchPAUser'
+        fetchPAUser: 'user/fetchPAUser',
+        savePAUser: 'user/savePAUser'
       }
     })],
   components: {
@@ -278,6 +305,7 @@ export default {
       else{
         console.log("in else of submit")
         console.log(this.new_user)
+        this.saveUser()
       }
     },
         onReset () {
@@ -287,6 +315,7 @@ export default {
         password:'',
         givenName:'',
         familyName:'',
+        email:'',
         external_id:'',
         admin:false,
         migrant_tenant:false,
@@ -299,6 +328,23 @@ export default {
     newUser () {
       this.hideAdd = true
       this.hideForm = false
+    },
+    saveUser(){
+      if(this.new_user.admin == true){
+        this.new_user.roles.push('micado_admin')
+      }
+      if(this.new_user.migrant_tenant == true){
+        this.new_user.roles.push('micado_migrant_manager')
+      }
+      var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
+      var working_roles = JSON.stringify(this.new_user.roles)
+      var working_token = this.token.token.access_token
+      console.log(working_token)
+      console.log(working_user)
+      console.log({user: working_user, tenant:"pa.micado.eu", token:working_token, roles:working_roles})
+      this.savePAUser({user: working_user, tenant:"pa.micado.eu", token:working_token, roles:working_roles})
+      this.hideForm = true
+      this.hideAdd = false
     },
     cancelUser () {
       //    this.isNew = false

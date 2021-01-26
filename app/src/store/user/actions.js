@@ -92,6 +92,12 @@ export function editUserPassword (state, payload) {
   return client
     .editUserPassword(payload.admin, payload.adminpwd, payload.payload, payload.tenant)
 }
+export function savePAUser (state, payload) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(payload)
+  return client
+    .savePAUser(payload.user, payload.roles, payload.tenant, payload.token)
+}
 /* export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)
