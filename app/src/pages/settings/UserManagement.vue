@@ -24,7 +24,157 @@
         <div class="text-h6">Migrant application configuration</div>
       </q-card-section>
       <q-card-section>
-
+         <form
+          @submit.prevent.stop="onSubmit"
+          @reset.prevent.stop="onReset"
+          class=""
+        >
+        <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.username')"
+            :helpLabel="$t('help.pa_username')"
+            class="div-3" />
+              <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                ref="username"
+                outlined
+                maxlength="50"
+                counter
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
+                v-model="new_user.username"
+              />
+            </div>
+              <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.password')"
+            :helpLabel="$t('help.pa_password')"
+            class="div-3" />
+      <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                :type="isPwd ? 'password' : 'text'"
+                ref="password"
+                outlined
+                maxlength="50"
+                counter
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
+                v-model="new_user.password"
+              >
+            <template v-slot:append>
+            <q-icon
+            :name="isPwd? 'visibility_off' : 'visibility'"
+            class="cursor-pointer"
+            @click="isPwd = !isPwd"
+          />
+        </template>
+      </q-input>
+            </div>
+             <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.name')"
+            :helpLabel="$t('help.pa_name')"
+            class="div-3" />
+              <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                ref="givenName"
+                outlined
+                maxlength="50"
+                counter
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
+                v-model="new_user.givenName"
+              />
+            </div>
+             <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.surname')"
+            :helpLabel="$t('help.pa_surname')"
+            class="div-3" />
+              <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                ref="familyName"
+                outlined
+                maxlength="50"
+                counter
+                :rules="[ 
+                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => !!val || 'Field is required'
+                ]"
+                v-model="new_user.familyName"
+              />
+            </div>
+            <div
+              class=" q-pa-xsm "
+              id="div-2"
+            >
+             <HelpLabel
+            :fieldLabel="$t('new_pa_user.external_id')"
+            :helpLabel="$t('help.pa_external_id')"
+            class="div-3" />
+              <q-input
+                dense
+                data-cy="title_input"
+                bg-color="grey-3"
+                standout
+                ref="external_id"
+                outlined
+                counter
+                v-model="new_user.external_id"
+              />
+            </div>
+            <div class="row">
+              <div class="col-3">
+            <div class="q-gutter-sm row">
+               <HelpLabel
+          :fieldLabel="$t('new_pa_user.admin')"
+          :helpLabel ="$t('help.pa_admin')"
+          class="col-1.5 field"
+          style="padding-top:10px"
+          /> 
+              <q-checkbox class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="new_user.admin"  />
+            </div>
+              </div>
+            <div class="q-gutter-sm row">
+               <HelpLabel
+          :fieldLabel="$t('new_pa_user.mig_tenant')"
+          :helpLabel ="$t('help.pa_mig_tenant')"
+          class="col-1.5 field"
+          style="padding-top:10px"
+          /> 
+              <q-checkbox class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="new_user.migrant_tenant"  />
+            </div>
+            </div>
         <hr id="hr">
         <q-btn
           no-caps
@@ -33,6 +183,7 @@
           unelevated
           rounded
           :label="$t('button.cancel')"
+          type="reset"
           @click="cancelUser()"
         />
         <q-btn
@@ -43,8 +194,9 @@
           rounded
           :label="$t('button.save')"
           class="button"
-          @click="savingUser()"
+          type="submit"
         />
+         </form>
       </q-card-section>
     </q-card>
     <q-list
@@ -63,6 +215,7 @@
 <script>
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import PaUser from '../../components/pa_user_management/PaUser'
+import HelpLabel from 'components/HelpLabel'
 
 
 export default {
@@ -71,8 +224,17 @@ export default {
     return {
       group: ["FEAT_SERVICES"],
       hideAdd: false,
+      isPwd:true,
       hideForm: true,
-
+      new_user:{
+        username:'', 
+        password:'',
+        givenName:'',
+        familyName:'',
+        external_id:'',
+        admin:false,
+        migrant_tenant:false,
+      },
       workingFeatures: []
     }
   },
@@ -86,7 +248,7 @@ export default {
       }
     })],
   components: {
-    PaUser
+    PaUser,HelpLabel
   },
   computed: {
     completepausers () {
@@ -94,6 +256,46 @@ export default {
     }
   },
   methods: {
+    onSubmit () {
+      console.log(this.$refs.username)
+            console.log(this.$refs.password)
+      console.log(this.$refs.givenName)
+      console.log(this.$refs.familyName)
+
+      this.$refs.username.validate()
+      this.$refs.password.validate()
+      this.$refs.givenName.validate()
+      this.$refs.familyName.validate()
+      
+      if (this.$refs.username.hasError || this.$refs.password.hasError || this.$refs.familyName.hasError || this.$refs.givenName.hasError  ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        console.log(this.new_user)
+      }
+    },
+        onReset () {
+        
+        this.new_user={
+        username:'', 
+        password:'',
+        givenName:'',
+        familyName:'',
+        external_id:'',
+        admin:false,
+        migrant_tenant:false,
+      }
+      this.$refs.username.resetValidation()
+        this.$refs.password.resetValidation()
+        this.$refs.givenName.resetValidation()
+        this.$refs.familyName.resetValidation()
+    },
     newUser () {
       this.hideAdd = true
       this.hideForm = false

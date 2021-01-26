@@ -53,7 +53,14 @@
     "is_published": "Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished",
     "word_count": "Number of words in the description",
     "location_maps":"Click here to preview the search results of this location on Google Maps",
-    "location": "Write the location of the event"
+    "location": "Write the location of the event",
+    "pa_username":"Write the username that the user will use to login",
+    "pa_password":"Write the password that the user will use to login",
+    "pa_name":"Write the name of the user",
+    "pa_surname":"Write the surname of the user",
+    "pa_external_id":"Write, if avalaible, the external ID of the user",
+    "pa_admin":"Choose if this account will have admin powers",
+    "pa_mig_tenant":"Choose if this account will be a migrant tenant"
   },
   "menu": {
     "title": "My Tools",
@@ -241,6 +248,16 @@
     "new_pass":"New Password",
     "confirm_pass":"Confirm password"
   },
+  "new_pa_user":{
+    "username": "Username",
+    "password": "Password",
+    "name":"Name",
+    "surname":"Surname",
+    "external_id":"External ID",
+    "admin":"Admin",
+    "mig_tenant":"Migrant Tenant"
+  },
+
   "information_centre": {
     "list_title": "Information centre",
     "add_new": "Add New Information to the Information Centre",
