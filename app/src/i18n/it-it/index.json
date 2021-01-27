@@ -49,7 +49,18 @@
     "delete_user": "Elimina migrante",
     "edit_intervention": "Modifica intervento",
     "delete_intervention": "Elimina intervento",
-    "is_published":"Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished"
+    "is_published":"Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished",
+    "word_count": "Numero di parole nella descrizione",
+    "location_maps":"Clicca qui per i risultati della ricerca su Google Maps",
+    "location": "Inserisci il luogo dell'evento",
+    "pa_username":"Inserisci il nome che l'utente utilizzerà per il login",
+    "pa_password":"Inserisci la password che l'utente utilizzerà per il login",
+    "pa_name":"Inserisci il nome dell'utente",
+    "pa_surname":"Inserisci il cognome dell'utente",
+    "pa_external_id":"Inserisci, se è disponibile, l'ID esterno dell'utente",
+    "pa_admin":"Spunta se l'account deve avere poteri da a mministratore",
+    "pa_mig_tenant":"Spunta se l'account deve essere un tenant dei migranti",
+    "pa_email":"Inserisci l'email dell'utente"
   },
   "menu": {
     "title": "Menu",
@@ -78,6 +89,7 @@
     "events_desc": "Gestisci gli eventi"
   },
   "button": {
+    "change_pass":"Cambia Password",
     "add_document": "Aggiungi documento",
     "integration": "Integrazione",
     "add": "Aggiungi",
@@ -113,7 +125,11 @@
     "categories": "Categorie",
     "remove": "Rimuovi",
     "migrant_data": "Dati",
-    "hide": "Nascondi"
+    "hide": "Nascondi",
+    "read_more": "Leggi di più",
+    "read_less": "Leggi di meno",
+    "update_link": "Aggiorna link",
+    "add_link": "Aggiungi link"
   },
   "data_settings": {
     "manage_languages": "Gestisci i linguaggi della piattaforma",
@@ -126,7 +142,13 @@
     "topics": "Argomenti",
     "intervention_categories": "Categorie d'intervento",
     "intervention_types": "Tipi d'intervento",
-    "user_types": "Tipi di utenti"
+    "usermgmt": "Gestione utenti PA",
+    "default_language": "Lingua di deafult per la piattaforma MICADO",
+    "set_default_language": "Imposta lingua",
+    "feature_settings": "Configurazione delle applicazioni MICADO",
+    "pa_logo": "Logo della Pubblica Amministrazione",
+    "user_types": "Tipi di utente",
+    "profile_settings":"Impostazioni Profilo"
   },
   "input_labels": {
     "validator": "Responsabile validazione:",
@@ -197,7 +219,8 @@
     "todo": "Da completare",
     "validated": "Validato",
     "validation_requested": "Validazione tichiesta",
-    "new_intervention": "Aggiungi nuovo intervento al piano"
+    "new_intervention": "Aggiungi nuovo intervento al piano",
+    "location": "Luogo"
   },
   "profile": {
     "username": "Username",
@@ -206,6 +229,31 @@
     "age": "Età",
     "gender": "Sesso",
     "status": "Stato"
+  },
+  "pa_profile":{
+    "change_pic": "Cambia foto",
+    "username": "Username",
+    "password": "Password",
+    "legal_name": "Nome completo",
+    "country": "Paese",
+    "dob": "Data di nascita",
+    "gender": "Sesso",
+    "personal_profile": "Profilo Personale",
+    "phone_number":"Numero di telefono",
+    "mail":"Email",
+    "old_pass":"Vecchia Password",
+    "new_pass":"Nuova Password",
+    "confirm_pass":"Conferma password"
+  },
+  "new_pa_user":{
+    "username": "Username",
+    "password": "Password",
+    "name":"Nome",
+    "surname":"Cognome",
+    "external_id":"ID Esterno",
+    "admin":"Amministratore",
+    "mig_tenant":"Tenant Migranti",
+    "email": "Email"
   },
   "information_centre": {
     "list_title": "Centro informazioni",
@@ -293,5 +341,8 @@
     "topic":"Attenzione: cancellare un argomento lo cancellerà anche dai processi esistenti. Continuare?",
     "user_type":"Attenzione: cancellare un tipo di utente lo cancellerà anche dai processi esistenti. Continuare?",
     "intervention_type":"Attenzione: cancellare un tipo d'intervento cancellerà anche tutti gli interventi di quel tipo. Continuare?"
+  },
+  "text_editor": {
+    "word_count": "Numero di parole"
   }
 }
