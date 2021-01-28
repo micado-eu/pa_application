@@ -86,6 +86,12 @@ export function editUserData (state, payload) {
   return client
     .editUserData(payload.user, payload.tenant, payload.token)
 }
+export function editUserDataByAdmin (state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log(payload)
+  return client
+    .editUserDataByAdmin(payload.user,  payload.tenant, payload.token)
+}
 export function editUserPassword (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload)
@@ -97,6 +103,12 @@ export function savePAUser (state, payload) {
   console.log(payload)
   return client
     .savePAUser(payload.user, payload.roles, payload.tenant, payload.token)
+}
+export function fetchUserGroup (state, payload) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(payload)
+  return client
+    .fetchUserGroup(payload.user, payload.token)
 }
 /* export function deleteDocument({commit}, document_type) {
 

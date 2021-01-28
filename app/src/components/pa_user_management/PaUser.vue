@@ -1,8 +1,8 @@
 <template>
   <div class="row">
-    <div class="col">
+    <q-item class="col" clickable @click="editing">
       {{this.theUser.umUserName}}
-    </div>
+    </q-item>
     <div class="col">
     </div>
   </div>
@@ -21,6 +21,10 @@ export default {
   },
 
   methods: {
+    editing(){
+      console.log(this.theUser.umId)
+      this.$emit('edit', this.theUser.umId)
+    },
     remove_user (event) {
       let target = event.currentTarget.id
       console.log(this.Path)

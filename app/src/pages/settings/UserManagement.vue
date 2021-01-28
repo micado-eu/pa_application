@@ -38,6 +38,7 @@
             :helpLabel="$t('help.pa_username')"
             class="div-3" />
               <q-input
+                :readonly="!is_new"
                 dense
                 data-cy="title_input"
                 bg-color="grey-3"
@@ -56,6 +57,7 @@
               <div
               class=" q-pa-xsm "
               id="div-2"
+              v-show="is_new"
             >
              <HelpLabel
             :fieldLabel="$t('new_pa_user.password')"
@@ -231,6 +233,7 @@
         v-for="user in completepausers"
         :key="user.umId"
         :theUser="user"
+        @edit="editPAUser"
       />
     </q-list>
   </div>
@@ -251,15 +254,18 @@ export default {
       isPwd:true,
       hideForm: true,
       new_user:{
+        userid:null,
         username:'', 
         password:'',
         givenName:'',
         familyName:'',
+        email:'',
         external_id:'',
         admin:false,
         migrant_tenant:false,
         roles:[]
       },
+      is_new:true,
       workingFeatures: []
     }
   },
@@ -271,7 +277,9 @@ export default {
       },
       actions: {
         fetchPAUser: 'user/fetchPAUser',
-        savePAUser: 'user/savePAUser'
+        savePAUser: 'user/savePAUser',
+        fetchUserGroup: 'user/fetchUserGroup',
+        editUserDataByAdmin:'user/editUserDataByAdmin'
       }
     })],
   components: {
@@ -283,13 +291,56 @@ export default {
     }
   },
   methods: {
-    onSubmit () {
-      console.log(this.$refs.username)
-            console.log(this.$refs.password)
-      console.log(this.$refs.givenName)
-      console.log(this.$refs.familyName)
+    findAttribute(user_mask, editing_user, umAttribute,userAttribute){
+      console.log(umAttribute)
+      var arr = editing_user.attributes.filter((attr)=>{
+        return attr.umAttrName == String(umAttribute)
+      })
+      if(arr.length>0){
+        console.log("inside if")
+        user_mask[userAttribute] = arr[0].umAttrValue 
+        console.log(user_mask[userAttribute])
+      }
+    },
+    editPAUser(value){
+      this.is_new=false
+      var editing_user = this.pausers.filter((user)=>{
+        return user.umId == value
+      })[0]
+      console.log(editing_user)
+      this.findAttribute(this.new_user, editing_user, 'uid', 'username')
+      this.findAttribute(this.new_user, editing_user, 'scimId', 'userid')
+      this.findAttribute(this.new_user, editing_user,'givenName', 'givenName')
+      this.findAttribute(this.new_user, editing_user,'sn', 'familyName')
+      this.findAttribute(this.new_user, editing_user,'workEmail', 'email')
+      var working_token = this.token.token.access_token
+      this.fetchUserGroup({user:this.new_user.username, token:working_token}).then((userg)=>{
+        console.log(userg)
+        if(userg.Resources){
+        userg.Resources.forEach((role)=>{
+          this.new_user.roles.push(role.displayName.replace("Application/", ""))
+        })
+        
+          this.new_user.roles.forEach((role)=>{
+          if(role == 'micado_admin' ){
+            this.new_user.admin = true
+          }
+          if(role == 'micado_migrant_manager' ){
+            this.new_user.migrant_tenant = true
+          }
+          
+        })
+        }
+        this.new_user.roles=[]
+        this.hideAdd = true
+        this.hideForm = false
 
-      this.$refs.username.validate()
+      })
+      
+    },
+    onSubmit () {
+      if(this.is_new){
+              this.$refs.username.validate()
       this.$refs.password.validate()
       this.$refs.givenName.validate()
       this.$refs.familyName.validate()
@@ -307,9 +358,36 @@ export default {
         console.log(this.new_user)
         this.saveUser()
       }
+      }
+      else{
+              this.$refs.username.validate()
+      this.$refs.givenName.validate()
+      this.$refs.familyName.validate()
+      
+      if (this.$refs.username.hasError || this.$refs.familyName.hasError || this.$refs.givenName.hasError  ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        console.log(this.new_user)
+        this.saveUser()
+      }
+      }
+
     },
         onReset () {
-        
+          console.log(this.$refs)
+          this.hideForm = true
+          this.hideAdd = false
+        this.$refs.username.resetValidation()
+        this.$refs.password.resetValidation()
+        this.$refs.givenName.resetValidation()
+        this.$refs.familyName.resetValidation()
         this.new_user={
         username:'', 
         password:'',
@@ -319,37 +397,54 @@ export default {
         external_id:'',
         admin:false,
         migrant_tenant:false,
+        roles:[]
       }
+       
+      
+    },
+    newUser () {
       this.$refs.username.resetValidation()
         this.$refs.password.resetValidation()
         this.$refs.givenName.resetValidation()
         this.$refs.familyName.resetValidation()
-    },
-    newUser () {
+
+      this.is_new = true
       this.hideAdd = true
       this.hideForm = false
     },
     saveUser(){
+      console.log(this.new_user)
       if(this.new_user.admin == true){
         this.new_user.roles.push('micado_admin')
       }
       if(this.new_user.migrant_tenant == true){
         this.new_user.roles.push('micado_migrant_manager')
       }
-      var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
+      console.log(this.new_user)
+
+      
       var working_roles = JSON.stringify(this.new_user.roles)
       var working_token = this.token.token.access_token
       console.log(working_token)
       console.log(working_user)
       console.log({user: working_user, tenant:"pa.micado.eu", token:working_token, roles:working_roles})
+      if(this.is_new){
+      var working_user =JSON.parse(JSON.stringify(this.new_user, ['username', 'password', 'givenName', 'familyName','email']))
       this.savePAUser({user: working_user, tenant:"pa.micado.eu", token:working_token, roles:working_roles})
+      }
+      else{
+        var working_user =JSON.parse(JSON.stringify(this.new_user, ['userid','username', 'password', 'givenName', 'familyName','email', 'roles']))
+        console.log(working_user)
+        this.editUserDataByAdmin({user:JSON.stringify(working_user), tenant:"pa.micado.eu", token:working_token})
+      }
+      
+
       this.hideForm = true
       this.hideAdd = false
     },
     cancelUser () {
       //    this.isNew = false
-      this.hideForm = true
-      this.hideAdd = false
+      
       //   this.int_doc_shell.validators = []
       //    this.uploaded_images = []
       //     this.icon = null
