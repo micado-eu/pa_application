@@ -2,7 +2,7 @@
   <div :id="category">
     <div class="group" ref="group">
       <div class="row" id="header">
-        <h1>{{category}}&nbsp;&nbsp;</h1>
+        <h1 @click="onClickNav(category)">{{category}}&nbsp;&nbsp;</h1>
         <!-- <q-btn
           id="printbtn"
           color="grey"
@@ -59,6 +59,9 @@ export default {
       htmlToImage.toPng(this.$refs.group, { filter: (node) => node.id !== 'printbtn' }).then((dataUrl) => {
         download(dataUrl, 'my-node.png')
       })
+    },
+    onClickNav: function (category) {
+      location.href = this.$route.path + "#" + category
     },
     sendData(grahDataId) {
       console.log('group:', grahDataId)

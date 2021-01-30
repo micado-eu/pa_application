@@ -15,23 +15,44 @@
     >
       MICADO Migration Situation Monitor
     </div>
+    <div id="header" class="q-pa-md row">
+      <q-btn
+        no-caps
+        class="q-ml-md"
+        color="info"
+        size="lg"
+        :label="$t('button.situation_overview')"
+        to="/situation/overview"
+      />
+      <q-btn
+        no-caps
+        class="q-ml-md q-mr-md"
+        color="white"
+        text-color="black"
+        size="lg"
+        :label="$t('button.situation_about')"
+        to="#"
+      />
+    </div>
     <div class="q-pa-md row">
-      <div
-        v-for="(b, i) in boards"
-        @click="jump(b.title)"
-        :key="i"
-        class="col-4"
-      >
+      <div v-for="(b, i) in boards" :key="i" class="col-4">
         <q-card class="q-ma-md">
           <q-card-section class="icon-div">
             <q-icon :name="b.icon" style="font-size: 5em" />
           </q-card-section>
           <q-card-section class="title-div">
-            <div class="text-h6">{{ b.title }}</div>
+            <div class="text-h6" @click="jump(b.link)">{{ b.title }}</div>
           </q-card-section>
-          <!-- <q-card-section class='desc-div'>
-            {{ b.title }}
-          </q-card-section> -->
+          <q-separator />
+          <q-card-actions vertical align="left">
+            <q-btn
+              v-for="(cat, i) in getCategory(b)"
+              :key="i"
+              flat
+              @click="onClickNav(b.title, cat.category)"
+              >{{ cat.category }}</q-btn
+            >
+          </q-card-actions>
         </q-card>
       </div>
     </div>
@@ -50,7 +71,7 @@ export default {
       const boards = this.$store.state.statistics.boards.reduce((acc, b) => {
         acc.push({
           title: b,
-          link: `/situation/${b}`,
+          link: `/situation/board/${b}`,
           icon: "analytics"
         })
         return acc
@@ -59,8 +80,16 @@ export default {
     }
   },
   methods: {
-    jump(title) {
-      this.$router.push(`/situation/${title}`)
+    jump(link) {
+      this.$router.push(link)
+    },
+    getCategory(board) {
+      return this.$store.state.statistics.categories.filter(
+        (c) => c.board === board.title
+      )
+    },
+    onClickNav(board, category) {
+      this.$router.push(`/situation/board/${board}#${category}`)
     }
   }
 }
@@ -78,5 +107,12 @@ export default {
 }
 .title-div {
   text-align: center;
+  cursor: pointer;
+}
+.title-div:hover {
+  text-decoration: underline;
+}
+#header {
+  justify-content: flex-end;
 }
 </style>

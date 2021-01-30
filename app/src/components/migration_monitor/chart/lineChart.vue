@@ -1,23 +1,28 @@
 <template>
-  <svg :width="width" :height="height" :id="id">
+  <svg :width="width" :id="id">
     <g
       v-if="sizeSet"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
-      <path :d="drawLine(content)" fill="none" stroke="#99e6b4" stroke-width="3px" />
+      <path
+        :d="drawLine(content)"
+        fill="none"
+        stroke="#99e6b4"
+        stroke-width="3px"
+      />
       <circle
-        v-for="(d,i) in content"
+        v-for="(d, i) in content"
         :key="i"
-        :cx="scaleX(d[catAxis])+barWidth/2"
+        :cx="scaleX(d[catAxis]) + barWidth / 2"
         :cy="scaleY(d[valAxis])"
         :r="2"
         fill="#3490DC"
       />
       <rect
-        v-for="(d,i) in content"
-        :key="i+'_rect'"
-        :id="i+'_rect'"
-        :x="scaleX(d[catAxis])-barWidth/2"
+        v-for="(d, i) in content"
+        :key="i + '_rect'"
+        :id="i + '_rect'"
+        :x="scaleX(d[catAxis]) - barWidth / 2"
         :y="scaleY(d[valAxis])"
         :width="barWidth"
         :height="height - scaleY(d[valAxis]) - margin.top - margin.bottom"
@@ -26,45 +31,67 @@
         @mouseleave="onMouseLeave"
       />
       <text
-        v-for="(d,i) in content"
-        :key="i+'_label'"
-        :ref="i+'_label'"
+        v-for="(d, i) in content"
+        :key="i + '_textx'"
+        :ref="i + '_textx'"
         class="label"
-        :x="scaleX( d[catAxis])+barWidth/2"
+        display="none"
+        :x="scaleX(d[catAxis]) + barWidth / 2"
+        :y="height-margin.top-margin.bottom"
+        text-anchor="middle"
+      >
+        {{ d[catAxis] }}
+      </text>
+      <text
+        v-for="(d, i) in content"
+        :key="i + '_texty'"
+        :ref="i + '_texty'"
+        class="label"
+        display="none"
+        :x="scaleX(d[catAxis]) + barWidth / 2"
         :y="scaleY(d[valAxis])"
         text-anchor="middle"
-      >{{d[valAxis]}}</text>
+      >
+        {{ d[valAxis] }}
+      </text>
       <line
-        v-for="(d,i) in content"
+        v-for="(d, i) in content"
         class="line"
-        :key="i+'_line'"
-        :ref="i+'_line'"
-        :x1="scaleX(d[catAxis])+barWidth/2"
-        :x2="scaleX(d[catAxis])+barWidth/2"
-        :y1="height-margin.top-margin.bottom"
+        display="none"
+        :key="i + '_line'"
+        :ref="i + '_line'"
+        :x1="scaleX(d[catAxis]) + barWidth / 2"
+        :x2="scaleX(d[catAxis]) + barWidth / 2"
+        :y1="height - margin.top - margin.bottom"
         :y2="scaleY(d[valAxis])"
         stroke-width="2"
       />
     </g>
     <text
       v-if="sizeSet"
-      :x="-margin.top - height/2"
-      :y="margin.left/2"
+      :x="-margin.top - height / 2"
+      :y="margin.left / 2"
       text-anchor="middle"
       transform="rotate(-90)"
-    >{{valAxis}}</text>
+    >
+      {{ valAxis }}
+    </text>
     <text
       v-if="sizeSet"
-      :x="width/2 "
-      :y="height - margin.bottom/2.4"
+      :x="width / 2"
+      :y="height - margin.bottom / 2.4"
       text-anchor="middle"
-    >{{catAxis}}</text>
+    >
+      {{ catAxis }}
+    </text>
     <ChartAxisBottom
       v-if="sizeSet"
       :length="content.length"
       :scaleX="scaleX"
       :key="xid"
-      :transform="'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'"
+      :transform="
+        'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'
+      "
     />
     <ChartAxisLeft
       v-if="sizeSet"
@@ -83,12 +110,12 @@ import {
   select,
   line,
   curveCardinal
-} from 'd3'
-import ChartAxisBottom from './ChartAxisBottom.vue'
-import ChartAxisLeft from './ChartAxisLeft.vue'
+} from "d3"
+import ChartAxisBottom from "./ChartAxisBottom.vue"
+import ChartAxisLeft from "./ChartAxisLeft.vue"
 
 export default {
-  name: 'lineChart',
+  name: "lineChart",
   components: {
     ChartAxisBottom,
     ChartAxisLeft
@@ -101,17 +128,17 @@ export default {
   },
   data() {
     return {
-      id: 'lineSvg',
+      id: "lineSvg",
       margin: {
         left: 100,
         top: 30,
         right: 30,
         bottom: 60
       },
-      width: '100%',
-      height: '60%',
-      xid: 'x0',
-      yid: 'y0',
+      width: "100%",
+      height: null,
+      xid: "x0",
+      yid: "y0",
       timeout: false,
       sizeSet: false,
       rangeTimeout: false
@@ -135,23 +162,20 @@ export default {
       return (
         scaleLinear()
           // .domain(extent(this.content, d => d[this.valAxis]))
-          .domain([
-            0,
-            Math.max(...this.content.map((d) => d[this.valAxis]))
-          ])
+          .domain([0, Math.max(...this.content.map((d) => d[this.valAxis]))])
           .range([this.height - this.margin.top - this.margin.bottom, 0])
       )
     },
     drawLine() {
       return line()
-        .x((d) => this.scaleX(d[this.catAxis]) + this.barWidth/2) 
+        .x((d) => this.scaleX(d[this.catAxis]) + this.barWidth / 2)
         .y((d) => this.scaleY(d[this.valAxis]))
         .curve(curveCardinal)
     },
     barWidth() {
       return (
-        (this.width - this.margin.left - this.margin.right)
-        / this.content.length
+        (this.width - this.margin.left - this.margin.right) /
+        this.content.length
       )
     }
   },
@@ -170,21 +194,25 @@ export default {
       this.timeout = setTimeout(this.updateGraph, 250)
     },
     onMouseOver(event) {
-      const labelLine = this.$refs[`${event.target.id.split('_')[0]}_line`][0]
-      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
-      label.style.opacity = 1
-      labelLine.style.opacity = 1
+      const labelLine = this.$refs[`${event.target.id.split("_")[0]}_line`][0]
+      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
+      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
+      textx.style.display = "inline"
+      texty.style.display = "inline"
+      labelLine.style.display = "block"
     },
     onMouseLeave(event) {
-      const labelLine = this.$refs[`${event.target.id.split('_')[0]}_line`][0]
-      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
-      label.style.opacity = 0
-      labelLine.style.opacity = 0
+      const labelLine = this.$refs[`${event.target.id.split("_")[0]}_line`][0]
+      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
+      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
+      textx.style.display = "none"
+      texty.style.display = "none"
+      labelLine.style.display = "none"
     },
-    refreshAxes(){
+    refreshAxes() {
       // force axes to update according to the size
-      this.xid = this.xid === 'x_0' ? 'x_1' : 'x_0'
-      this.yid = this.yid === 'y_0' ? 'y_1' : 'y_0'
+      this.xid = this.xid === "x_0" ? "x_1" : "x_0"
+      this.yid = this.yid === "y_0" ? "y_1" : "y_0"
     }
   },
   watch: {
@@ -195,12 +223,12 @@ export default {
   },
   mounted() {
     // window.resize event listener
-    window.addEventListener('resize', this.onResize)
+    window.addEventListener("resize", this.onResize)
     this.updateGraph()
     this.sizeSet = true
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.onResize)
+    window.removeEventListener("resize", this.onResize)
   }
 }
 </script>
@@ -212,8 +240,8 @@ div {
 }
 .line,
 .label {
-  opacity: 0;
   transition: 0.2s;
+  pointer-events: none;
 }
 .line {
   stroke: #ffc107;

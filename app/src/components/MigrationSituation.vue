@@ -1,53 +1,5 @@
 <template>
   <q-layout id="migration-situation-container" v-if="boards.length > 2">
-    <q-drawer
-      key="situation-drawer"
-      show-if-above
-      bordered
-      :content-style="{ backgroundColor: '#DCE4E8', border: 'none' }"
-      class="situation-drawer"
-    >
-      <q-scroll-area class="fit">
-        <q-list>
-          <template v-for="(menuItem, i) in menuItems">
-            <q-separator class="bg-dark-separator" :key="'sep_u_' + i" />
-            <q-item
-              v-if="menuItem.title !== 'Dashboards'"
-              :key="i + '_category'"
-              :header-inset-level="1"
-              clickable
-              :to="menuItem.link"
-              class="text-weight-bold"
-            >
-              <q-item-section>{{ menuItem.title }}</q-item-section>
-            </q-item>
-            <q-expansion-item
-              class="text-weight-bold"
-              v-if="menuItem.title === 'Dashboards'"
-              :key="i"
-              :to="menuItem.link"
-              active-class="my-menu-link"
-              expand-separator
-              :label="menuItem.title"
-              caption
-              clickable
-            >
-              <q-item
-                v-for="(c, i) in menuItem.children"
-                :key="i + '_category'"
-                :header-inset-level="1"
-                clickable
-                :to="c.link"
-                class="text-weight-regular"
-              >
-                <q-item-section>{{ c.title }}</q-item-section>
-              </q-item>
-            </q-expansion-item>
-            <q-separator class="bg-dark-separator" :key="'sep_b_' + i" />
-          </template>
-        </q-list>
-      </q-scroll-area>
-    </q-drawer>
     <q-page-container>
       <q-page>
         <router-view />
