@@ -2,7 +2,7 @@
 
 Public Administration application
 
-![](https://img.shields.io/docker/pulls/micadoproject/pa_app_site) ![](https://david-dm.org/micado-eu/pa_application/status.svg?path=app) [![Build Status](https://travis-ci.org/micado-eu/pa_application.svg?branch=master)](https://travis-ci.org/micado-eu/pa_application)
+![](https://img.shields.io/docker/pulls/micadoproject/pa_app_site) ![](https://david-dm.org/micado-eu/pa_application/status.svg?path=app) [![Build Status](https://travis-ci.org/micado-eu/pa_application.svg?branch=master)](https://travis-ci.org/micado-eu/pa_application) [![CodeFactor](https://www.codefactor.io/repository/github/micado-eu/pa_application/badge)](https://www.codefactor.io/repository/github/micado-eu/pa_application)
 
 
 ## Development instructions
