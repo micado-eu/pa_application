@@ -35,7 +35,7 @@ export default {
     return {
       data: [{ percentage: 10 }, { percentage: 20 }, { percentage: 30 }],
       id: "pieSvg",
-      radius: "150",
+      radius: "100",
       width: "100%",
       height: "85%",
       sizeSet: false

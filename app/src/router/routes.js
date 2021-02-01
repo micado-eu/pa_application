@@ -19,6 +19,7 @@ import EventEditPage from '../pages/events/EventEditPage.vue'
 import MasterPortal from '../components/migration_monitor/map/MasterPortal.vue'
 import Country from '../components/migration_monitor/Country.vue'
 import Board from '../components/migration_monitor/Board.vue'
+import BoardContainer from '../components/migration_monitor/BoardContainer.vue'
 import MigrationSitEditor from '../components/migration_monitor/editor/Editor.vue'
 import MigrationSitOverview from '../components/migration_monitor/overview/Overview.vue'
 import MigrationSitMain from '../components/migration_monitor/Main.vue'
@@ -107,7 +108,12 @@ const routes = [
           { path: 'editor', component: MigrationSitEditor },
           { path: 'overview', component: MigrationSitOverview },
           { path: 'map', component: MasterPortal },
-          { path: ':board', component: Board }
+          {
+            path: 'board', component: BoardContainer,
+            children: [
+              { path: ':board', component: Board }
+            ]
+          }
         ]
       },
       { path: '/ngo/requestmediation', component: RequestMediation },

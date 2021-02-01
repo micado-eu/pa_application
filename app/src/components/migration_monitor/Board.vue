@@ -1,26 +1,33 @@
 <template>
   <div class="board">
     <div id="header" class="q-pa-md row">
-      <div id="header-content">
-        <q-select
-          class="col-10"
-          outlined
-          v-model="printList"
-          multiple
-          :options="categories.map((c) => c.category)"
-          label="Select categories to print"
-          style="width: 250px"
-        />
-        <q-btn
-          no-caps
-          class="q-ml-md"
-          label="print"
-          color="info"
-          size="lg"
-          v-close-popup
-          @click="printPNG()"
-        />
-      </div>
+      <q-select
+        class="col-10"
+        outlined
+        v-model="printList"
+        multiple
+        :options="categories.map((c) => c.category)"
+        label="Select categories to print"
+        style="width: 250px"
+      />
+      <q-btn
+        no-caps
+        class="q-ml-md"
+        label="print"
+        color="info"
+        size="lg"
+        v-close-popup
+        @click="printPNG()"
+      />
+      <q-btn
+        class="q-ml-md q-mr-md"
+        icon="home"
+        color="white"
+        text-color="black"
+        size="lg"
+        to="/situation/main"
+        title="return to main page"
+      />
     </div>
 
     <div class="charts">
@@ -80,9 +87,11 @@ export default {
     printPNG() {
       this.$refs.group.forEach((group) => {
         if (this.printList.indexOf(group.category) > -1) {
-          htmlToImage.toPng(group.$el, {}).then((dataUrl) => {
-            download(dataUrl, `${group.category}.png`)
-          })
+          htmlToImage
+            .toPng(group.$el, {})
+            .then((dataUrl) => {
+              download(dataUrl, `${group.category}.png`)
+            })
         }
       })
     }
@@ -110,11 +119,6 @@ p {
 }
 
 #header {
-  background-color: rgba(255, 255, 255, 0.6);
-  width: 100%;
-}
-
-#header-content {
-  display: flex;
+  justify-content: flex-end;
 }
 </style>

@@ -1,37 +1,42 @@
 <template>
   <div id="card" :style="{ height: height }">
-    <div id="header" class="q-pt-lg">
-      <h6>{{ graph.title }}</h6>
-      <q-btn
-        icon="info"
-        round  
-        id="info-btn"      
-        class="q-ml-lg"
-        color="accent"
-        size="sm"
-        v-close-popup
+    <div id="header" class="q-pt-md q-pl-lg">
+      <h6
+        color="white"
+        text-color="black"
+        title="click to show details"
         @click="$emit('chart-clicked', graph.id)"
-      />
+      >
+        {{ graph.title }}
+      </h6>
     </div>
+    <p class="q-px-lg q-mx-lg no-padding">
+      <strong>description:</strong>
+      {{ graph.description }}
+      <br />
+      <strong>data provider:</strong>EU
+      <br />
+      <strong>updated time:</strong>2019.07
+    </p>
     <lineChart
       v-if="graph.type === 'LINE'"
-      class="chart"
-      :content="content"
+      class="chart line-chart"
+      :content="filteredContent"
       :catAxis="graph.x"
       :valAxis="graph.y"
       :xistime="graph.xistime"
     />
     <barChart
       v-if="graph.type === 'BAR'"
-      class="chart"
-      :content="content"
+      class="chart bar-chart"
+      :content="filteredContent"
       :catAxis="graph.x"
       :valAxis="graph.y"
       :xistime="graph.xistime"
     />
     <pieChart
       v-if="graph.type === 'PIE'"
-      class="chart"
+      class="chart pie-chart"
       :content="graph.content"
       :catAxis="graph.x"
       :valAxis="graph.y"
@@ -39,17 +44,23 @@
     <mapChart v-if="graph.type === 'MAP'" class="chart" />
     <div
       v-if="['LINE', 'BAR'].indexOf(graph.type) > -1"
-      class="q-px-lg q-mx-lg"
+      class="q-px-lg q-mx-lg  no-padding"
     >
-      <q-badge color="grey">
-        Model: {{ lower }} to {{ upper }} ({{ min }} to {{ max }})
-      </q-badge>
       <q-range
         v-model="range"
         :min="0"
         :max="graph.content.length - 1"
         color="grey"
       />
+      <p>
+        Statistics: {{ lower }} to {{ upper }}
+        <br />
+        Minimum Value: {{ min }}
+        <br />
+        Maximum Value: {{ max }}
+        <br />
+        Mean Value: {{ mean }}
+      </p>
     </div>
   </div>
 </template>
@@ -71,7 +82,7 @@ export default {
   props: ["graphData"],
   data() {
     return {
-      height: "400px",
+      height: "auto",
       range: { min: 0, max: 0 },
       graph: this.graphData
     }
@@ -81,12 +92,16 @@ export default {
       return this.graphData
     },
     min: function () {
-      return this.graphData.content[0][this.graphData.x]
+      return Math.min(...this.filteredContent.map((c) => c[this.graphData.y]))
     },
     max: function () {
-      return this.graphData.content[this.graphData.content.length - 1][
-        this.graphData.x
-      ]
+      return Math.max(...this.filteredContent.map((c) => c[this.graphData.y]))
+    },
+    mean: function () {
+      return Math.floor(
+        this.filteredContent.reduce((acc, c) => acc + c[this.graphData.y], 0) /
+          this.filteredContent.length
+      )
     },
     lower: function () {
       return this.graphData.content[this.range.min][this.graphData.x]
@@ -94,7 +109,7 @@ export default {
     upper: function () {
       return this.graphData.content[this.range.max][this.graphData.x]
     },
-    content: function () {
+    filteredContent: function () {
       const content = this.graph.content.filter(
         (c, i) => i >= this.range.min && i <= this.range.max
       )
@@ -103,7 +118,7 @@ export default {
   },
   created() {
     if (this.graphData.type === "MAP" || this.graphData.type === "PIE")
-      this.height = "600px"
+      this.height = "auto"
     this.range.max = this.graphData.content.length - 1
   }
 }
@@ -115,24 +130,38 @@ export default {
   /* margin: 50px; */
 }
 h6 {
-  padding: 0;
   margin: 0;
   text-align: center;
+}
+.no-padding {
+  padding: 0;
 }
 .chart {
   display: block;
   margin: auto;
 }
+.line-chart {
+  height: 200px;
+}
+.bar-chart {
+  height: 200px;
+}
+.pie-chart {
+  height: 500px;
+}
 .q-pa-md {
   padding: 0px 16px;
 }
-#header{
-  padding:0;
+#header {
   display: flex;
-  justify-content: center;
+  justify-content: left;
   align-items: center;
 }
-h6{
-  padding:0;
+h6 {
+  padding: 0;
+  cursor: pointer;
+}
+h6:hover {
+  text-decoration: underline;
 }
 </style>
