@@ -43,18 +43,15 @@
                 v-model="selectedTopics"
                 :val="topic.id"
                 class="filter-text"
-                :label="topic.topic"
+                :label="topicTransl(topic)"
                 @input="filterByTopics()"
               />
-              <span class="q-mt-sm">
-                {{topic.translations.filter(t => t.lang ===  lang)[0].topic}}
-              </span>
               <q-img
                 :src="topic.icon"
                 spinner-color="white"
                 id="image"
-                :alt="topic.topic"
-                class="q-ml-sm filter-icon"
+                :alt="topicTransl(topic)"
+                class="q-ml-sm q-mt-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
               >
                 <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
@@ -131,15 +128,12 @@
                 :label="userTypeTransl(userType)"
                 @input="filterByUserTypes()"
               />
-              <span class="q-mt-sm">
-                {{userType.translations.filter(t => t.lang ===  lang)[0].userType}}
-              </span>
               <q-img
                 :src="userType.icon"
                 spinner-color="white"
                 id="image"
                 :alt="userTypeTransl(userType)"
-                class="q-ml-sm filter-icon"
+                class="q-ml-sm q-mt-sm filter-icon"
                 :img-style="{'max-width': '24px', 'max-height': '24px'}"
               >
                 <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
@@ -239,7 +233,7 @@
                       :src="topic.icon"
                       spinner-color="white"
                       id="image"
-                      :alt="topic.topic"
+                      :alt="topicTransl(topic)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.topics.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     >
@@ -259,7 +253,7 @@
                       :src="userType.icon"
                       spinner-color="white"
                       id="image"
-                      :alt="userType.user_type"
+                      :alt="userTypeTransl(userType)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     >

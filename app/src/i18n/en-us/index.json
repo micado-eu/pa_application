@@ -308,7 +308,8 @@
     "url": "URL",
     "url_label": "URL",
     "upload_button": "Upload",
-    "uploader_label": "Upload image (Max 25 MB)"
+    "uploader_label": "Upload image (Max 25 MB)",
+    "text_alternative": "Text alternative to image"
   },
   "date_selector": {
     "close": "Close"
