@@ -811,8 +811,11 @@ export default {
       .then(document_types => {
         console.log(document_types)
         document_types.forEach(document_type => {
+          if(document_type.published){
           var the_doc = { label: document_type.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: document_type.id }
-          this.t_docs.push(the_doc)
+          
+             this.t_docs.push(the_doc)
+          }
         })
 
       })
