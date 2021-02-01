@@ -82,6 +82,9 @@
                 :readonly="!(language.lang===activeLanguage)"
                 @micado-change="(id) => {
                   changeTranslationState(edit_process, id.state)
+                 //groupSteps(edit_process.id)
+                  //updateStepTranslationState(id.state)
+                  
                 }"
                 @return-to-edit="(id) => {
                   changeTranslationState(edit_process, id.state)
@@ -315,7 +318,8 @@ export default {
         deleteTranslationProd: 'flows/deleteTranslationProd',
         saveStepTranslationProd: 'steps/saveTranslationProd',
         deleteStepTranslationProd: 'steps/deleteTranslationProd',
-        fetchComments: 'comments/fetchComments'
+        fetchComments: 'comments/fetchComments',
+        updateStepTranslation:'steps/updateStepTranslation'
       }
     })],
   props: ["theprocessid"],
@@ -338,7 +342,8 @@ export default {
       docOptions: [],
       selectedDocs: [],
       selected_process_comments:[], 
-      publishedOrig:false
+      publishedOrig:false,
+      related_steps:null
     }
   },
   computed: {
@@ -357,6 +362,19 @@ export default {
 
   },
   methods: {
+    updateStepTranslationState(state){
+      console.log("updating steps")
+      if(this.related_steps){
+      this.related_steps.forEach((step)=>{
+        this.updateStepTranslation({id:step.id, translationState:state})
+          })
+      }
+    },
+    groupSteps(id){
+      this.related_steps = this.steps.filter((step)=>{
+        return step.idProcess== id
+      })
+    },
     onSubmit () {
       console.log(this.$refs.produced_doc)
       this.$refs.produced_doc.validate()
@@ -518,6 +536,9 @@ export default {
       }
       else {
         await this.editProcess({process:value,defaultLang:this.$defaultLang })
+        this.groupSteps(value.id)
+        this.updateStepTranslationState(value.translations[0].translationState)
+
         console.log("i am ublished orig")
         console.log(this.publishedOrig)
         console.log("i am published of the form")

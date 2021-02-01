@@ -35,6 +35,16 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  updateStepTranslation (translation, id) {
+    translation.id = id
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id','translationState']));
+
+    // create fake id here
+    return axiosInstance
+      .patch('/backend/1.0.0/steps/' + id + '/step-translations', savingTranslation)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
   saveStepTranslationProd (id) {
     // create fake id here
     return axiosInstance
