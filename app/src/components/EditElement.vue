@@ -60,7 +60,7 @@
         <div>
           <span class="q-my-xl label-edit">
             <help-label
-              :fieldLabel="$t('input_labels.title')"
+              :fieldLabel="$t('input_labels.title') + ' *'"
               :helpLabel="$t('help.element_title')"
             ></help-label>
           </span>
@@ -134,7 +134,7 @@
           >
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.select_category')"
+                :fieldLabel="$t('input_labels.select_category') + ' *'"
                 :helpLabel="$t('help.element_category')"
               ></help-label>
             </span>
@@ -174,7 +174,7 @@
           <div class="q-my-xl q-mr-lg tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.start_date')"
+                :fieldLabel="$t('input_labels.start_date') + ' *'"
                 :helpLabel="$t('help.element_start_date')"
               ></help-label>
             </span>
@@ -257,7 +257,7 @@
           <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.finish_date')"
+                :fieldLabel="$t('input_labels.finish_date') + ' *'"
                 :helpLabel="$t('help.element_end_date')"
               ></help-label>
             </span>
