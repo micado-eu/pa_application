@@ -316,6 +316,14 @@
                         {{$t("lists.location")}}: {{item.location}}
                       </span>
                     </div>
+                    <div>
+                      <span
+                        class="date-text q-mt-sm q-mr-xl"
+                        v-if="item.creator && showExtraInfo[item.id]"
+                      >
+                        {{$t("lists.creator")}}: {{item.creator}}
+                      </span>
+                    </div>
                   </template>
                 </glossary-editor-viewer>
               </q-item-section>
