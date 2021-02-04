@@ -101,6 +101,9 @@ export function deleteTranslationProd(state, steps){
   })
   
 }
+export function updateStepTranslation(state, payload){
+  return client.updateStepTranslation(payload, payload.id)
+}
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)
