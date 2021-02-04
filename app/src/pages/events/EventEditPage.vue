@@ -99,7 +99,8 @@ export default {
         startDate: data[0].startDate,
         endDate: data[0].finishDate,
         location: data[0].location,
-        published: data[0].published
+        published: data[0].published,
+        creator: data[0].creator
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]

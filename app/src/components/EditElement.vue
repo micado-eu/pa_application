@@ -605,7 +605,8 @@ export default {
       const translation = {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
-        lang
+        lang,
+        creator: this.loggedUser?.name
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
@@ -615,6 +616,7 @@ export default {
       for (const savedTranslation of this.savedTranslations) {
         savedTranslation.published = this.published
         savedTranslation.translationState = this.selectedTranslationState
+        savedTranslation.location = this.location
         if (this.categories_enabled) {
           translation.category = this.selectedCategoryObject
         }
@@ -750,7 +752,9 @@ export default {
               title: '',
               description: '',
               lang: language.lang,
-              translationState: this.selectedTranslationState
+              translationState: this.selectedTranslationState,
+              creator: this.loggedUser?.name,
+              location: this.location
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -814,6 +818,7 @@ export default {
     ...mapGetters('language', ['languages']),
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
+    ...mapGetters({ loggedUser: 'auth/user'}),
     errorDefaultLangEmpty: function () {
       if (this.langTab !== this.$defaultLang) {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
