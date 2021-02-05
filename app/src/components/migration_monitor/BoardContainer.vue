@@ -4,7 +4,13 @@
       key="situation-drawer"
       show-if-above
       bordered
-      :content-style="{ backgroundColor: '#DCE4E8', border: 'none' }"
+      :style="{backroundColor: 'red'}"
+      :content-style="{
+        position: 'sticky',
+        top:'50px',
+        background:'#DCE4E8',
+        maxHeight:'100vh',
+        }"
       class="situation-drawer"
     >
       <q-scroll-area class="fit">
@@ -104,6 +110,7 @@ export default {
   /* align with the main menu bar */
   margin-top: 177px;
 }
+
 #board-container {
   margin-top: -50px;
   /* height: calc(100vh - 50px); */
@@ -111,4 +118,5 @@ export default {
 .q-page-container {
   margin-top: 50px;
 }
+
 </style>
