@@ -616,7 +616,6 @@ export default {
       for (const savedTranslation of this.savedTranslations) {
         savedTranslation.published = this.published
         savedTranslation.translationState = this.selectedTranslationState
-        savedTranslation.location = this.location
         if (this.categories_enabled) {
           translation.category = this.selectedCategoryObject
         }
@@ -753,8 +752,7 @@ export default {
               description: '',
               lang: language.lang,
               translationState: this.selectedTranslationState,
-              creator: this.loggedUser?.name,
-              location: this.location
+              creator: this.loggedUser?.name
             }
             if (this.categories_enabled) {
               emptyTranslation.category = this.selectedCategoryObject
@@ -765,9 +763,13 @@ export default {
             if (this.user_types_enabled) {
               emptyTranslation.userTypes = this.selectedUserTypesObjects
             }
+            if (this.is_event) {
+              emptyTranslation.location = this.location
+            }
             this.savedTranslations.push(emptyTranslation)
           }
         }
+        console.log(this.savedTranslations)
         this.save_item_fn(
           this.savedTranslations
         )
