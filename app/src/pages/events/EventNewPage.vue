@@ -50,6 +50,7 @@ export default {
                 delete translation.startDate
                 delete translation.finishDate
                 delete translation.location
+                delete translation.creator
                 this.addNewEventItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {
