@@ -644,6 +644,7 @@ export default {
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
               translation.location = e.location
             }
+            translation.creator = e.creator
             translation.published = e.published
             this.showExtraInfo[e.id] = false
             return translation
