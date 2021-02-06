@@ -93,7 +93,8 @@ export default {
       const eventData = {
         id,
         category: categoryId,
-        published: data[0].published
+        published: data[0].published,
+        creator: data[0].creator
       }
       this.editInformationItem(eventData).then(() => {
         const { topics } = data[0]

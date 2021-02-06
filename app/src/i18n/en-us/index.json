@@ -301,7 +301,8 @@
     "user_types": "User Types",
     "start_date": "Start date",
     "end_date": "End date",
-    "location": "Location"
+    "location": "Location",
+    "creator": "Created by/Organizer"
   },
   "upload_modal": {
     "upload_label": "Upload",
