@@ -4,7 +4,6 @@
       key="situation-drawer"
       show-if-above
       bordered
-      :style="{backroundColor: 'red'}"
       :content-style="{
         position: 'sticky',
         top:'50px',
@@ -110,7 +109,6 @@ export default {
   /* align with the main menu bar */
   margin-top: 177px;
 }
-
 #board-container {
   margin-top: -50px;
   /* height: calc(100vh - 50px); */
@@ -118,5 +116,4 @@ export default {
 .q-page-container {
   margin-top: 50px;
 }
-
 </style>
