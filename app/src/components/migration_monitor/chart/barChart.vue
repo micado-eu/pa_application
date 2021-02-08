@@ -4,7 +4,7 @@
       v-if="sizeSet"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
-      <rect
+      <!-- <rect
         v-for="(d, i) in content"
         :key="i + '_rect'"
         :id="i + '_rect'"
@@ -18,8 +18,27 @@
         stroke-width="1px"
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
+      /> -->
+      <rect
+        v-for="(d, i) in content"
+        :key="i + '_rect'"
+        :id="i + '_rect'"
+        :ref="i + '_rect'"
+        :x="scaleX(d[catAxis])"
+        :y="getY(d).pos"
+        :fill="getfill(d)"
+        :width="barWidth"
+        :height="getY(d).colheight"
+        stroke="white"
+        stroke-width="1px"
+        @mouseover="onMouseOver"
+        @mouseleave="onMouseLeave"
       />
+    </rect>
+    <!-- rect above was not closed -->
+
       <!-- For print function to work, "display: none" has to be inline -->
+      <!-- Label for value (y-axis) -->
       <text
         v-for="(d, i) in content"
         :key="i + '_texty'"
@@ -27,12 +46,13 @@
         class="label"
         display="none"
         :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="scaleY(d[valAxis])"
+        :y="getY(d).pos-5"
         text-anchor="middle"
       >
         {{ d[valAxis] }}
       </text>
       <!-- For print function to work, "display: none" has to be inline -->
+      <!-- Label for date (x-axis) -->
       <text
         v-for="(d, i) in content"
         :key="i + '_textx'"
@@ -40,7 +60,7 @@
         class="label"
         display="none"
         :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="height - margin.top - margin.bottom"
+        :y="height - margin.top - margin.bottom + 15"
         text-anchor="middle"
       >
         {{ d[catAxis] }}
@@ -112,7 +132,7 @@ export default {
       yid: "y0",
       resizeTimeout: false,
       rangeTimeout: false,
-      sizeSet: false
+      sizeSet: false,
     }
   },
   computed: {
@@ -130,18 +150,63 @@ export default {
         .range([0, this.width - this.margin.left - this.margin.right])
     },
     scaleY() {
-      return (
-        scaleLinear()
-          // .domain(extent(this.content, d => d[this.valAxis]))
-          .domain([0, Math.max(...this.content.map((d) => d[this.valAxis]))])
-          .range([this.height - this.margin.top - this.margin.bottom, 0])
-      )
+      let minvalue = Math.min(...this.content.map((d) => d[this.valAxis]));
+      if (minvalue < 0){
+        return (
+          scaleLinear()
+            // .domain(extent(this.content, d => d[this.valAxis]))
+            .domain([Math.min(...this.content.map((d) => d[this.valAxis])), Math.max(...this.content.map((d) => d[this.valAxis]))])
+            .range([this.height - this.margin.top - this.margin.bottom, 0])
+        )
+      } else {
+        return (
+          scaleLinear()
+            // .domain(extent(this.content, d => d[this.valAxis]))
+            .domain([0, Math.max(...this.content.map((d) => d[this.valAxis]))])
+            .range([this.height - this.margin.top - this.margin.bottom, 0])
+        )
+      }
+    },
+    getY(){
+      return function(d){
+        let value = d[this.valAxis] //value of data entry
+        let height = this.height-this.margin.top-this.margin.bottom //height of container
+        let maxvalue = Math.max(...this.content.map((d) => d[this.valAxis])) //maximum value in data entry
+        let minvalue = Math.min(...this.content.map((d) => d[this.valAxis])) //minimum value in data entry
+        var range
+        var pos
+        var colheight
+        if (minvalue<0){
+          range = maxvalue+Math.abs(minvalue)
+          colheight=(Math.abs(value)/range)*height
+          if (value<0){
+            pos=((range+minvalue)/range)*height
+          } else{
+            pos=((range+minvalue-Math.abs(value))/range)*height
+          }
+        } else {
+          range = maxvalue
+          pos=((range-value)/range)*height
+          colheight=(value/range)*height
+        }
+        return {"pos":pos,"colheight":colheight}
+
+      }
     },
     barWidth() {
       return (
         (this.width - this.margin.left - this.margin.right) /
         this.content.length
       )
+    },
+    getfill(){
+      return function(d){
+        if (d[this.valAxis]>0){
+          return "#0b91ce"
+        } else {
+          return "#C71f40"
+        }
+      }
     }
   },
   methods: {
@@ -187,9 +252,8 @@ export default {
     this.updateGraph()
     this.sizeSet = true
     for (let i=0;i<this.content.length;i++) {
-      console.log("i: ",`${i}_textx`)
-      console.log("i: ",this.$refs)
-
+      // console.log("i: ",`${i}_textx`)
+      // console.log("i: ",this.$refs)
       const textx = this.$refs[`${i}_textx`][0]
       const texty = this.$refs[`${i}_texty`][0]
       textx.style.display = "none"
