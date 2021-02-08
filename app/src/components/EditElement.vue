@@ -193,81 +193,14 @@
                 :helpLabel="$t('help.element_start_date')"
               ></help-label>
             </span>
-            <div class="row">
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="startDate"
-                class="col q-mr-md"
+              <date-time-selector
+                :date="startDate"
+                :time="startTime"
+                @inputDate="startDate = $event"
+                @inputTime="startTime = $event"
                 :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="event"
-                    class="cursor-pointer"
-                    data-cy="start_date_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="startDate"
-                        mask="YYYY-MM-DD"
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="startTime"
-                class="col"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="access_time"
-                    class="cursor-pointer"
-                    data-cy="start_time_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time
-                        v-model="startTime"
-                        mask="HH:mm"
-                        format24h
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+                inline
+              ></date-time-selector>
           </div>
           <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
@@ -276,81 +209,14 @@
                 :helpLabel="$t('help.element_end_date')"
               ></help-label>
             </span>
-            <div class="row">
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="finishDate"
-                class="col q-mr-md"
+              <date-time-selector
+                :date="finishDate"
+                :time="finishTime"
+                @inputDate="finishDate = $event"
+                @inputTime="finishTime = $event"
                 :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="event"
-                    class="cursor-pointer"
-                    data-cy="end_date_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-date
-                        v-model="finishDate"
-                        mask="YYYY-MM-DD"
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-date>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-              <q-input
-                outlined
-                bg-color="grey-3"
-                v-model="finishTime"
-                class="col"
-                :readonly="published"
-              >
-                <template v-slot:prepend>
-                  <q-icon
-                    name="access_time"
-                    class="cursor-pointer"
-                    data-cy="end_time_icon"
-                  >
-                    <q-popup-proxy
-                      transition-show="scale"
-                      transition-hide="scale"
-                    >
-                      <q-time
-                        v-model="finishTime"
-                        mask="HH:mm"
-                        format24h
-                        color="accent"
-                      >
-                        <div class="row items-center justify-end">
-                          <q-btn
-                            v-close-popup
-                            :label="$t('date_selector.close')"
-                            color="accent"
-                            flat
-                            data-cy="close_date_menu"
-                          />
-                        </div>
-                      </q-time>
-                    </q-popup-proxy>
-                  </q-icon>
-                </template>
-              </q-input>
-            </div>
+                inline
+              ></date-time-selector>
           </div>
         </div>
         <div class="row tag_category_selectors">
@@ -466,13 +332,15 @@
 import { mapGetters, mapActions } from 'vuex'
 import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
+import DateTimeSelector from './DateTimeSelector'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
 
 export default {
   name: 'EditElement',
   components: {
     'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor
+    'glossary-editor': GlossaryEditor,
+    'date-time-selector': DateTimeSelector
   },
   mixins: [translatedButtonMixin],
   props: {
@@ -625,7 +493,7 @@ export default {
         if (this.user_types_enabled) {
           translation.userTypes = this.selectedUserTypesObjects
         }
-        if (this.is_event && this.startDate && this.startTime) {
+        if (this.is_event) {
           if (this.startDate && this.startTime) {
             translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
           }
@@ -820,7 +688,7 @@ export default {
     ...mapGetters('language', ['languages']),
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
-    ...mapGetters({ loggedUser: 'auth/user'}),
+    ...mapGetters({ loggedUser: 'auth/user' }),
     errorDefaultLangEmpty: function () {
       if (this.langTab !== this.$defaultLang) {
         return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
