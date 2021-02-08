@@ -4,7 +4,12 @@
       key="situation-drawer"
       show-if-above
       bordered
-      :content-style="{ backgroundColor: '#DCE4E8', border: 'none' }"
+      :content-style="{
+        position: 'sticky',
+        top:'50px',
+        background:'#DCE4E8',
+        maxHeight:'100vh',
+        }"
       class="situation-drawer"
     >
       <q-scroll-area class="fit">
