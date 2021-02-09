@@ -2,6 +2,7 @@ export function user (state) {
   return state.user
 }
 
+
 export function token (state) {
   console.log("TOKEN GETTER")
   console.log(state)

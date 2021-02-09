@@ -1052,12 +1052,24 @@ export default {
         )
       }
       else {
+        console.log(this.int_doc_shell)
+        this.int_doc_shell.pictures.forEach((picture)=>{
+          picture.hotspots.forEach((spot)=>{
+            spot.translations.forEach((transl)=>{
+              console.log(this.int_doc_shell.translations[0].translationState)
+              transl.translationState = this.int_doc_shell.translations[0].translationState
+            })
+          })
+        })
+        console.log("doc after change of  transl state")
+                console.log(this.int_doc_shell)
+
         this.editDocumentType({doc_element:this.int_doc_shell, publishedOrig: this.publishedOrig}).then(()=>{
           console.log("In edit")
         console.log(this.int_doc_shell)
-        if(this.int_doc_shell.published != this.publishedOrig){
-          this.isPublished(this.int_doc_shell)
-        }
+        //if(this.int_doc_shell.published != this.publishedOrig){
+        //  this.isPublished(this.int_doc_shell)
+        //}
         })
         
 

@@ -110,7 +110,13 @@ export function fetchUserGroup (state, payload) {
   return client
     .fetchUserGroup(payload.user, payload.token)
 }
+export function getUserPic(state, userid){
+  return client.fetchUserPic(userid).then((ret)=>{
+    state.commit('setUserPic', ret)
+    return ret
+  })
+}
 /* export function deleteDocument({commit}, document_type) {
-
+client.
   commit(delete_document_type, document_type.id)
 } */

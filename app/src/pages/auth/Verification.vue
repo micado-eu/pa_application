@@ -11,10 +11,21 @@
 
 <script>
 import client from 'api-user-client'
+import storeMappingMixin from '../../mixin/storeMappingMixin'
 
 
 export default {
   name: 'Verification',
+   mixins: [
+    storeMappingMixin({
+      getters: {
+       
+      }, actions: {
+        getUserPic: 'user/getUserPic'
+      }
+    })
+
+  ],
   data () {
     return {
       token: '',
@@ -23,8 +34,18 @@ export default {
   },
   mounted () {
     this.verifyUser()
+    this.getPic()
   },
   methods: {
+    getPic(){
+      if(this.$store.state.auth.user != null){
+        console.log(this.$store.state.auth.user.umid)
+          this.getUserPic( this.$store.state.auth.user.umid).then((user)=>{
+            console.log("I AM USER IN VERIFICATION")
+            console.log(user)
+          })
+      }
+    },
     verifyUser () {
 
       const hashes = this.$route.hash.slice(this.$route.hash.indexOf('#') + 1).split('&')
