@@ -4,21 +4,7 @@
       v-if="sizeSet"
       :transform="'translate(' + margin.left + ',' + margin.top + ')'"
     >
-      <!-- <rect
-        v-for="(d, i) in content"
-        :key="i + '_rect'"
-        :id="i + '_rect'"
-        :ref="i + '_rect'"
-        :x="scaleX(d[catAxis])"
-        :y="scaleY(d[valAxis])"
-        :width="barWidth"
-        :height="height - scaleY(d[valAxis]) - margin.top - margin.bottom"
-        fill="#99e6b4"
-        stroke="white"
-        stroke-width="1px"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave"
-      /> -->
+
       <rect
         v-for="(d, i) in content"
         :key="i + '_rect'"
@@ -83,14 +69,14 @@
     >
       {{ catAxis }}
     </text>
+
     <ChartAxisBottom
       v-if="sizeSet"
       :length="content.length"
       :scaleX="scaleX"
       :key="xid"
-      :transform="
-        'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'
-      "
+      :tickpadd="gettickpadd"
+      :transform="translate"
     />
     <ChartAxisLeft
       v-if="sizeSet"
@@ -101,7 +87,7 @@
   </svg>
 </template>
 <script>
-import { scaleLinear, scaleTime, scaleBand, extent, select } from "d3"
+import { scaleLinear, scaleTime, scaleBand, extent, select, tickPadding, axis } from "d3"
 import ChartAxisBottom from "./ChartAxisBottom.vue"
 import ChartAxisLeft from "./ChartAxisLeft.vue"
 
@@ -140,10 +126,14 @@ export default {
       return select(`#${this.id}`)
     },
     scaleX() {
+
+
       if (this.xistime) {
         return scaleTime()
           .domain(extent(this.content, (d) => d[this.catAxis]))
           .range([0, this.width - this.margin.left - this.margin.right])
+
+
       }
       return scaleBand()
         .domain(this.content.map((d) => d[this.catAxis]))
@@ -206,6 +196,34 @@ export default {
         } else {
           return "#C71f40"
         }
+      }
+    },
+    translate(){
+      var maxvalue = Math.max(...this.content.map((d) => d[this.valAxis])) //maximum value in data entry
+      var minvalue = Math.min(...this.content.map((d) => d[this.valAxis])) //minimum value in data entry
+      var range = maxvalue+Math.abs(minvalue)
+      var ty
+      var tx = this.margin.left
+
+
+      if (minvalue<0){
+        ty=this.height-this.margin.bottom-((Math.abs(minvalue)/range)*(this.height-this.margin.bottom-this.margin.top))
+      } else {
+        ty=this.height-this.margin.bottom
+      }
+
+      // var ty = this.height - this.margin.bottom
+      return 'translate(TX,TY)'.replace('TX',tx).replace('TY',ty)
+    },
+    gettickpadd(){
+      var maxvalue = Math.max(...this.content.map((d) => d[this.valAxis])) //maximum value in data entry
+      var minvalue = Math.min(...this.content.map((d) => d[this.valAxis])) //minimum value in data entry
+      var range = maxvalue+Math.abs(minvalue)
+      var dist = 5 //distance from axis
+      if (minvalue > 0){
+        return dist
+      } else {
+        return (Math.abs(minvalue)/range)*(this.height-this.margin.bottom-this.margin.top)+dist
       }
     }
   },
@@ -273,4 +291,5 @@ div {
   transition: 0.2s;
   pointer-events: none;
 }
+
 </style>
