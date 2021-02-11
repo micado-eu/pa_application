@@ -6,6 +6,8 @@
       :pagetitle="pagetitle"
       :description_max_length="800"
       :title_max_length="255"
+      :on_publish=on_publish
+      :on_unpublish=on_unpublish
     />
   </div>
 </template>
@@ -23,6 +25,12 @@ export default {
     },
     "pagetitle": {
       type: String
+    },
+    on_publish: {
+      type: Function
+    },
+    on_unpublish: {
+      type: Function
     }
   },
   methods: {

@@ -516,10 +516,7 @@ export default {
     filterByCategory() {
       if (this.selectedCategory) {
         this.filteredElementsByCategory = this.translatedElements.filter((e) => {
-          if (e.category !== this.selectedCategory) {
-            return false
-          }
-          return true
+          return e.category === this.selectedCategory
         })
       } else {
         this.filteredElementsByCategory = this.translatedElements

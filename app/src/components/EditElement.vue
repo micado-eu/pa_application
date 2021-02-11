@@ -299,7 +299,7 @@
           <q-toggle
             v-model="published"
             color="accent"
-            @input="showWarningPublish($event)"
+            @input="showWarningPublish($event, elemId)"
             :disable="publishToggleState"
           ></q-toggle>
         </div>
@@ -637,7 +637,6 @@ export default {
             this.savedTranslations.push(emptyTranslation)
           }
         }
-        console.log(this.savedTranslations)
         this.save_item_fn(
           this.savedTranslations
         )
@@ -670,7 +669,7 @@ export default {
           actions: [
             {
               label: 'Yes', color: 'accent', handler: () => {
-                this.on_unpublish(id).then(() => this.published = false)
+                this.on_unpublish(id).then(() => this.goBack())
               }
             },
             {
@@ -730,9 +729,6 @@ export default {
       if (newVal && oldVal) {
         this.changeLanguage(newVal, oldVal)
       }
-    },
-    selectedTranslationState: function () {
-      console.log(this.selectedTranslationState)
     }
   },
   created() {
@@ -741,7 +737,6 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
-        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id

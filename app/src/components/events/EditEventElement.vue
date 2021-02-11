@@ -14,6 +14,8 @@
       :user_types="user_types"
       is_event
       :title_max_length="255"
+      :on_publish=on_publish
+      :on_unpublish=on_unpublish
     />
   </div>
 </template>
@@ -44,6 +46,12 @@ export default {
     },
     user_types: {
       type: Array
+    },
+    on_publish: {
+      type: Function
+    },
+    on_unpublish: {
+      type: Function
     }
   },
   methods: {
