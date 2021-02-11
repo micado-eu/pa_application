@@ -292,7 +292,7 @@
         <div class="row">
           <span class="label-edit">
             <help-label
-              :fieldLabel="$t('input_labels.is_published')"
+              :fieldLabel="$t('button.validate_and_publish')"
               :helpLabel="$t('help.is_published')"
             ></help-label>
           </span>

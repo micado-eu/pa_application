@@ -92,6 +92,7 @@
     "logout": "Logout"
   },
   "button": {
+    "validate_and_publish":"Validate and publish",
     "change_pass":"Change Password",
     "add_document": "Add Document",
     "integration": "Integration",

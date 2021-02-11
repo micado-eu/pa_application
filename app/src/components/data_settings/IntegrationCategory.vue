@@ -98,14 +98,14 @@
           />
         </q-tabs>
         <div class="row">
-        <div class="col-2" style="min-width:130px; max-width:130px">
+        <div class="col-3" style="min-width:200px">
           <HelpLabel
-            :fieldLabel="$t('input_labels.is_published')"
+            :fieldLabel="$t('button.validate_and_publish')"
             :helpLabel ="$t('help.is_published')"
             style="padding-left:17px"
           />
         </div>
-        <div class="col" style="padding-top:2px">
+        <div class="col-2" style="padding-top:2px">
           <q-toggle
             v-model="int_cat_shell.published"
             color="accent"

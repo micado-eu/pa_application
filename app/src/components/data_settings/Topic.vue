@@ -101,9 +101,9 @@
 
       </FileUploader>
         <div class="row">
-        <div class="col-2" style="min-width:130px; max-width:130px">
+        <div class="col-2" style="min-width:200px;">
           <HelpLabel
-            :fieldLabel="$t('input_labels.is_published')"
+            :fieldLabel="$t('button.validate_and_publish')"
             :helpLabel ="$t('help.is_published')"
             style="padding-left:17px"
           />
