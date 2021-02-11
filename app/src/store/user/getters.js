@@ -16,3 +16,6 @@ export function paUserProfile (state) {
 export function pausers (state) {
   return state.pauser
 }
+export function pic(state){
+  return state.userPic
+}

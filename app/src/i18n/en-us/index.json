@@ -92,6 +92,7 @@
     "logout": "Logout"
   },
   "button": {
+    "validate_and_publish":"Validate and publish",
     "change_pass":"Change Password",
     "add_document": "Add Document",
     "integration": "Integration",
@@ -154,7 +155,8 @@
     "feature_settings": "MICADO applications' configuration",
     "pa_logo": "Logo of the hosting Public Administration",
     "user_types": "User Types",
-    "profile_settings":"Profile settings"
+    "profile_settings":"Profile settings",
+    "pa_email":"Email for feedback to the Public Administration"
   },
   "input_labels": {
     "validator": "To be validated by",

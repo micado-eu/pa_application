@@ -38,6 +38,44 @@
         />
       </q-card-section>
     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.pa_email')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+      dense
+      bg-color="grey-3"
+      standout
+      outlined
+      counter
+      :readonly="!editing"
+      v-model="email"
+              />
+        <q-btn
+          v-if="!editing"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="editing = true"
+        />
+          <q-btn
+          v-if="editing"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelMail"
+        />
+          <q-btn
+          v-if="editing"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveMail"
+        />
+
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
@@ -52,17 +90,23 @@ export default {
     return {
       group: ["FEAT_SERVICES"],
       workingFeatures: [],
-      myCroppa: {}
+      myCroppa: {},
+      editing: false,
+      email:null,
+      emailOrig: null,
+      isNew:true
     }
   },
   mixins: [
     storeMappingMixin({
       getters: {
-        features: 'features/features'
+        features: 'features/features',
+        settings: 'settings/settings'
       }, actions: {
         fetchFeatures: 'features/fetchFeatures',
         updateAllFeatures: 'features/updateAllFeatures',
-        updateSetting: 'settings/updateSetting'
+        updateSetting: 'settings/updateSetting',
+        saveSetting:'settings/saveSetting'
       }
     })],
   components: {
@@ -72,6 +116,23 @@ export default {
 
   },
   methods: {
+    cancelMail(){
+      this.email =  JSON.parse(JSON.stringify(this.emailOrig))
+      this.editing = false
+     
+    },
+    saveMail(){
+      if(this.isNew){
+        console.log("saving new feedback email")
+        this.saveSetting({key:'feedback_email', value:this.email})
+      }
+      else{
+        this.updateSetting({key:'feedback_email', value:this.email})
+      }
+      console.log("updating old feedback email")
+      this.editing = false
+      this.emailOrig = JSON.parse(JSON.stringify(this.email))
+    },
     saveFeatures () {
       console.log(this.workingFeatures)
       /*
@@ -122,7 +183,17 @@ export default {
   created () {
     console.log("created")
     console.log(this.features)
+    console.log(this.settings)
     this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+    console.log(this.settings['feedback_email'])
+    this.settings.forEach((setting) => {
+      console.log(setting.key)
+      if(setting.key =='feedback_email'){
+        this.email = setting.value
+        this.emailOrig = setting.value
+        this.isNew = false
+      }
+    });
     /*
     this.fetchFeatures()
       .then(features => {

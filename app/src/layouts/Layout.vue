@@ -41,15 +41,17 @@
       content-class="bg-accent text-white"
     >
       <div class="column flex-center q-gutter-y-md">
-        <q-btn
+        <UserButton />
+        <!--<q-btn
           round
           class="q-gutter-y-md"
           v-if="isLoggedIn"
         >
           <q-avatar size="42px">
-            <img src="https://cdn.quasar.dev/img/avatar2.jpg">
+            <img v-if="userpic!=null" src="https://cdn.quasar.dev/img/avatar2.jpg">
+            <img v-else :src="this.userpic">
           </q-avatar>
-        </q-btn>
+        </q-btn>-->
       </div>
 
       <q-item
@@ -130,26 +132,46 @@
 <script>
 // import ListenToggle from 'components/ListenToggle'
 import storeMappingMixin from '../mixin/storeMappingMixin'
+import UserButton from 'components/UserButton'
 
 export default {
   name: 'Layout',
   mixins: [
     storeMappingMixin({
       getters: {
-        check: 'auth/check'
+        check: 'auth/check',
+        user: 'auth/user',
+        pic:'user/pic'
+      },
+      actions: {
+        getUserPic: 'user/getUserPic'
       }
     })],
   components: {
+    UserButton
   },
   computed: {
     isLoggedIn () {
       console.log("called isloggedin")
       return this.$auth.loggedIn()
-    }
-  },
+    },
+   /* userpic_computer(){
+       if(this.$store.state.auth.user != null){
+         console.log(this.pic)
+      return this.pic[0].picture
+       }
+    }*/
+    },
   created () {
     console.log("AUTH IN LAYOUT")
     console.log(this.$auth.loggedIn())
+    console.log(this.user)
+     if(this.$store.state.auth.user != null){
+      this.getUserPic(this.user.umid).then((user_found)=>{
+        console.log("I AM THE PICTURE")
+        console.log(user_found)
+      })
+  }
   },
   data () {
     return {
@@ -246,7 +268,8 @@ export default {
           description: 'menu.setting_desc'
         }
       ],
-      selectedKey: 'menu.home'
+      selectedKey: 'menu.home',
+      userpic:null
     }
   },
   methods: {
