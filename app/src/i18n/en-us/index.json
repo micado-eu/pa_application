@@ -156,7 +156,8 @@
     "pa_logo": "Logo of the hosting Public Administration",
     "user_types": "User Types",
     "profile_settings":"Profile settings",
-    "pa_email":"Email for feedback to the Public Administration"
+    "pa_email":"Email for feedback to the Public Administration",
+    "father_topics":"Main topics to be shown on migrant application"
   },
   "input_labels": {
     "validator": "To be validated by",
