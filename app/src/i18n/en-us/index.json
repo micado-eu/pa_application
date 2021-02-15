@@ -269,14 +269,14 @@
     "add_new": "Add New Information to the Information Centre",
     "edit": "Edit Information from the Information Centre",
     "categories_title": "Information Centre - Categories",
-    "categories_error": "Cannot delete a category when an item has this category"
+    "categories_error": "Cannot delete or unpublish a category when an item has this category"
   },
   "events": {
     "list_title": "Events",
     "add_new": "Add New Event to the Event List",
     "edit": "Edit Event from the Event List",
     "categories_title": "Events - Categories",
-    "categories_error": "Cannot delete a category when an item has this category"
+    "categories_error": "Cannot delete or unpublish a category when an item has this category"
   },
   "glossary": {
     "list_title": "Glossary",

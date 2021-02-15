@@ -19,6 +19,7 @@ export default {
     const whereClause = {
       id: { eq: translation.id }, lang: { eq: translation.lang }
     }
+    translation.translationDate =  new Date().toISOString()
     return axiosInstance
       .patch(`/backend/1.0.0/information-categories/${translation.id}/information-category-translations?where=${JSON.stringify(whereClause)}`, translation)
       .then((response) => response.data)
@@ -33,7 +34,7 @@ export default {
   },
   saveInformationCategoryTranslation(translation, id) {
     translation.id = id
-
+    translation.translationDate = new Date().toISOString()
     return axiosInstance
       .post(`/backend/1.0.0/information-categories/${id}/information-category-translations`, translation)
       .then((response) => response.data)
@@ -41,6 +42,7 @@ export default {
   },
   saveInformationCategoryTranslationProd(translation, id) {
     translation.id = id
+    translation.translationDate = new Date().toISOString()
     return axiosInstance
       .post(`/backend/1.0.0/information-categories/${id}/information-category-translation-prods`, translation)
       .then((response) => response.data)
@@ -67,7 +69,7 @@ export default {
     .catch(error_handler)
   },
 
-  deleteProdTranslations(state, id) {
+  deleteProdTranslations(id) {
     return axiosInstance
         .delete(`/backend/1.0.0/information-categories/${id}/information-category-translation-prods`)
         .then((response) => response.data)

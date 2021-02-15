@@ -7,18 +7,6 @@ export function fetchEventCategory(state, data) {
 }
 
 export function editCategoryTypeElement(state, event_category) {
-  const old_ec = state.event_category.filter(ic => ic.id === event_category.id)
-  if (old_ec.published && event_category.translations[0].translationState === 0) {
-    deleteProdTranslations(state, event_category.id).then(() => {
-      console.log("Deleted prod translations")
-    })
-  }
-  if (old_ec.published && !event_category.published) {
-    // If published goes from true to false, all the content gets deleted from the translation prod table
-    deleteProdTranslations(state, event_category.id).then(() => {
-      console.log("Deleted prod translations")
-    })
-  }
   // update translations
   return client
     .updateEventCategory({
@@ -31,13 +19,6 @@ export function editCategoryTypeElement(state, event_category) {
         aTranslation.eventCategory = aTranslation.category
         delete aTranslation.category
         client.updateEventCategoryTranslation(aTranslation)
-        if (!old_ec.published && event_category.published && aTranslation.translationState === 3) {
-          // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-          const prodTransl = Object.assign({}, aTranslation)
-          delete prodTransl.translationState
-          delete prodTransl.published
-          saveEventCategoryTranslationProd(prodTransl).then(() => { })
-        }
       })
       fetchEventCategory(state)
     })
@@ -82,5 +63,13 @@ export function deleteProdTranslations(state, id) {
 }
 
 export function saveEventCategoryTranslationProd(state, data) {
-  return this.saveEventCategoryTranslationProd(data)
-} 
+  data.eventCategory = data.category
+  delete data.category
+  return client.saveEventCategoryTranslationProd(data, data.id)
+}
+
+export function updateEventCategoryTranslation(state, data) {
+  data.eventCategory = data.category
+  delete data.category
+  return client.updateEventCategoryTranslation(data)
+}

@@ -27,7 +27,6 @@
           <q-toggle
             v-model="a_event_category.published"
             color="accent"
-            @input="updatePublishedCat($event, a_event_category.id)"
             disable
           />
         </q-item-section>
@@ -123,8 +122,9 @@
               ></help-label>
               <q-toggle
                 v-model="add_published"
-                color="green"
+                color="accent"
                 :disable="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState < 2"
+                @input="showWarningPublish($event, int_cat_shell.id)"
               ></q-toggle>
               <br>
               <q-checkbox
@@ -202,7 +202,8 @@ export default {
       'fetchEventCategory',
       'updatePublished',
       'deleteProdTranslations',
-      'saveEventCategoryTranslationProd'
+      'saveEventCategoryTranslationProd',
+      'updateEventCategoryTranslation'
     ]),
     ...mapActions('event', ['fetchEvent']),
     onClickTitle() {
@@ -246,6 +247,7 @@ export default {
           })
         })
       }
+      // Cleanup
       this.linkable = false
       this.add_published = false
       this.hideForm = true
@@ -296,38 +298,75 @@ export default {
     },
     updatePublishedCat(value, id) {
       let eventElem = this.eventCategoryById(id)
-      if (eventElem.translations[0].translationState === 3 && eventElem.published && !published) {
+      if (eventElem.published && !value) {
         // If published goes from true to false, all the content gets deleted from the translation prod table
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting event category production translations: ${err}`
-          })
-        })
-      } else if (eventElem.translations[0].translationState === 3 && !eventElem.published && published) {
-        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-        for (let i = 0; i < eventElem.translations.length; i += 1) {
-          const translation = Object.assign({}, eventElem.translations[i])
-          if (translation.translationState > 2) {
-            delete translation.translationState
-            delete translation.published
-            this.saveEventCategoryTranslationProd(translation).catch((err) => {
+        let promises = []
+        if (this.disabledDelete.includes(id)) {
+          this.errorMessage = 'events.categories_error'
+        } else {
+          for (let i = 0; i < eventElem.translations.length; i += 1) {
+            const translation = Object.assign({}, eventElem.translations[i])
+            translation.translationState = 0
+            promises.push(
+              this.updateEventCategoryTranslation(translation).catch((err) => {
+                this.$q.notify({
+                  type: 'negative',
+                  message: `Error while saving event translation ${dataWithId.lang}: ${err}`
+                })
+              })
+            )
+          }
+          Promise.all(promises).then(() => this.deleteProdTranslations(id))
+            .then(() => {
+              console.log("Deleted prod translations")
+              return this.updatePublished({ id, published: value })
+            }).then(() => {
+              // Cleanup
+              this.linkable = false
+              this.add_published = false
+              this.hideForm = true
+              this.initialize()
+            })
+            .catch((err) => {
               this.$q.notify({
                 type: 'negative',
-                message: `Error while saving event category production translation ${translation.lang}: ${err}`
+                message: `Error while updating published state: ${err}`
               })
             })
+        }
+      } else if (!eventElem.published && value) {
+        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
+        let promises = []
+        for (let i = 0; i < eventElem.translations.length; i += 1) {
+          const translation = Object.assign({}, eventElem.translations[i])
+          if (translation.translationState > 2 || translation.lang === this.$defaultLang) {
+            delete translation.translationState
+            delete translation.published
+            promises.push(
+              this.saveEventCategoryTranslationProd(translation).catch((err) => {
+                this.$q.notify({
+                  type: 'negative',
+                  message: `Error while saving event category production translation ${translation.lang}: ${err}`
+                })
+              })
+            )
           }
         }
+        Promise.all(promises)
+          .then(() => this.updatePublished({ id, published: value }))
+          .then(() => {
+            // Cleanup
+            this.linkable = false
+            this.add_published = false
+            this.hideForm = true
+            this.initialize()
+          }).catch((err) => {
+            this.$q.notify({
+              type: 'negative',
+              message: `Error while updating published state: ${err}`
+            })
+          })
       }
-      this.updatePublished({ id, published: value }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while updating published state: ${err}`
-        })
-      })
     },
     initialize() {
       this.createShell()
@@ -359,6 +398,46 @@ export default {
         type: 'negative',
         message: `Error while uploading: ${error}`
       })
+    },
+    showWarningPublish(event, id) {
+      if (event == true) {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+          actions: [
+            {
+              label: 'Yes', color: 'accent', handler: () => {
+                this.updatePublishedCat(event, id)
+              }
+            },
+            {
+              label: 'No', color: 'red', handler: () => {
+                this.add_published = false
+              }
+            }
+          ]
+        })
+
+      }
+      else {
+        this.$q.notify({
+          type: 'warning',
+          message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+          actions: [
+            {
+              label: 'Yes', color: 'accent', handler: () => {
+                this.updatePublishedCat(event, id)
+              }
+            },
+            {
+              label: 'No', color: 'red', handler: () => {
+                this.add_published = true
+              }
+            }
+          ]
+        })
+
+      }
     }
   },
   // store.commit('increment', 10)

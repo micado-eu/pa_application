@@ -7,18 +7,6 @@ export function fetchInformationCategory(state, data) {
 }
 
 export function editCategoryTypeElement(state, information_category) {
-  const old_ic = state.information_category.filter(ic => ic.id === information_category.id)
-  if (old_ic.published && information_category.translations[0].translationState === 0) {
-    deleteProdTranslations(state, information_category.id).then(() => {
-      console.log("Deleted prod translations")
-    })
-  }
-  if (old_ic.published && !information_category.published) {
-    // If published goes from true to false, all the content gets deleted from the translation prod table
-    deleteProdTranslations(state, information_category.id).then(() => {
-      console.log("Deleted prod translations")
-    })
-  }
   // update translations
   return client
     .updateInformationCategory({
@@ -31,13 +19,6 @@ export function editCategoryTypeElement(state, information_category) {
         aTranslation.informationCategory = aTranslation.category
         delete aTranslation.category
         client.updateInformationCategoryTranslation(aTranslation)
-        if (!old_ic.published && information_category.published && aTranslation.translationState === 3) {
-          // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-          const prodTransl = Object.assign({}, aTranslation)
-          delete prodTransl.translationState
-          delete prodTransl.published
-          saveInformationCategoryTranslationProd(prodTransl).then(() => { })
-        }
       })
       fetchInformationCategory(state)
     })
@@ -82,5 +63,13 @@ export function deleteProdTranslations(state, id) {
 }
 
 export function saveInformationCategoryTranslationProd(state, data) {
-  return this.saveInformationCategoryTranslationProd(data)
+  data.informationCategory = data.category
+  delete data.category
+  return this.saveInformationCategoryTranslationProd(data, data.id)
 } 
+
+export function updateInformationCategoryTranslation(state, data) {
+  data.informationCategory = data.category
+  delete data.category
+  return client.updateInformationCategoryTranslation(data)
+}
