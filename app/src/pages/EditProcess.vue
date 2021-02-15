@@ -212,9 +212,9 @@
           </div>
         </div>
          <div class=" q-pa-xsm row div-6" style="padding-bottom:20px">
-        <div class="col-2" style="min-width:130px; max-width:130px">
+        <div class="col-3" style="min-width:180px; ">
           <HelpLabel
-            :fieldLabel="$t('input_labels.is_published')"
+            :fieldLabel="$t('button.validate_and_publish')"
             :helpLabel ="$t('help.is_published')"
             class="tag"
           />

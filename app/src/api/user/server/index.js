@@ -80,4 +80,10 @@ export default {
     .then((response) => response.data)
     .catch(error_handler)
   },
+  fetchUserPic(id){
+    return axiosInstance
+    .get('/backend/1.0.0/user-pictures?filter[where][and][0][userId]=' + id)
+    .then((response) => response.data)
+    .catch(error_handler)
+  },
 }

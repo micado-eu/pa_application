@@ -151,6 +151,24 @@
               </a>
             </q-item>
           </q-expansion-item>
+          <q-separator v-if="is_event" />
+          <q-expansion-item
+            expand-separator
+            v-if="is_event"
+          >
+            <template v-slot:header>
+              <q-item-section>
+                <q-item-label class="filter-title">
+                  {{$t("filters.date_title")}}
+                </q-item-label>
+              </q-item-section>
+            </template>
+            <date-time-selector
+              @inputDate="selectedDate = $event"
+              @inputTime="selectedTime = $event"
+              class="q-ma-sm"
+            ></date-time-selector>
+          </q-expansion-item>
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
@@ -384,13 +402,14 @@ import { mapActions, mapGetters } from 'vuex'
 import Fuse from 'fuse.js'
 import GlossaryEditorViewer from './GlossaryEditorViewer'
 import UploadButton from 'components/UploadButton'
+import DateTimeSelector from 'components/DateTimeSelector'
 
 export default {
   name: 'ListSearchTags',
   props: {
     elements: {
       type: Array,
-      default () {
+      default() {
         return []
       }
     },
@@ -400,13 +419,13 @@ export default {
     },
     edit_url_fn: {
       type: Function,
-      default () {
+      default() {
         return () => '/'
       }
     },
     delete_fn: {
       type: Function,
-      default () {
+      default() {
         return () => ''
       }
     },
@@ -450,7 +469,7 @@ export default {
       type: String
     }
   },
-  data () {
+  data() {
     return {
       hovered: -1,
       // display only elements in the language selected
@@ -459,6 +478,7 @@ export default {
       filteredElementsByCategory: [],
       filteredElementsByTopics: [],
       filteredElementsByUserTypes: [],
+      filteredElementsByDate: [],
       searchText: '',
       topics: [],
       userTypes: [],
@@ -466,6 +486,8 @@ export default {
       selectedCategory: undefined,
       selectedTopics: [],
       selectedUserTypes: [],
+      selectedDate: '',
+      selectedTime: '',
       lang: '',
       alphabet: [],
       alphabetIds: [],
@@ -478,11 +500,12 @@ export default {
   },
   components: {
     'glossary-editor-viewer': GlossaryEditorViewer,
-    'upload-button': UploadButton
+    'upload-button': UploadButton,
+    'date-time-selector': DateTimeSelector
   },
   methods: {
     ...mapActions('glossary', ['fetchGlossary']),
-    addOrRemoveSelectedCategory (category) {
+    addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
       } else {
@@ -490,19 +513,16 @@ export default {
       }
       this.filterByCategory()
     },
-    filterByCategory () {
+    filterByCategory() {
       if (this.selectedCategory) {
         this.filteredElementsByCategory = this.translatedElements.filter((e) => {
-          if (e.category !== this.selectedCategory) {
-            return false
-          }
-          return true
+          return e.category === this.selectedCategory
         })
       } else {
         this.filteredElementsByCategory = this.translatedElements
       }
     },
-    filterByTopics () {
+    filterByTopics() {
       if (this.selectedTopics.length > 0) {
         this.filteredElementsByTopics = []
         for (const e of this.translatedElements) {
@@ -527,7 +547,7 @@ export default {
         this.filteredElementsByTopics = this.translatedElements
       }
     },
-    filterByUserTypes () {
+    filterByUserTypes() {
       if (this.selectedUserTypes.length > 0) {
         this.filteredElementsByUserTypes = []
         for (const e of this.translatedElements) {
@@ -552,45 +572,68 @@ export default {
         this.filteredElementsByUserTypes = this.translatedElements
       }
     },
-    compare (a, b) {
+    filterByDate() {
+      if (this.selectedDate) {
+        let fullDate
+        if (this.selectedTime) {
+          fullDate = new Date(this.selectedDate + ' ' + this.selectedTime)
+        } else {
+          fullDate = new Date(this.selectedDate)
+        }
+        this.filteredElementsByDate = []
+        for (const e of this.translatedElements) {
+          const fullStartDate = new Date(e.startDate)
+          const fullFinishDate = new Date(e.endDate)
+          if (fullDate >= fullStartDate && fullDate <= fullFinishDate) {
+            this.filteredElementsByDate.push(e)
+          }
+        }
+      } else {
+        this.filteredElementsByDate = this.translatedElements
+      }
+    },
+    compare(a, b) {
       return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
     },
-    compareTranslationDates (a, b) {
+    compareTranslationDates(a, b) {
       return new Date(b.translationDate) - new Date(a.translationDate)
     },
-    scrollIntoElement (index) {
+    scrollIntoElement(index) {
       document.getElementById(this.alphabetIds[index]).scrollIntoView()
     },
-    clearFilters () {
+    clearFilters() {
       this.selectedCategory = undefined
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
+      this.filteredElementsByDate = this.translatedElements
       this.selectedTopics = []
       this.selectedUserTypes = []
+      this.selectedDate = ''
+      this.selectedTime = ''
     },
-    showMoreCategories () {
+    showMoreCategories() {
       this.lastIndexCategories += 3
     },
-    showMoreTopics () {
+    showMoreTopics() {
       this.lastIndexTopics += 3
     },
-    showMoreUserTypes () {
+    showMoreUserTypes() {
       this.lastIndexUserTypes += 3
     },
-    toggleExtraInfo (id) {
+    toggleExtraInfo(id) {
       this.showExtraInfo[id] = !this.showExtraInfo[id]
     },
-    batchUploadSuccess (success) {
+    batchUploadSuccess(success) {
       this.$emit("batchUpload")
     },
-    batchUploadError (error) {
+    batchUploadError(error) {
       this.$q.notify({
         type: 'negative',
         message: `Error while uploading: ${err}`
       })
     },
-    initializeList () {
+    initializeList() {
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
@@ -668,25 +711,34 @@ export default {
       this.filteredElementsByCategory = this.translatedElements
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
+      this.filteredElementsByDate = this.translatedElements
       this.loading = false
     },
-    topicTransl (topic) {
+    topicTransl(topic) {
       const idx = topic.translations.findIndex((t) => t.lang === this.lang)
       return idx !== -1 ? topic.translations[idx].topic : ''
     },
-    userTypeTransl (userType) {
+    userTypeTransl(userType) {
       const idx = userType.translations.findIndex((t) => t.lang === this.lang)
       return idx !== -1 ? userType.translations[idx].userType : ''
+    }
+  },
+  watch: {
+    selectedDate(val) {
+      this.filterByDate()
+    },
+    selectedTime(val) {
+      this.filterByDate()
     }
   },
   computed: {
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
     search: {
-      get () {
+      get() {
         return this.searchText
       },
-      set (newSearch) {
+      set(newSearch) {
         if (newSearch) {
           const fuse = new Fuse(this.translatedElements, {
             keys: ['title']
@@ -701,36 +753,38 @@ export default {
         }
       }
     },
-    filteredElements () {
+    filteredElements() {
       const { filteredElementsByCategory } = this
       const { filteredElementsByTopics } = this
       const { filteredElementsByUserTypes } = this
+      const { filteredElementsByDate } = this
       return this.filteredElementsBySearch.filter(
         (n) => filteredElementsByCategory.indexOf(n) !== -1
           && filteredElementsByTopics.indexOf(n) !== -1
           && filteredElementsByUserTypes.indexOf(n) !== -1
+          && filteredElementsByDate.indexOf(n) !== -1
       )
     },
-    filterCategories () {
+    filterCategories() {
       return this.translatedCategories.slice(0, this.lastIndexCategories)
     },
-    isMaxShowMoreCategories () {
+    isMaxShowMoreCategories() {
       return this.translatedCategories.slice(0, this.lastIndexCategories).length >= this.translatedCategories.length
     },
-    filterTopics () {
+    filterTopics() {
       return this.topics.slice(0, this.lastIndexTopics)
     },
-    isMaxShowMoreTopics () {
+    isMaxShowMoreTopics() {
       return this.topics.slice(0, this.lastIndexTopics).length >= this.topics.length
     },
-    filterUserTypes () {
+    filterUserTypes() {
       return this.userTypes.slice(0, this.lastIndexUserTypes)
     },
-    isMaxShowMoreUserTypes () {
+    isMaxShowMoreUserTypes() {
       return this.userTypes.slice(0, this.lastIndexUserTypes).length >= this.userTypes.length
     }
   },
-  created () {
+  created() {
     this.loading = true
     this.lang = this.$i18n.locale
     this.fetchGlossary().then(() => this.initializeList())

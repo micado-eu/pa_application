@@ -12,12 +12,20 @@ export default {
             .catch(error_handler)
     },
     updateSingleSetting (data) {
-
+        console.log(data)
         return axiosInstance
             .patch('/backend/1.0.0/settings/' + data.key, data)
             .then((response) => {
                 return response.data
             })
             .catch(error_handler)
+    },
+    saveSetting(data){
+        return axiosInstance
+        .post('/backend/1.0.0/settings/', data)
+        .then((response) => {
+            return response.data
+        })
+        .catch(error_handler)
     }
 }

@@ -36,3 +36,13 @@ export function updateSetting (store, data) {
       return res
     })
 }
+export function saveSetting(store, data) {
+  client.saveSetting(data).then((res) => {
+    console.log(res)
+    store.commit('setNewSetting', data)
+    console.log(store.state.settings)
+
+    return res
+
+})
+}

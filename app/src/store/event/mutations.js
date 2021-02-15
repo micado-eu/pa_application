@@ -11,8 +11,8 @@ export function setEvent(state, event) {
 }
 
 export function updatePublished(state, data) {
-  let idx = state.events.findIndex((i) => i.id === data.id)
+  let idx = state.event.findIndex((i) => i.id === data.id)
   if (idx !== -1) {
-    state.events[idx].published = data.published
+    state.event[idx].published = data.published
   }
 }

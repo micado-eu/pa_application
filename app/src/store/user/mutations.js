@@ -33,6 +33,9 @@ export function deleteUser (state, index) {
   const idx = state.user.findIndex(item => item.id === index)
   if (idx !== -1) state.user.splice(idx, 1)
 }
+export function setUserPic(state, userPic){
+  state.userPic = userPic
+}
 /*export function delete_document_type (state, document_typeId) {
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types
