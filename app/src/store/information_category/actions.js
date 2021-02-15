@@ -65,7 +65,7 @@ export function deleteProdTranslations(state, id) {
 export function saveInformationCategoryTranslationProd(state, data) {
   data.informationCategory = data.category
   delete data.category
-  return this.saveInformationCategoryTranslationProd(data, data.id)
+  return client.saveInformationCategoryTranslationProd(data, data.id)
 } 
 
 export function updateInformationCategoryTranslation(state, data) {
