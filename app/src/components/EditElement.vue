@@ -513,6 +513,10 @@ export default {
     },
     setInternalCategorySelector(al) {
       this.internalCategories = this.categories.map((ic) => {
+        if (!ic.published) {
+          this.internalCategoriesObjects.push(undefined)
+          return undefined
+        }
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
         this.internalCategoriesObjects.push(translation)
@@ -525,6 +529,8 @@ export default {
         }
         return category
       })
+      this.internalCategories = this.internalCategories.filter((c) => c !== undefined)
+      this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
     setInternalTopicSelector(al) {
       this.internalTopics = this.topic.map((ic) => {
