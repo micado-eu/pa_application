@@ -10,16 +10,17 @@
         :id="i + '_rect'"
         :ref="i + '_rect'"
         :x="scaleX(d[catAxis])"
-        :y="scaleY(d[valAxis])"
+        :y="d[valAxis] > 0 ? scaleY(d[valAxis]) : zeroLine"
+        :fill="d[valAxis] > 0 ? '#0b91ce' : '#C71f40'"
         :width="barWidth"
-        :height="height - scaleY(d[valAxis]) - margin.top - margin.bottom"
-        fill="#99e6b4"
+        :height="Math.abs(zeroLine - scaleY(d[valAxis]))"
         stroke="white"
         stroke-width="1px"
         @mouseover="onMouseOver"
         @mouseleave="onMouseLeave"
       />
       <!-- For print function to work, "display: none" has to be inline -->
+      <!-- Label for value (y-axis) -->
       <text
         v-for="(d, i) in content"
         :key="i + '_texty'"
@@ -33,6 +34,7 @@
         {{ d[valAxis] }}
       </text>
       <!-- For print function to work, "display: none" has to be inline -->
+      <!-- Label for date (x-axis) -->
       <text
         v-for="(d, i) in content"
         :key="i + '_textx'"
@@ -40,7 +42,7 @@
         class="label"
         display="none"
         :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="height - margin.top - margin.bottom"
+        :y="height - margin.top - margin.bottom + 15"
         text-anchor="middle"
       >
         {{ d[catAxis] }}
@@ -68,8 +70,9 @@
       :length="content.length"
       :scaleX="scaleX"
       :key="xid"
+      :tickpadd="tickpadd"
       :transform="
-        'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'
+        'translate(' + margin.left + ', ' + (zeroLine + margin.top) + ')'
       "
     />
     <ChartAxisLeft
@@ -81,9 +84,17 @@
   </svg>
 </template>
 <script>
-import { scaleLinear, scaleTime, scaleBand, extent, select } from "d3"
-import ChartAxisBottom from "./ChartAxisBottom.vue"
-import ChartAxisLeft from "./ChartAxisLeft.vue"
+import {
+  scaleLinear,
+  scaleTime,
+  scaleBand,
+  extent,
+  select,
+  tickPadding,
+  axis,
+} from "d3";
+import ChartAxisBottom from "./ChartAxisBottom.vue";
+import ChartAxisLeft from "./ChartAxisLeft.vue";
 
 export default {
   name: "barChart",
@@ -95,7 +106,9 @@ export default {
     content: Array,
     catAxis: String,
     valAxis: String,
-    xistime: Boolean
+    xistime: Boolean,
+    max: Number,
+    min: Number
   },
   data() {
     return {
@@ -113,93 +126,101 @@ export default {
       resizeTimeout: false,
       rangeTimeout: false,
       sizeSet: false
-    }
+    };
   },
   computed: {
     svg() {
-      return select(`#${this.id}`)
+      return select(`#${this.id}`);
     },
     scaleX() {
       if (this.xistime) {
         return scaleTime()
           .domain(extent(this.content, (d) => d[this.catAxis]))
-          .range([0, this.width - this.margin.left - this.margin.right])
+          .range([0, this.width - this.margin.left - this.margin.right]);
       }
       return scaleBand()
         .domain(this.content.map((d) => d[this.catAxis]))
-        .range([0, this.width - this.margin.left - this.margin.right])
+        .range([0, this.width - this.margin.left - this.margin.right]);
+    },
+    zeroLine() {
+      return this.scaleY(0);
     },
     scaleY() {
-      return (
-        scaleLinear()
-          // .domain(extent(this.content, d => d[this.valAxis]))
-          .domain([0, Math.max(...this.content.map((d) => d[this.valAxis]))])
-          .range([this.height - this.margin.top - this.margin.bottom, 0])
-      )
+      if (this.min < 0) {
+        return scaleLinear()
+          .domain([this.min, this.max])
+          .range([this.height - this.margin.top - this.margin.bottom, 0]);
+      } else {
+        return scaleLinear()
+          .domain([0, this.max])
+          .range([this.height - this.margin.top - this.margin.bottom, 0]);
+      }
     },
     barWidth() {
       return (
         (this.width - this.margin.left - this.margin.right) /
         this.content.length
-      )
+      );
+    },
+    tickpadd() {
+      return (
+        this.height - this.margin.top - this.margin.bottom - this.zeroLine + 5
+      );
     }
   },
   methods: {
     updateGraph() {
-      const client = this.$el.getBoundingClientRect()
-      this.width = client.width
-      this.height = client.height
-      this.refreshAxes()
+      const client = this.$el.getBoundingClientRect();
+      this.width = client.width;
+      this.height = client.height;
+      this.refreshAxes();
     },
     refreshAxes() {
       // force axes to update according to the size
-      this.xid = this.xid === "x_0" ? "x_1" : "x_0"
-      this.yid = this.yid === "y_0" ? "y_1" : "y_0"
+      this.xid = this.xid === "x_0" ? "x_1" : "x_0";
+      this.yid = this.yid === "y_0" ? "y_1" : "y_0";
     },
     onResize() {
       // clear the resizeTimeout
-      clearTimeout(this.resizeTimeout)
+      clearTimeout(this.resizeTimeout);
       // start timing for event "completion"
-      this.resizeTimeout = setTimeout(this.updateGraph, 250)
+      this.resizeTimeout = setTimeout(this.updateGraph, 250);
     },
     onMouseOver(event) {
-      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
-      textx.style.display = "inline"
-      texty.style.display = "inline"
+      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0];
+      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0];
+      textx.style.display = "inline";
+      texty.style.display = "inline";
     },
     onMouseLeave(event) {
-      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
-      textx.style.display = "none"
-      texty.style.display = "none"
+      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0];
+      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0];
+      textx.style.display = "none";
+      texty.style.display = "none";
     }
   },
   watch: {
     content: function (val) {
-      clearTimeout(this.rangeTimeout)
-      this.rangeTimeout = setTimeout(this.refreshAxes, 250)
+      clearTimeout(this.rangeTimeout);
+      this.rangeTimeout = setTimeout(this.refreshAxes, 250);
     }
   },
   mounted() {
     // window.resize event listener
-    window.addEventListener("resize", this.onResize)
-    this.updateGraph()
-    this.sizeSet = true
-    for (let i=0;i<this.content.length;i++) {
-      console.log("i: ",`${i}_textx`)
-      console.log("i: ",this.$refs)
-
-      const textx = this.$refs[`${i}_textx`][0]
-      const texty = this.$refs[`${i}_texty`][0]
-      textx.style.display = "none"
-      texty.style.display = "none"
+    window.addEventListener("resize", this.onResize);
+    this.updateGraph();
+    this.sizeSet = true;
+    for (let i = 0; i < this.content.length; i++) {
+      const textx = this.$refs[`${i}_textx`][0];
+      const texty = this.$refs[`${i}_texty`][0];
+      textx.style.display = "none";
+      texty.style.display = "none";
     }
   },
   beforeDestroy() {
-    window.removeEventListener("resize", this.onResize)
+    window.removeEventListener("resize", this.onResize);
   }
-}
+};
 </script>
 <style scoped>
 div {

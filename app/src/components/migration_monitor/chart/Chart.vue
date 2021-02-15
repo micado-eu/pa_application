@@ -33,6 +33,8 @@
       :catAxis="graph.x"
       :valAxis="graph.y"
       :xistime="graph.xistime"
+      :max="max"
+      :min="min"
     />
     <pieChart
       v-if="graph.type === 'PIE'"

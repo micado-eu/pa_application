@@ -7,12 +7,13 @@ import { select, axisBottom } from 'd3'
 
 export default {
   name: 'ChartAxisBottom',
-  props: ['scaleX','length'],
+  props: ['scaleX','length','tickpadd'],
   computed: {
     axisX() {
       return axisBottom(this.scaleX)
       // making sure the ticks are not too compact
       .tickFormat((x, i) => i % Math.floor(this.length/5) ? "" : x)
+      .tickPadding([this.tickpadd])
     }
   },
   mounted() {
