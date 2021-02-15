@@ -100,6 +100,25 @@
       >
 
       </FileUploader>
+            <div class="col-2">
+          <HelpLabel
+            :fieldLabel="$t('input_labels.parent_topic')"
+            :helpLabel ="$t('help.parent_topic')"
+            style="padding-left:17px"
+          />
+        </div>
+        <q-select
+              filled
+              data-cy="father_topics"
+              dense
+              :readonly="int_topic_shell.published"
+              clearable
+              v-model="int_topic_shell.father"
+              emit-value
+              map-options
+              :options="topicOptions"
+              class="select"
+            />
         <div class="row">
         <div class="col-2" style="min-width:200px;">
           <HelpLabel
@@ -249,6 +268,18 @@ export default {
   components: {
     FileUploader, HelpLabel
   },
+  computed:{
+    topicOptions(){
+      var options = []
+      this.topic.forEach(topic => {
+        if(topic.id != this.int_topic_shell.id){
+          var the_topic = { label: topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic, value: topic.id }
+          options.push(the_topic)
+        }
+        })
+      return options
+    }
+  },
 
   methods: {
     onSubmit () {
@@ -385,7 +416,7 @@ export default {
       return workingTopic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
     },
     createShell () {
-      this.int_topic_shell = { id: -1, translations: [], icon: "", published:false }
+      this.int_topic_shell = { id: -1, translations: [], icon: "", father:null, published:false }
       this.languages.forEach(l => {
         //       console.log(l)
         this.int_topic_shell.translations.push({ id: -1, lang: l.lang, topic: '', translationDate: null, translationState: 0 })
@@ -396,6 +427,7 @@ export default {
       this.int_topic_shell.id = topic.id
       this.int_topic_shell.icon = topic.icon
       this.int_topic_shell.published = topic.published
+      this.int_topic_shell.father = topic.father
       //this.int_topic_shell.published = topic.published
       //this.int_topic_shell.publicationDate = topic.publicationDate
       topic.translations.forEach(tr => {

@@ -73,7 +73,7 @@ export default {
     const whereClause = {
       id: { eq: topic.id }
     },
-      updatingTopic = JSON.parse(JSON.stringify(topic, ['id', 'icon', 'published']))
+      updatingTopic = JSON.parse(JSON.stringify(topic, ['id', 'icon', 'published', 'father']))
 
     return axiosInstance
       .patch('/backend/1.0.0/topics?where=' + JSON.stringify(whereClause), updatingTopic)

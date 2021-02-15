@@ -61,7 +61,8 @@
     "pa_external_id":"Write, if avalaible, the external ID of the user",
     "pa_admin":"Choose if this account will have admin powers",
     "pa_mig_tenant":"Choose if this account will be a migrant tenant",
-    "pa_email":"Please insert the user's email"
+    "pa_email":"Please insert the user's email",
+    "parent_topic":"Select a parent for this topic. If this topic is a parent, leave the space blank"
   },
   "menu": {
     "title": "My Tools",
@@ -160,6 +161,7 @@
     "father_topics":"Main topics to be shown on migrant application"
   },
   "input_labels": {
+    "parent_topic":"Parent topic",
     "validator": "To be validated by",
     "category_placeholder": "Enter category title here",
     "publication_date": "Publication Date",
