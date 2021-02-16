@@ -76,11 +76,54 @@
 
       </q-card-section>
     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.father_topics')}}</div>
+      </q-card-section>
+      <q-card-section>
+       <q-select
+              filled
+              data-cy="father_topics"
+              dense
+              :readonly="!edit_fathers"
+              clearable
+              v-model="fathers"
+              multiple
+              emit-value
+              map-options
+              :options="this.t_tags"
+              class="select"
+            />
+        <q-btn
+          v-if="!edit_fathers"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_fathers = true"
+        />
+          <q-btn
+          v-if="edit_fathers"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelFathers"
+        />
+          <q-btn
+          v-if="edit_fathers"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveFathers"
+        />
+
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
 import storeMappingMixin from '../../mixin/storeMappingMixin'
+import editEntityMixin from '../../mixin/editEntityMixin'
 import FeaturesElement from '../../components/settings/FeaturesElement'
 //import Croppa from 'vue-croppa'
 import 'vue-croppa/dist/vue-croppa.css'
@@ -94,10 +137,15 @@ export default {
       editing: false,
       email:null,
       emailOrig: null,
-      isNew:true
+      isNew:true,
+      newFathers:true,
+      t_tags:[],
+      edit_fathers:false,
+      fathers:[],
+      fathersOrig:[]
     }
   },
-  mixins: [
+  mixins: [editEntityMixin,
     storeMappingMixin({
       getters: {
         features: 'features/features',
@@ -106,7 +154,8 @@ export default {
         fetchFeatures: 'features/fetchFeatures',
         updateAllFeatures: 'features/updateAllFeatures',
         updateSetting: 'settings/updateSetting',
-        saveSetting:'settings/saveSetting'
+        saveSetting:'settings/saveSetting',
+        fetchTopic: 'topic/fetchTopic',
       }
     })],
   components: {
@@ -116,6 +165,23 @@ export default {
 
   },
   methods: {
+    cancelFathers(){
+      this.fathers =  JSON.parse(JSON.stringify(this.fathersOrig))
+      this.edit_fathers = false
+    },
+    saveFathers(){
+      console.log(this.fathers)
+      if(this.newFathers){
+        console.log("saving new father_topics")
+        this.saveSetting({key:'father_topics', value:JSON.stringify(this.fathers)})
+      }
+      else{
+        this.updateSetting({key:'father_topics', value:JSON.stringify(this.fathers)})
+      }
+      console.log("updating old father_topics")
+      this.edit_fathers = false
+      this.fathersOrig = JSON.parse(JSON.stringify(this.fathers))
+    },
     cancelMail(){
       this.email =  JSON.parse(JSON.stringify(this.emailOrig))
       this.editing = false
@@ -193,7 +259,23 @@ export default {
         this.emailOrig = setting.value
         this.isNew = false
       }
+      if(setting.key =='father_topics'){
+        this.fathers = JSON.parse(setting.value)
+        this.fathersOrig = JSON.parse(setting.value)
+        this.newFathers = false
+      }
+
     });
+          this.fetchTopic()
+      .then((topics) => {
+        console.log(topics)
+         var published_topics = topics.filter((top)=>{return top.published == true})
+        published_topics.forEach(topic => {
+          var the_topic = { label: topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic, value: topic.id }
+          this.t_tags.push(the_topic)
+        })
+        
+      })
     /*
     this.fetchFeatures()
       .then(features => {
