@@ -201,7 +201,7 @@ import {
   Italic
 } from 'tiptap-extensions'
 import Image from 'components/editor_plugins/Image'
-import GlossaryMention from 'components/editor_plugins/GlossaryMention'
+import InternalMention from 'components/editor_plugins/InternalMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
 import imageUpload from '../mixin/imageUpload'
 import ImageUploader from './ImageUploader.vue'
@@ -285,7 +285,7 @@ export default {
           new Link(),
           new History(),
           new Image(null, null, this.uploadImage),
-          new GlossaryMention()
+          new InternalMention()
         ],
         onUpdate: ({ getHTML }) => {
           this.editorChange = true

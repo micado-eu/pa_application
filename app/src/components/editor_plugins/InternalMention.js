@@ -1,17 +1,19 @@
 import { Mark, Plugin } from 'tiptap'
 
-export default class GlossaryMention extends Mark {
+export default class InternalMention extends Mark {
 
   get name() {
-    return 'glossarymention'
+    return 'internalmention'
   }
 
   get defaultOptions() {
     return {
       showTooltip: false,
-      glossaryElemByIdFunc: (id) => null,
-      setTooltipDescription: (elem, eventTarget) => null,
-      lang: "en"
+      elemByIdFunctions: {},  
+      // elemByIdFunctions expects an object where each key is the mention-type 
+      // and the value is a function which 
+      // will be passed an 'id' argument (numeric) and be expected to return a single element or undefined
+      setTooltipDescription: (elem, eventTarget) => null
     }
   }
 
@@ -20,6 +22,9 @@ export default class GlossaryMention extends Mark {
       attrs: {
         'data-mention-id': {
           default: null
+        },
+        'mention-type': {
+          default: null
         }
       },
       inclusive: false,
@@ -27,7 +32,8 @@ export default class GlossaryMention extends Mark {
         {
           tag: 'span[class=mention]',
           getAttrs: dom => ({
-            'data-mention-id': dom.getAttribute('data-mention-id')
+            'data-mention-id': dom.getAttribute('data-mention-id'),
+            'mention-type': dom.getAttribute('mention-type')
           })
         }
       ],
@@ -47,13 +53,13 @@ export default class GlossaryMention extends Mark {
               if (this.options.showTooltip) {
                 if (event.target instanceof HTMLSpanElement) {
                   const idString = event.target.getAttribute("data-mention-id")
-                  if (idString) {
+                  const mentionType = event.target.getAttribute("mention-type")
+                  if (idString && mentionType in this.options.elemByIdFunctions) {
                     const id = parseInt(idString)
                     event.stopPropagation()
-                    const glossaryElem = this.options.glossaryElemByIdFunc(id)
-                    const idx = glossaryElem.translations.findIndex((t) => t.lang === this.options.lang)
-                    if (this.idx !== -1) {
-                      this.options.setTooltipDescription(glossaryElem.translations[idx], event.target)
+                    const elem = this.options.elemByIdFunctions[mentionType](id)
+                    if (elem !== undefined) {
+                      this.options.setTooltipDescription(elem, event.target)
                     }
                   }
                 }

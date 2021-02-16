@@ -291,7 +291,7 @@
                   class="viewer"
                   :content="item.description"
                   v-if="!loading"
-                  glossary_fetched
+                  all_fetched
                   :lang="lang"
                   readMore
                   @readMorePressed=toggleExtraInfo(item.id)
@@ -504,7 +504,10 @@ export default {
     'date-time-selector': DateTimeSelector
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossary']),
+    ...mapActions('glossary', ['fetchGlossaryProd']),
+    ...mapActions('information', ['fetchInformationProd']),
+    ...mapActions('flows', ['fetchFlowsProd']),
+    ...mapActions('event', ['fetchEventProd']),
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -792,7 +795,13 @@ export default {
   created() {
     this.loading = true
     this.lang = this.$i18n.locale
-    this.fetchGlossary().then(() => this.initializeList())
+    const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
+    Promise.all([
+      this.fetchGlossaryProd(langs),
+      this.fetchInformationProd(langs),
+      this.fetchFlowsProd(langs),
+      this.fetchEventProd(langs)
+    ]).then(() => this.initializeList())
   }
 }
 </script>

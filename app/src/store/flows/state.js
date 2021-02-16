@@ -4,5 +4,6 @@ export default {
   steps: [],
   nodePanelVisible: "hidden",
   theFlow: [],
-  flowsDocs:[]
+  flowsDocs:[],
+  flowsProd: []
 }

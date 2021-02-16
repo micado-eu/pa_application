@@ -11,6 +11,16 @@ export function fetchFlows (state, data) {
       return flows
     })
 }
+
+export function fetchFlowsProd (state, data) {
+  return client
+    .fetchFlowsProd(data.defaultLang, data.userLang)
+    .then(flows => {
+      state.commit('setFlowsProd', flows)
+      return flows
+    })
+}
+
 export function fetchFlowsDocs (state, data) {
   return client
     .fetchProcessProducedDocuments()
@@ -30,7 +40,7 @@ export function fetchDocuments (state, data) {
 export function saveProcess (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload.process)
-  let savingProcess = JSON.parse(JSON.stringify(payload.process, ['link']));
+  let savingProcess = JSON.parse(JSON.stringify(payload.process, ['link']))
   console.log(savingProcess)
 
   return client
@@ -64,7 +74,7 @@ export function saveProcess (state, payload) {
           console.log(user)
           await client.saveProcessUser(user, process_return.id)
         })
-        console.log('Dopo il applicableUsers');
+        console.log('Dopo il applicableUsers')
 
       }
       await saveUsers()
@@ -77,7 +87,7 @@ export function saveProcess (state, payload) {
           console.log(doc)
           await client.saveProcessProducedDocs(doc, process_return.id)
         })
-        console.log('Dopo il produced docs');
+        console.log('Dopo il produced docs')
 
       }
       await saveProcessDocs()
@@ -419,7 +429,7 @@ state.commit('editProcess', payload.process)
 
 async function asyncForEach (array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }
 

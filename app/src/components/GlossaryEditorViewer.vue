@@ -1,10 +1,12 @@
 <template>
   <div padding>
-    <editor-content
-      class='editor_content'
-      :editor="editor"
-      ref="editor"
-    />
+    <div>
+      <editor-content
+        class='editor_content'
+        :editor="editor"
+        ref="editor"
+      />
+    </div>
     <div>
       <slot name="append"></slot>
     </div>
@@ -60,7 +62,7 @@ import {
   Italic
 } from 'tiptap-extensions'
 import Image from 'components/editor_plugins/Image'
-import GlossaryMention from 'components/editor_plugins/GlossaryMention'
+import InternalMention from 'components/editor_plugins/InternalMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
 
 export default {
@@ -73,13 +75,9 @@ export default {
       type: String,
       default: ''
     },
-    glossary_fetched: {
+    all_fetched: {
       type: Boolean,
       default: false
-    },
-    lang: {
-      type: String,
-      default: 'en'
     },
     isContentHTML: {
       type: Boolean,
@@ -102,13 +100,19 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('glossary', ['glossary', 'glossaryElemById']),
+    ...mapGetters('glossary', ['glossaryProdElemById']),
+    ...mapGetters('information', ['informationProdElemById']),
+    ...mapGetters('flows', ['processProdById']),
+    ...mapGetters('event', ['eventProdElemById']),
     currentDescription() {
       return this.currentDescriptionContent
     }
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossary']),
+    ...mapActions('glossary', ['fetchGlossaryProd']),
+    ...mapActions('information', ['fetchInformationProd']),
+    ...mapActions('flows', ['fetchFlowsProd']),
+    ...mapActions('event', ['fetchEventProd']),
     initialize() {
       this.editor = new Editor({
         editable: false,
@@ -117,11 +121,15 @@ export default {
           new Italic(),
           new Link(),
           new Image(),
-          new GlossaryMention({
+          new InternalMention({
             showTooltip: true,
-            glossaryElemByIdFunc: this.glossaryElemById,
-            setTooltipDescription: this.setCurrentDescription,
-            lang: this.lang
+            elemByIdFunctions: {
+              "glossary": this.glossaryProdElemById,
+              "information": this.informationProdElemById,
+              "event": this.eventProdElemById,
+              "process": this.processProdById
+            },
+            setTooltipDescription: this.setCurrentDescription
           })
         ],
         content: ''
@@ -133,7 +141,7 @@ export default {
       if (!isHTML) {
         currentContent = this.markdownToHTML(content)
       }
-      this.markGlossaryReferences(currentContent, this.lang, this.glossary_fetched).then((markedContent) => {
+      this.markReferences(currentContent, this.$defaultLang, this.$userLang, true).then((markedContent) => {
         let newContent = markedContent
         this.allHTMLContent = markedContent
         if (this.readMore) {
@@ -163,8 +171,8 @@ export default {
       this.showingFullContent = false
       this.$emit("readLessPressed")
     },
-    setCurrentDescription(glossaryElem, element) {
-      let currentContent = glossaryElem.description
+    setCurrentDescription(elem, element) {
+      let currentContent = elem.description
       if (!this.isContentHTML) {
         currentContent = this.markdownToHTML(currentContent)
       }
@@ -177,11 +185,15 @@ export default {
           new Italic(),
           new Link(),
           new Image(),
-          new GlossaryMention({
+          new InternalMention({
             showTooltip: true,
-            glossaryElemByIdFunc: this.glossaryElemById,
-            setTooltipDescription: this.setCurrentDescription,
-            lang: this.lang
+            elemByIdFunctions: {
+              "glossary": this.glossaryProdElemById,
+              "information": this.informationProdElemById,
+              "event": this.eventProdElemById,
+              "process": this.processProdById
+            },
+            setTooltipDescription: this.setCurrentDescription
           })
         ],
         content: currentContent
@@ -194,8 +206,14 @@ export default {
     }
   },
   created() {
-    if (!this.glossary_fetched) {
-      this.fetchGlossary().then(() => {
+    if (!this.all_fetched) {
+      const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
+      Promise.all([
+        this.fetchGlossaryProd(langs),
+        this.fetchInformationProd(langs),
+        this.fetchFlowsProd(langs),
+        this.fetchEventProd(langs)
+      ]).then(() => {
         this.initialize()
       })
     } else {

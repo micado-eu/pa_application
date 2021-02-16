@@ -8,48 +8,63 @@ export default {
     }
   },
   methods: {
-    ...mapActions("glossary", ["fetchGlossary"]),
+    ...mapActions("glossary", ["fetchGlossaryProd"]),
+    ...mapActions('information', ['fetchInformationProd']),
+    ...mapActions('flows', ['fetchFlowsProd']),
+    ...mapActions('event', ['fetchEventProd']),
     HTMLToMarkdown(html) {
       return this.converter.makeMarkdown(html)
     },
     markdownToHTML(markdown) {
       return this.converter.makeHtml(markdown)
     },
-    async markGlossaryReferencesAux(html, lang) {
-      let glossaryTermsByLang = []
-      for (let glossaryElement of this.glossary) {
-        if (glossaryElement.translations) {
-          glossaryTermsByLang.push(glossaryElement.translations.filter(t => t.lang === lang)[0])
-        }
-      }
+    async markReferencesAux(html) {
       let result = html
-      for (const glossaryTerm of glossaryTermsByLang) {
-        if (glossaryTerm.title) {
-          // Look for the term's titles that are not already marked
-          let regexp = new RegExp(`(${glossaryTerm.title})`, "gi")
-          let splitted = result.split(regexp)
-          // Add the tag to the text
-          const prefixTag = `<span data-mention-id="${glossaryTerm.id}" class="mention">`
-          const suffixTag = "</span>"
-          for (let i = 0; i < splitted.length; i = i + 1) {
-            if (splitted[i].length === glossaryTerm.title.length) {
-              splitted[i] = prefixTag + splitted[i] + suffixTag
+      let entities = { // Key is mention-type, value is getter
+        "glossary": this.glossaryProd,
+        "process": this.processesProd,
+        "information": this.informationProd,
+        "event": this.eventProd
+      }
+      const suffixTag = "</span>"
+      for (const [key, value] of Object.entries(entities)) {
+        // Iterate through all the values given by getter for all entities
+        for (const term of value) {
+          if (term.title) {
+            // Look for the term's titles that are not already marked
+            let regexp = new RegExp(`(${term.title})`, "gi")
+            let splitted = result.split(regexp)
+            // Add the tag to the text
+            const prefixTag = `<span data-mention-id="${term.id}" mention-type="${key}" class="mention">`
+            for (let i = 0; i < splitted.length; i = i + 1) {
+              if (!splitted[i].localeCompare(term.title, undefined, { sensitivity: 'accent' })) {
+                splitted[i] = prefixTag + splitted[i] + suffixTag
+              }
             }
+            result = splitted.join("")
           }
-          result = splitted.join("")
         }
       }
+      console.log(result)
       return result
     },
-    async markGlossaryReferences(html, lang, isGlossaryFetched = false) {
-      if (isGlossaryFetched) {
-        return this.markGlossaryReferencesAux(html, lang)
+    async markReferences(html, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
+      if (isAllFetched) {
+        return this.markReferencesAux(html)
       }
-      await this.fetchGlossary()
-      return this.markGlossaryReferencesAux(html, lang)
+      await Promise.all([
+        this.fetchGlossary({ defaultLang, userLang }),
+        this.fetchInformation({ defaultLang, userLang }),
+        this.fetchFlows({ defaultLang, userLang }),
+        this.fetchEvents({ defaultLang, userLang })
+      ])
+      return this.markReferencesAux(html)
     }
   },
   computed: {
-    ...mapGetters("glossary", ["glossary"])
+    ...mapGetters("glossary", ["glossaryProd"]),
+    ...mapGetters('information', ['informationProd']),
+    ...mapGetters('flows', ['processesProd']),
+    ...mapGetters('event', ['eventProd'])
   }
 }

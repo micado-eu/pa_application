@@ -10,6 +10,14 @@ export function setEvent(state, event) {
   state.event = event
 }
 
+export function setEventProd(state, events) {
+  for (let i = 0; i < events.length; i++) {
+    events[i].title = events[i]['event']
+    delete events[i].event
+  }
+  state.eventProd = events
+}
+
 export function updatePublished(state, data) {
   let idx = state.event.findIndex((i) => i.id === data.id)
   if (idx !== -1) {
