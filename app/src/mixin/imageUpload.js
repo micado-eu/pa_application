@@ -12,7 +12,6 @@ export default {
             let array = client.uploadImage(file, onUploadProgressFn)
             this.cancelToken = array[1]
             let result = await array[0]
-            console.log(result)
             let hostname = window.location.hostname
             if (hostname === "localhost") {
                 hostname = "pa.micadoproject.eu"
@@ -22,7 +21,6 @@ export default {
         cancel() {
             if (this.cancelToken !== null) {
                 this.cancelToken.cancel()
-                console.log("image upload cancel")
             }
         },
         isCancel(error) {

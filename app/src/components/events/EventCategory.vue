@@ -276,7 +276,6 @@ export default {
     createShell() {
       this.int_cat_shell = { id: -1, translations: [] }
       this.languages.forEach((l) => {
-        //       console.log(l)
         this.int_cat_shell.translations.push({
           id: -1, lang: l.lang, category: '', translationDate: null, translationState: 0
         })
@@ -318,7 +317,6 @@ export default {
           }
           Promise.all(promises).then(() => this.deleteProdTranslations(id))
             .then(() => {
-              console.log("Deleted prod translations")
               return this.updatePublished({ id, published: value })
             }).then(() => {
               // Cleanup

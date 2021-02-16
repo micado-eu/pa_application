@@ -111,7 +111,6 @@ export default {
             percent: 1
           }
           this.uploading = false
-          console.log(imageUrl)
           this.$emit("onUpload", imageUrl)
         })
         .catch((err) => {

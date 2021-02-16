@@ -50,7 +50,6 @@ export default {
           result = splitted.join("")
         }
       }
-      console.log(result)
       return result
     },
     async markReferences(html, defaultLang = 'en', userLang = 'en', isAllFetched = false) {

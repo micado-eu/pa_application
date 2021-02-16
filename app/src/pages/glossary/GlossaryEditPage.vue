@@ -52,9 +52,7 @@ export default {
         )
       }
       promises.push(
-        this.updatePublished({ id, published: true }).then(() => {
-          //console.log("new published value for " + id + ": " + published)
-        }).catch((err) => {
+        this.updatePublished({ id, published: true }).catch((err) => {
           this.$q.notify({
             type: 'negative',
             message: `Error while updating published state: ${err}`
@@ -79,17 +77,13 @@ export default {
         )
       }
       promises.push(
-        this.deleteProdTranslations(id).then(() => {
-          console.log("Deleted prod translations")
-        }).catch((err) => {
+        this.deleteProdTranslations(id).catch((err) => {
           this.$q.notify({
             type: 'negative',
             message: `Error while deleting glossary production translations: ${err}`
           })
         }),
-        this.updatePublished({ id, published: false }).then(() => {
-          //console.log("new published value for " + id + ": " + published)
-        }).catch((err) => {
+        this.updatePublished({ id, published: false }).catch((err) => {
           this.$q.notify({
             type: 'negative',
             message: `Error while updating published state: ${err}`

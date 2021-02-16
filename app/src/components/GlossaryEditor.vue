@@ -339,7 +339,6 @@ export default {
       }
     },
     readonly(val) {
-      console.log("readonly: " + val)
       this.editor.setOptions({ editable: !val })
     }
   },

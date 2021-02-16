@@ -742,7 +742,6 @@ export default {
         return this.searchText
       },
       set(newSearch) {
-        console.log(this.translatedElements)
         if (newSearch) {
           let keys = ['title', 'description']
           if (this.is_event) {
