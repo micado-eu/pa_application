@@ -153,6 +153,7 @@ export default {
           delete translation.startDate
           delete translation.finishDate
           delete translation.location
+          delete translation.creator
           this.editEventItemTranslation(dataWithId).then(() => {
             if (i === data.length - 1) {
               router.push({ path: '/events' })

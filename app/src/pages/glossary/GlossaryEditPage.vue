@@ -109,6 +109,7 @@ export default {
         for (let i = 0; i < data.length; i += 1) {
           const translation = data[i]
           delete translation.published
+          delete translation.creator
           const dataWithId = Object.assign(translation, { id: parseInt(this.$route.params.id) })
           this.editGlossaryItemTranslation(dataWithId).then(() => {
             if (i === data.length - 1) {
