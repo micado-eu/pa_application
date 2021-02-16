@@ -103,8 +103,7 @@ export default {
       const id = parseInt(this.$route.params.id, 10)
       const glossaryData = {
         id,
-        published: data[0].published,
-        creator: data[0].creator
+        published: data[0].published
       }
       this.editGlossaryItem(glossaryData).then(() => {
         for (let i = 0; i < data.length; i += 1) {
