@@ -122,6 +122,29 @@
                   </div>
                 </q-tab-panel>
               </q-tab-panels>
+               <div
+                    id="location"
+                style="width:100%"
+                  >
+                  <HelpLabel
+                    :fieldLabel="$t('input_labels.link')"
+                    :helpLabel ="$t('help.link')"
+                    class="labels"
+                  />
+                    
+
+                    <q-input
+                      dense
+                      data-cy="link_input"
+                      bg-color="grey-3"
+                      standout
+                      outlined
+                      counter
+                      @blur="updateField()"
+                      v-model="step_shell.link"
+                      :label="$t('input_labels.link')"
+                    />
+                  </div>
               <div
                 id="location"
                 style="width:100%"
@@ -504,7 +527,7 @@ export default {
     },
 
     generateShell (id = -1) {
-      let newstep = { id: id, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false, is_edited: false }
+      let newstep = { id: id, link:null, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false, is_edited: false }
       this.languages.forEach(l => {
         newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null, translationState: 0 })
       })
@@ -587,6 +610,7 @@ export default {
           is_edited: false,
           title: "",
           location: "",
+          link:null,
           cost: "",
           required_documents: [],
           description: ""
@@ -701,7 +725,8 @@ export default {
     async savingGraph () {
       // start saving elements
       // adding new steps
-      console.log(this.$store.state.steplinks.steplinks)
+      console.log("IN SAVING GRAPH")
+      console.log(this.steps)
       let postData = { steps: this.steps, steplinks: this.steplinks }
       console.log(JSON.stringify(postData))
       this.saveGraph(postData)
@@ -929,7 +954,7 @@ export default {
   padding-bottom: 10px;
 }
 #list {
-  max-width: 700px;
+  width:100%
 }
 .center {
   text-align: center;
