@@ -15,6 +15,7 @@
   "dependencies": {
     "@bit/micado.shared.translatestatebutton": "0.0.2",
     "@quasar/extras": "^1.9.5",
+    "@riophae/vue-treeselect": "^0.4.0",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
     "@uppy/tus": "^1.5.0",
@@ -31,6 +32,7 @@
     "leaflet": "^1.6.0",
     "masterportalAPI": "git+https://github.com/citysciencelab/masterportalapi-MICADO.git",
     "ol": "^6.3.1",
+    "performant-array-to-tree": "^1.8.1",
     "qs": "^6.9.4",
     "quasar": "^1.14.0",
     "showdown": "^1.9.1",
