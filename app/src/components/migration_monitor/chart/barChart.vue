@@ -42,7 +42,7 @@
         class="label"
         display="none"
         :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="height - margin.top - margin.bottom + 15"
+        :y="height - margin.top - margin.bottom"
         text-anchor="middle"
       >
         {{ d[catAxis] }}
@@ -210,12 +210,6 @@ export default {
     window.addEventListener("resize", this.onResize);
     this.updateGraph();
     this.sizeSet = true;
-    for (let i = 0; i < this.content.length; i++) {
-      const textx = this.$refs[`${i}_textx`][0];
-      const texty = this.$refs[`${i}_texty`][0];
-      textx.style.display = "none";
-      texty.style.display = "none";
-    }
   },
   beforeDestroy() {
     window.removeEventListener("resize", this.onResize);
