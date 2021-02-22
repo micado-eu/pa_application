@@ -62,7 +62,8 @@
     "pa_admin":"Choose if this account will have admin powers",
     "pa_mig_tenant":"Choose if this account will be a migrant tenant",
     "pa_email":"Please insert the user's email",
-    "parent_topic":"Select a parent for this topic. If this topic is a parent, leave the space blank"
+    "parent_topic":"Select a parent for this topic. If this topic is a parent, leave the space blank",
+    "link":"Insert the link where you can find more info about the step"
   },
   "menu": {
     "title": "My Tools",
@@ -231,7 +232,8 @@
     "validated": "Validated",
     "validation_requested": "Requested validation",
     "new_intervention": "Add new intervention to the plan",
-    "location": "Location"
+    "location": "Location",
+    "link":"Link"
   },
   "profile": {
     "username": "Username",

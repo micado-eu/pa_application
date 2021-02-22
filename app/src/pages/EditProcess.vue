@@ -115,6 +115,14 @@
         
         <hr id="hr-2">
          </div>
+        <!-- <treeselect
+          :multiple="true"
+          :options="this.tree_options"
+          :flat="true"
+          :default-expand-level="1"
+          placeholder="Try selecting some options."
+          v-model="edit_process.processTopics"
+          />-->
         <div
           class=" q-pa-xsm row div-6"
         >
@@ -283,6 +291,8 @@
 </template>
 
 <script>
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 import editEntityMixin from '../mixin/editEntityMixin'
 import GlossaryEditor from 'components/GlossaryEditor'
 import storeMappingMixin from '../mixin/storeMappingMixin'
@@ -304,6 +314,7 @@ export default {
         steps: 'steps/steps',
         process_comments: 'comments/process_comments',
         comments: 'comments/comments',
+        tree_options:'topic/tree_options'
       }, actions: {
         saveProcess: 'flows/saveProcess',
         fetchFlows: 'flows/fetchFlows',
@@ -324,7 +335,7 @@ export default {
     })],
   props: ["theprocessid"],
   components: {
-    GlossaryEditor,CommentList,HelpLabel
+    GlossaryEditor,CommentList,HelpLabel,Treeselect
   },
   data () {
     return {

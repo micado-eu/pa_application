@@ -244,7 +244,7 @@ export default {
     translatedButtonMixin,
     storeMappingMixin({
       getters: {
-        topic: 'topic/topic'
+        topic: 'topic/topic',
       }, actions: {
         deleteTopic: 'topic/deleteTopic',
         saveTopic: 'topic/saveTopic',
