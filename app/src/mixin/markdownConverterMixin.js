@@ -12,11 +12,20 @@ export default {
     ...mapActions('information', ['fetchInformationProd']),
     ...mapActions('flows', ['fetchFlowsProd']),
     ...mapActions('event', ['fetchEventProd']),
+    cleanSpaces(text) {
+      // At the moment of writing there is this issue with the Showdown converter: https://github.com/showdownjs/showdown/issues/669
+      // Having &nbsp; instead of spaces breaks tooltips overflow wrap, so we substitute them here
+      return text.replace(/&nbsp;/g, " ")
+    },
     HTMLToMarkdown(html) {
-      return this.converter.makeMarkdown(html)
+      let md = this.converter.makeMarkdown(html)
+      md = this.cleanSpaces(md)
+      return md
     },
     markdownToHTML(markdown) {
-      return this.converter.makeHtml(markdown)
+      let html = this.converter.makeHtml(markdown)
+      html = this.cleanSpaces(html)
+      return html
     },
     async markReferencesAux(html) {
       let result = html

@@ -1,54 +1,56 @@
 <template>
   <div padding>
-    <div>
-      <editor-content
-        class='editor_content'
-        :editor="editor"
-        ref="editor"
-      />
-    </div>
-    <div>
-      <slot name="append"></slot>
-    </div>
-    <div>
-      <q-btn
-        unelevated
-        @click="showAllContent"
-        v-if="readMore && !showingFullContent"
-        rounded
-        color="grey-5"
-        size="sm"
-        no-caps
-        padding="1px 15px"
-        class="q-mb-md"
-      >
-        {{ $t("button.read_more") }}
-      </q-btn>
-      <q-btn
-        unelevated
-        @click="showLessContent"
-        v-if="readMore && showingFullContent"
-        rounded
-        size="sm"
-        outline
-        color="grey-8"
-        no-caps
-        padding="1px 15px"
-        class="q-my-md"
-      >
-        {{ $t("button.read_less") }}
-      </q-btn>
+    <q-spinner v-if="loading" />
+    <div v-else>
+      <div>
+        <editor-content
+          class='editor_content'
+          :editor="editor"
+          ref="editor"
+        />
+      </div>
+      <div>
+        <slot name="append"></slot>
+      </div>
+      <div>
+        <q-btn
+          unelevated
+          @click="showAllContent"
+          v-if="readMore && !showingFullContent"
+          rounded
+          color="grey-5"
+          size="sm"
+          no-caps
+          padding="1px 15px"
+          class="q-mb-md"
+        >
+          {{ $t("button.read_more") }}
+        </q-btn>
+        <q-btn
+          unelevated
+          @click="showLessContent"
+          v-if="readMore && showingFullContent"
+          rounded
+          size="sm"
+          outline
+          color="grey-8"
+          no-caps
+          padding="1px 15px"
+          class="q-my-md"
+        >
+          {{ $t("button.read_less") }}
+        </q-btn>
+      </div>
     </div>
     <q-tooltip
-      class="desc_tooltip"
-      v-model="showTooltip"
-      :target="targetElement"
-      anchor="top middle"
-      self="bottom middle"
-      :offset="[10, 10]"
-      v-if="currentDescription"
+      v-for="(mention, index) in mentions"
+      :key="index"
+      :target="mention"
+      :hide-delay="650"
     >
-      {{currentDescription}}
+      {{
+        getTooltip(mention)
+      }}
     </q-tooltip>
   </div>
 </template>
@@ -64,6 +66,7 @@ import {
 import Image from 'components/editor_plugins/Image'
 import InternalMention from 'components/editor_plugins/InternalMention'
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
+import Vue from 'vue'
 
 export default {
   name: 'GlossaryEditorViewer',
@@ -91,12 +94,11 @@ export default {
   mixins: [markdownConverterMixin],
   data() {
     return {
+      loading: false,
       editor: null,
-      currentDescriptionContent: '',
-      targetElement: false,
-      showTooltip: false, // Don't show by default
-      fullHTMLContent: '',
-      showingFullContent: true
+      showingFullContent: true,
+      tooltipDescriptions: undefined,
+      mentions: []
     }
   },
   computed: {
@@ -113,7 +115,7 @@ export default {
     ...mapActions('information', ['fetchInformationProd']),
     ...mapActions('flows', ['fetchFlowsProd']),
     ...mapActions('event', ['fetchEventProd']),
-    initialize() {
+    async initialize() {
       this.editor = new Editor({
         editable: false,
         extensions: [
@@ -121,45 +123,68 @@ export default {
           new Italic(),
           new Link(),
           new Image(),
-          new InternalMention({
-            showTooltip: true,
-            elemByIdFunctions: {
-              "glossary": this.glossaryProdElemById,
-              "information": this.informationProdElemById,
-              "event": this.eventProdElemById,
-              "process": this.processProdById
-            },
-            setTooltipDescription: this.setCurrentDescription
-          })
+          new InternalMention()
         ],
         content: ''
       })
-      this.setContent(this.content)
+      await this.setContent(this.content)
+      await Vue.nextTick()
+      this.generateTooltips()
+      if (this.readMore) {
+        let el = this.$refs.editor.$el
+        let height = parseFloat(getComputedStyle(el, null).height.replace("px", ""))
+        if (height >= 41) {
+          el.classList.add('max-lines')
+          this.showingFullContent = false
+        }
+      }
     },
-    setContent(content, isHTML = false) {
+    async setContent(content, isHTML = false) {
       let currentContent = content
       if (!isHTML) {
         currentContent = this.markdownToHTML(content)
       }
-      this.markReferences(currentContent, this.$defaultLang, this.$userLang, true).then((markedContent) => {
+      try {
+        let markedContent = await this.markReferences(currentContent, this.$defaultLang, this.$userLang, true)
         let newContent = markedContent
         this.allHTMLContent = markedContent
-        if (this.readMore) {
-          let el = this.$refs.editor.$el
-          let height = parseFloat(getComputedStyle(el, null).height.replace("px", ""))
-          if (height >= 41) {
-            el.classList.add('max-lines')
-            this.showingFullContent = false
-          }
-        }
         this.editor.setContent(newContent)
-      }).catch((err) => {
-        console.error(err)
+        this.loading = false
+        return newContent
+      } catch (err) {
         this.$q.notify({
           type: 'negative',
           message: `Error while fetching glossary description: ${err}`
         })
-      })
+        this.loading = false
+        return ''
+      }
+    },
+    generateTooltips() {
+      const elemByIdFunctions = {
+        "glossary": this.glossaryProdElemById,
+        "information": this.informationProdElemById,
+        "event": this.eventProdElemById,
+        "process": this.processProdById
+      }
+      this.mentions = this.$refs.editor.$el.querySelectorAll("[data-mention-id]")
+      this.tooltipDescriptions = {}
+      for (let mention of this.mentions) {
+        const idString = mention.getAttribute("data-mention-id")
+        const id = parseInt(idString)
+        const mentionType = mention.getAttribute("mention-type")
+        const text = this.getTooltipText(id, mentionType, elemByIdFunctions)
+        if (!(mentionType in this.tooltipDescriptions)) {
+          this.tooltipDescriptions[mentionType] = {}
+        }
+        this.tooltipDescriptions[mentionType][id] = text
+      }
+    },
+    getTooltip(mention) {
+      const idString = mention.getAttribute("data-mention-id")
+      const id = parseInt(idString)
+      const mentionType = mention.getAttribute("mention-type")
+      return this.tooltipDescriptions[mentionType][id]
     },
     showAllContent() {
       this.$refs.editor.$el.classList.remove('max-lines')
@@ -171,51 +196,30 @@ export default {
       this.showingFullContent = false
       this.$emit("readLessPressed")
     },
-    setCurrentDescription(elem, element) {
-      let currentContent = elem.description
-      if (!this.isContentHTML) {
-        currentContent = this.markdownToHTML(currentContent)
+    getTooltipText(id, mentionType, elemByIdFunctions) {
+      if (id > -1 && mentionType in elemByIdFunctions) {
+        const elem = elemByIdFunctions[mentionType](id)
+        if (elem !== undefined) {
+          let currentContent = this.markdownToHTML(elem.description)
+          // Gets description and transforms it to plain text
+          const doc = new DOMParser().parseFromString(currentContent, 'text/html')
+          const plainDescription = doc.body.textContent || ''
+          return plainDescription
+        }
       }
-      // Gets description and transforms it to plain text
-      // Create an invisible editor to transform the JSON into HTML for parsing
-      const editorInterpreter = new Editor({
-        editable: false,
-        extensions: [
-          new Bold(),
-          new Italic(),
-          new Link(),
-          new Image(),
-          new InternalMention({
-            showTooltip: true,
-            elemByIdFunctions: {
-              "glossary": this.glossaryProdElemById,
-              "information": this.informationProdElemById,
-              "event": this.eventProdElemById,
-              "process": this.processProdById
-            },
-            setTooltipDescription: this.setCurrentDescription
-          })
-        ],
-        content: currentContent
-      })
-      const doc = new DOMParser().parseFromString(editorInterpreter.getHTML(), 'text/html')
-      const plainDescription = doc.body.textContent || ''
-      this.targetElement = element
-      this.currentDescriptionContent = plainDescription
-      editorInterpreter.destroy()
     }
   },
   created() {
+    this.loading = true
     if (!this.all_fetched) {
       const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
       Promise.all([
         this.fetchGlossaryProd(langs),
         this.fetchInformationProd(langs),
         this.fetchFlowsProd(langs),
-        this.fetchEventProd(langs)
-      ]).then(() => {
-        this.initialize()
-      })
+        this.fetchEventsProd(langs)
+      ])
+        .then(() => this.initialize())
     } else {
       this.initialize()
     }
@@ -249,5 +253,9 @@ img {
 
 .ProseMirror:focus {
   outline: none;
+}
+
+.desc_tooltip {
+  max-width: 300px;
 }
 </style>
