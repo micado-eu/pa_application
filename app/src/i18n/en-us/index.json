@@ -320,6 +320,12 @@
     "uploader_label": "Upload image (Max 25 MB)",
     "text_alternative": "Text alternative to image"
   },
+  "link_modal": {
+    "text": "Text",
+    "link": "Link",
+    "apply": "Apply",
+    "selected": "Select some text to apply a link"
+  },
   "date_selector": {
     "close": "Close"
   },
