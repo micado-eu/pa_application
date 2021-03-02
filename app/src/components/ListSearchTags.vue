@@ -337,14 +337,11 @@
                     <div>
                       <span
                         class="date-text q-mt-sm q-mr-xl"
-                        v-if="item.creator && showExtraInfo[item.id]"
+                        v-if="item.creator !== null && showExtraInfo[item.id]"
                       >
                         {{$t("lists.creator")}}:
                         <span>
-                          {{item.creator.name}}
-                        </span>
-                        <span v-if="item.creator.lastname">
-                          {{item.creator.lastname}}
+                          {{getCreatorAttribute(item.creator, "givenName")}} {{getCreatorAttribute(item.creator, "sn")}}
                         </span>
                       </span>
                     </div>
@@ -698,9 +695,10 @@ export default {
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
               translation.location = e.location
             }
-            if (e.creator !== null) {
-              this.creatorCache[e.creator] = await this.fetchSpecificUser(e.creator, this.$pa_tenant)
+            if (e.creator !== null && !(e.creator in this.creatorCache)) {
+              this.creatorCache[e.creator] = await this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant })
               translation.creator = this.creatorCache[e.creator]
+              console.log(translation.creator)
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
@@ -735,6 +733,16 @@ export default {
     userTypeTransl(userType) {
       const idx = userType.translations.findIndex((t) => t.lang === this.lang)
       return idx !== -1 ? userType.translations[idx].userType : ''
+    },
+    getCreatorAttribute(creator, attrString) {
+      var retAttr = ""
+      var retAttr_arr = creator.attributes.filter((attr) => {
+        return attr.umAttrName === attrString
+      })
+      if (retAttr_arr.length > 0) {
+        retAttr = retAttr_arr[0].umAttrValue
+      }
+      return retAttr
     }
   },
   watch: {
