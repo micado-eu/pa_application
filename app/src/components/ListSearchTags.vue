@@ -339,7 +339,13 @@
                         class="date-text q-mt-sm q-mr-xl"
                         v-if="item.creator && showExtraInfo[item.id]"
                       >
-                        {{$t("lists.creator")}}: {{item.creator}}
+                        {{$t("lists.creator")}}:
+                        <span>
+                          {{item.creator.name}}
+                        </span>
+                        <span v-if="item.creator.lastname">
+                          {{item.creator.lastname}}
+                        </span>
                       </span>
                     </div>
                   </template>
@@ -495,7 +501,8 @@ export default {
       lastIndexTopics: 3,
       lastIndexUserTypes: 3,
       loading: true,
-      showExtraInfo: []
+      showExtraInfo: [],
+      creatorCache: {}
     }
   },
   components: {
@@ -508,6 +515,7 @@ export default {
     ...mapActions('information', ['fetchInformationProd']),
     ...mapActions('flows', ['fetchFlowsProd']),
     ...mapActions('event', ['fetchEventProd']),
+    ...mapActions('user', ['fetchSpecificUser']),
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -630,14 +638,14 @@ export default {
     batchUploadSuccess(success) {
       this.$emit("batchUpload")
     },
-    batchUploadError(error) {
+    batchUploadError(err) {
       this.$q.notify({
         type: 'negative',
         message: `Error while uploading: ${err}`
       })
     },
-    initializeList() {
-      this.translatedElements = this.elements.map((e) => {
+    async initializeList() {
+      this.translatedElements = await Promise.all(this.elements.map(async (e) => {
         let translation
         if (e.translations) {
           const idx = e.translations.findIndex((t) => t.lang === this.lang)
@@ -690,13 +698,16 @@ export default {
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
               translation.location = e.location
             }
-            translation.creator = e.creator
+            if (e.creator !== null) {
+              this.creatorCache[e.creator] = await this.fetchSpecificUser(e.creator, this.$pa_tenant)
+              translation.creator = this.creatorCache[e.creator]
+            }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
             return translation
           } else return undefined
         }
-      })
+      }))
       this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
       if (this.alphabetical_sorting) {
         this.translatedElements.sort(this.compare)
@@ -800,7 +811,7 @@ export default {
       this.fetchInformationProd(langs),
       this.fetchFlowsProd(langs),
       this.fetchEventProd(langs)
-    ]).then(() => this.initializeList())
+    ]).then(this.initializeList())
   }
 }
 </script>

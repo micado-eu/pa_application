@@ -474,7 +474,7 @@ export default {
         title: this.internalTitle,
         description: this.$refs.editor.getContent(),
         lang,
-        creator: this.loggedUser?.name
+        creator: this.loggedUser?.umid
       }
       if (idx !== -1) {
         this.savedTranslations[idx] = translation
