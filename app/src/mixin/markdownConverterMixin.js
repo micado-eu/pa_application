@@ -46,17 +46,19 @@ export default {
           else {
             title = term.title
           }
-          // Look for the term's titles that are not already marked
-          let regexp = new RegExp(`(${title})`, "gi")
-          let splitted = result.split(regexp)
-          // Add the tag to the text
-          const prefixTag = `<span data-mention-id="${term.id}" mention-type="${key}" class="mention">`
-          for (let i = 0; i < splitted.length; i = i + 1) {
-            if (!splitted[i].localeCompare(title, undefined, { sensitivity: 'accent' })) {
-              splitted[i] = prefixTag + splitted[i] + suffixTag
+          if (title.length > 0) {
+            // Look for the term's titles that are not already marked
+            let regexp = new RegExp(`(${title})`, "gi")
+            let splitted = result.split(regexp)
+            // Add the tag to the text
+            const prefixTag = `<span data-mention-id="${term.id}" mention-type="${key}" class="mention">`
+            for (let i = 0; i < splitted.length; i = i + 1) {
+              if (!splitted[i].localeCompare(title, undefined, { sensitivity: 'accent' })) {
+                splitted[i] = prefixTag + splitted[i] + suffixTag
+              }
             }
+            result = splitted.join("")
           }
-          result = splitted.join("")
         }
       }
       return result
