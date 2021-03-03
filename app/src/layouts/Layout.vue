@@ -153,7 +153,7 @@ export default {
   computed: {
     isLoggedIn () {
       console.log("called isloggedin")
-      return this.$auth.loggedIn()
+      return this.$auth.loggedIn() && this.check(["Application/micado_migrant_manager","Application/micado_superadmin","Application/micado_admin"])
     },
    /* userpic_computer(){
        if(this.$store.state.auth.user != null){

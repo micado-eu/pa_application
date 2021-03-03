@@ -46,62 +46,60 @@ const routes = [
         path: '/data_settings',
         component: DataSettings,
         children: [
-          { path: 'document_types', component: DocumentTypeManager },
-          { path: 'intervention_categories', component: IntegrationCategory },
-          { path: 'intervention_types', component: IntegrationType },
-          { path: 'topics', component: Topic },
-          { path: 'user_types', component: UserType },
-          { path: 'settings', component: FunctionConfiguration },
-          { path: 'usermgmt', component: UserManagement },
-          { path: 'profile_settings', component: ProfileSettings },
-          { path: 'language', component: ActiveLanguageSelector }
+          { path: 'document_types', meta: { auth: ["Application/micado_admin"] }, component: DocumentTypeManager },
+          { path: 'intervention_categories', meta: { auth: ["Application/micado_admin"] }, component: IntegrationCategory },
+          { path: 'intervention_types', meta: { auth: ["Application/micado_admin"] }, component: IntegrationType },
+          { path: 'topics', meta: { auth: ["Application/micado_admin"] }, component: Topic },
+          { path: 'user_types', meta: { auth: ["Application/micado_admin"] }, component: UserType },
+          { path: 'settings', meta: { auth: ["Application/micado_superadmin"] }, component: FunctionConfiguration },
+          { path: 'usermgmt', meta: { auth: ["Application/micado_superadmin"] }, component: UserManagement },
+          { path: 'profile_settings', meta: { auth: ["Application/micado_migrant_manager","Application/micado_admin","Application/micado_superadmin"] }, component: ProfileSettings },
+          { path: 'language', meta: { auth: ["Application/micado_superadmin"] }, component: ActiveLanguageSelector }
         ]
       },
-      { path: '/app_settings', component: Settings },
+      { path: '/app_settings', meta: { auth: ["Application/micado_superadmin"] }, component: Settings },
 
-      { path: '/migrant', component: MigrantManager },
+      { path: '/migrant', meta: { auth: ["Application/micado_migrant_manager"] },component: MigrantManager },
       {
-        path: '/migrant/data/:theuserid', name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })
+        path: '/migrant/data/:theuserid', meta: { auth: ["Application/micado_migrant_manager"] }, name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })
       },
       {
-        path: '/migrant/:theuserid', name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })
+        path: '/migrant/:theuserid', meta: { auth: ["Application/micado_migrant_manager"] }, name: 'interventionplan', component: () => import('pages/UserIntegration.vue'), props: (route) => ({ ...route.params })
       },
       {
-        path: '/migrant/:theuserid/add', name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'), props: (route) => ({ ...route.params })
+        path: '/migrant/:theuserid/add', meta: { auth: ["Application/micado_migrant_manager"] }, name: 'addinterventionplan', component: () => import('pages/AddInterventionPlan.vue'), props: (route) => ({ ...route.params })
       },
-      { path: '/cso', component: NgoManager },
-      { path: '/info', component: InfoEditor },
-      { path: '/chatbot', component: chatBot },
-
+      { path: '/cso', meta: { auth: ["Application/micado_superadmin"] }, component: NgoManager },
+      { path: '/info', meta: { auth: ["Application/micado_admin"] }, component: InfoEditor },
       {
-        path: '/adddocument', component: AddDocument, props: true, name: document
+        path: '/adddocument', meta: { auth: ["Application/micado_admin"] }, component: AddDocument, props: true, name: document
       },
       {
-        path: '/adddocument/:thedocumenttypeid', name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params })
+        path: '/adddocument/:thedocumenttypeid', meta: { auth: ["Application/micado_admin"] }, name: 'editdocumenttype', component: () => import('components/data_settings/AddDocument.vue'), props: (route) => ({ ...route.params })
       },
-      { path: '/guided_process_editor', component: ProcessManager, name: 'guidedprocesslist' },
+      { path: '/guided_process_editor', meta: { auth: ["Application/micado_admin"] }, component: ProcessManager, name: 'guidedprocesslist' },
 
       {
-        path: '/guided_process_editor/edit/', component: () => import('pages/EditProcess.vue'), props: true, name: process
+        path: '/guided_process_editor/edit/', meta: { auth: ["Application/micado_admin"] }, component: () => import('pages/EditProcess.vue'), props: true, name: process
       },
       {
-        path: '/guided_process_editor/edit/:theprocessid', name: 'editprocess', component: () => import('pages/EditProcess.vue'), props: (route) => ({ ...route.params })
+        path: '/guided_process_editor/edit/:theprocessid', meta: { auth: ["Application/micado_admin"] }, name: 'editprocess', component: () => import('pages/EditProcess.vue'), props: (route) => ({ ...route.params })
       },
       {
-        path: '/guided_process_editor/edit/:processId/steps', component: () => import('pages/StepManager.vue'), props: (route) => ({ ...route.params }), name: 'editstep'
+        path: '/guided_process_editor/edit/:processId/steps', meta: { auth: ["Application/micado_admin"] }, component: () => import('pages/StepManager.vue'), props: (route) => ({ ...route.params }), name: 'editstep'
       },
 
       {
-        path: '/edit_step/:id', component: () => import('components/EditStep.vue'), props: true, name: process
+        path: '/edit_step/:id', meta: { auth: ["Application/micado_admin"] }, component: () => import('components/EditStep.vue'), props: true, name: process
       },
       {
-        path: '/edit_step', component: () => import('components/EditStep.vue'), props: true, name: process
+        path: '/edit_step', meta: { auth: ["Application/micado_admin"] }, component: () => import('components/EditStep.vue'), props: true, name: process
       },
 
-      { path: '/dashboard', component: () => import('pages/Stats.vue') },
-      { path: '/map', component: () => import('components/Map.vue') },
+      { path: '/dashboard', meta: { auth: ["Application/micado_admin"] }, component: () => import('pages/Stats.vue') },
+      { path: '/map', meta: { auth: ["Application/micado_admin"] }, component: () => import('components/Map.vue') },
       {
-        path: '/situation',
+        path: '/situation', meta: { auth: ["Application/micado_admin"] },
         component: MigrationSituation,
         children: [
           { path: 'main', component: MigrationSitMain },
@@ -118,19 +116,19 @@ const routes = [
       },
       { path: '/ngo/requestmediation', component: RequestMediation },
 
-      { path: '/glossary', component: GlossaryListPage },
-      { path: '/glossary/new', component: GlossaryNewPage },
-      { path: '/glossary/:id/edit/', component: GlossaryEditPage },
+      { path: '/glossary', meta: { auth: ["Application/micado_admin"] }, component: GlossaryListPage },
+      { path: '/glossary/new', meta: { auth: ["Application/micado_admin"] }, component: GlossaryNewPage },
+      { path: '/glossary/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: GlossaryEditPage },
 
-      { path: '/information', component: InformationListPage },
-      { path: '/information/new', component: InformationNewPage },
-      { path: '/information/:id/edit/', component: InformationEditPage },
-      { path: '/information/categories', component: InformationCategory },
+      { path: '/information', meta: { auth: ["Application/micado_admin"] }, component: InformationListPage },
+      { path: '/information/new', meta: { auth: ["Application/micado_admin"] }, component: InformationNewPage },
+      { path: '/information/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: InformationEditPage },
+      { path: '/information/categories', meta: { auth: ["Application/micado_admin"] }, component: InformationCategory },
 
-      { path: '/events', component: EventListPage },
-      { path: '/events/new', component: EventNewPage },
-      { path: '/events/:id/edit/', component: EventEditPage },
-      { path: '/events/categories', component: EventCategory }
+      { path: '/events', meta: { auth: ["Application/micado_admin"] }, component: EventListPage },
+      { path: '/events/new', meta: { auth: ["Application/micado_admin"] }, component: EventNewPage },
+      { path: '/events/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: EventEditPage },
+      { path: '/events/categories', meta: { auth: ["Application/micado_admin"] }, component: EventCategory }
     ]
   }
 ]/*

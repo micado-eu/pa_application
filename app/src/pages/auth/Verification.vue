@@ -85,7 +85,7 @@ export default {
             token: identity_response,
             rememberMe: false
           })
-          this.message = "Welcome " + id_token.given_name + " you have " + (this.$store.getters['auth/check']("Application/micado_superadmin") ? "superadmin" : "no rights")
+          this.message = "Welcome " + id_token.given_name + " you have " + (this.$store.getters['auth/check']("Application/micado_superadmin") ? "superadmin" : (this.$store.getters['auth/check']("Application/micado_admin")?"admin":(this.$store.getters['auth/check']("Application/micado_migrant_manager")?"migrant manager":"no rights")))
           console.log(this.message)
         })
       /*
