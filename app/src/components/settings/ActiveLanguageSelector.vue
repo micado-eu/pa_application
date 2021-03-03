@@ -76,7 +76,9 @@ export default {
   computed: {
     ...mapGetters("language", ["languages"]),
     langOptions () {
-      return this.languages
+      return this.languages.filter((lan)=>{
+        return lan.active == true
+      })
     }
   },
   methods: {

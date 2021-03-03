@@ -188,15 +188,26 @@
               :options="this.u_tags"
               class="select"
             />
-            <q-chip
+          <!--  <q-chip
               v-for="tag in selected_u_tags"
               dense
               :key="tag"
-            >{{tag}}</q-chip>
+            >{{tag}}</q-chip>-->
           </div>
 
           <div class="col-6 div-9">
-            <q-select
+                        <treeselect
+          :multiple="true"
+          :options="this.tree_options"
+          :flat="true"
+          :default-expand-level="1"
+          placeholder="Try selecting some options."
+          v-model="edit_process.processTopics"
+          @select="addTopicTag($event)"
+          @deselect="removeTopicTag($event)"
+              @clear="clearAllTopics()"
+          />
+           <!-- <q-select
               filled
               data-cy="add_topic"
               dense
@@ -216,7 +227,7 @@
               v-for="tag in selected_t_tags"
               dense
               :key="tag"
-            >{{tag}}</q-chip>
+            >{{tag}}</q-chip>-->
           </div>
         </div>
          <div class=" q-pa-xsm row div-6" style="padding-bottom:20px">
@@ -451,19 +462,20 @@ export default {
       this.selected_u_tags = []
     },
     addTopicTag (value) {
-      console.log(value)
+      /*console.log(value)
 
       var the_topic = this.topic.filter((a_topic) => {
         return a_topic.id == value.value
       })[0]
       var the_topic_transl = the_topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic
-      this.selected_t_tags.push(the_topic_transl)
-
+      this.selected_t_tags.push(the_topic_transl)*/
+      console.log(value)
+      this.selected_t_tags.push(value.label)
     },
     removeTopicTag (value) {
       console.log(value)
-
-      this.selected_t_tags.splice(value.index, 1)
+      var idx = this.selected_t_tags.findIndex(item => item.id == value.id)
+      this.selected_t_tags.splice(idx, 1)
     },
     clearAllTopics () {
       this.selected_t_tags = []

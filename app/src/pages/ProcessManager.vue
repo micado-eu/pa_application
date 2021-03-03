@@ -1,5 +1,7 @@
   <template>
-  <div >
+  <div>
+    <div v-if="loading"> Loading...</div>
+  <div v-else>
   <div id="top-div" >{{$t('input_labels.guided_processes')}}</div>
   <div class="container">
     <div class="center">
@@ -79,6 +81,7 @@
     </div>
   </div>
   </div>
+  </div>
 </template>
 
 
@@ -119,7 +122,8 @@ export default {
   })],
   data () {
     return {
-      search: ' '
+      search: ' ',
+      loading:true
     }
   },
 
@@ -203,7 +207,16 @@ export default {
 
   created () {
     console.log("in process list")
-    this.fetchFlows()
+    var promises = []
+    promises.push(this.fetchSteps())
+    promises.push(this.fetchFlows())
+    promises.push(this.fetchSteplinks())
+    promises.push( this.fetchTopic({ defaultLang: this.$defaultLang, userLang: this.$userLang }))
+    promises.push(this.fetchUserType({ defaultLang: this.$defaultLang, userLang: this.$userLang }))
+    Promise.all(promises).then(()=>{
+      this.loading=false
+    })
+    /*this.fetchFlows()
       .then(processes => {
         this.loading = false
         console.log(this.processes)
@@ -223,7 +236,7 @@ export default {
     .then(user_types =>{
       console.log("in user type")
       console.log(user_types)
-    })
+    })*/
   
   }
 }
