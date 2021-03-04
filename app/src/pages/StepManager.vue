@@ -79,6 +79,7 @@
                       data-cy="title_input"
                       ref="title_input"
                       bg-color="grey-3"
+                      :hint="$t('input_labels.required')"
                       standout
                       outlined
                       counter
@@ -159,6 +160,7 @@
                 <q-input
                   data-cy="location_input"
                   dense
+                  :hint="$t('input_labels.required')"
                   ref="location_input"
                   class="no-pad"
                   bg-color="grey-3"

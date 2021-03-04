@@ -50,6 +50,7 @@
                 val => val.length <= 50 || 'Please use maximum 50 characters',
                 val => !!val || 'Field is required'
                 ]"
+                :hint="$t('input_labels.required')"
                 v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
               />
             </div>
@@ -134,6 +135,7 @@
           <q-select
             data-cy="add_produced_doc"
             filled
+            :hint="$t('input_labels.required')"
             dense
             ref="produced_doc"
             :rules="[ 

@@ -45,6 +45,7 @@
             filled
             dense
             counter
+            :hint="$t('input_labels.required')"
             ref="user_type"
             maxlength="20"
             :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters',

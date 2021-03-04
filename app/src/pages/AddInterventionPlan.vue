@@ -28,7 +28,8 @@
                       val => val.length <= 100 || 'Please use maximum 100 characters',
                       val => !!val || 'Field is required'
                       ]"
-                      ref="title_plan" 
+                      ref="title_plan"
+                      :hint="$t('input_labels.required')" 
                       counter 
                       maxlength="100" 
                       standout 
@@ -83,6 +84,7 @@
       <div id="div-13" class="col-9">
         <q-input 
           bg-color="grey-3" 
+          :hint="$t('input_labels.required')"
           ref="title_action"
           :rules="[
           val => val.length <= 100 || 'Please use maximum 100 characters',
@@ -121,6 +123,7 @@
       <div id="div-19" class=" q-pa-md col-9">
      <q-select
         class="select"
+        :hint="$t('input_labels.required')"
         ref="type_action"
         filled
         dense

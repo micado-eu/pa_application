@@ -58,6 +58,7 @@
               val => !!val || 'Field is required'
               ]"
               ref="intervention_type"
+              :hint="$t('input_labels.required')"
               outlined
               filled
               dense

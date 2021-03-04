@@ -42,6 +42,7 @@
           <q-input
             counter
             ref="type_title"
+            :hint="$t('input_labels.required')"
             maxlength="100"
             :rules="[
             val => val.length <= 100 || 'Please use maximum 100 characters',
@@ -113,6 +114,7 @@
                 val => !!val || 'Field is required'
           ]"
           ref="category_type"
+          :hint="$t('input_labels.required')"
           :readonly="int_type_shell.published"
           clearable
           v-model="int_type_shell.categoryType"
@@ -137,6 +139,7 @@
                 val => val.length > 0 || 'Field is required'
           ]"
           ref="validators"
+          :hint="$t('input_labels.required')"
           clearable
           :readonly="int_type_shell.published"
           multiple

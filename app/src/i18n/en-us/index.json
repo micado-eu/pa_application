@@ -233,7 +233,8 @@
     "validation_requested": "Requested validation",
     "new_intervention": "Add new intervention to the plan",
     "location": "Location",
-    "link":"Link"
+    "link":"Link",
+    "required":"Required"
   },
   "profile": {
     "username": "Username",

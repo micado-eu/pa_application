@@ -44,6 +44,7 @@
                 bg-color="grey-3"
                 standout
                 ref="username"
+                :hint="$t('input_labels.required')"
                 outlined
                 maxlength="50"
                 counter
@@ -70,6 +71,7 @@
                 standout
                 :type="isPwd ? 'password' : 'text'"
                 ref="password"
+                :hint="$t('input_labels.required')"
                 outlined
                 maxlength="50"
                 counter
@@ -102,6 +104,7 @@
                 bg-color="grey-3"
                 standout
                 ref="givenName"
+                :hint="$t('input_labels.required')"
                 outlined
                 maxlength="50"
                 counter
@@ -125,7 +128,6 @@
                 data-cy="title_input"
                 bg-color="grey-3"
                 standout
-                ref="familyName"
                 outlined
                 maxlength="50"
                 counter
@@ -150,6 +152,7 @@
                 bg-color="grey-3"
                 standout
                 ref="familyName"
+                :hint="$t('input_labels.required')"
                 outlined
                 maxlength="50"
                 counter

@@ -46,6 +46,7 @@
             filled
             dense
             ref="doc_type"
+            :hint="$t('input_labels.required')"
             counter
             maxlength="20"
             :rules="[ 
@@ -165,6 +166,7 @@
               <q-select
             filled
             dense
+            :hint="$t('input_labels.required')"
             ref="icon"
             clearable
             :rules="[ 

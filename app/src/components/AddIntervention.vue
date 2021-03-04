@@ -29,6 +29,7 @@
                   val => !!val || 'Field is required'
                   ]"
                   ref="title_ref"
+                  :hint="$t('input_labels.required')"
                   maxlength="100"
                   counter
                   dense
@@ -77,6 +78,7 @@
                   val => val != null || 'Field is required'
                   ]"
                   ref="type_ref"
+                  :hint="$t('input_labels.required')"
                   filled
                   dense
                   clearable
