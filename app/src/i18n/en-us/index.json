@@ -235,7 +235,8 @@
     "new_intervention": "Add new intervention to the plan",
     "location": "Location",
     "link":"Link",
-    "required":"Required"
+    "required":"Required",
+    "transl_state":"Translation state"
   },
   "profile": {
     "username": "Username",
@@ -374,5 +375,11 @@
   },
   "text_editor": {
     "word_count": "Word count"
+  },
+  "translation_states": {
+    "editing":"Editing",
+    "translatable":"Translatable",
+    "translating":"Translating",
+    "translated":"Translated"
   }
 }

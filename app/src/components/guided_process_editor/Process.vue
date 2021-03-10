@@ -4,20 +4,27 @@
     
     <div class="width">
       <div class="row">
-          <div class="col-7 flex flex-left title" >{{ this.Title }}</div>
+          <div class="col-5 flex flex-left title" style="padding-top:10px">{{ this.Title }}</div>
             <q-item-section class="col-1 flex flex-center">
             <q-toggle
             v-model="theProcess.published"
             color="accent"
             disable
             @input="isPublished($event, theProcess.id)"
+            style="padding-top:5px"
           />            
           </q-item-section>
+             <q-item-section class="col-1 flex flex-center top" >
+               {{this.translation_state}}
+            </q-item-section>
+            <q-item-section class="col-1 flex flex-center top" >
+             {{this.comment_present}}
+            </q-item-section>
             <q-item-section class="col-1 flex flex-center margin">
               <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.edit_process')" @click.native="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )"/>
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
-              <IconWithTooltip :icon="'img:statics/icons/Icon - manage (guided processes).png'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
+              <IconWithTooltip :icon="'img:statics/icons/Icon - Manage processes.svg'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_process')" @click.native="remove_process($event)" :data-cy="'deleteprocess'.concat(theProcess.id )"/>
@@ -59,6 +66,33 @@ export default {
   mixins: [editEntityMixin],
   data () {
     return {};
+  },
+  computed:{
+    comment_present(){
+      if(this.theProcess.comments){
+        return "yes"
+      }
+      else{
+        return "no"
+      }
+    },
+    translation_state(){
+      var state = this.theProcess.translations.filter((transl)=>{
+        return transl.lang == this.$defaultLang
+      })[0].translationState
+      if(state == 0){
+        return this.$i18n.t('translation_states.editing')
+      }
+      else if(state ==1){
+        return this.$i18n.t('translation_states.translatable')
+      }
+      else if(state==2){
+        return this.$i18n.t('translation_states.translating')
+      }
+      else{
+        return this.$i18n.t('translation_states.translated')
+      }
+    }
   },
   components:{IconWithTooltip},
   methods: {

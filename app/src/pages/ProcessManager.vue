@@ -45,11 +45,17 @@
       <UploadButton entity="process" />
       <q-list id="list">
     <q-item class="row" id="item">
-    <q-item-section class="col-7 flex flex-left" id="left">
+    <q-item-section class="col-5 flex flex-left" id="left">
         {{$t('input_labels.name')}}
     </q-item-section>
     <q-item-section class="col-1 flex flex-left">
         {{$t('input_labels.is_published')}}
+      </q-item-section>
+       <q-item-section class="col-1 flex flex-center">
+        {{$t('input_labels.transl_state')}}
+      </q-item-section>
+       <q-item-section class="col-1 flex flex-center">
+        {{$t('input_labels.comments')}}
       </q-item-section>
     <q-item-section class="col-1 flex flex-center" id="section">
        {{$t('input_labels.edit')}}

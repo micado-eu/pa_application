@@ -59,7 +59,8 @@ export default {
   name: "LanguageSettings",
   data () {
     return {
-      def_lang: this.$defaultLang
+      def_lang: this.$defaultLang,
+      old_lang: this.$defaultLang
     }
   },
   computed: {
@@ -86,11 +87,14 @@ export default {
       console.log(val)
     },
     saveDefLang () {
+      console.log(this.old_lang)
       let setting = { key: "default_language", value: this.def_lang }
       this.updateSetting(setting)
         .then((result) => {
           console.log(result)
-          //this.setLanguageDefault({lang:this.def_lang, is})
+          this.setLanguageDefault({lang:this.def_lang, isDefault:true})
+          this.setLanguageDefault({lang:this.old_lang, isDefault:false})
+          this.old_lang = JSON.parse(JSON.stringify(this.def_lang))
           //       window.location.reload()
         })
 
