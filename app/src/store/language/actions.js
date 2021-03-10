@@ -11,3 +11,8 @@ export function setLanguageActive(state, payload) {
     .setLanguage(payload)
     .then(newLanguage => state.commit('setLanguageActive', payload))
 }
+
+export function setLanguageDefault(state, payload) {
+  return client
+    .setLanguageDefault(payload)
+}

@@ -14,6 +14,7 @@ export default async ({ store, Vue }) => {
                 console.log('#####################################')
                 console.log(settings)
                 const curlang = settings.filter((setting) => setting.key == 'default_language')[0]
+                const migrant_tenant_domain = settings.filter((setting) => setting.key == 'migrant_domain_name')[0]
                 defaultLang = store.state.language.languages.filter(function (l) { return l.lang == curlang.value })[0]
 
                 const pa_tenant = settings.filter((setting) => setting.key == 'pa_tenant')[0]
@@ -41,6 +42,7 @@ export default async ({ store, Vue }) => {
                 Vue.prototype.$userLang = curlang.value
                 Vue.prototype.$pa_tenant = pa_tenant.value
                 Vue.prototype.$migrant_tenant = migrant_tenant.value
+                Vue.prototype.$migrant_tenant_domain = migrant_tenant_domain.value
                 console.log(Vue.prototype.$migrant_tenant)
                 console.log("default lang: " + defaultLang)
                 console.log(defaultLang)

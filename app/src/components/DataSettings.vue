@@ -51,10 +51,10 @@
             clickable
             to="/data_settings/language"
             class="situation-menu-item"
-            :disable="!check('Application/micado_superadmin')"
+            :disable="!check('Application/micado_admin')"
             active-class="my-menu-link"
           >
-            <q-item-section>{{ $t('data_settings.language') }}</q-item-section>
+            <q-item-section>{{ $t('data_settings.translations') }}</q-item-section>
           </q-item>
           <q-item
             :data-cy="'data_settings.usermgmt'.replace('.', '_')"

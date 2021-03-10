@@ -19,6 +19,8 @@
         />
       </q-card-section>
     </q-card>
+        <ActiveLanguageSelector />
+
     <q-card>
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.pa_logo')}}</div>
@@ -127,6 +129,7 @@ import editEntityMixin from '../../mixin/editEntityMixin'
 import FeaturesElement from '../../components/settings/FeaturesElement'
 //import Croppa from 'vue-croppa'
 import 'vue-croppa/dist/vue-croppa.css'
+import ActiveLanguageSelector from '../../components/settings/ActiveLanguageSelector.vue'
 export default {
   name: "FunctionConfiguration",
   data () {
@@ -159,7 +162,7 @@ export default {
       }
     })],
   components: {
-    FeaturesElement
+    FeaturesElement,ActiveLanguageSelector
   },
   computed: {
 

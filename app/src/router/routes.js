@@ -34,6 +34,7 @@ import IntegrationType from '../components/data_settings/IntegrationType'
 import FunctionConfiguration from '../pages/settings/FunctionConfiguration'
 import UserManagement from '../pages/settings/UserManagement'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
+import TranslationManager from '../components/settings/TranslationManager'
 import ProfileSettings from '../pages/ProfileSettings'
 
 const routes = [
@@ -54,7 +55,7 @@ const routes = [
           { path: 'settings', meta: { auth: ["Application/micado_superadmin"] }, component: FunctionConfiguration },
           { path: 'usermgmt', meta: { auth: ["Application/micado_superadmin"] }, component: UserManagement },
           { path: 'profile_settings', meta: { auth: ["Application/micado_migrant_manager","Application/micado_admin","Application/micado_superadmin"] }, component: ProfileSettings },
-          { path: 'language', meta: { auth: ["Application/micado_superadmin"] }, component: ActiveLanguageSelector }
+          { path: 'language', meta: { auth: ["Application/micado_admin"] }, component: TranslationManager }
         ]
       },
       { path: '/app_settings', meta: { auth: ["Application/micado_superadmin"] }, component: Settings },

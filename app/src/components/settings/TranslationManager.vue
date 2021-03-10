@@ -1,53 +1,17 @@
 <template>
   <div class="col q-gutter-md">
-   <!-- <h5>{{$t("data_settings.language")}}</h5>-->
     <q-card>
       <q-card-section>
-        <div class="text-h4">{{$t('data_settings.manage_languages')}}</div>
-      </q-card-section>
-      <q-card-section>
-        <q-btn
-          v-for="language in languages"
-          :key="language.isoCode"
-          :outline="!language.active"
-          :style="language.active"
-          :disable="language.lang===def_lang"
-          class="q-mx-sm language_btn"
-          :label="language.name"
-          @click="setActive(language)"
-          :id="language.isoCode"
-          color="accent"
-          no-caps
-        ></q-btn>
-      </q-card-section>
-    </q-card>
-    <q-card>
-      <q-card-section>
-        <div class="text-h4">{{$t('data_settings.default_language')}}</div>
+        <div class="text-h4">{{$t('data_settings.manage_translations')}}</div>
       </q-card-section>
       <q-card-section>
 
-        <q-select
-          filled
-          v-model="def_lang"
-          :options="langOptions"
-          option-value="lang"
-          option-label="name"
-          option-disable="inactive"
-          emit-value
-          map-options
-          @input="updateDefLang"
-          style="min-width: 250px; max-width: 300px"
+        <q-btn
+          :label="$t('data_settings.send_to_translation')"
+          @click="sendToTranslation()"
         />
-        <q-btn
-          :label="$t('data_settings.set_default_language')"
-          @click="saveDefLang"
-        ></q-btn>
-
       </q-card-section>
-
     </q-card>
-
   </div>
 </template>
 
@@ -71,7 +35,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions("language", ["fetchLanguages", "setLanguageActive", "setLanguageDefault"]),
+    ...mapActions("language", ["fetchLanguages", "setLanguageActive"]),
     ...mapActions("settings", ["updateSetting"]),
     setActive (language) {
       let newLanguage = {
@@ -86,11 +50,11 @@ export default {
       console.log(val)
     },
     saveDefLang () {
+      console.log(this.def_lang)
       let setting = { key: "default_language", value: this.def_lang }
       this.updateSetting(setting)
         .then((result) => {
           console.log(result)
-          //this.setLanguageDefault({lang:this.def_lang, is})
           //       window.location.reload()
         })
 

@@ -145,6 +145,31 @@ export default {
   },
   created () {
     const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    var promises = []
+    promises.push(this.fetchDocuments(this.theuserid))
+    promises.push( this.fetchDocumentType())
+
+    Promise.all(promises).then(()=>{
+        this.fetchSpecificUser(payload)
+          .then((users) => {
+            console.log('fetchSpecificUser - page')
+            console.log(users)
+          this.the_user = users
+            console.log("return from fetch specific user")
+            console.log(users)
+            /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
+            this.the_user = temp[0]*/
+            this.fetchReceipt({ tenant: this.$migrant_tenant_domain, principal: users.umUserName })
+              .then((receipt) => {
+                console.log(receipt)
+                this.theReceipt = receipt
+              })
+                          
+    
+          })
+          this.loading=false
+    })
+   /* const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
     this.fetchSpecificUser(payload)
       .then((users) => {
         console.log('fetchSpecificUser - page')
@@ -153,7 +178,7 @@ export default {
         console.log("return from fetch specific user")
         console.log(users)
         /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
-        this.the_user = temp[0]*/
+        this.the_user = temp[0]
         this.fetchReceipt({ tenant: users.tenant.umDomainName, principal: users.umUserName })
           .then((receipt) => {
             console.log(receipt)
@@ -179,7 +204,7 @@ export default {
       .then((document_types) => {
         console.log('we are the docs')
         console.log(document_types)
-      })
+      })*/
   }
 }
 </script>
