@@ -16,13 +16,15 @@
       </UserProfile>
     </div>
     <hr>
-    <ConsentPanel :receipt="theReceipt" />
+    <div         v-for="consent in userConsents"
+>
     <q-toggle
-        v-for="consent in userConsents"
         v-model="consent.val"
         color="green"
         :label="consent.label"
-      />
+        disable
+      ></br></q-toggle>
+      </div>
     <hr>
     <q-list style="width:100%; margin:0 auto">
       <Document
@@ -164,6 +166,9 @@ export default {
           this.the_user = users
             console.log("return from fetch specific user")
             console.log(users)
+       this.userConsents = Object.entries(JSON.parse(this.the_user.userConsent.consent)).map(([key, value]) => ({"label": key, "val":value}))
+       console.log("CONSENTS")
+       console.log(this.userConsents)
             /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
             this.the_user = temp[0]*/
             this.fetchReceipt({ tenant: this.$migrant_tenant_domain, principal: users.umUserName })
