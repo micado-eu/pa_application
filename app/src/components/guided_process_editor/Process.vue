@@ -70,10 +70,10 @@ export default {
   computed:{
     comment_present(){
       if(this.theProcess.comments){
-        return "yes"
+        return this.theProcess.comments.length
       }
       else{
-        return "no"
+        return 0
       }
     },
     translation_state(){
