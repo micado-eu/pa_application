@@ -16,14 +16,17 @@
       </UserProfile>
     </div>
     <hr>
-    <div         v-for="consent in userConsents"
->
+          <div class="title">{{$t("consent.title")}}</div>
+    <div v-if="userConsents == null">
+      {{$t('input_labels.no_consent')}}
+    </div>
+    <div v-else v-for="consent in userConsents" :key="consent.label">
     <q-toggle
         v-model="consent.val"
         color="green"
         :label="consent.label"
         disable
-      ></br></q-toggle>
+      />
       </div>
     <hr>
     <q-list style="width:100%; margin:0 auto">
@@ -166,7 +169,9 @@ export default {
           this.the_user = users
             console.log("return from fetch specific user")
             console.log(users)
-       this.userConsents = Object.entries(JSON.parse(this.the_user.userConsent.consent)).map(([key, value]) => ({"label": key, "val":value}))
+      if(this.the_user.userConsent){
+        this.userConsents = Object.entries(JSON.parse(this.the_user.userConsent.consent)).map(([key, value]) => ({"label": key, "val":value}))
+      }
        console.log("CONSENTS")
        console.log(this.userConsents)
             /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
@@ -231,5 +236,12 @@ export default {
 #second-div {
   width: 100%;
   margin: 0 auto;
+}
+.title{
+font-family: Nunito;
+font-style: normal;
+font-weight: normal;
+font-size: 30px;
+line-height: 41px;
 }
 </style>
