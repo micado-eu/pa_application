@@ -17,6 +17,12 @@
     </div>
     <hr>
     <ConsentPanel :receipt="theReceipt" />
+    <q-toggle
+        v-for="consent in userConsents"
+        v-model="consent.val"
+        color="green"
+        :label="consent.label"
+      />
     <hr>
     <q-list style="width:100%; margin:0 auto">
       <Document
@@ -65,6 +71,7 @@ export default {
     return {
       the_user: null,
       theReceipt: null,
+      userConsents: null,
       loading:true
     }
   },
@@ -175,6 +182,8 @@ export default {
         console.log('fetchSpecificUser - page')
         console.log(users)
        this.the_user = users
+       this.userConsents = JSON.parse(this.the_user.userConsent).map(([key, value]) => ({[label]: key, [val]:value}))
+       console.log(this.userConsents)
         console.log("return from fetch specific user")
         console.log(users)
         /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
