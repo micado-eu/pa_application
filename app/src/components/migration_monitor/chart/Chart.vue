@@ -14,9 +14,6 @@
       <strong>description:</strong>
       {{ graph.description }}
       <br />
-      <strong>data provider:</strong>EU
-      <br />
-      <strong>updated time:</strong>2019.07
     </p>
     <lineChart
       v-if="graph.type === 'LINE'"
@@ -46,7 +43,7 @@
     <mapChart v-if="graph.type === 'MAP'" class="chart" />
     <div
       v-if="['LINE', 'BAR'].indexOf(graph.type) > -1"
-      class="q-px-lg q-mx-lg  no-padding"
+      class="q-px-lg q-mx-lg no-padding"
     >
       <q-range
         v-model="range"
@@ -54,24 +51,36 @@
         :max="graph.content.length - 1"
         color="grey"
       />
-      <p>
-        Statistics: {{ lower }} to {{ upper }}
-        <br />
-        Minimum Value: {{ min }}
-        <br />
-        Maximum Value: {{ max }}
-        <br />
-        Mean Value: {{ mean }}
-      </p>
+      <div class="row">
+        <div class="col">
+          <p>
+            <strong>data provider:</strong> EU
+            <br />
+            <strong>updated time:</strong> 2019.07
+            <br />
+            <strong>Statistics:</strong> {{ lower }} to
+            {{ upper }}
+          </p>
+        </div>
+        <div class="col">
+          <p>
+            <strong>Minimum Value:</strong> {{ min }}
+            <br />
+            <strong>Maximum Value:</strong> {{ max }}
+            <br />
+            <strong>Mean Value:</strong> {{ mean }}
+          </p>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import lineChart from "./lineChart.vue"
-import pieChart from "./pieChart.vue"
-import barChart from "./barChart.vue"
-import mapChart from "./mapChart.vue"
+import lineChart from "./lineChart.vue";
+import pieChart from "./pieChart.vue";
+import barChart from "./barChart.vue";
+import mapChart from "./mapChart.vue";
 
 export default {
   name: "MigrationSituation",
@@ -79,51 +88,51 @@ export default {
     lineChart,
     pieChart,
     barChart,
-    mapChart
+    mapChart,
   },
   props: ["graphData"],
   data() {
     return {
       height: "auto",
       range: { min: 0, max: 0 },
-      graph: this.graphData
-    }
+      graph: this.graphData,
+    };
   },
   computed: {
     d: function () {
-      return this.graphData
+      return this.graphData;
     },
     min: function () {
-      return Math.min(...this.filteredContent.map((c) => c[this.graphData.y]))
+      return Math.min(...this.filteredContent.map((c) => c[this.graphData.y]));
     },
     max: function () {
-      return Math.max(...this.filteredContent.map((c) => c[this.graphData.y]))
+      return Math.max(...this.filteredContent.map((c) => c[this.graphData.y]));
     },
     mean: function () {
       return Math.floor(
         this.filteredContent.reduce((acc, c) => acc + c[this.graphData.y], 0) /
           this.filteredContent.length
-      )
+      );
     },
     lower: function () {
-      return this.graphData.content[this.range.min][this.graphData.x]
+      return this.graphData.content[this.range.min][this.graphData.x];
     },
     upper: function () {
-      return this.graphData.content[this.range.max][this.graphData.x]
+      return this.graphData.content[this.range.max][this.graphData.x];
     },
     filteredContent: function () {
       const content = this.graph.content.filter(
         (c, i) => i >= this.range.min && i <= this.range.max
-      )
-      return content
-    }
+      );
+      return content;
+    },
   },
   created() {
     if (this.graphData.type === "MAP" || this.graphData.type === "PIE")
-      this.height = "auto"
-    this.range.max = this.graphData.content.length - 1
-  }
-}
+      this.height = "auto";
+    this.range.max = this.graphData.content.length - 1;
+  },
+};
 </script>
 
 <style scoped>

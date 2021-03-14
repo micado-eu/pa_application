@@ -23,7 +23,7 @@ export default {
     menuItems() {
       return [
         { title: "Main page", link: "/situation/main", children: [] },
-        { title: "Overview", link: "/situation/overview", children: [] },
+        { title: "Manage Charts", link: "/situation/overview", children: [] },
         { title: "Map", link: "/situation/map", children: [] },
         {
           title: "Dashboards",

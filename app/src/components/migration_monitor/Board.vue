@@ -1,35 +1,37 @@
 <template>
   <div class="board">
-    <div id="header" class="q-pa-md row">
-      <q-select
-        class="col-10"
-        outlined
-        v-model="printList"
-        multiple
-        :options="categories.map((c) => c.category)"
-        label="Select categories to print"
-        style="width: 250px"
-      />
-      <q-btn
-        no-caps
-        class="q-ml-md"
-        label="print"
-        color="info"
-        size="lg"
-        v-close-popup
-        @click="printPNG()"
-      />
+    <div class="q-pa-md row justify-between">
+      <div>{{ board }}</div>
+      <div class="row justify-between">
+        <q-select
+          class="col-10"
+          outlined
+          v-model="printList"
+          multiple
+          :options="categories.map((c) => c.category)"
+          label="Select categories to print"
+          style="width: 250px"
+        />
+        <q-btn
+          no-caps
+          class="q-ml-md"
+          label="print"
+          color="info"
+          size="md"
+          v-close-popup
+          @click="printPNG()"
+        />
+      </div>
       <q-btn
         class="q-ml-md q-mr-md"
         icon="home"
         color="white"
         text-color="black"
-        size="lg"
+        size="md"
         to="/situation/main"
         title="return to main page"
       />
     </div>
-
     <div class="charts">
       <ChartGroup
         v-for="(c, i) in categories"
@@ -46,57 +48,55 @@
 </template>
 
 <script>
-import ChartGroup from "./ChartGroup"
-import Modal from "./modal/Modal"
-import htmlToImage from "html-to-image"
-import download from "downloadjs"
+import ChartGroup from "./ChartGroup";
+import Modal from "./modal/Modal";
+import htmlToImage from "html-to-image";
+import download from "downloadjs";
 
 export default {
   name: "Board",
   components: {
     ChartGroup,
-    Modal
+    Modal,
   },
   data() {
     return {
       showModal: false,
       grahDataId: null,
-      printList: []
-    }
+      printList: [],
+    };
   },
   computed: {
     categories() {
       return this.$store.state.statistics.categories.filter(
         (c) => c.board === this.board
-      )
+      );
     },
     board() {
-      return this.$route.params.board
+      return this.$route.params.board;
     },
     graphData() {
       return this.$store.state.statistics.charts.filter(
         (c) => c.id === this.grahDataId
-      )[0]
-    }
+      )[0];
+    },
   },
   methods: {
     renderModal(grahDataId) {
-      this.grahDataId = grahDataId
-      this.showModal = true
+      this.grahDataId = grahDataId;
+      this.showModal = true;
     },
     printPNG() {
       this.$refs.group.forEach((group) => {
         if (this.printList.indexOf(group.category) > -1) {
-          htmlToImage
-            .toPng(group.$el, {})
-            .then((dataUrl) => {
-              download(dataUrl, `${group.category}.png`)
-            })
+          htmlToImage.toPng(group.$el, {}).then((dataUrl) => {
+            download(dataUrl, `${group.category}.png`);
+          });
         }
-      })
-    }
-  }
-}
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -116,9 +116,5 @@ p {
 
 .q-icon {
   font-size: 24px;
-}
-
-#header {
-  justify-content: flex-end;
 }
 </style>

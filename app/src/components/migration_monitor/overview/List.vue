@@ -1,16 +1,16 @@
 <template>
   <div>
-    <div class="row div-5">
-      <div class="col-9 flex flex-left div-6">
+    <div class="row table-header">
+      <div class="col-9 flex flex-left">
         {{ $t("input_labels.name") }}
       </div>
-      <div class="col-1 flex flex-center div-8">
+      <div class="col-1 flex flex-center">
         {{ $t("input_labels.board") }}
       </div>
-      <div class="col-1 flex flex-center div-8">
+      <div class="col-1 flex flex-center">
         {{ $t("input_labels.category") }}
       </div>
-      <div class="col-1 flex flex-center div-8">
+      <div class="col-1 flex flex-center">
         {{ $t("input_labels.delete") }}
       </div>
     </div>
@@ -48,7 +48,7 @@
             label="OK"
             color="black"
             v-close-popup
-            @click="deleteDialog=false"
+            @click="deleteDialog = false"
           />
         </q-card-actions>
       </q-card>
@@ -77,47 +77,51 @@
 </template>
 
 <script>
-import storeMappingMixin from "../../../mixin/storeMappingMixin"
+import storeMappingMixin from "../../../mixin/storeMappingMixin";
 
 export default {
   name: "MigrationMonitorManageList",
   mixins: [
     storeMappingMixin({
       actions: {
-        dispatchDeleteChart: "statistics/deleteChart"
-      }
-    })
+        dispatchDeleteChart: "statistics/deleteChart",
+      },
+    }),
   ],
   data() {
     return {
       deleteDialog: false,
-      selectedChart: {}
-    }
+      selectedChart: {},
+    };
   },
   computed: {
     charts() {
       console.log(
         this.$store.state.statistics.charts.filter((c) => c.format != "API")
-      )
+      );
       return this.$store.state.statistics.charts.filter(
         (c) => c.format != "API"
-      )
-    }
+      );
+    },
   },
   methods: {
     deleteChart(chart) {
-      this.dispatchDeleteChart(chart.id)
-      this.deleteDialog = false
+      this.dispatchDeleteChart(chart.id);
+      this.deleteDialog = false;
     },
     showCategoryLabel(index) {
-      return index
+      return index;
     },
     showDialog(chart) {
-      this.selectedChart = chart
-      this.deleteDialog = true
-    }
-  }
-}
+      this.selectedChart = chart;
+      this.deleteDialog = true;
+    },
+  },
+};
 </script>
 <style scoped>
+.table-header {
+  padding-bottom: 30px;
+  font-size: 18px;
+}
 </style>

@@ -15,13 +15,13 @@
     >
       MICADO Migration Situation Monitor
     </div>
-    <div id="header" class="q-pa-md row">
+    <div class="q-pa-md row  justify-center">
       <q-btn
         no-caps
         class="q-ml-md"
-        color="info"
-        size="lg"
-        :label="$t('button.situation_overview')"
+        color="secondary"
+        size="md"
+        :label="$t('button.situation_manage_charts')"
         to="/situation/overview"
       />
       <q-btn
@@ -29,7 +29,7 @@
         class="q-ml-md q-mr-md"
         color="white"
         text-color="black"
-        size="lg"
+        size="md"
         :label="$t('button.situation_about')"
         to="#"
       />
@@ -44,7 +44,7 @@
             <div class="text-h6" @click="jump(b.link)">{{ b.title }}</div>
           </q-card-section>
           <q-separator />
-          <q-card-actions vertical align="left">
+          <q-card-actions class="card-body" vertical align="left" >
             <q-btn
               v-for="(cat, i) in getCategory(b)"
               :key="i"
@@ -112,7 +112,7 @@ export default {
 .title-div:hover {
   text-decoration: underline;
 }
-#header {
-  justify-content: flex-end;
+.card-body{
+  background-color: #F1F8FC;
 }
 </style>

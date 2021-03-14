@@ -1,7 +1,7 @@
 <template>
   <div :id="category">
     <div class="group" ref="group">
-      <div class="row" id="header">
+      <div class="row full-width" id="header">
         <h1 @click="onClickNav(category)">{{category}}&nbsp;&nbsp;</h1>
         <!-- <q-btn
           id="printbtn"
@@ -126,5 +126,8 @@ p {
 }
 #printbtn{
   height:42px;
+}
+#header{
+  background-color: #F1F8FC;
 }
 </style>
