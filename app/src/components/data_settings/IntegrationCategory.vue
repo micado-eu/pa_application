@@ -271,6 +271,7 @@ export default {
       if( event == true){
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Publishing the category type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -287,6 +288,7 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Unpublishing the category type will delete all existing translations. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -305,6 +307,7 @@ export default {
     deletingIntegrationCategory (category) {
       this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Deleting a category will also delete all the intervention type of that category with their related interventions. Proceed?',
         actions: [
           { label: 'Delete', color: 'red', handler: () => { 

@@ -336,6 +336,7 @@ export default {
       if( event == true){
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Publishing the intervention type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -352,6 +353,7 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Unpublishing the intervention type will delete all existing translations. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -367,6 +369,7 @@ export default {
     deletingIntegrationType (index) {
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?',
         actions: [
           { label: 'Delete', color: 'red', handler: () => { 

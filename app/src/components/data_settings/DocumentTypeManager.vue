@@ -605,6 +605,7 @@ export default {
       if( event == true){
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -622,6 +623,7 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Unpublishing the document type will delete all existing translations and unpublish all related processes. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => {
@@ -771,6 +773,7 @@ export default {
       console.log(payload.hotspots.length != 0)
        this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Deleting a document type will also delete it from all the processes and steps where it appears. Proceed?',
         actions: [
           { label: 'Delete', color: 'red', handler: () => { 
