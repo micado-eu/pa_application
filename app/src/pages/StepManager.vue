@@ -558,7 +558,9 @@ export default {
 
     // This get called when we click on the cytoscape node
     editStep (event, node) {
+      console.log("EDITSTEP-----------")
       console.log(node)
+      console.log(event)
       if (node.group == "nodes") {
         console.log("editing")
 
