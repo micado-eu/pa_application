@@ -309,6 +309,7 @@ export default {
     deletingTopic (index) {
        this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?',
         actions: [
           { label: 'Delete', color: 'red', handler: () => { 
@@ -356,6 +357,7 @@ export default {
       if( event == true){
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Publishing the topic will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -372,6 +374,7 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Unpublishing the topic will delete all existing translations. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 

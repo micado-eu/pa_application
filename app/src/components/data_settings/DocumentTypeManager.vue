@@ -48,9 +48,9 @@
             ref="doc_type"
             :hint="$t('input_labels.required')"
             counter
-            maxlength="20"
+            maxlength="25"
             :rules="[ 
-            val => val.length <= 20 || 'Please use maximum 20 characters',
+            val => val.length <= 25 || 'Please use maximum 25 characters',
             val => !!val || 'Field is required'
             ]"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"
@@ -605,6 +605,7 @@ export default {
       if( event == true){
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => { 
@@ -622,6 +623,7 @@ export default {
       else{
         this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Unpublishing the document type will delete all existing translations and unpublish all related processes. Proceed?',
         actions: [
           { label: 'Yes', color: 'accent', handler: () => {
@@ -771,6 +773,7 @@ export default {
       console.log(payload.hotspots.length != 0)
        this.$q.notify({
         type: 'warning',
+        timeout:0,
         message: 'Warning: Deleting a document type will also delete it from all the processes and steps where it appears. Proceed?',
         actions: [
           { label: 'Delete', color: 'red', handler: () => { 

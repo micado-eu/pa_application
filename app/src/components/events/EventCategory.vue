@@ -401,6 +401,7 @@ export default {
       if (event == true) {
         this.$q.notify({
           type: 'warning',
+          timeout:0,
           message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
           actions: [
             {
@@ -420,6 +421,7 @@ export default {
       else {
         this.$q.notify({
           type: 'warning',
+          timeout:0,
           message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
           actions: [
             {

@@ -161,7 +161,6 @@
                   data-cy="location_input"
                   dense
                   :hint="$t('input_labels.required')"
-                  ref="location_input"
                   class="no-pad"
                   bg-color="grey-3"
                   standout
@@ -493,11 +492,9 @@ export default {
   methods: {
     onSubmit () {
       console.log(this.$refs.title_input)
-            console.log(this.$refs.location_input)
 
-      this.$refs.location_input.validate()
       this.$refs.title_input[0].validate()
-      if (this.$refs.title_input[0].hasError || this.$refs.location_input.hasError ) {
+      if (this.$refs.title_input[0].hasError) {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
@@ -513,7 +510,6 @@ export default {
         onReset () {
 
        this.$refs.title_input[0].resetValidation()
-       this.$refs.location_input.resetValidation()
     },
     gmap_location(location) {
       return "https://www.google.com/maps/search/?api=1&query=" + location
