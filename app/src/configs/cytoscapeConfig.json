@@ -22,7 +22,9 @@
         "curve-style": "bezier",
         "target-arrow-color": "#0f0",
         "target-arrow-shape": "triangle",
-        "arrow-scale": 2
+        "arrow-scale": 2,
+        "label": "data(description)"
+        
       }
     },
     {

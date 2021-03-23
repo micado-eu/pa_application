@@ -24,10 +24,131 @@
           </cytoscape>
         </q-card-section>
       </q-card>
-      <div class="col-8"           
+       <div class="col-8"     
+       v-if="this.editing_steplink"      
       >
         <q-card
-          v-if="this.editing"
+          
+          class="div-2"
+        >
+        <form
+          @submit.prevent.stop="onSubmitLink"
+          @reset.prevent.stop="onResetLink"
+          class=""
+        >
+          <div class=" q-pa-lg ">
+            <div class=" q-pa-xsm row ">
+              <q-tabs
+                v-model="langTab"
+                dense
+                class="bg-grey-2 width"
+                active-color="accent"
+                indicator-color="accent"
+                align="justify"
+                narrow-indicator
+              >
+                <q-tab
+                  v-for="language in languages"
+                  :key="language.lang"
+                  :name="language.name"
+                  :label="language.name"
+                />
+              </q-tabs>
+              <q-tab-panels
+                v-model="langTab"
+                animated
+                class="bg-grey-2 inset-shadow width "
+              >
+                <q-tab-panel
+                  v-for="language in languages"
+                  :key="language.lang"
+                  :name="language.name"
+                >
+                  <div
+                    class=" q-pa-xsm "
+                    id="div-2"
+                  >
+                  <HelpLabel
+                    :fieldLabel="$t('input_labels.step_name')"
+                    :helpLabel ="$t('help.step_name')"
+                    class="labels"
+                  />
+                    
+
+                    <q-input
+                      dense
+                      data-cy="title_input"
+                      ref="title_link_input"
+                      bg-color="grey-3"
+                      :hint="$t('input_labels.required')"
+                      standout
+                      outlined
+                      counter
+                      maxlength="50"
+                      @blur="updateField()"
+                      :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
+                      val=> !!val || 'Field is required']"
+                      :readonly="!(steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
+                      v-model="steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+                      :label="$t('input_labels.process_name')"
+                    />
+                  </div>
+                  <div>
+                    <TranslateStateButton
+                      v-model="steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                      :isForDefaultLanguage="language.lang===activeLanguage"
+                      :objectId="steplink_shell.id"
+                      :readonly="!(language.lang===activeLanguage)"
+                      @micado-change="(id) => {changeTranslationState(steplink_shell, id.state)}"
+                    />
+                  </div>
+                </q-tab-panel>
+              </q-tab-panels>
+              <hr>
+
+            <div class="row">
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  color="accent"
+                  no-caps
+                  :data-cy="'savestep'"
+                  unelevated
+                  :label="$t('button.save')"
+                  type="submit"
+                  class="button"
+                />
+              </div>
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  class="delete-button"
+                  no-caps
+                  unelevated
+                  :data-cy="'back_to_graph'"
+                  :label="$t('button.back')"
+                  type="reset"
+                  @click="cancelEditStep()"
+                />
+              </div>
+              <div class="q-pa-md col-4 left">
+                <q-btn
+                  :data-cy="'deletestep'"
+                  class="delete-button"
+                  no-caps
+                  unelevated
+                  :label="$t('button.delete')"
+                  @click="deleteElementSteplink()"
+                />
+              </div>
+            </div>
+            </div>
+          </div>
+              </form>
+        </q-card>
+       </div>
+      <div v-else-if="this.editing" class="col-8"           
+      >
+        <q-card
+          
           class="div-2"
         >
         <form
@@ -411,6 +532,7 @@ export default {
         changeNode: 'graphs/changeNode',
         addNode: 'graphs/addNode',
         deleteNode: 'graphs/deleteNode',
+        deleteEdge:'graphs/deleteEdge',
         addEdge: 'graphs/addEdge',
         saveGraph: 'graphs/saveGraph',
         fetchGraphs: 'graphs/fetchGraphs',
@@ -421,7 +543,9 @@ export default {
         addStepLink: 'steplinks/addStepLink',
         fetchFlows: 'flows/fetchFlows',
         fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
-        fetchDocumentType: 'document_type/fetchDocumentType'
+        fetchDocumentType: 'document_type/fetchDocumentType',
+        changeSteplink:"steplinks/changeSteplink",
+        deleteStepLink:"steplinks/deleteStepLink"
       }
     })],
 
@@ -442,6 +566,7 @@ export default {
       refresher: 0,
       title:null,
       editing: false,
+      editing_steplink:false,
       selected_node: "",
       t_docs: [],
       stepdocadd: false,
@@ -511,6 +636,29 @@ export default {
 
        this.$refs.title_input[0].resetValidation()
     },
+      onSubmitLink () {
+      console.log(this.$refs.title_link_input[0])
+
+      this.$refs.title_link_input[0].validate()
+      if (this.$refs.title_link_input[0].hasError) {
+        console.log("IN TSTEPLINK ERROR")
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("IN TSTEPLINK exact")
+        console.log(this.steplink_shell)
+        this.saveStepLink()
+      }
+    },
+        onResetLink () {
+
+       this.$refs.title_link_input[0].resetValidation()
+    },
     gmap_location(location) {
       return "https://www.google.com/maps/search/?api=1&query=" + location
     },
@@ -542,7 +690,12 @@ export default {
       this.step_shell = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == idStep })[0]))
 
     },
+    
+    mergeStepLink (idStepLink) {
+      console.log("MERGING")
+      this.steplink_shell = JSON.parse(JSON.stringify(this.steplinks.filter(step => { return step.id == idStepLink })[0]))
 
+    },
     preConfig (cytoscape) {
       console.log("calling pre-config")
 
@@ -555,31 +708,53 @@ export default {
     // This get called when we click on the cytoscape node
     editStep (event, node) {
       console.log("EDITSTEP-----------")
-      console.log(node)
-      console.log(event)
+      console.log(node.group)
+      //console.log(event)
       if (node.group == "nodes") {
         console.log("editing")
 
 
 
         if (node.data.is_new) {
-          console.log("NEW NODE")
+          //console.log("NEW NODE")
           this.mergeStep(node.data.id)
         }
         else {
-          console.log("I'm old")
+          //console.log("I'm old")
           this.is_new = false
           this.mergeStep(node.data.id)
-          console.log(node)
+          //console.log(node)
           if (node.data.required_documents != null) {
             this.model_docs = node.data.required_documents
           }
         }
         console.log("this is edit step")
-        console.log(this.step_shell)
+        //console.log(this.step_shell)
         this.editing = false
+        this.editing_steplink = false
         this.editing = true
       }
+      else{
+        console.log("I am editing a steplink")
+        console.log(node.data)
+        if (node.data.is_new) {
+          console.log("NEW EDGE")
+          this.mergeStepLink(node.data.id)
+          console.log(this.steplink_shell)
+          console.log(node)
+        }
+        else {
+          //console.log("I'm old")
+          this.is_new = false
+          this.mergeStepLink(node.data.id)
+          console.log(this.steplink_shell)
+          //console.log(node)
+        }
+        console.log("this is edit steplink")
+        this.editing = false
+      this.editing_steplink = true
+      }
+      
     },
     saveStep () {
       // In edit_step we have the instance of step that we are working on
@@ -596,6 +771,23 @@ export default {
       this.editing = false
       this.stepdocadd = false
       this.createShell()
+    },
+        saveStepLink () {
+      // In edit_step we have the instance of step that we are working on
+      this.changeSteplink(this.steplink_shell)
+        .then(ret => {
+          console.log("CHANGED THE STEP")
+        })
+      /*let newtitle = this.steplink_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].steplink
+      this.changeNode({ title: newtitle, id: this.steplink_shell.id })
+        .then(ret => {
+          this.refresher += 1
+        })
+
+      this.editing = false
+      this.stepdocadd = false
+      this.createShell()*/
+      this.editing_steplink = false
     },
     addingNode (event, cy) {
       let new_id = uuidv4()
@@ -645,11 +837,23 @@ export default {
       console.log("MANAGE EDGES")
       this.editing = false
     },
+        deleteElementSteplink () {
+      this.deleteStepLink(this.steplink_shell.id)
+        .then(ret => {
+          console.log("DELETED STEP")
+          console.log(this.steps)
+        })
+      this.deleteEdge(this.steplink_shell.id)
+        .then(res => {
+        })
+      console.log("MANAGE EDGES")
+      this.editing_steplink = false
+    },
 
-    generateStepLink (id_edge, fromStep_edge, toStep_edge) {
-      this.steplink_shell = { id: id_edge, is_new: true, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
+    generateStepLink (id_edge, fromStep_edge, toStep_edge, is_new) {
+      this.steplink_shell = { id: id_edge, is_new: is_new, to_delete: false, is_edited: false, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
       this.languages.forEach(l => {
-        this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '' })
+        this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '', translationState:0,translationDate: null })
       })
       return this.steplink_shell
 
@@ -677,7 +881,7 @@ export default {
 
       this.$refs.cyRef.instance.elements().remove()
 
-      this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id)
+      this.generateStepLink(newKey, sourceNode._private.data.id, targetNode._private.data.id, true)
       this.addStepLink(this.steplink_shell)
       this.addEdge({
         group: 'edges',
@@ -782,6 +986,7 @@ export default {
     cancelEditStep () {
       this.editing = false
       this.stepdocadd = false
+      this.editing_steplink = false
     }
   },
 
