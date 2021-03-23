@@ -36,6 +36,7 @@ import UserManagement from '../pages/settings/UserManagement'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
 import TranslationManager from '../components/settings/TranslationManager'
 import ProfileSettings from '../pages/ProfileSettings'
+import TestMarkdownConverter from '../pages/TestMarkdownConverter'
 
 const routes = [
   {
@@ -129,7 +130,8 @@ const routes = [
       { path: '/events', meta: { auth: ["Application/micado_admin"] }, component: EventListPage },
       { path: '/events/new', meta: { auth: ["Application/micado_admin"] }, component: EventNewPage },
       { path: '/events/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: EventEditPage },
-      { path: '/events/categories', meta: { auth: ["Application/micado_admin"] }, component: EventCategory }
+      { path: '/events/categories', meta: { auth: ["Application/micado_admin"] }, component: EventCategory },
+      { path: '/testmarkdown', component: TestMarkdownConverter}
     ]
   }
 ]/*

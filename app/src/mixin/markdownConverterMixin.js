@@ -1,10 +1,11 @@
 import { Converter } from 'showdown'
 import { mapGetters, mapActions } from "vuex"
+import referenceExtension from "./markdownExtensions/referenceExtension.js"
 
 export default {
   data() {
     return {
-      converter: new Converter()
+      converter: new Converter({extensions: [referenceExtension]})
     }
   },
   methods: {
@@ -17,9 +18,14 @@ export default {
       // Having &nbsp; instead of spaces breaks tooltips overflow wrap, so we substitute them here
       return text.replace(/&nbsp;/g, " ")
     },
-    HTMLToMarkdown(html) {
+    removeMentionTags(md) {
+      return md.replace(/<span data-mention-id="\d+" mention-type="\w+" class="mention">/g, "").replace(/<\/span>/g, "")
+    },
+    async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
       let md = this.converter.makeMarkdown(html)
       md = this.cleanSpaces(md)
+      md = this.removeMentionTags(md)
+      md = await this.markReferences(md, defaultLang, userLang, isAllFetched)
       return md
     },
     markdownToHTML(markdown) {
@@ -27,15 +33,14 @@ export default {
       html = this.cleanSpaces(html)
       return html
     },
-    async markReferencesAux(html) {
-      let result = html
+    async markReferencesAux(md) {
+      let result = md
       let entities = { // Key is mention-type, value is getter
         "glossary": this.glossaryProd,
         "process": this.processesProd,
         "information": this.informationProd,
         "event": this.eventProd
       }
-      const suffixTag = "</span>"
       for (const [key, value] of Object.entries(entities)) {
         // Iterate through all the values given by getter for all entities
         for (const term of value) {
@@ -51,29 +56,29 @@ export default {
             let regexp = new RegExp(`(${title})`, "gi")
             let splitted = result.split(regexp)
             // Add the tag to the text
-            const prefixTag = `<span data-mention-id="${term.id}" mention-type="${key}" class="mention">`
+            const prefixTag = `@[${key},${term.id}]`
             for (let i = 0; i < splitted.length; i = i + 1) {
               if (!splitted[i].localeCompare(title, undefined, { sensitivity: 'accent' })) {
-                splitted[i] = prefixTag + splitted[i] + suffixTag
+                splitted[i] = prefixTag + "(" + splitted[i] + ")"
               }
-            }
+            } 
             result = splitted.join("")
           }
         }
       }
       return result
     },
-    async markReferences(html, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
+    async markReferences(md, defaultLang = 'en', userLang = 'en', isAllFetched = false) {
       if (isAllFetched) {
-        return this.markReferencesAux(html)
+        return this.markReferencesAux(md)
       }
       await Promise.all([
-        this.fetchGlossary({ defaultLang, userLang }),
-        this.fetchInformation({ defaultLang, userLang }),
-        this.fetchFlows({ defaultLang, userLang }),
-        this.fetchEvents({ defaultLang, userLang })
+        this.fetchGlossaryProd({ defaultLang, userLang }),
+        this.fetchInformationProd({ defaultLang, userLang }),
+        this.fetchFlowsProd({ defaultLang, userLang }),
+        this.fetchEventProd({ defaultLang, userLang })
       ])
-      return this.markReferencesAux(html)
+      return this.markReferencesAux(md)
     }
   },
   computed: {
