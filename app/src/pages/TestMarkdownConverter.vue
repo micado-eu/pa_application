@@ -2,7 +2,10 @@
   <div>
     <div>Write HTML here:</div>
     <div>
-      <div><textarea v-model="htmlToConvert" style="width: 100%"></textarea></div>
+      <div><textarea
+          v-model="htmlToConvert"
+          style="width: 100%"
+        ></textarea></div>
       <q-btn @click="applyConversions(htmlToConvert)">Convert</q-btn>
     </div>
     <q-separator></q-separator>
@@ -14,15 +17,27 @@
     <q-separator></q-separator>
     <div>Markdown again:</div>
     <div><code>{{reconvertedMd}}</code></div>
+    <q-separator></q-separator>
+    <div>Viewer:</div>
+    <div>
+      <glossary-editor-viewer
+        :content="reconvertedHTML"
+        v-if="reconvertedHTML"
+        all_fetched
+      ></glossary-editor-viewer>
+    </div>
   </div>
 </template>
 
 <script>
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
-
+import GlossaryEditorViewer from '../components/GlossaryEditorViewer'
 export default {
   name: "TestMarkdownConverter",
   mixins: [markdownConverterMixin],
+  components: {
+    GlossaryEditorViewer
+  },
   data() {
     return {
       htmlToConvert: `<p>Glossary: identity card</p>

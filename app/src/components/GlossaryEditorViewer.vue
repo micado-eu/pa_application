@@ -42,16 +42,19 @@
         </q-btn>
       </div>
     </div>
-    <q-tooltip
-      v-for="(mention, index) in mentions"
-      :key="index"
-      :target="mention"
-      :hide-delay="650"
+    <internal-reference-dialog
+      v-if="showDialog"
+      v-model="showDialog"
+      :title="titleDialog"
+      :link="linkDialog"
+      @close="showDialog = false"
     >
-      {{
-        getTooltip(mention)
-      }}
-    </q-tooltip>
+      <glossary-editor-viewer
+        :content="descriptionDialog"
+        class="description"
+        all_fetched
+      />
+    </internal-reference-dialog>
   </div>
 </template>
 
@@ -63,15 +66,17 @@ import {
   Bold,
   Italic
 } from 'tiptap-extensions'
-import Image from 'components/editor_plugins/Image'
-import InternalMention from 'components/editor_plugins/InternalMention'
-import markdownConverterMixin from '../mixin/markdownConverterMixin'
+import Image from 'components/editor_plugins/Image.js'
+import InternalMention from 'components/editor_plugins/InternalMention.js'
+import markdownConverterMixin from '../mixin/markdownConverterMixin.js'
 import Vue from 'vue'
+import InternalReferenceDialog from './InternalReferenceDialog.vue'
 
 export default {
   name: 'GlossaryEditorViewer',
   components: {
-    EditorContent
+    EditorContent,
+    InternalReferenceDialog
   },
   props: {
     content: {
@@ -97,8 +102,11 @@ export default {
       loading: false,
       editor: null,
       showingFullContent: true,
-      tooltipDescriptions: undefined,
-      mentions: []
+      showDialog: false,
+      referenceData: {},
+      titleDialog: undefined,
+      descriptionDialog: undefined,
+      linkDialog: undefined
     }
   },
   computed: {
@@ -123,13 +131,15 @@ export default {
           new Italic(),
           new Link(),
           new Image(),
-          new InternalMention()
+          new InternalMention({
+            showInternalReference: this.showInternalReference
+          })
         ],
         content: ''
       })
       await this.setContent(this.content)
       await Vue.nextTick()
-      this.generateTooltips()
+      this.cacheDialog()
       if (this.readMore) {
         let el = this.$refs.editor.$el
         let height = parseFloat(getComputedStyle(el, null).height.replace("px", ""))
@@ -143,11 +153,12 @@ export default {
       let currentContent = content
       if (!isHTML) {
         currentContent = this.markdownToHTML(content)
+      } else {
+        currentContent = await this.markReferences(currentContent, this.$defaultLang, this.$userLang, true)
       }
       try {
-        let markedContent = await this.markReferences(currentContent, this.$defaultLang, this.$userLang, true)
-        let newContent = markedContent
-        this.allHTMLContent = markedContent
+        let newContent = currentContent
+        this.allHTMLContent = currentContent
         this.editor.setContent(newContent)
         this.loading = false
         return newContent
@@ -160,7 +171,7 @@ export default {
         return ''
       }
     },
-    generateTooltips() {
+    cacheDialog() {
       const elemByIdFunctions = {
         "glossary": this.glossaryProdElemById,
         "information": this.informationProdElemById,
@@ -168,23 +179,17 @@ export default {
         "process": this.processProdById
       }
       this.mentions = this.$refs.editor.$el.querySelectorAll("[data-mention-id]")
-      this.tooltipDescriptions = {}
+      this.referenceData = {}
       for (let mention of this.mentions) {
         const idString = mention.getAttribute("data-mention-id")
         const id = parseInt(idString)
         const mentionType = mention.getAttribute("mention-type")
-        const text = this.getTooltipText(id, mentionType, elemByIdFunctions)
-        if (!(mentionType in this.tooltipDescriptions)) {
-          this.tooltipDescriptions[mentionType] = {}
+        const elem = this.getMentionData(id, mentionType, elemByIdFunctions)
+        if (!(mentionType in this.referenceData)) {
+          this.referenceData[mentionType] = {}
         }
-        this.tooltipDescriptions[mentionType][id] = text
+        this.referenceData[mentionType][id] = elem
       }
-    },
-    getTooltip(mention) {
-      const idString = mention.getAttribute("data-mention-id")
-      const id = parseInt(idString)
-      const mentionType = mention.getAttribute("mention-type")
-      return this.tooltipDescriptions[mentionType][id]
     },
     showAllContent() {
       this.$refs.editor.$el.classList.remove('max-lines')
@@ -196,17 +201,31 @@ export default {
       this.showingFullContent = false
       this.$emit("readLessPressed")
     },
-    getTooltipText(id, mentionType, elemByIdFunctions) {
+    getMentionData(id, mentionType, elemByIdFunctions) {
+      const mentionBaseURL = {
+        "glossary": "glossary/{id}/edit",
+        "information": "information/{id}/edit",
+        "event": "events/{id}/edit",
+        "process": "guided_process_editor/edit/{id}"
+      }
       if (id > -1 && mentionType in elemByIdFunctions) {
         const elem = elemByIdFunctions[mentionType](id)
         if (elem !== undefined) {
-          let currentContent = this.markdownToHTML(elem.description)
-          // Gets description and transforms it to plain text
-          const doc = new DOMParser().parseFromString(currentContent, 'text/html')
-          const plainDescription = doc.body.textContent || ''
-          return plainDescription
+          const url = "/" + mentionBaseURL[mentionType].replace("{id}", id)
+          return {
+            title: mentionType !== "process" ? elem.title : elem.process,
+            description: elem.description,
+            link: url
+          }
         }
       }
+    },
+    showInternalReference(mentionType, id) {
+      // Click event handler is managed by the InternalMention ProseMirror plugin
+      this.titleDialog = this.referenceData[mentionType][id].title
+      this.descriptionDialog = this.referenceData[mentionType][id].description
+      this.linkDialog = this.referenceData[mentionType][id].link
+      this.showDialog = true
     }
   },
   created() {
@@ -214,10 +233,10 @@ export default {
     if (!this.all_fetched) {
       const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
       Promise.all([
-        this.fetchGlossaryProd(langs),
-        this.fetchInformationProd(langs),
-        this.fetchFlowsProd(langs),
-        this.fetchEventsProd(langs)
+        this.fetchGlossary(langs),
+        this.fetchInformation(langs),
+        this.fetchFlows(langs),
+        this.fetchEvents(langs)
       ])
         .then(() => this.initialize())
     } else {
@@ -230,6 +249,8 @@ export default {
 <style lang="scss">
 .mention {
   text-decoration: underline;
+  color: #ff7c44;
+  cursor: pointer;
 }
 
 img {
@@ -237,8 +258,8 @@ img {
   max-width: 300px;
 }
 
-.editor_content {
-  font-family: "Nunito Sans";
+.description {
+  font-family: Nunito Sans;
 }
 
 .max-lines {

@@ -8,6 +8,12 @@ export default class InternalMention extends Mark {
     return 'internalmention'
   }
 
+  get defaultOptions() {
+    return {
+      showInternalReference: (mentionType, id) => null
+    }
+  }
+
   get schema() {
     return {
       attrs: {
@@ -35,4 +41,25 @@ export default class InternalMention extends Mark {
     }
   }
 
+  get plugins() {
+    return [
+      new Plugin({
+        props: {
+          handleDOMEvents: {
+            click: (view, event) => {
+              if (event.target instanceof HTMLSpanElement) {
+                const idString = event.target.getAttribute("data-mention-id")
+                const mentionType = event.target.getAttribute("mention-type")
+                if (idString && mentionType) {
+                  event.stopPropagation()
+                  const id = parseInt(idString)
+                  this.options.showInternalReference(mentionType, id)
+                }
+              }
+            }
+          }
+        }
+      })
+    ]
+  }
 }

@@ -382,5 +382,10 @@
     "translatable":"Translatable",
     "translating":"Translating",
     "translated":"Translated"
+  },
+  "internal_reference": {
+    "more_info_1": "More information for",
+    "more_info_2": "can be found at:",
+    "go_to_reference": "Go to reference"
   }
 }
