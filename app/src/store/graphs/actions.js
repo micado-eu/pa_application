@@ -46,6 +46,10 @@ export function deleteNode (state, payload) {
   state.commit('deleteNode', payload)
   return 1
 }
+export function deleteEdge (state, payload) {
+  state.commit('deleteEdge', payload)
+  return 1
+}
 
 export function editGraphs (state, graphs) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state

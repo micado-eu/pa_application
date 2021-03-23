@@ -27,8 +27,8 @@ export function addStepLink (state, steplink) {
   return 1
 }
 
-export function changeStep (state, payload) {
-  state.commit('changeStep', payload)
+export function changeSteplink (state, payload) {
+  state.commit('changeSteplink', payload)
   return
 }
 

@@ -11,27 +11,27 @@ export function addStepLink (state, steplink) {
   state.steplinks.push(steplink)
 }
 
-export function changeStep (state, step) {
+export function changeSteplink (state, steplink) {
   //  state.graphs.elements.push(node)
-  step.is_edited = true
-  let editingIndex = state.steps.findIndex(entry => entry.id == step.id)
+  steplink.is_edited = true
+  let editingIndex = state.steplinks.findIndex(entry => entry.id == steplink.id)
   console.log(editingIndex)
-  state.steps.splice(editingIndex, 1, JSON.parse(JSON.stringify(step)))
+  state.steplinks.splice(editingIndex, 1, JSON.parse(JSON.stringify(steplink)))
 
 }
 
 export function deleteStepLink (state, id) {
-  const deletingStepLink = state.stepslinks.filter(step => { return step.id === id })[0];
-  const index = state.stepslinks.findIndex(item => item.id === id);
+  const deletingStepLink = state.steplinks.filter(step => { return step.id === id })[0];
+  const index = state.steplinks.findIndex(item => item.id === id);
 
   if (deletingStepLink.is_new) {
     // since it is new I can delete without problem bacause it is not in the DB
-    state.stepslinks.splice(index, 1)
+    state.steplinks.splice(index, 1)
 
   } else {
     // since is not new I wil have to keep it to delete it from the DB
     deletingStepLink.to_delete = true
-    state.stepslinks.splice(index, 1, JSON.parse(JSON.stringify(deletingStepLink)))
+    state.steplinks.splice(index, 1, JSON.parse(JSON.stringify(deletingStepLink)))
   }
 }
 
