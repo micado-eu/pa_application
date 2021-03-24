@@ -193,14 +193,14 @@
                 :helpLabel="$t('help.element_start_date')"
               ></help-label>
             </span>
-              <date-time-selector
-                :date="startDate"
-                :time="startTime"
-                @inputDate="startDate = $event"
-                @inputTime="startTime = $event"
-                :readonly="published"
-                inline
-              ></date-time-selector>
+            <date-time-selector
+              :date="startDate"
+              :time="startTime"
+              @inputDate="startDate = $event"
+              @inputTime="startTime = $event"
+              :readonly="published"
+              inline
+            ></date-time-selector>
           </div>
           <div class="q-my-xl tag_list col">
             <span class="q-my-lg label-edit">
@@ -209,14 +209,14 @@
                 :helpLabel="$t('help.element_end_date')"
               ></help-label>
             </span>
-              <date-time-selector
-                :date="finishDate"
-                :time="finishTime"
-                @inputDate="finishDate = $event"
-                @inputTime="finishTime = $event"
-                :readonly="published"
-                inline
-              ></date-time-selector>
+            <date-time-selector
+              :date="finishDate"
+              :time="finishTime"
+              @inputDate="finishDate = $event"
+              @inputTime="finishTime = $event"
+              :readonly="published"
+              inline
+            ></date-time-selector>
           </div>
         </div>
         <div class="row tag_category_selectors">
@@ -439,8 +439,8 @@ export default {
     gmap_location(location) {
       return "https://www.google.com/maps/search/?api=1&query=" + location
     },
-    changeLanguage(newLang, oldLang) {
-      this.saveContent(oldLang)
+    async changeLanguage(newLang, oldLang) {
+      await this.saveContent(oldLang)
       this.changeLanguageAux(newLang)
     },
     changeLanguageAux(al) {
@@ -468,11 +468,11 @@ export default {
         this.$refs.editor.setContent(this.internalDescription)
       }
     },
-    saveContent(lang) {
+    async saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
       const translation = {
         title: this.internalTitle,
-        description: this.$refs.editor.getContent(),
+        description: await this.$refs.editor.getContent(),
         lang,
         creator: this.loggedUser?.umid
       }
@@ -618,34 +618,35 @@ export default {
     },
     callSaveFn() {
       if (!this.checkErrors()) {
-        this.saveContent(this.langTab)
-        for (const language of this.languages) {
-          if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
-            const emptyTranslation = {
-              title: '',
-              description: '',
-              lang: language.lang,
-              translationState: this.selectedTranslationState,
-              creator: this.loggedUser?.name
+        this.saveContent(this.langTab).then(() => {
+          for (const language of this.languages) {
+            if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
+              const emptyTranslation = {
+                title: '',
+                description: '',
+                lang: language.lang,
+                translationState: this.selectedTranslationState,
+                creator: this.loggedUser?.name
+              }
+              if (this.categories_enabled) {
+                emptyTranslation.category = this.selectedCategoryObject
+              }
+              if (this.topics_enabled) {
+                emptyTranslation.topics = this.selectedTopicsObjects
+              }
+              if (this.user_types_enabled) {
+                emptyTranslation.userTypes = this.selectedUserTypesObjects
+              }
+              if (this.is_event) {
+                emptyTranslation.location = this.location
+              }
+              this.savedTranslations.push(emptyTranslation)
             }
-            if (this.categories_enabled) {
-              emptyTranslation.category = this.selectedCategoryObject
-            }
-            if (this.topics_enabled) {
-              emptyTranslation.topics = this.selectedTopicsObjects
-            }
-            if (this.user_types_enabled) {
-              emptyTranslation.userTypes = this.selectedUserTypesObjects
-            }
-            if (this.is_event) {
-              emptyTranslation.location = this.location
-            }
-            this.savedTranslations.push(emptyTranslation)
           }
-        }
-        this.save_item_fn(
-          this.savedTranslations
-        )
+          this.save_item_fn(
+            this.savedTranslations
+          )
+        })
       }
     },
     showWarningPublish(event, id) {

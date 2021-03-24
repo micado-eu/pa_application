@@ -1,5 +1,4 @@
 <template>
-  <q-dialog v-model="value">
     <q-card>
       <q-toolbar class="bg-accent text-white">
         <q-avatar>
@@ -42,16 +41,11 @@
         </div>
       </q-card-section>
     </q-card>
-  </q-dialog>
 </template>
 
 <script>
 export default {
   props: {
-    value: {
-      type: Boolean,
-      default: false
-    },
     title: {
       type: String,
       default: "Internal Reference"

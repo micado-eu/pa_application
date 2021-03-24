@@ -304,15 +304,15 @@ export default {
     }
   },
   methods: {
-    getContent() {
+    async getContent() {
       if (this.isContentHTML) {
         return this.getHTML()
       } else {
-        return this.getMarkdown()
+        return await this.getMarkdown()
       }
     },
-    getMarkdown() {
-      return this.HTMLToMarkdown(this.editor.getHTML())
+    async getMarkdown() {
+      return await this.HTMLToMarkdown(this.editor.getHTML())
     },
     getHTML() {
       return this.editor.getHTML()

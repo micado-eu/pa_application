@@ -1,28 +1,33 @@
 <template>
   <div>
-    <div>Write HTML here:</div>
+    <div>Write here:</div>
     <div>
-      <div><textarea
+      <div>
+        <glossary-editor
           v-model="htmlToConvert"
-          style="width: 100%"
-        ></textarea></div>
-      <q-btn @click="applyConversions(htmlToConvert)">Convert</q-btn>
+          ref="editor"
+        ></glossary-editor>
+      </div>
+      <q-btn @click="applyConversions()">Convert</q-btn>
     </div>
     <q-separator></q-separator>
-    <div>Markdown:</div>
+    <div>Pure Editor HTML obtained calling editor.getHTML():</div>
+    <div><code>{{editorHTML}}</code></div>
+    <q-separator></q-separator>
+    <div>Markdown obtained calling editor.getContent() (references marked):</div>
     <div><code>{{convertedMarkdown}}</code></div>
     <q-separator></q-separator>
-    <div>HTML again:</div>
+    <div>Markdown -> HTML:</div>
     <div><code>{{reconvertedHTML}}</code></div>
     <q-separator></q-separator>
-    <div>Markdown again:</div>
+    <div>HTML -> Markdown:</div>
     <div><code>{{reconvertedMd}}</code></div>
     <q-separator></q-separator>
     <div>Viewer:</div>
     <div>
       <glossary-editor-viewer
-        :content="reconvertedHTML"
-        v-if="reconvertedHTML"
+        :content="reconvertedMd"
+        v-if="reconvertedMd"
         all_fetched
       ></glossary-editor-viewer>
     </div>
@@ -32,11 +37,14 @@
 <script>
 import markdownConverterMixin from '../mixin/markdownConverterMixin'
 import GlossaryEditorViewer from '../components/GlossaryEditorViewer'
+import GlossaryEditor from '../components/GlossaryEditor'
+
 export default {
   name: "TestMarkdownConverter",
   mixins: [markdownConverterMixin],
   components: {
-    GlossaryEditorViewer
+    GlossaryEditorViewer,
+    GlossaryEditor
   },
   data() {
     return {
@@ -44,14 +52,18 @@ export default {
 <p>Information centre: Curso de castellano</p>
 <p>Events: english Course</p>
 <p>Guided processes: enroll children to school</p>`,
+      editorHTML: "",
       convertedMarkdown: "",
       reconvertedHTML: "",
-      reconvertedMd: ""
+      reconvertedMd: "",
+      allFetched: false
     }
   },
   methods: {
-    async applyConversions(html) {
-      this.convertedMarkdown = await this.HTMLToMarkdown(html)
+    async applyConversions() {
+      this.editorHTML = this.$refs.editor.getHTML()
+      this.convertedMarkdown = await this.$refs.editor.getContent()
+      this.allFetched = true
       this.reconvertedHTML = this.markdownToHTML(this.convertedMarkdown)
       this.reconvertedMd = await this.HTMLToMarkdown(this.reconvertedHTML, 'en', 'en', true)
     }
