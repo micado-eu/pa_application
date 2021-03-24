@@ -4,21 +4,21 @@
         "form": "Complete el formulario en el idioma predeterminado:",
         "process_name": "Escriba el nombre del proceso",
         "process_description": "Describa su proceso",
-        "generated_docs": "Si el proceso genera un documento, elija su tipo de la lista a continuación. Si no hay un tipo que coincida, elija 'otro'. Si el proceso no genera un documento, deje este espacio vacío",
+        "generated_docs": "Seleccione el documento generado por el proceso. Si no hay un tipo que coincida, elija 'otro'",
         "user_tags": "Seleccione los tipos de usuarios para los que este proceso es relevante. Puedes dejar este espacio vacío",
         "topic_tags": "Seleccione los temas relacionados con este proceso. Puedes dejar este espacio vacío",
         "step_name": "Elija un nombre para el paso",
         "step_description": "Describa el paso",
         "step_location": "Si el paso tiene una ubicación específica donde debe completarse, escríbalo aquí. Puedes dejar este espacio vacío",
         "step_cost": "Escriba aquí cuánto costará ejecutar este paso",
-        "required_documents": "Si la finalización del paso requiere uno o más documentos, puede agregarlos a través de este botón. A continuación, podrá seleccionar el tipo de documento y su costo.",
+        "required_documents": "Si la finalización del paso requiere uno o más documentos, puede agregarlos a través de este botón. A continuación, podrá seleccionar el tipo de documento y su costo",
         "doc_type": "Escriba el tipo de documento",
         "doc_type_description": "Describa el tipo de documento",
         "issuer": "Escriba el nombre del emisor del tipo de documento",
         "validable": "Si el tipo de documento puede o necesita ser validado, marque esta casilla",
         "validators": "Seleccione quién puede validar este tipo de documento de la lista",
         "doc_type_icon": "Seleccione un icono para el tipo de documento",
-        "doc_pics": "Si hay imágenes del tipo de documento, puedes subirlas aquí.",
+        "doc_pics": "Si hay imágenes del tipo de documento, puedes subirlas aquí",
         "upload_model": "Si hay un modelo .pdf o .doc del tipo de documento, puede subirlo aquí",
         "user_type": "Escriba el nombre del tipo de usuario",
         "user_type_description": "Describa el tipo de usuario",
@@ -30,7 +30,7 @@
         "intervention_category_type": "Seleccione una categoría para el tipo de intervención",
         "integration_type_validators": "Seleccione quién puede validar este tipo de intervención",
         "intervention_category": "Escriba el nombre de la categoría de intervención",
-        "intervention_title": "Escriba un título para la intervención.",
+        "intervention_title": "Escriba un título para la intervención",
         "intervention_description": "Describe la intervención",
         "intervention_assigned_type": "Seleccione el tipo de esta intervención",
         "intervention_plan_title": "Escriba un título para el plan de intervención",
@@ -61,7 +61,9 @@
         "pa_surname": "Escriba el apellido del usuario",
         "pa_external_id": "Escriba, si está disponible, el ID externo del usuario",
         "pa_admin": "Elija si esta cuenta tendrá poderes de administrador",
-        "pa_email": "Por favor, introduzca el correo electrónico del usuario"
+        "pa_email": "Por favor, introduzca el correo electrónico del usuario",
+        "link": "Inserte el enlace donde se puede encontrar más información sobre el paso",
+        "parent_topic": "Seleccione un tema de nivel superior para este tema. Si este tema es de nivel superior, deje el espacio en blanco"
     },
     "menu": {
         "title": "Mis herramientas",
@@ -84,7 +86,7 @@
         "glossary_desc": "Gestionar el glosario",
         "information_centre": "Centro de Información",
         "information_centre_desc": "Gestionar la información",
-        "chatbot": "MICADO Bot",
+        "chatbot": "Bot MICADO",
         "chatbot_desc": "Gestionar y formar el Bot MICADO",
         "events": "Eventos",
         "events_desc": "Gestionar los eventos",
@@ -134,7 +136,10 @@
         "update_link": "Actualizar enlace",
         "add_link": "Añadir enlace",
         "situation_overview": "Resumen",
-        "change_pass": "Cambiar contraseña"
+        "change_pass": "Cambiar contraseña",
+        "situation_manage_charts": "Gestionar gráficas",
+        "validate_and_publish": "Validar y publicar",
+        "situation_about": "Acerca de"
     },
     "data_settings": {
         "manage_languages": "Gestionar idiomas en la plataforma",
@@ -154,7 +159,9 @@
         "set_default_language": "Establecer idioma",
         "feature_settings": "Configuración de las aplicaciones MICADO",
         "pa_logo": "Logotipo de la Administración Pública anfitriona",
-        "profile_settings": "Configuración del perfil"
+        "profile_settings": "Configuración del perfil",
+        "translations": "Traducciones",
+        "father_topics": "Principales temas que deben figurar en la aplicación de migrantes"
     },
     "input_labels": {
         "validator": "Para ser validado por",
@@ -226,7 +233,12 @@
         "validated": "Validado",
         "validation_requested": "Validación solicitada",
         "new_intervention": "Agregar nueva intervención al plan",
-        "location": "Localización"
+        "location": "Localización",
+        "no_consent": "El migrante no ha dado aún su consentimiento",
+        "transl_state": "Estado de la traducción",
+        "required": "Requerido",
+        "link": "Enlace",
+        "parent_topic": "Tema de nivel superior"
     },
     "profile": {
         "username": "Usuario",
@@ -241,14 +253,14 @@
         "add_new": "Agregar nueva información al centro de información",
         "edit": "Editar información desde el Centro de información",
         "categories_title": "Centro de información - Categorías",
-        "categories_error": "No se puede eliminar una categoría cuando un artículo tiene esta categoría"
+        "categories_error": "No se puede eliminar o desactivar la publicación de una categoría cuando un artículo tiene esta categoría"
     },
     "events": {
         "list_title": "Eventos",
         "add_new": "Agregar nuevo evento a la lista de eventos",
         "edit": "Editar evento de la lista de eventos",
         "categories_title": "Eventos - Categorías",
-        "categories_error": "No se puede eliminar una categoría cuando un artículo tiene esta categoría"
+        "categories_error": "No se puede eliminar o desactivar la publicación de una categoría cuando un artículo tiene esta categoría"
     },
     "glossary": {
         "list_title": "Glosario",
@@ -356,7 +368,24 @@
         "legal_name": "Nombre legal",
         "country": "País",
         "dob": "Fecha de nacimiento",
-        "gender": "Sexo",
+        "gender": "Género",
         "personal_profile": "Perfil personal"
+    },
+    "internal_reference": {
+        "go_to_reference": "Ir a la referencia",
+        "more_info_2": "se puede encontrar en:",
+        "more_info_1": "Más información sobre"
+    },
+    "translation_states": {
+        "translated": "Traducido",
+        "translating": "Traduciendo",
+        "translatable": "Listo para traducir",
+        "editing": "Editando"
+    },
+    "link_modal": {
+        "selected": "Seleccione un texto para convertir en enlace",
+        "apply": "Aplicar",
+        "link": "Enlace",
+        "text": "Texto"
     }
 }
