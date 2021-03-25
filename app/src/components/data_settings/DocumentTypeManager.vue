@@ -162,8 +162,45 @@
           class="field"
           style="padding-top:10px"
           /> 
-             
-              <q-select
+    <q-select
+        dense
+        filled
+        v-model="int_doc_shell.icon"
+        :options="this.document_types_icons"
+        :label="$t('input_labels.icon')"
+        :rules="[ 
+                val => val != null|| 'Field is required'
+                ]"
+        :readonly="int_doc_shell.published"
+        ref="icon"
+        color="teal"
+        @input="addIcon($event)"
+        @remove="removeIcon($event)"
+        clearable
+      >
+      <template v-slot:selected>
+          <q-chip
+            v-if="int_doc_shell.icon"
+            square  
+          >
+          <q-avatar>
+          <img :src="int_doc_shell.icon">
+        </q-avatar>
+          </q-chip>
+          <q-badge v-else></q-badge>
+        </template>
+        <template v-slot:option="scope">
+          <q-item
+            v-bind="scope.itemProps"
+            v-on="scope.itemEvents"
+          >
+            <q-item-section>
+              <q-img style="max-width:24px; max-heigth:24px" :src="scope.opt.value" />
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+             <!-- <q-select
             filled
             dense
             :hint="$t('input_labels.required')"
@@ -181,7 +218,7 @@
             :options="this.icons"
             :label="$t('input_labels.icon')"
             class="select"
-          />
+          />-->
             <!--<q-file
               @input="getFilesIcon($event)"
               bg-color="grey-3"
@@ -492,6 +529,7 @@ export default {
         tenants: 'tenant/tenants',
         flowsDocs: 'flows/processes',
         steps: 'steps/steps',
+        document_types_icons:'document_type/document_types_icons'
       }, actions: {
         fetchSteps: 'steps/fetchSteps',
         fetchFlowsDocs:'flows/fetchFlows',
@@ -509,7 +547,8 @@ export default {
         deleteTranslationProd: 'document_type/deleteTranslationProd',
         deleteTranslationProdFlows: 'flows/deleteTranslationProd',
         saveSpotTranslationProd: 'picture_hotspots/saveTranslationProd',
-        deleteSpotTranslationProd: 'picture_hotspots/deleteTranslationProd'
+        deleteSpotTranslationProd: 'picture_hotspots/deleteTranslationProd',
+        fetchDocumentTypeIcons:'document_type/fetchDocumentTypeIcons'
       }
     })],
   components: {
@@ -671,7 +710,8 @@ export default {
       this.the_model = ""
     },
     addIcon(value){
-      this.int_doc_shell.icon = value
+      console.log(value)
+      this.int_doc_shell.icon = value.value
       console.log("I am doc shel after adding icon ")
       console.log(this.int_doc_shell)
     }, 
@@ -1114,6 +1154,7 @@ export default {
 
   created () {
     this.createShell()
+    this.fetchDocumentTypeIcons()
     this.fetchHotspots()
     this.loading = true
     this.fetchSteps()

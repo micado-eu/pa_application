@@ -212,4 +212,10 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  fetchDocumentTypeIcons () {
+    return axiosInstance
+      .get('/backend/1.0.0/mixed-icons')
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
 }

@@ -7,6 +7,15 @@ export function setDocument_type (state, document_type) {
       state.document_type = document_type
     }
 
+export function setDocument_type_icons (state, document_type_icons) {
+  console.log("IN ICONS MUTATION")
+  console.log(document_type_icons)
+      var icons = document_type_icons.filter((icon)=>{
+        return icon.relatedEntity == 1
+      })
+      state.document_type_icons = icons
+    }
+
 
     export function editDocumentType(state, document_type) {
       console.log("update the state")
