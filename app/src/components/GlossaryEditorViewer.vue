@@ -173,10 +173,10 @@ export default {
     },
     cacheDialog() {
       const elemByIdFunctions = {
-        "glossary": this.glossaryProdElemById,
-        "information": this.informationProdElemById,
-        "event": this.eventProdElemById,
-        "process": this.processProdById
+        "g": this.glossaryProdElemById,
+        "i": this.informationProdElemById,
+        "e": this.eventProdElemById,
+        "p": this.processProdById
       }
       this.mentions = this.$refs.editor.$el.querySelectorAll("[data-mention-id]")
       this.referenceData = {}
@@ -203,10 +203,10 @@ export default {
     },
     getMentionData(id, mentionType, elemByIdFunctions) {
       const mentionBaseURL = {
-        "glossary": "glossary/{id}/edit",
-        "information": "information/{id}/edit",
-        "event": "events/{id}/edit",
-        "process": "guided_process_editor/edit/{id}"
+        "g": "glossary/{id}/edit",
+        "i": "information/{id}/edit",
+        "e": "events/{id}/edit",
+        "p": "guided_process_editor/edit/{id}"
       }
       if (id > -1 && mentionType in elemByIdFunctions) {
         const elem = elemByIdFunctions[mentionType](id)

@@ -36,10 +36,10 @@ export default {
     async markReferencesAux(md, lang) {
       let result = md
       let entities = { // Key is mention-type, value is getter, order is important because of possible title duplicates
-        "glossary": this.glossaryProd,
-        "process": this.processesProd,
-        "information": this.informationProd,
-        "event": this.eventProd
+        "g": this.glossaryProd,
+        "p": this.processesProd,
+        "i": this.informationProd,
+        "e": this.eventProd
       }
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
