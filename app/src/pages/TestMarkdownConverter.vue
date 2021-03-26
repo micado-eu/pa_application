@@ -29,6 +29,7 @@
         :content="reconvertedMd"
         v-if="reconvertedMd"
         all_fetched
+        ref="viewer"
       ></glossary-editor-viewer>
     </div>
   </div>
@@ -66,6 +67,9 @@ export default {
       this.allFetched = true
       this.reconvertedHTML = this.markdownToHTML(this.convertedMarkdown)
       this.reconvertedMd = await this.HTMLToMarkdown(this.reconvertedHTML, 'en', 'en', true)
+      if (this.$refs.viewer) {
+        this.$refs.viewer.setContent(this.reconvertedMd)
+      }
     }
   }
 
