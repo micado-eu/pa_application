@@ -2,7 +2,6 @@
 <div>
    <div class="row container">
      <h3 class="header">{{this.umUserName}}</h3>
-     
     <q-card class="my-card" flat >
       <q-card-section horizontal>
         <q-card-section class="section">

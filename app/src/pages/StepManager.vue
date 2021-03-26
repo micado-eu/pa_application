@@ -69,8 +69,8 @@
                     id="div-2"
                   >
                   <HelpLabel
-                    :fieldLabel="$t('input_labels.step_name')"
-                    :helpLabel ="$t('help.step_name')"
+                    :fieldLabel="$t('input_labels.link_name')"
+                    :helpLabel ="$t('help.link_name')"
                     class="labels"
                   />
                     
@@ -90,7 +90,7 @@
                       val=> !!val || 'Field is required']"
                       :readonly="!(steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                       v-model="steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-                      :label="$t('input_labels.process_name')"
+                      :label="$t('input_labels.link_name')"
                     />
                   </div>
                   <div>
@@ -210,7 +210,7 @@
                       val=> !!val || 'Field is required']"
                       :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
                       v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
-                      :label="$t('input_labels.process_name')"
+                      :label="$t('input_labels.step_name')"
                     />
                   </div>
 

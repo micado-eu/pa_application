@@ -15,6 +15,9 @@
       :userPicture="picture">
       </UserProfile>
     </div>
+    <div style="text-align:center"> 
+    <q-btn size="15px" :label="$t('button.back')" no-caps  unelevated to="/migrant" color="accent"  />
+    </div>
     <hr>
           <div class="title">{{$t("consent.title")}}</div>
     <div v-if="userConsents == null">
