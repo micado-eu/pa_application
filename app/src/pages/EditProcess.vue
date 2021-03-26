@@ -326,6 +326,7 @@ export default {
         documents: 'document_type/document_types',
         steps: 'steps/steps',
         process_comments: 'comments/process_comments',
+        steplinks: 'steplinks/steplinks',
         comments: 'comments/comments',
         tree_options:'topic/tree_options'
       }, actions: {
@@ -342,8 +343,12 @@ export default {
         deleteTranslationProd: 'flows/deleteTranslationProd',
         saveStepTranslationProd: 'steps/saveTranslationProd',
         deleteStepTranslationProd: 'steps/deleteTranslationProd',
+        saveSteplinkTranslationProd: 'steplinks/saveTranslationProd',
+        deleteSteplinkTranslationProd: 'steplinks/deleteTranslationProd',
         fetchComments: 'comments/fetchComments',
-        updateStepTranslation:'steps/updateStepTranslation'
+        updateStepTranslation:'steps/updateStepTranslation',
+        fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
+        updateSteplinkTranslation:'steplinks/updateSteplinkTranslation'
       }
     })],
   props: ["theprocessid"],
@@ -367,7 +372,8 @@ export default {
       selectedDocs: [],
       selected_process_comments:[], 
       publishedOrig:false,
-      related_steps:null
+      related_steps:null, 
+      related_links:null
     }
   },
   computed: {
@@ -391,6 +397,14 @@ export default {
       if(this.related_steps){
       this.related_steps.forEach((step)=>{
         this.updateStepTranslation({id:step.id, translationState:state})
+          })
+      }
+    },
+      updateSteplinkTranslationState(state){
+      console.log("updating steps")
+      if(this.related_links){
+      this.related_links.forEach((steplink)=>{
+        this.updateSteplinkTranslation({id:steplink.id, translationState:state})
           })
       }
     },
@@ -497,6 +511,8 @@ export default {
       }) 
       console.log("i am steps to publish")
       console.log(publishing_steps)
+      console.log("i am links to publish")
+      console.log(this.related_links)
       if( event == true){
         this.$q.notify({
         type: 'warning',
@@ -507,6 +523,7 @@ export default {
             this.updatePublished({process:publishing_process, published:event})
             this.saveTranslationProd(value)
             this.saveStepTranslationProd(publishing_steps)
+            this.saveSteplinkTranslationProd(this.related_links)
             setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300); } },
           { label: 'No', color: 'red', handler: () => { 
             this.edit_process.published = false } }
@@ -523,7 +540,9 @@ export default {
           { label: 'Yes', color: 'accent', handler: () => { 
             this.updatePublished({process:publishing_process, published:event})
             this.deleteTranslationProd(value)
-            this.deleteStepTranslationProd(publishing_steps)}},
+            this.deleteStepTranslationProd(publishing_steps)
+            this.deleteSteplinkTranslationProd(this.related_links)
+            }},
           { label: 'No', color: 'red', handler: () => { 
             this.edit_process.published = true } }
         ]
@@ -564,7 +583,15 @@ export default {
       else {
         await this.editProcess({process:value,defaultLang:this.$defaultLang })
         this.groupSteps(value.id)
+        //this condition is necessary because if the user changes, for example, a topic while the translationstate
+        //is 2, all steps and link would move to that translation state without being put into weblate
+        //if the user creates new steps or links after the process has been put into translationstate = 2
+        //he will have to manually select his state and send it to translation platform
+        if(value.translations[0].translationState < 2){
         this.updateStepTranslationState(value.translations[0].translationState)
+        this.updateSteplinkTranslationState(value.translations[0].translationState)
+        }
+
 
         console.log("i am ublished orig")
         console.log(this.publishedOrig)
@@ -715,6 +742,13 @@ export default {
     console.log(this.theprocess)
     
     if (this.theprocess != null) {
+    this.fetchSteplinksByProcessId(Number(this.theprocessid))
+      .then(steplinks => {
+        this.related_links = steplinks
+        console.log("THE STEPLINKS")
+        console.log(steplinks)
+      })
+
       this.fetchComments().then((commentlist)=>{
       console.log(commentlist)
       this.fetchCommentsByProcess(this.theprocessid).then((the_comments)=>{

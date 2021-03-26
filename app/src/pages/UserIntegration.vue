@@ -333,6 +333,9 @@ export default {
 
         this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
         console.log(this.selected_plan)
+        if(!this.selected_plan.interventions){
+          this.selected_plan.interventions = []
+        }
         this.selected_plan.interventions.push(this.intervention_shell)
         var payload = {intervention: this.intervention_shell, plan: this.selected_plan}
         //this.saveIntervention(payload)

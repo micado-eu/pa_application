@@ -68,6 +68,24 @@ export function deleteSteps (state, steps) {
     .then(steps_return => state.commit('deleteSteps', steps_return))
 }
 
+export function updateSteplinkTranslation(state, payload){
+  return client.updateSteplinkTranslation(payload, payload.id)
+}
+
+export function saveTranslationProd(state, steplinks){
+  steplinks.forEach((steplink)=>{
+    console.log("deleting translation with id:" + steplink.id)
+    client.saveSteplinkTranslationProd(steplink.id)
+  })
+}
+
+export function deleteTranslationProd(state, steplinks){
+  console.log("in delete transl prod")
+  steplinks.forEach((steplink)=>{
+    client.deleteSteplinkTranslationProd(steplink.id)
+  })
+}
+
 
 /*export function deleteDocument({commit}, document_type) {
 

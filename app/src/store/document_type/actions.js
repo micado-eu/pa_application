@@ -13,6 +13,15 @@ export function fetchDocumentType (state, data) {
     })
 }
 
+export function fetchDocumentTypeIcons (state, data) {
+  return client
+    .fetchDocumentTypeIcons()
+    .then(document_type_icons => {
+      state.commit('setDocument_type_icons', document_type_icons)
+      return document_type_icons
+    })
+}
+
 
 
 export  function saveDocumentType (state, doc_element) {
