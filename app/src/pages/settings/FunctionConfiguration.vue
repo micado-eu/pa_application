@@ -120,16 +120,112 @@
 
       </q-card-section>
     </q-card>
+   
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.privacy')}}</div>
+      </q-card-section>
+             <q-tab-panels
+          v-model="langTab"
+          class="  "
+          animated
+        >
+          <q-tab-panel
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+          >
+              <GlossaryEditor
+                data-cy="description_input"
+                class="desc-editor "
+                style="width:100%; text-align:left"
+                :readonly="!(policy.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)|| !(editing_policy)"
+                v-model="policy.translations.filter(filterTranslationModel(language.lang))[0].value"
+                :lang="language.lang"
+                ref="editor"
+              />
+              <div style="text-align:right;padding-left: 150px;">
+              <TranslateStateButton
+                v-model="policy.translations.filter(filterTranslationModel(language.lang))[0].translationState"
+                :isForDefaultLanguage="language.lang===activeLanguage"
+                :objectId="policy.id"
+                :readonly="!(language.lang===activeLanguage)"
+                @micado-change="(id) => {
+                  changeTranslationState(policy, id.state)
+                 //groupSteps(edit_process.id)
+                  //updateStepTranslationState(id.state)
+                  
+                }"
+                @return-to-edit="(id) => {
+                  changeTranslationState(policy, id.state)
+                  deleteTranslationProd(policy.id)
+                  policy.published = false
+                }"
+              />
+            </div>
+                </q-tab-panel>
+        </q-tab-panels>
+        <div style="padding-left:16px;padding-right:16px">
+        <hr id="hr-2">
+        <q-tabs
+          v-model="langTab"
+          dense
+          active-color="accent"
+          indicator-color="accent"
+          align="justify"
+          narrow-indicator
+        >
+          <q-tab
+            v-for="language in languages"
+            :key="language.lang"
+            :name="language.name"
+            :label="language.name"
+          />
+        </q-tabs>
+        
+        <hr id="hr-2">
+         </div>
+         <div style="padding-left:16px;padding-right:16px">
+        <q-btn
+          v-if="!editing_policy"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="editing_policy = true"
+        />
+          <q-btn
+          v-if="editing_policy"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelPolicy"
+        />
+          <q-btn
+          v-if="editing_policy"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="savePolicy"
+        />
+         </div>
+
+
+    </q-card>
+
   </div>
 </template>
 
 <script>
+import GlossaryEditor from 'components/GlossaryEditor'
+
 import storeMappingMixin from '../../mixin/storeMappingMixin'
 import editEntityMixin from '../../mixin/editEntityMixin'
 import FeaturesElement from '../../components/settings/FeaturesElement'
 //import Croppa from 'vue-croppa'
 import 'vue-croppa/dist/vue-croppa.css'
 import ActiveLanguageSelector from '../../components/settings/ActiveLanguageSelector.vue'
+import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+
 export default {
   name: "FunctionConfiguration",
   data () {
@@ -140,15 +236,20 @@ export default {
       editing: false,
       email:null,
       emailOrig: null,
+      policy:null,
+      policyOrig:null,
       isNew:true,
       newFathers:true,
+      newPolicy:true,
       t_tags:[],
       edit_fathers:false,
       fathers:[],
-      fathersOrig:[]
+      fathersOrig:[],
+      editing_policy:false
     }
   },
   mixins: [editEntityMixin,
+  translatedButtonMixin,
     storeMappingMixin({
       getters: {
         features: 'features/features',
@@ -159,15 +260,43 @@ export default {
         updateSetting: 'settings/updateSetting',
         saveSetting:'settings/saveSetting',
         fetchTopic: 'topic/fetchTopic',
+        fetchMixedSettings:'settings/fetchMixedSettings',
+        savingPolicy:'settings/savePolicy',
+        updatePolicy: 'settings/updatePolicy'
+
       }
     })],
   components: {
-    FeaturesElement,ActiveLanguageSelector
+    FeaturesElement,ActiveLanguageSelector,GlossaryEditor,
   },
   computed: {
 
   },
   methods: {
+    createPolicyShell(){
+      this.policy = {id:-1, key:'privacy_policy', published:false, translations:[]}
+      this.languages.forEach(l => {
+        this.policy.translations.push({ id: -1, lang: l.lang, value: '', translationState: 0 })
+      })
+      this.policyOrig = JSON.parse(JSON.stringify(this.policy))
+    },
+    cancelPolicy(){
+      this.policy =  JSON.parse(JSON.stringify(this.policyOrig))
+      this.editing_policy = false
+     
+    },
+    savePolicy(){
+      if(this.newPolicy){
+        console.log("saving new policy")
+        this.savingPolicy(this.policy)
+      }
+      else{
+        this.updatePolicy(this.policy)
+      }
+      console.log("updating old policy")
+      this.editing_policy = false
+      this.policyOrig = JSON.parse(JSON.stringify(this.policy))
+    },
     cancelFathers(){
       this.fathers =  JSON.parse(JSON.stringify(this.fathersOrig))
       this.edit_fathers = false
@@ -250,9 +379,11 @@ export default {
 
   },
   created () {
+    console.log(this.languages)
     console.log("created")
     console.log(this.features)
     console.log(this.settings)
+    this.createPolicyShell()
     this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     console.log(this.settings['feedback_email'])
     this.settings.forEach((setting) => {
@@ -269,6 +400,16 @@ export default {
       }
 
     });
+    this.fetchMixedSettings().then((setting)=>{
+      if(setting.length >0){
+        if(setting[0].key == 'privacy_policy'){
+        this.policy = setting[0]
+        this.policyOrig = setting[0]
+        this.newPolicy = false
+      }
+      }
+
+    })
           this.fetchTopic()
       .then((topics) => {
         console.log(topics)

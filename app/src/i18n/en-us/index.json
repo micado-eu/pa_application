@@ -161,7 +161,8 @@
     "profile_settings":"Profile settings",
     "pa_email":"Email for feedback to the Public Administration",
     "father_topics":"Main topics to be shown on migrant application",
-    "translations":"Translations"
+    "translations":"Translations",
+    "privacy":"Privacy Policy"
   },
   "input_labels": {
     "parent_topic":"Parent topic",

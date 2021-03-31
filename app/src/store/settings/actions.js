@@ -46,3 +46,36 @@ export function saveSetting(store, data) {
 
 })
 }
+export function savePolicy(store, data) {
+  client.savePolicy(data).then((res) => {
+    console.log(res)
+    var savingId= res.id
+    data.translations.forEach((transl)=>{
+      client.savePolicyTranslations(transl, savingId)
+    })
+    store.commit('setNewSetting', data)
+    return res
+
+})
+}
+export function updatePolicy (store, data) {
+  console.log(data)
+  client.updatePolicy(data)
+    .then((res) => {
+      console.log(res)
+      data.translations.forEach((transl)=>{
+        client.updatePolicyTranslations(transl)
+      })
+      //store.commit('setSetting', data)
+      console.log(store.state.settings)
+
+      return res
+    })
+}
+export function fetchMixedSettings(store, data){
+  return client.fetchMixedSettings().then((ret)=>{
+    console.log("I AM THE PRIVACY POLICY")
+    console.log(ret)
+    return ret
+  })
+}
