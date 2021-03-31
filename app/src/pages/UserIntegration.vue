@@ -6,7 +6,9 @@
     >
       <div class="row container">
      <h3 class=" col-6 header">{{the_user.umUserName}}</h3>
+     
      <span class="col-6 top-span">
+      <q-btn class=add-button :label="$t('button.back')" no-caps size="15px" unelevated to="/migrant" color="accent"  />
      <q-btn class=add-button unelevated color="info" :data-cy="'interventionplan'.concat(theuserid)" rounded :label="$t('button.add_plan')" no-caps size="15px" @click="addInterventionPlan" />
      </span >
        <div class="row">
