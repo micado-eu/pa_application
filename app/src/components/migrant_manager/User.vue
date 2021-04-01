@@ -14,7 +14,7 @@
         <span class="span">{{this.Gender}}</span>
       </div>
       <div class="q-pa-md q-gutter-sm  col-4 button-container">
-        <div class="row ">
+        <div class="row " style="margin-left:20px">
           <div class="col-4"  style="text-align:right;">
       <IconWithTooltip style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
           </div>
