@@ -64,7 +64,8 @@
     "pa_email":"Please insert the user's email",
     "parent_topic":"Select a parent for this topic. If this topic is a parent, leave the space blank",
     "link":"Insert the link where you can find more info about the step",
-    "link_name": "Choose a name for the step link"
+    "link_name": "Choose a name for the step link",
+    "event_cost": "Price of the event. Mark the checkbox if the event is free."
   },
   "menu": {
     "title": "My Tools",
@@ -240,7 +241,9 @@
     "required":"Required",
     "transl_state":"Translation state",
     "no_consent":"Migrant has not yet given consent",
-    "link_name": "Step link name"
+    "link_name": "Step link name",
+    "event_cost": "Cost of the event",
+    "event_free": "The event is free"
   },
   "profile": {
     "username": "Username",
@@ -317,7 +320,9 @@
     "start_date": "Start date",
     "end_date": "End date",
     "location": "Location",
-    "creator": "Created by/Organizer"
+    "creator": "Created by/Organizer",
+    "cost": "Cost",
+    "cost_free": "Free"
   },
   "upload_modal": {
     "upload_label": "Upload",

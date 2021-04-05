@@ -289,6 +289,38 @@
             </div>
           </div>
         </div>
+        <div
+          class="row"
+          v-if="is_event"
+        >
+          <div class="col">
+            <span class="label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.event_cost')"
+                :helpLabel="$t('help.event_cost')"
+              ></help-label>
+            </span>
+            <div class="row">
+              <q-input
+                class="q-mr-md col-8"
+                outlined
+                v-model="cost"
+                bg-color="grey-3"
+                counter
+                :maxlength="50"
+                :rules="[ val => val.length <= 50 || $t('error_messages.max_char_limit') + 50]"
+                :readonly="published || costIsFree"
+              />
+              <q-checkbox
+                color="accent"
+                v-model="costIsFree"
+                :readonly="published"
+                :label="$t('input_labels.event_free')"
+              />
+            </div>
+          </div>
+          <div class="col"></div>
+        </div>
         <div class="row">
           <span class="label-edit">
             <help-label
@@ -429,7 +461,9 @@ export default {
       finishTime: '',
       savedTranslations: [],
       published: false,
-      location: ''
+      location: '',
+      cost: null,
+      costIsFree: true
     }
   },
   methods: {
@@ -501,6 +535,9 @@ export default {
             translation.finishDate = new Date(this.finishDate + " " + this.finishTime).toISOString()
           }
           translation.location = this.location
+          if (!this.costIsFree) {
+            translation.cost = this.cost
+          }
         }
       }
     },
@@ -639,6 +676,9 @@ export default {
               }
               if (this.is_event) {
                 emptyTranslation.location = this.location
+                if (!this.costIsFree) {
+                  emptyTranslation.cost = this.cost
+                }
               }
               this.savedTranslations.push(emptyTranslation)
             }
@@ -771,6 +811,10 @@ export default {
           this.finishDate = `${finishDate.getUTCFullYear()}-${finishDate.getUTCMonth() + 1}-${finishDate.getUTCDate()}`
           this.finishTime = `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
+          if (this.elem.cost) {
+            this.cost = this.elem.cost
+            this.costIsFree = false
+          }
         }
       }
       if (this.categories.length > 0) {

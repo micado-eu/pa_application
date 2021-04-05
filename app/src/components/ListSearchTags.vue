@@ -281,10 +281,16 @@
                     </q-img>
                   </span>
                   <span
-                    class="tags_text"
+                    class="q-mr-md tags_text"
                     v-if="categories_enabled && item.category"
                   >
                     {{$t("lists.category")}}: {{item.category.category}}
+                  </span>
+                  <span
+                    class="tags_text"
+                    v-if="is_event"
+                  >
+                    {{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}
                   </span>
                 </div>
                 <glossary-editor-viewer
@@ -694,6 +700,7 @@ export default {
                 `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
               translation.location = e.location
+              translation.cost = e.cost
             }
             if (e.creator !== null && !(e.creator in this.creatorCache)) {
               this.creatorCache[e.creator] = await this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant })
