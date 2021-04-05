@@ -213,7 +213,7 @@ export default {
         if (elem !== undefined) {
           const url = "/" + mentionBaseURL[mentionType].replace("{id}", id)
           return {
-            title: mentionType !== "process" ? elem.title : elem.process,
+            title: mentionType !== "p" ? elem.title : elem.process,
             description: elem.description,
             link: url
           }
