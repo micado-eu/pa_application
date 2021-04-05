@@ -337,7 +337,7 @@
                     <div>
                       <span
                         class="date-text q-mt-sm q-mr-xl"
-                        v-if="item.creator !== null && showExtraInfo[item.id]"
+                        v-if="item.creator && showExtraInfo[item.id]"
                       >
                         {{$t("lists.creator")}}:
                         <span>
@@ -735,12 +735,12 @@ export default {
       return idx !== -1 ? userType.translations[idx].userType : ''
     },
     getCreatorAttribute(creator, attrString) {
-      var retAttr = ""
-      var retAttr_arr = creator.attributes.filter((attr) => {
-        return attr.umAttrName === attrString
-      })
-      if (retAttr_arr.length > 0) {
-        retAttr = retAttr_arr[0].umAttrValue
+      let retAttr = ""
+      if (creator && creator.attributes) {
+        let retAttr_arr = creator.attributes.filter((attr) => attr.umAttrName === attrString)
+        if (retAttr_arr.length > 0) {
+          retAttr = retAttr_arr[0].umAttrValue
+        }
       }
       return retAttr
     }
