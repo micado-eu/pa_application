@@ -1,4 +1,5 @@
 export default {
   //
-  steps: []
+  steps: [],
+  step_icons:[]
 }

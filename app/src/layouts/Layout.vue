@@ -115,7 +115,7 @@
         <div class="row justify-center full-height full-width text-center">
           <img
             alt="Powered by Micado"
-            src="~assets/powered_Micado_white.png"
+            src="~assets/Powered by micado - white.svg"
           />
         </div>
       </q-list>

@@ -305,6 +305,47 @@
                   </div>
                 </div>
               </div>
+              <div id="location" style="width:100%">
+                <HelpLabel
+          :fieldLabel="$t('input_labels.icon')"
+          :helpLabel ="$t('help.doc_type_icon')"
+          class="field"
+          style="padding-top:10px"
+          /> 
+    <q-select
+        dense
+        filled
+        v-model="step_shell.stepIcon"
+        :options="this.step_icons"
+        :readonly="step_shell.published"
+        color="teal"
+        @input="addIcon($event)"
+        @remove="removeIcon($event)"
+        clearable
+      >
+      <template v-slot:selected>
+          <q-chip
+            v-if="step_shell.stepIcon"
+            square  
+          >
+          <q-avatar>
+          <img :src="step_icons.filter(icon => {return icon.label == step_shell.stepIcon})[0].value ">
+        </q-avatar>
+          </q-chip>
+          <q-badge v-else></q-badge>
+        </template>
+        <template v-slot:option="scope">
+          <q-item
+            v-bind="scope.itemProps"
+            v-on="scope.itemEvents"
+          >
+            <q-item-section>
+              <q-img style="max-width:24px; max-heigth:24px" :src="scope.opt.value" />
+            </q-item-section>
+          </q-item>
+        </template>
+      </q-select>
+              </div>
               <div
                 id="location"
                 style="width:100%"
@@ -527,7 +568,8 @@ export default {
         steplinks: 'steplinks/steplinks',
         graphs: 'graphs/graphs',
         elements: 'graphs/elements',
-        document_types: 'document_type/document_types'
+        document_types: 'document_type/document_types',
+        step_icons:'steps/step_icons'
       }, actions: {
         changeNode: 'graphs/changeNode',
         addNode: 'graphs/addNode',
@@ -545,7 +587,8 @@ export default {
         fetchSteplinksByProcessId: 'steplinks/fetchSteplinksByProcessId',
         fetchDocumentType: 'document_type/fetchDocumentType',
         changeSteplink:"steplinks/changeSteplink",
-        deleteStepLink:"steplinks/deleteStepLink"
+        deleteStepLink:"steplinks/deleteStepLink",
+        fetchStepIcons:'steps/fetchStepIcons'
       }
     })],
 
@@ -615,6 +658,14 @@ export default {
   },
 
   methods: {
+    addIcon(value){
+      console.log(value)
+      this.step_shell.stepIcon = value.label
+      console.log(this.step_shell)
+    },
+    removeIcon(){
+      console.log(removing)
+    },
     onSubmit () {
       console.log(this.$refs.title_input)
 
@@ -1037,6 +1088,8 @@ export default {
         console.log(this.refresher)
 
       })
+    this.fetchStepIcons()
+
     this.fetchDocumentType()
       .then(document_types => {
         console.log(document_types)

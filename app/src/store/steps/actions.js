@@ -104,6 +104,15 @@ export function deleteTranslationProd(state, steps){
 export function updateStepTranslation(state, payload){
   return client.updateStepTranslation(payload, payload.id)
 }
+
+export function fetchStepIcons (state, data) {
+  return client
+    .fetchStepIcons()
+    .then(step_icons => {
+      state.commit('setStepIcons', step_icons)
+      return step_icons
+    })
+}
 /*export function deleteDocument({commit}, document_type) {
 
   commit(delete_document_type, document_type.id)

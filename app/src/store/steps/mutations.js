@@ -54,6 +54,15 @@ export function deleteSteps (state, index) {
   const idx = state.steps.findIndex(item => item.id === index);
   if (idx !== -1) state.steps.splice(idx, 1);
 }
+
+export function setStepIcons (state, step_icons) {
+  console.log("IN ICONS MUTATION")
+  console.log(step_icons)
+      var icons = step_icons.filter((icon)=>{
+        return icon.relatedEntity == 2
+      })
+      state.step_icons = icons
+    }
 /*export function delete_document_type (state, document_typeId) {
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types

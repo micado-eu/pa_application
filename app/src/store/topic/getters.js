@@ -13,13 +13,14 @@ export function topic_published(state) {
   }
   export function tree_options(state){
     var options = []
-  var published_topi = state.topic.filter((topico)=>{
+  /*var published_topi = state.topic.filter((topico)=>{
     return topico.published == true
-  })
-  published_topi.forEach((top)=>{
-    options.push({id:top.id, parentId:top.father, label:top.translations.filter(editEntityMixin.methods.filterTranslationModel((i18nInstance.locale)))[0].topic})
+  })*/
+  state.topic.forEach((top)=>{
+    options.push({id:top.id, parentId:top.father, label:top.translations.filter(editEntityMixin.methods.filterTranslationModel((i18nInstance.locale)))[0].topic, published:top.published})
   })
   const tree = arrayToTree(options,{ dataField: null })
+  console.log("I AM TREE")
   console.log(tree)
   return tree
   }

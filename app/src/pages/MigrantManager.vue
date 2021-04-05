@@ -25,29 +25,25 @@
       <div class="row labels">
 
         <div
-          class="col-8"
+          class="col-9"
           style="min-height:21px; vertical-align: top"
         >
           &nbsp;
           <!--{{$t('input_labels.name')}}-->
         </div>
 
-        <div class="q-pa-md q-gutter-sm  col-4 button-container">
-          <div class="row ">
             <div
-              class="col-5"
-              style="padding-right:25px"
+              class="col-1"
+              
             >
               {{$t('button.integration')}}
             </div>
-            <div class="col-3 ">
+            <div class="col-1 " style="text-align:center">
               {{$t('button.migrant_data')}}
             </div>
-            <div class="col-4">
+            <div class="col-1" style="text-align:right; padding-right:10px">
               {{$t('input_labels.delete')}}
             </div>
-          </div>
-        </div>
       </div>
 
     </div>

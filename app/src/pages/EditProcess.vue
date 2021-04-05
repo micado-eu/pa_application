@@ -198,7 +198,7 @@
           </div>
 
           <div class="col-6 div-9">
-                        <treeselect
+          <treeselect
           :multiple="true"
           :options="this.tree_options"
           :flat="true"
@@ -207,8 +207,13 @@
           v-model="edit_process.processTopics"
           @select="addTopicTag($event)"
           @deselect="removeTopicTag($event)"
-              @clear="clearAllTopics()"
-          />
+          @clear="clearAllTopics()"
+          >
+          <div slot="value-label" slot-scope="{ node }" :class="{unpublished: !node.raw.published}">{{ node.label }}</div>
+          <label slot="option-label" slot-scope="{node}" :class="{unpublished: !node.raw.published}">
+           {{ node.label }}
+          </label>
+          </treeselect>
            <!-- <q-select
               filled
               data-cy="add_topic"
@@ -321,7 +326,7 @@ export default {
     storeMappingMixin({
       getters: {
         processes: 'flows/processes',
-        topic: 'topic/topic_published',
+        topic: 'topic/topic',
         user: 'user_type/user',
         documents: 'document_type/document_types',
         steps: 'steps/steps',
@@ -653,7 +658,7 @@ export default {
       if (process.processTopics != null) {
         process.processTopics.forEach(the_topic => {
           this.edit_process.processTopics.push(the_topic.idTopic)
-
+          console.log(this.topic)
           var the_topic = this.topic.filter((a_topic) => {
             return a_topic.id == the_topic.idTopic
           })[0]
@@ -889,5 +894,8 @@ export default {
   font-size: 16px;
   line-height: 22px;
   text-align: center;
+}
+.unpublished{
+  color:red
 }
 </style>
