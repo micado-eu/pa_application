@@ -322,7 +322,8 @@
     "location": "Location",
     "creator": "Created by/Organizer",
     "cost": "Cost",
-    "cost_free": "Free"
+    "cost_free": "Free",
+    "translation_state": "Translation state"
   },
   "upload_modal": {
     "upload_label": "Upload",
@@ -389,7 +390,8 @@
     "editing":"Editing",
     "translatable":"Translatable",
     "translating":"Translating",
-    "translated":"Translated"
+    "translated":"Translated",
+    "unknown": "Unknown"
   },
   "internal_reference": {
     "more_info_1": "More information for",
