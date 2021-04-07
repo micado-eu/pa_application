@@ -12,5 +12,14 @@
         "data": "Data settings",
         "glossary": "Glossary"
     },
-    "application_title": "MICADO app"
+    "application_title": "MICADO app",
+    "help": {
+        "element_start_date": "Startdatum auswählen ",
+        "user_type": "Benennen Sie die Benutzergruppe.",
+        "user_type_description": "Benutergruppe beschreiben ",
+        "doc_type": "Benennen Sie den Dokumententyp. ",
+        "required_documents": "Wenn für die Durchführung dieses Schrittes ein oder mehrere Dokumente benötigt werden, können diese über diesen Button hinzugefügt werden. Im Anschluss können Sie den Dokumententyp sowie auftretene Kosten hinzufügen.  ",
+        "process_name": "Namen des Prozesses einfügen",
+        "form": ""
+    }
 }
