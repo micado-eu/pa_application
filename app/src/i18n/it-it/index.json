@@ -58,13 +58,14 @@
         "pa_name": "Inserisci il nome dell'utente",
         "pa_surname": "Inserisci il cognome dell'utente",
         "pa_external_id": "Inserisci, se è disponibile, l'ID esterno dell'utente",
-        "pa_admin": "Spunta la casella se l'account deve avere poteri da amministratore",
-        "pa_mig_tenant": "Spunta se l'account deve essere un tenant dei migranti",
-        "pa_email": "Inserisci l'email dell'utente",
+        "pa_admin": "Scegli se questo account avrà poteri d amministratore",
+        "pa_mig_tenant": "Scegli se questo account sarà un tenant dei migranti",
+        "pa_email": "Inserire l'email dell'utente",
         "form": "Compilare il modulo nella lingua base:",
         "link": "Inserisci il link dove puoi trovare più informazioni sul passo",
         "parent_topic": "Seleziona un padre per questo argomento. Se l'argomento è esso stesso un padre, lascia lo spazio vuoto",
-        "link_name": "Inserisci un nome per il collegamento tra passi"
+        "link_name": "Inserisci un nome per il collegamento tra passi",
+        "event_cost": ""
     },
     "menu": {
         "title": "Menu",
@@ -193,7 +194,7 @@
         "user_type_placeholder": "Inserisci il tipo di utente qui",
         "title": "Titolo",
         "tags": "Tags",
-        "select_category": "Seleziona una categoria",
+        "select_category": "Seleziona categoria",
         "type": "Tipo",
         "required_documents": "Documenti richiesti",
         "manage": "Gestisci",
@@ -239,7 +240,9 @@
         "transl_state": "Stato traduzione",
         "no_consent": "Il migrante non ha ancora dato il consenso",
         "link_name": "Nome del collegamento tra passi",
-        "parent_topic": "Argomento padre"
+        "parent_topic": "Argomento padre",
+        "event_cost": "",
+        "event_free": ""
     },
     "profile": {
         "username": "Nome utente",
@@ -315,7 +318,10 @@
         "start_date": "Data d'inizio",
         "end_date": "Data di fine",
         "location": "Luogo",
-        "creator": "Creato da/Organizzatore"
+        "creator": "Creato da/Organizzatore",
+        "translation_state": "",
+        "cost": "",
+        "cost_free": ""
     },
     "upload_modal": {
         "upload_label": "Carica",
@@ -376,7 +382,8 @@
         "editing": "Modificabile",
         "translatable": "Traducibile",
         "translating": "In traduzione",
-        "translated": "Tradotto"
+        "translated": "Tradotto",
+        "unknown": ""
     },
     "link_modal": {
         "text": "Testo",
