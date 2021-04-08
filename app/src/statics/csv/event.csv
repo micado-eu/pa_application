@@ -1,2 +1,2 @@
-title,description,start_date,end_date
-testtitle,a description,2020-11-18 20:00:00,2020-11-18 20:00:00
+title,description,start_date,end_date,location,cost
+test title,a description,2020-11-18 20:00:00,2020-11-18 20:00:00,optional location,optional cost

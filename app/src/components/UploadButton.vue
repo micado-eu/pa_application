@@ -71,6 +71,11 @@ export default {
           'event_category'
         ].indexOf(value) !== -1
       }
+    },
+    creator: {
+      // Id of the creator of the entity
+      type: Number,
+      default: null
     }
 
   },
@@ -83,6 +88,9 @@ export default {
       let formData = new FormData()
       formData.append('files', this.files)
       formData.append('entity', this.entity)
+      if (this.creator !== null) {
+        formData.append('creator', this.creator)
+      }
       console.log(formData)
       console.log(this.$axios.defaults.headers)
       let postHeaders = this.$axios.defaults.headers

@@ -204,6 +204,7 @@
         <div class="row">
           <upload-button
             :entity="entity"
+            :creator="getCurrentUser()"
             @uploadSuccess="batchUploadSuccess($event)"
             @uploadError="batchUploadError($event)"
           ></upload-button>
@@ -526,6 +527,14 @@ export default {
     ...mapActions('flows', ['fetchFlowsProd']),
     ...mapActions('event', ['fetchEventProd']),
     ...mapActions('user', ['fetchSpecificUser']),
+    getCurrentUser() {
+      if (this.loggedUser) {
+        return this.loggedUser?.umid
+      }
+      else {
+        return null
+      }
+    },
     addOrRemoveSelectedCategory(category) {
       if (this.selectedCategory === category) {
         this.selectedCategory = undefined
@@ -780,6 +789,7 @@ export default {
   computed: {
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
+    ...mapGetters({ loggedUser: 'auth/user' }),
     search: {
       get() {
         return this.searchText
