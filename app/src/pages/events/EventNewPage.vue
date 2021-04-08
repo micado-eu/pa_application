@@ -29,7 +29,8 @@ export default {
         endDate: translationData[0].finishDate,
         published: translationData[0].published,
         location: translationData[0].location,
-        creator: translationData[0].creator
+        creator: translationData[0].creator,
+        cost: translationData[0].cost
       }
       if ('category' in translationData[0]) {
         eventData.category = translationData[0].category.id
@@ -51,6 +52,7 @@ export default {
                 delete translation.finishDate
                 delete translation.location
                 delete translation.creator
+                delete translation.cost
                 this.addNewEventItemTranslation(dataWithId)
                   .then(() => {
                     if (i === translationData.length - 1) {

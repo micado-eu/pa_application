@@ -208,12 +208,19 @@
             @uploadError="batchUploadError($event)"
           ></upload-button>
         </div>
-        <div class="flex">
+        <div class="column-header">
           <!-- column title -->
-          <span style="flex: 11.45"></span>
-          <span style="flex: 4">
-            {{$t("lists.published")}}
-          </span>
+          <q-list>
+            <q-item class="row flex">
+              <q-item-section class="col-7 flex flex-left"></q-item-section>
+              <q-item-section class="col-3 flex flex-center">
+                {{$t("lists.translation_state")}}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-left">
+                {{$t("lists.published")}}
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
         <div class="row q-mb-sm">
           <q-separator style="max-width: 91.7%; background-color: black" />
@@ -229,10 +236,11 @@
               :key="item.id"
               :id="item.id"
               clickable
+              class="row"
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
             >
-              <q-item-section class="title_section q-mt-md">
+              <q-item-section class="col-7 flex flex-left q-mt-md">
                 <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
@@ -281,10 +289,16 @@
                     </q-img>
                   </span>
                   <span
-                    class="tags_text"
+                    class="q-mr-md tags_text"
                     v-if="categories_enabled && item.category"
                   >
                     {{$t("lists.category")}}: {{item.category.category}}
+                  </span>
+                  <span
+                    class="tags_text"
+                    v-if="is_event"
+                  >
+                    {{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}
                   </span>
                 </div>
                 <glossary-editor-viewer
@@ -337,7 +351,7 @@
                     <div>
                       <span
                         class="date-text q-mt-sm q-mr-xl"
-                        v-if="item.creator !== null && showExtraInfo[item.id]"
+                        v-if="item.creator && showExtraInfo[item.id]"
                       >
                         {{$t("lists.creator")}}:
                         <span>
@@ -348,10 +362,10 @@
                   </template>
                 </glossary-editor-viewer>
               </q-item-section>
-              <q-item-section
-                side
-                class="q-mt-md"
-              >
+              <q-item-section class="col-3 flex flex-center q-mt-md">
+                {{getTranslationStateText(item.translationState)}}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-toggle
                   v-model="item.published"
                   color="accent"
@@ -359,9 +373,8 @@
                 />
               </q-item-section>
               <q-item-section
-                side
                 :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-                class="icon_btn_section"
+                class="col-shrink q-mt-md"
               >
                 <q-btn
                   round
@@ -694,6 +707,7 @@ export default {
                 `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
                 `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
               translation.location = e.location
+              translation.cost = e.cost
             }
             if (e.creator !== null && !(e.creator in this.creatorCache)) {
               this.creatorCache[e.creator] = await this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant })
@@ -724,6 +738,7 @@ export default {
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
       this.filteredElementsByDate = this.translatedElements
+      console.log(this.filteredElements)
       this.loading = false
     },
     topicTransl(topic) {
@@ -735,14 +750,23 @@ export default {
       return idx !== -1 ? userType.translations[idx].userType : ''
     },
     getCreatorAttribute(creator, attrString) {
-      var retAttr = ""
-      var retAttr_arr = creator.attributes.filter((attr) => {
-        return attr.umAttrName === attrString
-      })
-      if (retAttr_arr.length > 0) {
-        retAttr = retAttr_arr[0].umAttrValue
+      let retAttr = ""
+      if (creator && creator.attributes) {
+        let retAttr_arr = creator.attributes.filter((attr) => attr.umAttrName === attrString)
+        if (retAttr_arr.length > 0) {
+          retAttr = retAttr_arr[0].umAttrValue
+        }
       }
       return retAttr
+    },
+    getTranslationStateText(translationStateNumber) {
+      switch (translationStateNumber) {
+        case 0: return this.$t("translation_states.editing")
+        case 1: return this.$t("translation_states.translatable")
+        case 2: return this.$t("translation_states.translating")
+        case 3: return this.$t("translation_states.translated")
+        default: return this.$t("translation_states.unknown")
+      }
     }
   },
   watch: {
@@ -865,12 +889,6 @@ $btn_secondary: #cdd0d2;
   text-decoration: underline;
   border: 1px solid $accent_list;
 }
-.title_section {
-  flex: 3000;
-}
-.icon_btn_section {
-  flex: 350;
-}
 .alphabet {
   color: $primary;
   font-family: "Nunito";
@@ -930,5 +948,8 @@ $btn_secondary: #cdd0d2;
 }
 .filter-list {
   margin-top: 65px;
+}
+.column-header {
+  max-width: 91.6667%;
 }
 </style>

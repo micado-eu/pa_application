@@ -116,7 +116,8 @@ export default {
         startDate: data[0].startDate,
         endDate: data[0].finishDate,
         location: data[0].location,
-        published: data[0].published
+        published: data[0].published,
+        cost: data[0].cost
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]
@@ -148,6 +149,7 @@ export default {
           delete translation.finishDate
           delete translation.location
           delete translation.creator
+          delete translation.cost
           this.editEventItemTranslation(dataWithId).then(() => {
             if (i === data.length - 1) {
               router.push({ path: '/events' })
@@ -175,6 +177,7 @@ export default {
     this.fetchEvent()
       .then(() => {
         this.elem = this.eventElemById(this.$route.params.id)
+        console.log(this.elem)
         return this.fetchEventTopics(this.elem.id)
       })
       .then((eventTopics) => {
