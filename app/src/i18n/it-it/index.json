@@ -58,13 +58,14 @@
         "pa_name": "Inserisci il nome dell'utente",
         "pa_surname": "Inserisci il cognome dell'utente",
         "pa_external_id": "Inserisci, se è disponibile, l'ID esterno dell'utente",
-        "pa_admin": "Spunta la casella se l'account deve avere poteri da amministratore",
-        "pa_mig_tenant": "Spunta se l'account deve essere un tenant dei migranti",
-        "pa_email": "Inserisci l'email dell'utente",
+        "pa_admin": "Scegli se questo account avrà poteri d amministratore",
+        "pa_mig_tenant": "Scegli se questo account sarà un tenant dei migranti",
+        "pa_email": "Inserire l'email dell'utente",
         "form": "Compilare il modulo nella lingua base:",
         "link": "Inserisci il link dove puoi trovare più informazioni sul passo",
         "parent_topic": "Seleziona un padre per questo argomento. Se l'argomento è esso stesso un padre, lascia lo spazio vuoto",
-        "link_name": "Inserisci un nome per il collegamento tra passi"
+        "link_name": "Inserisci un nome per il collegamento tra passi",
+        "event_cost": "Prezzo dell'evento. Spunta la casella se l'evento è gratuito."
     },
     "menu": {
         "title": "Menu",
@@ -161,7 +162,8 @@
         "translations": "Traduzioni",
         "pa_email": "Email per commenti alla Pubblica Amministrazione",
         "father_topics": "Argomenti principali da essere mostrati sull'app del migrante",
-        "privacy": "Informativa sulla privacy"
+        "privacy": "Informativa sulla privacy",
+        "survey": "Sondaggio"
     },
     "input_labels": {
         "validator": "Responsabile validazione:",
@@ -193,7 +195,7 @@
         "user_type_placeholder": "Inserisci il tipo di utente qui",
         "title": "Titolo",
         "tags": "Tags",
-        "select_category": "Seleziona una categoria",
+        "select_category": "Seleziona categoria",
         "type": "Tipo",
         "required_documents": "Documenti richiesti",
         "manage": "Gestisci",
@@ -239,7 +241,9 @@
         "transl_state": "Stato traduzione",
         "no_consent": "Il migrante non ha ancora dato il consenso",
         "link_name": "Nome del collegamento tra passi",
-        "parent_topic": "Argomento padre"
+        "parent_topic": "Argomento padre",
+        "event_cost": "Costo dell'evento",
+        "event_free": "L'evento è gratuito"
     },
     "profile": {
         "username": "Nome utente",
@@ -276,8 +280,8 @@
     },
     "information_centre": {
         "list_title": "Centro informazioni",
-        "add_new": "Aggiungi nuove informazioni al centro informazioni",
-        "edit": "Modifica informazioni del centro informazioni",
+        "add_new": "Aggiungi nuova informazione al centro informazioni",
+        "edit": "Modifica informazione del centro informazioni",
         "categories_title": "Centro informazioni - Categorie",
         "categories_error": "Impossibile cancellare o rimuovere dalla pubblicazione una categoria quando questa è gia assegnata ad un oggetto"
     },
@@ -298,7 +302,7 @@
         "empty_error": "Tag vuoti non sono permessi."
     },
     "filters": {
-        "title": "Filtro",
+        "title": "Filtra",
         "clear_all": "Rimuovi tutti i filtri",
         "tags_title": "Tags",
         "category_title": "Categorie",
@@ -315,7 +319,10 @@
         "start_date": "Data d'inizio",
         "end_date": "Data di fine",
         "location": "Luogo",
-        "creator": "Creato da/Organizzatore"
+        "creator": "Creato da/Organizzatore",
+        "translation_state": "Stato della traduzione",
+        "cost": "Costo",
+        "cost_free": "Gratuito"
     },
     "upload_modal": {
         "upload_label": "Carica",
@@ -376,7 +383,8 @@
         "editing": "Modificabile",
         "translatable": "Traducibile",
         "translating": "In traduzione",
-        "translated": "Tradotto"
+        "translated": "Tradotto",
+        "unknown": "Sconosciuto"
     },
     "link_modal": {
         "text": "Testo",

@@ -63,33 +63,35 @@
         "pa_admin": "Elija si esta cuenta tendrá poderes de administrador",
         "pa_email": "Por favor, introduzca el correo electrónico del usuario",
         "link": "Inserte el enlace donde se puede encontrar más información sobre el paso",
-        "parent_topic": "Seleccione un tema de nivel superior para este tema. Si este tema es de nivel superior, deje el espacio en blanco"
+        "parent_topic": "Seleccione un tema de nivel superior para este tema. Si este tema es de nivel superior, deje el espacio en blanco",
+        "event_cost": "Precio del evento. Marque la casilla si el evento es gratuito.",
+        "link_name": "Elija un nombre para el enlace del paso"
     },
     "menu": {
         "title": "Mis herramientas",
         "home": "Inicio",
         "home_desc": "",
         "usage": "Estadísticas de MICADO",
-        "usage_desc": "Tablero y gráficos del uso de la aplicación MICADO",
-        "situation": "Monitor de situación migratoria",
-        "situation_desc": "Cuadro de mando y gráficos de situación migratoria",
+        "usage_desc": "Resumen del uso de la aplicación",
+        "situation": "Migración en cifras",
+        "situation_desc": "Resumen de estadísticas de migración local",
         "setting": "Configuración",
-        "setting_desc": "Administrar la aplicación MICADO",
-        "process": "Procesos guiados",
-        "process_desc": "Editar información de procesos guiados",
-        "cso": "Gestión administrativa de OSC",
-        "cso_desc": "Gestionar cuentas de organizaciones de la sociedad civil (OSC)",
-        "migrant": "Gestión de migrantes",
-        "migrant_desc": "Administrar cuentas de migrantes",
+        "setting_desc": "Administrar y ver configuración",
+        "process": "Guías paso a paso",
+        "process_desc": "Ver y editar procesos paso a paso",
+        "cso": "Administración de cuentas OSC",
+        "cso_desc": "Ver y administrar cuentas",
+        "migrant": "Gestión de cuentas de migrantes",
+        "migrant_desc": "Ver y administrar cuentas",
         "data": "Configuración de datos",
         "glossary": "Glosario",
-        "glossary_desc": "Gestionar el glosario",
-        "information_centre": "Centro de Información",
-        "information_centre_desc": "Gestionar la información",
-        "chatbot": "Bot MICADO",
-        "chatbot_desc": "Gestionar y formar el Bot MICADO",
-        "events": "Eventos",
-        "events_desc": "Gestionar los eventos",
+        "glossary_desc": "Ver y editar entradas del glosario",
+        "information_centre": "Información útil",
+        "information_centre_desc": "Ver y editar información y servicios para migrantes",
+        "chatbot": "Asistente virtual",
+        "chatbot_desc": "Gestionar y formar el bot de chat",
+        "events": "Eventos y cursos",
+        "events_desc": "Ver y editar cursos y eventos",
         "login": "Iniciar sesión",
         "logout": "Cerrar sesión"
     },
@@ -161,7 +163,8 @@
         "pa_logo": "Logotipo de la Administración Pública anfitriona",
         "profile_settings": "Configuración del perfil",
         "translations": "Traducciones",
-        "father_topics": "Principales temas que deben figurar en la aplicación de migrantes"
+        "father_topics": "Principales temas que deben figurar en la aplicación de migrantes",
+        "privacy": "Política de Privacidad"
     },
     "input_labels": {
         "validator": "Para ser validado por",
@@ -238,7 +241,10 @@
         "transl_state": "Estado de la traducción",
         "required": "Requerido",
         "link": "Enlace",
-        "parent_topic": "Tema de nivel superior"
+        "parent_topic": "Tema de nivel superior",
+        "event_free": "El evento es gratuito",
+        "event_cost": "Coste del evento",
+        "link_name": "Nombre de enlace del paso"
     },
     "profile": {
         "username": "Usuario",
@@ -289,7 +295,10 @@
         "start_date": "Fecha de inicio",
         "end_date": "Fecha de fin",
         "location": "Localización",
-        "creator": "Creado por/Organizador"
+        "creator": "Creado por/Organizador",
+        "translation_state": "Estado de traducción",
+        "cost_free": "Gratis",
+        "cost": "Coste"
     },
     "upload_modal": {
         "upload_label": "Subir",
@@ -362,7 +371,7 @@
         "old_pass": "Contraseña antigua",
         "new_pass": "Nueva contraseña",
         "confirm_pass": "Confirmar contraseña",
-        "change_pic": "Cambiar la imagen",
+        "change_pic": "Cambiar foto",
         "username": "Nombre de usuario",
         "password": "Contraseña",
         "legal_name": "Nombre legal",
@@ -380,7 +389,8 @@
         "translated": "Traducido",
         "translating": "Traduciendo",
         "translatable": "Listo para traducir",
-        "editing": "Editando"
+        "editing": "Editando",
+        "unknown": "Desconocido"
     },
     "link_modal": {
         "selected": "Seleccione un texto para convertir en enlace",

@@ -36,6 +36,8 @@
     "qs": "^6.9.4",
     "quasar": "^1.14.0",
     "showdown": "^1.9.1",
+    "survey-creator": "^1.8.41",
+    "surveyjs-widgets": "^1.8.41",
     "tiptap": "^1.27.1",
     "tiptap-extensions": "^1.29.1",
     "uppy": "^1.6.0",

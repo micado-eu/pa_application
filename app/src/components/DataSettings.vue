@@ -47,6 +47,16 @@
             <q-item-section>{{ $t('data_settings.settings') }}</q-item-section>
           </q-item>
           <q-item
+            :data-cy="'data_settings.survey'.replace('.', '_')"
+            clickable
+            to="/data_settings/survey"
+            class="situation-menu-item"
+            :disable="!check('Application/micado_superadmin')"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.survey') }}</q-item-section>
+          </q-item>
+          <q-item
             :data-cy="'data_settings.language'.replace('.', '_')"
             clickable
             to="/data_settings/language"
