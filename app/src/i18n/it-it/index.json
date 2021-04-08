@@ -65,7 +65,7 @@
         "link": "Inserisci il link dove puoi trovare più informazioni sul passo",
         "parent_topic": "Seleziona un padre per questo argomento. Se l'argomento è esso stesso un padre, lascia lo spazio vuoto",
         "link_name": "Inserisci un nome per il collegamento tra passi",
-        "event_cost": ""
+        "event_cost": "Prezzo dell'evento. Spunta la casella se l'evento è gratuito."
     },
     "menu": {
         "title": "Menu",
@@ -162,7 +162,8 @@
         "translations": "Traduzioni",
         "pa_email": "Email per commenti alla Pubblica Amministrazione",
         "father_topics": "Argomenti principali da essere mostrati sull'app del migrante",
-        "privacy": "Informativa sulla privacy"
+        "privacy": "Informativa sulla privacy",
+        "survey": "Sondaggio"
     },
     "input_labels": {
         "validator": "Responsabile validazione:",
@@ -241,8 +242,8 @@
         "no_consent": "Il migrante non ha ancora dato il consenso",
         "link_name": "Nome del collegamento tra passi",
         "parent_topic": "Argomento padre",
-        "event_cost": "",
-        "event_free": ""
+        "event_cost": "Costo dell'evento",
+        "event_free": "L'evento è gratuito"
     },
     "profile": {
         "username": "Nome utente",
@@ -279,8 +280,8 @@
     },
     "information_centre": {
         "list_title": "Centro informazioni",
-        "add_new": "Aggiungi nuove informazioni al centro informazioni",
-        "edit": "Modifica informazioni del centro informazioni",
+        "add_new": "Aggiungi nuova informazione al centro informazioni",
+        "edit": "Modifica informazione del centro informazioni",
         "categories_title": "Centro informazioni - Categorie",
         "categories_error": "Impossibile cancellare o rimuovere dalla pubblicazione una categoria quando questa è gia assegnata ad un oggetto"
     },
@@ -301,7 +302,7 @@
         "empty_error": "Tag vuoti non sono permessi."
     },
     "filters": {
-        "title": "Filtro",
+        "title": "Filtra",
         "clear_all": "Rimuovi tutti i filtri",
         "tags_title": "Tags",
         "category_title": "Categorie",
@@ -319,9 +320,9 @@
         "end_date": "Data di fine",
         "location": "Luogo",
         "creator": "Creato da/Organizzatore",
-        "translation_state": "",
-        "cost": "",
-        "cost_free": ""
+        "translation_state": "Stato della traduzione",
+        "cost": "Costo",
+        "cost_free": "Gratuito"
     },
     "upload_modal": {
         "upload_label": "Carica",
@@ -383,7 +384,7 @@
         "translatable": "Traducibile",
         "translating": "In traduzione",
         "translated": "Tradotto",
-        "unknown": ""
+        "unknown": "Sconosciuto"
     },
     "link_modal": {
         "text": "Testo",
