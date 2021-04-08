@@ -34,6 +34,7 @@ import IntegrationType from '../components/data_settings/IntegrationType'
 import FunctionConfiguration from '../pages/settings/FunctionConfiguration'
 import UserManagement from '../pages/settings/UserManagement'
 import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelector'
+import SurveyCreator from '../components/SurveyCreator'
 import TranslationManager from '../components/settings/TranslationManager'
 import ProfileSettings from '../pages/ProfileSettings'
 import TestMarkdownConverter from '../pages/TestMarkdownConverter'
@@ -54,14 +55,15 @@ const routes = [
           { path: 'topics', meta: { auth: ["Application/micado_admin"] }, component: Topic },
           { path: 'user_types', meta: { auth: ["Application/micado_admin"] }, component: UserType },
           { path: 'settings', meta: { auth: ["Application/micado_superadmin"] }, component: FunctionConfiguration },
+          { path: 'survey', meta: { auth: ["Application/micado_superadmin"] }, component: SurveyCreator },
           { path: 'usermgmt', meta: { auth: ["Application/micado_superadmin"] }, component: UserManagement },
-          { path: 'profile_settings', meta: { auth: ["Application/micado_migrant_manager","Application/micado_admin","Application/micado_superadmin"] }, component: ProfileSettings },
+          { path: 'profile_settings', meta: { auth: ["Application/micado_migrant_manager", "Application/micado_admin", "Application/micado_superadmin"] }, component: ProfileSettings },
           { path: 'language', meta: { auth: ["Application/micado_admin"] }, component: TranslationManager }
         ]
       },
       { path: '/app_settings', meta: { auth: ["Application/micado_superadmin"] }, component: Settings },
 
-      { path: '/migrant', meta: { auth: ["Application/micado_migrant_manager"] },component: MigrantManager },
+      { path: '/migrant', meta: { auth: ["Application/micado_migrant_manager"] }, component: MigrantManager },
       {
         path: '/migrant/data/:theuserid', meta: { auth: ["Application/micado_migrant_manager"] }, name: 'migrantdata', component: () => import('pages/MigrantData.vue'), props: (route) => ({ ...route.params })
       },
@@ -131,7 +133,7 @@ const routes = [
       { path: '/events/new', meta: { auth: ["Application/micado_admin"] }, component: EventNewPage },
       { path: '/events/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: EventEditPage },
       { path: '/events/categories', meta: { auth: ["Application/micado_admin"] }, component: EventCategory },
-      { path: '/testmarkdown', component: TestMarkdownConverter}
+      { path: '/testmarkdown', component: TestMarkdownConverter }
     ]
   }
 ]/*

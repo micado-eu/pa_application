@@ -52,18 +52,18 @@
     "delete_intervention": "Delete intervention",
     "is_published": "Switching the toggle to the right(green) will publish the content as soon as it's saved. Leaving it on the left(white) will save the content and leave it unpublished",
     "word_count": "Number of words in the description",
-    "location_maps":"Click here to preview the search results of this location on Google Maps",
+    "location_maps": "Click here to preview the search results of this location on Google Maps",
     "location": "Write the location of the event",
-    "pa_username":"Write the username that the user will use to login",
-    "pa_password":"Write the password that the user will use to login",
-    "pa_name":"Write the name of the user",
-    "pa_surname":"Write the surname of the user",
-    "pa_external_id":"Write, if avalaible, the external ID of the user",
-    "pa_admin":"Choose if this account will have admin powers",
-    "pa_mig_tenant":"Choose if this account will be a migrant tenant",
-    "pa_email":"Please insert the user's email",
-    "parent_topic":"Select a parent for this topic. If this topic is a parent, leave the space blank",
-    "link":"Insert the link where you can find more info about the step",
+    "pa_username": "Write the username that the user will use to login",
+    "pa_password": "Write the password that the user will use to login",
+    "pa_name": "Write the name of the user",
+    "pa_surname": "Write the surname of the user",
+    "pa_external_id": "Write, if avalaible, the external ID of the user",
+    "pa_admin": "Choose if this account will have admin powers",
+    "pa_mig_tenant": "Choose if this account will be a migrant tenant",
+    "pa_email": "Please insert the user's email",
+    "parent_topic": "Select a parent for this topic. If this topic is a parent, leave the space blank",
+    "link": "Insert the link where you can find more info about the step",
     "link_name": "Choose a name for the step link"
   },
   "menu": {
@@ -95,8 +95,8 @@
     "logout": "Logout"
   },
   "button": {
-    "validate_and_publish":"Validate and publish",
-    "change_pass":"Change Password",
+    "validate_and_publish": "Validate and publish",
+    "change_pass": "Change Password",
     "add_document": "Add Document",
     "integration": "Integration",
     "add": "Add",
@@ -147,6 +147,7 @@
     "send_to_translation": "Send to translation platform",
     "data_management": "Data management",
     "settings": "Settings",
+    "survey": "Survey",
     "language": "Language",
     "document_types": "Document Types",
     "topics": "Topics",
@@ -158,14 +159,14 @@
     "feature_settings": "MICADO applications' configuration",
     "pa_logo": "Logo of the hosting Public Administration",
     "user_types": "User Types",
-    "profile_settings":"Profile settings",
-    "pa_email":"Email for feedback to the Public Administration",
-    "father_topics":"Main topics to be shown on migrant application",
-    "translations":"Translations",
-    "privacy":"Privacy Policy"
+    "profile_settings": "Profile settings",
+    "pa_email": "Email for feedback to the Public Administration",
+    "father_topics": "Main topics to be shown on migrant application",
+    "translations": "Translations",
+    "privacy": "Privacy Policy"
   },
   "input_labels": {
-    "parent_topic":"Parent topic",
+    "parent_topic": "Parent topic",
     "validator": "To be validated by",
     "category_placeholder": "Enter category title here",
     "publication_date": "Publication Date",
@@ -236,10 +237,10 @@
     "validation_requested": "Requested validation",
     "new_intervention": "Add new intervention to the plan",
     "location": "Location",
-    "link":"Link",
-    "required":"Required",
-    "transl_state":"Translation state",
-    "no_consent":"Migrant has not yet given consent",
+    "link": "Link",
+    "required": "Required",
+    "transl_state": "Translation state",
+    "no_consent": "Migrant has not yet given consent",
     "link_name": "Step link name"
   },
   "profile": {
@@ -250,7 +251,7 @@
     "gender": "Gender",
     "status": "Status"
   },
-  "pa_profile":{
+  "pa_profile": {
     "change_pic": "Change picture",
     "username": "Username",
     "password": "Password",
@@ -259,23 +260,22 @@
     "dob": "Date of Birth",
     "gender": "Gender",
     "personal_profile": "Personal Profile",
-    "phone_number":"Phone Number",
-    "mail":"Email",
-    "old_pass":"Old Password",
-    "new_pass":"New Password",
-    "confirm_pass":"Confirm password"
+    "phone_number": "Phone Number",
+    "mail": "Email",
+    "old_pass": "Old Password",
+    "new_pass": "New Password",
+    "confirm_pass": "Confirm password"
   },
-  "new_pa_user":{
+  "new_pa_user": {
     "username": "Username",
     "password": "Password",
-    "name":"Name",
-    "surname":"Surname",
-    "external_id":"External ID",
-    "admin":"Admin",
-    "mig_tenant":"Migrant Tenant",
+    "name": "Name",
+    "surname": "Surname",
+    "external_id": "External ID",
+    "admin": "Admin",
+    "mig_tenant": "Migrant Tenant",
     "email": "Email"
   },
-
   "information_centre": {
     "list_title": "Information centre",
     "add_new": "Add New Information to the Information Centre",
@@ -381,10 +381,10 @@
     "word_count": "Word count"
   },
   "translation_states": {
-    "editing":"Editing",
-    "translatable":"Translatable",
-    "translating":"Translating",
-    "translated":"Translated"
+    "editing": "Editing",
+    "translatable": "Translatable",
+    "translating": "Translating",
+    "translated": "Translated"
   },
   "internal_reference": {
     "more_info_1": "More information for",
