@@ -23,6 +23,19 @@ export function changeNode (state, payload) {
   workingNode.data.title = payload.title
   let editingIndex = state.graphs.elements.findIndex(entry => entry.data.id == workingNode.data.id)
   console.log(editingIndex)
+  console.log(workingNode)
+  state.graphs.elements.splice(editingIndex, 1, JSON.parse(JSON.stringify(workingNode)))
+
+}
+export function changeEdge (state, payload) {
+  //  state.graphs.elements.push(node)
+  let workingNode = state.graphs.elements.filter(el => { return el.data.id == payload.id })[0]
+  console.log(workingNode)
+  workingNode.data.is_edited = true
+  workingNode.data.description = payload.title
+  let editingIndex = state.graphs.elements.findIndex(entry => entry.data.id == workingNode.data.id)
+  console.log(editingIndex)
+  console.log(workingNode)
   state.graphs.elements.splice(editingIndex, 1, JSON.parse(JSON.stringify(workingNode)))
 
 }
