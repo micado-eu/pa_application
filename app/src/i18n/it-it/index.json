@@ -70,7 +70,7 @@
     "menu": {
         "title": "Menu",
         "home": "Homepage",
-        "home_desc": "",
+        "home_desc": "Homepage di MICADO",
         "usage": "Statistiche di utilizzo di MICADO",
         "usage_desc": "Panoramica sull'utilizzo dell'applicazione",
         "situation": "Flussi migratori in cifre",
@@ -139,7 +139,8 @@
         "add_link": "Aggiungi link",
         "validate_and_publish": "Valida e pubblica",
         "add_user": "Aggiungi utente",
-        "situation_manage_charts": "Gestisci grafici"
+        "situation_manage_charts": "Gestisci grafici",
+        "situation_about": "Dettagli"
     },
     "data_settings": {
         "manage_languages": "Gestisci i linguaggi della piattaforma",
