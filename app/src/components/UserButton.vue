@@ -1,15 +1,18 @@
 <template>
     <q-avatar
+      clickable
+      @click="toProfile"
       size="42px"
       data-cy="userButton"
     >
       <q-icon
-        v-if="!this.$auth.loggedIn() || !this.pic[0].picture"
+        v-if="!this.$auth.loggedIn() || !this.pic.length >0"
         name="account_circle"
       />
       <img
-        v-if="this.$auth.loggedIn()"
+        v-if="this.$auth.loggedIn() && this.pic.length >0"
         :src="this.pic[0].picture"
+        alt="Profile"
       />
     </q-avatar>
     
@@ -60,6 +63,9 @@ export default {
     toLogout () {
       console.log("LOGGING OUT")
       this.$auth.logout()
+    },
+    toProfile(){
+      this.$router.push({name:'profile'})
     }
   },
    created () {

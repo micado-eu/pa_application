@@ -17,5 +17,7 @@ export function pausers (state) {
   return state.pauser
 }
 export function pic(state){
+  console.log("I am user pic")
+  console.log(state.userPic)
   return state.userPic
 }

@@ -57,7 +57,7 @@ const routes = [
           { path: 'settings', meta: { auth: ["Application/micado_superadmin"] }, component: FunctionConfiguration },
           { path: 'survey', meta: { auth: ["Application/micado_superadmin"] }, component: SurveyCreator },
           { path: 'usermgmt', meta: { auth: ["Application/micado_superadmin"] }, component: UserManagement },
-          { path: 'profile_settings', meta: { auth: ["Application/micado_migrant_manager", "Application/micado_admin", "Application/micado_superadmin"] }, component: ProfileSettings },
+          { path: 'profile_settings', name:'profile', meta: { auth: ["Application/micado_migrant_manager", "Application/micado_admin", "Application/micado_superadmin"] }, component: ProfileSettings },
           { path: 'language', meta: { auth: ["Application/micado_admin"] }, component: TranslationManager }
         ]
       },
