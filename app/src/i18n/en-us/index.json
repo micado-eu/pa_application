@@ -323,7 +323,11 @@
     "creator": "Created by/Organizer",
     "cost": "Cost",
     "cost_free": "Free",
-    "translation_state": "Translation state"
+    "translation_state": "Translation state",
+    "publish_warning": "Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_warning": "Warning: Unpublishing the process mark all existing translations as untranslated and might need to be translated again. Proceed?",
+    "yes": "Yes",
+    "no": "No"
   },
   "upload_modal": {
     "upload_label": "Upload",

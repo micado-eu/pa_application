@@ -694,15 +694,16 @@ export default {
       if (event == true) {
         this.$q.notify({
           type: 'warning',
-          message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+          timeout: 0,
+          message: this.$t("lists.publish_warning"),
           actions: [
             {
-              label: 'Yes', color: 'accent', handler: () => {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
                 this.on_publish(id).then(() => this.goBack())
               }
             },
             {
-              label: 'No', color: 'red', handler: () => {
+              label: this.$t("lists.yes"), color: 'red', handler: () => {
                 this.published = false
               }
             }
@@ -713,15 +714,15 @@ export default {
       else {
         this.$q.notify({
           type: 'warning',
-          message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+          message: this.$t("lists.unpublish_warning"),
           actions: [
             {
-              label: 'Yes', color: 'accent', handler: () => {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
                 this.on_unpublish(id).then(() => this.goBack())
               }
             },
             {
-              label: 'No', color: 'red', handler: () => {
+              label: this.$t("lists.yes"), color: 'red', handler: () => {
                 this.published = true
               }
             }
