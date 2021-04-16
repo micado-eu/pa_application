@@ -528,6 +528,7 @@ export default {
           translation.userTypes = this.selectedUserTypesObjects
         }
         if (this.is_event) {
+          // Dates are expected to be UTC by the server
           if (this.startDate && this.startTime) {
             translation.startDate = new Date(this.startDate + " " + this.startTime).toISOString()
           }
@@ -804,7 +805,9 @@ export default {
           this.selectedCategory = this.selectedCategoryObject.category
         }
         if (this.is_event) {
+          // Expects ISO String, automatically converts to user's locale
           const startDate = new Date(this.elem.startDate)
+          // Format used by QDate and QTime
           this.startDate = `${startDate.getUTCFullYear()}-${startDate.getUTCMonth() + 1}-${startDate.getUTCDate()}`
           this.startTime = `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)

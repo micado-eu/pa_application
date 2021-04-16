@@ -78,7 +78,7 @@
 
 <script>
 export default {
-  props: ['date', 'time', 'readonly', 'inline'], //Expects object with keys date and time
+  props: ['date', 'time', 'readonly', 'inline'], // Date and time comes in UTC
   data() {
     return {
       internalDate: this.date,
