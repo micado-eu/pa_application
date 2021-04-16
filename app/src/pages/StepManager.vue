@@ -572,6 +572,7 @@ export default {
         step_icons:'steps/step_icons'
       }, actions: {
         changeNode: 'graphs/changeNode',
+        changeEdge: 'graphs/changeEdge',
         addNode: 'graphs/addNode',
         deleteNode: 'graphs/deleteNode',
         deleteEdge:'graphs/deleteEdge',
@@ -829,15 +830,15 @@ export default {
         .then(ret => {
           console.log("CHANGED THE STEP")
         })
-      /*let newtitle = this.steplink_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].steplink
-      this.changeNode({ title: newtitle, id: this.steplink_shell.id })
+      let newtitle = this.steplink_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].description
+      this.changeEdge({ title: newtitle, id: this.steplink_shell.id })
         .then(ret => {
           this.refresher += 1
         })
 
       this.editing = false
       this.stepdocadd = false
-      this.createShell()*/
+      this.createShell()
       this.editing_steplink = false
     },
     addingNode (event, cy) {
@@ -942,7 +943,8 @@ export default {
           source: sourceNode._private.data.id,
           target: targetNode._private.data.id,
           is_edited: false,
-          description: ""
+          description: "",
+          title:""
         }
         //      position: { x: 150, y: 150 },
       })

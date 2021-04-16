@@ -40,6 +40,10 @@ export function changeNode (state, payload) {
   state.commit('changeNode', payload)
   return 1
 }
+export function changeEdge (state, payload) {
+  state.commit('changeEdge', payload)
+  return 1
+}
 
 
 export function deleteNode (state, payload) {
