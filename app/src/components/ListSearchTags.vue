@@ -704,24 +704,15 @@ export default {
             }
             if (this.is_event) {
               const startDate = new Date(e.startDate)
-              translation.startDate = `${startDate.getUTCFullYear()}-` +
-                `${startDate.getUTCMonth() + 1}-` +
-                `${startDate.getUTCDate()} ` +
-                `${startDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
-                `${startDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+              translation.startDate = startDate.toLocaleString(this.$userLang)
               const finishDate = new Date(e.endDate)
-              translation.endDate = `${finishDate.getUTCFullYear()}-` +
-                `${finishDate.getUTCMonth() + 1}-` +
-                `${finishDate.getUTCDate()} ` +
-                `${finishDate.getUTCHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:` +
-                `${finishDate.getUTCMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+              translation.endDate = finishDate.toLocaleString(this.$userLang)
               translation.location = e.location
               translation.cost = e.cost
             }
             if (e.creator !== null && !(e.creator in this.creatorCache)) {
               this.creatorCache[e.creator] = await this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant })
               translation.creator = this.creatorCache[e.creator]
-              console.log(translation.creator)
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
@@ -747,7 +738,6 @@ export default {
       this.filteredElementsByTopics = this.translatedElements
       this.filteredElementsByUserTypes = this.translatedElements
       this.filteredElementsByDate = this.translatedElements
-      console.log(this.filteredElements)
       this.loading = false
     },
     topicTransl(topic) {
