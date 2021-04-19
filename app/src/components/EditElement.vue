@@ -463,7 +463,8 @@ export default {
       published: false,
       location: '',
       cost: null,
-      costIsFree: true
+      costIsFree: true,
+      errorDefaultLangEmpty: false
     }
   },
   methods: {
@@ -497,10 +498,11 @@ export default {
     },
     setContent(element, al) {
       this.internalTitle = element.title
+      this.errorDefaultLangEmpty = !this.internalTitle
       this.internalDescription = element.description
-      if (this.$refs.editor) {
-        this.$refs.editor.setContent(this.internalDescription)
-      }
+      // if (this.$refs.editor) {
+      //   this.$refs.editor.setContent(this.internalDescription)
+      // }
     },
     async saveContent(lang) {
       const idx = this.savedTranslations.findIndex((t) => t.lang === lang)
@@ -737,12 +739,6 @@ export default {
     ...mapGetters('topic', ['topic']),
     ...mapGetters('user_type', ['user']),
     ...mapGetters({ loggedUser: 'auth/user' }),
-    errorDefaultLangEmpty: function () {
-      if (this.langTab !== this.$defaultLang) {
-        return !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
-      }
-      return !this.internalTitle
-    },
     errorCategoryEmpty: function () {
       return this.categories_enabled
         && Object.keys(this.selectedCategoryObject).length === 0
@@ -776,7 +772,13 @@ export default {
   watch: {
     langTab: function (newVal, oldVal) {
       if (newVal && oldVal) {
-        this.changeLanguage(newVal, oldVal)
+        this.changeLanguage(newVal, oldVal).then(() => {
+          // Set errorDefaultLangEmpty
+          if (this.langTab !== this.$defaultLang) {
+            this.errorDefaultLangEmpty = !this.savedTranslations.filter((t) => t.lang === this.$defaultLang)[0].title
+          }
+          this.errorDefaultLangEmpty = !this.internalTitle
+        })
       }
     }
   },

@@ -390,7 +390,7 @@ export default {
   watch: {
     value(val) {
       if (this.editor && !this.editorChange) {
-        this.editor.setContent(val, false)
+        this.setContent(val, this.isContentHTML)
       }
       this.editorChange = false
       // check errors
