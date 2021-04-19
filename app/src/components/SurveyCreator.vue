@@ -100,7 +100,6 @@
               :hint="$t('input_labels.required')"
               outlined
               type="date"
-              @input="changedJson()"
               counter
               :rules="[ 
                 val => !!val || 'Field is required'
@@ -145,6 +144,24 @@
             <q-toggle
               v-model="new_survey.active"
               color="green"
+            />
+          </div>
+          <div
+            class=" q-pa-xsm "
+            id="div-2"
+          >
+            <HelpLabel
+              :fieldLabel="$t('new_survey.destinationApp')"
+              :helpLabel="$t('help.survey_destinationApp')"
+              class="div-3"
+            />
+            <q-select
+              filled
+              v-model="new_survey.destinationApp"
+              :options="syrvey_options"
+              label="Standard"
+              emit-value
+              map-options
             />
           </div>
           <hr id="hr">
@@ -212,6 +229,20 @@ export default {
       hideAdd: false,
       hideForm: true,
       is_new: true,
+      syrvey_options: [
+        {
+          label: this.$t("new_survey.dest_opt_migrant"),
+          value: 0
+        },
+        {
+          label: this.$t("new_survey.dest_opt_pa"),
+          value: 1
+        },
+        {
+          label: this.$t("new_survey.dest_opt_ngo"),
+          value: 2
+        }
+      ],
       new_survey: {
         id: 0,
         survey: {},
