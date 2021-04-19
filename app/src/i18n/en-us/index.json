@@ -62,6 +62,12 @@
     "pa_admin": "Choose if this account will have admin powers",
     "pa_mig_tenant": "Choose if this account will be a migrant tenant",
     "pa_email": "Please insert the user's email",
+    "survey_title": "Write the title of the survey",
+    "survey_content": "Write the JSON definition of the survey",
+    "survey_application": "Define for which application this survey is destined",
+    "survey_activation": "Decide if you want to activate this survey (this will deactivate any other survey for the same application)",
+    "survey_activationDate": "Set the day when the survey will activate",
+    "survey_expiryDate": "Set the day when the survey will close",
     "parent_topic": "Select a parent for this topic. If this topic is a parent, leave the space blank",
     "link": "Insert the link where you can find more info about the step",
     "link_name": "Choose a name for the step link",
@@ -121,6 +127,7 @@
     "add_plan": "Add plan",
     "add_step": "Add step",
     "add_tag": "Add tag",
+    "add_survey": "Add survey",
     "save_graph": "Save Graph",
     "add_category": "Add Category",
     "save_document": "Save document",
@@ -164,6 +171,7 @@
     "pa_email": "Email for feedback to the Public Administration",
     "father_topics": "Main topics to be shown on migrant application",
     "translations": "Translations",
+    "surveymanagement": "Manage surveys",
     "privacy": "Privacy Policy"
   },
   "input_labels": {
@@ -278,6 +286,13 @@
     "admin": "Admin",
     "mig_tenant": "Migrant Tenant",
     "email": "Email"
+  },
+  "new_survey": {
+    "title": "Survey title",
+    "survey": "JSON definition of the survey",
+    "active": "Is active?",
+    "activationDate": "Date of activation of the survey",
+    "expiryDate": "Expiration date"
   },
   "information_centre": {
     "list_title": "Information centre",

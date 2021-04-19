@@ -20,6 +20,7 @@ import steplinks from './steplinks'
 import graphs from './graphs'
 import user from './user'
 import ngo_user from './ngo_user'
+import survey from './survey'
 import intervention_plan from './intervention_plan'
 import intervention from './intervention'
 import information from './information'
@@ -60,6 +61,7 @@ export default function (/* { ssrContext } */) {
       graphs,
       user,
       ngo_user,
+      survey,
       intervention_plan,
       information,
       settings,
