@@ -7,7 +7,7 @@ export function setSurvey (state, survey) {
   state.survey = survey
 }
 
-export function editSurveyr (state, survey) {
+export function editSurvey (state, survey) {
   console.log("update the state")
   const index = state.survey.findIndex(item => item.id === survey.id);
   if (index !== -1) state.survey.splice(index, 1, survey);

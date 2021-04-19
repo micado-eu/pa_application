@@ -99,13 +99,41 @@
               ref="survey"
               :hint="$t('input_labels.required')"
               outlined
-              type="date"
               counter
               :rules="[ 
                 val => !!val || 'Field is required'
                 ]"
               v-model="new_survey.activationDate"
-            />
+            >
+            <template v-slot:prepend>
+        <q-icon
+          name="event"
+          class="cursor-pointer"
+          data-cy="date_icon"
+        >
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-date
+              v-model="new_survey.activationDate"
+              mask="YYYY-MM-DD"
+              color="accent"
+            >
+              <div class="row items-center justify-end">
+                <q-btn
+                  v-close-popup
+                  :label="$t('date_selector.close')"
+                  color="accent"
+                  flat
+                  data-cy="close_date_menu"
+                />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+            </q-input>
           </div>
           <div
             class=" q-pa-xsm "
@@ -124,13 +152,41 @@
               ref="survey"
               :hint="$t('input_labels.required')"
               outlined
-              type="date"
               counter
               :rules="[ 
                 val => !!val || 'Field is required'
                 ]"
               v-model="new_survey.expiryDate"
-            />
+            >
+                        <template v-slot:prepend>
+        <q-icon
+          name="event"
+          class="cursor-pointer"
+          data-cy="date_icon"
+        >
+          <q-popup-proxy
+            transition-show="scale"
+            transition-hide="scale"
+          >
+            <q-date
+              v-model="new_survey.expiryDate"
+              mask="YYYY-MM-DD"
+              color="accent"
+            >
+              <div class="row items-center justify-end">
+                <q-btn
+                  v-close-popup
+                  :label="$t('date_selector.close')"
+                  color="accent"
+                  flat
+                  data-cy="close_date_menu"
+                />
+              </div>
+            </q-date>
+          </q-popup-proxy>
+        </q-icon>
+      </template>
+            </q-input>
           </div>
           <div
             class=" q-pa-xsm "
@@ -202,7 +258,7 @@
         v-for="survey in surveys"
         :key="survey.id"
         :theSurvey="survey"
-        @editSurvey="editSurvey"
+        @editSurvey="editSurvey(survey.id)"
       />
     </q-list>
   </div>
@@ -247,8 +303,8 @@ export default {
         id: 0,
         survey: {},
         active: false,
-        activationDate: new Date(),
-        expiryDate: '',
+        activationDate: null,
+        expiryDate: null,
         title: '',
         destinationApp: 0
       }
@@ -276,7 +332,8 @@ export default {
       },
       actions: {
         fetchSurvey: 'survey/fetchSurvey',
-        saveSurvey: 'survey/saveSurvey'
+        saveSurvey: 'survey/saveSurvey',
+        updateSurvey:'survey/editSurvey'
       }
     })],
   mounted () {
@@ -305,6 +362,22 @@ export default {
 
   },
   methods: {
+    onSubmit(){
+      this.$refs.title.validate()
+      this.$refs.survey.validate()
+      if (this.$refs.title.hasError || this.$refs.survey.hasError ) {
+        this.formHasError = true
+         this.$q.notify({
+          color: 'negative',
+          message: 'You need to fill in the required fields first'
+        })
+        return false
+      }
+      else{
+        console.log("in else of submit")
+        this.savingSurvey()
+      }
+    },
     newSurvey () {
       this.$refs.title.resetValidation()
       this.$refs.survey.resetValidation()
@@ -314,6 +387,29 @@ export default {
       this.hideAdd = true
       this.hideForm = false
     },
+    savingSurvey(){
+    JSON.stringify(this.new_survey.survey)
+    var expiry = new Date(this.new_survey.expiryDate).toISOString();
+    this.new_survey.expiryDate = expiry
+    var activation = new Date(this.new_survey.activationDate).toISOString();
+    this.new_survey.activationDate = activation
+    console.log(this.new_survey.expiryDate)
+    console.log(this.new_survey.activationDate)
+      if(this.is_new){
+      var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
+      console.log(working_survey)
+      this.saveSurvey(working_survey) 
+      this.hideAdd = false
+      this.hideForm = true
+      }
+      else{
+            var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['id','survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
+        this.updateSurvey(working_survey)
+      this.hideAdd = false
+      this.hideForm = true
+      }
+      
+    },
     cancelSurvey () {
       this.hideAdd = false
       this.hideForm = true
@@ -322,6 +418,17 @@ export default {
     changedJson () {
       console.log("chenged json")
       console.log(this.new_survey.survey)
+    },
+    editSurvey(id){
+      var the_survey = this.surveys.filter((sur)=>{
+        return sur.id == id
+      })[0]
+      console.log(the_survey)
+      JSON.parse(the_survey.survey)
+      this.new_survey = JSON.parse(JSON.stringify(the_survey)) 
+      this.is_new = false
+      this.hideAdd = true
+      this.hideForm = false
     }
   }
 };
