@@ -164,7 +164,8 @@
         "profile_settings": "Configuración del perfil",
         "translations": "Traducciones",
         "father_topics": "Principales temas que deben figurar en la aplicación de migrantes",
-        "privacy": "Política de Privacidad"
+        "privacy": "Política de Privacidad",
+        "survey": "Encuesta"
     },
     "input_labels": {
         "validator": "Para ser validado por",
@@ -211,7 +212,7 @@
         "guided_processes": "Procesos guiados",
         "manage_steps": "Gestionar pasos",
         "start_date": "Seleccionar fecha de inicio",
-        "finish_date": "Seleccionar fecha de finalización",
+        "finish_date": "Seleccionar fecha de finalización. Advertencia: Cuando la fecha de fin ocurra, el contenido será despublicado.",
         "not_translated": "&ltNo traducido&gt",
         "select_topic": "Seleccionar tema",
         "select_user_type": "Seleccionar tipo de usuario",
@@ -298,7 +299,11 @@
         "creator": "Creado por/Organizador",
         "translation_state": "Estado de traducción",
         "cost_free": "Gratis",
-        "cost": "Coste"
+        "cost": "Coste",
+        "no": "No",
+        "yes": "Sí",
+        "unpublish_warning": "Advertencia: Despublicar el proceso marca todas las traducciones existentes como no traducidas y puede que sea necesario traducirlas otra vez. ¿Proceder?",
+        "publish_warning": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible realizar cambios antes de despublicar. ¿Proceder?"
     },
     "upload_modal": {
         "upload_label": "Subir",
