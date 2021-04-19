@@ -705,7 +705,7 @@ export default {
               }
             },
             {
-              label: this.$t("lists.yes"), color: 'red', handler: () => {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
                 this.published = false
               }
             }
