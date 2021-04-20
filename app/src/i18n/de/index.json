@@ -1,8 +1,8 @@
 {
     "menu": {
-        "title": "My Tools",
+        "title": "Meine Werkzeuge",
         "home": "Start",
-        "usage": "MICADO-Statistik",
+        "usage": "MICADO-Nutzungsübersicht",
         "situation": "Lagebild Flüchtlinge",
         "setting": "App settings",
         "process": "Schritt-für-Schritt-Anleitungen",
@@ -12,21 +12,21 @@
         "data": "Dateneinstellungen",
         "glossary": "Glossar",
         "situation_desc": "Übersicht der Statistiken zur Flüchtlingssituation",
-        "usage_desc": "Übersicht der Nutzung der MICADO-Anwendungen",
-        "information_centre_desc": "Editieren der Allgemeinen Informationen",
+        "usage_desc": "Indikatoren zu MICADO-Anwendungen anzeigen",
+        "information_centre_desc": "Informationen bearbeiten",
         "information_centre": "Nützliche Informationen",
-        "glossary_desc": "Editieren der Einträge",
-        "cso_desc": "Verwaltung der Accounts der ZGOs",
-        "process_desc": "Editieren der Anleitungen",
-        "setting_desc": "Änderung an den Einstellungen der MICADO-Anwendung",
+        "glossary_desc": "Einträge bearbeiten",
+        "cso_desc": "Accounts der ZGOs verwalten",
+        "process_desc": "Anleitungen bearbeiten",
+        "setting_desc": "Einstellungen der MICADO-Anwendung ändern",
         "cso": "Zivilgesellschaftliche Organisationen - Admin Management",
-        "chatbot_desc": "Editieren und Training des MICADO-Chatbots",
+        "chatbot_desc": "MICADO-Chatbot verwalten und trainieren",
         "chatbot": "Virtueller Assistent",
-        "migrant_desc": "Verwaltung der Accounts der Geflüchteten und Migranten/-innen",
+        "migrant_desc": "Accounts der Geflüchteten und Migranten/-innen verwalten",
         "logout": "Abmelden",
         "login": "Anmelden",
         "events": "Kurse & Veranstaltungen",
-        "events_desc": "Editieren der Kurse und Veranstaltungen"
+        "events_desc": "Kurse und Veranstaltungen bearbeiten"
     },
     "application_title": "MICADO App",
     "help": {
@@ -94,7 +94,14 @@
         "pa_mig_tenant": "Auswählen ob dieser Account ein Tenant in der Migrant/-innen-App ist",
         "pa_external_id": "Falls verfügbar, externe ID des/der Nutzer/-in einfügen",
         "link_name": "Name für den Link zu dem Schritt wählen",
-        "pa_username": "Nutzer/-innen-Namen einfügen, der für Login genutzt wird"
+        "pa_username": "Nutzer/-innen-Namen einfügen, der für Login genutzt wird",
+        "survey_destinationApp": "App zur Durchführung der Umfrage auswählen",
+        "survey_title": "Titel der Umfrage angeben",
+        "survey_content": "JSON-Definition der Umfrage angeben",
+        "survey_application": "Angeben, in welcher App die Umfrage durchgeführt wird",
+        "survey_activation": "Diese Umfrage aktivieren (alle anderen Umfragen in der selben App werden deaktiviert)",
+        "survey_activationDate": "Aktivierungsdatum der Umfrage angeben",
+        "survey_expiryDate": "Enddatum der Umfrage angeben"
     },
     "internal_reference": {
         "more_info_1": "Mehr Information für",
@@ -145,10 +152,10 @@
         "select_user_type": "Nutzer/-innen-Gruppe wählen",
         "select_topic": "Themenfeld auswählen",
         "not_translated": "Nicht übersetzt",
-        "finish_date": "Enddatum auswählen",
+        "finish_date": "Enddatum auswählen. Achtung: Wenn das Enddatum erreicht ist, wird die Veröffentlichung des Inhalts zurückgezogen",
         "start_date": "Startdatum auswählen",
         "manage_steps": "Schritte verwalten",
-        "guided_processes": "Schritt-für-Schritt Prozesse",
+        "guided_processes": "Schritt-für-Schritt Anleitungen",
         "add_new_process": "Neuen Prozess hinzufügen",
         "edit_process": "Prozess editieren",
         "step_cost": "Kosten für Schritt",
@@ -192,7 +199,10 @@
         "user_types": "Nutzer/-innen-Gruppen",
         "start_date": "Startdatum",
         "end_date": "Enddatum",
-        "cost_free": "Kostenlos"
+        "cost_free": "Kostenlos",
+        "unpublish_warning": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, wird der Übersetzungsstatus auf \"nicht übersetzt\" gesetzt und der Übersetzungsprozess muss wiederholt werden. Fortsetzen?",
+        "yes": "Ja",
+        "no": "Nein"
     },
     "glossary": {
         "list_title": "Glossar",
@@ -226,7 +236,7 @@
         "topics": "Themenfelder",
         "user_types": "Nutzer/-innen-Gruppen",
         "privacy": "Datenschutzerklärung",
-        "pa_email": "E-Mail für Feedback an die verwaltende Behörde",
+        "pa_email": "E-Mail für Feedback an die Freie und Hansestadt Hamburg",
         "settings": "Einstellungen",
         "data_management": "Datenmanagement",
         "send_to_translation": "Zur Übersetzungsplattform senden",
@@ -243,7 +253,8 @@
         "intervention_categories": "Interventionskategorien",
         "language": "Sprache",
         "document_types": "Dokumententypen",
-        "survey": "Umfrage"
+        "survey": "Umfrage",
+        "surveymanagement": "Umfragen verwalten"
     },
     "information_centre": {
         "categories_error": "Wenn die Kategorie einem Eintrag zugewiesen wurde, kann diese nicht entfernt oder die Veröffentlichung zurückgezogen werden",
@@ -342,8 +353,8 @@
     },
     "warning": {
         "intervention_type": "Achtung: Das Löschen eines Interventionstypen wird alle Interventionen des Typs entfernen. Fortsetzen?",
-        "user_type": "Achtung: Das Löschen einer Nutzer/-innen-Gruppe wird diese aus allen bestehenden Schritt-für-Schritt-Prozessen entfernen. Fortsetzen?",
-        "topic": "Achtung: Das Löschen eines Themenfeldes wird dieses aus allen bestehenden Schritt-für-Schritt-Prozessen entfernen. Fortsetzen?"
+        "user_type": "Achtung: Das Löschen einer Nutzer/-innen-Gruppe wird diese aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?",
+        "topic": "Achtung: Das Löschen eines Themenfeldes wird dieses aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?"
     },
     "translation_states": {
         "editing": "In Bearbeitung",
@@ -397,6 +408,15 @@
         "validate_and_publish": "Validieren und veröffentlichen",
         "add_new_chart": "Neues Diagramm anlegen",
         "add_user": "Nutzer/-in anlegen",
-        "situation_manage_charts": "Diagramme verwalten"
+        "situation_manage_charts": "Diagramme verwalten",
+        "add_survey": "Umfrage hinzufügen"
+    },
+    "new_survey": {
+        "title": "Umfragetitel",
+        "survey": "JSON-Definition der Umfrage",
+        "active": "Aktiv?",
+        "destinationApp": "Zielapp",
+        "activationDate": "Aktivierungsdatum der Umfrage",
+        "expiryDate": "Ablaufdatum"
     }
 }
