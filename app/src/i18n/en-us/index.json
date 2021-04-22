@@ -253,7 +253,12 @@
     "no_consent": "Migrant has not yet given consent",
     "link_name": "Step link name",
     "event_cost": "Cost of the event",
-    "event_free": "The event is free"
+    "event_free": "The event is free",
+    "answers":"Answers",
+    "start_date_survey":"Start date",
+    "end_date_survey":"End date",
+    "active":"Active",
+    "related_app":"Related app"
   },
   "profile": {
     "username": "Username",

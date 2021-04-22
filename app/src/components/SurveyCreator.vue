@@ -249,7 +249,32 @@
         </div>
       </q-card-section>
     </q-card>
-
+    <q-item  style="">
+    <q-item-section class="col-4 flex flex-left " >
+        {{$t('input_labels.name')}}
+    </q-item-section>
+    <q-item-section class="col-1 flex flex-center top" style="margin-left:0px" >
+        {{$t('input_labels.active')}}
+      </q-item-section>
+    <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.start_date_survey')}}
+      </q-item-section>
+    <q-item-section class="col-1 flex flex-center top">
+        {{$t('input_labels.end_date_survey')}}
+      </q-item-section>
+    <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.related_app')}}
+      </q-item-section>
+       <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.answers')}}
+      </q-item-section>
+    <q-item-section class="col-1 flex flex-center top" >
+       {{$t('input_labels.edit')}}
+    </q-item-section>
+    <q-item-section class="col-1 flex flex-center top" >
+      {{$t('input_labels.delete')}}
+    </q-item-section>
+        </q-item>
     <q-list
       bordered
       separator
@@ -259,6 +284,7 @@
         :key="survey.id"
         :theSurvey="survey"
         @editSurvey="editSurvey(survey.id)"
+        @remove="deletingSurvey(survey.id)"
       />
     </q-list>
   </div>
@@ -333,7 +359,8 @@ export default {
       actions: {
         fetchSurvey: 'survey/fetchSurvey',
         saveSurvey: 'survey/saveSurvey',
-        updateSurvey:'survey/editSurvey'
+        updateSurvey:'survey/editSurvey',
+        deleteSurvey:'survey/deleteSurvey'
       }
     })],
   mounted () {
@@ -429,6 +456,22 @@ export default {
       this.is_new = false
       this.hideAdd = true
       this.hideForm = false
+    },
+    deletingSurvey(id){
+      console.log("in deleting survey")
+      this.$q.notify({
+        type: 'warning',
+        timeout:0,
+        message: 'Warning: Deleting a survey will also delete all related answers. Proceed?',
+        actions: [
+          { label: 'Delete', color: 'red', handler: () => { 
+            this.deleteSurvey(id)
+               } },
+          { label: 'Back', color: 'accent', handler: () => { 
+            console.log("not deleting")
+            } }
+        ]
+      })
     }
   }
 };

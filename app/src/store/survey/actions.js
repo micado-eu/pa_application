@@ -26,12 +26,18 @@ export function saveSurvey (state, survey) {
     .then(survey_return => state.commit('saveSurvey', survey_return))
 }
 
-export function deleteSurvey (state, survey) {
+export function deleteSurvey (state, id) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(survey)
   return client
-    .deleteSurvey(survey)
-    .then(survey_return => state.commit('deleteSurvey', survey_return))
+    .deleteSurveyAnswers(id)
+    .then(() =>{
+      client.deleteSurvey(id).then(()=>{
+        state.commit('deleteSurvey', id)
+
+      })
+    } 
+      
+     )
 }
 
 
