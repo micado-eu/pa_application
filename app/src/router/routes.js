@@ -129,6 +129,8 @@ const routes = [
       { path: '/information/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: InformationEditPage },
       { path: '/information/categories', meta: { auth: ["Application/micado_admin"] }, component: InformationCategory },
 
+      // {path: '/testmarkdown', component: TestMarkdownConverter },
+
       { path: '/events', meta: { auth: ["Application/micado_admin"] }, component: EventListPage },
       { path: '/events/new', meta: { auth: ["Application/micado_admin"] }, component: EventNewPage },
       { path: '/events/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: EventEditPage },

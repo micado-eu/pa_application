@@ -338,9 +338,9 @@ export default {
           new Image(null, null, this.uploadImage),
           new InternalMention()
         ],
-        onUpdate: ({ getHTML }) => {
+        onUpdate: async ({}) => {
           this.editorChange = true
-          this.$emit('input', getHTML())
+          this.$emit('input', await this.getContent())
         },
         editable: !this.readonly,
         content: currentContent

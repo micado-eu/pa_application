@@ -23,6 +23,9 @@
     <div>HTML -> Markdown:</div>
     <div><code>{{reconvertedMd}}</code></div>
     <q-separator></q-separator>
+    <div>HTML to Convert:</div>
+    <div><code>{{htmlToConvert}}</code></div>
+    <q-separator></q-separator>
     <div>Viewer:</div>
     <div>
       <glossary-editor-viewer
@@ -49,10 +52,10 @@ export default {
   },
   data() {
     return {
-      htmlToConvert: `<p>Glossary: identity card</p>
-<p>Information centre: Curso de castellano</p>
-<p>Events: english Course</p>
-<p>Guided processes: enroll children to school</p>`,
+      htmlToConvert: `Glossary: @[g,56](identity card)  
+      Information centre: @[i,174](Curso de castellano)  
+      Events: english Course  
+      Guided processes: @[p,47](enroll children to school)`,
       editorHTML: "",
       convertedMarkdown: "",
       reconvertedHTML: "",
