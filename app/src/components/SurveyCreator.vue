@@ -250,7 +250,7 @@
       </q-card-section>
     </q-card>
     <q-item  style="">
-    <q-item-section class="col-4 flex flex-left " >
+    <q-item-section class="col-3 flex flex-left " >
         {{$t('input_labels.name')}}
     </q-item-section>
     <q-item-section class="col-1 flex flex-center top" style="margin-left:0px" >
@@ -271,6 +271,9 @@
     <q-item-section class="col-1 flex flex-center top" >
        {{$t('input_labels.edit')}}
     </q-item-section>
+     <q-item-section class="col-1 flex flex-center top" >
+       {{$t('button.download')}}
+    </q-item-section>
     <q-item-section class="col-1 flex flex-center top" >
       {{$t('input_labels.delete')}}
     </q-item-section>
@@ -285,6 +288,7 @@
         :theSurvey="survey"
         @editSurvey="editSurvey(survey.id)"
         @remove="deletingSurvey(survey.id)"
+        @download="downloadSurvey"
       />
     </q-list>
   </div>
@@ -332,7 +336,8 @@ export default {
         activationDate: null,
         expiryDate: null,
         title: '',
-        destinationApp: 0
+        destinationApp: 0,
+        answerNumber:0
       }
     };
   },
@@ -360,7 +365,8 @@ export default {
         fetchSurvey: 'survey/fetchSurvey',
         saveSurvey: 'survey/saveSurvey',
         updateSurvey:'survey/editSurvey',
-        deleteSurvey:'survey/deleteSurvey'
+        deleteSurvey:'survey/deleteSurvey',
+        fetchCSV:'survey/fetchCSV'
       }
     })],
   mounted () {
@@ -389,6 +395,19 @@ export default {
 
   },
   methods: {
+    downloadSurvey(value){
+      console.log(value)
+      this.fetchCSV(value).then((csv)=>{
+        console.log(csv)
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(csv));
+        element.setAttribute('download', 'survey' + value.surveyid);
+        element.style.display = 'none';
+        document.body.appendChild(element);
+        element.click();
+        document.body.removeChild(element);
+      })
+    },
     onSubmit(){
       this.$refs.title.validate()
       this.$refs.survey.validate()
@@ -423,14 +442,14 @@ export default {
     console.log(this.new_survey.expiryDate)
     console.log(this.new_survey.activationDate)
       if(this.is_new){
-      var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
-      console.log(working_survey)
-      this.saveSurvey(working_survey) 
+      //var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
+      //console.log(working_survey)
+      this.saveSurvey(this.new_survey) 
       this.hideAdd = false
       this.hideForm = true
       }
       else{
-            var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['id','survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
+            //var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['id','survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
         this.updateSurvey(working_survey)
       this.hideAdd = false
       this.hideForm = true

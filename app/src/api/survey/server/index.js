@@ -32,5 +32,11 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  fetchCSV (id_survey, destination_app) {
+    return axiosInstance
+      .get('/backend/1.0.0/getCsv?destinationApp='+destination_app + '&surveyid='+ id_survey)
+      .then(response => { return response.data })
+      .catch(error_handler)
+  },
 
 }

@@ -1,7 +1,7 @@
 <template>
 
     <q-item>
-  <div class="col-4 flex flex-left title" style="padding-top:10px">{{this.theSurvey.title}}</div>
+  <div class="col-3 flex flex-left title" style="padding-top:10px">{{this.theSurvey.title}}</div>
             <q-item-section class="col-1 flex flex-center margin">
             <q-toggle
             v-model="theSurvey.active"
@@ -20,12 +20,14 @@
              {{this.related_app}}
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
-             {{this.theSurvey.answer_number}}
+             {{this.theSurvey.answerNumber}}
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.delete_process')" @click.native="editing()" :data-cy="'deletesurvey'.concat(theSurvey.id )"/>
             </q-item-section>
-
+            <q-item-section class="col-1 flex flex-center top">
+              <IconWithTooltip :icon="'img:statics/icons/Icon - Download.svg'" :tooltip="$t('help.delete_process')" @click.native="download($event)" />
+            </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_process')" @click.native="remove_survey($event)" :data-cy="'deletesurvey'.concat(theSurvey.id )"/>
             </q-item-section>
@@ -47,16 +49,16 @@ export default {
   computed:{
     start_date(){
       console.log(typeof(this.theSurvey.activation_date))
-      return this.theSurvey.activation_date.slice(0,10)
+      return this.theSurvey.activationDate.slice(0,10)
     },
     end_date(){
-      return this.theSurvey.expiry_date.slice(0,10)
+      return this.theSurvey.expiryDate.slice(0,10)
     },
     related_app(){
-      if(this.theSurvey.destination_app == 0){
+      if(this.theSurvey.destinationApp == 0){
         return  this.$t("new_survey.dest_opt_migrant")
       }
-      else if(this.theSurvey.destination_app ==1){
+      else if(this.theSurvey.destinationApp ==1){
          return this.$t("new_survey.dest_opt_pa")
       }
       else{
@@ -66,6 +68,9 @@ export default {
     },
 
   methods: {
+    download(){
+      this.$emit('download',{surveyid:this.theSurvey.id, app:this.theSurvey.destination_app})
+    },
     editing () {
       console.log(this.theSurvey.id)
       this.$emit('editSurvey', this.theSurvey.id)
