@@ -236,7 +236,7 @@ export default {
         this.fetchGlossaryTemp(langs),
         this.fetchInformationTemp(langs),
         this.fetchFlowsTemp(langs),
-        this.fetchEventsTemp(langs)
+        this.fetchEventTemp(langs)
       ])
         .then(() => this.initialize())
     } else {
