@@ -10,15 +10,6 @@
       </div>
       <div class="h6">Build: {{buildDate}}</div>
     </div>
-    <div
-      class="h4"
-      v-if="!this.$auth.loggedIn()"
-    >To log in please press
-      <q-btn
-        @click="toLogin()"
-        label="here"
-      />
-    </div>
   </q-page>
 </template>
 

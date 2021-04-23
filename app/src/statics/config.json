@@ -6,5 +6,7 @@
     "countlyAppKey": "eb86692cec343df4efb89ca7aaf4a0352621f45d",
     "identitySPclientId": "bELXHH3g8nvwytaSHRMWNjxe4WnD",
     "appBuildDate": "$APP_BUILD_DATE",
-    "paUrl": "pa.micadoproject.eu"
+    "paUrl": "pa.micadoproject.eu",
+    "paTenantDomain":"pa.micado.eu",
+    "ngoTenantDomain":"ngo.micado.eu"
 }
