@@ -26,7 +26,8 @@
         "logout": "Abmelden",
         "login": "Anmelden",
         "events": "Kurse & Veranstaltungen",
-        "events_desc": "Kurse und Veranstaltungen bearbeiten"
+        "events_desc": "Kurse und Veranstaltungen bearbeiten",
+        "home_desc": " "
     },
     "application_title": "MICADO App",
     "help": {
@@ -186,7 +187,12 @@
         "doc": "Dokument",
         "doc_pics": "Bilder des Dokuments",
         "upload_doc_pics": "Bilder des Dokuments hochladen",
-        "doc_type": "Dokumententyp"
+        "doc_type": "Dokumententyp",
+        "related_app": "Verwandte app",
+        "active": "Aktiv",
+        "end_date_survey": "Enddatum",
+        "start_date_survey": "Startdatum",
+        "answers": "Antworten"
     },
     "lists": {
         "category": "Kategorie",
@@ -202,7 +208,8 @@
         "cost_free": "Kostenlos",
         "unpublish_warning": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, wird der Übersetzungsstatus auf \"nicht übersetzt\" gesetzt und der Übersetzungsprozess muss wiederholt werden. Fortsetzen?",
         "yes": "Ja",
-        "no": "Nein"
+        "no": "Nein",
+        "publish_warning": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?"
     },
     "glossary": {
         "list_title": "Glossar",
@@ -241,7 +248,7 @@
         "data_management": "Datenmanagement",
         "send_to_translation": "Zur Übersetzungsplattform senden",
         "manage_translations": "Übersetzungen verwalten",
-        "manage_languages": "Sprachen der Platform verwalten",
+        "manage_languages": "Sprachen der Plattform verwalten",
         "intervention_types": "Interventionstypen",
         "father_topics": "Hauptthemenfelder, die in der Migrant/-innen-App angezeigt werden",
         "profile_settings": "Profileinstellungen",
@@ -417,6 +424,8 @@
         "active": "Aktiv?",
         "destinationApp": "Zielapp",
         "activationDate": "Aktivierungsdatum der Umfrage",
-        "expiryDate": "Ablaufdatum"
+        "expiryDate": "Ablaufdatum",
+        "dest_opt_migrant": "MICADO mobile",
+        "dest_opt_ngo": "MICADO Zivilgesellschaft"
     }
 }
