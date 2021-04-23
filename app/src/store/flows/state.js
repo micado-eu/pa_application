@@ -5,5 +5,6 @@ export default {
   nodePanelVisible: "hidden",
   theFlow: [],
   flowsDocs:[],
-  flowsProd: []
+  flowsProd: [],
+  flowsTemp: []
 }

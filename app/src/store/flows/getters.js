@@ -13,6 +13,17 @@ export function processProdById(state) {
   return getterFunc
 }
 
+export function processesTemp(state) {
+  return state.flowsTemp
+}
+
+export function processTempById(state) {
+  let getterFunc = function (id) {
+    return state.flowsTemp.filter(n => n.id == id)[0]
+  }
+  return getterFunc
+}
+
 export function flowsDocs(state) {
   return state.flowsDocs
 }
