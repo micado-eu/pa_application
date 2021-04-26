@@ -426,6 +426,7 @@
         "activationDate": "Aktivierungsdatum der Umfrage",
         "expiryDate": "Ablaufdatum",
         "dest_opt_migrant": "MICADO mobile",
-        "dest_opt_ngo": "MICADO Zivilgesellschaft"
+        "dest_opt_ngo": "MICADO Zivilgesellschaft",
+        "dest_opt_pa": "MICADO FHH/Verwaltung"
     }
 }
