@@ -124,10 +124,10 @@ const routes = [
       { path: '/glossary/new', meta: { auth: ["Application/micado_admin"] }, component: GlossaryNewPage },
       { path: '/glossary/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: GlossaryEditPage },
 
-      { path: '/information', meta: { auth: ["Application/micado_admin"] }, component: InformationListPage },
-      { path: '/information/new', meta: { auth: ["Application/micado_admin"] }, component: InformationNewPage },
-      { path: '/information/:id/edit/', meta: { auth: ["Application/micado_admin"] }, component: InformationEditPage },
-      { path: '/information/categories', meta: { auth: ["Application/micado_admin"] }, component: InformationCategory },
+      { path: '/information', component: InformationListPage },
+      { path: '/information/new', component: InformationNewPage },
+      { path: '/information/:id/edit/', component: InformationEditPage },
+      { path: '/information/categories', component: InformationCategory },
 
       // {path: '/testmarkdown', component: TestMarkdownConverter },
 
