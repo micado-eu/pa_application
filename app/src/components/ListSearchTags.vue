@@ -723,7 +723,10 @@ export default {
         }
       })
       Promise.all(creatorPromises).then(results => {
-        const creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, {[creator.umId]: creator}, {}))
+        let creatorCache = {}
+        if (results.length > 0) {
+          creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, {[creator.umId]: creator}, {}))
+        }
         this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
         this.translatedElements.forEach(e => e.creator = creatorCache[e.creator])
         if (this.alphabetical_sorting) {
