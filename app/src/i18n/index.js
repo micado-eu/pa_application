@@ -7,6 +7,8 @@ export default {
   en: enUS,
   it,
   ar,
-  de
-
+  de,
+  es,
+  zh,
+  nl
 }
