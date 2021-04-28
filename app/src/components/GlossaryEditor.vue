@@ -312,7 +312,7 @@ export default {
       }
     },
     async getMarkdown() {
-      return await this.HTMLToMarkdown(this.editor.getHTML())
+      return await this.HTMLToMarkdown(this.editor.getHTML(), this.$defaultLang, this.$userLang, true)
     },
     getHTML() {
       return this.editor.getHTML()
