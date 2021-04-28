@@ -304,7 +304,7 @@
                 </div>
                 <glossary-editor-viewer
                   class="viewer"
-                  :content="item.description"
+                  :content="item.description ? item.description : ''"
                   v-if="!loading"
                   all_fetched
                   :lang="lang"

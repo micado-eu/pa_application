@@ -499,7 +499,7 @@ export default {
     setContent(element, al) {
       this.internalTitle = element.title
       this.errorDefaultLangEmpty = !this.internalTitle
-      this.internalDescription = element.description
+      this.internalDescription = element.description ? element.description : ""
       // if (this.$refs.editor) {
       //   this.$refs.editor.setContent(this.internalDescription)
       // }
@@ -755,6 +755,7 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
+        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
