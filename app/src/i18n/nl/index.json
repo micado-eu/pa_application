@@ -174,7 +174,7 @@
         "pa_mig_tenant": "Kies of deze account een gebruiker van de app voor nieuwkomers is",
         "link": "Waar kan je meer info over deze stap vinden? Voeg de link toe",
         "link_name": "Kies een naam voor de stap link",
-        "event_cost": "Vul de prijs van het evenement in. Is het gratis?  Vink de checkbox aan.",
+        "event_cost": "Vul de prijs van het evenement in. Is het gratis? Vink de checkbox aan.",
         "form": "Vul het formulier in, in de standaard taal:",
         "process_name": "Vul de naam van het proces in",
         "process_description": "Beschrijf het proces",
@@ -220,15 +220,19 @@
     "lists": {
         "user_types": "Gebruikerstypes",
         "start_date": "Startdatum",
-        "creator": "Aangemaakt door/organisator",
+        "creator": "Aangemaakt door",
         "published": "Gepubliceerd",
         "category": "Categorie",
         "topics": "Thema's",
         "end_date": "Einddatum",
         "location": "Locatie",
-        "cost": "Prijs",
+        "cost": "Kostprijs",
         "cost_free": "Gratis",
-        "translation_state": "Status van de vertaling"
+        "translation_state": "Status van de vertaling",
+        "no": "Neen",
+        "yes": "Ja",
+        "unpublish_warning": "Opgelet: de publicatieknop uitschakelen betekent dat je mogelijk de vertalingen zal moeten aanpassen. Verdergaan?",
+        "publish_warning": "Opgelet: Als je deze inhoud publiceert wordt het zichtbaar op de app voor nieuwkomers. Je kan dan niets aan de inhoud wijzigen tenzij je de publicatie terug uitschakelt. Verdergaan?"
     },
     "menu": {
         "home_desc": " ",
