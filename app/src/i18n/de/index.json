@@ -65,7 +65,7 @@
         "element_tags": "Neue Tags hinzufügen",
         "element_topic": "Themenfeld auswählen",
         "element_user_type": "Nutzer/-innen-Gruppe auswählen",
-        "element_end_date": "Enddatum auswählen",
+        "element_end_date": "Enddatum auswählen. Achtung: Wenn das Enddatum erreicht wird, wird die Veröffentlichung zurückgezogen.",
         "edit_process": "Prozess editieren",
         "delete_process": "Prozess löschen",
         "doc_pics": "Wenn es Beispielbilder dieses Dokumententyps gibt, können diese hier hochgeladen werden",
@@ -106,7 +106,7 @@
     },
     "internal_reference": {
         "more_info_1": "Mehr Information für",
-        "more_info_2": "Ist zu finden unter",
+        "more_info_2": "ist zu finden unter:",
         "go_to_reference": "Zu Referenz gehen"
     },
     "input_labels": {
@@ -153,7 +153,7 @@
         "select_user_type": "Nutzer/-innen-Gruppe wählen",
         "select_topic": "Themenfeld auswählen",
         "not_translated": "Nicht übersetzt",
-        "finish_date": "Enddatum auswählen. Achtung: Wenn das Enddatum erreicht ist, wird die Veröffentlichung des Inhalts zurückgezogen",
+        "finish_date": "Enddatum auswählen.",
         "start_date": "Startdatum auswählen",
         "manage_steps": "Schritte verwalten",
         "guided_processes": "Schritt-für-Schritt Anleitungen",
@@ -426,6 +426,7 @@
         "activationDate": "Aktivierungsdatum der Umfrage",
         "expiryDate": "Ablaufdatum",
         "dest_opt_migrant": "MICADO mobile",
-        "dest_opt_ngo": "MICADO Zivilgesellschaft"
+        "dest_opt_ngo": "MICADO Zivilgesellschaft",
+        "dest_opt_pa": "MICADO FHH/Verwaltung"
     }
 }

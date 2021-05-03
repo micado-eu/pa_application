@@ -10,6 +10,10 @@ export function setFlowsProd (state, flows) {
   state.flowsProd = flows
 }
 
+export function setFlowsTemp (state, flows) {
+  state.flowsTemp = flows
+}
+
 export function setFlowsDocs (state, flowsDocs) {
   state.flowsDocs = flowsDocs
 }

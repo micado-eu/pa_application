@@ -30,6 +30,7 @@
     "jsonapi-vuex": "^3.1.1",
     "jsonwebtoken": "^8.5.1",
     "leaflet": "^1.6.0",
+    "lodash": "^4.17.21",
     "masterportalAPI": "git+https://github.com/citysciencelab/masterportalapi-MICADO.git",
     "ol": "^6.3.1",
     "performant-array-to-tree": "^1.8.1",

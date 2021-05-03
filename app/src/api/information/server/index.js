@@ -18,6 +18,15 @@ export default {
       })
       .catch(error_handler)
   },
+  fetchInformationTemp(defaultLang, userLang) {
+    return axiosInstance
+      .get(`/backend/1.0.0/temp-information?defaultlang=${defaultLang}&currentlang=${userLang}`, {
+      })
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler)
+  },
   saveNewInformationItem(eventItem) {
     return axiosInstance
       .post('/backend/1.0.0/information', eventItem)
@@ -85,7 +94,7 @@ export default {
     for (let i = 0; i < topics.topics.length; i += 1) {
       const body = {
         idInformation: topics.id,
-        idTopic: topics.topics[i].id
+        idTopic: topics.topics[i]
       }
       promises.push(axiosInstance.post(`/backend/1.0.0/information/${topics.id}/information-topics`, body).then((response) => response.data))
     }
@@ -96,7 +105,7 @@ export default {
     for (let i = 0; i < userTypes.userTypes.length; i += 1) {
       const body = {
         idInformation: userTypes.id,
-        idUserTypes: userTypes.userTypes[i].id
+        idUserTypes: userTypes.userTypes[i]
       }
       promises.push(axiosInstance.post(`/backend/1.0.0/information/${userTypes.id}/information-user-types`, body).then((response) => response.data))
     }

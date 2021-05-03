@@ -21,6 +21,15 @@ export function fetchFlowsProd (state, data) {
     })
 }
 
+export function fetchFlowsTemp (state, data) {
+  return client
+    .fetchFlowsTemp(data.defaultLang, data.userLang)
+    .then(flows => {
+      state.commit('setFlowsTemp', flows)
+      return flows
+    })
+}
+
 export function fetchFlowsDocs (state, data) {
   return client
     .fetchProcessProducedDocuments()

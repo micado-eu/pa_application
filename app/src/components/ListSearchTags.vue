@@ -304,7 +304,7 @@
                 </div>
                 <glossary-editor-viewer
                   class="viewer"
-                  :content="item.description"
+                  :content="item.description ? item.description : ''"
                   v-if="!loading"
                   all_fetched
                   :lang="lang"
@@ -512,8 +512,7 @@ export default {
       lastIndexTopics: 3,
       lastIndexUserTypes: 3,
       loading: true,
-      showExtraInfo: [],
-      creatorCache: {}
+      showExtraInfo: []
     }
   },
   components: {
@@ -522,10 +521,10 @@ export default {
     'date-time-selector': DateTimeSelector
   },
   methods: {
-    ...mapActions('glossary', ['fetchGlossaryProd']),
-    ...mapActions('information', ['fetchInformationProd']),
-    ...mapActions('flows', ['fetchFlowsProd']),
-    ...mapActions('event', ['fetchEventProd']),
+    ...mapActions('glossary', ['fetchGlossaryTemp']),
+    ...mapActions('information', ['fetchInformationTemp']),
+    ...mapActions('flows', ['fetchFlowsTemp']),
+    ...mapActions('event', ['fetchEventTemp']),
     ...mapActions('user', ['fetchSpecificUser']),
     getCurrentUser() {
       if (this.loggedUser) {
@@ -664,7 +663,9 @@ export default {
       })
     },
     async initializeList() {
-      this.translatedElements = await Promise.all(this.elements.map(async (e) => {
+      let creatorPromises = []
+      let creatorPromisesIds = []
+      this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
           const idx = e.translations.findIndex((t) => t.lang === this.lang)
@@ -710,35 +711,43 @@ export default {
               translation.location = e.location
               translation.cost = e.cost
             }
-            if (e.creator !== null && !(e.creator in this.creatorCache)) {
-              this.creatorCache[e.creator] = await this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant })
-              translation.creator = this.creatorCache[e.creator]
+            if (e.creator !== null && !creatorPromisesIds.includes(e.creator)) {
+              creatorPromisesIds.push(e.creator)
+              creatorPromises.push(this.fetchSpecificUser({ userid: e.creator, tenantid: this.$pa_tenant }))
+              translation.creator = e.creator
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
             return translation
           } else return undefined
         }
-      }))
-      this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
-      if (this.alphabetical_sorting) {
-        this.translatedElements.sort(this.compare)
-        for (const elem of this.translatedElements) {
-          const firstChar = elem.title.charAt(0).toUpperCase()
-          if (!this.alphabet.includes(firstChar)) {
-            this.alphabet.push(firstChar)
-            this.alphabetIds.push(elem.id)
-          }
+      })
+      Promise.all(creatorPromises).then(results => {
+        let creatorCache = {}
+        if (results.length > 0) {
+          creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, {[creator.umId]: creator}, {}))
         }
-      } else {
-        this.translatedElements.sort(this.compareTranslationDates)
-      }
-      this.filteredElementsBySearch = this.translatedElements
-      this.filteredElementsByCategory = this.translatedElements
-      this.filteredElementsByTopics = this.translatedElements
-      this.filteredElementsByUserTypes = this.translatedElements
-      this.filteredElementsByDate = this.translatedElements
-      this.loading = false
+        this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
+        this.translatedElements.forEach(e => e.creator = creatorCache[e.creator])
+        if (this.alphabetical_sorting) {
+          this.translatedElements.sort(this.compare)
+          for (const elem of this.translatedElements) {
+            const firstChar = elem.title.charAt(0).toUpperCase()
+            if (!this.alphabet.includes(firstChar)) {
+              this.alphabet.push(firstChar)
+              this.alphabetIds.push(elem.id)
+            }
+          }
+        } else {
+          this.translatedElements.sort(this.compareTranslationDates)
+        }
+        this.filteredElementsBySearch = this.translatedElements
+        this.filteredElementsByCategory = this.translatedElements
+        this.filteredElementsByTopics = this.translatedElements
+        this.filteredElementsByUserTypes = this.translatedElements
+        this.filteredElementsByDate = this.translatedElements
+        this.loading = false
+      })
     },
     topicTransl(topic) {
       const idx = topic.translations.findIndex((t) => t.lang === this.lang)
@@ -839,10 +848,10 @@ export default {
     this.lang = this.$i18n.locale
     const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
     Promise.all([
-      this.fetchGlossaryProd(langs),
-      this.fetchInformationProd(langs),
-      this.fetchFlowsProd(langs),
-      this.fetchEventProd(langs)
+      this.fetchGlossaryTemp(langs),
+      this.fetchInformationTemp(langs),
+      this.fetchFlowsTemp(langs),
+      this.fetchEventTemp(langs)
     ]).then(this.initializeList())
   }
 }

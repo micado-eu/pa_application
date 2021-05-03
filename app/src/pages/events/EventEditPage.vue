@@ -177,7 +177,6 @@ export default {
     this.fetchEvent()
       .then(() => {
         this.elem = this.eventElemById(this.$route.params.id)
-        console.log(this.elem)
         return this.fetchEventTopics(this.elem.id)
       })
       .then((eventTopics) => {

@@ -6,6 +6,10 @@ export function setGlossaryProd(state, glossary) {
   state.glossaryProd = glossary
 }
 
+export function setGlossaryTemp(state, glossary) {
+  state.glossaryTemp = glossary
+}
+
 export function updatePublished(state, data) {
   let idx = state.glossary.findIndex((i) => i.id === data.id)
   if (idx !== -1) {
