@@ -7,6 +7,7 @@
       bordered
       :content-style="{backgroundColor: '#DCE4E8',border: 'none'}"
       class="situation-drawer"
+      behavior="desktop"
     >
       <q-scroll-area class="fit">
         <q-list>

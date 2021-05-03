@@ -192,20 +192,20 @@
       />
     </form>
     </q-card>
-    <div class="row div-7">
-      <div class="col-9 flex flex-left div-8">
+    <q-item >
+      <q-item-section class="col-8 flex flex-left ">
         {{$t('input_labels.name')}}
-      </div>
-      <div class="col-1 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.is_published')}}
-      </div>
-      <div class="col-1 flex flex-center div-9">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
-      </div>
-      <div class="col-1 flex flex-center div-10">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.delete')}}
-      </div>
-    </div>
+      </q-item-section>
+    </q-item>
     <q-list
       bordered
       separator
@@ -216,24 +216,23 @@
         v-for="a_integration_type in intervention_types"
         :key="a_integration_type.id"
       >
-        <q-item-section class="col-9 flex flex-left section">{{showTypeLabel(a_integration_type)}}</q-item-section>
-        <q-item-section class="col-1 flex flex-left">
+        <q-item-section class="col-8 flex flex-left ">{{showTypeLabel(a_integration_type)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
           <q-toggle
             v-model="a_integration_type.published"
             color="accent"
             disable
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
           <q-icon
           :data-cy="'edittype'.concat(a_integration_type.id)"
-            id="icon"
             name="img:statics/icons/Edit.png"
             size="md"
             @click.stop="editIntegrationType(a_integration_type)"
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
           <q-icon
           :data-cy="'deletetype'.concat(a_integration_type.id)"
             name="img:statics/icons/Icon - Delete.svg"

@@ -401,23 +401,23 @@
       />
     </form>
     </q-card>
-    <div class="row div-4">
-      <div class="col-1 flex flex-left">
+    <q-item >
+      <q-item-section class="col-1">
         {{$t('input_labels.image')}}
-      </div>
-      <div class="col-8 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-7 flex flex-left  ">
         {{$t('input_labels.name')}}
-      </div>
-      <div class="col-1 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top" >
         {{$t('input_labels.is_published')}}
-      </div>
-      <div class="col-1 flex flex-center div-5">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
-      </div>
-      <div class="col-1 flex flex-center div-6">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.delete')}}
-      </div>
-    </div>
+      </q-item-section>
+    </q-item>
 
     <q-list
       bordered
@@ -429,22 +429,22 @@
         v-for="document_type in document_types"
         :key="document_type.id"
       >
-        <q-item-section class="col-1 flex flex-left">
+        <q-item-section class="col-1 ">
           <q-img
             :src="document_type.icon"
             spinner-color="white"
             id="image"
           />
         </q-item-section>
-        <q-item-section class="col-8 flex flex-left section">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
-        <q-item-section class="col-1 flex flex-left">
+        <q-item-section class="col-7 flex flex-left ">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
            <q-toggle
             v-model="document_type.published"
             color="accent"
             disable
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top ">
           <q-icon
           :data-cy="'editdoc'.concat(document_type.id)"
             id="icon"
@@ -453,7 +453,7 @@
             @click.stop="editingDoc(document_type)"
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1  flex flex-center top">
           <q-icon
           :data-cy="'deletedoc'.concat(document_type.id)"
             name="img:statics/icons/Icon - Delete.svg"
@@ -1252,9 +1252,7 @@ h5 {
   padding-left: 0px;
   padding-right: 0px;
 }
-#icon {
-  margin-right: 10px;
-}
+
 .span {
   margin-top: 10px;
 }
