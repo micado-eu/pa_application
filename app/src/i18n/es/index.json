@@ -41,7 +41,7 @@
         "element_topic": "Elija un tema",
         "element_user_type": "Seleccione un tipo de usuario",
         "element_start_date": "Seleccione la fecha de inicio",
-        "element_end_date": "Seleccione la fecha de finalización",
+        "element_end_date": "Seleccione la fecha de finalización. Atención: Pasada esta fecha, el contenido dejará de estar publicado.",
         "edit_process": "Editar proceso",
         "manage_process": "Gestionar proceso",
         "delete_process": "Borrar proceso",
@@ -65,7 +65,14 @@
         "link": "Inserte el enlace donde se puede encontrar más información sobre el paso",
         "parent_topic": "Seleccione un tema de nivel superior para este tema. Si este tema es de nivel superior, deje el espacio en blanco",
         "event_cost": "Precio del evento. Marque la casilla si el evento es gratuito.",
-        "link_name": "Elija un nombre para el enlace del paso"
+        "link_name": "Elija un nombre para el enlace del paso",
+        "survey_destinationApp": "Establezca la aplicación donde se utilizará el formulario",
+        "survey_expiryDate": "Establezca el día en el que desea que se cierre el formulario",
+        "survey_activationDate": "Establezca la fecha en la que desea que se active el formulario",
+        "survey_activation": "Decida si quiere activar este formulario (esto desactivará cualquier otro formulario para la misma aplicación)",
+        "survey_application": "Defina a qué aplicación se destina el formulario",
+        "survey_content": "Escriba la definición en JSON del formulario",
+        "survey_title": "Escriba el título del formulario"
     },
     "menu": {
         "title": "Mis herramientas",
@@ -141,7 +148,8 @@
         "change_pass": "Cambiar contraseña",
         "situation_manage_charts": "Gestionar gráficas",
         "validate_and_publish": "Validar y publicar",
-        "situation_about": "Acerca de"
+        "situation_about": "Acerca de",
+        "add_survey": "Añadir formulario"
     },
     "data_settings": {
         "manage_languages": "Gestionar idiomas en la plataforma",
@@ -165,7 +173,8 @@
         "translations": "Traducciones",
         "father_topics": "Principales temas que deben figurar en la aplicación de migrantes",
         "privacy": "Política de Privacidad",
-        "survey": "Encuesta"
+        "survey": "Encuesta",
+        "surveymanagement": "Gestionar formularios"
     },
     "input_labels": {
         "validator": "Para ser validado por",
@@ -212,7 +221,7 @@
         "guided_processes": "Procesos guiados",
         "manage_steps": "Gestionar pasos",
         "start_date": "Seleccionar fecha de inicio",
-        "finish_date": "Seleccionar fecha de finalización. Advertencia: Cuando la fecha de fin ocurra, el contenido será despublicado.",
+        "finish_date": "Seleccione la fecha de finalización.",
         "not_translated": "&ltNo traducido&gt",
         "select_topic": "Seleccionar tema",
         "select_user_type": "Seleccionar tipo de usuario",
@@ -245,7 +254,12 @@
         "parent_topic": "Tema de nivel superior",
         "event_free": "El evento es gratuito",
         "event_cost": "Coste del evento",
-        "link_name": "Nombre de enlace del paso"
+        "link_name": "Nombre de enlace del paso",
+        "related_app": "Aplicación",
+        "active": "Activo",
+        "end_date_survey": "Fecha de fin",
+        "start_date_survey": "Fecha de comienzo",
+        "answers": "Respuestas"
     },
     "profile": {
         "username": "Usuario",
@@ -402,5 +416,16 @@
         "apply": "Aplicar",
         "link": "Enlace",
         "text": "Texto"
+    },
+    "new_survey": {
+        "expiryDate": "Fecha de expiración",
+        "activationDate": "Fecha de activación del formulario",
+        "dest_opt_ngo": "Aplicación de las CSI",
+        "dest_opt_pa": "Aplicación de la AP",
+        "dest_opt_migrant": "Aplicación del migrante",
+        "destinationApp": "Aplicación destino",
+        "active": "¿Está activo?",
+        "survey": "Definición en JSON del formulario",
+        "title": "Título del formulario"
     }
 }
