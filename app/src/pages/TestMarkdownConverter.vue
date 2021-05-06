@@ -52,10 +52,7 @@ export default {
   },
   data() {
     return {
-      htmlToConvert: `Glossary: @[g,56](identity card)  
-      Information centre: @[i,174](Curso de castellano)  
-      Events: english Course  
-      Guided processes: @[p,47](enroll children to school)`,
+      htmlToConvert: `Een @[g,147](beëdigde vertaling) is een vertaling gemaakt door een beëdigd vertaler. Een beëdigd vertaler heeft een @[g,152](diploma) van een erkende vertaalopleiding en legt een professionele eed af voor een rechtbank. Een vertaling van een beëdigd vertaler is pas écht een @[g,147](beëdigde vertaling) als ze voorzien zijn van een slotformule van de vertaler, vergezeld door zijn of haar handtekening en ambtsstempel.`,
       editorHTML: "",
       convertedMarkdown: "",
       reconvertedHTML: "",

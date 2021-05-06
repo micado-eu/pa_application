@@ -230,29 +230,30 @@
                 :helpLabel="$t('help.element_topic')"
               ></help-label>
             </span>
-            <q-select
-              v-model="selectedTopic"
-              :options="internalTopics"
-              @input="setTopicObjectModel($event)"
-              data-cy="topic_select"
-              bg-color="grey-3"
-              :readonly="published"
-            />
-            <div
-              class="tag_list flex"
-              data-cy="topic_list"
+            <treeselect
+              :multiple="true"
+              :options="this.tree_options"
+              :flat="true"
+              :default-expand-level="1"
+              placeholder="Try selecting some options."
+              v-model="selectedTopics"
+              @select="selectedTopics.push($event)"
+              @deselect="selectedTopics = selectedTopics.filter(t => t !== $event)"
+              @clear="selectedTopics = []"
             >
               <div
-                class="tag_btn q-my-sm q-mr-sm"
-                v-for="(topic, idx) in selectedTopicsObjects"
-                :key="idx"
+                slot="value-label"
+                slot-scope="{ node }"
+                :class="{unpublished: !node.raw.published}"
+              >{{ node.label }}</div>
+              <label
+                slot="option-label"
+                slot-scope="{node}"
+                :class="{unpublished: !node.raw.published}"
               >
-                <span>{{topic.topic}} <span
-                    class="del_tag_btn"
-                    @click="removeTopic(idx)"
-                  >X</span></span>
-              </div>
-            </div>
+                {{ node.label }}
+              </label>
+            </treeselect>
           </div>
           <div
             v-if="user_types_enabled"
@@ -366,13 +367,16 @@ import HelpLabel from './HelpLabel'
 import GlossaryEditor from './GlossaryEditor'
 import DateTimeSelector from './DateTimeSelector'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
+import Treeselect from '@riophae/vue-treeselect'
+import '@riophae/vue-treeselect/dist/vue-treeselect.css'
 
 export default {
   name: 'EditElement',
   components: {
-    'help-label': HelpLabel,
-    'glossary-editor': GlossaryEditor,
-    'date-time-selector': DateTimeSelector
+    HelpLabel,
+    GlossaryEditor,
+    DateTimeSelector,
+    Treeselect
   },
   mixins: [translatedButtonMixin],
   props: {
@@ -445,11 +449,7 @@ export default {
       selectedCategory: '',
       selectedCategoryObject: {},
       langTab: '',
-      internalTopics: [],
-      internalTopicsObjects: [],
-      selectedTopic: '',
-      selectedTopicsObjects: [],
-      internalUserType: '',
+      selectedTopics: [],
       internalUserTypesObjects: [],
       selectedUserType: '',
       selectedUserTypesObjects: [],
@@ -499,7 +499,7 @@ export default {
     setContent(element, al) {
       this.internalTitle = element.title
       this.errorDefaultLangEmpty = !this.internalTitle
-      this.internalDescription = element.description
+      this.internalDescription = element.description ? element.description : ""
       // if (this.$refs.editor) {
       //   this.$refs.editor.setContent(this.internalDescription)
       // }
@@ -524,10 +524,10 @@ export default {
           translation.category = this.selectedCategoryObject
         }
         if (this.topics_enabled) {
-          translation.topics = this.selectedTopicsObjects
+          translation.topics = this.selectedTopics
         }
         if (this.user_types_enabled) {
-          translation.userTypes = this.selectedUserTypesObjects
+          translation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
         }
         if (this.is_event) {
           // Dates are expected to be UTC by the server
@@ -572,24 +572,6 @@ export default {
       this.internalCategories = this.internalCategories.filter((c) => c !== undefined)
       this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
-    setInternalTopicSelector(al) {
-      this.internalTopics = this.topic.map((ic) => {
-        const idx = ic.translations.findIndex((t) => t.lang === al)
-        const translation = ic.translations[idx]
-        this.internalTopicsObjects.push(translation)
-        let { topic } = translation
-        if (!topic || topic.length <= 0) {
-          topic = this.$t('input_labels.not_translated')
-        }
-        const idxSelectedTopic = this.selectedTopicsObjects.findIndex(
-          (st) => translation.id === st.id
-        )
-        if (idxSelectedTopic !== -1) {
-          this.selectedTopicsObjects[idxSelectedTopic] = translation
-        }
-        return topic
-      })
-    },
     setInternalUserTypeSelector(al) {
       this.internalUserTypes = this.user.map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
@@ -614,16 +596,6 @@ export default {
       )
       this.selectedCategoryObject = this.internalCategoriesObjects[idx]
     },
-    setTopicObjectModel(topic) {
-      const idx = this.internalTopicsObjects.findIndex(
-        (t) => t.topic === topic
-      )
-      const topicObj = this.internalTopicsObjects[idx]
-      const idxSelected = this.selectedTopicsObjects.findIndex((st) => st.topic === topicObj.topic)
-      if (idxSelected === -1) {
-        this.selectedTopicsObjects.push(topicObj)
-      }
-    },
     setUserTypeObjectModel(userType) {
       const idx = this.internalUserTypesObjects.findIndex(
         (t) => t.userType === userType
@@ -634,11 +606,6 @@ export default {
       if (idxSelected === -1) {
         this.selectedUserTypesObjects.push(userTypeObj)
       }
-    },
-    removeTopic(idx) {
-      this.selectedTopicsObjects.splice(
-        idx, 1
-      )
     },
     removeUserType(idx) {
       this.selectedUserTypesObjects.splice(
@@ -672,10 +639,10 @@ export default {
                 emptyTranslation.category = this.selectedCategoryObject
               }
               if (this.topics_enabled) {
-                emptyTranslation.topics = this.selectedTopicsObjects
+                emptyTranslation.topics = this.selectedTopics
               }
               if (this.user_types_enabled) {
-                emptyTranslation.userTypes = this.selectedUserTypesObjects
+                emptyTranslation.userTypes = this.selectedUserTypesObjects.map(u => u.id)
               }
               if (this.is_event) {
                 emptyTranslation.location = this.location
@@ -736,7 +703,7 @@ export default {
   },
   computed: {
     ...mapGetters('language', ['languages']),
-    ...mapGetters('topic', ['topic']),
+    ...mapGetters('topic', ['topic', 'tree_options']),
     ...mapGetters('user_type', ['user']),
     ...mapGetters({ loggedUser: 'auth/user' }),
     errorCategoryEmpty: function () {
@@ -788,6 +755,7 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
+        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
@@ -828,20 +796,8 @@ export default {
       }
       if (this.topics_enabled) {
         this.fetchTopic().then(() => {
-          if (this.elem && this.topics.length > 0) {
-            for (let i = 0; i < this.topics.length; i += 1) {
-              const idTopic = this.topics[i]
-              const idxTopic = this.topic.findIndex((t) => t.id === idTopic)
-              const idxTopicTranslation = this.topic[idxTopic]
-                .translations
-                .findIndex((t) => t.lang === al)
-              this.selectedTopicsObjects
-                .push(this.topic[idxTopic].translations[idxTopicTranslation])
-            }
-          }
-          if (this.topic.length > 0) {
-            this.setInternalTopicSelector(al)
-          }
+          console.log(this.topics)
+          this.selectedTopics = this.topics
           if (this.user_types_enabled) {
             this.fetchUserType().then(() => {
               if (this.elem && this.user_types.length > 0) {

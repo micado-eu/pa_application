@@ -139,21 +139,21 @@
       </q-card-section>
     </form>
     </q-card>
-    <div class="row div-5">
+    <q-item class="">
 
-      <div class="col-9 flex flex-left div-6">
+      <q-item-section class="col-8 flex flex-left ">
         {{$t('input_labels.name')}}
-      </div>
-      <div class="col-1 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
          {{$t('input_labels.is_published')}}
-      </div>
-      <div class="col-1 flex flex-center div-7">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
-      </div>
-      <div class="col-1 flex flex-center div-8">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.delete')}}
-      </div>
-    </div>
+      </q-item-section>
+    </q-item>
     <q-list
       bordered
       separator
@@ -164,26 +164,24 @@
         v-for="a_integration_category in intervention_categories"
         :key="a_integration_category.id"
       >
-        <q-item-section class="col-9 flex flex-left div-3">{{showCategoryLabel(a_integration_category)}}</q-item-section>
-        <q-item-section class="col-1 flex flex-left">
+        <q-item-section class="col-8 flex flex-left ">{{showCategoryLabel(a_integration_category)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
           <q-toggle
             v-model="a_integration_category.published"
             color="accent"
             disable
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
           <q-icon
           :data-cy="'editcategory'.concat(a_integration_category.id)"
-            id="icon"
-            style="margin-right:10px;"
             name="img:statics/icons/Edit.png"
             size="md"
             @click.stop="editIntegrationCategory(a_integration_category)"
           />
 
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
 
           <q-icon
           :data-cy="'deletecategory'.concat(a_integration_category.id)"

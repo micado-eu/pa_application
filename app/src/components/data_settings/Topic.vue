@@ -161,23 +161,23 @@
       />
         </form>
     </q-card>
-    <div class="row div-4">
-      <div class="col-1 flex flex-left">
+    <q-item>
+      <q-item-section class="col-1 flex flex-left">
         {{$t('input_labels.image')}}
-      </div>
-      <div class="col-8 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-7 flex flex-left">
         {{$t('input_labels.name')}}
-      </div>
-      <div class="col-1 flex flex-left">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.is_published')}}
-      </div>
-      <div class="col-1 flex flex-center div-5">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
-      </div>
-      <div class="col-1 flex flex-center div-6">
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.delete')}}
-      </div>
-    </div>
+      </q-item-section>
+    </q-item>
 
     <q-list
       bordered
@@ -196,8 +196,8 @@
             id="image"
           />
         </q-item-section>
-        <q-item-section class="col-8 flex flex-left section">{{showTopicLabel(a_topic)}}</q-item-section>
-        <q-item-section class="col-1 flex flex-left">
+        <q-item-section class="col-7 flex flex-left ">{{showTopicLabel(a_topic)}}</q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
           <q-toggle
             v-model="a_topic.published"
             color="accent"
@@ -205,7 +205,7 @@
             disable
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
           <q-icon
           :data-cy="'edittopic'.concat(a_topic.id)"
             id="icon"
@@ -214,7 +214,7 @@
             @click.stop="editingTopic(a_topic)"
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center">
+        <q-item-section class="col-1 flex flex-center top">
           <q-icon
           :data-cy="'deletetopic'.concat(a_topic.id)"
             name="img:statics/icons/Icon - Delete.svg"
