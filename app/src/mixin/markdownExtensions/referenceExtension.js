@@ -12,7 +12,7 @@ export default function referenceExtension() {
      * Second capture group: entity id
      * Third capture group: reference title
      */
-    regex: /@\[(.+),(\d+)\]\((.+)\)/g,
+    regex: /@\[([^,]+),(\d+)\]\(([^\)]+)\)/g,
     replace: function (match, entityType, entityId, referenceText) {
       return `<span data-mention-id="${entityId}" mention-type="${entityType}" class="mention">${referenceText}</span>`
     }
