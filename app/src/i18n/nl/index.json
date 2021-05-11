@@ -139,9 +139,9 @@
         "step_cost": "Hoeveel kost deze stap?",
         "doc_type": "Vul het document type in",
         "validable": "Kan of moet dit document type gevalideerd worden? Vink deze checkbox aan.",
-        "doc_pics": "Als er afbeeldingen zijn van het document typen, kan je ze hier uploaden",
+        "doc_pics": "Als er afbeeldingen zijn van het document type, kan je ze hier uploaden",
         "user_type": "Geef de naam van het type gebruiker in",
-        "user_type_description": "Beschrijf het type van de gebruiker",
+        "user_type_description": "Beschrijf het type gebruiker",
         "user_type_icon": "Upload een icon voor het type gebruiker",
         "topic": "Vul de naam van het thema in",
         "topic_icon": "Kies een icoon voor het thema",
@@ -160,7 +160,7 @@
         "edit_process": "Bewerk het proces",
         "manage_process": "Beheer het proces",
         "integration": "Ga naar de interventieplannen",
-        "migrant_data": "Ga naar de gebruikersgegevens",
+        "migrant_data": "Ga naar de gegevens van de nieuwkomers",
         "delete_user": "Verwijder deze gebruiker",
         "delete_intervention": "Verwijder de interventie",
         "word_count": "Aantal woorden in de beschrijving",
@@ -293,7 +293,7 @@
         "add_new_chart": "Nieuwe grafiek toevoegen",
         "situation_about": "Over",
         "view": "Bekijken",
-        "add_glossary": "Term toevoegen",
+        "add_glossary": "Item toevoegen",
         "add_event": "Evenement toevoegen",
         "add_information": "Informatie toevoegen",
         "categories": "Categorieën",
@@ -396,24 +396,24 @@
         "address": "Adres"
     },
     "warning": {
-        "topic": "Opgelet: het verwijderen van een onderwerp zal het ook verwijderen van bestaande processen. Wil je verder gaan?",
-        "user_type": "Opgelet: het verwijderen van een gebruikerstype zal het ook verwijderen uit bestaande processen. Wil je verder gaan?",
+        "topic": "Opgelet: als je dit thema verwijdert, wordt het ook verwijderen uit de bestaande stappenplannen. Wil je verder gaan?",
+        "user_type": "Opgelet: het verwijderen van een gebruikerstype zal het ook verwijderen uit bestaande stappenplannen. Wil je verder gaan?",
         "intervention_type": "Opgelet: het verwijderen van een interventietype zal alle interventietypes van hetzelfde type verwijderen. Wil je verder gaan?"
     },
     "text_editor": {
         "word_count": "Aantal woorden"
     },
     "translation_states": {
-        "editing": "Schrijven",
+        "editing": "Bewerken",
         "translatable": "Klaar om te vertalen",
-        "translating": "Vertalen",
+        "translating": "De vertaling is nog niet klaar",
         "translated": "Vertaald",
         "unknown": "Onbekend"
     },
     "internal_reference": {
         "more_info_1": "Meer informatie over",
-        "more_info_2": "kan gevonden worden op:",
-        "go_to_reference": "Ga naar referentie"
+        "more_info_2": "kan je vinden op:",
+        "go_to_reference": "Ga naar de pagina"
     },
     "application_title": "MICADO app",
     "new_survey": {
