@@ -18,16 +18,6 @@
           <span class="col"></span>
         </div>
         <div
-          class="warning-error-row row"
-          v-if="errorCategoryEmpty"
-        >
-          <span class="col"></span>
-          <span class="warning-error col">
-            {{$t("error_messages.category_empty")}}
-          </span>
-          <span class="col"></span>
-        </div>
-        <div
           class="row"
           v-if="selectedTranslationState === 2"
         >
@@ -134,7 +124,7 @@
           >
             <span class="q-my-lg label-edit">
               <help-label
-                :fieldLabel="$t('input_labels.select_category') + ' *'"
+                :fieldLabel="$t('input_labels.select_category')"
                 :helpLabel="$t('help.element_category')"
               ></help-label>
             </span>
@@ -619,7 +609,6 @@ export default {
       return (this.selectedTranslationState >= 2)
         || this.errorDefaultLangEmpty
         || (this.internalTitle.length <= 0)
-        || this.errorCategoryEmpty
         || this.errorDateTimeEmpty
         || this.$refs.editor.hasError()
     },
@@ -706,11 +695,6 @@ export default {
     ...mapGetters('topic', ['topic', 'tree_options']),
     ...mapGetters('user_type', ['user']),
     ...mapGetters({ loggedUser: 'auth/user' }),
-    errorCategoryEmpty: function () {
-      return this.categories_enabled
-        && Object.keys(this.selectedCategoryObject).length === 0
-        && this.selectedCategoryObject.constructor === Object
-    },
     errorDateTimeEmpty: function () {
       return this.is_event
         && (
