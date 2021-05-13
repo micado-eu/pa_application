@@ -450,7 +450,7 @@ export default {
       }
       else{
             //var working_survey = JSON.parse(JSON.stringify(this.new_survey, ['id','survey', 'active', 'activationDate', 'expiryDate', 'title', 'destinationApp']))
-        this.updateSurvey(working_survey)
+        this.updateSurvey(this.new_survey)
       this.hideAdd = false
       this.hideForm = true
       }
