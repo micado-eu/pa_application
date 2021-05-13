@@ -401,15 +401,18 @@
       />
     </form>
     </q-card>
-    <q-item >
+    <q-item>
       <q-item-section class="col-1">
         {{$t('input_labels.image')}}
       </q-item-section>
-      <q-item-section class="col-7 flex flex-left  ">
+      <q-item-section class="col-6 flex flex-left  ">
         {{$t('input_labels.name')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top" >
         {{$t('input_labels.is_published')}}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.transl_state')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
@@ -436,14 +439,17 @@
             id="image"
           />
         </q-item-section>
-        <q-item-section class="col-7 flex flex-left ">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
+        <q-item-section class="col-6 flex flex-left ">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
+        <q-item-section class="col-1 flex flex-center top" >
            <q-toggle
             v-model="document_type.published"
             color="accent"
             disable
           />
         </q-item-section>
+        <q-item-section class="col-1 flex flex-center top" >
+               {{getTranslationState(document_type.id)}}
+            </q-item-section>
         <q-item-section class="col-1 flex flex-center top ">
           <q-icon
           :data-cy="'editdoc'.concat(document_type.id)"
@@ -589,6 +595,26 @@ export default {
   },
 
   methods: {
+    getTranslationState(id){
+      var doc = this.document_types.filter((thedoc)=>{
+        return thedoc.id == id
+      })[0]
+      var state = doc.translations.filter((transl)=>{
+        return transl.lang == this.$defaultLang
+      })[0].translationState
+      if(state == 0){
+        return this.$i18n.t('translation_states.editing')
+      }
+      else if(state ==1){
+        return this.$i18n.t('translation_states.translatable')
+      }
+      else if(state==2){
+        return this.$i18n.t('translation_states.translating')
+      }
+      else{
+        return this.$i18n.t('translation_states.translated')
+      }
+    },
     onSubmit () {
       console.log(this.$refs.doc_type)
       console.log(this.$refs.icon)
