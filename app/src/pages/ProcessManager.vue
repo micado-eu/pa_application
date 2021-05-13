@@ -41,29 +41,31 @@
         />
       </div>
     </div>
-    <div class="center">
+    <div >
+      <div class="center">
       <UploadButton entity="process" />
+      </div>
       <q-list id="list">
-    <q-item class="row" id="item">
-    <q-item-section class="col-5 flex flex-left" id="left">
+    <q-item>
+    <q-item-section class="col-5 flex flex-left" >
         {{$t('input_labels.name')}}
     </q-item-section>
-    <q-item-section class="col-1 flex flex-left">
+    <q-item-section class="col-1 flex flex-center top" style="margin-left:0px">
         {{$t('input_labels.is_published')}}
       </q-item-section>
-       <q-item-section class="col-1 flex flex-center">
+       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.transl_state')}}
       </q-item-section>
-       <q-item-section class="col-1 flex flex-center">
+       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.comments')}}
       </q-item-section>
-    <q-item-section class="col-1 flex flex-center" id="section">
+    <q-item-section class="col-1 flex flex-center top" >
        {{$t('input_labels.edit')}}
     </q-item-section>
-    <q-item-section class="col-1 flex flex-center">
+    <q-item-section class="col-1 flex flex-center top">
     {{$t('input_labels.manage')}}
     </q-item-section> 
-    <q-item-section class="col-1 flex flex-center">
+    <q-item-section class="col-1 flex flex-center top">
       {{$t('input_labels.delete')}}
     </q-item-section>
         </q-item>

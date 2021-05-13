@@ -20,7 +20,7 @@
             <q-item-section class="col-1 flex flex-center top" >
              {{this.comment_present}}
             </q-item-section>
-            <q-item-section class="col-1 flex flex-center margin">
+            <q-item-section class="col-1 flex flex-center top">
               <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :tooltip="$t('help.edit_process')" @click.native="editProcess()" :data-cy="'editprocess'.concat(theProcess.id )"/>
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
