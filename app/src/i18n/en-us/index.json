@@ -148,7 +148,9 @@
     "read_more": "Read more",
     "read_less": "Read less",
     "update_link": "Update link",
-    "add_link": "Add link"
+    "add_link": "Add link",
+    "batch_upload":"Batch upload",
+    "download_template":"Download template"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",

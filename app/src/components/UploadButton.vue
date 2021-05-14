@@ -2,12 +2,12 @@
   <div class="col-4 justify-center">
     <q-btn
       color="info"
-      label="Batch Upload"
+      :label="$t('button.batch_upload')"
       class="add-button"
       size="9px"
       @click="show_dialog=true"
     />
-    <a :href="staticUrl">download template</a>
+    <a :href="staticUrl">{{$t('button.download_template')}}</a>
 
     <q-dialog
       v-model="show_dialog"
