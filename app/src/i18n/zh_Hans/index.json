@@ -1,0 +1,16 @@
+{
+    "menu": {
+        "title": "我的工具箱",
+        "home": "主页",
+        "usage": "使用情况报告",
+        "situation": "Migration situation Monitor",
+        "setting": "App settings",
+        "process": "Guided processes",
+        "ngo": "NGO users",
+        "migrant": "Migrant users",
+        "info": "General information",
+        "data": "Data settings",
+        "glossary": "Glossary"
+    },
+    "application_title": "MICADO 应用"
+}

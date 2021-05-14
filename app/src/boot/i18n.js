@@ -23,7 +23,8 @@ export const setLocale = locale => {
   i18nInstance.locale = locale
   axiosInstance.defaults.headers.common['Accept-Language'] = locale
 
-  import(`quasar/lang/${locale}`).then(lang => {
+  let quasarLang = locale.replace('_','-').toLowerCase()
+  import(`quasar/lang/${quasarLang}`).then(lang => {
     Quasar.lang.set(lang.default)
   })
 }
