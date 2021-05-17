@@ -16,8 +16,15 @@
         />
 
         <q-toolbar-title>{{$t("application_title")}}</q-toolbar-title>
-
+        <q-btn
+          v-if="this.$auth.loggedIn() && this.surveyJSON != null"
+          no-caps
+          style="background-color:white; color:#0B91CE"
+          :label="$t('data_settings.survey')"
+          @click="generateSurvey"
+        />
         <div>Micado v0.1</div>
+
       </q-toolbar>
     </q-header>
 
@@ -120,7 +127,28 @@
         </div>
       </q-list>
     </q-drawer>
+    <q-dialog v-model="alert">
+      <q-card>
+        <q-card-section>
+          <div class="text-h6">Survey</div>
+        </q-card-section>
 
+        <q-card-section class="q-pt-none">
+          <div id="surveyContainer">
+            <survey :survey="survey"></survey>
+          </div>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn
+            flat
+            label="OK"
+            color="primary"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
     <q-page-container>
       <q-page>
         <router-view />
@@ -133,6 +161,8 @@
 // import ListenToggle from 'components/ListenToggle'
 import storeMappingMixin from '../mixin/storeMappingMixin'
 import UserButton from 'components/UserButton'
+import * as SurveyVue from 'survey-vue'
+
 
 export default {
   name: 'Layout',
@@ -141,14 +171,18 @@ export default {
       getters: {
         check: 'auth/check',
         user: 'auth/user',
-        pic:'user/pic'
+        pic:'user/pic',
+        activeSurvey: 'survey/activeSurvey'
       },
       actions: {
-        getUserPic: 'user/getUserPic'
+        getUserPic: 'user/getUserPic',
+        fetchPASurvey:'survey/fetchPASurvey',
+        saveSurveyAnswer: 'survey/saveSurveyAnswer'
       }
     })],
   components: {
-    UserButton
+    UserButton,
+    SurveyVue
   },
   computed: {
     isLoggedIn () {
@@ -176,6 +210,9 @@ export default {
   data () {
     return {
       leftDrawerOpen: false,
+      alert: false,
+      survey: null,
+      surveyJSON: null,
       navs: [
         {
           label: 'menu.home',
@@ -276,6 +313,35 @@ export default {
     toLogin () {
       this.$auth.login()
     },
+    generateSurvey () {
+      console.log("computed surveyrender")
+      console.log(this.surveyJSON)
+      if (this.surveyJSON != null) {
+        this.survey = new SurveyVue.Model(this.surveyJSON)
+        console.log("after survey initialization")
+        this.survey.onComplete.add((result) => {
+          console.log("result of SURVEY")
+          console.log(result.data)
+          this.saveResults(result.data)
+        })
+        this.alert = true
+        return this.survey
+      } else {
+        return null
+      }
+    },
+     saveResults (answer) {
+      console.log(this.activeSurvey)
+      var formatted_results = {
+        idSurvey: this.activeSurvey.id,
+        idUser: this.user.umid,
+        answer: JSON.stringify(answer),
+        answerDate: new Date().toISOString()
+      }
+      console.log(formatted_results)
+      this.saveSurveyAnswer(formatted_results)
+      console.log("I am saving the results of the survey!!!!!")
+    },
     toLogout () {
       this.$auth.logout()
     },
@@ -283,6 +349,18 @@ export default {
       console.log('selected key')
       this.selectedKey = key
     }
+  },
+  created(){
+        this.fetchPASurvey(this.user.umid).then((sr) => {
+      console.log("I AM THE SUrVEY")
+      console.log(sr)
+      if(sr != null){
+        this.surveyJSON = JSON.parse(sr.survey)
+      }
+      console.log("I AM THE SUrVEY json")
+
+      console.log(this.surveyJSON)
+    })
   }
 
 }

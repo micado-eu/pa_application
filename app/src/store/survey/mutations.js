@@ -25,6 +25,10 @@ export function deleteSurvey (state, index) {
   const idx = state.survey.findIndex(item => item.id === index);
   if (idx !== -1) state.survey.splice(idx, 1);
 }
+
+export function setActiveSurvey (state, survey) {
+  state.activeSurvey = survey
+}
 /*export function delete_document_type (state, document_typeId) {
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types

@@ -38,5 +38,20 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler)
   },
+  fetchPASurvey (id) {
+    if(id == undefined){
+      id = 0
+    }
+    return axiosInstance
+      .get('/backend/1.0.0/specific-survey?destinationApp=1&userid=' + id)
+      .then(response => { return response.data })
+      .catch(error_handler)
+  },
+  saveSurveyAnswer(surveyid, answer){
+    return axiosInstance
+      .post('/backend/1.0.0/surveys/' + surveyid + '/survey-answers', answer)
+      .then(response => response.data)
+      .catch(error_handler);
+  },
 
 }

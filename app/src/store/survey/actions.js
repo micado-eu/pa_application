@@ -53,6 +53,25 @@ export function deleteSurvey (state, id) {
      )
 }
 
+export function fetchPASurvey (state, data) {
+  return client
+    .fetchPASurvey(data)
+    .then((survey) => {
+      console.log("in action get specific survey")
+      console.log(survey)
+      state.commit('setActiveSurvey', survey)
+      return survey
+    })
+}
+
+export function saveSurveyAnswer (state, answer) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log(answer)
+  return client
+    .saveSurveyAnswer(answer.idSurvey, answer)
+    
+}
+
 
 /*export function deleteDocument({commit}, document_type) {
 
