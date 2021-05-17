@@ -8,5 +8,6 @@
     "appBuildDate": "$APP_BUILD_DATE",
     "paUrl": "$PA_HOSTNAME",
     "paTenantDomain":"$PA_TENANT_DOMAIN",
-    "ngoTenantDomain":"$NGO_TENANT_DOMAIN"
+    "ngoTenantDomain":"$NGO_TENANT_DOMAIN",
+    "paMouseflow": "$PA_MOUSEFLOW"
 }
