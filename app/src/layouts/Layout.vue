@@ -150,14 +150,12 @@
             />
           </q-toolbar>
         </q-header>
-      <q-card>
+        <q-page-container>
+          <q-page class="q-pa-sm">
 
-
-        <q-card-section class="q-pt-none q-pa-md">
           <div id="surveyContainer">
             <survey :survey="survey"></survey>
           </div>
-        </q-card-section>
 
         <q-card-actions align="right">
           <q-btn
@@ -167,8 +165,9 @@
             v-close-popup
           />
         </q-card-actions>
-      </q-card>
-       </q-layout>
+          </q-page>
+        </q-page-container>
+      </q-layout>
     </q-dialog>
     <q-page-container>
       <q-page>
