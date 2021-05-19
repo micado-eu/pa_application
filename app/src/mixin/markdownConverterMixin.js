@@ -6,7 +6,7 @@ import referenceExtension from "./markdownExtensions/referenceExtension.js"
 export default {
   data() {
     return {
-      converter: new Converter({ extensions: [referenceExtension] })
+      converter: new Converter({ extensions: [referenceExtension], simpleLineBreaks: true})
     }
   },
   methods: {
@@ -23,9 +23,9 @@ export default {
       return md.replace(/<span data-mention-id="\d+" mention-type="\w+" class="mention">/g, "").replace(/<\/span>/g, "")
     },
     async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities=false, fakeEntitiesObj) {
-      let md = this.converter.makeMarkdown(html)
+      let cleanHTML = this.removeMentionTags(html)
+      let md = this.converter.makeMarkdown(cleanHTML)
       md = this.cleanSpaces(md)
-      md = this.removeMentionTags(md)
       md = await this.markReferences(md, defaultLang, userLang, isAllFetched, fakeEntities, fakeEntitiesObj)
       return md
     },
