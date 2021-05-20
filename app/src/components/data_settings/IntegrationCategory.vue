@@ -52,9 +52,9 @@
             
             <q-input
               counter
-              maxlength="30"
+              :maxlength="$envconfig.titleLimit"
               :rules="[
-              val => val.length <= 30 || 'Please use maximum 30 characters',
+              val => val.length <= $envconfig.titleLimit || 'Please use maximum 30 characters',
               val => !!val || 'Field is required'
               ]"
               ref="intervention_type"
