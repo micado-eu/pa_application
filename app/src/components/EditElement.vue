@@ -613,7 +613,32 @@ export default {
         || this.$refs.editor.hasError()
     },
     callSaveFn() {
-      if (!this.checkErrors()) {
+      if (this.checkErrors()) {
+        let errorMsg = ""
+        if (this.errorDefaultLangEmpty) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.fill_default_language"), " ", $defaultLangString, "<br/>")
+        }
+        if (this.errorDateTimeEmpty) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.date_time_empty"), "<br/>")
+        }
+        if (this.selectedTranslationState === 2) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.in_translation"), "<br/>")
+        }
+        if ((this.selectedTranslationState === 3) && this.elem.published) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.change_translated"), "<br/>")
+        }
+        if (this.internalTitle.length <= 0) {
+          errorMsg = errorMsg.concat(this.$t("error_messages.title_empty"), "<br/>")
+        }
+        if (this.$refs.editor.hasError()) {
+          errorMsg = errorMsg.concat(this.$refs.editor.errorMessage)
+        }
+        this.$q.notify({
+          type: 'warning',
+          message: errorMsg,
+          html: true
+        })
+      } else {
         this.saveContent(this.langTab).then(() => {
           for (const language of this.languages) {
             if (this.savedTranslations.findIndex((t) => t.lang === language.lang) === -1) {
@@ -739,7 +764,6 @@ export default {
     this.fetchLanguages().then(() => {
       this.langTab = this.languages.filter((l) => l.lang === al)[0].lang
       if (this.elem) {
-        console.log(this.elem)
         this.changeLanguageAux(al)
         this.published = this.elem.published
         this.elemId = this.elem.id
@@ -780,7 +804,6 @@ export default {
       }
       if (this.topics_enabled) {
         this.fetchTopic().then(() => {
-          console.log(this.topics)
           this.selectedTopics = this.topics
           if (this.user_types_enabled) {
             this.fetchUserType().then(() => {
