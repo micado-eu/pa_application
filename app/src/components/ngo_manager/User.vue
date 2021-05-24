@@ -1,6 +1,26 @@
 <template>
+<div>
   <q-item class="item">
-    <div>
+    <q-item-section class="col-9 flex flex-left ">{{ this.user.name }}</q-item-section>
+        
+        <q-item-section class="col-1 flex flex-center top">
+          <q-icon
+          
+            name="img:statics/icons/Icon - open up.svg"
+            size="md"
+            @click="showData()"
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
+          <q-icon
+          
+            name="img:statics/icons/Icon - Delete.svg"
+            @click="remove_user($event)"
+            size="md"
+          />
+        </q-item-section>
+
+   <!-- <div>
 
       <div class="row width">
         <div class="col h6 right">{{ this.user.name }}</div>
@@ -76,8 +96,76 @@
         </div>
       </q-card>
       <hr class="hr" />
-    </div>
+    </div>-->
+
   </q-item>
+          <q-item v-if="!hideData" style="padding-left:0px">
+        
+        <div class=" q-gutter-sm">
+          <div>
+          <b>{{$t('ngo.fulluser')}}:</b> {{ wso2FullUser}}
+        </div>
+        <div>
+          <b>{{$t('ngo.adminMail')}}:</b> {{ wso2Email}}
+        </div>
+        <div v-if="user.email!=null && user.email!=undefined">
+          <b>{{$t('ngo.contactMail')}}:</b> {{ user.email}}
+        </div>
+        <div  v-if="user.address!=null && user.address!=undefined">
+          <b>{{$t('ngo.address')}}:</b> {{ user.address}}
+        </div>
+          <!--<q-field
+            :label="$t('ngo.fulluser')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ wso2FullUser}}</div>
+            </template>
+          </q-field>
+          <q-field
+            :label="$t('ngo.adminMail')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ wso2Email }}</div>
+            </template>
+          </q-field>
+          <q-field
+            v-if="user.email!=null"
+            :label="$t('ngo.contactMail')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ user.email}}</div>
+            </template>
+          </q-field>
+          <q-field
+          v-if="user.address!=null"
+            :label="$t('ngo.address')"
+            stack-label
+          >
+            <template v-slot:control>
+              <div
+                
+                class="self-center full-width no-outline"
+                tabindex="0"
+              >{{ user.address}}</div>
+            </template>
+          </q-field>-->
+        </div>
+      </q-item>
+         <hr>
+
+</div>
 </template>
 
 <script>
@@ -124,6 +212,8 @@ export default {
 .item {
   padding-top: 16px;
   padding-bottom: 0px;
+  padding-left:0px; 
+  padding-right:0px
 }
 .username {
   font-size: 20px;

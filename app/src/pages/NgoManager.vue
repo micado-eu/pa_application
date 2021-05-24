@@ -1,8 +1,8 @@
   <template>
   <div class="container">
-    <div class=" row center">
+    <div class="center">
       <div
-        class="col"
+        class="col-10"
         id="div-1"
       >
         <q-input
@@ -20,10 +20,12 @@
           </template>
         </q-input>
       </div>
-      <div class="col">
+      <div class="col-2" style="display:inline-block">
         <q-btn
+        id="button"
           :label="$t('ngo.addNgo')"
-          color="info"
+          color="secondary"
+          no-caps
           @click="hideData=false"
         />
       </div>
@@ -38,7 +40,7 @@
         >
 
           <div class="row">
-            <div class="col">
+            <div class=" input-field col-4">
               <q-input
                 ref="new_ngo_name"
                 :rules="[val => !!val || 'Field is required']"
@@ -46,7 +48,7 @@
                 :label="$t('ngo.ngoName')"
               />
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_admin_name"
                 :rules="[val => !!val || 'Field is required']"
@@ -54,7 +56,7 @@
                 :label="$t('ngo.adminName')"
               />
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_admin_surname"
                 :rules="[val => !!val || '* Required']"
@@ -62,7 +64,10 @@
                 :label="$t('ngo.adminSurname')"
               />
             </div>
-            <div class="col">
+            
+          </div>
+          <div class="row">
+            <div class="input-field col-4">
               <q-input
                 ref="new_admin_email"
                 :rules="[val => !!val || '* Required']"
@@ -71,7 +76,7 @@
                 :label="$t('ngo.adminMail')"
               />
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_admin_pwd"
                 :rules="[val => !!val || '* Required']"
@@ -88,17 +93,18 @@
                 </template>
               </q-input>
             </div>
-          </div>
-          <div class="row">
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_ngo_address"
                 :rules="[val => !!val || '* Required']"
                 v-model="new_ngo_address"
                 :label="$t('ngo.address')"
               />
+          </div>
+          <div class="row">
+            
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_ngo_contact_mail"
                 :rules="[val => !!val || '* Required']"
@@ -107,7 +113,7 @@
                 :label="$t('ngo.contactMail')"
               />
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_ngo_tenant"
                 :rules="[val => !!val || '* Required']"
@@ -115,7 +121,7 @@
                 :label="$t('ngo.tenant')"
               />
             </div>
-            <div class="col">
+            <div class="input-field col-4">
               <q-input
                 ref="new_ngo_link"
                 :rules="[val => !!val || '* Required']"
@@ -123,28 +129,33 @@
                 :label="$t('ngo.link')"
               />
             </div>
-            <div class="col">
+            <div class="col-4">
             </div>
           </div>
-          <div class="row pa-md">
+          <div class="q-pa-md q-gutter-md" style="text-align:center">
             <q-btn
-              :label="$t('button.save')"
-              type="submit"
-              color="info"
-            />
-            <q-btn
-              :label="$t('button.reset')"
-              type="reset"
-              color="info"
-              flat
-              class="q-ml-sm"
-            />
-            <q-btn
+              no-caps
               :label="$t('button.cancel')"
-              color="info"
+              class="delete-button"
               @click="onReset();hideData=true"
               flat
-              class="q-ml-sm"
+              
+            />
+            <q-btn
+              no-caps
+              :label="$t('button.reset')"
+              type="reset"
+              flat
+              class="delete-button"
+
+            />
+
+            <q-btn
+              no-caps
+              class="save-button"
+              :label="$t('button.save')"
+              type="submit"
+              color="accent"
             />
           </div>
 
@@ -152,8 +163,20 @@
       </q-card-section>
     </q-card>
 
-    <div class="center">
+    <div>
       <q-list id="list">
+    <q-item class="no-pad">
+    <q-item-section class="col-9 flex flex-left" >
+      &nbsp;
+    </q-item-section>
+    <q-item-section class="col-1 flex flex-center top">
+    {{$t('button.view')}}
+    </q-item-section> 
+    <q-item-section class="col-1 flex flex-center top">
+      {{$t('input_labels.delete')}}
+    </q-item-section>
+        </q-item>
+        <hr style="border: 0.999px solid #424244;">
         <User
           v-for="user in filteredUsers"
           :key="user.id"
@@ -334,18 +357,41 @@ export default {
 .center {
   text-align: center;
 }
-#div-1 {
-  display: inline-block;
-  padding-right: 20px;
-  padding-left: 20px;
-}
 #input {
-  border-radius: 10px;
-  width: 590px;
-  font-size: 18px;
+  border-radius:10px;
+  width:100%;
+  font-size:18px
 }
 #list {
-  display: inline-block;
-  width: 750px;
+  margin:0 auto;
+}
+#button{
+    width:150px; 
+  margin-bottom:15px;
+  border-radius:2px
+}#div-1{
+  display:inline-block;
+  width:80%;
+  padding-right:30px;
+  padding-left:0px
+}
+.no-pad{
+  padding-left:0px;
+  padding-right: 0px;
+}
+.input-field{
+  padding-left:50px;
+  padding-right: 50px;
+}
+.delete-button {
+  background-color: white;
+  color: black;
+  border: 1px solid #c71f40;
+  width: 150px;
+  border-radius: 2px;
+}
+.save-button{
+    width: 150px;
+  border-radius: 2px;
 }
 </style>
