@@ -9,5 +9,6 @@
     "paUrl": "pa.micadoproject.eu",
     "paTenantDomain":"pa.micado.eu",
     "ngoTenantDomain":"ngo.micado.eu",
-    "paMouseflow": "6bf43914-3827-41e6-ad32-c51635e9e8b0"
+    "paMouseflow": "6bf43914-3827-41e6-ad32-c51635e9e8b0",
+    "titleLimit":30
 }

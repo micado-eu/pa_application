@@ -9,5 +9,6 @@
     "paUrl": "$PA_HOSTNAME",
     "paTenantDomain":"$PA_TENANT_DOMAIN",
     "ngoTenantDomain":"$NGO_TENANT_DOMAIN",
-    "paMouseflow": "$PA_MOUSEFLOW"
+    "paMouseflow": "$PA_MOUSEFLOW",
+    "titleLimit":"$TITLE_LIMIT"
 }

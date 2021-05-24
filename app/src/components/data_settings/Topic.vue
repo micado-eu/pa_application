@@ -47,10 +47,10 @@
             dense
             ref="topic"
             counter
-            maxlength="20"
+            :maxlength="$envconfig.titleLimit"
             :hint="$t('input_labels.required')"
             :rules="[ 
-            val => val.length <= 20 || 'Please use maximum 20 characters',
+            val => val.length <= $envconfig.titleLimit || 'Please use maximum 20 characters',
             val => !!val || 'Field is required'
             ]"
             v-model="int_topic_shell.translations.filter(filterTranslationModel(language.lang))[0].topic"

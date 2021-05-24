@@ -47,8 +47,8 @@
             counter
             :hint="$t('input_labels.required')"
             ref="user_type"
-            maxlength="20"
-            :rules="[ val => val.length <= 20 || 'Please use maximum 20 characters',
+            :maxlength="$envconfig.titleLimit"
+            :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 20 characters',
             val => !!val || 'Field is required']"
             v-model="int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].userType"
             :readonly="!(int_user_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"

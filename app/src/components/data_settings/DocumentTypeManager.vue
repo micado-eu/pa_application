@@ -48,9 +48,9 @@
             ref="doc_type"
             :hint="$t('input_labels.required')"
             counter
-            maxlength="25"
+            :maxlength="$envconfig.titleLimit"
             :rules="[ 
-            val => val.length <= 25 || 'Please use maximum 25 characters',
+            val => val.length <= $envconfig.titleLimit || 'Please use maximum 25 characters',
             val => !!val || 'Field is required'
             ]"
             v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"
