@@ -10,6 +10,12 @@
           :label="$t('data_settings.send_to_translation')"
           @click="sendToTranslation()"
         />
+        <q-spinner
+          class="q-ml-md"
+          color="accent"
+          v-if="loading"
+          size="3em"
+        />
       </q-card-section>
     </q-card>
   </div>
@@ -23,7 +29,8 @@ export default {
   name: "LanguageSettings",
   data () {
     return {
-      def_lang: this.$defaultLang
+      def_lang: this.$defaultLang,
+      loading: false
     }
   },
   computed: {
@@ -60,9 +67,24 @@ export default {
 
     },
     sendToTranslation () {
+      this.loading = true
       weblateClient.sendToTranslation()
         .then((result) => {
+          this.$q.notify({
+            type: 'positive',
+            message: this.$t("success_messages.send_translation")
+          })
           console.log(result)
+        })
+        .catch((error) => {
+          this.$q.notify({
+            type: 'negative',
+            message: this.$t("error_messages.send_translation") + error
+          })
+          console.err(error)
+        })
+        .finally(() => {
+          this.loading = false
         })
     }
   },

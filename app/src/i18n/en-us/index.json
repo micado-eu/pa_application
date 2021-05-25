@@ -400,6 +400,9 @@
     "tenant": "CSO tenant",
     "address": "Address"
   },
+  "success_messages": {
+    "send_translation": "Content has been sent to the translation platform."
+  },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
     "category_empty": "Please select a category.",
@@ -408,7 +411,8 @@
     "in_translation": "This content is waiting translation. The edited content will not be saved.",
     "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted.",
     "date_time_empty": "Please fill the start and end dates and times.",
-    "no_categories": "No published categories found."
+    "no_categories": "No published categories found.",
+    "send_translation": "Error while sending to translation platform: "
   },
   "warning": {
     "topic": "Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
