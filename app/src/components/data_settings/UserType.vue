@@ -268,7 +268,7 @@ export default {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
-          message: 'You need to fill in the required fields first'
+          message: this.$t('warning.req_fields')
         })
         return false
       }
@@ -288,12 +288,12 @@ export default {
       this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?',
+        message: this.$t('warning.delete_user_type'),
         actions: [
-          { label: 'Delete', color: 'red', handler: () => { 
+          { label: this.$t('button.delete'), color: 'red', handler: () => { 
             console.log(index)
             this.deleteUserType(index) } },
-          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+          { label: this.$t('button.back'), color: 'accent', handler: () => { console.log("not deleting") } }
         ]
       })
       
@@ -408,14 +408,14 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Publishing the user type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        message: this.$t('warning.publish_user_type'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({user:publishing_user, published: event})
             this.saveTranslationProd(value)
             this.cancelUserType()
              }},
-          { label: 'No', color: 'red', handler: () => { 
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
             this.int_user_type_shell.published = false } }
         ]
       })
@@ -425,12 +425,12 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Unpublishing the user type will delete all existing translations. Proceed?',
+        message: this.$t('warning.unpublish_user_type'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({user:publishing_user, published:event})
             this.deleteTranslationProd(value)}},
-          { label: 'No', color: 'red', handler: () => { 
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
             this.int_user_type_shell.published = true } }
         ]
       })

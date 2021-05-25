@@ -675,7 +675,7 @@ export default {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
-          message: 'You need to fill in the required fields first'
+          message: this.$t('warning.req_fields')
         })
         return false
       }
@@ -697,7 +697,7 @@ export default {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
-          message: 'You need to fill in the required fields first'
+          message: this.$t('warning.req_fields')
         })
         return false
       }

@@ -304,7 +304,7 @@ export default {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
-          message: 'You need to fill in the required fields first'
+          message: this.$t('warning.req_fields')
         })
         return false
       }
@@ -336,15 +336,15 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Publishing the intervention type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        message: this.$t('warning.publish_intervention_type'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({type:publishing_type, published: event})
             this.saveTranslationProd(value)
             this.cancelIntegrationType()
              }},
-          { label: 'No', color: 'red', handler: () => { 
-            this.int_topic_shell.published = false } }
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
+            this.int_type_shell.published = false } }
         ]
       })
        
@@ -353,13 +353,13 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Unpublishing the intervention type will delete all existing translations. Proceed?',
+        message:  this.$t('warning.unpublish_intervention_type'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({type:publishing_type, published:event})
             this.deleteTranslationProd(value)}},
-          { label: 'No', color: 'red', handler: () => { 
-            this.int_topic_shell.published = true } }
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
+            this.int_type_shell.published = true } }
         ]
       })
        
@@ -369,12 +369,12 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?',
+        message: this.$t('warning.delete_intervention_type'),
         actions: [
-          { label: 'Delete', color: 'red', handler: () => { 
+          { label: this.$t('button.delete'), color: 'red', handler: () => { 
             console.log(index)
             this.deleteIntegrationTypeElement(index) } },
-          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+          { label: this.$t('button.back'), color: 'accent', handler: () => { console.log("not deleting") } }
         ]
       })
       
