@@ -1,0 +1,61 @@
+description ↓ - language →,default
+survey.description,"Please, select your age"
+survey.title,Usability Test
+survey.page1.title,Please enter the required information
+survey.page1.age.title,"Please, select your age"
+survey.page1.agreement.title,"Could you give feedback on your agreement with the following statements?
+"
+survey.page1.agreement.columns.1,Strongly disagree
+survey.page1.agreement.columns.2,Disagree
+survey.page1.agreement.columns.3,Neither disagree nor agree
+survey.page1.agreement.columns.4,Agree
+survey.page1.agreement.columns.5,Strongly agree
+survey.page1.agreement.rows.organized,"The application/dashboard is well organized "
+survey.page1.agreement.rows.find,It was easy to find the information requested / needed
+survey.page1.agreement.rows.content,The content of the app is useful for the final users
+survey.page1.agreement.rows.icons,The icons are clear
+survey.page1.agreement.rows.colors,I like the colors of the app
+survey.page1.agreement.rows.organization,I like the organization of the app
+survey.page1.agreement.rows.layout,I like the layout of the app
+survey.page1.agreement.rows.learnable,I think the app can be learned quickly by colleagues and PA operators
+survey.page1.agreement.rows.work,"I would use this app in my work "
+survey.page1.appreciated.title,Could you indicate up to three aspects that you appreciated the most about the app?
+survey.page1.appreciated.1.title,1
+survey.page1.appreciated.2.title,2
+survey.page1.appreciated.3.title,3
+survey.page1.comments.title,Do you have any other comments or suggestions for developing the app?
+survey.page1.confident.title,How confident are you using digital technologies to perform the following tasks? (Please rate each one on a scale from 1 to 5)
+survey.page1.confident.columns.confidence1,Not at all confident
+survey.page1.confident.columns.confidence2,Slightly not confident
+survey.page1.confident.columns.confidence3,Neither not confident nor confident
+survey.page1.confident.columns.confidence4,Fairly confident
+survey.page1.confident.columns.confidence5,Completely confident
+survey.page1.confident.rows.search,Access the internet and search for information
+survey.page1.confident.rows.email,Set up an email account and use it for communication.
+survey.page1.confident.rows.apps,"Download Apps for your mobile device, set up accounts and use them."
+survey.page1.confident.rows.forms,"Access and use public services online, including filling in forms to complete a transaction or make a payment online."
+survey.page1.confident.rows.os,Install a new or replacing an old operating system.
+survey.page1.difficulttask.title,If you answered B or C could you indicate the tasks with which you had the greatest difficulty and what was not clear / easy to do for you?
+survey.page1.education.title,What is the highest educational level you have completed?
+survey.page1.education.choices.e1,Less than secondary
+survey.page1.education.choices.e2,"Secondary, upper secondary or vocational education and training (VET)"
+survey.page1.education.choices.e3,University studies
+survey.page1.gender.title,What is your gender?
+survey.page1.gender.choices.female,Female
+survey.page1.gender.choices.male,Male
+survey.page1.gender.choices.other,Prefer not to say/other
+survey.page1.id.title,ID participant
+survey.page1.improve.title,Could you indicate up to three aspects that you would most like to improve in the app?
+survey.page1.improve.1.title,1
+survey.page1.improve.2.title,2
+survey.page1.improve.3.title,3
+survey.page1.task.title,Thinking about the just completed tasks
+survey.page1.task.choices.a,I found it easy to do all the tasks
+survey.page1.task.choices.b,It was not clear to me how to perform some tasks
+survey.page1.task.choices.c,I had difficulty with most of the tasks
+survey.page1.worktime.title,"How long have you been working at your current position?
+"
+survey.page1.worktime.choices.wt1,less then a year
+survey.page1.worktime.choices.wt2,between one and five years
+survey.page1.worktime.choices.wt3,between five and ten years
+survey.page1.worktime.choices.wt4,more than ten
