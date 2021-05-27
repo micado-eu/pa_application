@@ -1,0 +1,267 @@
+{
+    "title": "Test di utilizzabilità",
+    "description": "Prego, indicare l'età",
+    "pages": [
+        {
+            "name": "page1",
+            "elements": [
+                {
+                    "type": "text",
+                    "name": "id",
+                    "title": "ID partecipante"
+                },
+                {
+                    "type": "text",
+                    "name": "age",
+                    "title": "Indica la tua età",
+                    "inputType": "number",
+                    "min": "16",
+                    "max": "84"
+                },
+                {
+                    "type": "radiogroup",
+                    "name": "gender",
+                    "title": "Quale è il tuo genere?",
+                    "choices": [
+                        {
+                            "value": "female",
+                            "text": "Donna"
+                        },
+                        {
+                            "value": "male",
+                            "text": "Uomo"
+                        },
+                        {
+                            "value": "other",
+                            "text": "Preferisco non dichiarare/altro"
+                        }
+                    ]
+                },
+                {
+                    "type": "radiogroup",
+                    "name": "education",
+                    "title": "Quale è il grado più alto di istruzione che hai conseguito?",
+                    "choices": [
+                        {
+                            "value": "e1",
+                            "text": "Inferiore al grado secondario"
+                        },
+                        {
+                            "value": "e2",
+                            "text": "Secondario, scuole superiori"
+                        },
+                        {
+                            "value": "e3",
+                            "text": "Studi universitari"
+                        }
+                    ]
+                },
+                {
+                    "type": "radiogroup",
+                    "name": "worktime",
+                    "title": "Da quanto lavori nella tua attuale mansione?",
+                    "choices": [
+                        {
+                            "value": "wt1",
+                            "text": "meno di un anno"
+                        },
+                        {
+                            "value": "wt2",
+                            "text": "tra uno e cinque anni"
+                        },
+                        {
+                            "value": "wt3",
+                            "text": "tra cinque e dieci anni"
+                        },
+                        {
+                            "value": "wt4",
+                            "text": "più di dieci anni"
+                        }
+                    ]
+                },
+                {
+                    "type": "matrix",
+                    "name": "confident",
+                    "title": "Quanto ti ritieni pratico nell'utilizzo delle tecnologie digitali per svolgere i seguenti compiti? (valuta in una scala da 1 a 5)",
+                    "columns": [
+                        {
+                            "value": "confidence1",
+                            "text": "Per nulla pratico"
+                        },
+                        {
+                            "value": "confidence2",
+                            "text": "Modertamente pratico"
+                        },
+                        {
+                            "value": "confidence3",
+                            "text": "Nella media"
+                        },
+                        {
+                            "value": "confidence4",
+                            "text": "Abbastanza pratico"
+                        },
+                        {
+                            "value": "confidence5",
+                            "text": "Molto pratico"
+                        }
+                    ],
+                    "rows": [
+                        {
+                            "value": "search",
+                            "text": "Accedere ad Internet e trovare informazioni"
+                        },
+                        {
+                            "value": "email",
+                            "text": "Attivare un account di posta ed utilizzarlo per comunicare."
+                        },
+                        {
+                            "value": "apps",
+                            "text": "Scaricare applicativi per mobile device, impostare account per i medesimi."
+                        },
+                        {
+                            "value": "forms",
+                            "text": "Accedere ed utilizzare servizi pubblici online, incluso compilare moduli e completare transazioni o effettuare pagamenti online."
+                        },
+                        {
+                            "value": "os",
+                            "text": "Installare o aggiornare un sistema operativo obsoleto."
+                        }
+                    ]
+                },
+                {
+                    "type": "matrix",
+                    "name": "agreement",
+                    "title": "Puoi indicare il tuo livello di accordo in merito alle affermazioni che seguono?",
+                    "columns": [
+                        {
+                            "value": "1",
+                            "text": "Forte disaccordo"
+                        },
+                        {
+                            "value": "2",
+                            "text": "Disaccordo"
+                        },
+                        {
+                            "value": "3",
+                            "text": "Neutrale"
+                        },
+                        {
+                            "value": "4",
+                            "text": "Accordo"
+                        },
+                        {
+                            "value": "5",
+                            "text": "Completo accordo"
+                        }
+                    ],
+                    "rows": [
+                        {
+                            "value": "organized",
+                            "text": "L'applicazione è bene organizzata"
+                        },
+                        {
+                            "value": "find",
+                            "text": "Trovare le informazioni necessarie/richieste è stato facile"
+                        },
+                        {
+                            "value": "content",
+                            "text": "Il contenuto dell'applicativo è utile per gli utenti finali"
+                        },
+                        {
+                            "value": "icons",
+                            "text": "Le icone sono chiare"
+                        },
+                        {
+                            "value": "colors",
+                            "text": "Mi piacciono i colori dell'applicativo"
+                        },
+                        {
+                            "value": "organization",
+                            "text": "Mi piace come l'applicativo è strutturato"
+                        },
+                        {
+                            "value": "layout",
+                            "text": "Mi piace l'aspetto grafico dell'applicativo"
+                        },
+                        {
+                            "value": "learnable",
+                            "text": "Penso che l'lapplicativo possa essere appreso velocemente da colleghi e operatori della PA"
+                        },
+                        {
+                            "value": "work",
+                            "text": "Utilizzerei questo applicativo nel mio lavoro"
+                        }
+                    ]
+                },
+                {
+                    "type": "radiogroup",
+                    "name": "task",
+                    "title": "Pensando ai compiti completati",
+                    "choices": [
+                        {
+                            "value": "a",
+                            "text": "Ho trovato facile svolgere tutti i compiti"
+                        },
+                        {
+                            "value": "b",
+                            "text": "Non mi era chiaro come svolgere alcuni compiti"
+                        },
+                        {
+                            "value": "c",
+                            "text": "Ho avuto difficoltà con molti compiti"
+                        }
+                    ]
+                },
+                {
+                    "type": "comment",
+                    "name": "difficulttask",
+                    "title": "Se ha risposto B o C puoi indicare i compiti che sono stati più difficili e che non erano chiari/semplici per te?"
+                },
+                {
+                    "type": "multipletext",
+                    "name": "appreciated",
+                    "title": "Puoi indicare tre aspetti che hai apprezzato dell'applicativo?",
+                    "items": [
+                        {
+                            "name": "1",
+                            "title": "1"
+                        },
+                        {
+                            "name": "2",
+                            "title": "2"
+                        },
+                        {
+                            "name": "3",
+                            "title": "3"
+                        }
+                    ]
+                },
+                {
+                    "type": "multipletext",
+                    "name": "improve",
+                    "title": "Puoi indicare tre aspetti che miglioreresti nell'applicazione?",
+                    "items": [
+                        {
+                            "name": "1",
+                            "title": "1"
+                        },
+                        {
+                            "name": "2",
+                            "title": "2"
+                        },
+                        {
+                            "name": "3",
+                            "title": "3"
+                        }
+                    ]
+                },
+                {
+                    "type": "comment",
+                    "name": "comments",
+                    "title": "Hai dei commenti o suggerimenti per il migloramento dell'applicativo?"
+                }
+            ],
+            "title": "Cortesemente compila le domande che seguono"
+        }
+    ]
+}
