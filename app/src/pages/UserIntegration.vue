@@ -243,13 +243,13 @@ export default {
     deletePlan(id){
        this.$q.notify({
         type: 'warning',
-        message: 'Warning: This will delete the plan and all of its interventions. Proceed?',
+        message: this.$t('warning.delete_plan'),
         actions: [
-          { label: 'Delete', color: 'red', handler: () => { 
+          { label: this.$t('button.delete'), color: 'red', handler: () => { 
              console.log("inside deleting plan")
              console.log(id)
              this.deleteInterventionPlan(id) } },
-          { label: 'Back', color: 'accent', handler: () => { console.log("not deleting") } }
+          { label: this.$t('button.back'), color: 'accent', handler: () => { console.log("not deleting") } }
         ]
       })
      

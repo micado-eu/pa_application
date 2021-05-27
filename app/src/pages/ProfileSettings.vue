@@ -246,7 +246,7 @@ export default {
       }
       else{
         this.$q.notify({
-        message: 'The new password and the confirmation password do not match',
+        message: this.$t('warning.change_pass'),
         color: 'purple'
       })
       }
@@ -294,7 +294,7 @@ export default {
       if(this.user_pic_orig != this.the_user.picture){
            this.$q.notify({
         type: 'warning',
-        message: 'Do you really want to change picture?',
+        message: this.$t('warning.change_pic'),
         actions: [
           { label: 'Yes', color: 'red', handler: () => {
             if(this.user_pic_orig == null){

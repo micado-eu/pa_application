@@ -417,7 +417,28 @@
   "warning": {
     "topic": "Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
     "user_type": "Warning: Deleting an user type will also delete it from the existing guided processes. Proceed?",
-    "intervention_type": "Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?"
+    "intervention_type": "Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?",
+    "publish_process": "Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_process": "Warning: Unpublishing the process will make it disappear from the migrant app. Proceed?",
+    "publish_intervention_type":"Warning: Publishing the intervention type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_intervention_type":"Warning: Unpublishing the intervention type will delete all existing translations. Proceed?",
+    "delete_intervention_type":"Warning: Deleting an intervention type will also delete all the interventions of the same tipe. Proceed?",
+    "publish_doc_type":"Warning: Publishing the document type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_doc_type":"Warning: Unpublishing the document type will delete all existing translations and unpublish all related processes. Proceed?",
+    "delete_doc_type":"Warning: Deleting a document type will also delete it from all the processes and steps where it appears. Proceed?",
+    "publish_intervention_categroy":"Warning: Publishing the category type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_intervention_category":"Warning: Unpublishing the category type will delete all existing translations. Proceed?",
+    "delete_intervention_category":"Warning: Deleting a category will also delete all the intervention type of that category with their related interventions. Proceed?",
+    "publish_topic": "Warning: Publishing the topic will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_topic": "Warning: Unpublishing the topic will delete all existing translations. Proceed?",
+    "delete_topic":"Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
+    "publish_user_type": "Warning: Publishing the user type will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
+    "unpublish_user_type": "Warning: Unpublishing the user type will delete all existing translations. Proceed?",
+    "delete_user_type":"Warning: Deleting a user type will also delete it from the existing guided processes. Proceed?",
+    "req_fields":"You need to fill in the required fields first",
+    "delete_plan":"Warning: This will delete the plan and all of its interventions. Proceed?",
+    "change_pass":"The new password and the confirmation password do not match",
+    "change_pic":"Do you really want to change picture?"
   },
   "text_editor": {
     "word_count": "Word count"

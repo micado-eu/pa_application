@@ -427,7 +427,7 @@ export default {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
-          message: 'You need to fill in the required fields first'
+          message:this.$t('warning.req_fields')
         })
         return false
       }
@@ -522,15 +522,15 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
+        message: this.$t('warning.publish_process'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({process:publishing_process, published:event})
             this.saveTranslationProd(value)
             this.saveStepTranslationProd(publishing_steps)
             this.saveSteplinkTranslationProd(this.related_links)
             setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300); } },
-          { label: 'No', color: 'red', handler: () => { 
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
             this.edit_process.published = false } }
         ]
       })
@@ -540,15 +540,15 @@ export default {
         this.$q.notify({
         type: 'warning',
         timeout:0,
-        message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
+        message:  this.$t('warning.unpublish_process'),
         actions: [
-          { label: 'Yes', color: 'accent', handler: () => { 
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
             this.updatePublished({process:publishing_process, published:event})
             this.deleteTranslationProd(value)
             this.deleteStepTranslationProd(publishing_steps)
             this.deleteSteplinkTranslationProd(this.related_links)
             }},
-          { label: 'No', color: 'red', handler: () => { 
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
             this.edit_process.published = true } }
         ]
       })
