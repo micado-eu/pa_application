@@ -1,5 +1,5 @@
 <template>
-  <q-layout id="migration-situation-container" v-if="boards.length > 2">
+  <q-layout id="migration-situation-container" v-if="!isLoading">
     <q-page-container>
       <q-page>
         <router-view />
@@ -11,44 +11,8 @@
 export default {
   name: "MigrationSituation",
   data: function () {
-    return {}
-  },
-  computed: {
-    boards() {
-      return this.$store.state.statistics.boards.map((b) => ({
-        title: b,
-        link: `/situation/${b}`
-      }))
-    },
-    menuItems() {
-      return [
-        { title: "Main page", link: "/situation/main", children: [] },
-        { title: "Manage Charts", link: "/situation/overview", children: [] },
-        { title: "Map", link: "/situation/map", children: [] },
-        {
-          title: "Dashboards",
-          link: "/situation/bla",
-          children: [...this.boards]
-        }
-      ]
-    }
-  },
-  methods: {
-    getCategory(board) {
-      return this.$store.state.statistics.categories.filter(
-        (c) => c.board === board.title
-      )
-    },
-    /**
-     * jump to the corresponding chartGroup when clicked
-     */
-    onClickNav(board, category) {
-      const baseURL = this.$route.path.substring(
-        0,
-        this.$route.path.indexOf("situation") + 10
-      )
-      // location.href = baseURL + board + "#" + category;
-      return `${baseURL + board}#${category}`
+    return {
+      isLoading: true,
     }
   },
   created() {
@@ -58,6 +22,7 @@ export default {
     if (true) {
       this.$store.dispatch("statistics/fetchStatistics").then((res) => {
         this.$q.loading.hide()
+        this.isLoading = false
       })
     } else {
       this.$q.loading.hide()
