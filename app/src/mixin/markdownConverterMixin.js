@@ -70,7 +70,6 @@ export default {
     },
     removeReferencesFromExternalLinks(md) {
       // clears references in both the [] and () of a link
-      console.log("removing")
       let clearRegex1 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(.*)@\[.*?,\d+\]\((.*?)\)(.*\))/g
       let result = md
       let splitted = md.split(clearRegex1)
