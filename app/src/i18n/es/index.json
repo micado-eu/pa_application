@@ -106,7 +106,7 @@
         "add_document": "Agregar documento",
         "integration": "Integración",
         "add": "Añadir",
-        "delete": "Borrar",
+        "delete": "Eliminar",
         "manage": "Administrar",
         "save": "Guardar",
         "reset": "Reiniciar",
@@ -149,7 +149,9 @@
         "situation_manage_charts": "Gestionar gráficas",
         "validate_and_publish": "Validar y publicar",
         "situation_about": "Acerca de",
-        "add_survey": "Añadir formulario"
+        "add_survey": "Añadir formulario",
+        "batch_upload": "Subir por lotes",
+        "download_template": "Descargar plantilla"
     },
     "data_settings": {
         "manage_languages": "Gestionar idiomas en la plataforma",
@@ -364,12 +366,35 @@
         "fill_default_language": "Complete el título del idioma predeterminado: ",
         "in_translation": "Este contenido está esperando traducción. El contenido editado no se guardará.",
         "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales.",
-        "date_time_empty": "Por favor complete las fechas y horas de inicio y fin."
+        "date_time_empty": "Por favor complete las fechas y horas de inicio y fin.",
+        "send_translation": "Error al mandar a plataforma de traducción: ",
+        "no_categories": "No se han encontrado categorías publicadas."
     },
     "warning": {
         "topic": "Advertencia: Eliminar un tema también lo eliminará de los procesos guiados existentes. ¿Continuar?",
         "user_type": "Advertencia: Eliminar un tipo de usuario también lo eliminará de los procesos guiados existentes. ¿Continuar?",
-        "intervention_type": "Advertencia: Eliminar un tipo de intervención también eliminará todas las intervenciones del mismo tipo. ¿Continuar?"
+        "intervention_type": "Advertencia: Eliminar un tipo de intervención también eliminará todas las intervenciones del mismo tipo. ¿Continuar?",
+        "change_pic": "¿Quieres cambiar la foto?",
+        "change_pass": "La nueva contraseña y la contraseña de confirmación no coinciden",
+        "delete_plan": "Advertencia: Se eliminará el plan y todas sus intervenciones. ¿Proceder?",
+        "req_fields": "Tiene que completar todos los campos obligatorios primero",
+        "delete_user_type": "Advertencia: Eliminar un tipo de usuario lo eliminará también de los procesos guiados existentes. ¿Proceder?",
+        "unpublish_user_type": "Advertencia: Despublicar el tipo de usuario eliminará todas sus traducciones existentes. ¿Proceder?",
+        "publish_user_type": "Advertencia: Publicar el tipo de usuario lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "delete_topic": "Advertencia: Eliminar un tema también lo eliminará de los procesos guiados. ¿Proceder?",
+        "unpublish_topic": "Advertencia: Despublicar el tema eliminará todas sus traducciones existentes. ¿Proceder?",
+        "publish_topic": "Advertencia: Publicar el tema lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "delete_intervention_category": "Advertencia: Eliminar una categoría eliminará también todos los tipos de intervención de esa categoría con sus intervenciones relacionadas. ¿Proceder?",
+        "unpublish_intervention_category": "Advertencia: Despublicar un tipo de categoría eliminará todas las traducciones existentes. ¿Proceder?",
+        "publish_intervention_categroy": "Advertencia: Publicar un tipo de categoría lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "delete_doc_type": "Advertencia: Eliminar un tipo de documento lo eliminará también de todos los procesos y pasos en los que aparezca. ¿Proceder?",
+        "unpublish_doc_type": "Advertencia: Despublicar el tipo de documento eliminará todas las traducciones existentes y despublicará todos los procesos relacionados. ¿Proceder?",
+        "publish_doc_type": "Advertencia: Publicar el tipo de documento lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "delete_intervention_type": "Advertencia: Eliminar un tipo de intervención eliminará también todas las intervenciones del mismo tipo. ¿Proceder?",
+        "unpublish_intervention_type": "Advertencia: Despublicar el tipo de intervención eliminará todas las traducciones existentes. ¿Proceder?",
+        "publish_intervention_type": "Advertencia: Publicar el tipo de intervención lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "unpublish_process": "Advertencia: Despublicar el proceso lo hará desapareecer de la app de migrantes. ¿Proceder?",
+        "publish_process": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?"
     },
     "text_editor": {
         "word_count": "Recuento de palabras"
@@ -400,7 +425,7 @@
         "personal_profile": "Perfil personal"
     },
     "internal_reference": {
-        "go_to_reference": "Ir a la referencia",
+        "go_to_reference": "Ir a referencia",
         "more_info_2": "se puede encontrar en:",
         "more_info_1": "Más información sobre"
     },
@@ -427,5 +452,8 @@
         "active": "¿Está activo?",
         "survey": "Definición en JSON del formulario",
         "title": "Título del formulario"
+    },
+    "success_messages": {
+        "send_translation": "El contenido ha sido mandado a la plataforma de traducción."
     }
 }
