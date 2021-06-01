@@ -564,7 +564,7 @@ export default {
       this.internalCategoriesObjects = this.internalCategoriesObjects.filter((c) => c !== undefined)
     },
     setInternalUserTypeSelector(al) {
-      this.internalUserTypes = this.user.map((ic) => {
+      this.internalUserTypes = this.user.filter(ut => ut.published).map((ic) => {
         const idx = ic.translations.findIndex((t) => t.lang === al)
         const translation = ic.translations[idx]
         this.internalUserTypesObjects.push(translation)
