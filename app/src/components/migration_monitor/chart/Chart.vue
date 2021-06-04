@@ -54,11 +54,11 @@
       <div class="row">
         <div class="col">
           <p>
-            <strong>{{$t('migration_monitor.data_provider')}}</strong> EU
+            <strong>{{$t('migration_monitor.chart_data_provider')}}</strong> EU
             <br />
             <strong>{{$t('migration_monitor.updated_time')}}</strong> 2019.07
             <br />
-            <strong>{{$t('migration_monitor.statistics')}}</strong> {{ lower }} {{$t('migration_monitor.to')}}
+            <strong>{{$t('migration_monitor.Statistics')}}</strong> {{ lower }} {{$t('migration_monitor.to')}}
             {{ upper }}
           </p>
         </div>
