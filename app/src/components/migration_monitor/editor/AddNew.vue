@@ -207,7 +207,7 @@
             size="md"
             :label="$t('button.cancel')"
             @click="reset()"
-            to="/situation/editor"
+            to="/situation/overview"
           />
         </div>
         <div class="q-pa-md col-6" style="text-align: left">
@@ -246,7 +246,7 @@
         <q-card-section>
           <div class="text-h6">{{$t('error_messages.add_chart_title')}}</div>
         </q-card-section>
-        <q-card-section class="q-pt-none"> 
+        <q-card-section class="q-pt-none">
           {{$t('error_messages.add_chart_description_1')}}<br />
           {{$t('error_messages.add_chart_description_2')}}
         </q-card-section>
