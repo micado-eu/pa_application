@@ -288,17 +288,17 @@
         "status": "Estado"
     },
     "information_centre": {
-        "list_title": "Centro de Información",
-        "add_new": "Agregar nueva información al centro de información",
-        "edit": "Editar información desde el Centro de información",
-        "categories_title": "Centro de información - Categorías",
+        "list_title": "Información útil",
+        "add_new": "Agregar nueva información a la información útil",
+        "edit": "Editar información de la información útil",
+        "categories_title": "Información útil - Categorías",
         "categories_error": "No se puede eliminar o desactivar la publicación de una categoría cuando un artículo tiene esta categoría"
     },
     "events": {
         "list_title": "Eventos y cursos",
-        "add_new": "Agregar nuevo evento a la lista de eventos",
-        "edit": "Editar evento de la lista de eventos",
-        "categories_title": "Eventos - Categorías",
+        "add_new": "Agregar nuevo evento o curso a la lista de eventos y cursos",
+        "edit": "Editar evento o curso de la lista de eventos y cursos",
+        "categories_title": "Eventos y cursos - Categorías",
         "categories_error": "No se puede eliminar o desactivar la publicación de una categoría cuando un artículo tiene esta categoría"
     },
     "glossary": {
