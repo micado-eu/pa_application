@@ -1,9 +1,9 @@
 {
     "menu": {
-        "title": "Meine Tools",
+        "title": "Meine Werkzeuge",
         "home": "Start",
         "usage": "MICADO-Nutzungsübersicht",
-        "situation": "Lagebild Flüchtlinge",
+        "situation": "Migration in Zahlen",
         "setting": "App settings",
         "process": "Schritt-für-Schritt-Anleitungen",
         "ngo": "NGO users",
@@ -82,7 +82,7 @@
         "location": "Ort der Veranstaltung nennen",
         "integration": "Zu Interventionsplänen gehen",
         "delete_user": "Nutzer/-in in Migrant/-innen-App entfernen",
-        "manage_process": "Prozess verwalten",
+        "manage_process": "Schritte verwalten",
         "migrant_data": "Zu Nutzer/-innen-Daten gehen",
         "pa_password": "Passwort einfügen, das für Login genutzt wird",
         "pa_name": "Vornamen des/der Nutzer/-in einfügen",
@@ -102,11 +102,15 @@
         "survey_application": "Angeben, in welcher App die Umfrage durchgeführt wird",
         "survey_activation": "Diese Umfrage aktivieren (alle anderen Umfragen in der selben App werden deaktiviert)",
         "survey_activationDate": "Aktivierungsdatum der Umfrage angeben",
-        "survey_expiryDate": "Enddatum der Umfrage angeben"
+        "survey_expiryDate": "Enddatum der Umfrage angeben",
+        "chart_description": "Diagramm beschreiben",
+        "category": "Wenn die Kategorie noch nicht existiert, wird diese automatisch erstellt",
+        "board": "Wenn die Gruppe noch nicht existiert, wird diese autmatisch erstellt",
+        "enter_chart_title": "Diagrammtitel wählen"
     },
     "internal_reference": {
-        "more_info_1": "Mehr Informationen für",
-        "more_info_2": "Ist zu finden unter",
+        "more_info_1": "Mehr Information für",
+        "more_info_2": "ist zu finden unter:",
         "go_to_reference": "Zu Referenz gehen"
     },
     "input_labels": {
@@ -153,7 +157,7 @@
         "select_user_type": "Nutzer/-innen-Gruppe wählen",
         "select_topic": "Themenfeld auswählen",
         "not_translated": "Nicht übersetzt",
-        "finish_date": "Enddatum auswählen.",
+        "finish_date": "Enddatum auswählen",
         "start_date": "Startdatum auswählen",
         "manage_steps": "Schritte verwalten",
         "guided_processes": "Schritt-für-Schritt Anleitungen",
@@ -192,7 +196,16 @@
         "active": "Aktiv",
         "end_date_survey": "Enddatum",
         "start_date_survey": "Startdatum",
-        "answers": "Antworten"
+        "answers": "Antworten",
+        "chart_description": "Diagrammbeschreibung",
+        "y_axis": "Y-Achse",
+        "x_axis": "X-Achse",
+        "chart_type": "Diagrammtyp",
+        "chart_title": "Diagrammtitel",
+        "choose_json": "JSON auswählen",
+        "choose_csv": "CSV auswählen",
+        "standard": "Standard",
+        "data_format": "Datenformat"
     },
     "lists": {
         "category": "Kategorie",
@@ -242,8 +255,8 @@
         "translations": "Übersetzungen",
         "topics": "Themenfelder",
         "user_types": "Nutzer/-innen-Gruppen",
-        "privacy": "Datenschutzerklärung",
-        "pa_email": "E-Mail für Feedback an die Freie und Hansestadt Hamburg",
+        "privacy": "Datenschutzbestimmung",
+        "pa_email": "E-Mail für Feedback an die verwaltende Behörde",
         "settings": "Einstellungen",
         "data_management": "Datenmanagement",
         "send_to_translation": "Zur Übersetzungsplattform senden",
@@ -265,10 +278,10 @@
     },
     "information_centre": {
         "categories_error": "Wenn die Kategorie einem Eintrag zugewiesen wurde, kann diese nicht entfernt oder die Veröffentlichung zurückgezogen werden",
-        "categories_title": "Allgemeine Informationen - Kategorien",
-        "add_new": "Eintrag in \"Allgemeine Informationen\" hinzufügen",
-        "list_title": "Allgemeine Informationen",
-        "edit": "Eintrag in \"Allgemeine Informationen\" editieren"
+        "categories_title": "Nützliche Informationen - Kategorien",
+        "add_new": "Eintrag in \"Nützliche Informationen\" erstellen",
+        "list_title": "Nützliche Informationen",
+        "edit": "Eintrag in \"Nützliche Informationen\" editieren"
     },
     "tags": {
         "empty_error": "Leere Tags sind nicht erlaubt",
@@ -314,7 +327,14 @@
         "fill_default_language": "Titel in der Standardsprache einfügen: ",
         "in_translation": "Der Inhalt befindet sich im Übersetzungsmodus. Änderungen werden nicht gespeichert.",
         "change_translated": "Den Übersetzungsstatus auf \"in Bearbeitung\" setzen, um eine Editierung zu ermöglichen. Wird der Inhalt geändert und gespeichert, wird die bestehende Übersetzung gelöscht.",
-        "date_time_empty": "Bitte Start- und Enddatum sowie Uhrzeit angeben"
+        "date_time_empty": "Bitte Start- und Enddatum sowie Uhrzeit angeben",
+        "add_chart_empty_field_description": "Bitte sicherstellen, dass alle erforderlichen Felder ausgefüllt sind.",
+        "add_chart_empty_field_title": "Leeres Feld erkannt",
+        "add_chart_description_2": "Es kann auch ein Serverfehler vorliegen. In diesem Fall bitte Systemadministrator/-in kontaktieren.",
+        "add_chart_description_1": "Upload gescheitert. Bitte überprüfen, ob der Inhalt Format- und Strukturvorgaben enstpricht.",
+        "add_chart_title": "Fehler",
+        "send_translation": "Fehler bei der Übermittlung an die Übersetzungsplattform: ",
+        "no_categories": "Keine publizierten Kategorien gefunden."
     },
     "events": {
         "list_title": "Veranstaltungen",
@@ -361,7 +381,29 @@
     "warning": {
         "intervention_type": "Achtung: Das Löschen eines Interventionstypen wird alle Interventionen des Typs entfernen. Fortsetzen?",
         "user_type": "Achtung: Das Löschen einer Nutzer/-innen-Gruppe wird diese aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?",
-        "topic": "Achtung: Das Löschen eines Themenfeldes wird dieses aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?"
+        "topic": "Achtung: Das Löschen eines Themenfeldes wird dieses aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?",
+        "no_results": "Keine Ergebnisse",
+        "change_pic": "Soll das Bild wirklich geändert werden?",
+        "change_pass": "Die Passwörter stimmen nicht überein",
+        "delete_plan": "Achtung: Der Plan und alle dazugehörigen Interventionen werden entfernt. Fortsetzen?",
+        "req_fields": "Die erforderlichen Felder müssen ausgefüllt werden",
+        "delete_user_type": "Achtung: Wenn ein Nutzer/-innentyp entfernt wird, wird dieser aus vorhandenen Schritt-für-Schritt-Anleitungen entfernt. Fortsetzen?",
+        "unpublish_user_type": "Achtung: Wenn die Veröffentlichung des Nutzer/-innentyps zurückgezogen wird, werden alle vorhandene Übersetzungen gelöscht. Fortsetzen?",
+        "publish_user_type": "Achtung: Wenn der Nutzer/-innentyp veröffentlicht wird, wird dieser in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "delete_topic": "Achtung: Das Löschen eines Themenfeldes wird dieses aus allen bestehenden Schritt-für-Schritt-Anleitungen entfernen. Fortsetzen?",
+        "unpublish_topic": "Achtung: Wenn die Veröffentlichung des Themenfelds zurückgezogen wird, werden alle vorhandene Übersetzungen gelöscht. Fortsetzen?",
+        "publish_topic": "Achtung: Wenn das Themenfeld veröffentlicht wird, wird dieses in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "delete_intervention_category": "Achtung: Wenn eine Kategorie entfernt wird, werden alle Interventionstypen der selben Kategorie, sowie dazugehörige Interventionen gelöscht. Fortsetzen?",
+        "unpublish_intervention_category": "Achtung: Wenn die Veröffentlichung des Kategorientyps zurückgezogen wird, werden alle vorhandenen Übersetzungen entfernt. Fortsetzen?",
+        "publish_intervention_categroy": "Achtung: Wenn der Kategorientyp veröffentlicht wird, wird dieser in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "delete_doc_type": "Achtung: Wenn der Dokumententyp entfernt wird, wird dieser aus allen Anleitungen und Schritten entfernt, wo dieser auftaucht. Fortsetzen?",
+        "unpublish_doc_type": "Achtung: Wenn der Dokumententyp entfernt wird, werden alle vorhandenen Übersetzungen gelöscht und die Veröffentlichung der dazugehörigen Schritt-für-Schritt Anleitungen zurückgezogen. Fortsetzen?",
+        "publish_doc_type": "Achtung: Wenn der Dokumententyp veröffentlicht wird, wird dieser in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "delete_intervention_type": "Achtung: Das Löschen eines Interventionstypen wird alle vorhandenen Interventionen des selben Typs entfernen. Fortsetzen?",
+        "unpublish_intervention_type": "Achtung: Das Löschen eines Interventionstypen wird alle vorhandenen Übersetzungen entfernen. Fortsetzen?",
+        "publish_intervention_type": "Achtung! Wenn der Interventionstyp veröffentlicht wird, wird dieser in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "unpublish_process": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, verschwindet der Eintrag aus MICADO mobile. Fortsetzen?",
+        "publish_process": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?"
     },
     "translation_states": {
         "editing": "In Bearbeitung",
@@ -416,7 +458,12 @@
         "add_new_chart": "Neues Diagramm anlegen",
         "add_user": "Nutzer/-in anlegen",
         "situation_manage_charts": "Diagramme verwalten",
-        "add_survey": "Umfrage hinzufügen"
+        "add_survey": "Umfrage hinzufügen",
+        "return_main": "zu Hauptseite zurückgehen",
+        "print": "drucken",
+        "download_template": "Vorlage herunterladen",
+        "batch_upload": "Gebündelt hochladen",
+        "add_topic": "Themenfeld hinzufügen"
     },
     "new_survey": {
         "title": "Umfragetitel",
@@ -428,5 +475,25 @@
         "dest_opt_migrant": "MICADO mobile",
         "dest_opt_ngo": "MICADO Zivilgesellschaft",
         "dest_opt_pa": "MICADO FHH/Verwaltung"
+    },
+    "migration_monitor": {
+        "mean_value": "Durchschnitt:",
+        "maximum_value": "Höchster Wert:",
+        "minimum_value": "Kleinster Wert:",
+        "to": "bis",
+        "Statistics": "Statistiken:",
+        "updated_time": "Aktualisierungsdatum:",
+        "chart_data_provider": "Datenbereitsteller:",
+        "chart_description": "Beschreibung:",
+        "chart_title": "Titel:",
+        "print_categories": "Kategorien zum Drucken auswählen",
+        "add_chart": "Neues Diagramm anlegen",
+        "manage_charts": "Diagramme verwalten",
+        "title": "Lagebild Flüchtlinge"
+    },
+    "success_messages": {
+        "add_chart_description": "Upload erfolgreich abgeschlossen! Bitte zur enstsprechenden Gruppe gehen, um das neue Diagramm zu betrachten.",
+        "add_chart_title": "Erfolg",
+        "send_translation": "Der Inhalt wurde an die Übersetzungsplattform gesendet."
     }
 }
