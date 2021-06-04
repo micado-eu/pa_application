@@ -72,7 +72,11 @@
         "survey_activation": "Decida si quiere activar este formulario (esto desactivará cualquier otro formulario para la misma aplicación)",
         "survey_application": "Defina a qué aplicación se destina el formulario",
         "survey_content": "Escriba la definición en JSON del formulario",
-        "survey_title": "Escriba el título del formulario"
+        "survey_title": "Escriba el título del formulario",
+        "chart_description": "Describa su gráfico",
+        "category": "si la categoría no existe, será creada automáticamente",
+        "board": "si el tablero no existe, será creado automáticamente",
+        "enter_chart_title": "Introduzca el título del gráfico aquí"
     },
     "menu": {
         "title": "Mis herramientas",
@@ -151,7 +155,10 @@
         "situation_about": "Acerca de",
         "add_survey": "Añadir formulario",
         "batch_upload": "Subir por lotes",
-        "download_template": "Descargar plantilla"
+        "download_template": "Descargar plantilla",
+        "return_main": "volver a la página principal",
+        "print": "imprimir",
+        "add_topic": "Añadir Tema"
     },
     "data_settings": {
         "manage_languages": "Gestionar idiomas en la plataforma",
@@ -164,7 +171,7 @@
         "topics": "Temas",
         "intervention_categories": "Categorías de intervención",
         "intervention_types": "Tipos de intervención",
-        "usermgmt": "Gestión de usuarios de megafonía",
+        "usermgmt": "Gestión de usuarios de AP",
         "user_types": "Tipos de usuario",
         "pa_email": "Correo electrónico de respuesta a la Administración Pública",
         "default_language": "Idioma base por defecto para la plataforma MICADO",
@@ -261,7 +268,16 @@
         "active": "Activo",
         "end_date_survey": "Fecha de fin",
         "start_date_survey": "Fecha de comienzo",
-        "answers": "Respuestas"
+        "answers": "Respuestas",
+        "chart_description": "Descripción del gráfico",
+        "y_axis": "Eje y",
+        "x_axis": "Eje x",
+        "chart_type": "Tipo de gráfico",
+        "chart_title": "Título del gráfico",
+        "choose_json": "Elegir JSON",
+        "choose_csv": "Elegir CSV",
+        "standard": "Estándar",
+        "data_format": "Formato de Datos"
     },
     "profile": {
         "username": "Usuario",
@@ -279,7 +295,7 @@
         "categories_error": "No se puede eliminar o desactivar la publicación de una categoría cuando un artículo tiene esta categoría"
     },
     "events": {
-        "list_title": "Eventos",
+        "list_title": "Eventos y cursos",
         "add_new": "Agregar nuevo evento a la lista de eventos",
         "edit": "Editar evento de la lista de eventos",
         "categories_title": "Eventos - Categorías",
@@ -368,7 +384,12 @@
         "change_translated": "Para editar el contenido, cambie el estado de traducción a Edición. Si el contenido se cambia a Edición y se guarda, se eliminarán las traducciones actuales.",
         "date_time_empty": "Por favor complete las fechas y horas de inicio y fin.",
         "send_translation": "Error al mandar a plataforma de traducción: ",
-        "no_categories": "No se han encontrado categorías publicadas."
+        "no_categories": "No se han encontrado categorías publicadas.",
+        "add_chart_empty_field_description": "Por favor asegurese de que todos los campos necesarios están cumplimentados.",
+        "add_chart_empty_field_title": "Campo vacío detectado",
+        "add_chart_description_2": "Este error puede ser causado también por el servidor. En este caso por favor contacte con el administrador del sistema para asistencia.",
+        "add_chart_description_1": "Subida de datos fallida. Por favor comprueba que el archivo subido tenga el formato y estructura de contenido correctos.",
+        "add_chart_title": "Error"
     },
     "warning": {
         "topic": "Advertencia: Eliminar un tema también lo eliminará de los procesos guiados existentes. ¿Continuar?",
@@ -394,7 +415,8 @@
         "unpublish_intervention_type": "Advertencia: Despublicar el tipo de intervención eliminará todas las traducciones existentes. ¿Proceder?",
         "publish_intervention_type": "Advertencia: Publicar el tipo de intervención lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
         "unpublish_process": "Advertencia: Despublicar el proceso lo hará desapareecer de la app de migrantes. ¿Proceder?",
-        "publish_process": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?"
+        "publish_process": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible hacer cambios antes de despublicar. ¿Proceder?",
+        "no_results": "Sin resultados"
     },
     "text_editor": {
         "word_count": "Recuento de palabras"
@@ -454,6 +476,23 @@
         "title": "Título del formulario"
     },
     "success_messages": {
-        "send_translation": "El contenido ha sido mandado a la plataforma de traducción."
+        "send_translation": "El contenido ha sido mandado a la plataforma de traducción.",
+        "add_chart_description": "¡Subida de datos realizada! Por favor comprueba el tablero correspondiente para ver el nuevo gráfico.",
+        "add_chart_title": "Éxito"
+    },
+    "migration_monitor": {
+        "mean_value": "Valor medio:",
+        "maximum_value": "Valor máximo:",
+        "minimum_value": "Valor mínimo:",
+        "to": "a",
+        "Statistics": "Estadísticas:",
+        "updated_time": "tiempo de actualización:",
+        "chart_data_provider": "proveedor de datos:",
+        "chart_description": "descripción:",
+        "chart_title": "título:",
+        "print_categories": "Seleccionar categorías a imprimir",
+        "add_chart": "Añadir nuevo gráfico",
+        "manage_charts": "Gestionar gráficos",
+        "title": "Monitor de Situación Migratoria MICADO"
     }
 }
