@@ -34,7 +34,7 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <q-dialog v-model="deleteDialog">
+    <!-- <q-dialog v-model="deleteDialog">
       <q-card>
         <q-card-section>
           <div class="text-h6">Ooops</div>
@@ -52,8 +52,8 @@
           />
         </q-card-actions>
       </q-card>
-    </q-dialog>
-    <!-- <q-dialog v-model="deleteDialog">
+    </q-dialog> -->
+    <q-dialog v-model="deleteDialog">
       <q-card>
         <q-card-section>
           <div class="text-h6">Are you sure?</div>
@@ -72,7 +72,7 @@
           />
         </q-card-actions>
       </q-card>
-    </q-dialog> -->
+    </q-dialog>
   </div>
 </template>
 
