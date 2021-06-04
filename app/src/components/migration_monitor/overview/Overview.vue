@@ -2,7 +2,7 @@
   <div>
     <div class="q-pa-lg">
       <div class="row justify-between q-pb-lg">
-        <div class="title">Manage Charts</div>
+        <div class="title">{{$t("migration_monitor.manage_charts")}}</div>
         <q-btn
           color="secondary"
           no-caps
@@ -26,17 +26,17 @@
 </template>
 
 <script>
-import List from "./List";
+import List from "./List"
 
 export default {
   name: "MigrationMonitorManage",
   components: {
-    List,
+    List
   },
   data() {
-    return {};
-  },
-};
+    return {}
+  }
+}
 </script>
 <style scoped>
 .title {

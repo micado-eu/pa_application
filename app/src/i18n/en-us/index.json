@@ -72,7 +72,11 @@
     "parent_topic": "Select a parent for this topic. If this topic is a parent, leave the space blank",
     "link": "Insert the link where you can find more info about the step",
     "link_name": "Choose a name for the step link",
-    "event_cost": "Price of the event. Mark the checkbox if the event is free."
+    "event_cost": "Price of the event. Mark the checkbox if the event is free.",
+    "enter_chart_title": "Enter chart title here",
+    "board": "if the board does not already exist, it will be automatically created",
+    "category": "if the category does not already exist, it will be automatically created",
+    "chart_description": "Describe your Chart"
   },
   "menu": {
     "title": "My Tools",
@@ -133,6 +137,7 @@
     "add_category": "Add Category",
     "save_document": "Save document",
     "add_type": "Add Type",
+    "add_topic": "Add Topic",
     "add_user": "Add User",
     "add_new_chart": "Add New Chart",
     "situation_manage_charts": "Manage Charts",
@@ -150,7 +155,9 @@
     "update_link": "Update link",
     "add_link": "Add link",
     "batch_upload":"Batch upload",
-    "download_template":"Download template"
+    "download_template":"Download template",
+    "print": "print",
+    "return_main": "return to main page"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",
@@ -200,6 +207,15 @@
     "name": "Name",
     "edit": "Edit",
     "delete": "Delete",
+    "data_format": "Data Format",
+    "standard": "Standard",
+    "choose_csv": "Choose CSV",
+    "choose_json": "Choose JSON",
+    "chart_title": "Chart Title",
+    "chart_type": "Chart Type",
+    "x_axis": "x Axis",
+    "y_axis": "y Axis",
+    "chart_description": "Chart description",
     "board": "Board",
     "category": "Category",
     "topic_placeholder": "Enter topic title here",
@@ -314,7 +330,7 @@
     "categories_error": "Cannot delete or unpublish a category when an item has this category"
   },
   "events": {
-    "list_title": "Events",
+    "list_title": "Events and courses",
     "add_new": "Add New Event to the Event List",
     "edit": "Edit Event from the Event List",
     "categories_title": "Events - Categories",
@@ -401,7 +417,9 @@
     "address": "Address"
   },
   "success_messages": {
-    "send_translation": "Content has been sent to the translation platform."
+    "send_translation": "Content has been sent to the translation platform.",
+    "add_chart_title": "Success",
+    "add_chart_description": "Upload succeeded! Please check the corresponding board to see the new chart."
   },
   "error_messages": {
     "title_empty": "Title is empty. Please add a title.",
@@ -412,7 +430,12 @@
     "change_translated": "To edit the content, switch the translation state to Editing. If the content is change to Editing and saved, the current translations will be deleted.",
     "date_time_empty": "Please fill the start and end dates and times.",
     "no_categories": "No published categories found.",
-    "send_translation": "Error while sending to translation platform: "
+    "send_translation": "Error while sending to translation platform: ",
+    "add_chart_title": "Error",
+    "add_chart_description_1": "Upload failed. Please check if the uploaded file has the correct format and content structure.",
+    "add_chart_description_2": "This Error could also be caused by the server. In this case please contact the system administrator for assistance.",
+    "add_chart_empty_field_title": "Empty field detected",
+    "add_chart_empty_field_description": "Please make sure all required fields are filled."
   },
   "warning": {
     "topic": "Warning: Deleting a topic will also delete it from the existing guided processes. Proceed?",
@@ -438,7 +461,8 @@
     "req_fields":"You need to fill in the required fields first",
     "delete_plan":"Warning: This will delete the plan and all of its interventions. Proceed?",
     "change_pass":"The new password and the confirmation password do not match",
-    "change_pic":"Do you really want to change picture?"
+    "change_pic":"Do you really want to change picture?",
+    "no_results": "No results"
   },
   "text_editor": {
     "word_count": "Word count"
@@ -454,5 +478,20 @@
     "more_info_1": "More information for",
     "more_info_2": "can be found at:",
     "go_to_reference": "Go to reference"
+  },
+  "migration_monitor": {
+    "title": "MICADO Migration Situation Monitor",
+    "manage_charts": "Manage Charts",
+    "add_chart": "Add new chart",
+    "print_categories": "Select categories to print",
+    "chart_title": "title:",
+    "chart_description": "description:",
+    "chart_data_provider": "data provider:",
+    "updated_time": "updated time:",
+    "Statistics": "Statistics:",
+    "to": "to",
+    "minimum_value": "Minimum Value:",
+    "maximum_value": "Maximum Value:",
+    "mean_value": "Mean Value:"
   }
 }

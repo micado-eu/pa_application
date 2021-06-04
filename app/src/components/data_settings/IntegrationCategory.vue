@@ -6,7 +6,7 @@
     <div class="row wrap justify-start items-start content-center">
       <div class="col">
         <router-link :to="'#'+$options.name">
-          <h5 @click="onClickTitle()">{{$options.name}}</h5>
+          <h5 @click="onClickTitle()">{{$t("data_settings.intervention_categories")}}</h5>
         </router-link>
       </div>
       <div class="full-height col">

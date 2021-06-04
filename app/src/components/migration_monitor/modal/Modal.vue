@@ -7,18 +7,18 @@
         </div>
         <div class="modal-content">
           <p>
-            <strong>title:</strong>
+            <strong>{{$t('migration_monitor.chart_title')}}</strong>
             {{graphData.title}}
           </p>
           <p>
-            <strong>description:</strong>
+            <strong>{{$t('migration_monitor.chart_description')}}</strong>
             {{graphData.description}}
           </p>
           <p>
-            <strong>data provider:</strong>EU
+            <strong>{{$t('migration_monitor.data_provider')}}</strong>EU
           </p>
           <p>
-            <strong>updated time:</strong>2019.07
+            <strong>{{$t('migration_monitor.updated_time')}}</strong>2019.07
           </p>
         </div>
       </div>

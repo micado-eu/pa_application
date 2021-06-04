@@ -11,7 +11,7 @@
       </h6>
     </div>
     <p class="q-px-lg q-mx-lg no-padding">
-      <strong>description:</strong>
+      <strong>{{$t('migration_monitor.chart_description')}}</strong>
       {{ graph.description }}
       <br />
     </p>
@@ -54,21 +54,21 @@
       <div class="row">
         <div class="col">
           <p>
-            <strong>data provider:</strong> EU
+            <strong>{{$t('migration_monitor.data_provider')}}</strong> EU
             <br />
-            <strong>updated time:</strong> 2019.07
+            <strong>{{$t('migration_monitor.updated_time')}}</strong> 2019.07
             <br />
-            <strong>Statistics:</strong> {{ lower }} to
+            <strong>{{$t('migration_monitor.statistics')}}</strong> {{ lower }} {{$t('migration_monitor.to')}}
             {{ upper }}
           </p>
         </div>
         <div class="col">
           <p>
-            <strong>Minimum Value:</strong> {{ min }}
+            <strong>{{$t('migration_monitor.minimum_value')}}</strong> {{ min }}
             <br />
-            <strong>Maximum Value:</strong> {{ max }}
+            <strong>{{$t('migration_monitor.maximum_value')}}</strong> {{ max }}
             <br />
-            <strong>Mean Value:</strong> {{ mean }}
+            <strong>{{$t('migration_monitor.mean_value')}}</strong> {{ mean }}
           </p>
         </div>
       </div>
