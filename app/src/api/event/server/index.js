@@ -152,5 +152,11 @@ export default {
     .patch('/backend/1.0.0/events?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
     .catch(error_handler)
+  },
+  deleteCategory(id) {
+    return axiosInstance
+      .delete(`/backend/1.0.0/events/${id}/category`)
+      .then((response) => response.data)
+      .catch(error_handler)
   }
 }

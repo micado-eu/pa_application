@@ -109,3 +109,7 @@ export function addNewEventItemTranslationProd(state, data) {
   return client
     .addNewEventItemTranslationProd(data)
 }
+
+export function deleteCategory(state, data) {
+  return client.deleteCategory(data)
+}

@@ -44,7 +44,8 @@ export default {
       'fetchInformationUserTypes',
       'deleteProdTranslations',
       'addNewInformationItemTranslationProd',
-      'updatePublished'
+      'updatePublished',
+      'deleteCategory'
     ]),
     onPublish(id) {
       let infoElem = this.informationElemById(id)
@@ -105,12 +106,18 @@ export default {
     },
     editInformationItemAndReturn(data) {
       const router = this.$router
-      const categoryId = data[0].category.id
+      let categoryId = undefined
+      if (('category' in data[0]) && (data[0].category)) {
+        categoryId = data[0].category.id
+      }
       const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
         category: categoryId,
         published: data[0].published
+      }
+      if (eventData.category === undefined) {
+        this.deleteCategory(id).then(() => {})
       }
       this.editInformationItem(eventData).then(() => {
         const { topics } = data[0]

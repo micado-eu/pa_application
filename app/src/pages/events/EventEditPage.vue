@@ -47,7 +47,8 @@ export default {
       'setUserTypes',
       'deleteProdTranslations',
       'addNewEventItemTranslationProd',
-      'updatePublished'
+      'updatePublished',
+      'deleteCategory'
     ]),
     onPublish(id) {
       let eventElem = this.eventElemById(id)
@@ -108,7 +109,10 @@ export default {
     },
     editEventItemAndReturn(data) {
       const router = this.$router
-      const categoryId = data[0].category.id
+      let categoryId = undefined
+      if (('category' in data[0]) && (data[0].category)) {
+        categoryId = data[0].category.id
+      }
       const id = parseInt(this.$route.params.id, 10)
       const eventData = {
         id,
@@ -118,6 +122,9 @@ export default {
         location: data[0].location,
         published: data[0].published,
         cost: data[0].cost
+      }
+      if (eventData.category === undefined) {
+        this.deleteCategory(id).then(() => {})
       }
       this.editEventItem(eventData).then(() => {
         const { topics } = data[0]
