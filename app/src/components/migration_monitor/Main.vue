@@ -13,7 +13,7 @@
         background-color: #ff7c44;
       "
     >
-      MICADO Migration Situation Monitor
+      {{$t("migration_monitor.title")}}
     </div>
     <div class="q-pa-md row  justify-center">
       <q-btn

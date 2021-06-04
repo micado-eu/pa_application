@@ -1,13 +1,13 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <h5 class="col-6">{{$options.name}}</h5>
+      <h5 class="col-6">{{$t("data_settings.topics")}}</h5>
       <div class="col-6 div-1">
         <q-btn
         :data-cy="'addtopic'"
           color="info"
           no-caps
-          :label="$t('button.add_type')"
+          :label="$t('button.add_topic')"
           @click="newTopic()"
           :disable="hideAdd"
           class="add-button"
@@ -245,7 +245,7 @@ export default {
     translatedButtonMixin,
     storeMappingMixin({
       getters: {
-        topic: 'topic/topic',
+        topic: 'topic/topic'
       }, actions: {
         deleteTopic: 'topic/deleteTopic',
         saveTopic: 'topic/saveTopic',

@@ -7,16 +7,16 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Data Format</p>
+            <p class="label">{{$t("input_labels.data_format")}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-select
               v-model="data_format"
               filled
               :options="formats"
-              label="Standard"
+              :label="$t('input_labels.standard')"
               @input="onChangeFileType"
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             />
           </div>
         </div>
@@ -26,7 +26,7 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Choose csv</p>
+            <p class="label">{{$t('input_labels.choose_csv')}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-file
@@ -34,7 +34,7 @@
               @input="getFiles"
               dense
               filled
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             ></q-file>
           </div>
         </div>
@@ -45,7 +45,7 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Choose JSON</p>
+            <p class="label">{{$t('input_labels.choose_json')}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-file
@@ -53,7 +53,7 @@
               @input="getFiles"
               dense
               filled
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             ></q-file>
           </div>
         </div>
@@ -62,15 +62,15 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Chart Title</p>
+            <p class="label">{{$t('input_labels.chart_title')}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
               dense
               filled
               v-model="title"
-              :rules="[(val) => !!val || 'Field is required']"
-              placeholder="Enter chart title here"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
+              :placeholder="$t('help.enter_chart_title')"
             />
           </div>
         </div>
@@ -79,7 +79,7 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Chart Type</p>
+            <p class="label">{{$t('input_labels.chart_type')}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-select
@@ -87,7 +87,7 @@
               v-model="type"
               :options="types"
               label
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             />
           </div>
         </div>
@@ -96,10 +96,10 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-6 q-pl-xl q-mr-l">
-            <p class="label">Board</p>
+            <p class="label">{{$t('input_labels.board')}}</p>
           </div>
           <div class="col-6 q-pl-xl">
-            <p class="label">Category</p>
+            <p class="label">{{$t('input_labels.category')}}</p>
           </div>
           <div class="col-6 q-pl-xl">
             <q-select
@@ -112,14 +112,14 @@
               :options="boardOpts"
               @filter="filterBoards"
               @input-value="setBoard"
-              hint="if the board does not already exist, it will be automatically created"
+              :hint="$t('help.board')"
               style="width: 250px; padding-bottom: 32px"
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             >
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
-                    No results
+                    {{$t('warning.no_results')}}
                   </q-item-section>
                 </q-item>
               </template>
@@ -136,14 +136,14 @@
               :options="catOpts"
               @filter="filterCats"
               @input-value="setCategory"
-              hint="if the category does not already exist, it will be automatically created"
+              :hint="$t('help.category')"
               style="width: 250px; padding-bottom: 32px"
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             >
               <template v-slot:no-option>
                 <q-item>
                   <q-item-section class="text-grey">
-                    no results
+                    {{$t('warning.no_results')}}
                   </q-item-section>
                 </q-item>
               </template>
@@ -157,17 +157,17 @@
           style="text-align: center; padding-right: 45px"
         >
           <div class="col-6 q-pl-xl q-mr-l">
-            <p class="label">x Axis</p>
+            <p class="label">{{$t('input_labels.x_axis')}}</p>
           </div>
           <div class="col-6 q-pl-xl">
-            <p class="label">y Axis</p>
+            <p class="label">{{$t('input_labels.y_axis')}}</p>
           </div>
           <div class="col-6 q-pl-xl">
             <q-input
               dense
               filled
               v-model="x"
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             />
           </div>
           <div class="col-6 q-pl-xl" style="margin: auto; display: block">
@@ -175,7 +175,7 @@
               dense
               filled
               v-model="y"
-              :rules="[(val) => !!val || 'Field is required']"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
             />
           </div>
         </div>
@@ -185,14 +185,14 @@
           style="padding-bottom: 15px; padding-right: 45px"
         >
           <div class="col-12 q-pl-xl">
-            <p class="label">Chart Description</p>
+            <p class="label">{{$t('input_labels.chart_description')}}</p>
           </div>
           <div class="col-12 q-pl-xl">
             <q-input
               type="textarea"
               filled
               v-model="description"
-              placeholder="Describe your Chart"
+              :placeholder="$t('help.chart_description')"
             />
           </div>
         </div>
@@ -205,7 +205,7 @@
             unelevated
             no-caps
             size="md"
-            label="Cancel"
+            :label="$t('button.cancel')"
             @click="reset()"
             to="/situation/editor"
           />
@@ -216,7 +216,7 @@
             unelevated
             no-caps
             size="md"
-            label="Save"
+            :label="$t('button.save')"
             @click="addChart()"
           />
         </div>
@@ -225,11 +225,10 @@
     <q-dialog v-model="succeed">
       <q-card>
         <q-card-section>
-          <div class="text-h6">Success</div>
+          <div class="text-h6">{{$t("success_messages.add_chart_title")}}</div>
         </q-card-section>
         <q-card-section class="q-pt-none">
-          Upload succeeded! Please check the corresponding board to see the new
-          chart.
+          {{$t("success_messages.add_chart_description")}}
         </q-card-section>
         <q-card-actions align="right">
           <q-btn
@@ -245,11 +244,11 @@
     <q-dialog v-model="fail">
       <q-card>
         <q-card-section>
-          <div class="text-h6">Error</div>
+          <div class="text-h6">{{$t('error_messages.add_chart_title')}}</div>
         </q-card-section>
         <q-card-section class="q-pt-none"> 
-          Upload failed. Please check if the uploaded file has the correct format and content structure.<br />
-          This Error could also be caused by the server. In this case please contact the system administrator for assistance.
+          {{$t('error_messages.add_chart_description_1')}}<br />
+          {{$t('error_messages.add_chart_description_2')}}
         </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="OK" color="black" v-close-popup @click="!fail" />
@@ -259,9 +258,9 @@
     <q-dialog v-model="empty">
       <q-card>
         <q-card-section>
-          <div class="text-h6">Empty field detected</div>
+          <div class="text-h6">{{$t('error_messages.add_chart_empty_field_title')}}</div>
         </q-card-section>
-        <q-card-section class="q-pt-none"> Please make sure all required fields are filled. </q-card-section>
+        <q-card-section class="q-pt-none"> {{$t('error_messages.add_chart_empty_field_description')}} </q-card-section>
         <q-card-actions align="right">
           <q-btn flat label="OK" color="black" v-close-popup @click="!empty" />
         </q-card-actions>

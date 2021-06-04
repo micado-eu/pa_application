@@ -110,3 +110,7 @@ export function addNewInformationItemTranslationProd(state, data) {
   return client
     .addNewInformationItemTranslationProd(data)
 }
+
+export function deleteCategory(state, data) {
+  return client.deleteCategory(data)
+}

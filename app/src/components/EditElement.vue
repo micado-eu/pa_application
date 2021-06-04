@@ -136,6 +136,7 @@
               bg-color="grey-3"
               :label="internalCategories.length <= 0 ? this.$t('error_messages.no_categories') : ''"
               :readonly="published"
+              clearable
             />
           </div>
           <div

@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <h5 class="col-6">{{$options.name}}</h5>
+      <h5 class="col-6">{{$t("data_settings.intervention_types")}}</h5>
       <div class="col-6 div-1">
         <q-btn
         :data-cy="'addtype'"
