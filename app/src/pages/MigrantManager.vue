@@ -22,29 +22,23 @@
       </div>
     </div>
     <div>
-      <div class="row labels">
+      <q-item class="row labels">
 
-        <div
-          class="col-9"
-          style="min-height:21px; vertical-align: top"
-        >
+        <q-item-section class="col-8 flex flex-left" >
           &nbsp;
           <!--{{$t('input_labels.name')}}-->
-        </div>
+        </q-item-section>
 
-            <div
-              class="col-1"
-              
-            >
+            <q-item-section class="col-1 flex flex-center top">
               {{$t('button.integration')}}
-            </div>
-            <div class="col-1 " style="text-align:center">
+            </q-item-section>
+           <q-item-section class="col-1 flex flex-center top">
               {{$t('button.migrant_data')}}
-            </div>
-            <div class="col-1" style="text-align:right; padding-right:10px">
+           </q-item-section>
+            <q-item-section class="col-1 flex flex-center top">
               {{$t('input_labels.delete')}}
-            </div>
-      </div>
+            </q-item-section>
+      </q-item>
 
     </div>
     <hr style="width:100%;border: 0.999px solid #424244;">
@@ -104,7 +98,8 @@ export default {
           }
         })
       }
-    }
+    },
+    
   },
   methods: {
     deleteUser (value) {

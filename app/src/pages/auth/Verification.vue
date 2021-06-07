@@ -34,17 +34,17 @@ export default {
   },
   mounted () {
     this.verifyUser()
-    this.getPic()
+    //this.getPic()
   },
   methods: {
     getPic(){
-      if(this.$store.state.auth.user != null){
+      //if(this.$store.state.auth.user != null){
         console.log(this.$store.state.auth.user.umid)
           this.getUserPic( this.$store.state.auth.user.umid).then((user)=>{
             console.log("I AM USER IN VERIFICATION")
             console.log(user)
           })
-      }
+      //}
     },
     verifyUser () {
 
@@ -77,6 +77,10 @@ export default {
           console.log("response from getting internal user id")
           console.log(response)
           id_token.umid = response[0].umId
+          this.getUserPic(response[0].umId).then((user)=>{
+            console.log("I AM USER IN VERIFICATION")
+            console.log(user)
+          })
           id_token.email = response[0].attributes.filter(att => { return att.umAttrName == "mail" })[0] != undefined ? response[0].attributes.filter(att => { return att.umAttrName == "mail" })[0].umAttrValue : ""
           id_token.given_name = response[0].attributes.filter(att => { return att.umAttrName == "givenName" })[0] != undefined ? response[0].attributes.filter(att => { return att.umAttrName == "givenName" })[0].umAttrValue : ""
           console.log(id_token)

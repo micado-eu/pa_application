@@ -135,15 +135,18 @@ export default {
       data_settings: [
         {
           label: 'data_settings.document_types',
-          link: '/document_types'
+          link: '/document_types',
+          auth: ["Application/micado_superadmin", "Application/micado_admin"]
         },
         {
           label: 'data_settings.intervention_categories',
-          link: '/intervention_categories'
+          link: '/intervention_categories',
+          auth: ["Application/micado_superadmin", "Application/micado_admin"]
         },
         {
           label: 'data_settings.intervention_types',
-          link: '/intervention_types'
+          link: '/intervention_types',
+          auth: ["Application/micado_superadmin", "Application/micado_admin"]
         },
         {
           label: 'data_settings.topics',

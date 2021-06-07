@@ -47,7 +47,7 @@
       bordered
       content-class="bg-accent text-white"
     >
-      <div class="column flex-center q-gutter-y-md">
+      <div class="column flex-center q-gutter-y-md" style="padding-top:10px">
         <UserButton />
         <!--<q-btn
           round
@@ -254,6 +254,7 @@ export default {
           icon: 'img:statics/icons/Icon - Migration Situation Monitor.png',
           active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).png',
           to: '/situation/main',
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           feature: "FEAT_DEFAULT",
           description: 'menu.situation_desc'
         },
@@ -281,6 +282,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Guided Processes (selected).png',
           to: '/guided_process_editor',
           feature: "FEAT_PROCESSES",
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           description: 'menu.process_desc'
         },
         {
@@ -289,6 +291,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Information Centre (selected).png',
           to: '/information',
           feature: "FEAT_EVENTS",
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           description: 'menu.information_centre_desc'
         },
         {
@@ -297,6 +300,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Events (selected) (30x30).png',
           to: '/events',
           feature: "FEAT_EVENTS",
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           description: 'menu.events_desc'
         },
         {
@@ -305,6 +309,7 @@ export default {
           active_icon: 'img:statics/icons/Icon - Micado Stats (selected).png',
           to: '/dashboard',
           feature: "FEAT_DEFAULT",
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           description: 'menu.usage_desc'
         },
         {
@@ -312,6 +317,7 @@ export default {
           icon: 'img:statics/icons/Icon - Glossary.png',
           active_icon: 'img:statics/icons/Icon - Glossary (selected).png',
           to: '/glossary',
+          auth: ["Application/micado_superadmin", "Application/micado_admin"],
           feature: "FEAT_GLOSSARY",
           description: 'menu.glossary_desc'
         },
@@ -327,7 +333,7 @@ export default {
           label: 'menu.setting',
           icon: 'img:statics/icons/Icon - Settings.png',
           active_icon: 'img:statics/icons/Icon - Settings (selected).png',
-          to: '/data_settings/document_types',
+          to: '/data_settings/profile_settings',
           feature: "FEAT_DEFAULT",
           description: 'menu.setting_desc'
         }
