@@ -196,7 +196,68 @@
             />
           </div>
         </div>
+        <div
+          class="q-mt-md row"
+          style="padding-bottom: 15px; padding-right: 45px"
+        >
+        <div class="col-12 q-pl-xl">
+          <p class="label">{{$t('migration_monitor.chart_data_provider')}}</p>
+        </div>
+          <div class="col-12 q-pl-xl">
+            <q-input
+              filled
+              v-model="provider"
+              :placeholder="$t('migration_monitor.chart_data_provider_description')"
+            />
+          </div>
+        </div>
+        <div class="col-12 q-pl-xl">
+          <p class="label">{{$t('migration_monitor.updated_time')}}</p>
+        </div>
+
+        <div
+        class="q-pl-xl"
+        style="padding-right: 45px"
+        >
+          <q-input
+            dense
+            data-cy="title_input"
+            bg-color="grey-3"
+            v-model="updated"
+          >
+            <template v-slot:prepend>
+              <q-icon
+                style="padding-left: 5px"
+                name="event"
+                class="cursor-pointer"
+                data-cy="date_icon"
+              >
+                <q-popup-proxy
+                  transition-show="scale"
+                  transition-hide="scale"
+                >
+                  <q-date
+                    v-model="updated"
+                    mask="YYYY-MM-DD"
+                    color="accent"
+                  >
+                    <div class="row items-center justify-end">
+                      <q-btn
+                        v-close-popup
+                        :label="$t('date_selector.close')"
+                        color="accent"
+                        flat
+                        data-cy="close_date_menu"
+                      />
+                    </div>
+                  </q-date>
+                </q-popup-proxy>
+              </q-icon>
+            </template>
+          </q-input>
+        </div>
       </div>
+
 
       <div class="row">
         <div class="q-pa-md col-6" style="text-align: right">
@@ -287,6 +348,8 @@ export default {
       type: "",
       types: ["BAR", "LINE", "PIE"],
       board: "",
+      provider: "",
+      updated: "",
       content: null,
       filename: null,
       succeed: false,
@@ -330,10 +393,16 @@ export default {
       this.category = val
     },
     addChart: function () {
+
+      console.warn(this.updated)
+      var update_date = new Date(this.updated)
+      console.warn(update_date)
+      var update_transformed = new Date(update_date.getTime()-update_date.getTimezoneOffset()*-60000)
+      console.warn(update_transformed)
+
       if (
         !this.title.length ||
         !this.content.length ||
-        !this.description.length ||
         !this.data_format.length ||
         !this.type.length ||
         !this.x.length ||
@@ -350,6 +419,8 @@ export default {
         category: this.category,
         format: this.data_format,
         type: this.type,
+        provider: this.provider,
+        updated: update_transformed,
         xistime: this.xistime,
         x: this.x,
         y: this.y,
@@ -378,6 +449,8 @@ export default {
       this.data_format = "JSON"
       this.category = ""
       this.type = ""
+      this.provider = ""
+      this.updated = ""
       this.board = ""
       this.content = null
     },

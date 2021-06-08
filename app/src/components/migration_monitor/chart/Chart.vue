@@ -54,9 +54,9 @@
       <div class="row">
         <div class="col">
           <p>
-            <strong>{{$t('migration_monitor.chart_data_provider')}}</strong> EU
+            <strong>{{$t('migration_monitor.chart_data_provider')}}</strong> {{graph.provider}}
             <br />
-            <strong>{{$t('migration_monitor.updated_time')}}</strong> 2019.07
+            <strong>{{$t('migration_monitor.updated_time')}}</strong> {{updateTransformed}}
             <br />
             <strong>{{$t('migration_monitor.Statistics')}}</strong> {{ lower }} {{$t('migration_monitor.to')}}
             {{ upper }}
@@ -126,6 +126,15 @@ export default {
       );
       return content;
     },
+    updateTransformed: function(){
+      if (this.graphData.updated){
+            let updateTime = new Date(this.graphData.updated);
+            let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000);
+            return update_transformed.toISOString().split('T')[0];
+      } else {
+        return "";
+      }
+    }
   },
   created() {
     if (this.graphData.type === "MAP" || this.graphData.type === "PIE")

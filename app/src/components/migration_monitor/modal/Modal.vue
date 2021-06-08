@@ -15,10 +15,12 @@
             {{graphData.description}}
           </p>
           <p>
-            <strong>{{$t('migration_monitor.data_provider')}}</strong>EU
+            <strong>{{$t('migration_monitor.chart_data_provider')}}</strong>
+            {{graphData.provider}}
           </p>
           <p>
-            <strong>{{$t('migration_monitor.updated_time')}}</strong>2019.07
+            <strong>{{$t('migration_monitor.updated_time')}}</strong>
+            {{updateTransformed}}
           </p>
         </div>
       </div>
@@ -29,7 +31,18 @@
 <script>
 export default {
   name: "Modal",
-  props: ["graphData"]
+  props: ["graphData"],
+  computed: {
+        updateTransformed: function(){
+      if (this.graphData.updated){
+            let updateTime = new Date(this.graphData.updated);
+            let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000);
+            return update_transformed.toISOString().split('T')[0];
+      } else {
+        return "";
+      }
+    }
+  }
 }
 </script>
 
