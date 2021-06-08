@@ -48,11 +48,18 @@ export default {
   },
   computed:{
     start_date(){
-      console.log(typeof(this.theSurvey.activation_date))
-      return this.theSurvey.activationDate.slice(0,10)
+      let updateTime = new Date(this.theSurvey.activationDate);
+      let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000)
+      return update_transformed.toISOString().split('T')[0];
+     
+
+      //return this.theSurvey.expiryDate.slice(0,10)
     },
     end_date(){
-      return this.theSurvey.expiryDate.slice(0,10)
+      let updateTime = new Date(this.theSurvey.expiryDate);
+      let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000)
+      return update_transformed.toISOString().split('T')[0];
+      //return this.theSurvey.expiryDate.slice(0,10)
     },
     related_app(){
       if(this.theSurvey.destinationApp == 0){
