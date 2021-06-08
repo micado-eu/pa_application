@@ -7,7 +7,7 @@
       <path
         :d="drawLine(content)"
         fill="none"
-        stroke="#99e6b4"
+        stroke="#0b91ce"
         stroke-width="3px"
       />
       <circle
@@ -15,8 +15,8 @@
         :key="i"
         :cx="scaleX(d[catAxis]) + barWidth / 2"
         :cy="scaleY(d[valAxis])"
-        :r="2"
-        fill="#3490DC"
+        :r="1"
+        fill="#4a4a4a"
       />
       <rect
         v-for="(d, i) in content"
@@ -244,7 +244,7 @@ div {
   pointer-events: none;
 }
 .line {
-  stroke: #ffc107;
+  stroke: #ff7c44;
 }
 rect {
   pointer-events: all;

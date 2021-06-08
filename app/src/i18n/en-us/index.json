@@ -484,14 +484,15 @@
     "manage_charts": "Manage Charts",
     "add_chart": "Add new chart",
     "print_categories": "Select categories to print",
-    "chart_title": "title:",
-    "chart_description": "description:",
-    "chart_data_provider": "data provider:",
-    "updated_time": "updated time:",
+    "chart_title": "Title:",
+    "chart_description": "Description:",
+    "chart_data_provider": "Data provider:",
+    "updated_time": "Updated time:",
     "Statistics": "Statistics:",
     "to": "to",
     "minimum_value": "Minimum Value:",
     "maximum_value": "Maximum Value:",
-    "mean_value": "Mean Value:"
+    "mean_value": "Mean Value:",
+    "chart_data_provider_description": "Insert data provider here"
   }
 }

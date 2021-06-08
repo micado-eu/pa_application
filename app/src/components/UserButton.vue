@@ -7,6 +7,7 @@
     >
       <q-icon
         v-if="!this.$auth.loggedIn() || !this.pic.length >0"
+        size="42px"
         name="account_circle"
       />
       <img

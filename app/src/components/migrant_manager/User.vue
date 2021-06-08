@@ -2,30 +2,27 @@
 <div>
 <div class="item" style="margin-right:0px">
         
-        
-    <div class="col-12 username ">{{ this.Username }}</div>
-        
+    <div class="row">
+    <div class="col-8 username ">{{ this.Username }}</div>
+    <q-item-section class="col-1 flex flex-center top">
+      <IconWithTooltip style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
+         </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+      <IconWithTooltip style="float:right" :icon="'img:statics/icons/Icon - Data.svg'" :tooltip="$t('help.migrant_data')" @click.native="migrantData()" :data-cy="'userdata'.concat(theUser.umId)"/>
+          </q-item-section>
+         <q-item-section class="col-1 flex flex-center top">
+      <IconWithTooltip  style="float:right" :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_user')" @click.native="remove_user($event)" :data-cy="'deleteuser'.concat(theUser.umId)"/>
+         </q-item-section>
+    </div>
     <div class="row width">
        <div class=" q-pa-md  col-8 container" >
-        <span class="span">{{this.Age}}</span>
+        <span class="span">{{this.dateOfBirth}}</span>
         <span class="span">|</span>
-        <span class="span">{{this.Nationality}}</span>
+        <span class="span">{{this.nationality}}</span>
         <span class="span">|</span>
-        <span class="span">{{this.Gender}}</span>
+        <span class="span">{{this.gender}}</span>
       </div>
-      <div class="q-pa-md q-gutter-sm  col-4 button-container">
-        <div class="row " style="margin-left:20px">
-          <div class="col-4"  style="text-align:right;">
-      <IconWithTooltip style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
-          </div>
-          <div class="col-4">
-      <IconWithTooltip style="float:right" :icon="'img:statics/icons/Icon - Data.svg'" :tooltip="$t('help.migrant_data')" @click.native="migrantData()" :data-cy="'userdata'.concat(theUser.umId)"/>
-          </div>
-          <div class="col-4">
-      <IconWithTooltip  style="float:right" :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_user')" @click.native="remove_user($event)" :data-cy="'deleteuser'.concat(theUser.umId)"/>
-          </div>
-        </div>
-      </div>
+
     </div>
     
     
@@ -45,7 +42,38 @@ export default {
   components:{
     IconWithTooltip
   },
-
+  computed: {
+      dateOfBirth () {
+      var dob=""
+      var dob_arr =  this.theUser.attributes.filter((attr)=>{
+        return attr.umAttrName == "dateOfBirth"
+      })
+      if(dob_arr.length>0){
+        dob = dob_arr[0].umAttrValue 
+      }
+      return dob
+    },
+    nationality () {
+      var country = ""
+      var country_arr = this.theUser.attributes.filter((attr)=>{
+        return attr.umAttrName == "country"
+      })
+      if(country_arr.length>0){
+        country = country_arr[0].umAttrValue 
+      }
+      return country
+    },
+    gender () {
+      var gender =""
+      var gender_arr =  this.theUser.attributes.filter((attr)=>{
+        return attr.umAttrName == "gender"
+      })
+      if(gender_arr.length>0){
+        gender = gender_arr[0].umAttrValue 
+      }
+      return gender
+    }
+  },
   methods: {
     remove_user(event){
        let target = event.currentTarget.id
@@ -74,7 +102,6 @@ export default {
  font-size:20px; 
  text-align:left; 
  font-size:18px;
- width:100%; 
  padding-bottom:0px; 
  padding-left:0px
 }

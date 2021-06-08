@@ -9,13 +9,13 @@
           v-model="printList"
           multiple
           :options="categories.map((c) => c.category)"
-          :label="t('migration_monitor.print_categories')"
+          :label="$t('migration_monitor.print_categories')"
           style="width: 250px"
         />
         <q-btn
           no-caps
           class="q-ml-md"
-          :label="t('button.print')"
+          :label="$t('button.print')"
           color="info"
           size="md"
           v-close-popup
@@ -29,7 +29,7 @@
         text-color="black"
         size="md"
         to="/situation/main"
-        :title="$('button.return_main')"
+        :title="$t('button.return_main')"
       />
     </div>
     <div class="charts">

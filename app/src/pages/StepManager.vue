@@ -239,7 +239,10 @@
                       :isForDefaultLanguage="language.lang===activeLanguage"
                       :objectId="step_shell.id"
                       :readonly="!(language.lang===activeLanguage)"
-                      @micado-change="(id) => {changeTranslationState(step_shell, id.state)}"
+                      @micado-change="(id) => {
+                        changeTranslationState(step_shell, id.state)
+                        change()
+                        }"
                     />
                   </div>
                 </q-tab-panel>
@@ -659,6 +662,9 @@ export default {
   },
 
   methods: {
+    change(){
+      this.$forceUpdate()
+    },
     addIcon(value){
       console.log(value)
       this.step_shell.stepIcon = value.label
