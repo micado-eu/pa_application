@@ -70,7 +70,7 @@ export default {
     },
     removeReferencesFromExternalLinks(md) {
       // clears references in both the [] and () of a link
-      let clearRegex1 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(.*)@\[.*?,\d+\]\((.*?)\)(.*\))/g
+      let clearRegex1 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(<.*)@\[.*?,\d+\]\((.*?)\)(.*>\))/g
       let result = md
       let splitted = md.split(clearRegex1)
       while (splitted.length > 1) {
@@ -78,14 +78,14 @@ export default {
         splitted = result.split(clearRegex1)
       }
       // clears references in []
-      let clearRegex2 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(.*\))/g
+      let clearRegex2 = /(\[[^(]*)@\[.*?,\d+\]\((.*?)\)(.*?\]\(<.*>\))/g
       splitted = result.split(clearRegex2)
       while (splitted.length > 1) {
         result = splitted.join("")
         splitted = result.split(clearRegex2)
       }
       // clears references in ()
-      let clearRegex3 = /(\[.*\]\(.*)@\[.*?,\d+\]\((.*?)\)(.*\))/g
+      let clearRegex3 = /(\[[^(]*\]\(<.*)@\[.*?,\d+\]\((.*?)\)(.*>\))/g
       splitted = result.split(clearRegex3)
       while (splitted.length > 1) {
         result = splitted.join("")
@@ -99,6 +99,7 @@ export default {
       let md = this.converter.makeMarkdown(cleanHTML)
       md = this.cleanSpaces(md)
       md = await this.markReferences(md, defaultLang, userLang, isAllFetched, fakeEntities, fakeEntitiesObj)
+      console.log(md)
       return md
     },
     markdownToHTML(markdown) {
@@ -123,6 +124,7 @@ export default {
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
       for (const [key, value] of Object.entries(entities)) {
+        console.log("here")
         // Remove elements with repeated titles from previous entities (ignoring case)
         const filteredTerms = value.filter((elem) => {
           for (const marked of markedTitles) {
