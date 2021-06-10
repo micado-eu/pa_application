@@ -1,27 +1,38 @@
 <template>
-  <svg :width="width" :height="height" :id="id">
+  <svg :width="width" :height="height" :id="'c_'+graphid">
     <g v-if="sizeSet" :transform="`translate( ${ width/2 },${ height/2})`">
-      <g v-for="(d,i) in pie(content)" :key="i">
-        <path 
+      <g v-for="(d,i) in pie(content)" :key="i" :id="'g_'+i" class="arcgroup">
+        <path
           :d="pathArc(d)" 
-          :fill="interpolateGnBu(color(d.data[catAxis]))" 
+          :fill="interpolateViridis(color(d.data[catAxis]))" 
           @mouseover="onMouseOver"
           @mouseleave="onMouseLeave"  
-          :id="d.data[catAxis]+'_arc'"
+          :id="'a_'+i"
         />
+        <defs>
+            <filter x="0" y="0" width="1" height="1" id="solid">
+      <feFlood flood-color="white" result="bg" />
+      <feMerge>
+        <feMergeNode in="bg"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+        </defs>
         <text 
-          class="label" 
+          class="label"
+          filter="url(#solid)"
+          :id="'l_'+i"
           :ref="d.data[catAxis]+'_label'" 
           :key="d.data[catAxis]+'_label'" 
           :transform="drawLabel(d)" text-anchor="middle" 
-          font-size="17">{{d.data[catAxis]}} - {{d.data[valAxis]}}
+          font-size="12">{{d.data[catAxis]}} - {{d.data[valAxis]}}
         </text>
       </g>
     </g>
   </svg>
 </template>
 <script>
-import { arc, pie, interpolateGnBu, scaleBand } from "d3"
+import { arc, pie, interpolateViridis, scaleBand, select } from "d3"
 
 export default {
   name: "pieChart",
@@ -34,7 +45,7 @@ export default {
   data: function() {
     return {
       data: [{ percentage: 10 }, { percentage: 20 }, { percentage: 30 }],
-      id: "pieSvg",
+      // id: "pieSvg",
       radius: "100",
       width: "100%",
       height: "85%",
@@ -42,6 +53,9 @@ export default {
     }
   },
   computed: {
+    graphid: function() {
+      return this._uid
+    },
     svg: function() {
       return select("#" + this.id)
     },
@@ -51,12 +65,12 @@ export default {
     pathArc: function() {
       return arc()
         .outerRadius(this.radius)
-        .innerRadius(0)
+        .innerRadius(66)
     },
     labelArc: function() {
       return arc()
-        .outerRadius(1.5 * this.radius)
-        .innerRadius(1.5 * this.radius)
+        .outerRadius(1.2 * this.radius)
+        .innerRadius(1.2 * this.radius)
     },
     color: function() {
       return scaleBand()
@@ -66,8 +80,8 @@ export default {
     drawLabel: function() {
       return d => "translate(" + this.labelArc.centroid(d) + ")"
     },
-    interpolateGnBu: function() {
-      return interpolateGnBu
+    interpolateViridis: function() {
+      return interpolateViridis
     }
   },
   methods: {
@@ -77,12 +91,18 @@ export default {
       this.height = client.height
     },
     onMouseOver(event) {
-      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
-      label.style.opacity = 1
+      let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
+      let currid = currgraph.select("#g_"+event.target.id.split("_")[1])
+      currid.selectAll("path").classed("active")
+      currid.select("path").classed("active",true)
+      currid.select("text").classed("active",true)
+      currid.raise()
     },
     onMouseLeave(event) {
-      const label = this.$refs[`${event.target.id.split('_')[0]}_label`][0]
-      label.style.opacity = 0.2
+      let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
+      let currid = currgraph.select("#g_"+event.target.id.split("_")[1])
+      currid.select("path").classed("active",false)
+      currid.select("text").classed("active",false)
     }
   },
   mounted: function() {
@@ -99,9 +119,23 @@ div {
 path {
   stroke: white;
   stroke-width: 1px;
+  opacity: 0.5;
 }
 .label {
-  opacity: 0.2;
+  opacity: 0.5;
   transition: 0.2s;
+  pointer-events: none;
+}
+.active {
+  opacity: 1;
+}
+.textbg {
+  position: absolute;
+}
+.invisible {
+  display: none;
+}
+svg{
+  overflow: visible;
 }
 </style>
