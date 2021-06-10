@@ -11,7 +11,7 @@
         />
         <defs>
             <filter x="0" y="0" width="1" height="1" id="solid">
-      <feFlood flood-color="white" result="bg" />
+      <feFlood flood-color="white" flood-opacity="0.8" result="bg" />
       <feMerge>
         <feMergeNode in="bg"/>
         <feMergeNode in="SourceGraphic"/>
@@ -93,16 +93,18 @@ export default {
     onMouseOver(event) {
       let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
       let currid = currgraph.select("#g_"+event.target.id.split("_")[1])
-      currid.selectAll("path").classed("active")
-      currid.select("path").classed("active",true)
-      currid.select("text").classed("active",true)
+      currgraph.selectAll("path").classed("inactive",true)
+      currgraph.selectAll("text").classed("inactive",true)
+      currid.select("path").classed("inactive",false)
+      currid.select("text").classed("inactive",false)
+      currid.select("text").classed("highlighted",true)
       currid.raise()
     },
     onMouseLeave(event) {
       let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
-      let currid = currgraph.select("#g_"+event.target.id.split("_")[1])
-      currid.select("path").classed("active",false)
-      currid.select("text").classed("active",false)
+      currgraph.selectAll("path").classed("inactive",false)
+      currgraph.selectAll("text").classed("inactive",false)
+      currgraph.selectAll("text").classed("highlighted",false)
     }
   },
   mounted: function() {
@@ -118,15 +120,17 @@ div {
 }
 path {
   stroke: white;
-  stroke-width: 1px;
-  opacity: 0.5;
+  stroke-width: 2px;
+  opacity: 1;
 }
 .label {
-  opacity: 0.5;
-  transition: 0.2s;
+  opacity: 0.75;
   pointer-events: none;
 }
-.active {
+.inactive {
+  opacity: 0.15;
+}
+.highlighted {
   opacity: 1;
 }
 .textbg {
