@@ -73,6 +73,29 @@
         </div>
       </div>
     </div>
+        <div
+      v-if="['PIE'].indexOf(graph.type) > -1"
+      class="q-px-lg q-mx-lg no-padding"
+    >
+      <div class="row">
+        <div class="col">
+          <p>
+            <strong>{{$t('migration_monitor.chart_data_provider')}}</strong> {{graph.provider}}
+            <br />
+            <strong>{{$t('migration_monitor.updated_time')}}</strong> {{updateTransformed}}
+          </p>
+        </div>
+        <div class="col">
+          <p>
+            <strong>{{$t('migration_monitor.minimum_value')}}</strong> {{ min }}
+            <br />
+            <strong>{{$t('migration_monitor.maximum_value')}}</strong> {{ max }}
+            <br />
+            <strong>{{$t('migration_monitor.mean_value')}}</strong> {{ mean }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -167,7 +190,7 @@ h6 {
   height: 200px;
 }
 .pie-chart {
-  height: 500px;
+  height: 400px;
 }
 .q-pa-md {
   padding: 0px 16px;
