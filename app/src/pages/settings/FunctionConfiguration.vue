@@ -78,49 +78,7 @@
 
       </q-card-section>
     </q-card>
-    <q-card>
-      <q-card-section>
-        <div class="text-h6">{{$t('data_settings.father_topics')}}</div>
-      </q-card-section>
-      <q-card-section>
-       <q-select
-              filled
-              data-cy="father_topics"
-              dense
-              :readonly="!edit_fathers"
-              clearable
-              v-model="fathers"
-              multiple
-              emit-value
-              map-options
-              :options="this.t_tags"
-              class="select"
-            />
-        <q-btn
-          v-if="!edit_fathers"
-          color="accent"
-          glossy
-          :label="$t('button.edit')"
-          @click="edit_fathers = true"
-        />
-          <q-btn
-          v-if="edit_fathers"
-          color="accent"
-          glossy
-          :label="$t('button.cancel')"
-          @click="cancelFathers"
-        />
-          <q-btn
-          v-if="edit_fathers"
-          color="accent"
-          glossy
-          :label="$t('button.save')"
-          @click="saveFathers"
-        />
-
-      </q-card-section>
-    </q-card>
-   
+    
     <q-card>
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.privacy')}}</div>

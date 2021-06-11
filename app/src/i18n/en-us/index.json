@@ -462,7 +462,8 @@
     "delete_plan":"Warning: This will delete the plan and all of its interventions. Proceed?",
     "change_pass":"The new password and the confirmation password do not match",
     "change_pic":"Do you really want to change picture?",
-    "no_results": "No results"
+    "no_results": "No results",
+    "published_step":"You can't make changes to steps if the process is published"
   },
   "text_editor": {
     "word_count": "Word count"

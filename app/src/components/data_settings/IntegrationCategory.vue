@@ -141,11 +141,14 @@
     </q-card>
     <q-item class="">
 
-      <q-item-section class="col-8 flex flex-left ">
+      <q-item-section class="col-7 flex flex-left ">
         {{$t('input_labels.name')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
          {{$t('input_labels.is_published')}}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.transl_state')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
@@ -164,13 +167,16 @@
         v-for="a_integration_category in intervention_categories"
         :key="a_integration_category.id"
       >
-        <q-item-section class="col-8 flex flex-left ">{{showCategoryLabel(a_integration_category)}}</q-item-section>
+        <q-item-section class="col-7 flex flex-left ">{{showCategoryLabel(a_integration_category)}}</q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <q-toggle
             v-model="a_integration_category.published"
             color="accent"
             disable
           />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top" >
+               {{getTranslationState(a_integration_category.id)}}
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <q-icon
@@ -236,6 +242,26 @@ export default {
     UploadButton, HelpLabel
   },
   methods: {
+        getTranslationState(id){
+      var cate = this.intervention_categories.filter((cat)=>{
+        return cat.id == id
+      })[0]
+      var state = cate.translations.filter((transl)=>{
+        return transl.lang == this.$defaultLang
+      })[0].translationState
+      if(state == 0){
+        return this.$i18n.t('translation_states.editing')
+      }
+      else if(state ==1){
+        return this.$i18n.t('translation_states.translatable')
+      }
+      else if(state==2){
+        return this.$i18n.t('translation_states.translating')
+      }
+      else{
+        return this.$i18n.t('translation_states.translated')
+      }
+    },
     onSubmit () {
       console.log(this.$refs.intervention_type[0])
       this.$refs.intervention_type[0].validate()

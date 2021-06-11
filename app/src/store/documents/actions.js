@@ -21,3 +21,12 @@ export function fetchCompletionDocuments(state, id) {
     })
 }
 
+export function fetchShareableDocuments(state, id) {
+  return client
+    .fetchShareableDocuments(id)
+    .then(documents => {
+      state.commit('setDocuments', documents)
+      return documents
+    })
+}
+
