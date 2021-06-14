@@ -155,11 +155,14 @@
       <q-item-section class="col-1 flex flex-left">
         {{$t('input_labels.image')}}
       </q-item-section>
-      <q-item-section class="col-7 flex flex-left">
+      <q-item-section class="col-6 flex flex-left">
         {{$t('input_labels.name')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.is_published')}}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top" >
+        {{$t('input_labels.transl_state')}}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
         {{$t('input_labels.edit')}}
@@ -185,13 +188,16 @@
             id="image"
           />
         </q-item-section>
-        <q-item-section class="col-7 flex flex-left ">{{showUserTypeLabel(a_user_type)}}</q-item-section>
+        <q-item-section class="col-6 flex flex-left ">{{showUserTypeLabel(a_user_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <q-toggle
             v-model="a_user_type.published"
             color="accent"
             disable
           />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top" >
+               {{getTranslationState(a_user_type.id)}}
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <q-icon
@@ -261,6 +267,26 @@ export default {
   },
 
   methods: {
+    getTranslationState(id){
+      var cate = this.user.filter((cat)=>{
+        return cat.id == id
+      })[0]
+      var state = cate.translations.filter((transl)=>{
+        return transl.lang == this.$defaultLang
+      })[0].translationState
+      if(state == 0){
+        return this.$i18n.t('translation_states.editing')
+      }
+      else if(state ==1){
+        return this.$i18n.t('translation_states.translatable')
+      }
+      else if(state==2){
+        return this.$i18n.t('translation_states.translating')
+      }
+      else{
+        return this.$i18n.t('translation_states.translated')
+      }
+    },
     onSubmit () {
       console.log(this.$refs.user_type)
       this.$refs.user_type[0].validate()

@@ -66,7 +66,7 @@ export default {
       },
       actions: {
         fetchSpecificUser: 'user/fetchSpecificUser',
-        fetchDocuments: 'documents/fetchDocuments',
+        fetchDocuments: 'documents/fetchShareableDocuments',
         fetchDocumentType: 'document_type/fetchDocumentType',
         fetchReceipt: 'consent/fetchReceipt'
       }

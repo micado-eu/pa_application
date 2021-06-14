@@ -14,4 +14,10 @@ fetchCompletionDocuments () {
     .then(response => { return response.data })
     .catch(error_handler);
 },
+fetchShareableDocuments (id) {
+  return axiosInstance
+    .get('/backend/1.0.0/documents?filter[include][0][relation]=pictures&filter[include][1][relation]=documentType&filter[where][and][2][userId]=' + id + '&filter[where][and][3][shareable]=true')
+    .then(response => { return response.data })
+    .catch(error_handler);
+},
 }

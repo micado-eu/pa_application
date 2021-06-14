@@ -213,8 +213,8 @@
     "choose_json": "Choose JSON",
     "chart_title": "Chart Title",
     "chart_type": "Chart Type",
-    "x_axis": "x Axis",
-    "y_axis": "y Axis",
+    "x_axis": "Index column",
+    "y_axis": "Value column",
     "chart_description": "Chart description",
     "board": "Board",
     "category": "Category",
@@ -462,7 +462,8 @@
     "delete_plan":"Warning: This will delete the plan and all of its interventions. Proceed?",
     "change_pass":"The new password and the confirmation password do not match",
     "change_pic":"Do you really want to change picture?",
-    "no_results": "No results"
+    "no_results": "No results",
+    "published_step":"You can't make changes to steps if the process is published"
   },
   "text_editor": {
     "word_count": "Word count"

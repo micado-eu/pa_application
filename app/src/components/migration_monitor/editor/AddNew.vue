@@ -152,7 +152,6 @@
         </div>
 
         <div
-          v-if="type !== 'PIE'"
           class="q-pa-xsm q-mt-md row"
           style="text-align: center; padding-right: 45px"
         >
@@ -393,12 +392,8 @@ export default {
       this.category = val
     },
     addChart: function () {
-
-      console.warn(this.updated)
       var update_date = new Date(this.updated)
-      console.warn(update_date)
       var update_transformed = new Date(update_date.getTime()-update_date.getTimezoneOffset()*-60000)
-      console.warn(update_transformed)
 
       if (
         !this.title.length ||

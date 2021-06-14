@@ -124,10 +124,18 @@ export default {
       this.$router.push({ name: 'editprocess', params: { theprocessid: this.theProcess.id } })
     },
     manageProcess () {
+      if(this.theProcess.published){
+        this.$q.notify({
+        message: this.$t('warning.published_step'),
+        color: 'red'
+      })
+      }
+      else{
       console.log("prima di editare gli step")
       console.log(this.theProcess.id)
       console.log(this.theProcess)
       this.$router.push({ name: 'editstep', params: { processId: this.theProcess.id } })
+      }
     }
   }
 }
