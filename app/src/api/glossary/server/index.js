@@ -75,9 +75,9 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete('/backend/1.0.0/glossaries/' + item.id + '/glossary-translations')
-      // .then(
-      //   () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
-      // )
+      .then(
+        () => axiosInstance.delete(`/backend/1.0.0/glossaries/${item.id}/glossary-translation-prods`)
+      )
       .then(
         response => {
           return axiosInstance.delete('/backend/1.0.0/glossaries/' + item.id)

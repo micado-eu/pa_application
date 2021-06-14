@@ -75,9 +75,9 @@ export default {
     // Delete translations then item
     return axiosInstance
       .delete(`/backend/1.0.0/information/${item.id}/information-translations`)
-      // .then(
-      //   () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
-      // )
+      .then(
+        () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}/information-translation-prods`)
+      )
       .then(
         () => axiosInstance.delete(`/backend/1.0.0/information/${item.id}`)
       ).then((response) => response.data)
