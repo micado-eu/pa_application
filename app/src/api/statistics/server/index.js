@@ -135,7 +135,8 @@ function parseUnhcrBar(data) {
     type: 'BAR',
     x: 'date',
     y: 'individuals',
-    xistime: false
+    xistime: true,
+    provider: 'UNHCR'
   }
 }
 
@@ -148,6 +149,7 @@ function parseUnhcrPie(data) {
     format: 'API',
     title: data.title_language_en,
     type: 'PIE',
+    provider: 'UNHCR',
     x: 'pop_origin_name',
     y: 'individuals',
     xistime: false
@@ -178,9 +180,10 @@ function parseHamburg(json) {
         description: "",
         category: category,
         format: "API",
+        provider: "ZKF",
         url: "",
         type: "BAR",
-        xIsTime: false,
+        xistime: true,
         x: "mic:datum",
         y: "mic:wert",
         content: JSON.stringify(content)
