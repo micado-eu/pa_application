@@ -36,6 +36,12 @@ export default {
       .then(response => response.data)
       .catch(error_handler)
   },
+  deleteProcessTranslationsProd (id) {
+    return axiosInstance
+      .delete('/backend/1.0.0/processes/' + id + '/process-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler)
+  },
 
   deleteProcess (id) {
     return axiosInstance
@@ -73,6 +79,12 @@ export default {
       .then(response => response.data)
       .catch(error_handler)
   },
+  deleteProcessStepLinkTranslationProd(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/step-links/' + id + '/step-link-translation-prods')
+      .then(response => response.data)
+      .catch(error_handler)
+  },
   deleteProcessStepDocument(id){
     return axiosInstance
       .delete('/backend/1.0.0/steps/' + id + '/step-documents')
@@ -89,6 +101,12 @@ export default {
   deleteProcessStepTranslation(id){
     return axiosInstance
       .delete('/backend/1.0.0/steps/' + id + '/step-translations')
+      .then(response => response.data)
+      .catch(error_handler)
+  },
+  deleteProcessStepTranslationProd(id){
+    return axiosInstance
+      .delete('/backend/1.0.0/steps/' + id + '/step-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
