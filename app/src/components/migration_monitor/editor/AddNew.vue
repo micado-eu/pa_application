@@ -255,6 +255,31 @@
             </template>
           </q-input>
         </div>
+
+        <div
+          class="q-mt-md row"
+          style="padding-bottom: 15px; padding-right: 45px"
+        >
+          <span class="q-pl-xl">
+            <help-label
+              :fieldLabel="$t('migration_monitor.timescale_title')"
+              :helpLabel="$t('migration_monitor.timescale_help')"
+            ></help-label>
+          </span>
+
+
+        <div class="col-12 q-pl-xl "
+        style="text-align: left; padding-right: 45px"
+        >
+                <q-checkbox
+                color="accent"
+                v-model="xistime"
+                :label="$t('migration_monitor.timescale_checkbox')"
+        />
+        </div>
+      </div>
+
+
       </div>
 
 
@@ -330,6 +355,8 @@
 </template>
 
 <script>
+import HelpLabel from 'components/HelpLabel'
+
 export default {
   name: "AddNewChart",
 
@@ -357,6 +384,9 @@ export default {
       boardOpts: [],
       catOpts: []
     }
+  },
+    components: {
+    'help-label': HelpLabel,
   },
   computed: {
     categories() {

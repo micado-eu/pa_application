@@ -25,7 +25,7 @@
           :ref="d.data[catAxis]+'_label'" 
           :key="d.data[catAxis]+'_label'" 
           :transform="drawLabel(d)" text-anchor="middle" 
-          font-size="12">{{d.data[catAxis]}} - {{d.data[valAxis]}}
+          font-size="12">{{d.data[catAxis]}} - {{d.data[valAxis].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}
         </text>
       </g>
     </g>

@@ -494,6 +494,9 @@
     "minimum_value": "Minimum Value:",
     "maximum_value": "Maximum Value:",
     "mean_value": "Mean Value:",
-    "chart_data_provider_description": "Insert data provider here"
+    "chart_data_provider_description": "Insert data provider here",
+    "timescale_title": "Timescale data",
+    "timescale_checkbox": "data related to a time sequence",
+    "timescale_help":"Tick this box if you use a time-scale on your category axis (e.g. years, months), leave it empty if you use a nominal or other scale (e.g. countries, cities)"
   }
 }

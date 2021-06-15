@@ -77,7 +77,7 @@
         :x="scaleX(d[catAxis]) + barWidth / 2"
         :y="scaleY(d[valAxis])-10"
         text-anchor="middle"
-      >{{ d[catAxis] }}: {{ d[valAxis] }}</text>      
+      >{{ d[catAxis] }}: {{ d[valAxis].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}</text>      
     </g>
   </svg>
 </template>
@@ -135,11 +135,11 @@ export default {
       return select(`#${this.id}`)
     },
     scaleX() {
-      if (this.xistime) {
-        return scaleTime()
-          .domain(extent(this.content, (d) => d[this.catAxis]))
-          .range([0, this.width - this.margin.left - this.margin.right])
-      }
+      // if (this.xistime) {
+      //   return scaleTime()
+      //     .domain(extent(this.content, (d) => d[this.catAxis]))
+      //     .range([0, this.width - this.margin.left - this.margin.right])
+      // }
       return scaleBand()
         .domain(this.content.map((d) => d[this.catAxis]))
         .range([0, this.width - this.margin.left - this.margin.right])
