@@ -141,7 +141,6 @@
            </div>
           </q-card-section>
           
-        </q-card>
       </q-expansion-item>
       
     </div>

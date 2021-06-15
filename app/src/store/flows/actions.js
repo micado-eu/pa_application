@@ -155,6 +155,7 @@ export function deleteProcess (state, payload) {
     await asyncForEach(payload.steplinks, async (steplink) => {
       console.log(steplink)
       await client.deleteProcessStepLinkTranslation(steplink.id)
+      await client.deleteProcessStepLinkTranslationProd(steplink.id)
     })
     console.log("after foreach delete steplinks translation")
   }
@@ -183,6 +184,7 @@ export function deleteProcess (state, payload) {
     await asyncForEach(payload.steps, async (step) => {
       console.log(step)
       await client.deleteProcessStepTranslation(step.id)
+      await client.deleteProcessStepTranslationProd(step.id)
     })
     console.log("after foreach delete step translation")
   }
@@ -199,6 +201,7 @@ export function deleteProcess (state, payload) {
 
   
   client.deleteProcessTranslations(payload.process)
+  client.deleteProcessTranslationsProd(payload.process)
   client.deleteProcess(payload.process).then(function () {
   })
 
