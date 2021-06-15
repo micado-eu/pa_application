@@ -1,72 +1,6 @@
 <template>
-  <svg :width="width" :id="id">
-    <g
-      v-if="sizeSet"
-      :transform="'translate(' + margin.left + ',' + margin.top + ')'"
-    >
-      <path
-        :d="drawLine(content)"
-        fill="none"
-        stroke="#0b91ce"
-        stroke-width="3px"
-      />
-      <circle
-        v-for="(d, i) in content"
-        :key="i"
-        :cx="scaleX(d[catAxis]) + barWidth / 2"
-        :cy="scaleY(d[valAxis])"
-        :r="1"
-        fill="#4a4a4a"
-      />
-      <rect
-        v-for="(d, i) in content"
-        :key="i + '_rect'"
-        :id="i + '_rect'"
-        :x="scaleX(d[catAxis]) - barWidth / 2"
-        :y="scaleY(d[valAxis])"
-        :width="barWidth"
-        :height="height - scaleY(d[valAxis]) - margin.top - margin.bottom"
-        fill="none"
-        @mouseover="onMouseOver"
-        @mouseleave="onMouseLeave"
-      />
-      <text
-        v-for="(d, i) in content"
-        :key="i + '_textx'"
-        :ref="i + '_textx'"
-        class="label"
-        display="none"
-        :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="height-margin.top-margin.bottom"
-        text-anchor="middle"
-      >
-        {{ d[catAxis] }}
-      </text>
-      <text
-        v-for="(d, i) in content"
-        :key="i + '_texty'"
-        :ref="i + '_texty'"
-        class="label"
-        display="none"
-        :x="scaleX(d[catAxis]) + barWidth / 2"
-        :y="scaleY(d[valAxis])"
-        text-anchor="middle"
-      >
-        {{ d[valAxis] }}
-      </text>
-      <line
-        v-for="(d, i) in content"
-        class="line"
-        display="none"
-        :key="i + '_line'"
-        :ref="i + '_line'"
-        :x1="scaleX(d[catAxis]) + barWidth / 2"
-        :x2="scaleX(d[catAxis]) + barWidth / 2"
-        :y1="height - margin.top - margin.bottom"
-        :y2="scaleY(d[valAxis])"
-        stroke-width="2"
-      />
-    </g>
+  <svg :width="width" :height="height" :id="'c_'+graphid" >
+    <!-- Axis label Value (Y-Axis) -->
     <text
       v-if="sizeSet"
       :x="-margin.top - height / 2"
@@ -76,6 +10,7 @@
     >
       {{ valAxis }}
     </text>
+    <!-- Axis label Category (X-axis) -->
     <text
       v-if="sizeSet"
       :x="width / 2"
@@ -89,8 +24,9 @@
       :length="content.length"
       :scaleX="scaleX"
       :key="xid"
+      :tickpadd="tickpadd"
       :transform="
-        'translate(' + margin.left + ', ' + (height - margin.bottom) + ')'
+        'translate(' + margin.left + ', ' + (zeroLine + margin.top) + ')'
       "
     />
     <ChartAxisLeft
@@ -99,6 +35,50 @@
       :key="yid"
       :transform="'translate(' + margin.left + ', ' + margin.top + ')'"
     />
+        <g
+      v-if="sizeSet"
+      :transform="'translate(' + margin.left + ',' + margin.top + ')'"
+      >
+      <path
+        :d="drawLine(content)"
+        fill="none"
+        stroke="#0b91ce"
+        stroke-width="3px"
+
+      />
+        <circle
+        v-for="(d, i) in content"
+        :id="'circle_'+i"
+        :key="i"
+        :cx="scaleX(d[catAxis]) + barWidth / 2"
+        :cy="scaleY(d[valAxis])"
+        :r="4"
+        @mouseover="onMouseOver"
+        @mouseleave="onMouseLeave"
+      />
+      <defs>
+        <filter x="0" y="0" width="1" height="1" id="solid">
+          <feFlood flood-color="white" flood-opacity="0.8" result="bg" />
+          <feMerge>
+            <feMergeNode in="bg"/>
+            <feMergeNode in="SourceGraphic"/>
+          </feMerge>
+        </filter>
+      </defs>
+  <!-- Display = none is specified for printing -->
+      <text
+        v-for="(d, i) in content"
+        filter="url(#solid)"
+        :id="'label_'+i"
+        :key="i + '_textx'"
+        :ref="i + '_textx'"
+        class="label invisible"
+        display="none"
+        :x="scaleX(d[catAxis]) + barWidth / 2"
+        :y="scaleY(d[valAxis])-10"
+        text-anchor="middle"
+      >{{ d[catAxis] }}: {{ d[valAxis] }}</text>      
+    </g>
   </svg>
 </template>
 <script>
@@ -124,7 +104,10 @@ export default {
     content: Array,
     catAxis: String,
     valAxis: String,
-    xistime: Boolean
+    xistime: Boolean,
+    max: Number,
+    min: Number
+
   },
   data() {
     return {
@@ -145,6 +128,9 @@ export default {
     }
   },
   computed: {
+    graphid: function() {
+      return this._uid
+    },
     svg() {
       return select(`#${this.id}`)
     },
@@ -159,12 +145,18 @@ export default {
         .range([0, this.width - this.margin.left - this.margin.right])
     },
     scaleY() {
-      return (
-        scaleLinear()
-          // .domain(extent(this.content, d => d[this.valAxis]))
-          .domain([0, Math.max(...this.content.map((d) => d[this.valAxis]))])
-          .range([this.height - this.margin.top - this.margin.bottom, 0])
-      )
+      if (this.min < 0) {
+        return scaleLinear()
+          .domain([this.min, this.max])
+          .range([this.height - this.margin.top - this.margin.bottom, 0]);
+      } else {
+        return scaleLinear()
+          .domain([0, this.max])
+          .range([this.height - this.margin.top - this.margin.bottom, 0]);
+      }
+    },
+        zeroLine() {
+      return this.scaleY(0);
     },
     drawLine() {
       return line()
@@ -177,6 +169,11 @@ export default {
         (this.width - this.margin.left - this.margin.right) /
         this.content.length
       )
+    },
+        tickpadd() {
+      return (
+        this.height - this.margin.top - this.margin.bottom - this.zeroLine + 5
+      );
     }
   },
   methods: {
@@ -194,20 +191,20 @@ export default {
       this.timeout = setTimeout(this.updateGraph, 250)
     },
     onMouseOver(event) {
-      const labelLine = this.$refs[`${event.target.id.split("_")[0]}_line`][0]
-      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
-      textx.style.display = "inline"
-      texty.style.display = "inline"
-      labelLine.style.display = "block"
+      let chartid = event.target.parentNode.parentNode.id
+      let groupid = event.target.id.split("_")[1]
+      select("#"+chartid).select("#label_"+groupid).classed("invisible",false)
+      select("#"+chartid).select("#label_"+groupid).style("display","inline")
+
+
     },
     onMouseLeave(event) {
-      const labelLine = this.$refs[`${event.target.id.split("_")[0]}_line`][0]
-      const textx = this.$refs[`${event.target.id.split("_")[0]}_textx`][0]
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0]
-      textx.style.display = "none"
-      texty.style.display = "none"
-      labelLine.style.display = "none"
+      let chartid = event.target.parentNode.parentNode.id
+      let groupid = event.target.id.split("_")[1]
+      select("#"+chartid).select("#label_"+groupid).classed("invisible",true)
+      select("#"+chartid).select("#label_"+groupid).style("display","none")
+
+
     },
     refreshAxes() {
       // force axes to update according to the size
@@ -248,5 +245,18 @@ div {
 }
 rect {
   pointer-events: all;
+}
+circle {
+  fill:#4a4a4a;
+  opacity: 0;
+}
+circle:hover{
+  opacity: 1;
+}
+.invisible {
+  display:none;
+}
+svg{
+  overflow: visible;
 }
 </style>

@@ -22,6 +22,8 @@
       :catAxis="graph.x"
       :valAxis="graph.y"
       :xistime="graph.xistime"
+      :max="max"
+      :min="min"
     />
     <barChart
       v-if="graph.type === 'BAR'"
