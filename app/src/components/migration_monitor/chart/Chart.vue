@@ -10,11 +10,6 @@
         {{ graph.title }}
       </h6>
     </div>
-    <p class="q-px-lg q-mx-lg no-padding">
-      <strong>{{$t('migration_monitor.chart_description')}}</strong>
-      {{ graph.description }}
-      <br />
-    </p>
     <lineChart
       v-if="graph.type === 'LINE'"
       class="chart line-chart"
@@ -44,7 +39,7 @@
     />
     <mapChart v-if="graph.type === 'MAP'" class="chart" />
     <div
-      v-if="['LINE', 'BAR'].indexOf(graph.type) > -1"
+      v-if="[true].indexOf(graph.xistime) > -1"
       class="q-px-lg q-mx-lg no-padding"
     >
       <q-range
@@ -66,17 +61,17 @@
         </div>
         <div class="col">
           <p>
-            <strong>{{$t('migration_monitor.minimum_value')}}</strong> {{ min }}
+            <strong>{{$t('migration_monitor.minimum_value')}}</strong> {{ min.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
             <br />
-            <strong>{{$t('migration_monitor.maximum_value')}}</strong> {{ max }}
+            <strong>{{$t('migration_monitor.maximum_value')}}</strong> {{ max.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
             <br />
-            <strong>{{$t('migration_monitor.mean_value')}}</strong> {{ mean }}
+            <strong>{{$t('migration_monitor.mean_value')}}</strong> {{ mean.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,') }}
           </p>
         </div>
       </div>
     </div>
         <div
-      v-if="['PIE'].indexOf(graph.type) > -1"
+      v-if="[false,null].indexOf(graph.xistime) > -1"
       class="q-px-lg q-mx-lg no-padding"
     >
       <div class="row">

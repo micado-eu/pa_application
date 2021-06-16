@@ -23,12 +23,12 @@
 
       <rect
         v-for="(d, i) in content"
-        :key="i + '_rect'"
-        :id="i + '_rect'"
+        :key="'rect_'+i"
+        :id="'rect_'+i"
         :ref="i + '_rect'"
         :x="scaleX(d[catAxis])+(barWidth*0.5)*(1/0.8)/4"
         :y="d[valAxis] > 0 ? scaleY(d[valAxis]) : zeroLine"
-        :fill="istime ? d[valAxis] > 0 ? '#0b91ce' : '#C71f40' : interpolateViridis(Math.random())"
+        :fill="istime ? d[valAxis] > 0 ? '#0b91ce' : '#C71f40' : interpolateViridis(color(d[catAxis]))"
         :width="barWidth"
         :height="Math.abs(zeroLine - scaleY(d[valAxis]))"
         stroke="white"
@@ -49,6 +49,7 @@
       </defs>
       <text
         v-for="(d, i) in content"
+        :id="'label_'+i"
         :key="i + '_texty'"
         :ref="i + '_texty'"
         class="label"
@@ -191,7 +192,12 @@ export default {
         return true
       }
       return this.xistime
-    }
+    },
+    color: function() {
+      return scaleBand()
+        .domain(this.content.map(d => d[this.catAxis]))
+        .range([0, 1])
+    },
   },
   methods: {
     updateGraph() {
@@ -212,12 +218,20 @@ export default {
       this.resizeTimeout = setTimeout(this.updateGraph, 250);
     },
     onMouseOver(event) {
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0];
-      texty.style.display = "inline";
+      let currgraph = select("#"+event.target.parentNode.parentNode.id)
+      let currid = event.target.id.split("_")[1]
+      currgraph.selectAll("rect").classed("inactive",true)
+      currgraph.selectAll(".label").classed("inactive",true)
+      currgraph.select("#label_"+currid).classed("inactive",false).style("display","inline").raise()
+
     },
     onMouseLeave(event) {
-      const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0];
-      texty.style.display = "none";
+      // const texty = this.$refs[`${event.target.id.split("_")[0]}_texty`][0];
+      // texty.style.display = "none";
+      let currgraph = select("#"+event.target.parentNode.parentNode.id)
+      currgraph.selectAll("rect").classed("inactive",false)
+      currgraph.selectAll(".label").classed("inactive",false).style("display","none")
+      currgraph.selectAll(".label").classed("highlighted",false)
     }
   },
   watch: {
@@ -242,10 +256,18 @@ div {
   background: white;
 }
 .label {
-  transition: 0.2s;
   pointer-events: none;
 }
 svg{
   overflow: visible;
 }
+.inactive {
+  opacity: 0.15;
+  transition: 0.25s;
+}
+rect:hover{
+  opacity: 1;
+  transition-duration: 0.25s;
+}
+
 </style>

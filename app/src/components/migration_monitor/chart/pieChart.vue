@@ -97,14 +97,13 @@ export default {
       currgraph.selectAll("text").classed("inactive",true)
       currid.select("path").classed("inactive",false)
       currid.select("text").classed("inactive",false)
-      currid.select("text").classed("highlighted",true)
       currid.raise()
     },
     onMouseLeave(event) {
       let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
       currgraph.selectAll("path").classed("inactive",false)
       currgraph.selectAll("text").classed("inactive",false)
-      currgraph.selectAll("text").classed("highlighted",false)
+      currgraph.selectAll("text").raise()
     }
   },
   mounted: function() {
@@ -129,9 +128,11 @@ path {
 }
 .inactive {
   opacity: 0.15;
+  transition: 0.25s;
 }
-.highlighted {
+path:hover{
   opacity: 1;
+  transition-duration: 0.25s;
 }
 .textbg {
   position: absolute;
