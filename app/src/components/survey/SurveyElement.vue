@@ -76,7 +76,7 @@ export default {
 
   methods: {
     download(){
-      this.$emit('download',{surveyid:this.theSurvey.id, app:this.theSurvey.destination_app})
+      this.$emit('download',{surveyid:this.theSurvey.id, app:this.theSurvey.destinationApp})
     },
     editing () {
       console.log(this.theSurvey.id)
