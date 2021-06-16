@@ -67,14 +67,14 @@ export default {
       localCharts.push(...parseHamburg(hamburg0))
       localCharts.push(...parseHamburg(hamburg1))
       localCharts.push(...parseHamburg(hamburg2))
-      localCharts.push(parseUnhcrBar(Spain_sea))
-      localCharts.push(parseUnhcrBar(Spain_land))
-      localCharts.push(parseUnhcrBar(Greece_sea))
-      localCharts.push(parseUnhcrBar(Greece_land))
-      localCharts.push(parseUnhcrBar(Italy_sea))
-      localCharts.push(parseUnhcrPie(Spain_nat))
-      localCharts.push(parseUnhcrPie(Greece_nat))
-      localCharts.push(parseUnhcrPie(Italy_nat))
+      localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
+      localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
+      localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
+      localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
+      localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
+      localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
+      localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
+      localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
       return {
         charts: localCharts
       }
@@ -118,7 +118,7 @@ function fetchLocalCharts() {
     .catch(error_handler)
 }
 
-function parseUnhcrBar(data) {
+function parseUnhcrBar(data,title) {
   // add date
   for (let i = 0; i < data.data.timeseries.length; i++) {
     const d = data.data.timeseries[i]
@@ -131,7 +131,7 @@ function parseUnhcrBar(data) {
     content: JSON.stringify(data.data.timeseries),
     description: data.situation_view_description,
     format: 'API',
-    title: data.title_language_en,
+    title: title,
     type: 'BAR',
     x: 'date',
     y: 'individuals',
@@ -140,14 +140,14 @@ function parseUnhcrBar(data) {
   }
 }
 
-function parseUnhcrPie(data) {
+function parseUnhcrPie(data,title) {
   return {
     board: 'UNHCR',
     category: data.data[0].geomaster_name,
     content: JSON.stringify(data.data),
     description: data.situation_view_description,
     format: 'API',
-    title: data.title_language_en,
+    title: title,
     type: 'PIE',
     provider: 'UNHCR',
     x: 'pop_origin_name',
@@ -176,11 +176,11 @@ function parseHamburg(json) {
       result.push({
         id: key,
         board,
-        title: key,
+        title: key.split(":")[1].replaceAll("_"," "),
         description: "",
-        category: category,
+        category: category.split(":")[1].replaceAll("_"," "),
         format: "API",
-        provider: "ZKF",
+        provider: "Free and Hanseatic City of Hamburg",
         url: "",
         type: "BAR",
         xistime: true,
