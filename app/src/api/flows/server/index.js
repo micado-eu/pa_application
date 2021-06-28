@@ -262,6 +262,14 @@ export default {
       .get('/backend/1.0.0/process-produced-documents')
       .then(response => response.data)
       .catch(error_handler)
+  },
+  fetchGraph (id, userLang) {
+    return axiosInstance
+      .get('backend/1.0.0/mermaid_pa?processid=' + id + '&lang=' + userLang)
+      .then((response) => {
+        return response.data
+      })
+      .catch(error_handler);
   }
 
 }

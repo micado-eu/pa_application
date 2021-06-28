@@ -76,7 +76,8 @@
     "enter_chart_title": "Enter chart title here",
     "board": "if the board does not already exist, it will be automatically created",
     "category": "if the category does not already exist, it will be automatically created",
-    "chart_description": "Describe your Chart"
+    "chart_description": "Describe your Chart",
+    "preview_process":"Preview process"
   },
   "menu": {
     "title": "My Tools",
@@ -157,7 +158,9 @@
     "batch_upload":"Batch upload",
     "download_template":"Download template",
     "print": "print",
-    "return_main": "return to main page"
+    "return_main": "return to main page",
+    "view_model": "View model",
+    "view_pics": "View details"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",
@@ -276,7 +279,11 @@
     "start_date_survey":"Start date",
     "end_date_survey":"End date",
     "active":"Active",
-    "related_app":"Related app"
+    "related_app":"Related app",
+    "click_step":"Click on a step above for details",
+    "preview":"Preview",
+    "preview_migrant":"Preview of the process on the migrant app",
+    "loading":"Loading..."
   },
   "profile": {
     "username": "Username",

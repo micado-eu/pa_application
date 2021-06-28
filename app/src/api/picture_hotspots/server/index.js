@@ -49,6 +49,12 @@ export default {
       .then(response => response.data)
       .catch(error_handler);
   },
+  fetchDocumentTypePicturesByIdGraph(id, defaultlang, currentLang) {
+    return axiosInstance
+      .get('/backend/1.0.0/picture-hotspots-migrant?defaultlang='+ defaultlang + '&currentlang=' + currentLang + '&pictureId=' + id)
+      .then(response => response.data)
+      .catch(error_handler);
+  }
 
 }
   

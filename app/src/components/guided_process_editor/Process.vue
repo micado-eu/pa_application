@@ -4,7 +4,7 @@
     
     <div class="width">
       <div class="row">
-          <div class="col-5 flex flex-left title" style="padding-top:10px">{{ this.Title }}</div>
+          <div class="col-4 flex flex-left title" style="padding-top:10px">{{ this.Title }}</div>
             <q-item-section class="col-1 flex flex-center">
             <q-toggle
             v-model="theProcess.published"
@@ -27,8 +27,12 @@
               <IconWithTooltip :icon="'img:statics/icons/Icon - Manage processes.svg'" :tooltip="$t('help.manage_process')" @click.native="manageProcess()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
             </q-item-section>
             <q-item-section class="col-1 flex flex-center top" >
+              <IconWithTooltip :icon="'img:statics/icons/graph.png'" :tooltip="$t('help.preview_process')" @click.native="viewer()" :data-cy="'manageprocess'.concat(theProcess.id )"/>
+            </q-item-section>
+            <q-item-section class="col-1 flex flex-center top" >
               <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_process')" @click.native="remove_process($event)" :data-cy="'deleteprocess'.concat(theProcess.id )"/>
             </q-item-section>
+
       </div>
        <div class="row pad">
             <q-img
@@ -54,18 +58,55 @@
             </div>
       <hr class="hr">
     </div>
+    <q-dialog v-model="alert" full-width >
+       <q-layout
+        view="Lhh lpR fff"
+        container
+        class="bg-white"
+      >
+      <q-header
+          
+          class="bg-accent"
+        >
+          <q-toolbar>
+
+            <q-toolbar-title> {{$t('input_labels.preview_migrant')}}</q-toolbar-title>
+            <q-btn
+              round
+              dense
+              flat
+              v-close-popup
+              color="white"
+              icon="cancel"
+            />
+          </q-toolbar>
+        </q-header>
+        <q-page-container>
+          <q-page class="q-pa-sm">
+            <ProcessViewer
+            :processid="theProcess.id"
+            :topics="processTopics"
+            />
+ 
+          </q-page>
+        </q-page-container>
+      </q-layout>
+    </q-dialog>
   </q-item>
 </template>
 
 <script>
 import IconWithTooltip from '../IconWithTooltip'
 import editEntityMixin from '../../mixin/editEntityMixin'
+import ProcessViewer from './ProcessViewer'
 export default {
   name: 'Process',
   props: ["Title", "Topics", "Users", "Link", "Path", "theProcess", "processTopics", "processUsers"],
   mixins: [editEntityMixin],
   data () {
-    return {};
+    return {
+      alert:false
+    };
   },
   computed:{
     comment_present(){
@@ -94,8 +135,11 @@ export default {
       }
     }
   },
-  components:{IconWithTooltip},
+  components:{IconWithTooltip,ProcessViewer},
   methods: {
+    viewer(){
+      this.alert = true
+    },
     topicTransl(topic_id){
       var working_topic = this.processTopics.filter(topic => topic.id == topic_id)[0]
       return working_topic.translations.filter((tr)=>{

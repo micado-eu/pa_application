@@ -18,6 +18,12 @@ export function fetchHotspotsById(state, pic_id) {
     })
 }
 
+export function fetchHotspotsByIdGraph(state, payload) {
+  return client
+    .fetchDocumentTypePicturesByIdGraph(payload.id, payload.defaultLang, payload.currentLang)
+    .then(picture_hotspots => state.commit('setHotspots', picture_hotspots))
+}
+
 export function saveTranslationProd(state, spots){
   spots.forEach((spot)=>{
     client.deleteSpotTranslationProd(spot.id).then(()=>{

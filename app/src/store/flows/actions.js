@@ -462,4 +462,11 @@ export function deleteTranslationProd(state, id){
   console.log("in delete transl prod")
   client.deleteProcessTranslationProd(id)
 }
-
+export function fetchGraph (state, payload) {
+  return client
+    .fetchGraph(payload.id, payload.userLang)
+    .then(graph => {
+      state.commit('graphs/setGraphs', graph, { root: true })
+      return graph
+    })
+}
