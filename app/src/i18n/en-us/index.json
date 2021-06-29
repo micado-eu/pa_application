@@ -283,7 +283,8 @@
     "click_step":"Click on a step above for details",
     "preview":"Preview",
     "preview_migrant":"Preview of the process on the migrant app",
-    "loading":"Loading..."
+    "loading":"Loading...",
+    "emitter":"Emitter"
   },
   "profile": {
     "username": "Username",
