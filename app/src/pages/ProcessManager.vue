@@ -149,7 +149,7 @@ export default {
           console.log(this.activeLanguage)
           var curlangproc = a_process.translations.filter((transl) => { return transl.lang == this.activeLanguage })[0]
           //Splits the search field and puts the words in an array
-          var searchArray = this.search.split(" ")
+          var searchArray = this.search.toLowerCase().split(" ")
           if (searchArray.every(string => curlangproc.process.toLowerCase().includes(string))) {
             return true;
           }        })
