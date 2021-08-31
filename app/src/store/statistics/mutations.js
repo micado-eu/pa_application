@@ -30,17 +30,14 @@ export function setCharts(state, charts) {
           // Removed Bar chart
           //  if ((c.type === 'LINE' || c.type === 'BAR') && c.xistime) {
 
-          //  if ((c.type === 'LINE') && c.xistime) {
-          //   c.content.forEach((item) => {
-          //     item[c.x] = new Date(item[c.x]).getTime()
-          //   })
-          //   c.content = c.content.sort(
-          //     (a, b) => b[c.x] - a[c.x]
-          //   )
-          //   c.content.forEach((item) => {
-          //     item[c.x] = new Date(item[c.x])
-          //   })
-          // }
+           if ((c.type === 'LINE' || c.type === 'BAR') && c.xistime) {
+            c.content.forEach((item) => {
+              item[c.time] = new Date(item[c.x]).getTime()
+            })
+            c.content = c.content.sort(
+              (a, b) => a[c.time] - b[c.time]
+            )
+          }
           state.charts.push(c)
         } catch (err) {
           console.log(err)
