@@ -185,7 +185,10 @@
     "father_topics": "Main topics to be shown on migrant application",
     "translations": "Translations",
     "surveymanagement": "Manage surveys",
-    "privacy": "Privacy Policy"
+    "privacy": "Privacy Policy",
+    "helpdesk_pa":"Helpdesk message for the PA application",
+    "helpdesk_ngo":"Helpdesk message for the NGO application",
+    "helpdesk_migrant":"Helpdesk mail or phone number for the Migrant application"
   },
   "input_labels": {
     "parent_topic": "Parent topic",
@@ -284,6 +287,7 @@
     "preview":"Preview",
     "preview_migrant":"Preview of the process on the migrant app",
     "loading":"Loading...",
+    "available_transl":"Available translations",
     "emitter":"Emitter"
   },
   "profile": {

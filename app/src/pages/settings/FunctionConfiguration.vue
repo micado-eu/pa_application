@@ -169,7 +169,124 @@
 
 
     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.helpdesk_pa')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+      dense
+      bg-color="grey-3"
+      standout
+      outlined
+      counter
+      type="textarea"
+      :readonly="!edit_helpdesk_pa"
+      v-model="helpdeskPa"
+              />
+        <q-btn
+          v-if="!edit_helpdesk_pa"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_helpdesk_pa = true"
+        />
+          <q-btn
+          v-if="edit_helpdesk_pa"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('helpdesk_pa')"
+        />
+          <q-btn
+          v-if="edit_helpdesk_pa"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('helpdesk_pa',newHelpdeskPa, helpdeskPa )"
+        />
 
+      </q-card-section>
+    </q-card>
+     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.helpdesk_ngo')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+      dense
+      bg-color="grey-3"
+      standout
+      outlined
+      counter
+      type="textarea"
+      :readonly="!edit_helpdesk_ngo"
+      v-model="helpdeskNgo"
+              />
+        <q-btn
+          v-if="!edit_helpdesk_ngo"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_helpdesk_ngo = true"
+        />
+          <q-btn
+          v-if="edit_helpdesk_ngo"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('helpdesk_ngo')"
+        />
+          <q-btn
+          v-if="edit_helpdesk_ngo"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('helpdesk_ngo',newHelpdeskNgo, helpdeskNgo )"
+        />
+
+      </q-card-section>
+    </q-card>
+     </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.helpdesk_migrant')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+      dense
+      bg-color="grey-3"
+      standout
+      outlined
+      counter
+      :readonly="!edit_helpdesk_migrant"
+      v-model="helpdeskMigrant"
+              />
+        <q-btn
+          v-if="!edit_helpdesk_migrant"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_helpdesk_migrant = true"
+        />
+          <q-btn
+          v-if="edit_helpdesk_migrant"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('helpdesk_migrant')"
+        />
+          <q-btn
+          v-if="edit_helpdesk_migrant"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('helpdesk_migrant',newHelpdeskMigrant, helpdeskMigrant )"
+        />
+
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
@@ -196,14 +313,26 @@ export default {
       emailOrig: null,
       policy:null,
       policyOrig:null,
+      helpdeskPa:null,
+      helpdeskPaOrig:null,
+      helpdeskNgo:null,
+      helpdeskNgoOrig:null,
+      helpdeskMigrant:null,
+      helpdeskMigrantOrig:null,
       isNew:true,
       newFathers:true,
       newPolicy:true,
+      newHelpdeskPa:true,
+      newHelpdeskNgo:true,
+      newHelpdeskMigrant:true,
       t_tags:[],
       edit_fathers:false,
       fathers:[],
       fathersOrig:[],
-      editing_policy:false
+      editing_policy:false,
+      edit_helpdesk_pa:false,
+      edit_helpdesk_ngo:false,
+      edit_helpdesk_migrant:false,
     }
   },
   mixins: [editEntityMixin,
@@ -277,6 +406,19 @@ export default {
       this.editing = false
      
     },
+    cancelSetting(setting){
+      switch(setting) {
+        case 'helpdesk_pa':
+          this.helpdeskPa =  JSON.parse(JSON.stringify(this.helpdeskPaOrig))
+          this.edit_helpdesk_pa = false
+          break;
+        case y:
+          // code block
+          break;
+        default:
+          console.log("non of those")
+      }
+    },
     saveMail(){
       if(this.isNew){
         console.log("saving new feedback email")
@@ -289,6 +431,32 @@ export default {
       this.editing = false
       this.emailOrig = JSON.parse(JSON.stringify(this.email))
     },
+    saveSingleSetting(key, is_new, item){
+      if(is_new){
+        console.log("saving new feedback email")
+        this.saveSetting({key:key, value:item})
+      }
+      else{
+        this.updateSetting({key:key, value:item})
+      }
+      switch(key) {
+        case 'helpdesk_pa':
+          this.helpdeskPaOrig =  JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_pa = false
+          break;
+        case 'helpdesk_ngo':
+          this.helpdeskNgoOrig =  JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_ngo = false
+          break;
+        case 'helpdesk_migrant':
+          this.helpdeskMigrantOrig =  JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_pa = false
+          break;
+        default:
+          console.log("non of those")
+      }
+    },
+
     saveFeatures () {
       console.log(this.workingFeatures)
       /*
@@ -355,6 +523,22 @@ export default {
         this.fathers = JSON.parse(setting.value)
         this.fathersOrig = JSON.parse(setting.value)
         this.newFathers = false
+      }
+      if(setting.key =='helpdesk_pa'){
+        console.log(setting)
+        this.helpdeskPa = setting.value
+        this.helpdeskPaOrig = setting.value
+        this.newHelpdeskPa = false
+      }
+      if(setting.key =='helpdesk_ngo'){
+        this.helpdeskNgo = setting.value
+        this.helpdeskNgoOrig = setting.value
+        this.newHelpdeskNgo = false
+      }
+      if(setting.key =='helpdesk_pamigrant'){
+        this.helpdeskMigrant = setting.value
+        this.helpdeskMigrantOrig = setting.value
+        this.newHelpdeskMigrant = false
       }
 
     });
