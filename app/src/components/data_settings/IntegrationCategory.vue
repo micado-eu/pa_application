@@ -196,7 +196,7 @@
         </q-item-section>
       </q-item>
         <div class="row pad">
-              <p style="padding-top:8px; margin-bottom:0px;padding-left:15px">{{$t('input_labels.available_transl')}}:</p>
+          <p style="padding-top:8px; margin-bottom:0px;padding-left:15px">{{$t('input_labels.available_transl')}}:</p>
                <q-chip v-for=" lang in a_integration_category.translations.filter(lang => {return lang.title.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
             </div>
             <hr style="margin-bottom:0px">
