@@ -426,11 +426,9 @@
       bordered
       separator
     >
-      <q-item
-        clickable
-        v-ripple
-        v-for="document_type in document_types"
-        :key="document_type.id"
+    <div v-for="document_type in document_types"
+        :key="document_type.id">
+      <q-item        
       >
         <q-item-section class="col-1 ">
           <q-img
@@ -467,7 +465,14 @@
             size="md"
           />
         </q-item-section>
+
       </q-item>
+              <div class="row pad">
+              <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">{{$t('input_labels.available_transl')}}:</p>
+               <q-chip v-for=" lang in document_type.translations.filter(lang => {return lang.document.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
+            </div>
+            <hr style="margin-bottom:0px">
+    </div>
     </q-list>
     <q-card class="my-card">
 

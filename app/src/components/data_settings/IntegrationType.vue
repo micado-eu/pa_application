@@ -213,12 +213,9 @@
       bordered
       separator
     >
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_integration_type in intervention_types"
-        :key="a_integration_type.id"
-      >
+    <div v-for="a_integration_type in intervention_types"
+        :key="a_integration_type.id">
+      <q-item>
         <q-item-section class="col-7 flex flex-left ">{{showTypeLabel(a_integration_type)}}</q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <q-toggle
@@ -247,6 +244,12 @@
           />
         </q-item-section>
       </q-item>
+      <div class="row pad">
+              <p style="padding-top:8px; margin-bottom:0px;padding-left:15px">{{$t('input_labels.available_transl')}}:</p>
+               <q-chip v-for=" lang in a_integration_type.translations.filter(lang => {return lang.interventionTitle.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
+            </div>
+            <hr style="margin-bottom:0px">
+    </div>
     </q-list>
     <q-card class="my-card">
 

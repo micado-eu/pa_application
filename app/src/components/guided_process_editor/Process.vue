@@ -56,6 +56,10 @@
                 </q-tooltip>
               </q-img>  
             </div>
+            <div class="row pad">
+              <p style="padding-top:8px; margin-bottom:0px">{{$t('input_labels.available_transl')}}:</p>
+               <q-chip v-for=" lang in theProcess.translations.filter(lang => {return lang.process.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
+            </div>
       <hr class="hr">
     </div>
     <q-dialog v-model="alert" full-width >
@@ -105,7 +109,7 @@ export default {
   mixins: [editEntityMixin],
   data () {
     return {
-      alert:false
+      alert:false,
     };
   },
   computed:{

@@ -186,12 +186,9 @@
       bordered
       separator
     >
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_topic in topic"
-        :key="a_topic.id"
-      >
+    <div  v-for="a_topic in topic"
+        :key="a_topic.id">
+      <q-item>
         <q-item-section class="col-1 flex flex-left">
           <q-img
             :src="a_topic.icon"
@@ -229,6 +226,12 @@
           />
         </q-item-section>
       </q-item>
+      <div class="row pad">
+              <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">{{$t('input_labels.available_transl')}}:</p>
+               <q-chip v-for=" lang in a_topic.translations.filter(lang => {return lang.topic.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
+            </div>
+            <hr style="margin-bottom:0px">
+    </div>
     </q-list>
     <q-card class="my-card">
 

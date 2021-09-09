@@ -175,12 +175,9 @@
       bordered
       separator
     >
-      <q-item
-        clickable
-        v-ripple
-        v-for="a_user_type in user"
-        :key="a_user_type.id"
-      >
+    <div v-for="a_user_type in user"
+        :key="a_user_type.id">
+      <q-item>
         <q-item-section class="col-1 flex flex-left">
           <q-img
             :src="a_user_type.icon"
@@ -217,6 +214,12 @@
           />
         </q-item-section>
       </q-item>
+            <div class="row pad">
+              <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">{{$t('input_labels.available_transl')}}:</p>
+               <q-chip v-for=" lang in a_user_type.translations.filter(lang => {return lang.userType.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
+            </div>
+            <hr style="margin-bottom:0px">
+    </div>
     </q-list>
 
   </div>
