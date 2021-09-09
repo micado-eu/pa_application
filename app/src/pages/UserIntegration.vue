@@ -1,5 +1,7 @@
 <template>
-  <div id="first-div">
+<div>
+  <div v-if="loading">{{$t('input_labels.loading')}}</div>
+  <div v-else id="first-div">
     <div
       class="q-pa-md col"
       id="second-div"
@@ -79,7 +81,7 @@
             @editIntervention="editIntervention"
             @cancelIntervention="cancelIntervention"
             @saveIntervention="savingIntervention"
-            @validated="validateIntervention"
+            @validated="openValidateDialog"
             @deleteIntervention="deleteIntervention"
           >
           </IntegrationPlan>
@@ -108,8 +110,55 @@
                 :disable="hideAdd"
                 @click="deletePlan(intervention_plan.id)"
               />
+                  <q-dialog  v-model="ask_validation"
+      persistent
+    >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">{{$t('input_labels.validate_intervention')}}</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-select
+            filled
+            dense
+            clearable
+            emit-value
+            map-options
+            v-model="validatingDocType"
+            :options="t_docs"
+            :label="$t('input_labels.doc_type')"
+          />
+          <q-file
+            v-model="validationFile"
+            accept=".jpg, .pdf, image/*"
+            label="Choose an optional file for validate"
+          />
+        </q-card-section>
+
+        <q-card-actions
+          align="right"
+          class="text-primary"
+        >
+          <q-btn
+          :data-cy="'cancel'"
+            label="Cancel"
+            color="accent"
+            v-close-popup
+          />
+          <q-btn
+            label="Add document"
+            color="accent"
+            :data-cy="'validatetask'"
+            @click="validateTask()"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -131,6 +180,7 @@ export default {
       intervention_categories: 'integration_category/intervention_categories',
       intervention_plans: 'intervention_plan/intervention_plans',
       users: 'user/users',
+      validator:'user/pausers',
       documents: 'documents/my_documents',
       completion_documents: 'documents/completion_documents',
       tenants: 'tenant/tenants'
@@ -144,17 +194,24 @@ export default {
       fetchCompletionDocuments: 'documents/fetchCompletionDocuments',
       fetchTenants: 'tenant/fetchTenants',
       deletingIntervention: 'intervention_plan/deleteIntervention',
-      deleteInterventionPlan: 'intervention_plan/deleteInterventionPlan'
+      deleteInterventionPlan: 'intervention_plan/deleteInterventionPlan',
+      fetchDocumentType: 'document_type/fetchDocumentType',
+      editInterventionByValidation:'intervention/editInterventionByValidation',
+      fetchValidator:'user/fetchPAUser',
+      saveDoc:'documents/saveDocument'
+
   }
   })
   ],
   data () {
     return {
+      loading:true,
       hideForm: true,
       isNew: false,
       the_user: [],
       button_id: null,
       hideAdd: false,
+      ask_validation: false,
       processes_list: [
         "How to certify education degree",
         "Renewal of residence permit for working reasons",
@@ -162,6 +219,25 @@ export default {
         "How to get access to public funded housing",
         "How to enroll children to school"
       ],
+      validationFile: null,
+      validatingIntervention: null,
+      validatingUser: null,
+      validatingDocType: null,
+      doc_shell: {
+        id: -1,
+        pictures: [],
+        userId: null,
+        userTenant: null,
+        askValidateByTenant: null,
+        validated: false,
+        validationDate: null,
+        validatedByTenant: null,
+        validatedByUser: null,
+        uploadedByMe: true,
+        expirationDate: null,
+        documentTypeId: "",
+        shareable:true
+      },
       id: this.$route.params.id,
       edit_action: {
         id: 999,
@@ -184,6 +260,7 @@ export default {
         assignmentDate: null,
         validationRequestDate: null
       },
+      t_docs:[],
 
       selected_plan: null,
       validation: null,
@@ -215,13 +292,18 @@ export default {
       console.log(this.completion_documents)
       this.the_pic = null
       //console.log(id)
+      var the_doc = null
       var intervention_doc = this.completion_documents.filter((doc)=>{
         return doc.idIntervention == intervention.id
       })[0]
-      if(intervention_doc!= null){
-        var the_doc= this.documents.filter((document) => {
+      if(intervention_doc != null){
+        console.log("inside intervention doc different from null")
+       the_doc = this.documents.filter((document) => {
+         console.log(document.id)
+         console.log(intervention_doc.idDocument)
         return document.id == intervention_doc.idDocument
       })[0]
+      console.log("i am the doc completed")
       console.log(the_doc)
       if(the_doc != null){
         console.log("inside if")
@@ -369,7 +451,80 @@ export default {
 
     },
 
+    openValidateDialog (event) {
+      console.log(event)
+      this.validatingIntervention = event
+            console.log(this.validatingIntervention)
 
+      console.log(this.$store.state.auth.user.umid)
+      this.validatingUser = Number(this.theuserid)
+      this.ask_validation = true
+    },
+    validateTask () {
+      console.log("user id: " + this.validatingUser)
+      let current_data = new Date().toISOString()
+
+      // before validate the intervention and in the then check the file
+      this.validatingIntervention.completed = true
+      this.validatingIntervention.validationDate = current_data
+      // TODO change with the real user ID
+      this.validatingIntervention.validatingUserId = this.$store.state.auth.user.umid
+      console.log(this.validatingIntervention)
+      this.editInterventionByValidation({ intervention: this.validatingIntervention, plan: this.validatingIntervention.listId })
+        .then(() => {
+          if (this.validationFile) {
+            console.log("we have to upload a file to the user")
+            console.log(this.validationFile)
+            let reader = new FileReader()
+            // Convert the file to base64 text
+            reader.readAsDataURL(this.validationFile)
+            // on reader load somthing...
+            reader.onload = () => {
+              // Make a fileInfo Object
+              let fileInfo = {
+                name: this.validationFile.name,
+                type: this.validationFile.type,
+                size: Math.round(this.validationFile.size / 1000) + ' kB',
+                base64: reader.result,
+                file: this.validationFile
+              }
+              this.doc_shell.userId = this.validatingUser
+              this.doc_shell.userTenant = Number(this.$migrant_tenant)
+              this.doc_shell.documentTypeId = this.validatingDocType
+              this.doc_shell.validated = true
+              this.doc_shell.validationDate = current_data
+              this.doc_shell.uploadedByMe = false
+              this.doc_shell.validatedByTenant = Number(this.$pa_tenant)
+              // TODO substitute with proper value (now using the 17 as id of tenant 3)
+              this.doc_shell.validatedByUser = this.$store.state.auth.user.umid
+              this.doc_shell.pictures.push({
+                id: -1,
+                picture: fileInfo.base64,
+                docId: -1,
+                order: null
+              })
+              // now we can send
+              console.log("I am validating intervention and its id")
+              console.log(this.validatingIntervention)
+              console.log(this.validatingIntervention.id)
+              this.saveDoc({document:this.doc_shell, id_intervention:this.validatingIntervention.id})
+                .then(() => {
+                  // still have to write the completed_intervention_document table to associate the new doc with the intervention
+
+                  this.createDocShell()
+                  this.validationFile = null
+                  this.validatingIntervention = null
+                  this.validatingUser = null
+                  this.validatingDocType = null
+                })
+            }
+
+          }
+        })
+    },
+    createDocShell(){
+      this.doc_shell = { id: -1, pictures: [], userId: null, userTenant: null, askValidateByTenant: null, validated: false, validationDate: null, validatedByTenant: null, validatedByUser: null, uploadedByMe: true, expirationDate: null, documentTypeId: "", shareable:true }
+    },
     validateIntervention (value) {
       console.log("in validation page")
       console.log(value)
@@ -442,9 +597,22 @@ export default {
           var the_integration_types = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle, value: ut.id }
           this.types.push(the_integration_types)
         })
+    this.fetchDocumentType()
+      .then(document_types => {
+        console.log(document_types)
+        console.log("DOCUMENT TYPES FETCHED")
+        document_types.forEach(document_type => {
+          var the_doc = { label: document_type.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: document_type.id }
+          this.t_docs.push(the_doc)
+          
+        })
+        this.loading = false
+      console.log("I AM T DOCS")
+        console.log(this.t_docs)
+      })
       })
     
-      
+
     
     var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
     this.fetchSpecificUser(payload)

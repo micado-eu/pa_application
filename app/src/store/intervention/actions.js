@@ -35,6 +35,16 @@ export function editInterventionPlan(state, intervention_plan) {
     .updateInterventionPlan(intervention_plan)
     .then(intervention_plan_return => state.commit('editInterventionPlan', intervention_plan_return))
 }
+export function editInterventionByValidation (state, payload) {
+  // we need BEFORE to call the API to do the update and if ok we update wuex state
+  console.log(payload.intervention)
+  return client
+      .editInterventionByValidation(payload.plan, payload.intervention)
+      .then(intervention_plan_return => {
+          state.commit('editInterventionByValidation', payload.intervention)
+          return intervention_plan_return
+       })
+}
 
 export function saveInterventionPlan(state, intervention_plan) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state

@@ -29,3 +29,10 @@ export function deleteIntervention(state, index){
   let document_types = state.document_type.filter(d => d.id != document_typeId)
   state.document_type = document_types
 }*/
+export function editInterventionByValidation(state, interventions) {
+  console.log("update the state")
+  const index = state.intervention.findIndex(item => item.id === interventions.id);
+  if (index !== -1) state.intervention.splice(index, 1, interventions);
+  console.log(interventions)
+  console.log(state.interventions)
+}

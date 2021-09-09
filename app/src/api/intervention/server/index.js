@@ -63,5 +63,19 @@ export default {
           resolve(integration_category)
         }, 0)
       })
-    }
-  }
+    },
+    editInterventionByValidation (id_plan, intervention) {
+      console.log(id_plan)
+      const whereClause = {
+          id: { eq: intervention.id }
+      },
+
+          editingIntervention = JSON.parse(JSON.stringify(intervention, ['id', 'listId', 'completed', 'validationDate', 'validatingUserId']));
+
+      return axiosInstance
+          .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
+          .then(response => response.data)
+          .catch(error_handler);
+  },
+}
+  
