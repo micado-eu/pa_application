@@ -188,7 +188,8 @@
     "privacy": "Privacy Policy",
     "helpdesk_pa":"Helpdesk message for the PA application",
     "helpdesk_ngo":"Helpdesk message for the NGO application",
-    "helpdesk_migrant":"Helpdesk mail or phone number for the Migrant application"
+    "helpdesk_migrant":"Helpdesk mail or phone number for the Migrant application",
+    "duration_of_new":"Select for how long content will be labeled as new "
   },
   "input_labels": {
     "parent_topic": "Parent topic",
@@ -287,6 +288,8 @@
     "preview":"Preview",
     "preview_migrant":"Preview of the process on the migrant app",
     "loading":"Loading...",
+    "validate_intervention":"Validate intervention",
+    "days":"Days",
     "available_transl":"Available translations",
     "emitter":"Emitter"
   },

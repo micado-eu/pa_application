@@ -175,14 +175,14 @@
       </q-card-section>
       <q-card-section>
            <q-input
-      dense
-      bg-color="grey-3"
-      standout
-      outlined
-      counter
-      type="textarea"
-      :readonly="!edit_helpdesk_pa"
-      v-model="helpdeskPa"
+              dense
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              type="textarea"
+              :readonly="!edit_helpdesk_pa"
+              v-model="helpdeskPa"
               />
         <q-btn
           v-if="!edit_helpdesk_pa"
@@ -287,178 +287,254 @@
 
       </q-card-section>
     </q-card>
+     <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.duration_of_new')}}</div>
+      </q-card-section>
+      <q-card-section>
+        <div class="row">
+           <q-input
+              type="number"
+              dense
+              class="col-2"
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              :readonly="!edit_duration_of_new"
+              v-model.number="durationOfNew"
+              />
+              <p class="col-10 duration">{{$t('input_labels.days')}}</p>
+        </div>
+        <q-btn
+          v-if="!edit_duration_of_new"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_duration_of_new = true"
+        />
+          <q-btn
+          v-if="edit_duration_of_new"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('duration_of_new')"
+        />
+          <q-btn
+          v-if="edit_duration_of_new"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('duration_of_new',newDurationOfNew, durationOfNew )"
+        />
+
+      </q-card-section>
+    </q-card>
   </div>
 </template>
 
 <script>
-import GlossaryEditor from 'components/GlossaryEditor'
+import GlossaryEditor from "components/GlossaryEditor";
 
-import storeMappingMixin from '../../mixin/storeMappingMixin'
-import editEntityMixin from '../../mixin/editEntityMixin'
-import FeaturesElement from '../../components/settings/FeaturesElement'
+import storeMappingMixin from "../../mixin/storeMappingMixin";
+import editEntityMixin from "../../mixin/editEntityMixin";
+import FeaturesElement from "../../components/settings/FeaturesElement";
 //import Croppa from 'vue-croppa'
-import 'vue-croppa/dist/vue-croppa.css'
-import ActiveLanguageSelector from '../../components/settings/ActiveLanguageSelector.vue'
-import translatedButtonMixin from '../../mixin/translatedButtonMixin'
+import "vue-croppa/dist/vue-croppa.css";
+import ActiveLanguageSelector from "../../components/settings/ActiveLanguageSelector.vue";
+import translatedButtonMixin from "../../mixin/translatedButtonMixin";
 
 export default {
   name: "FunctionConfiguration",
-  data () {
+  data() {
     return {
       group: ["FEAT_SERVICES"],
       workingFeatures: [],
       myCroppa: {},
       editing: false,
-      email:null,
+      email: null,
       emailOrig: null,
-      policy:null,
-      policyOrig:null,
-      helpdeskPa:null,
-      helpdeskPaOrig:null,
-      helpdeskNgo:null,
-      helpdeskNgoOrig:null,
-      helpdeskMigrant:null,
-      helpdeskMigrantOrig:null,
-      isNew:true,
-      newFathers:true,
-      newPolicy:true,
-      newHelpdeskPa:true,
-      newHelpdeskNgo:true,
-      newHelpdeskMigrant:true,
-      t_tags:[],
-      edit_fathers:false,
-      fathers:[],
-      fathersOrig:[],
-      editing_policy:false,
-      edit_helpdesk_pa:false,
-      edit_helpdesk_ngo:false,
-      edit_helpdesk_migrant:false,
-    }
+      policy: null,
+      policyOrig: null,
+      helpdeskPa: null,
+      helpdeskPaOrig: null,
+      helpdeskNgo: null,
+      helpdeskNgoOrig: null,
+      helpdeskMigrant: null,
+      helpdeskMigrantOrig: null,
+      durationOfNew: null,
+      durationOfNewOrig: null,
+      isNew: true,
+      newFathers: true,
+      newPolicy: true,
+      newHelpdeskPa: true,
+      newHelpdeskNgo: true,
+      newHelpdeskMigrant: true,
+      newDurationOfNew: true,
+      t_tags: [],
+      edit_fathers: false,
+      fathers: [],
+      fathersOrig: [],
+      editing_policy: false,
+      edit_helpdesk_pa: false,
+      edit_helpdesk_ngo: false,
+      edit_helpdesk_migrant: false,
+      edit_duration_of_new: false,
+    };
   },
-  mixins: [editEntityMixin,
-  translatedButtonMixin,
+  mixins: [
+    editEntityMixin,
+    translatedButtonMixin,
     storeMappingMixin({
       getters: {
-        features: 'features/features',
-        settings: 'settings/settings'
-      }, actions: {
-        fetchFeatures: 'features/fetchFeatures',
-        updateAllFeatures: 'features/updateAllFeatures',
-        updateSetting: 'settings/updateSetting',
-        saveSetting:'settings/saveSetting',
-        fetchTopic: 'topic/fetchTopic',
-        fetchMixedSettings:'settings/fetchMixedSettings',
-        savingPolicy:'settings/savePolicy',
-        updatePolicy: 'settings/updatePolicy'
-
-      }
-    })],
+        features: "features/features",
+        settings: "settings/settings",
+      },
+      actions: {
+        fetchFeatures: "features/fetchFeatures",
+        updateAllFeatures: "features/updateAllFeatures",
+        updateSetting: "settings/updateSetting",
+        saveSetting: "settings/saveSetting",
+        fetchTopic: "topic/fetchTopic",
+        fetchMixedSettings: "settings/fetchMixedSettings",
+        savingPolicy: "settings/savePolicy",
+        updatePolicy: "settings/updatePolicy",
+      },
+    }),
+  ],
   components: {
-    FeaturesElement,ActiveLanguageSelector,GlossaryEditor,
+    FeaturesElement,
+    ActiveLanguageSelector,
+    GlossaryEditor,
   },
-  computed: {
-
-  },
+  computed: {},
   methods: {
-    createPolicyShell(){
-      this.policy = {id:-1, key:'privacy_policy', published:false, translations:[]}
-      this.languages.forEach(l => {
-        this.policy.translations.push({ id: -1, lang: l.lang, value: '', translationState: 0 })
-      })
-      this.policyOrig = JSON.parse(JSON.stringify(this.policy))
+    createPolicyShell() {
+      this.policy = {
+        id: -1,
+        key: "privacy_policy",
+        published: false,
+        translations: [],
+      };
+      this.languages.forEach((l) => {
+        this.policy.translations.push({
+          id: -1,
+          lang: l.lang,
+          value: "",
+          translationState: 0,
+        });
+      });
+      this.policyOrig = JSON.parse(JSON.stringify(this.policy));
     },
-    cancelPolicy(){
-      this.policy =  JSON.parse(JSON.stringify(this.policyOrig))
-      this.editing_policy = false
-     
+    cancelPolicy() {
+      this.policy = JSON.parse(JSON.stringify(this.policyOrig));
+      this.editing_policy = false;
     },
-    savePolicy(){
-      if(this.newPolicy){
-        console.log("saving new policy")
-        this.savingPolicy(this.policy)
+    savePolicy() {
+      if (this.newPolicy) {
+        console.log("saving new policy");
+        this.savingPolicy(this.policy);
+      } else {
+        this.updatePolicy(this.policy);
       }
-      else{
-        this.updatePolicy(this.policy)
+      console.log("updating old policy");
+      this.editing_policy = false;
+      this.policyOrig = JSON.parse(JSON.stringify(this.policy));
+    },
+    cancelFathers() {
+      this.fathers = JSON.parse(JSON.stringify(this.fathersOrig));
+      this.edit_fathers = false;
+    },
+    saveFathers() {
+      console.log(this.fathers);
+      if (this.newFathers) {
+        console.log("saving new father_topics");
+        this.saveSetting({
+          key: "father_topics",
+          value: JSON.stringify(this.fathers),
+        });
+      } else {
+        this.updateSetting({
+          key: "father_topics",
+          value: JSON.stringify(this.fathers),
+        });
       }
-      console.log("updating old policy")
-      this.editing_policy = false
-      this.policyOrig = JSON.parse(JSON.stringify(this.policy))
+      console.log("updating old father_topics");
+      this.edit_fathers = false;
+      this.fathersOrig = JSON.parse(JSON.stringify(this.fathers));
     },
-    cancelFathers(){
-      this.fathers =  JSON.parse(JSON.stringify(this.fathersOrig))
-      this.edit_fathers = false
+    cancelMail() {
+      this.email = JSON.parse(JSON.stringify(this.emailOrig));
+      this.editing = false;
     },
-    saveFathers(){
-      console.log(this.fathers)
-      if(this.newFathers){
-        console.log("saving new father_topics")
-        this.saveSetting({key:'father_topics', value:JSON.stringify(this.fathers)})
-      }
-      else{
-        this.updateSetting({key:'father_topics', value:JSON.stringify(this.fathers)})
-      }
-      console.log("updating old father_topics")
-      this.edit_fathers = false
-      this.fathersOrig = JSON.parse(JSON.stringify(this.fathers))
-    },
-    cancelMail(){
-      this.email =  JSON.parse(JSON.stringify(this.emailOrig))
-      this.editing = false
-     
-    },
-    cancelSetting(setting){
-      switch(setting) {
-        case 'helpdesk_pa':
-          this.helpdeskPa =  JSON.parse(JSON.stringify(this.helpdeskPaOrig))
-          this.edit_helpdesk_pa = false
+    cancelSetting(setting) {
+      switch (setting) {
+        case "helpdesk_pa":
+          this.helpdeskPa = JSON.parse(JSON.stringify(this.helpdeskPaOrig));
+          this.edit_helpdesk_pa = false;
           break;
-        case y:
-          // code block
+        case "helpdesk_ngo":
+          this.helpdeskNgo = JSON.parse(JSON.stringify(this.helpdeskNgoOrig));
+          this.edit_helpdesk_ngo = false;
           break;
-        default:
-          console.log("non of those")
-      }
-    },
-    saveMail(){
-      if(this.isNew){
-        console.log("saving new feedback email")
-        this.saveSetting({key:'feedback_email', value:this.email})
-      }
-      else{
-        this.updateSetting({key:'feedback_email', value:this.email})
-      }
-      console.log("updating old feedback email")
-      this.editing = false
-      this.emailOrig = JSON.parse(JSON.stringify(this.email))
-    },
-    saveSingleSetting(key, is_new, item){
-      if(is_new){
-        console.log("saving new feedback email")
-        this.saveSetting({key:key, value:item})
-      }
-      else{
-        this.updateSetting({key:key, value:item})
-      }
-      switch(key) {
-        case 'helpdesk_pa':
-          this.helpdeskPaOrig =  JSON.parse(JSON.stringify(item))
-          this.edit_helpdesk_pa = false
+        case "helpdesk_migrant":
+          this.helpdeskMigrant = JSON.parse(
+            JSON.stringify(this.helpdeskMigrantOrig)
+          );
+          this.edit_helpdesk_migrant = false;
           break;
-        case 'helpdesk_ngo':
-          this.helpdeskNgoOrig =  JSON.parse(JSON.stringify(item))
-          this.edit_helpdesk_ngo = false
-          break;
-        case 'helpdesk_migrant':
-          this.helpdeskMigrantOrig =  JSON.parse(JSON.stringify(item))
-          this.edit_helpdesk_pa = false
+        case "duration_of_new":
+          this.durationOfNew = JSON.parse(
+            JSON.stringify(this.durationOfNewOrig)
+          );
+          this.edit_duration_of_new = false;
           break;
         default:
-          console.log("non of those")
+          console.log("non of those");
+      }
+    },
+    saveMail() {
+      if (this.isNew) {
+        console.log("saving new feedback email");
+        this.saveSetting({ key: "feedback_email", value: this.email });
+      } else {
+        this.updateSetting({ key: "feedback_email", value: this.email });
+      }
+      console.log("updating old feedback email");
+      this.editing = false;
+      this.emailOrig = JSON.parse(JSON.stringify(this.email));
+    },
+    saveSingleSetting(key, is_new, item) {
+      if (is_new) {
+        console.log("saving new feedback email");
+        this.saveSetting({ key: key, value: String(item) });
+      } else {
+        this.updateSetting({ key: key, value: String(item) });
+      }
+      switch (key) {
+        case "helpdesk_pa":
+          this.helpdeskPaOrig = JSON.parse(JSON.stringify(item));
+          this.edit_helpdesk_pa = false;
+          break;
+        case "helpdesk_ngo":
+          this.helpdeskNgoOrig = JSON.parse(JSON.stringify(item));
+          this.edit_helpdesk_ngo = false;
+          break;
+        case "helpdesk_migrant":
+          this.helpdeskMigrantOrig = JSON.parse(JSON.stringify(item));
+          this.edit_helpdesk_migrant = false;
+          break;
+        case "duration_of_new":
+          this.durationOfNewOrig = JSON.parse(JSON.stringify(item));
+          this.edit_duration_of_new = false;
+          break;
+        default:
+          console.log("non of those");
       }
     },
 
-    saveFeatures () {
-      console.log(this.workingFeatures)
+    saveFeatures() {
+      console.log(this.workingFeatures);
       /*
       const agent = new https.Agent({
         rejectUnauthorized: false
@@ -489,79 +565,85 @@ export default {
           response => [];
         });
         */
-      this.updateAllFeatures(this.workingFeatures)
-      console.log("posted")
-      this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+      this.updateAllFeatures(this.workingFeatures);
+      console.log("posted");
+      this.workingFeatures = JSON.parse(JSON.stringify(this.features));
     },
-    saveLogo () {
-      console.log(this.myCroppa.generateDataUrl())
-      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() }
-      this.updateSetting(setting)
-        .then((result) => {
-          console.log(result)
-          //       window.location.reload()
-        })
-    }
-
+    saveLogo() {
+      console.log(this.myCroppa.generateDataUrl());
+      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() };
+      this.updateSetting(setting).then((result) => {
+        console.log(result);
+        //       window.location.reload()
+      });
+    },
   },
-  created () {
-    console.log(this.languages)
-    console.log("created")
-    console.log(this.features)
-    console.log(this.settings)
-    this.createPolicyShell()
-    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
-    console.log(this.settings['feedback_email'])
+  created() {
+    console.log(this.languages);
+    console.log("created");
+    console.log(this.features);
+    console.log(this.settings);
+    this.createPolicyShell();
+    this.workingFeatures = JSON.parse(JSON.stringify(this.features));
+    console.log(this.settings["feedback_email"]);
     this.settings.forEach((setting) => {
-      console.log(setting.key)
-      if(setting.key =='feedback_email'){
-        this.email = setting.value
-        this.emailOrig = setting.value
-        this.isNew = false
+      console.log(setting.key);
+      if (setting.key == "feedback_email") {
+        this.email = setting.value;
+        this.emailOrig = setting.value;
+        this.isNew = false;
       }
-      if(setting.key =='father_topics'){
-        this.fathers = JSON.parse(setting.value)
-        this.fathersOrig = JSON.parse(setting.value)
-        this.newFathers = false
+      if (setting.key == "father_topics") {
+        this.fathers = JSON.parse(setting.value);
+        this.fathersOrig = JSON.parse(setting.value);
+        this.newFathers = false;
       }
-      if(setting.key =='helpdesk_pa'){
-        console.log(setting)
-        this.helpdeskPa = setting.value
-        this.helpdeskPaOrig = setting.value
-        this.newHelpdeskPa = false
+      if (setting.key == "helpdesk_pa") {
+        console.log(setting);
+        this.helpdeskPa = setting.value;
+        this.helpdeskPaOrig = setting.value;
+        this.newHelpdeskPa = false;
       }
-      if(setting.key =='helpdesk_ngo'){
-        this.helpdeskNgo = setting.value
-        this.helpdeskNgoOrig = setting.value
-        this.newHelpdeskNgo = false
+      if (setting.key == "helpdesk_ngo") {
+        this.helpdeskNgo = setting.value;
+        this.helpdeskNgoOrig = setting.value;
+        this.newHelpdeskNgo = false;
       }
-      if(setting.key =='helpdesk_pamigrant'){
-        this.helpdeskMigrant = setting.value
-        this.helpdeskMigrantOrig = setting.value
-        this.newHelpdeskMigrant = false
+      if (setting.key == "helpdesk_migrant") {
+        this.helpdeskMigrant = setting.value;
+        this.helpdeskMigrantOrig = setting.value;
+        this.newHelpdeskMigrant = false;
       }
-
+      if (setting.key == "duration_of_new") {
+        this.durationOfNew = Number(setting.value);
+        this.durationOfNewOrig = Number(setting.value);
+        this.newDurationOfNew = false;
+      }
     });
-    this.fetchMixedSettings().then((setting)=>{
-      if(setting.length >0){
-        if(setting[0].key == 'privacy_policy'){
-        this.policy = setting[0]
-        this.policyOrig = setting[0]
-        this.newPolicy = false
+    this.fetchMixedSettings().then((setting) => {
+      if (setting.length > 0) {
+        if (setting[0].key == "privacy_policy") {
+          this.policy = setting[0];
+          this.policyOrig = setting[0];
+          this.newPolicy = false;
+        }
       }
-      }
-
-    })
-          this.fetchTopic()
-      .then((topics) => {
-        console.log(topics)
-         var published_topics = topics.filter((top)=>{return top.published == true})
-        published_topics.forEach(topic => {
-          var the_topic = { label: topic.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].topic, value: topic.id }
-          this.t_tags.push(the_topic)
-        })
-        
-      })
+    });
+    this.fetchTopic().then((topics) => {
+      console.log(topics);
+      var published_topics = topics.filter((top) => {
+        return top.published == true;
+      });
+      published_topics.forEach((topic) => {
+        var the_topic = {
+          label: topic.translations.filter(
+            this.filterTranslationModel(this.activeLanguage)
+          )[0].topic,
+          value: topic.id,
+        };
+        this.t_tags.push(the_topic);
+      });
+    });
     /*
     this.fetchFeatures()
       .then(features => {
@@ -570,7 +652,13 @@ export default {
         console.log(this.features)
       });
       */
-
-  }
-}
+  },
+};
 </script>
+<style scoped>
+.duration{
+  padding-top:5px;
+  padding-left:10px;
+  font-size: 20px;
+}
+</style>
