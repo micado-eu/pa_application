@@ -290,7 +290,7 @@
      <q-card>
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.duration_of_new')}}</div>
-      </q-card-section>
+      </q-card-section> 
       <q-card-section>
         <div class="row">
            <q-input
