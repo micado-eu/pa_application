@@ -12,4 +12,6 @@ export function setCompletionDocuments (state, documents) {
 export function saveCompletionDoc(state, doc){
   state.completion_documents.push(doc)
 }
-
+export function saveDocuments (state, document) {
+  state.documents.push(document)
+}
