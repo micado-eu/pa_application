@@ -11,6 +11,7 @@
         rounded
         :label="$t('button.add_language')"
         no-caps
+        :disable="hideAdd"
         @click="newLang"
         size="15px"
       />
@@ -95,7 +96,7 @@
           rounded
           :label="$t('button.cancel')"
           type="reset"
-          @click="cancelTopic()"
+          @click="cancelLang()"
         />
         <q-btn
           no-caps
@@ -231,6 +232,11 @@ export default {
       this.hideAdd = false;
       this.hideForm = true;
       this.createShell();
+    },
+    cancelLang() {
+      this.isNew = false;
+      this.hideForm = true;
+      this.hideAdd = false;
     },
     createShell() {
       this.language_shell = {
