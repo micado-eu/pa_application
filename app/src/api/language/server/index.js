@@ -1,4 +1,5 @@
 import { axiosInstance } from 'boot/axios'
+import { error_handler } from '../../../helper/utility'
 
 export default {
   fetchLanguages() {
@@ -87,5 +88,21 @@ export default {
         }
         console.log(error.config);
       });
+  },
+  saveLanguage(language){
+    return axiosInstance
+    .post('/backend/1.0.0/languages', language)
+    .then(response => { return response.data })
+      .catch(error_handler)
+  },
+  updateLanguage(language){
+    let whereClause = {
+      lang: language.lang
+    }
+    console.log(language)
+    return axiosInstance
+      .patch('/backend/1.0.0/languages?where=' + JSON.stringify(whereClause), language)
+      .then(response => { return response.data })
+      .catch(error_handler)
   }
 }

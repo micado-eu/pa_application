@@ -160,7 +160,8 @@
     "print": "print",
     "return_main": "return to main page",
     "view_model": "View model",
-    "view_pics": "View details"
+    "view_pics": "View details",
+    "add_language":"Add language"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",
@@ -291,7 +292,11 @@
     "validate_intervention":"Validate intervention",
     "days":"Days",
     "available_transl":"Available translations",
-    "emitter":"Emitter"
+    "emitter":"Emitter",
+    "language_name":"Language name",
+    "language_iso":"ISO code",
+    "language_abbr":"Language tag",
+    "lang_editor":"Language editor"
   },
   "profile": {
     "username": "Username",

@@ -330,6 +330,7 @@
 
       </q-card-section>
     </q-card>
+    <LanguageManager :languages="languages" />
   </div>
 </template>
 
@@ -343,6 +344,7 @@ import FeaturesElement from "../../components/settings/FeaturesElement";
 import "vue-croppa/dist/vue-croppa.css";
 import ActiveLanguageSelector from "../../components/settings/ActiveLanguageSelector.vue";
 import translatedButtonMixin from "../../mixin/translatedButtonMixin";
+import LanguageManager from "../../components/LanguageManager";
 
 export default {
   name: "FunctionConfiguration",
@@ -406,6 +408,7 @@ export default {
     FeaturesElement,
     ActiveLanguageSelector,
     GlossaryEditor,
+    LanguageManager
   },
   computed: {},
   methods: {
