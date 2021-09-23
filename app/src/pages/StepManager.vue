@@ -292,8 +292,7 @@
                   @blur="updateField()"
                   counter
                   maxlength="50"
-                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters',
-                  val=> !!val || 'Field is required']"
+                  :rules="[ val => val.length <= 50 ]"
                   v-model="step_shell.location"
                   :label="$t('input_labels.step_location')"
                 />

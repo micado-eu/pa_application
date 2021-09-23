@@ -137,10 +137,6 @@
             filled
             :hint="$t('input_labels.required')"
             dense
-            ref="produced_doc"
-            :rules="[ 
-                val => val.length > 0 || 'Field is required'
-                ]"
             clearable
             :readonly="edit_process.published == true"
             v-model="edit_process.producedDoc"
@@ -419,11 +415,8 @@ export default {
       })
     },
     onSubmit () {
-      console.log(this.$refs.produced_doc)
-      this.$refs.produced_doc.validate()
       this.$refs.process_name[0].validate()
-      console.log(this.$refs.produced_doc.hasError)
-      if (this.$refs.process_name[0].hasError || this.$refs.produced_doc.hasError ) {
+      if (this.$refs.process_name[0].hasError ) {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
@@ -438,10 +431,8 @@ export default {
     },
         onReset () {
        this.$refs.process_name[0].validate()
-       this.$refs.produced_doc.validate()
 
        this.$refs.process_name[0].resetValidation()
-       this.$refs.produced_doc.resetValidation()
     },
     manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
