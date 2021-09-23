@@ -1039,7 +1039,7 @@ export default {
 
     },
     cancelStep () {
-      this.$router.push('/guided_process_editor')
+      this.$router.push('/guided_process_editor/edit/'+ this.processId)
     },
     cancelEditStep () {
       this.editing = false
