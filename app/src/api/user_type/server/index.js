@@ -60,7 +60,7 @@ export default {
 
   updateUserTypeTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
     },
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation)) : translation
 

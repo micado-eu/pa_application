@@ -25,9 +25,9 @@ export default {
 
   updateIntegrationTypeTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
     }
-    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'interventionTitle', 'description', 'translationState'])) : translation
+    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'interventionTitle', 'description', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
       .patch(`/backend/1.0.0/intervention-types/${translation.id}/intervention-types-translations?where=${JSON.stringify(whereClause)}`, updatingTranslation)

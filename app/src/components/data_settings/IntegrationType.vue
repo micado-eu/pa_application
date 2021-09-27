@@ -1,10 +1,10 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <h5 class="col-6">{{$t("data_settings.intervention_types")}}</h5>
+      <h5 class="col-6">{{ $t("data_settings.intervention_types") }}</h5>
       <div class="col-6 div-1">
         <q-btn
-        :data-cy="'addtype'"
+          :data-cy="'addtype'"
           color="info"
           no-caps
           :label="$t('button.add_type')"
@@ -14,281 +14,278 @@
         />
       </div>
     </div>
-    <q-card
-      class="q-pa-md div-2"
-      :hidden="hideForm"
-    >
-    <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class=""
-        >
-
-      <q-tab-panels
-        v-model="langTab"
-        class="bg-grey-2 inset-shadow "
-        animated
+    <q-card class="q-pa-md div-2" :hidden="hideForm">
+      <form
+        @submit.prevent.stop="onSubmit"
+        @reset.prevent.stop="onReset"
+        class=""
       >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-        >
         <HelpLabel
           :fieldLabel="$t('input_labels.intervention_type')"
-          :helpLabel ="$t('help.intervention_type')"
-          class=" div-3"
-          />
-          <q-input
-            counter
-            ref="type_title"
-            :hint="$t('input_labels.required')"
-            maxlength="100"
-            :rules="[
-            val => val.length <= 100 || 'Please use maximum 100 characters',
-            val => !!val || 'Field is required'
-            ]"
-            outlined
-            filled
-            dense
-            :readonly="!(int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-            v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].interventionTitle"
-            :label="$t('input_labels.type_placeholder')"
-          />
-          <HelpLabel
+          :helpLabel="$t('help.intervention_type')"
+          class="div-3"
+        />
+        <q-input
+          counter
+          ref="type_title"
+          :hint="$t('input_labels.required')"
+          maxlength="100"
+          :rules="[
+            (val) => val.length <= 100 || 'Please use maximum 100 characters',
+            (val) => !!val || 'Field is required',
+          ]"
+          outlined
+          filled
+          dense
+          :readonly="
+            !(
+              int_type_shell.translations.filter(
+                (top) => top.translated == false
+              )[0].translationState == 0 && int_type_shell.published == false
+            )
+          "
+          v-model="
+            int_type_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].interventionTitle
+          "
+          :label="$t('input_labels.type_placeholder')"
+        />
+        <HelpLabel
           :fieldLabel="$t('input_labels.description')"
-          :helpLabel ="$t('help.intervention_type_description')"
-          class=" div-3"
-          style="padding-top:10px"
-          />
-          <GlossaryEditor
-            class="desc-editor"
-            :readonly="!(int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-            v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-            :lang="language.lang"
-            ref="editor"
-          />
-          <div>
-            <TranslateStateButton
-              v-model="int_type_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-              :isForDefaultLanguage="language.lang===activeLanguage"
-              :objectId="int_type_shell.id"
-              :readonly="!(language.lang===activeLanguage)"
-              @micado-change="(id) => {changeTranslationState(int_type_shell, id.state)}"
-              @return-to-edit="(id) => {
-                  changeTranslationState(int_type_shell, id.state)
-                  deleteTranslationProd(int_type_shell.id)
-                  int_type_shell.published = false
-                }"
-            />
-          </div>
-        </q-tab-panel>
-      </q-tab-panels>
-      <q-tabs
-        v-model="langTab"
-        dense
-        class="bg-grey-2"
-        active-color="accent"
-        indicator-color="accent"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-          :label="language.name"
+          :helpLabel="$t('help.intervention_type_description')"
+          class="div-3"
+          style="padding-top: 10px"
         />
-      </q-tabs>
-       
-      <div class="q-gutter-sm">
-        <HelpLabel
-          :fieldLabel="$t('input_labels.category_type')"
-          :helpLabel ="$t('help.intervention_category_type')"
-          class=" div-4"
-          style="padding-top:10px"
-          />
-        <q-select
-          filled
-          :rules="[ 
-                val => !!val || 'Field is required'
-          ]"
-          ref="category_type"
-          :hint="$t('input_labels.required')"
-          :readonly="int_type_shell.published"
-          clearable
-          v-model="int_type_shell.categoryType"
-          emit-value
-          map-options
-          id="select"
-          :options="options"
-          :label="$t('input_labels.category_type')"
+        <GlossaryEditor
+          class="desc-editor"
+          :readonly="
+            !(
+              int_type_shell.translations.filter(
+                (top) => top.translated == false
+              )[0].translationState == 0 && int_type_shell.published == false
+            )
+          "
+          v-model="
+            int_type_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].description
+          "
+          :lang="int_type_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].lang"
+          ref="editor"
         />
-      </div>
-      <div class="q-gutter-sm">
-        <HelpLabel
-          :fieldLabel="$t('input_labels.integration_type_validators')"
-          :helpLabel ="$t('help.integration_type_validators')"
-          class=" div-4"
-          style="padding-top:10px"
-          />
-        <q-select
-          filled
-          :lazy-rules="true"
-          :rules="[ 
-                val => val.length > 0 || 'Field is required'
-          ]"
-          ref="validators"
-          :hint="$t('input_labels.required')"
-          clearable
-          :readonly="int_type_shell.published"
-          multiple
-          v-model="int_type_shell.interventionTypeValidators"
-          emit-value
-          map-options
-          id="select"
-          :options="validatorsOptions"
-          :label="$t('input_labels.integration_type_validators')"
-        />
-      </div>
-       <div class="row">
-        <div class="col-2" style="min-width:200px;">
+        <div class="q-gutter-sm">
           <HelpLabel
-            :fieldLabel="$t('button.validate_and_publish')"
-            :helpLabel ="$t('help.is_published')"
-            style="padding-left:17px"
+            :fieldLabel="$t('input_labels.category_type')"
+            :helpLabel="$t('help.intervention_category_type')"
+            class="div-4"
+            style="padding-top: 10px"
+          />
+          <q-select
+            filled
+            :rules="[(val) => !!val || 'Field is required']"
+            ref="category_type"
+            :hint="$t('input_labels.required')"
+            :readonly="int_type_shell.published"
+            clearable
+            v-model="int_type_shell.categoryType"
+            emit-value
+            map-options
+            id="select"
+            :options="options"
+            :label="$t('input_labels.category_type')"
           />
         </div>
-        <div class="col" style="padding-top:2px">
-          <q-toggle
+        <div class="q-gutter-sm">
+          <HelpLabel
+            :fieldLabel="$t('input_labels.integration_type_validators')"
+            :helpLabel="$t('help.integration_type_validators')"
+            class="div-4"
+            style="padding-top: 10px"
+          />
+          <q-select
+            filled
+            :lazy-rules="true"
+            :rules="[(val) => val.length > 0 || 'Field is required']"
+            ref="validators"
+            :hint="$t('input_labels.required')"
+            clearable
+            :readonly="int_type_shell.published"
+            multiple
+            v-model="int_type_shell.interventionTypeValidators"
+            emit-value
+            map-options
+            id="select"
+            :options="validatorsOptions"
+            :label="$t('input_labels.integration_type_validators')"
+          />
+        </div>
+        <div class="row">
+          <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('translation_states.translatable')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col" style="padding-top: 2px">
+            <!-- <q-toggle
             v-model="int_type_shell.published"
             color="accent"
             :disable="int_type_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event,int_type_shell.id)"
-          />
+          />-->
+            <q-toggle
+              :value="
+                int_type_shell.translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              color="accent"
+              @input="makeTranslatable($event)"
+            />
+          </div>
         </div>
-      </div>
-      <hr id="hr">
-      <q-btn
-      :data-cy="'canceltype'"
-        no-caps
-        class="delete-button"
-        unelevated
-        rounded
-        :label="$t('button.cancel')"
-        type="reset"
-        @click="cancelIntegrationType()"
-      />
-      <q-btn
-      :data-cy="'savetype'"
-        no-caps
-        :disable="int_type_shell.published"
-        color="accent"
-        unelevated
-        rounded
-        class="button"
-        :label="$t('button.save')"
-        type="submit"
-      />
-    </form>
+        <hr id="hr" />
+        <q-btn
+          :data-cy="'canceltype'"
+          no-caps
+          class="delete-button"
+          unelevated
+          rounded
+          :label="$t('button.cancel')"
+          type="reset"
+          @click="cancelIntegrationType()"
+        />
+        <q-btn
+          :data-cy="'savetype'"
+          no-caps
+          :disable="int_type_shell.published"
+          color="accent"
+          unelevated
+          rounded
+          class="button"
+          :label="$t('button.save')"
+          type="submit"
+        />
+      </form>
     </q-card>
-    <q-item >
-      <q-item-section class="col-7 flex flex-left ">
-        {{$t('input_labels.name')}}
+    <q-item>
+      <q-item-section class="col-7 flex flex-left">
+        {{ $t("input_labels.name") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.is_published')}}
-      </q-item-section>
-      <q-item-section class="col-1 flex flex-center top" >
-        {{$t('input_labels.transl_state')}}
+        {{ $t("input_labels.is_published") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.edit')}}
+        {{ $t("input_labels.transl_state") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.delete')}}
+        {{ $t("input_labels.edit") }}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
+        {{ $t("input_labels.delete") }}
       </q-item-section>
     </q-item>
-    <q-list
-      bordered
-      separator
-    >
-    <div v-for="a_integration_type in intervention_types"
-        :key="a_integration_type.id">
-      <q-item>
-        <q-item-section class="col-7 flex flex-left ">{{showTypeLabel(a_integration_type)}}</q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
-          <q-toggle
-            v-model="a_integration_type.published"
-            color="accent"
-            disable
-          />
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top" >
-               {{getTranslationState(a_integration_type.id)}}
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
-          <q-icon
-          :data-cy="'edittype'.concat(a_integration_type.id)"
-            name="img:statics/icons/Edit.png"
-            size="md"
-            @click.stop="editIntegrationType(a_integration_type)"
-          />
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
-          <q-icon
-          :data-cy="'deletetype'.concat(a_integration_type.id)"
-            name="img:statics/icons/Icon - Delete.svg"
-            @click.stop="deletingIntegrationType(a_integration_type.id)"
-            size="md"
-          />
-        </q-item-section>
-      </q-item>
-      <div class="row pad">
-              <p style="padding-top:8px; margin-bottom:0px;padding-left:15px">{{$t('input_labels.available_transl')}}:</p>
-               <q-chip v-for=" lang in a_integration_type.translations.filter(lang => {return lang.interventionTitle.length>1})" :key="lang.lang">{{lang.lang}}</q-chip>
-            </div>
-            <hr style="margin-bottom:0px">
-    </div>
+    <q-list bordered separator>
+      <div
+        v-for="a_integration_type in intervention_types"
+        :key="a_integration_type.id"
+      >
+        <q-item>
+          <q-item-section class="col-7 flex flex-left">{{
+            showTypeLabel(a_integration_type)
+          }}</q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            <q-toggle
+              v-model="a_integration_type.published"
+              color="accent"
+              :disable="
+                a_integration_type.translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1
+              "
+              @input="isPublished($event, a_integration_type.id)"
+            />
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ getTranslationState(a_integration_type.id) }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            <q-icon
+              :data-cy="'edittype'.concat(a_integration_type.id)"
+              name="img:statics/icons/Edit.png"
+              size="md"
+              @click.stop="editIntegrationType(a_integration_type)"
+            />
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            <q-icon
+              :data-cy="'deletetype'.concat(a_integration_type.id)"
+              name="img:statics/icons/Icon - Delete.svg"
+              @click.stop="deletingIntegrationType(a_integration_type.id)"
+              size="md"
+            />
+          </q-item-section>
+        </q-item>
+        <div class="row pad">
+          <p style="padding-top: 8px; margin-bottom: 0px; padding-left: 15px">
+            {{ $t("input_labels.available_transl") }}:
+          </p>
+          <q-chip
+            v-for="lang in a_integration_type.translations.filter((lang) => {
+              return lang.interventionTitle.length > 1 && lang.translated == true;
+            })"
+            :key="lang.lang"
+            >{{ lang.lang }}</q-chip
+          >
+        </div>
+        <hr style="margin-bottom: 0px" />
+      </div>
     </q-list>
-    <q-card class="my-card">
-
-    </q-card>
+    <q-card class="my-card"> </q-card>
   </div>
 </template>
 
 <script>
-import FileUploader from 'components/FileUploader'
-import GlossaryEditor from 'components/GlossaryEditor'
-import editEntityMixin from '../../mixin/editEntityMixin'
-import storeMappingMixin from '../../mixin/storeMappingMixin'
-import translatedButtonMixin from '../../mixin/translatedButtonMixin'
-import HelpLabel from '../HelpLabel'
-
+import FileUploader from "components/FileUploader";
+import GlossaryEditor from "components/GlossaryEditor";
+import editEntityMixin from "../../mixin/editEntityMixin";
+import storeMappingMixin from "../../mixin/storeMappingMixin";
+import translatedButtonMixin from "../../mixin/translatedButtonMixin";
+import HelpLabel from "../HelpLabel";
 
 export default {
-  name: 'InterventionType',
-  mixins: [editEntityMixin,
+  name: "InterventionType",
+  mixins: [
+    editEntityMixin,
     translatedButtonMixin,
     storeMappingMixin({
       getters: {
-        intervention_types: 'integration_type/intervention_types',
-        intervention_categories: 'integration_category/intervention_categories_published',
-        tenants: 'tenant/tenants'
+        intervention_types: "integration_type/intervention_types",
+        intervention_categories:
+          "integration_category/intervention_categories_published",
+        tenants: "tenant/tenants",
       },
       actions: {
-        deleteIntegrationTypeElement: 'integration_type/deleteIntegrationTypeElement',
-        saveIntegrationTypeElement: 'integration_type/saveIntegrationTypeElement',
-        editIntegrationTypeElement: 'integration_type/editIntegrationTypeElement',
-        fetchIntegrationType: 'integration_type/fetchIntegrationType',
-        fetchIntegrationCategory: 'integration_category/fetchIntegrationCategory',
-        fetchTenants: 'tenant/fetchTenants',
-        updatePublished: 'integration_type/updatePublished',
-        saveTranslationProd: 'integration_type/saveTranslationProd',
-        deleteTranslationProd: 'integration_type/deleteTranslationProd'
-      }
-    })],
-  data () {
+        deleteIntegrationTypeElement:
+          "integration_type/deleteIntegrationTypeElement",
+        saveIntegrationTypeElement:
+          "integration_type/saveIntegrationTypeElement",
+        editIntegrationTypeElement:
+          "integration_type/editIntegrationTypeElement",
+        fetchIntegrationType: "integration_type/fetchIntegrationType",
+        fetchIntegrationCategory:
+          "integration_category/fetchIntegrationCategory",
+        fetchTenants: "tenant/fetchTenants",
+        updatePublished: "integration_type/updatePublished",
+        saveTranslationProd: "integration_type/saveTranslationProd",
+        deleteTranslationProd: "integration_type/deleteTranslationProd",
+      },
+    }),
+  ],
+  data() {
     return {
       int_type_shell: { id: -1, translations: [], categoryType: null },
       hideForm: true,
@@ -296,233 +293,312 @@ export default {
       isNew: false,
       options: [],
       validatorsOptions: [],
-      publishedOrig:false
-    }
+      publishedOrig: false,
+    };
   },
   components: {
-    GlossaryEditor,HelpLabel
+    GlossaryEditor,
+    HelpLabel,
   },
   methods: {
-    getTranslationState(id){
-      var cate = this.intervention_types.filter((cat)=>{
-        return cat.id == id
-      })[0]
-      var state = cate.translations.filter((transl)=>{
-        return transl.lang == this.$defaultLang
-      })[0].translationState
-      if(state == 0){
-        return this.$i18n.t('translation_states.editing')
-      }
-      else if(state ==1){
-        return this.$i18n.t('translation_states.translatable')
-      }
-      else if(state==2){
-        return this.$i18n.t('translation_states.translating')
-      }
-      else{
-        return this.$i18n.t('translation_states.translated')
+    makeTranslatable(value) {
+      console.log(value);
+      if (value) {
+        this.int_type_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1;
+      } else {
+        this.int_type_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0;
       }
     },
-    onSubmit () {
-      console.log(this.$refs.validators)
-      console.log(this.$refs.validators.hasError)
-      this.$refs.category_type.validate()
-      this.$refs.validators.validate()
-      this.$refs.type_title[0].validate()
-      if (this.$refs.type_title[0].hasError || this.$refs.validators.hasError || this.$refs.category_type.hasError) {
-        this.formHasError = true
-         this.$q.notify({
-          color: 'negative',
-          message: this.$t('warning.req_fields')
-        })
-        return false
-      }
-      else{
-        console.log("in else of submit")
-        this.savingIntegrationType()
-        this.onReset()
+    getTranslationState(id) {
+      var cate = this.intervention_types.filter((cat) => {
+        return cat.id == id;
+      })[0];
+      var state = cate.translations.filter((transl) => {
+        return transl.lang == this.$defaultLang;
+      })[0].translationState;
+      if (state == 0) {
+        return this.$i18n.t("translation_states.editing");
+      } else if (state == 1) {
+        return this.$i18n.t("translation_states.translatable");
+      } else if (state == 2) {
+        return this.$i18n.t("translation_states.translating");
+      } else {
+        return this.$i18n.t("translation_states.translated");
       }
     },
-        onReset () {
-       this.$refs.type_title[0].validate()
-       this.$refs.category_type.validate()
-       this.$refs.validators.validate()
+    onSubmit() {
+      console.log(this.$refs.validators);
+      console.log(this.$refs.validators.hasError);
+      this.$refs.category_type.validate();
+      this.$refs.validators.validate();
+      this.$refs.type_title.validate();
+      if (
+        this.$refs.type_title.hasError ||
+        this.$refs.validators.hasError ||
+        this.$refs.category_type.hasError
+      ) {
+        this.formHasError = true;
+        this.$q.notify({
+          color: "negative",
+          message: this.$t("warning.req_fields"),
+        });
+        return false;
+      } else {
+        console.log("in else of submit");
+        this.savingIntegrationType();
+        this.onReset();
+      }
+    },
+    onReset() {
+      this.$refs.type_title.validate();
+      this.$refs.category_type.validate();
+      this.$refs.validators.validate();
 
-       this.$refs.type_title[0].resetValidation()
-       this.$refs.category_type.resetValidation()
-       this.$refs.validators.resetValidation()
+      this.$refs.type_title.resetValidation();
+      this.$refs.category_type.resetValidation();
+      this.$refs.validators.resetValidation();
     },
-     isPublished(event,value){
-     console.log("event ")
-      console.log(event)
-      console.log("user id")
-      console.log(value)
-      var publishing_type_temp =  this.intervention_types.filter((type)=>{
-        return type.id == value
-      })[0]
-      var publishing_type = JSON.parse(JSON.stringify(publishing_type_temp))
-      if( event == true){
+    isPublished(event, value) {
+      console.log("event ");
+      console.log(event);
+      console.log("user id");
+      console.log(value);
+      var publishing_type_temp = this.intervention_types.filter((type) => {
+        return type.id == value;
+      })[0];
+      var publishing_type = JSON.parse(JSON.stringify(publishing_type_temp));
+      if (event == true) {
         this.$q.notify({
-        type: 'warning',
-        timeout:0,
-        message: this.$t('warning.publish_intervention_type'),
-        actions: [
-          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
-            this.updatePublished({type:publishing_type, published: event})
-            this.saveTranslationProd(value)
-            this.cancelIntegrationType()
-             }},
-          { label: this.$t('lists.no'), color: 'red', handler: () => { 
-            this.int_type_shell.published = false } }
-        ]
-      })
-       
+          type: "warning",
+          timeout: 0,
+          message: this.$t("warning.publish_intervention_type"),
+          actions: [
+            {
+              label: this.$t("lists.yes"),
+              color: "accent",
+              handler: () => {
+                this.updatePublished({
+                  type: publishing_type,
+                  published: event,
+                });
+                this.saveTranslationProd(value);
+                this.cancelIntegrationType();
+              },
+            },
+            {
+              label: this.$t("lists.no"),
+              color: "red",
+              handler: () => {
+                this.intervention_types.filter((topic) => {
+                  return topic.id == value;
+                })[0].published = false;
+              },
+            },
+          ],
+        });
+      } else {
+        this.$q.notify({
+          type: "warning",
+          timeout: 0,
+          message: this.$t("warning.unpublish_intervention_type"),
+          actions: [
+            {
+              label: this.$t("lists.yes"),
+              color: "accent",
+              handler: () => {
+                this.updatePublished({
+                  type: publishing_type,
+                  published: event,
+                });
+                this.deleteTranslationProd(value);
+              },
+            },
+            {
+              label: this.$t("lists.no"),
+              color: "red",
+              handler: () => {
+                this.intervention_types.filter((topic) => {
+                  return topic.id == value;
+                })[0].published = true;
+              },
+            },
+          ],
+        });
       }
-      else{
-        this.$q.notify({
-        type: 'warning',
-        timeout:0,
-        message:  this.$t('warning.unpublish_intervention_type'),
-        actions: [
-          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
-            this.updatePublished({type:publishing_type, published:event})
-            this.deleteTranslationProd(value)}},
-          { label: this.$t('lists.no'), color: 'red', handler: () => { 
-            this.int_type_shell.published = true } }
-        ]
-      })
-       
-      }
-     },
-    deletingIntegrationType (index) {
-        this.$q.notify({
-        type: 'warning',
-        timeout:0,
-        message: this.$t('warning.delete_intervention_type'),
-        actions: [
-          { label: this.$t('button.delete'), color: 'red', handler: () => { 
-            console.log(index)
-            this.deleteIntegrationTypeElement(index) } },
-          { label: this.$t('button.back'), color: 'accent', handler: () => { console.log("not deleting") } }
-        ]
-      })
-      
     },
-    savingIntegrationType () {
+    deletingIntegrationType(index) {
+      this.$q.notify({
+        type: "warning",
+        timeout: 0,
+        message: this.$t("warning.delete_intervention_type"),
+        actions: [
+          {
+            label: this.$t("button.delete"),
+            color: "red",
+            handler: () => {
+              console.log(index);
+              this.deleteIntegrationTypeElement(index);
+            },
+          },
+          {
+            label: this.$t("button.back"),
+            color: "accent",
+            handler: () => {
+              console.log("not deleting");
+            },
+          },
+        ],
+      });
+    },
+    savingIntegrationType() {
       if (this.isNew) {
         // we are adding a new instance
-        this.saveIntegrationTypeElement(this.int_type_shell)
-          .then((int_cat) => {
-            console.log('saved')
-          })
-      } else {
-        // we are updating the exsisting
-        this.editIntegrationTypeElement(this.int_type_shell)
-          .then((int_cat) => {
-            console.log('updated')
-          })
-      }
-      this.hideForm = true
-      this.hideAdd = false
-      this.createShell()
-    },
-    newIntegrationType () {
-      this.createShell()
-      this.isNew = true
-      this.hideForm = false
-      this.hideAdd = true
-    },
-    cancelIntegrationType () {
-      this.onReset()
-      console.log(this.normalizedOptions)
-      this.isNew = false
-      this.hideForm = true
-      this.hideAdd = false
-      this.createShell()
-
-    },
-    editIntegrationType (integration_type) {
-      this.isNew = false
-      this.hideForm = false
-      this.hideAdd = true
-      // this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
-      this.mergeType(integration_type)
-      this.publishedOrig = integration_type.published
-    },
-    showTypeLabel (workingType) {
-      return workingType.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].interventionTitle
-    },
-    createShell () {
-      this.int_type_shell = {
-        id: -1, translations: [], categoryType: null, interventionTypeValidators: [], published:false
-      }
-      this.languages.forEach((l) => {
         this.int_type_shell.translations.push({
-          id: -1, lang: l.lang, interventionTitle: '', description: '', translationDate: null, translationState: 0
-        })
-      })
+          id: -1,
+          lang: this.activeLanguage,
+          interventionTitle: this.int_type_shell.translations[0]
+            .interventionTitle,
+          description: this.int_type_shell.translations[0].description,
+          translationDate: null,
+          translationState: this.int_type_shell.translations[0]
+            .translationState,
+          translated: true,
+        });
+        //}
+        this.int_type_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString();
+        });
+        this.saveIntegrationTypeElement(this.int_type_shell).then((int_cat) => {
+          console.log("saved");
+        });
+      } else {
+        if (this.int_type_shell.translations[0].translationState == 1) {
+          console.log(this.int_type_shell);
+          this.int_type_shell.translations.push({
+            id: this.int_type_shell.id,
+            lang: this.activeLanguage,
+            interventionTitle: this.int_type_shell.translations[0]
+              .interventionTitle,
+            description: this.int_type_shell.translations[0].description,
+            translationDate: null,
+            translationState: 1,
+            translated: true,
+          });
+        }
+        // we are updating the exsisting
+        this.editIntegrationTypeElement(this.int_type_shell).then((int_cat) => {
+          console.log("updated");
+        });
+      }
+      this.hideForm = true;
+      this.hideAdd = false;
+      this.createShell();
     },
-    mergeType (intervention_type) {
-      console.log('MERGING')
-      console.log(process)
-      this.int_type_shell.id = intervention_type.id
-      this.int_type_shell.link = intervention_type.link
-      this.int_type_shell.published = intervention_type.published
+    newIntegrationType() {
+      this.createShell();
+      this.isNew = true;
+      this.hideForm = false;
+      this.hideAdd = true;
+    },
+    cancelIntegrationType() {
+      this.onReset();
+      console.log(this.normalizedOptions);
+      this.isNew = false;
+      this.hideForm = true;
+      this.hideAdd = false;
+      this.createShell();
+    },
+    editIntegrationType(integration_type) {
+      this.isNew = false;
+      this.hideForm = false;
+      this.hideAdd = true;
+      // this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
+      this.mergeType(integration_type);
+      this.publishedOrig = integration_type.published;
+    },
+    showTypeLabel(workingType) {
+      return workingType.translations.filter(
+        this.filterTranslationModel(this.activeLanguage)
+      )[0].interventionTitle;
+    },
+    createShell() {
+      this.int_type_shell = {
+        id: -1,
+        translations: [],
+        categoryType: null,
+        interventionTypeValidators: [],
+        published: false,
+      };
+      this.int_type_shell.translations.push({
+        id: -1,
+        lang: this.activeLanguage,
+        interventionTitle: "",
+        description: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false,
+      });
+    },
+    mergeType(intervention_type) {
+      console.log("MERGING");
+      console.log(process);
+      this.int_type_shell.id = intervention_type.id;
+      this.int_type_shell.link = intervention_type.link;
+      this.int_type_shell.published = intervention_type.published;
       // this.int_type_shell.published = intervention_type.published
       // this.int_type_shell.publicationDate = intervention_type.publicationDate
-      this.int_type_shell.categoryType = intervention_type.categoryType
+      this.int_type_shell.categoryType = intervention_type.categoryType;
       //      this.int_type_shell.interventionTypeValidators = intervention_type.interventionTypeValidators
       //     const validators = []
       if (intervention_type.interventionTypeValidators) {
         intervention_type.interventionTypeValidators.forEach((v) => {
-          this.int_type_shell.interventionTypeValidators.push(v.tenantId)
-        })
+          this.int_type_shell.interventionTypeValidators.push(v.tenantId);
+        });
         //      console.log('validators')
         //     console.log(validators)
         //     this.int_type_shell.interventionTypeValidators = [3]
-        console.log(this.int_type_shell.interventionTypeValidators)
+        console.log(this.int_type_shell.interventionTypeValidators);
       }
-      this.int_type_shell.interventionProcess = intervention_type.interventionProcess
-      intervention_type.translations.forEach((pr) => {
-        console.log(pr)
-        for (let i = 0; i < this.int_type_shell.translations.length; i++) {
-          if (this.int_type_shell.translations[i].lang == pr.lang) {
-            this.int_type_shell.translations.splice(i, 1)
-            this.int_type_shell.translations.push(JSON.parse(JSON.stringify(pr)))
-            break
-          }
-        }
-      })
-      console.log("checking the merge")
+      this.int_type_shell.interventionProcess =
+        intervention_type.interventionProcess;
+      this.int_type_shell.translations = [
+        intervention_type.translations.filter((top) => {
+          return top.lang == this.activeLanguage && top.translated == false;
+        })[0],
+      ];
+      console.log("checking the merge");
 
-      console.log(this.int_type_shell)
-    }
+      console.log(this.int_type_shell);
+    },
   },
 
-  created () {
-    this.createShell()
-    this.loading = true
-    console.log(this.$store)
-    this.fetchIntegrationType()
-      .then((processes) => {
-        this.loading = false
-      })
-    this.fetchIntegrationCategory()
-      .then((processes) => {
-        this.intervention_categories.forEach((cat) => {
-          const translation = cat.translations.filter((transl) => transl.lang == this.activeLanguage)[0]
-          this.options.push({ value: translation.id, label: translation.title })
-        })
-        this.loading = false
-      })
-    this.fetchTenants()
-      .then((tenants) => {
-        this.tenants.forEach((tenant) => {
-          this.validatorsOptions.push({ value: tenant.id, label: tenant.name })
-        })
-      })
-  }
-}
+  created() {
+    this.createShell();
+    this.loading = true;
+    console.log(this.$store);
+    this.fetchIntegrationType().then((processes) => {
+      this.loading = false;
+    });
+    this.fetchIntegrationCategory().then((processes) => {
+      this.intervention_categories.forEach((cat) => {
+        const translation = cat.translations.filter(
+          (transl) => transl.lang == this.activeLanguage
+        )[0];
+        this.options.push({ value: translation.id, label: translation.title });
+      });
+      this.loading = false;
+    });
+    this.fetchTenants().then((tenants) => {
+      this.tenants.forEach((tenant) => {
+        this.validatorsOptions.push({ value: tenant.id, label: tenant.name });
+      });
+    });
+  },
+};
 </script>
 <style scoped>
 .delete-button {

@@ -18,7 +18,7 @@ export default {
   },
   saveTopicTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic', 'translationState']));
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic', 'translationState', 'translationDate', 'translated']));
 
     // create fake id here
     return axiosInstance
@@ -83,9 +83,9 @@ export default {
 
   updateTopicTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
     },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic', 'translationState'])) : translation
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
       .patch('/backend/1.0.0/topics/' + translation.id + '/topic-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
