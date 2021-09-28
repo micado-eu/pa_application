@@ -1,97 +1,103 @@
-  <template>
+<template>
   <div>
-    <div v-if="loading"> Loading...</div>
-  <div v-else>
-  <div id="top-div" >{{$t('input_labels.guided_processes')}}</div>
-  <div class="container">
-    <div class="center">
-      <div
-        id="div-1"
-        class="col-10"
-      >
-        <q-input
-          id="input"
-          dense
-          items-center
-          filled
-          v-model="search"
-          :label="$t('input_labels.search')"
-        >
-          <template v-slot:append>
-            <q-avatar>
-              <q-icon name="search" />
-            </q-avatar>
-          </template>
-        </q-input>
+    <div v-if="loading">
+      Loading...
+    </div>
+    <div v-else>
+      <div id="top-div">
+        {{ $t('input_labels.guided_processes') }}
       </div>
-      <div
-        id="div-2"
-        class="col-2"
-      >
-        <q-btn
-          :data-cy="'addprocess'"
-          id="button"
-          color="secondary"
-          unelevated
-          rounded
-          :label="$t('button.add_process')"
-          no-caps
-          size="15px"
-          to="guided_process_editor/edit"
-        />
+      <div class="container">
+        <div class="center">
+          <div
+            id="div-1"
+            class="col-10"
+          >
+            <q-input
+              id="input"
+              dense
+              items-center
+              filled
+              v-model="search"
+              :label="$t('input_labels.search')"
+            >
+              <template v-slot:append>
+                <q-avatar>
+                  <q-icon name="search" />
+                </q-avatar>
+              </template>
+            </q-input>
+          </div>
+          <div
+            id="div-2"
+            class="col-2"
+          >
+            <q-btn
+              :data-cy="'addprocess'"
+              id="button"
+              color="secondary"
+              unelevated
+              rounded
+              :label="$t('button.add_process')"
+              no-caps
+              size="15px"
+              to="guided_process_editor/edit"
+            />
+          </div>
+        </div>
+        <div>
+          <div class="center">
+            <UploadButton entity="process" />
+          </div>
+          <q-list id="list">
+            <q-item>
+              <q-item-section class="col-4 flex flex-left">
+                {{ $t('input_labels.name') }}
+              </q-item-section>
+              <q-item-section
+                class="col-1 flex flex-center top"
+                style="margin-left:0px"
+              >
+                {{ $t('input_labels.is_published') }}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.transl_state') }}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.comments') }}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.edit') }}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.manage') }}
+              </q-item-section> 
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.preview') }}
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center top">
+                {{ $t('input_labels.delete') }}
+              </q-item-section>
+            </q-item>
+            <hr id="hr">
+            <Process
+              v-for="process in filteredProcesses"
+              :key="process.id"
+              :title="showProcessLabel(process)"
+              :topics="process.processTopics"
+              :users="process.applicableUsers"
+              :process-topics="topics"
+              :process-users="users"
+              :link="process.id"
+              :the-process="process"
+              path="guided_process_editor"
+              @remove="deletingProcess"
+              @publish="isPublished"
+            />
+          </q-list>
+        </div>
       </div>
     </div>
-    <div >
-      <div class="center">
-      <UploadButton entity="process" />
-      </div>
-      <q-list id="list">
-    <q-item>
-    <q-item-section class="col-4 flex flex-left" >
-        {{$t('input_labels.name')}}
-    </q-item-section>
-    <q-item-section class="col-1 flex flex-center top" style="margin-left:0px">
-        {{$t('input_labels.is_published')}}
-      </q-item-section>
-       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.transl_state')}}
-      </q-item-section>
-       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.comments')}}
-      </q-item-section>
-    <q-item-section class="col-1 flex flex-center top" >
-       {{$t('input_labels.edit')}}
-    </q-item-section>
-    <q-item-section class="col-1 flex flex-center top">
-    {{$t('input_labels.manage')}}
-    </q-item-section> 
-    <q-item-section class="col-1 flex flex-center top">
-    {{$t('input_labels.preview')}}
-    </q-item-section>
-    <q-item-section class="col-1 flex flex-center top">
-      {{$t('input_labels.delete')}}
-    </q-item-section>
-        </q-item>
-        <hr id="hr">
-        <Process
-          v-for="process in filteredProcesses"
-          :key="process.id"
-          :Title="showProcessLabel(process)"
-          :Topics="process.processTopics"
-          :Users="process.applicableUsers"
-          :processTopics="topics"
-          :processUsers="users"
-          :Link="process.id"
-          :theProcess="process"
-          Path="guided_process_editor"
-          @remove="deletingProcess"
-          @publish="isPublished"
-        >
-        </Process>
-      </q-list>
-    </div>
-  </div>
-  </div>
   </div>
 </template>
 
@@ -128,7 +134,10 @@ export default {
       saveTranslationProd: 'flows/saveTranslationProd',
       deleteTranslationProd: 'flows/deleteTranslationProd',
       saveStepTranslationProd: 'steps/saveTranslationProd',
-      deleteStepTranslationProd: 'steps/deleteTranslationProd'
+      deleteStepTranslationProd: 'steps/deleteTranslationProd',
+      saveSteplinkTranslationProd: 'steplinks/saveTranslationProd',
+      deleteSteplinkTranslationProd: 'steplinks/deleteTranslationProd'
+      
     }
   })],
   data () {
@@ -151,13 +160,13 @@ export default {
           //Splits the search field and puts the words in an array
           var searchArray = this.search.toLowerCase().split(" ")
           if (searchArray.every(string => curlangproc.process.toLowerCase().includes(string))) {
-            return true;
+            return true
           }        })
       }
     }
   },
   methods: {
-     isPublished(value){
+     /*isPublished(value){
        console.log(value)
       var publishing_process =  this.processes.filter((process)=>{
         return process.id == value.process_id
@@ -181,7 +190,7 @@ export default {
         this.deleteTranslationProd(value.process_id)
         this.deleteStepTranslationProd(publishing_steps)
       }
-     },
+     }*/
     deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
@@ -206,14 +215,78 @@ export default {
     },
     filterTranslationModel (currentLang) {
       return function (element) {
-        return element.lang == currentLang;
+        return element.lang == currentLang
       }
     },
     showProcessLabel (workingProcess) {
-      return workingProcess.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].process
-    }
-  },
+      return workingProcess.translations.filter(
+                (top) => top.translated == false && top.lang == this.$defaultLang
+              )[0].process
+    },
+    isPublished(event){
+     console.log("event ")
+      console.log(event.isPublished)
+      console.log("user id")
+      console.log(event.process_id)
+      var publishing_process =  this.processes.filter((doc)=>{
+        return doc.id == event.process_id
+      })[0]
+      console.log("i am doc to publish")
+      console.log(publishing_process)
+      var publishing_steps = this.steps.filter((step)=>{
+        return step.idProcess == event.process_id
+      }) 
+      console.log("i am steps to publish")
+      console.log(publishing_steps)
+      console.log("i am links to publish")
+      console.log(this.related_links)
+      var publishing_links = this.steplinks.filter((links)=>{
+        return links.idProcess == event.process_id 
+      })
+      if( event.isPublished == true){
+        this.$q.notify({
+        type: 'warning',
+        timeout:0,
+        message: this.$t('warning.publish_process'),
+        actions: [
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event.isPublished})
+            this.saveTranslationProd(event.process_id)
+            this.saveStepTranslationProd(publishing_steps)
+            this.saveSteplinkTranslationProd(publishing_links)
+             } },
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
+             this.processes.filter((doc)=>{
+              return doc.id == event.process_id
+              })[0].published = false } }
+        ]
+      })
+       
+      }
+      else{
+        this.$q.notify({
+        type: 'warning',
+        timeout:0,
+        message:  this.$t('warning.unpublish_process'),
+        actions: [
+          { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
+            this.updatePublished({process:publishing_process, published:event.isPublished})
+            this.deleteTranslationProd(event.process_id)
+            this.deleteStepTranslationProd(publishing_steps)
+            this.deleteSteplinkTranslationProd(publishing_links)
+            }},
+          { label: this.$t('lists.no'), color: 'red', handler: () => { 
+            this.processes.filter((doc)=>{
+              return doc.id == event.process_id
+              })[0].published = true } }
+        ]
+      })
+       
+      }
+     }
 
+  },
+  
 
 
   created () {

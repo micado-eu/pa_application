@@ -139,7 +139,7 @@ export default {
       .catch(error_handler)
   },
   saveProcessTranslation (translation, id) {
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState']))
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState', 'translationDate', 'translated']))
 
     // create fake id here
     return axiosInstance
@@ -189,9 +189,9 @@ export default {
 
   updateProcessTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
     },
-      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState'])) : translation
+      updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
       .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
@@ -269,7 +269,7 @@ export default {
       .then((response) => {
         return response.data
       })
-      .catch(error_handler);
+      .catch(error_handler)
   }
 
 }

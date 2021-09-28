@@ -3,120 +3,87 @@
     <div
       v-if="theprocess!=null"
       class="banner"
-    >{{$t('input_labels.edit_process')}} - {{this.title}}</div>
+    >
+      {{ $t('input_labels.edit_process') }} - {{ this.title }}
+    </div>
     <div
       v-else
       class="banner"
-    >{{$t('input_labels.add_new_process')}}</div>
+    >
+      {{ $t('input_labels.add_new_process') }}
+    </div>
 
     <div id="div-1">
       <q-card class="container">
-          <div class="form-help"> {{$t("help.form")}} {{this.$defaultLangString}} </div>
-       <form
+        <div class="form-help">
+          {{ $t("help.form") }} {{ this.$defaultLangString }}
+        </div>
+        <form
           @submit.prevent.stop="onSubmit"
           @reset.prevent.stop="onReset"
           class=""
         >
-        <q-tab-panels
-          v-model="langTab"
-          class="  "
-          animated
-        >
-          <q-tab-panel
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
+          <div
+            class=" q-pa-xsm "
+            id="div-2"
           >
-            <div
-              class=" q-pa-xsm "
-              id="div-2"
-            >
             <HelpLabel
-            :fieldLabel="$t('input_labels.process_name')"
-            :helpLabel="$t('help.process_name')"
-            class="div-3" />
+              :field-label="$t('input_labels.process_name')"
+              :help-label="$t('help.process_name')"
+              class="div-3"
+            />
            
-              <q-input
-                dense
-                data-cy="title_input"
-                bg-color="grey-3"
-                standout
-                ref="process_name"
-                outlined
-                maxlength="50"
-                counter
-                :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-                :rules="[ 
+            <q-input
+              dense
+              data-cy="title_input"
+              bg-color="grey-3"
+              standout
+              ref="process_name"
+              outlined
+              maxlength="50"
+              counter
+              :readonly="!(
+                (edit_process.translations.filter((top) => top.translated == false)[0].translationState == 0) && (edit_process.published == false)
+              )"
+              :rules="[ 
                 val => val.length <= 50 || 'Please use maximum 50 characters',
                 val => !!val || 'Field is required'
-                ]"
-                :hint="$t('input_labels.required')"
-                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].process"
-              />
-            </div>
+              ]"
+              :hint="$t('input_labels.required')"
+              v-model="edit_process.translations.filter(
+                (top) => top.translated == false
+              )[0].process"
+            />
+          </div>
 
-            <div
-              id="div-4"
-              class=""
-            >
-             <HelpLabel
-            :fieldLabel="$t('input_labels.process_description')"
-            :helpLabel="$t('help.process_description')"
-            class="div-5" />
+          <div
+            id="div-4"
+            class=""
+          >
+            <HelpLabel
+              :field-label="$t('input_labels.process_description')"
+              :help-label="$t('help.process_description')"
+              class="div-5"
+            />
             
-              <GlossaryEditor
-                data-cy="description_input"
-                class="desc-editor "
-                style="width:100%; text-align:left"
-                :readonly="!(edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].description"
-                :lang="language.lang"
-                ref="editor"
-              />
+            <GlossaryEditor
+              data-cy="description_input"
+              class="desc-editor "
+              style="width:100%; text-align:left"
+              :readonly="!(
+                (edit_process.translations.filter((top) => top.translated == false)[0].translationState == 0) && (edit_process.published == false)
+              )"
+              v-model="edit_process.translations.filter(
+                (top) => top.translated == false
+              )[0].description"
+              :lang="edit_process.translations.filter(
+                (top) => top.translated == false
+              )[0].langg"
+              ref="editor"
+            />
+          </div>
 
-            </div>
-            <div style="text-align:right;padding-left: 150px;padding-right: 150px;">
-              <TranslateStateButton
-                v-model="edit_process.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-                :isForDefaultLanguage="language.lang===activeLanguage"
-                :objectId="edit_process.id"
-                :readonly="!(language.lang===activeLanguage)"
-                @micado-change="(id) => {
-                  changeTranslationState(edit_process, id.state)
-                 //groupSteps(edit_process.id)
-                  //updateStepTranslationState(id.state)
-                  
-                }"
-                @return-to-edit="(id) => {
-                  changeTranslationState(edit_process, id.state)
-                  deleteTranslationProd(edit_process.id)
-                  edit_process.published = false
-                }"
-              />
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
-         <div style="padding-left:166px; padding-right:166px">
-        <hr id="hr-2">
-        <q-tabs
-          v-model="langTab"
-          dense
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
-        
-        <hr id="hr-2">
-         </div>
-        <!-- <treeselect
+          <!-- <treeselect
           :multiple="true"
           :options="this.tree_options"
           :flat="true"
@@ -124,93 +91,105 @@
           placeholder="Try selecting some options."
           v-model="edit_process.processTopics"
           />-->
-        <div
-          class=" q-pa-xsm row div-6"
-        >
-        <HelpLabel
-            :fieldLabel="$t('input_labels.generated_docs')"
-            :helpLabel="$t('help.generated_docs')"
-            class="tag"
-            style="padding-bottom:15px" />
-          <q-select
-            data-cy="add_produced_doc"
-            filled
-            :hint="$t('input_labels.required')"
-            dense
-            clearable
-            :readonly="edit_process.published == true"
-            v-model="edit_process.producedDoc"
-            @add="addDoc($event)"
-            @remove="removeDoc($event)"
-            @clear="clearAllDocs()"
-            multiple
-            emit-value
-            map-options
-            :options="this.docOptions"
-            class="select"
-          />
-        </div>
-        <div  class=" q-pa-xsm row div-6">
-          <div class="col-6 tag">
+          <div
+            class=" q-pa-xsm row div-6"
+          >
             <HelpLabel
-            :fieldLabel="$t('input_labels.user_tags')"
-            :helpLabel="$t('help.user_tags')"
-            class="tag" />
-            
-          </div>
-          <div class="col-6 tag">
-            <HelpLabel
-            :fieldLabel="$t('input_labels.topic_tags')"
-            :helpLabel="$t('help.topic_tags')"
-            class="tag" />
-          </div> 
-        </div>
-        <div
-          class="q-pa-xsm row"
-          id="div-7"
-        >
-          <div class="col-6 div-8">
+              :field-label="$t('input_labels.generated_docs')"
+              :help-label="$t('help.generated_docs')"
+              class="tag"
+              style="padding-bottom:15px"
+            />
             <q-select
+              data-cy="add_produced_doc"
               filled
+              :hint="$t('input_labels.required')"
               dense
-              :readonly="edit_process.published == true"
-              data-cy="add_user"
               clearable
-              v-model="edit_process.applicableUsers"
-              @add="addUserTag($event)"
-              @remove="removeUserTag($event)"
-              @clear="clearAllUsers()"
+              :readonly="edit_process.published == true"
+              v-model="edit_process.producedDoc"
+              @add="addDoc($event)"
+              @remove="removeDoc($event)"
+              @clear="clearAllDocs()"
               multiple
               emit-value
               map-options
-              :options="this.u_tags"
+              :options="this.docOptions"
               class="select"
             />
-          <!--  <q-chip
+          </div>
+          <div class=" q-pa-xsm row div-6">
+            <div class="col-6 tag">
+              <HelpLabel
+                :field-label="$t('input_labels.user_tags')"
+                :help-label="$t('help.user_tags')"
+                class="tag"
+              />
+            </div>
+            <div class="col-6 tag">
+              <HelpLabel
+                :field-label="$t('input_labels.topic_tags')"
+                :help-label="$t('help.topic_tags')"
+                class="tag"
+              />
+            </div> 
+          </div>
+          <div
+            class="q-pa-xsm row"
+            id="div-7"
+          >
+            <div class="col-6 div-8">
+              <q-select
+                filled
+                dense
+                :readonly="edit_process.published == true"
+                data-cy="add_user"
+                clearable
+                v-model="edit_process.applicableUsers"
+                @add="addUserTag($event)"
+                @remove="removeUserTag($event)"
+                @clear="clearAllUsers()"
+                multiple
+                emit-value
+                map-options
+                :options="this.u_tags"
+                class="select"
+              />
+              <!--  <q-chip
               v-for="tag in selected_u_tags"
               dense
               :key="tag"
             >{{tag}}</q-chip>-->
-          </div>
+            </div>
 
-          <div class="col-6 div-9">
-          <treeselect
-          :multiple="true"
-          :options="this.tree_options"
-          :flat="true"
-          :default-expand-level="1"
-          placeholder="Try selecting some options."
-          v-model="edit_process.processTopics"
-          @select="addTopicTag($event)"
-          @deselect="removeTopicTag($event)"
-          @clear="clearAllTopics()"
-          >
-          <div slot="value-label" slot-scope="{ node }" :class="{unpublished: !node.raw.published}">{{ node.label }}</div>
-          <label slot="option-label" slot-scope="{node}" :class="{unpublished: !node.raw.published}">
-           {{ node.label }}
-          </label>
-          </treeselect>
-           <!-- <q-select
+            <div class="col-6 div-9">
+              <treeselect
+                :multiple="true"
+                :options="this.tree_options"
+                :flat="true"
+                :default-expand-level="1"
+                placeholder="Try selecting some options."
+                v-model="edit_process.processTopics"
+                @select="addTopicTag($event)"
+                @deselect="removeTopicTag($event)"
+                @clear="clearAllTopics()"
+              >
+                <div
+                  slot="value-label"
+                  slot-scope="{ node }"
+                  :class="{unpublished: !node.raw.published}"
+                >
+                  {{ node.label }}
+                </div>
+                <label
+                  slot="option-label"
+                  slot-scope="{node}"
+                  :class="{unpublished: !node.raw.published}"
+                >
+                  {{ node.label }}
+                </label>
+              </treeselect>
+              <!-- <q-select
               filled
               data-cy="add_topic"
               dense
@@ -231,75 +210,89 @@
               dense
               :key="tag"
             >{{tag}}</q-chip>-->
+            </div>
           </div>
-        </div>
-         <div class=" q-pa-xsm row div-6" style="padding-bottom:20px">
-        <div class="col-3" style="min-width:180px; ">
-          <HelpLabel
-            :fieldLabel="$t('button.validate_and_publish')"
-            :helpLabel ="$t('help.is_published')"
-            class="tag"
-          />
-        </div>
-        <div class="col" style="padding-top:2px; text-align:left">
-          <q-toggle
-            v-model="edit_process.published"
-            :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
-            @input="isPublished($event, edit_process.id)"
-            color="accent"
-          />
-        </div>
-      </div>
-      <div style="padding-left:166px; padding-right:166px">
-       
-        
-        <hr id="hr-2">
-        <CommentList 
-        style="text-align:left;"
-        :selected_process_comments="selected_process_comments"/>
-      </div>
-        <div id="div-10">
-          <div class="q-pa-md q-gutter-md col-4 div-11">
-            <q-btn
-            :data-cy="'back_to_process'.concat(theprocessid)"
-              class="delete-button"
-              no-caps
-              rounded
-              :label="$t('button.back')"
-              unelevated
-              style=""
-              to="/guided_process_editor"
-            />
-            <q-btn
-            :data-cy="'manageprocess'.concat(theprocessid)"
-              color="secondary"
-              no-caps
-              rounded
-              :label="$t('button.manage_steps')"
-              unelevated
-              :disable="this.disabled || edit_process.published"
-              class="button"
-              @click="manageProcess()"
-            />
-
-            <q-btn
-            :data-cy="'saveprocess'.concat(theprocessid)"
-              color="accent"
-              no-caps
-              rounded
-              :disable="edit_process.published"
-              :label="$t('button.save')"
-              unelevated
-              class="button"
-              type="submit"
-              
-            />
-
+          <div
+            class=" q-pa-xsm row div-6"
+            style="padding-bottom:20px"
+          >
+            <div
+              class="col-3"
+              style="min-width:180px; "
+            >
+              <HelpLabel
+                :field-label="$t('translation_states.translatable')"
+                :help-label="$t('help.is_published')"
+                class="tag"
+              />
+            </div>
+            <div
+              class="col"
+              style="padding-top:2px; text-align:left"
+            >
+              <!-- <q-toggle
+                v-model="edit_process.published"
+                :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+                @input="isPublished($event, edit_process.id)"
+                color="accent"
+              />-->
+              <q-toggle
+                :value="
+                  edit_process.translations.filter(
+                    (top) => top.translated == false
+                  )[0].translationState == 1
+                "
+                color="accent"
+                @input="makeTranslatable($event)"
+              />
+            </div>
           </div>
-        </div>
-       </form>
+          <div style="padding-left:166px; padding-right:166px">
+            <hr id="hr-2">
+            <CommentList 
+              style="text-align:left;"
+              :selected_process_comments="selected_process_comments"
+            />
+          </div>
+          <div id="div-10">
+            <div class="q-pa-md q-gutter-md col-4 div-11">
+              <q-btn
+                :data-cy="'back_to_process'.concat(theprocessid)"
+                class="delete-button"
+                no-caps
+                rounded
+                :label="$t('button.back')"
+                unelevated
+                style=""
+                to="/guided_process_editor"
+              />
+              <q-btn
+                :data-cy="'manageprocess'.concat(theprocessid)"
+                color="secondary"
+                no-caps
+                rounded
+                :label="$t('button.manage_steps')"
+                unelevated
+                :disable="this.disabled || edit_process.published"
+                class="button"
+                @click="manageProcess()"
+              />
+
+              <q-btn
+                :data-cy="'saveprocess'.concat(theprocessid)"
+                color="accent"
+                no-caps
+                rounded
+                :disable="edit_process.published"
+                :label="$t('button.save')"
+                unelevated
+                class="button"
+                type="submit"
+              />
+            </div>
+          </div>
+        </form>
       </q-card>
-
     </div>
   </div>
 </template>
@@ -393,6 +386,18 @@ export default {
 
   },
   methods: {
+    makeTranslatable(value) {
+      console.log(value)
+      if (value) {
+        this.edit_process.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+        this.edit_process.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
     updateStepTranslationState(state){
       console.log("updating steps")
       if(this.related_steps){
@@ -415,8 +420,8 @@ export default {
       })
     },
     onSubmit () {
-      this.$refs.process_name[0].validate()
-      if (this.$refs.process_name[0].hasError ) {
+      this.$refs.process_name.validate()
+      if (this.$refs.process_name.hasError ) {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
@@ -430,9 +435,9 @@ export default {
       }
     },
         onReset () {
-       this.$refs.process_name[0].validate()
+       this.$refs.process_name.validate()
 
-       this.$refs.process_name[0].resetValidation()
+       this.$refs.process_name.resetValidation()
     },
     manageProcess () {
       this.$router.push({ name: 'editstep', params: { processId: this.theprocessid } })
@@ -520,7 +525,7 @@ export default {
             this.saveTranslationProd(value)
             this.saveStepTranslationProd(publishing_steps)
             this.saveSteplinkTranslationProd(this.related_links)
-            setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300); } },
+            setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 300) } },
           { label: this.$t('lists.no'), color: 'red', handler: () => { 
             this.edit_process.published = false } }
         ]
@@ -571,19 +576,48 @@ export default {
       let workingProcess = JSON.parse(JSON.stringify(this.edit_process))
 
       if (this.is_new) {
+        workingProcess.translations.push({
+          id: -1,
+          lang: this.activeLanguage,
+          process: workingProcess.translations[0].process,
+          description: workingProcess.translations[0].description,
+          translationDate: null,
+          translationState: workingProcess.translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        workingProcess.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
         console.log(workingProcess)
         await this.saveProcess({process:workingProcess, defaultLang:this.$defaultLang})
         console.log(this.$store.state.flows)
         console.log(this.edit_process.id)
       }
       else {
-        await this.editProcess({process:value,defaultLang:this.$defaultLang })
-        this.groupSteps(value.id)
+        if (workingProcess.translations[0].translationState == 1) {
+          console.log(workingProcess)
+          workingProcess.translations.push({
+            id: workingProcess.id,
+            lang: this.activeLanguage,
+            process: workingProcess.translations[0].process,
+            description: workingProcess.translations[0].description,
+            translationDate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        workingProcess.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+        await this.editProcess({process:workingProcess,defaultLang:this.$defaultLang })
+        this.groupSteps(workingProcess.id)
         //this condition is necessary because if the user changes, for example, a topic while the translationstate
         //is 2, all steps and link would move to that translation state without being put into weblate
         //if the user creates new steps or links after the process has been put into translationstate = 2
         //he will have to manually select his state and send it to translation platform
-        if(value.translations[0].translationState < 2){
+        if(workingProcess.translations[0].translationState == 1){
         this.updateStepTranslationState(value.translations[0].translationState)
         this.updateSteplinkTranslationState(value.translations[0].translationState)
         }
@@ -602,14 +636,20 @@ export default {
         console.log(this.edit_process)
         console.log(this.$store.state.flows)
       }
-      setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 500);
+      setTimeout(() => { this.$router.push({ path: '/guided_process_editor' }) }, 500)
       
     },
 
     createShell () {
       this.edit_process = { id: -1, applicableUsers: [], translations: [], processTopics: [], producedDoc: [], link: "", published:false }
-      this.languages.forEach(l => {
-        this.edit_process.translations.push({ id: -1, lang: l.lang, process: '', description: '', published: false, translationDate: null, translationState: 0 })
+      this.edit_process.translations.push({
+        id: -1,
+        lang: this.activeLanguage,
+        process: "",
+        description: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false
       })
     },
     mergeProcess (process) {
@@ -622,17 +662,11 @@ export default {
       this.edit_process.applicableUsersOrig = []
       this.edit_process.processTopicsOrig = []
       this.edit_process.published = process.published
-      process.translations.forEach(pr => {
-        console.log(pr)
-
-        for (var i = 0; i < this.edit_process.translations.length; i++) {
-          if (this.edit_process.translations[i].lang == pr.lang) {
-            this.edit_process.translations.splice(i, 1)
-            this.edit_process.translations.push(JSON.parse(JSON.stringify(pr)))
-            break
-          }
-        }
-      })
+      this.edit_process.translations = [
+        process.translations.filter((top) => {
+          return top.lang == this.$defaultLang && top.translated == false
+        })[0]
+      ]
       console.log("pre-topics foreach")
       if (process.producedDoc != null) {
         process.producedDoc.forEach(the_doc => {
