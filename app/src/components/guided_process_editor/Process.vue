@@ -87,7 +87,7 @@
           {{ $t('input_labels.available_transl') }}:
         </p>
         <q-chip
-          v-for=" lang in theProcess.translations.filter(lang => {return lang.process.length>1})"
+          v-for=" lang in theProcess.translations.filter(lang => {return lang.process.length>1 && lang.translated == true})"
           :key="lang.lang"
         >
           {{ lang.lang }}

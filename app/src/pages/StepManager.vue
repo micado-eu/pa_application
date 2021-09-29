@@ -37,33 +37,7 @@
           class=""
         >
           <div class=" q-pa-lg ">
-            <div class=" q-pa-xsm row ">
-              <q-tabs
-                v-model="langTab"
-                dense
-                class="bg-grey-2 width"
-                active-color="accent"
-                indicator-color="accent"
-                align="justify"
-                narrow-indicator
-              >
-                <q-tab
-                  v-for="language in languages"
-                  :key="language.lang"
-                  :name="language.name"
-                  :label="language.name"
-                />
-              </q-tabs>
-              <q-tab-panels
-                v-model="langTab"
-                animated
-                class="bg-grey-2 inset-shadow width "
-              >
-                <q-tab-panel
-                  v-for="language in languages"
-                  :key="language.lang"
-                  :name="language.name"
-                >
+            <div class=" q-pa-xsm  ">
                   <div
                     class=" q-pa-xsm "
                     id="div-2"
@@ -88,24 +62,49 @@
                       @blur="updateField()"
                       :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
                       val=> !!val || 'Field is required']"
-                      :readonly="!(steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-                      v-model="steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
+                                          :readonly="!(
+                      (steplink_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)                    )"
+                    v-model="steplink_shell.translations.filter(
+                      (top) => top.translated == false
+                    )[0].description"
                       :label="$t('input_labels.link_name')"
                     />
                   </div>
-                  <div>
-                    <TranslateStateButton
-                      v-model="steplink_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-                      :isForDefaultLanguage="language.lang===activeLanguage"
-                      :objectId="steplink_shell.id"
-                      :readonly="!(language.lang===activeLanguage)"
-                      @micado-change="(id) => {changeTranslationState(steplink_shell, id.state)}"
-                    />
-                  </div>
-                </q-tab-panel>
-              </q-tab-panels>
-              <hr>
-
+                           <div
+            class=" q-pa-xsm row div-6"
+            style="padding-bottom:20px"
+          >
+            <div
+              class="col-3"
+              style="min-width:180px; "
+            >
+              <HelpLabel
+                :field-label="$t('translation_states.translatable')"
+                :help-label="$t('help.is_published')"
+                class="tag"
+              />
+            </div>
+            <div
+              class="col"
+              style="padding-top:2px; text-align:left"
+            >
+              <!-- <q-toggle
+                v-model="edit_process.published"
+                :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+                @input="isPublished($event, edit_process.id)"
+                color="accent"
+              />-->
+              <q-toggle
+                :value="
+                  steplink_shell.translations.filter(
+                    (top) => top.translated == false
+                  )[0].translationState == 1
+                "
+                color="accent"
+                @input="makeTranslatableSteplink($event)"
+              />
+            </div>
+          </div>
             <div class="row">
               <div class="q-pa-md col-4 left">
                 <q-btn
@@ -157,34 +156,8 @@
           class=""
         >
           <div class=" q-pa-lg ">
-            <div class=" q-pa-xsm row ">
-              <q-tabs
-                v-model="langTab"
-                dense
-                class="bg-grey-2 width"
-                active-color="accent"
-                indicator-color="accent"
-                align="justify"
-                narrow-indicator
-              >
-                <q-tab
-                  v-for="language in languages"
-                  :key="language.lang"
-                  :name="language.name"
-                  :label="language.name"
-                />
-              </q-tabs>
-              <q-tab-panels
-                v-model="langTab"
-                animated
-                class="bg-grey-2 inset-shadow width "
-              >
-                <q-tab-panel
-                  v-for="language in languages"
-                  :key="language.lang"
-                  :name="language.name"
-                >
-                  <div
+            <div class=" q-pa-xsm  ">
+                 <div
                     class=" q-pa-xsm "
                     id="div-2"
                   >
@@ -208,8 +181,12 @@
                       @blur="updateField()"
                       :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
                       val=> !!val || 'Field is required']"
-                      :readonly="!(step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].step"
+                      :readonly="!(
+                      (step_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)
+                    )"
+                    v-model="step_shell.translations.filter(
+                      (top) => top.translated == false
+                    )[0].step"
                       :label="$t('input_labels.step_name')"
                     />
                   </div>
@@ -227,26 +204,17 @@
                     <GlossaryEditor
                       data-cy="description_input"
                       class="desc-editor"
-                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-                      :lang="language.lang"
+                      v-model="step_shell.translations.filter(
+                      (top) => top.translated == false
+                    )[0].description"
+                    :lang="step_shell.translations.filter(
+                      (top) => top.translated == false
+                    )[0].lang"
                       ref="editor"
                     />
 
                   </div>
-                  <div>
-                    <TranslateStateButton
-                      v-model="step_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-                      :isForDefaultLanguage="language.lang===activeLanguage"
-                      :objectId="step_shell.id"
-                      :readonly="!(language.lang===activeLanguage)"
-                      @micado-change="(id) => {
-                        changeTranslationState(step_shell, id.state)
-                        change()
-                        }"
-                    />
-                  </div>
-                </q-tab-panel>
-              </q-tab-panels>
+
                <div
                     id="location"
                 style="width:100%"
@@ -457,7 +425,41 @@
               </q-list>
             </div>
             <hr>
-
+                           <div
+            class=" q-pa-xsm row div-6"
+            style="padding-bottom:20px"
+          >
+            <div
+              class="col-3"
+              style="min-width:180px; "
+            >
+              <HelpLabel
+                :field-label="$t('translation_states.translatable')"
+                :help-label="$t('help.is_published')"
+                class="tag"
+              />
+            </div>
+            <div
+              class="col"
+              style="padding-top:2px; text-align:left"
+            >
+              <!-- <q-toggle
+                v-model="edit_process.published"
+                :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
+                @input="isPublished($event, edit_process.id)"
+                color="accent"
+              />-->
+              <q-toggle
+                :value="
+                  step_shell.translations.filter(
+                    (top) => top.translated == false
+                  )[0].translationState == 1
+                "
+                color="accent"
+                @input="makeTranslatableStep($event)"
+              />
+            </div>
+          </div>
             <div class="row">
               <div class="q-pa-md col-4 left">
                 <q-btn
@@ -661,6 +663,30 @@ export default {
   },
 
   methods: {
+    makeTranslatableSteplink(value){
+      console.log(value)
+      if (value) {
+        this.steplink_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+        this.steplink_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
+     makeTranslatableStep(value){
+      console.log(value)
+      if (value) {
+        this.step_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+        this.step_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
     change(){
       this.$forceUpdate()
     },
@@ -675,8 +701,8 @@ export default {
     onSubmit () {
       console.log(this.$refs.title_input)
 
-      this.$refs.title_input[0].validate()
-      if (this.$refs.title_input[0].hasError) {
+      this.$refs.title_input.validate()
+      if (this.$refs.title_input.hasError) {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
@@ -694,10 +720,10 @@ export default {
        this.$refs.title_input[0].resetValidation()
     },
       onSubmitLink () {
-      console.log(this.$refs.title_link_input[0])
+      console.log(this.$refs.title_link_input)
 
-      this.$refs.title_link_input[0].validate()
-      if (this.$refs.title_link_input[0].hasError) {
+      this.$refs.title_link_input.validate()
+      if (this.$refs.title_link_input.hasError) {
         console.log("IN TSTEPLINK ERROR")
         this.formHasError = true
          this.$q.notify({
@@ -731,8 +757,14 @@ export default {
 
     generateShell (id = -1) {
       let newstep = { id: id, link:null, documents: [], translations: [], cost: 0, idProcess: Number(this.processId), location: '', locationLon: 0, locationLat: 0, locationSpecific: false, is_new: false, to_delete: false, is_edited: false }
-      this.languages.forEach(l => {
-        newstep.translations.push({ id: id, lang: l.lang, step: '', description: '', translationDate: null, translationState: 0 })
+      newstep.translations.push({
+        id: id,
+        lang: this.activeLanguage,
+        step: "",
+        description: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false
       })
       return newstep
     },
@@ -743,14 +775,28 @@ export default {
     },
 
     mergeStep (idStep) {
-      console.log("MERGING")
-      this.step_shell = JSON.parse(JSON.stringify(this.steps.filter(step => { return step.id == idStep })[0]))
+            console.log("MERGING")
+      var step = this.steps.filter(step => { return step.id == idStep })[0]
+      console.log(step)
+      this.step_shell = JSON.parse(JSON.stringify(step))
+      this.step_shell.translations = [
+        step.translations.filter((top) => {
+          return top.lang == this.$defaultLang && top.translated == false
+        })[0]
+      ]
+      console.log(this.step_shell)
 
     },
     
     mergeStepLink (idStepLink) {
       console.log("MERGING")
-      this.steplink_shell = JSON.parse(JSON.stringify(this.steplinks.filter(step => { return step.id == idStepLink })[0]))
+      var steplink = this.steplinks.filter(step => { return step.id == idStepLink })[0]
+      this.steplink_shell = JSON.parse(JSON.stringify(steplink))
+      this.steplink_shell.translations = [
+        steplink.translations.filter((top) => {
+          return top.lang == this.$defaultLang && top.translated == false
+        })[0]
+      ]
 
     },
     preConfig (cytoscape) {
@@ -815,6 +861,40 @@ export default {
     },
     saveStep () {
       // In edit_step we have the instance of step that we are working on
+      console.log("saving the step")
+      if ( this.step_shell.is_new) {
+        this.step_shell.translations.push({
+          id: this.step_shell.id,
+          lang: this.activeLanguage,
+          step: this.step_shell.translations[0].step,
+          description: this.step_shell.translations[0].description,
+          translationDate: null,
+          translationState: this.step_shell.translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        this.step_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+      }
+      else{
+        if (this.step_shell.translations[0].translationState == 1) {
+          this.step_shell.translations.push({
+            id: this.step_shell.id,
+            lang: this.activeLanguage,
+            step: this.step_shell.translations[0].step,
+            description: this.step_shell.translations[0].description,
+            translationDate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        this.step_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+      }
+      console.log(this.step_shell)
       this.changeStep(this.step_shell)
         .then(ret => {
           console.log("CHANGED THE STEP")
@@ -831,6 +911,37 @@ export default {
     },
         saveStepLink () {
       // In edit_step we have the instance of step that we are working on
+      if ( this.steplink_shell.is_new) {
+        this.steplink_shell.translations.push({
+          id: this.steplink_shell.id,
+          lang: this.activeLanguage,
+          description: this.steplink_shell.translations[0].description,
+          translationDate: null,
+          translationState: this.steplink_shell.translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        this.steplink_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+      }
+      else{
+        if (this.steplink_shell.translations[0].translationState == 1) {
+          this.steplink_shell.translations.push({
+            id: this.steplink_shell.id,
+            lang: this.activeLanguage,
+            description: this.steplink_shell.translations[0].description,
+            translationDate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        this.steplink_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+      }
+      console.log(this.steplink_shell)
       this.changeSteplink(this.steplink_shell)
         .then(ret => {
           console.log("CHANGED THE STEP")
@@ -909,8 +1020,13 @@ export default {
 
     generateStepLink (id_edge, fromStep_edge, toStep_edge, is_new) {
       this.steplink_shell = { id: id_edge, is_new: is_new, to_delete: false, is_edited: false, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
-      this.languages.forEach(l => {
-        this.steplink_shell.translations.push({ id: id_edge, lang: l.lang, description: '', translationState:0,translationDate: null })
+     this.steplink_shell.translations.push({
+        id: id_edge,
+        lang: this.activeLanguage,
+        description: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false
       })
       return this.steplink_shell
 

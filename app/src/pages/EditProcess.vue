@@ -78,7 +78,7 @@
               )[0].description"
               :lang="edit_process.translations.filter(
                 (top) => top.translated == false
-              )[0].langg"
+              )[0].lang"
               ref="editor"
             />
           </div>
