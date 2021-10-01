@@ -23,18 +23,7 @@
           @reset.prevent.stop="onReset"
           class=""
         >
-
-      <q-tab-panels
-        v-model="langTab"
-        class="bg-grey-2 inset-shadow "
-        animated
-      >
-        <q-tab-panel
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-        >
-          <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
+    <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
           <HelpLabel
           :fieldLabel="$t('input_labels.doc_type')"
           :helpLabel ="$t('help.doc_type')"
@@ -53,8 +42,15 @@
             val => val.length <= $envconfig.titleLimit || 'Please use maximum 25 characters',
             val => !!val || 'Field is required'
             ]"
-            v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].document"
-            :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
+            v-model="int_doc_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].document"
+            :readonly="!(
+              int_doc_shell.translations.filter(
+                (top) => top.translated == false
+              )[0].translationState == 0 &&
+              int_doc_shell.published == false
+            )"
             :label="$t('input_labels.doc_type_placeholder')"
           />
            <HelpLabel
@@ -65,48 +61,20 @@
           
           <GlossaryEditor
             class="desc-editor"
-            :readonly="!(int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)"
-            v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].description"
-            :lang="language.lang"
+            :readonly="!(
+              int_doc_shell.translations.filter(
+                (top) => top.translated == false
+              )[0].translationState == 0 &&
+              int_doc_shell.published == false
+            )"
+            v-model="int_doc_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].description"
+            :lang="int_doc_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].lang"
             ref="editor"
           />
-            <TranslateStateButton
-              v-model="int_doc_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-              :isForDefaultLanguage="language.lang===activeLanguage"
-              :objectId="int_doc_shell.id"
-              :readonly="!(language.lang===activeLanguage)"
-              @micado-change="(id) => {
-                changeTranslationState(int_doc_shell, id.state)
-                int_doc_shell.pictures.forEach((pic)=>{
-                  pic.hotspots.forEach((spot)=>{
-                    changeTranslationState(spot, id.state)
-                  })
-                })
-              }"
-              @return-to-edit="(id) => {
-                  changeTranslationState(int_doc_shell, id.state)
-                  deleteTranslationProd(int_doc_shell.id)
-                  int_doc_shell.published = false
-                }"
-            />
-        </q-tab-panel>
-      </q-tab-panels>
-      <q-tabs
-        v-model="langTab"
-        dense
-        class="bg-grey-2"
-        active-color="accent"
-        indicator-color="accent"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="language in languages"
-          :key="language.lang"
-          :name="language.name"
-          :label="language.name"
-        />
-      </q-tabs>
           <HelpLabel
           :fieldLabel="$t('input_labels.issuer')"
           :helpLabel ="$t('help.issuer')"
@@ -288,7 +256,7 @@
                   :src="image"
                   spinner-color="white"
                   class="image"
-                  @click="addHotspot(image)"
+                  @click="addHotspotDiag(image)"
                 />
 
                 <span class="span">
@@ -310,7 +278,12 @@
                 <q-card>
                   <v-hotspot
                     :init-options="hotspotConfig"
-                    @save-data="saveHotspot"
+                     @add-hotspot="addHotspot"
+    @hotspot-click="hotspotClick"
+    @after-delete="afterDelete"
+    @delete-hotspot="hotspotDelete"
+    @edit-hotspot="hotspotEdit"
+                    @save-data="saveData"
                   />
 
                 </q-card>
@@ -361,18 +334,27 @@
        <div class="row">
         <div class="col-2" style="min-width:200px; ">
           <HelpLabel
-            :fieldLabel="$t('button.validate_and_publish')"
+            :fieldLabel="$t('translation_states.translatable')"
             :helpLabel ="$t('help.is_published')"
             style="padding-left:17px"
           />
         </div>
         <div class="col" style="padding-top:2px">
-          <q-toggle
+          <!--<q-toggle
             v-model="int_doc_shell.published"
             color="accent"
             :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event, int_doc_shell.id)"
-          />
+          />-->
+          <q-toggle
+              :value="
+                int_doc_shell.translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              color="accent"
+              @input="makeTranslatable($event)"
+            />
         </div>
       </div>
       
@@ -442,7 +424,11 @@
            <q-toggle
             v-model="document_type.published"
             color="accent"
-            disable
+            :disable="
+                document_type.translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1
+              "
+              @input="isPublished($event, document_type.id)"
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top" >
@@ -624,9 +610,9 @@ export default {
       console.log(this.$refs.doc_type)
       console.log(this.$refs.icon)
       this.$refs.icon.validate()
-      this.$refs.doc_type[0].validate()
+      this.$refs.doc_type.validate()
       console.log(this.$refs.icon.hasError)
-      if (this.$refs.doc_type[0].hasError || this.$refs.icon.hasError ) {
+      if (this.$refs.doc_type.hasError || this.$refs.icon.hasError ) {
         this.formHasError = true
          this.$q.notify({
           color: 'negative',
@@ -640,10 +626,10 @@ export default {
       }
     },
         onReset () {
-       this.$refs.doc_type[0].validate()
+       this.$refs.doc_type.validate()
        this.$refs.icon.validate()
 
-       this.$refs.doc_type[0].resetValidation()
+       this.$refs.doc_type.resetValidation()
        this.$refs.icon.resetValidation()
     },
     isPublished(event,value){
@@ -685,7 +671,10 @@ export default {
             this.cancelDoc()
              } },
           { label: this.$t('lists.no'), color: 'red', handler: () => { 
-            this.int_doc_shell.published = false } }
+            this.document_types.filter((topic) => {
+                  return topic.id == value
+                })[0].published = false
+             } }
         ]
       })
        
@@ -729,7 +718,10 @@ export default {
             this.deleteTranslationProd(value)
             this.deleteSpotTranslationProd(spots)}},
           { label: this.$t('lists.no'), color: 'red', handler: () => { 
-            this.int_doc_shell.published = true } }
+            this.document_types.filter((topic) => {
+                  return topic.id == value
+                })[0].published = true
+             } }
         ]
       })
        
@@ -1007,12 +999,17 @@ export default {
     },
     createShell () {
       this.int_doc_shell = { id: -1, issuer: null, translations: [], pictures: [], validators:[], icon: "", model: "", validable: false, published:false }
-      this.languages.forEach(l => {
-        //       console.log(l)
-        this.int_doc_shell.translations.push({ id: -1, lang: l.lang, document: '', description: '', translationDate: null, translationState: 0 })
+       this.int_doc_shell.translations.push({
+        id: -1,
+        lang: this.activeLanguage,
+        document: "",
+        description: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false
       })
     },
-    addHotspot (picture) {
+    addHotspotDiag (picture) {
       var selected_picture = this.uploaded_images.filter((pic) => {
         console.log(pic == String(picture))
         return pic == String(picture)
@@ -1088,23 +1085,13 @@ export default {
       this.int_doc_shell.pictures.forEach((a_picture) => {
         this.uploaded_images.push(a_picture.image)
       })
-
-      doc.translations.forEach(doc => {
-        console.log(doc)
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
-        for (var i = 0; i < this.int_doc_shell.translations.length; i++) {
-          if (this.int_doc_shell.translations[i].lang == doc.lang) {
-            this.int_doc_shell.translations.splice(i, 1)
-            this.int_doc_shell.translations.push(JSON.parse(JSON.stringify(doc)))
-            break
-          }
-        }
-      })
+      this.int_doc_shell.translations = [
+        doc.translations.filter((top) => {
+          return top.lang == this.activeLanguage && top.translated == false
+        })[0]
+      ]
       console.log("after merge")
       console.log(this.int_doc_shell)
-
-
     },
     removePicture (image) {
       var idx = this.uploaded_images.findIndex(an_image => an_image === image)
@@ -1119,6 +1106,20 @@ export default {
       if (this.isNew) {
         console.log("I am the document")
         console.log(this.int_doc_shell)
+        this.int_doc_shell.translations.push({
+          id: -1,
+          lang: this.activeLanguage,
+          document: this.int_doc_shell.translations[0].document,
+          description: this.int_doc_shell.translations[0].description,
+          translationDate: null,
+          translationState: this.int_doc_shell.translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        this.int_doc_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
         this.saveDocumentType(this.int_doc_shell).then((doc) => {
 
           console.log("I am the saved document in the store")
@@ -1128,6 +1129,20 @@ export default {
         )
       }
       else {
+        if (this.int_doc_shell.translations[0].translationState == 1) {
+          this.int_doc_shell.translations.push({
+            id: this.int_doc_shell.id,
+            lang: this.activeLanguage,
+            document: this.int_doc_shell.translations[0].document,
+            description: this.int_doc_shell.translations[0].description,
+            translationDate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        this.int_doc_shell.translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
         console.log(this.int_doc_shell)
         this.int_doc_shell.pictures.forEach((picture)=>{
           picture.hotspots.forEach((spot)=>{

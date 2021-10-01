@@ -66,7 +66,34 @@
                 }"
             />
           </div> -->
-
+          <HelpLabel
+          :field-label="$t('input_labels.description')"
+          :help-label="$t('help.user_type_description')"
+          style="padding-top: 10px"
+          class="div-3"
+        />
+        <GlossaryEditor
+          class="desc-editor"
+          :readonly="
+            !(
+              int_topic_shell.translations.filter(
+                (top) => top.translated == false
+              )[0].translationState == 0 &&
+              int_topic_shell.published == false
+            )
+          "
+          v-model="
+            int_topic_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].description
+          "
+          :lang="
+            int_topic_shell.translations.filter(
+              (top) => top.translated == false
+            )[0].lang
+          "
+          ref="editor"
+        />
         <FileUploader
           :Image="topicimage"
           :icon="int_topic_shell.icon"
@@ -228,11 +255,13 @@
 </template>
 
 <script>
-import FileUploader from "components/FileUploader";
-import editEntityMixin from "../../mixin/editEntityMixin";
-import storeMappingMixin from "../../mixin/storeMappingMixin";
-import translatedButtonMixin from "../../mixin/translatedButtonMixin";
-import HelpLabel from "../HelpLabel";
+import FileUploader from "components/FileUploader"
+import editEntityMixin from "../../mixin/editEntityMixin"
+import storeMappingMixin from "../../mixin/storeMappingMixin"
+import translatedButtonMixin from "../../mixin/translatedButtonMixin"
+import HelpLabel from "../HelpLabel"
+import GlossaryEditor from "components/GlossaryEditor"
+
 
 export default {
   name: "TopicType",
@@ -241,7 +270,7 @@ export default {
     translatedButtonMixin,
     storeMappingMixin({
       getters: {
-        topic: "topic/topic",
+        topic: "topic/topic"
       },
       actions: {
         deleteTopic: "topic/deleteTopic",
@@ -250,9 +279,9 @@ export default {
         fetchTopic: "topic/fetchTopic",
         updatePublished: "topic/updatePublished",
         saveTranslationProd: "topic/saveTranslationProd",
-        deleteTranslationProd: "topic/deleteTranslationProd",
-      },
-    }),
+        deleteTranslationProd: "topic/deleteTranslationProd"
+      }
+    })
   ],
   data() {
     return {
@@ -261,69 +290,70 @@ export default {
       hideAdd: false,
       isNew: false,
       topicimage: null,
-      publishedOrig: false,
-    };
+      publishedOrig: false
+    }
   },
   components: {
     FileUploader,
     HelpLabel,
+    GlossaryEditor
   },
   computed: {
     topicOptions() {
-      var options = [];
+      var options = []
       this.topic.forEach((topic) => {
         if (topic.id != this.int_topic_shell.id) {
           var the_topic = {
             label: topic.translations.filter(
               this.filterTranslationModel(this.activeLanguage)
             )[0].topic,
-            value: topic.id,
-          };
-          options.push(the_topic);
+            value: topic.id
+          }
+          options.push(the_topic)
         }
-      });
-      return options;
-    },
+      })
+      return options
+    }
   },
 
   methods: {
     getTranslationState(id) {
       var cate = this.topic.filter((cat) => {
-        return cat.id == id;
-      })[0];
+        return cat.id == id
+      })[0]
       var state = cate.translations.filter((transl) => {
-        return transl.lang == this.$defaultLang;
-      })[0].translationState;
+        return transl.lang == this.$defaultLang
+      })[0].translationState
       if (state == 0) {
-        return this.$i18n.t("translation_states.editing");
+        return this.$i18n.t("translation_states.editing")
       } else if (state == 1) {
-        return this.$i18n.t("translation_states.translatable");
+        return this.$i18n.t("translation_states.translatable")
       } else if (state == 2) {
-        return this.$i18n.t("translation_states.translating");
+        return this.$i18n.t("translation_states.translating")
       } else {
-        return this.$i18n.t("translation_states.translated");
+        return this.$i18n.t("translation_states.translated")
       }
     },
     onSubmit() {
-      console.log(this.$refs.topic);
-      this.$refs.topic.validate();
+      console.log(this.$refs.topic)
+      this.$refs.topic.validate()
       if (this.$refs.topic.hasError) {
-        this.formHasError = true;
+        this.formHasError = true
         this.$q.notify({
           color: "negative",
-          message: this.$t("warning.req_fields"),
-        });
-        return false;
+          message: this.$t("warning.req_fields")
+        })
+        return false
       } else {
-        console.log("in else of submit");
-        this.savingTopic();
-        this.onReset();
+        console.log("in else of submit")
+        this.savingTopic()
+        this.onReset()
       }
     },
     onReset() {
       //this.$refs.topic[0].validate()
 
-      this.$refs.topic.resetValidation();
+      this.$refs.topic.resetValidation()
     },
     deletingTopic(index) {
       this.$q.notify({
@@ -335,19 +365,19 @@ export default {
             label: this.$t("button.delete"),
             color: "red",
             handler: () => {
-              console.log(index);
-              this.deleteTopic(index);
-            },
+              console.log(index)
+              this.deleteTopic(index)
+            }
           },
           {
             label: this.$t("button.back"),
             color: "accent",
             handler: () => {
-              console.log("not deleting");
-            },
-          },
-        ],
-      });
+              console.log("not deleting")
+            }
+          }
+        ]
+      })
     },
     savingTopic() {
       //let workingTopic = JSON.parse(JSON.stringify(this.int_topic_shell));
@@ -358,71 +388,73 @@ export default {
           id: -1,
           lang: this.activeLanguage,
           topic: this.int_topic_shell.translations[0].topic,
+          description:this.int_topic_shell.translations[0].description,
           translationDate: null,
           translationState: this.int_topic_shell.translations[0]
             .translationState,
-          translated: true,
-        });
+          translated: true
+        })
         //}
         this.int_topic_shell.translations.forEach((transl) => {
-          transl.translationDate = new Date().toISOString();
-        });
+          transl.translationDate = new Date().toISOString()
+        })
         // we are adding a new instance
-        console.log(this.int_topic_shell);
+        console.log(this.int_topic_shell)
         this.saveTopic(this.int_topic_shell).then((int_cat) => {
-          console.log("saved");
-        });
+          console.log("saved")
+        })
       } else {
         if (this.int_topic_shell.translations[0].translationState == 1) {
-          console.log(this.int_topic_shell);
+          console.log(this.int_topic_shell)
           this.int_topic_shell.translations.push({
             id: this.int_topic_shell.id,
             lang: this.activeLanguage,
             topic: this.int_topic_shell.translations[0].topic,
+            description:this.int_topic_shell.translations[0].description,
             translationDate: null,
             translationState: 1,
-            translated: true,
-          });
+            translated: true
+          })
         }
         this.int_topic_shell.translations.forEach((transl) => {
-          transl.translationDate = new Date().toISOString();
-        });
-        console.log(this.int_topic_shell);
+          transl.translationDate = new Date().toISOString()
+        })
+        console.log(this.int_topic_shell)
 
         // we are updating the exsisting
         this.editTopic(this.int_topic_shell).then((int_cat) => {
-          console.log("updated");
-        });
+          console.log("updated")
+        })
         /*if(this.int_topic_shell.published != this.publishedOrig){
           this.isPublished(this.int_topic_shell)
         }*/
       }
-      this.topicimage = null;
-      this.hideAdd = false;
-      this.hideForm = true;
-      this.createShell();
+      this.topicimage = null
+      this.hideAdd = false
+      this.hideForm = true
+      this.createShell()
     },
     makeTranslatable(value) {
-      console.log(value);
+      console.log(value)
       if (value) {
         this.int_topic_shell.translations.filter(
           (top) => top.translated == false
-        )[0].translationState = 1;
+        )[0].translationState = 1
       } else {
         this.int_topic_shell.translations.filter(
           (top) => top.translated == false
-        )[0].translationState = 0;
+        )[0].translationState = 0
       }
     },
     isPublished(event, value) {
-      console.log("event ");
-      console.log(event);
-      console.log("user id");
-      console.log(value);
+      console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
       var publishing_topic_temp = this.topic.filter((topic) => {
-        return topic.id == value;
-      })[0];
-      var publishing_topic = JSON.parse(JSON.stringify(publishing_topic_temp));
+        return topic.id == value
+      })[0]
+      var publishing_topic = JSON.parse(JSON.stringify(publishing_topic_temp))
       if (event == true) {
         this.$q.notify({
           type: "warning",
@@ -435,24 +467,24 @@ export default {
               handler: () => {
                 this.updatePublished({
                   topic: publishing_topic,
-                  published: event,
-                });
-                this.saveTranslationProd(value);
+                  published: event
+                })
+                this.saveTranslationProd(value)
                 //this.cancelTopic();
-              },
+              }
             },
             {
               label: this.$t("lists.no"),
               color: "red",
               handler: () => {
-                console.log(document.getElementById(publishing_topic.id));
+                console.log(document.getElementById(publishing_topic.id))
                 this.topic.filter((topic) => {
-                  return topic.id == value;
-                })[0].published = false;
-              },
-            },
-          ],
-        });
+                  return topic.id == value
+                })[0].published = false
+              }
+            }
+          ]
+        })
       } else {
         this.$q.notify({
           type: "warning",
@@ -465,22 +497,22 @@ export default {
               handler: () => {
                 this.updatePublished({
                   topic: publishing_topic,
-                  published: event,
-                });
-                this.deleteTranslationProd(value);
-              },
+                  published: event
+                })
+                this.deleteTranslationProd(value)
+              }
             },
             {
               label: this.$t("lists.no"),
               color: "red",
               handler: () => {
                 this.topic.filter((topic) => {
-                  return topic.id == value;
-                })[0].published = true;
-              },
-            },
-          ],
-        });
+                  return topic.id == value
+                })[0].published = true
+              }
+            }
+          ]
+        })
       }
     },
     /* isPublished (value) {
@@ -494,28 +526,28 @@ export default {
       }
     },*/
     newTopic() {
-      this.createShell();
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
+      this.createShell()
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
     },
     cancelTopic() {
-      this.topicimage = null;
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
+      this.topicimage = null
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
     },
     editingTopic(topic) {
-      this.isNew = false;
-      this.hideForm = false;
-      this.mergeTopic(topic);
-      this.publishedOrig = topic.published;
+      this.isNew = false
+      this.hideForm = false
+      this.mergeTopic(topic)
+      this.publishedOrig = topic.published
     },
 
     showTopicLabel(workingTopic) {
       return workingTopic.translations.filter(
         this.filterTranslationModel(this.activeLanguage)
-      )[0].topic;
+      )[0].topic
     },
     createShell() {
       this.int_topic_shell = {
@@ -523,30 +555,31 @@ export default {
         translations: [],
         icon: "",
         father: null,
-        published: false,
-      };
+        published: false
+      }
       this.int_topic_shell.translations.push({
         id: -1,
         lang: this.activeLanguage,
         topic: "",
+        description:"",
         translationDate: null,
         translationState: 0,
-        translated: false,
-      });
+        translated: false
+      })
     },
     mergeTopic(topic) {
-      console.log(topic);
-      this.int_topic_shell.id = topic.id;
-      this.int_topic_shell.icon = topic.icon;
-      this.int_topic_shell.published = topic.published;
-      this.int_topic_shell.father = topic.father;
+      console.log(topic)
+      this.int_topic_shell.id = topic.id
+      this.int_topic_shell.icon = topic.icon
+      this.int_topic_shell.published = topic.published
+      this.int_topic_shell.father = topic.father
       //this.int_topic_shell.published = topic.published
       //this.int_topic_shell.publicationDate = topic.publicationDate
       this.int_topic_shell.translations = [
         topic.translations.filter((top) => {
-          return top.lang == this.activeLanguage && top.translated == false;
-        })[0],
-      ];
+          return top.lang == this.activeLanguage && top.translated == false
+        })[0]
+      ]
       /*topic.translations.forEach(tr => {
         console.log(tr)
         for (var i = 0; i < this.int_topic_shell.translations.length; i++) {
@@ -558,15 +591,15 @@ export default {
         }
       })*/
 
-      console.log(this.int_topic_shell);
+      console.log(this.int_topic_shell)
     },
     getFiles(files) {
-      console.log(files);
-      console.log(this);
-      console.log(self);
-      let reader = new FileReader();
+      console.log(files)
+      console.log(this)
+      console.log(self)
+      let reader = new FileReader()
       // Convert the file to base64 text
-      reader.readAsDataURL(files);
+      reader.readAsDataURL(files)
       // on reader load somthing...
       reader.onload = () => {
         // Make a fileInfo Object
@@ -575,23 +608,23 @@ export default {
           type: files.type,
           size: Math.round(files.size / 1000) + " kB",
           base64: reader.result,
-          file: files,
-        };
-        this.topicimage = fileInfo.base64;
-        this.int_topic_shell.icon = fileInfo.base64;
-        console.log(fileInfo);
-      };
-    },
+          file: files
+        }
+        this.topicimage = fileInfo.base64
+        this.int_topic_shell.icon = fileInfo.base64
+        console.log(fileInfo)
+      }
+    }
   },
   created() {
-    this.loading = true;
-    console.log(this.$store);
+    this.loading = true
+    console.log(this.$store)
     this.$store.dispatch("topic/fetchTopic").then((processes) => {
-      this.loading = false;
-    });
-    this.createShell();
-  },
-};
+      this.loading = false
+    })
+    this.createShell()
+  }
+}
 </script>
 <style scoped>
 .delete-button {

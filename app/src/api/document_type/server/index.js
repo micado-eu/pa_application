@@ -37,7 +37,7 @@ export default {
   },
   saveDocumentTypeTranslation (translation, id) {
     translation.id = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState']))
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState', 'translationDate','translated']))
 
     // create fake id here
     return axiosInstance
@@ -60,11 +60,11 @@ export default {
     return axiosInstance
     .post('/backend/1.0.0/picture-hotspots', savingSpot)
     .then(response => response.data)
-    .catch(error_handler);
+    .catch(error_handler)
   },
   saveHotspotTranslation (translation, id) {
     translation.phtId = id
-    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'title', 'message', 'translationState']))
+    const savingTranslation = JSON.parse(JSON.stringify(translation, ['lang', 'title', 'message', 'translationState', 'translationDate','translated']))
 
     // create fake id here
     return axiosInstance
@@ -76,13 +76,13 @@ export default {
     return axiosInstance
       .delete(`/backend/1.0.0/picture-hotspots/${id}/picture-hotspot-translations`)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   deleteDocumentTypePicturesHotspots(id) {
     return axiosInstance
       .delete(`/backend/1.0.0/picture-hotspots/${id}`)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   deleteDocumentTypePictures (id) {
     return axiosInstance
@@ -148,9 +148,9 @@ export default {
 
   updateDocumentTypeTranslation (translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
     }
-    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState'])) : translation
+    const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['lang', 'document', 'description', 'translationState', 'translationDate','translated'])) : translation
 
     return axiosInstance
       .patch(`/backend/1.0.0/document-types/${translation.id}/document-type-translations?where=${JSON.stringify(whereClause)}`, updatingTranslation)
@@ -172,7 +172,7 @@ export default {
     return axiosInstance
     .patch('/backend/1.0.0/document-types?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
-    .catch(error_handler);
+    .catch(error_handler)
 
   }, 
   saveDocTypeTranslationProd (id) {
@@ -181,21 +181,21 @@ export default {
     return axiosInstance
       .get('/backend/1.0.0/document-types/to-production?id=' + id)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   deleteDocTypeTranslationProd (id) {
     // create fake id here
     return axiosInstance
       .delete('/backend/1.0.0/document-types/' + id + '/document-type-translation-prods')
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   fetchDocTypeTranslated (id) {
 
     return axiosInstance
       .get('/backend/1.0.0/document-types/' + id + '/document-type-translations')
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   saveSpotTranslationProd (id) {
 
@@ -203,19 +203,19 @@ export default {
     return axiosInstance
       .get('/backend/1.0.0/picture-hotspots/to-production?pht_id=' + id)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   deleteSpotTranslationProd (id) {
     // create fake id here
     return axiosInstance
       .delete('/backend/1.0.0/picture-hotspots/' + id + '/picture-hotspot-translation-prods')
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   fetchDocumentTypeIcons () {
     return axiosInstance
       .get('/backend/1.0.0/mixed-icons')
       .then((response) => response.data)
       .catch(error_handler)
-  },
+  }
 }
