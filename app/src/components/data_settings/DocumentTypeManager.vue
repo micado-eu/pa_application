@@ -256,7 +256,7 @@
                   :src="image"
                   spinner-color="white"
                   class="image"
-                  @click="addHotspotDiag(image)"
+                  @click="addHotspot(image)"
                 />
 
                 <span class="span">
@@ -277,13 +277,8 @@
               >
                 <q-card>
                   <v-hotspot
-                    :init-options="hotspotConfig"
-                     @add-hotspot="addHotspot"
-    @hotspot-click="hotspotClick"
-    @after-delete="afterDelete"
-    @delete-hotspot="hotspotDelete"
-    @edit-hotspot="hotspotEdit"
-                    @save-data="saveData"
+                     :init-options="hotspotConfig"
+                    @save-data="saveHotspot"
                   />
 
                 </q-card>
@@ -586,6 +581,18 @@ export default {
   },
 
   methods: {
+     makeTranslatable(value) {
+      console.log(value)
+      if (value) {
+        this.int_doc_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+        this.int_doc_shell.translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
     getTranslationState(id){
       var doc = this.document_types.filter((thedoc)=>{
         return thedoc.id == id
@@ -776,14 +783,19 @@ export default {
       console.log(value)
       value.forEach((spot) => {
              var hotspot_translations = []
-        this.languages.forEach(l => {
+             hotspot_translations.push({ phtId: -1, lang: this.activeLanguage, title: spot.Title, message: spot.Message, translationState:this.int_doc_shell.translations.filter((doc)=>{return doc.translated == false})[0].translationState, translationDate:null, translated:false })
+            hotspot_translations.push({ phtId: -1, lang: this.activeLanguage, title: spot.Title, message: spot.Message, translationState:this.int_doc_shell.translations.filter((doc)=>{return doc.translated == false})[0].translationState, translationDate:null, translated:true })
+            hotspot_translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+        /*this.languages.forEach(l => {
           if (l.lang == this.activeLanguage) {
             hotspot_translations.push({ phtId: -1, lang: l.lang, title: spot.Title, message: spot.Message, translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState })
           }
           else {
             hotspot_translations.push({ phtId: -1, lang: l.lang, title: '', message: '', translationState:this.int_doc_shell.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].translationState  })
           }
-        })
+        })*/
         the_picture.hotspots.push({
           id: -1,
           x: Math.floor(spot.x),
@@ -1009,7 +1021,7 @@ export default {
         translated: false
       })
     },
-    addHotspotDiag (picture) {
+    addHotspot (picture) {
       var selected_picture = this.uploaded_images.filter((pic) => {
         console.log(pic == String(picture))
         return pic == String(picture)
