@@ -1,5 +1,7 @@
 <template>
-  <div class="q-pa-md">
+<div>
+<div v-if="loading"> load </div>
+  <div v-else class="q-pa-md">
     <h5>{{$t('data_settings.settings')}}</h5>
     <q-card class="my-card">
       <q-card-section>
@@ -83,92 +85,197 @@
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.privacy')}}</div>
       </q-card-section>
-             <q-tab-panels
-          v-model="langTab"
-          class="  "
-          animated
-        >
-          <q-tab-panel
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-          >
               <GlossaryEditor
                 data-cy="description_input"
                 class="desc-editor "
                 style="width:100%; text-align:left"
-                :readonly="!(policy.translations.filter(filterTranslationModel(language.lang))[0].translationState==0)||!(language.lang===activeLanguage)|| !(editing_policy)"
-                v-model="policy.translations.filter(filterTranslationModel(language.lang))[0].value"
-                :lang="language.lang"
+                :readonly="!(t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit)"
+                v-model="t_settings.filter((top) => top.key == 'policy')[0].translations.filter((transl) => transl.translated ==false)[0].value"
+
                 ref="editor"
-              />
-              <div style="text-align:right;padding-left: 150px;">
-              <TranslateStateButton
-                v-model="policy.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-                :isForDefaultLanguage="language.lang===activeLanguage"
-                :objectId="policy.id"
-                :readonly="!(language.lang===activeLanguage)"
-                @micado-change="(id) => {
-                  changeTranslationState(policy, id.state)
-                 //groupSteps(edit_process.id)
-                  //updateStepTranslationState(id.state)
-                  
-                }"
-                @return-to-edit="(id) => {
-                  changeTranslationState(policy, id.state)
-                  deleteTranslationProd(policy.id)
-                  policy.published = false
-                }"
-              />
-            </div>
-                </q-tab-panel>
-        </q-tab-panels>
+              /> 
+              <div class="row"> 
+          <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('translation_states.translatable')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              :value="
+                t_settings.filter((top) => top.key == 'policy')[0].translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              :disable="
+                t_settings_edit.filter((top) => top.key == 'policy')[0].is_setting_edit == false
+              "
+              color="accent"
+              @input="makeTranslatablePolicy($event,'policy')"
+            />
+          </div>
+                    <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              v-model="t_settings.filter((top) => top.key == 'policy')[0].published"
+              color="accent"
+              :disable="
+                t_settings.filter((top) => top.key == 'policy')[0].translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1 || t_settings_new.filter((top) => top.key == 'policy')[0].is_setting_new == true
+              "
+              @input="isPublishedSetting($event, 'policy')"
+            />
+          </div>
+          </div>
         <div style="padding-left:16px;padding-right:16px">
-        <hr id="hr-2">
-        <q-tabs
-          v-model="langTab"
-          dense
-          active-color="accent"
-          indicator-color="accent"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
-          />
-        </q-tabs>
-        
         <hr id="hr-2">
          </div>
          <div style="padding-left:16px;padding-right:16px">
         <q-btn
-          v-if="!editing_policy"
+          v-if="!(t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit)"
           color="accent"
           glossy
           :label="$t('button.edit')"
-          @click="editing_policy = true"
+          @click="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit = true"
         />
           <q-btn
-          v-if="editing_policy"
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit"
           color="accent"
           glossy
           :label="$t('button.cancel')"
-          @click="cancelPolicy"
+          @click="cancelPolicy('policy')"
         />
           <q-btn
-          v-if="editing_policy"
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit"
           color="accent"
           glossy
           :label="$t('button.save')"
-          @click="savePolicy"
+          @click="savePolicy('policy')"
         />
          </div>
 
 
     </q-card>
+      <q-tab-panels
+        v-model="tabs"
+        class="bg-grey-2 inset-shadow "
+        animated
+      >
+        <q-tab-panel
+          v-for="setting in t_settings.filter((top) => top.key != 'policy')"
+          :key="setting.key"
+          :name="setting.key"
+        >
+            <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.privacy')}}</div>
+      </q-card-section>
+              <GlossaryEditor
+                data-cy="description_input"
+                class="desc-editor "
+                style="width:100%; text-align:left"
+                :readonly="!(t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit)"
+                v-model="setting.translations.filter((transl) => transl.translated ==false)[0].value"
+
+                ref="editor"
+              /> 
+              <div class="row"> 
+          <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('translation_states.translatable')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              :value="
+                setting.translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              :disable="
+                t_settings_edit.filter((top) => top.key == setting.key)[0].is_setting_edit == false
+              "
+              color="accent"
+              @input="makeTranslatablePolicy($event,setting.key)"
+            />
+          </div>
+                    <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              v-model="setting.published"
+              color="accent"
+              :disable="
+                setting.translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1 || t_settings_new.filter((top) => top.key == setting.key)[0].is_setting_new == true
+              "
+              @input="isPublishedSetting($event, setting.key)"
+            />
+          </div>
+          </div>
+          <div style="padding-left:16px;padding-right:16px">
+        <hr id="hr-2">
+         </div>
+         <div style="padding-left:16px;padding-right:16px">
+        <q-btn
+          v-if="!(t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit)"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit = true"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelPolicy(setting.key)"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="savePolicy(setting.key)"
+        />
+         </div>
+
+
+    </q-card>
+        </q-tab-panel>
+              </q-tab-panels>
+               <q-separator />
+      <q-tabs
+        v-model="tabs"
+        dense
+        class="bg-grey-2"
+        active-color="accent"
+        indicator-color="accent"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab
+          v-for="setting in t_settings.filter((top) => top.key != 'policy')"
+          :key="setting.key"
+          :name="setting.key"
+          :label="setting.key"
+        />
+      </q-tabs>
     <q-card>
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.helpdesk_pa')}}</div>
@@ -332,24 +439,31 @@
     </q-card>
     <LanguageManager :languages="languages" />
   </div>
+  </div>
 </template>
 
 <script>
-import GlossaryEditor from "components/GlossaryEditor";
+import GlossaryEditor from "components/GlossaryEditor"
 
-import storeMappingMixin from "../../mixin/storeMappingMixin";
-import editEntityMixin from "../../mixin/editEntityMixin";
-import FeaturesElement from "../../components/settings/FeaturesElement";
+import storeMappingMixin from "../../mixin/storeMappingMixin"
+import editEntityMixin from "../../mixin/editEntityMixin"
+import FeaturesElement from "../../components/settings/FeaturesElement"
 //import Croppa from 'vue-croppa'
-import "vue-croppa/dist/vue-croppa.css";
-import ActiveLanguageSelector from "../../components/settings/ActiveLanguageSelector.vue";
-import translatedButtonMixin from "../../mixin/translatedButtonMixin";
-import LanguageManager from "../../components/LanguageManager";
+import "vue-croppa/dist/vue-croppa.css"
+import ActiveLanguageSelector from "../../components/settings/ActiveLanguageSelector.vue"
+import translatedButtonMixin from "../../mixin/translatedButtonMixin"
+import LanguageManager from "../../components/LanguageManager"
+import HelpLabel from "components/HelpLabel"
+
 
 export default {
   name: "FunctionConfiguration",
   data() {
     return {
+      t_settings:[],
+      t_settings_orig:[],
+      t_settings_edit:[],
+      t_settings_new:[],
       group: ["FEAT_SERVICES"],
       workingFeatures: [],
       myCroppa: {},
@@ -357,6 +471,11 @@ export default {
       email: null,
       emailOrig: null,
       policy: null,
+      guides:null,
+      event:null,
+      info:null,
+      doc:null,
+      plan:null,
       policyOrig: null,
       helpdeskPa: null,
       helpdeskPaOrig: null,
@@ -382,7 +501,9 @@ export default {
       edit_helpdesk_ngo: false,
       edit_helpdesk_migrant: false,
       edit_duration_of_new: false,
-    };
+      loading:true,
+      tabs:'guides'
+    }
   },
   mixins: [
     editEntityMixin,
@@ -391,6 +512,7 @@ export default {
       getters: {
         features: "features/features",
         settings: "settings/settings",
+        mixed_settings:"settings/mixed_settings"
       },
       actions: {
         fetchFeatures: "features/fetchFeatures",
@@ -401,143 +523,287 @@ export default {
         fetchMixedSettings: "settings/fetchMixedSettings",
         savingPolicy: "settings/savePolicy",
         updatePolicy: "settings/updatePolicy",
-      },
-    }),
+        updatePublished: "settings/updatePublished",
+        saveTranslationProd: "settings/saveTranslationProd",
+        deleteTranslationProd: "settings/deleteTranslationProd"
+      }
+    })
   ],
   components: {
     FeaturesElement,
     ActiveLanguageSelector,
     GlossaryEditor,
-    LanguageManager
+    LanguageManager,
+    HelpLabel
   },
   computed: {},
   methods: {
-    createPolicyShell() {
-      this.policy = {
-        id: -1,
-        key: "privacy_policy",
-        published: false,
-        translations: [],
-      };
-      this.languages.forEach((l) => {
-        this.policy.translations.push({
-          id: -1,
-          lang: l.lang,
-          value: "",
-          translationState: 0,
-        });
-      });
-      this.policyOrig = JSON.parse(JSON.stringify(this.policy));
-    },
-    cancelPolicy() {
-      this.policy = JSON.parse(JSON.stringify(this.policyOrig));
-      this.editing_policy = false;
-    },
-    savePolicy() {
-      if (this.newPolicy) {
-        console.log("saving new policy");
-        this.savingPolicy(this.policy);
+    isPublishedSetting(event, value) {
+      console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
+      var publishing_setting_temp = this.mixed_settings.filter((set) => {
+        return set.key == value
+      })[0]
+      console.log(publishing_setting_temp)
+      var publishing_setting = JSON.parse(JSON.stringify(publishing_setting_temp))
+      if (event == true) {
+        this.$q.notify({
+          type: "warning",
+          timeout: 0,
+          message: this.$t("warning.publish_topic"),
+          actions: [
+            {
+              label: this.$t("lists.yes"),
+              color: "accent",
+              handler: () => {
+                this.updatePublished({
+                  setting: publishing_setting,
+                  published: event
+                })
+                this.saveTranslationProd(publishing_setting.id)
+                //this.cancelTopic();
+              }
+            },
+            {
+              label: this.$t("lists.no"),
+              color: "red",
+              handler: () => {
+                this.t_settings.filter((set)=>{return set.key == key})[0].published = false
+              }
+            }
+          ]
+        })
       } else {
-        this.updatePolicy(this.policy);
+        this.$q.notify({
+          type: "warning",
+          timeout: 0,
+          message: this.$t("warning.unpublish_topic"),
+          actions: [
+            {
+              label: this.$t("lists.yes"),
+              color: "accent",
+              handler: () => {
+                this.updatePublished({
+                  setting: publishing_setting,
+                  published: event
+                })
+                this.deleteTranslationProd(publishing_setting.id)
+              }
+            },
+            {
+              label: this.$t("lists.no"),
+              color: "red",
+              handler: () => {
+                this.t_settings.filter((set)=>{return set.key == key})[0].published = true
+              }
+            }
+          ]
+        })
       }
-      console.log("updating old policy");
-      this.editing_policy = false;
-      this.policyOrig = JSON.parse(JSON.stringify(this.policy));
+    },
+    makeTranslatablePolicy(value, key) {
+      console.log(value)
+
+      if (value) {
+      this.t_settings.filter((set)=>{
+        return set.key == key
+      })[0].translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 1
+      } else {
+              this.t_settings.filter((set)=>{
+        return set.key == key
+      })[0].translations.filter(
+          (top) => top.translated == false
+        )[0].translationState = 0
+      }
+    },
+    checkExists(settings,key){
+       var exist = settings.filter((set)=>{
+          return set.key == key
+        })
+        if(exist.length >0){
+          var exist_parsed = JSON.parse(JSON.stringify(exist[0]))
+          exist_parsed.translations = [exist_parsed.translations.filter((set)=>{return set.translated == false})[0]]
+          console.log(exist_parsed)
+          this.t_settings.push(JSON.parse(JSON.stringify(exist_parsed)))
+          this.t_settings_orig.push(JSON.parse(JSON.stringify(exist_parsed)))
+          this.t_settings_new.push({key:exist_parsed.key, is_setting_new:false})
+        }
+        else{
+          this.t_settings.push(JSON.parse(JSON.stringify(this.createPolicyShell(key))))
+          this.t_settings_orig.push(JSON.parse(JSON.stringify(this.createPolicyShell(key))))
+          this.t_settings_new.push({key:key, is_setting_new:true})
+        }
+        this.t_settings_edit.push({key:key, is_setting_edit:false})
+    },
+    createPolicyShell(key) {
+     var shell = {
+        id: -1,
+        key: key,
+        published: false,
+        translations: []
+      }
+      shell.translations = []
+      shell.translations.push({
+        id: -1,
+        lang: this.activeLanguage,
+        value: "",
+        translationDate: null,
+        translationState: 0,
+        translated: false
+      })
+      return shell
+      //var shellOrig = JSON.parse(JSON.stringify(shell))
+    },
+    cancelPolicy(key) {
+      console.log("going back")
+      console.log(key)
+      console.log(this.t_settings_orig.filter((set)=>{return set.key == key})[0])
+      console.log(this.t_settings_orig.filter((set)=>{return set.key == key})[0].translations.filter((top) => top.translated == false)[0].value)
+     this.t_settings.filter((set)=>{return set.key == key})[0].translations.filter((top) => top.translated == false)[0].value = JSON.parse(JSON.stringify(this.t_settings_orig.filter((set)=>{return set.key == key})[0].translations.filter((top) => top.translated == false)[0].value)) 
+      this.t_settings_edit.filter((top)=> top.key == key)[0].is_setting_edit = false
+    },
+    savePolicy(key) {
+            console.log(this.t_settings_new)
+      var is_new = this.t_settings_new.filter((set)=>{
+        return set.key == key
+      })[0].is_setting_new
+
+      if (is_new) {
+        this.t_settings.filter((set)=>{return set.key == key})[0].translations.push({
+          id: -1,
+          lang: this.activeLanguage,
+          value: this.t_settings.filter((set)=>{return set.key == key})[0].translations[0].value,
+          translationDate: null,
+          translationState: this.t_settings.filter((set)=>{return set.key == key})[0].translations[0]
+            .translationState,
+          translated: true
+        })
+        //}
+        this.t_settings.filter((set)=>{return set.key == key})[0].translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+        console.log("saving new policy")
+        console.log(this.policy)
+        this.savingPolicy(this.t_settings.filter((set)=>{return set.key == key})[0])
+      } else {
+        if (this.t_settings.filter((set)=>{return set.key == key})[0].translations.filter((top) => top.translated == false)[0].translationState == 1) {
+          this.t_settings.filter((set)=>{return set.key == key})[0].translations.push({
+            id: this.t_settings.filter((set)=>{return set.key == key})[0].id,
+            lang: this.activeLanguage,
+            value: this.t_settings.filter((set)=>{return set.key == key})[0].translations[0].value,
+            translationDate: null,
+            translationState: 1,
+            translated: true
+          })
+        }
+        this.t_settings.filter((set)=>{return set.key == key})[0].translations.forEach((transl) => {
+          transl.translationDate = new Date().toISOString()
+        })
+        this.updatePolicy(this.t_settings.filter((set)=>{return set.key == key})[0])
+      }
+      console.log("updating old policy")
+      this.t_settings_edit.filter((top)=> top.key == key)[0].is_setting_edit = false
+      this.t_settings_new.filter((top)=> top.key == key)[0].is_setting_new = false
+      this.t_settings_orig.filter((set)=>{return set.key == key})[0] = JSON.parse(JSON.stringify(this.t_settings.filter((set)=>{return set.key == key})[0]))
     },
     cancelFathers() {
-      this.fathers = JSON.parse(JSON.stringify(this.fathersOrig));
-      this.edit_fathers = false;
+      this.fathers = JSON.parse(JSON.stringify(this.fathersOrig))
+      this.edit_fathers = false
     },
     saveFathers() {
-      console.log(this.fathers);
+      console.log(this.fathers)
       if (this.newFathers) {
-        console.log("saving new father_topics");
+        console.log("saving new father_topics")
         this.saveSetting({
           key: "father_topics",
-          value: JSON.stringify(this.fathers),
-        });
+          value: JSON.stringify(this.fathers)
+        })
       } else {
         this.updateSetting({
           key: "father_topics",
-          value: JSON.stringify(this.fathers),
-        });
+          value: JSON.stringify(this.fathers)
+        })
       }
-      console.log("updating old father_topics");
-      this.edit_fathers = false;
-      this.fathersOrig = JSON.parse(JSON.stringify(this.fathers));
+      console.log("updating old father_topics")
+      this.edit_fathers = false
+      this.fathersOrig = JSON.parse(JSON.stringify(this.fathers))
     },
     cancelMail() {
-      this.email = JSON.parse(JSON.stringify(this.emailOrig));
-      this.editing = false;
+      this.email = JSON.parse(JSON.stringify(this.emailOrig))
+      this.editing = false
     },
     cancelSetting(setting) {
       switch (setting) {
         case "helpdesk_pa":
-          this.helpdeskPa = JSON.parse(JSON.stringify(this.helpdeskPaOrig));
-          this.edit_helpdesk_pa = false;
-          break;
+          this.helpdeskPa = JSON.parse(JSON.stringify(this.helpdeskPaOrig))
+          this.edit_helpdesk_pa = false
+          break
         case "helpdesk_ngo":
-          this.helpdeskNgo = JSON.parse(JSON.stringify(this.helpdeskNgoOrig));
-          this.edit_helpdesk_ngo = false;
-          break;
+          this.helpdeskNgo = JSON.parse(JSON.stringify(this.helpdeskNgoOrig))
+          this.edit_helpdesk_ngo = false
+          break
         case "helpdesk_migrant":
           this.helpdeskMigrant = JSON.parse(
             JSON.stringify(this.helpdeskMigrantOrig)
-          );
-          this.edit_helpdesk_migrant = false;
-          break;
+          )
+          this.edit_helpdesk_migrant = false
+          break
         case "duration_of_new":
           this.durationOfNew = JSON.parse(
             JSON.stringify(this.durationOfNewOrig)
-          );
-          this.edit_duration_of_new = false;
-          break;
+          )
+          this.edit_duration_of_new = false
+          break
         default:
-          console.log("non of those");
+          console.log("non of those")
       }
     },
     saveMail() {
       if (this.isNew) {
-        console.log("saving new feedback email");
-        this.saveSetting({ key: "feedback_email", value: this.email });
+        console.log("saving new feedback email")
+        this.saveSetting({ key: "feedback_email", value: this.email })
       } else {
-        this.updateSetting({ key: "feedback_email", value: this.email });
+        this.updateSetting({ key: "feedback_email", value: this.email })
       }
-      console.log("updating old feedback email");
-      this.editing = false;
-      this.emailOrig = JSON.parse(JSON.stringify(this.email));
+      console.log("updating old feedback email")
+      this.editing = false
+      this.emailOrig = JSON.parse(JSON.stringify(this.email))
     },
     saveSingleSetting(key, is_new, item) {
       if (is_new) {
-        console.log("saving new feedback email");
-        this.saveSetting({ key: key, value: String(item) });
+        console.log("saving new feedback email")
+        this.saveSetting({ key: key, value: String(item) })
       } else {
-        this.updateSetting({ key: key, value: String(item) });
+        this.updateSetting({ key: key, value: String(item) })
       }
       switch (key) {
         case "helpdesk_pa":
-          this.helpdeskPaOrig = JSON.parse(JSON.stringify(item));
-          this.edit_helpdesk_pa = false;
-          break;
+          this.helpdeskPaOrig = JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_pa = false
+          break
         case "helpdesk_ngo":
-          this.helpdeskNgoOrig = JSON.parse(JSON.stringify(item));
-          this.edit_helpdesk_ngo = false;
-          break;
+          this.helpdeskNgoOrig = JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_ngo = false
+          break
         case "helpdesk_migrant":
-          this.helpdeskMigrantOrig = JSON.parse(JSON.stringify(item));
-          this.edit_helpdesk_migrant = false;
-          break;
+          this.helpdeskMigrantOrig = JSON.parse(JSON.stringify(item))
+          this.edit_helpdesk_migrant = false
+          break
         case "duration_of_new":
-          this.durationOfNewOrig = JSON.parse(JSON.stringify(item));
-          this.edit_duration_of_new = false;
-          break;
+          this.durationOfNewOrig = JSON.parse(JSON.stringify(item))
+          this.edit_duration_of_new = false
+          break
         default:
-          console.log("non of those");
+          console.log("non of those")
       }
     },
 
     saveFeatures() {
-      console.log(this.workingFeatures);
+      console.log(this.workingFeatures)
       /*
       const agent = new https.Agent({
         rejectUnauthorized: false
@@ -568,85 +834,110 @@ export default {
           response => [];
         });
         */
-      this.updateAllFeatures(this.workingFeatures);
-      console.log("posted");
-      this.workingFeatures = JSON.parse(JSON.stringify(this.features));
+      this.updateAllFeatures(this.workingFeatures)
+      console.log("posted")
+      this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     },
     saveLogo() {
-      console.log(this.myCroppa.generateDataUrl());
-      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() };
+      console.log(this.myCroppa.generateDataUrl())
+      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() }
       this.updateSetting(setting).then((result) => {
-        console.log(result);
+        console.log(result)
         //       window.location.reload()
-      });
-    },
+      })
+    }
   },
   created() {
-    console.log(this.languages);
-    console.log("created");
-    console.log(this.features);
-    console.log(this.settings);
-    this.createPolicyShell();
-    this.workingFeatures = JSON.parse(JSON.stringify(this.features));
-    console.log(this.settings["feedback_email"]);
+    console.log(this.languages)
+    console.log("created")
+    console.log(this.features)
+    console.log(this.settings)
+    this.createPolicyShell()
+    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+    console.log(this.settings["feedback_email"])
     this.settings.forEach((setting) => {
-      console.log(setting.key);
+      console.log(setting.key)
       if (setting.key == "feedback_email") {
-        this.email = setting.value;
-        this.emailOrig = setting.value;
-        this.isNew = false;
+        this.email = setting.value
+        this.emailOrig = setting.value
+        this.isNew = false
       }
       if (setting.key == "father_topics") {
-        this.fathers = JSON.parse(setting.value);
-        this.fathersOrig = JSON.parse(setting.value);
-        this.newFathers = false;
+        this.fathers = JSON.parse(setting.value)
+        this.fathersOrig = JSON.parse(setting.value)
+        this.newFathers = false
       }
       if (setting.key == "helpdesk_pa") {
-        console.log(setting);
-        this.helpdeskPa = setting.value;
-        this.helpdeskPaOrig = setting.value;
-        this.newHelpdeskPa = false;
+        console.log(setting)
+        this.helpdeskPa = setting.value
+        this.helpdeskPaOrig = setting.value
+        this.newHelpdeskPa = false
       }
       if (setting.key == "helpdesk_ngo") {
-        this.helpdeskNgo = setting.value;
-        this.helpdeskNgoOrig = setting.value;
-        this.newHelpdeskNgo = false;
+        this.helpdeskNgo = setting.value
+        this.helpdeskNgoOrig = setting.value
+        this.newHelpdeskNgo = false
       }
       if (setting.key == "helpdesk_migrant") {
-        this.helpdeskMigrant = setting.value;
-        this.helpdeskMigrantOrig = setting.value;
-        this.newHelpdeskMigrant = false;
+        this.helpdeskMigrant = setting.value
+        this.helpdeskMigrantOrig = setting.value
+        this.newHelpdeskMigrant = false
       }
       if (setting.key == "duration_of_new") {
-        this.durationOfNew = Number(setting.value);
-        this.durationOfNewOrig = Number(setting.value);
-        this.newDurationOfNew = false;
+        this.durationOfNew = Number(setting.value)
+        this.durationOfNewOrig = Number(setting.value)
+        this.newDurationOfNew = false
       }
-    });
-    this.fetchMixedSettings().then((setting) => {
-      if (setting.length > 0) {
-        if (setting[0].key == "privacy_policy") {
-          this.policy = setting[0];
-          this.policyOrig = setting[0];
-          this.newPolicy = false;
+    })
+    this.fetchMixedSettings().then((settings) => {
+      if (settings.length > 0) {
+        this.checkExists(settings,'policy')
+        this.checkExists(settings,'info')
+        this.checkExists(settings,'doc')
+        this.checkExists(settings,'event')
+        this.checkExists(settings,'plan')
+        this.checkExists(settings,'guides')
+        console.log(this.t_settings)
+
+       /* var exist_policy = settings.filter((set)=>{
+          return set.key == policy
+        })
+        if(exist_policy.length >0){
+          this.t_settings.push(JSON.parse(JSON.stringify(exist_policy[0])))
+          this.t_settings_orig.push(JSON.parse(JSON.stringify(exist_policy[0])))
+          this.t_settings_new.push({key:exist_policy[0].key, is_setting_new:false})
         }
+        /*settings.forEach((setting)=>{
+        if (setting.key == "policy" || setting.key == "info" || setting.key == "doc" || setting.key == "event" || setting.key == "plan" || setting.key == "guides") {
+          /*this.policy = JSON.parse(JSON.stringify(setting[0]))
+          this.policyOrig = JSON.parse(JSON.stringify(setting[0]))
+          this.newPolicy = false
+          this.t_settings.push(this.createPolicyShell(setting))
+          this.t_settings_orig.push(this.createPolicyShell(setting))
+          this.t_settings_new.push({key:key, is_setting_new:false})
+        }
+        console.log("I am translatable settings")
+        console.log(this.t_settings)
+        })*/
+
       }
-    });
+    })
     this.fetchTopic().then((topics) => {
-      console.log(topics);
+      console.log(topics)
       var published_topics = topics.filter((top) => {
-        return top.published == true;
-      });
+        return top.published == true
+      })
       published_topics.forEach((topic) => {
         var the_topic = {
           label: topic.translations.filter(
             this.filterTranslationModel(this.activeLanguage)
           )[0].topic,
-          value: topic.id,
-        };
-        this.t_tags.push(the_topic);
-      });
-    });
+          value: topic.id
+        }
+        this.t_tags.push(the_topic)
+      })
+      this.loading = false
+    })
     /*
     this.fetchFeatures()
       .then(features => {
@@ -655,8 +946,8 @@ export default {
         console.log(this.features)
       });
       */
-  },
-};
+  }
+}
 </script>
 <style scoped>
 .duration{

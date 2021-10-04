@@ -49,7 +49,7 @@ export default {
             .catch(error_handler)
     },
     savePolicyTranslations(translation, id){
-        const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState']))
+        const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState', 'translationDate', 'translated']))
         return axiosInstance
         .post('/backend/1.0.0/t-settings/' + id +'/t-settings-translations', savingTranslation)
         .then((response) => {
@@ -59,9 +59,9 @@ export default {
     },
     updatePolicyTranslations (translation) {
         const whereClause = {
-            id: { eq: translation.id }, lang: { eq: translation.lang }
+            id: { eq: translation.id }, lang: { eq: translation.lang }, translated: {eq: translation.translated}
           }
-          const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState']))
+          const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState', 'translationDate', 'translated']))
 
           return axiosInstance
             .patch('/backend/1.0.0/t-settings/'+ translation.id + '/t-settings-translations?where='+JSON.stringify(whereClause), savingTranslation)
@@ -78,4 +78,26 @@ export default {
             })
             .catch(error_handler)
     },
+    updatePublished(id, is_published){
+        return axiosInstance
+        .patch('/backend/1.0.0/t-settings?[where][id]='+ id, {published: is_published})
+        .then(response => response.data)
+        .catch(error_handler)
+    
+      },
+      saveSettingTranslationProd (id) {
+
+        // create fake id here
+        return axiosInstance
+          .get('/backend/1.0.0/t-settings/to-production?id='+ id)
+          .then(response => response.data)
+          .catch(error_handler)
+      },
+      deleteSettingTranslationProd (id) {
+        // create fake id here
+        return axiosInstance
+          .delete('/backend/1.0.0/t-settings/' + id + '/t-settings-translation-prods')
+          .then(response => response.data)
+          .catch(error_handler)
+      }
 }

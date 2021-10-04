@@ -76,6 +76,24 @@ export function fetchMixedSettings(store, data){
   return client.fetchMixedSettings().then((ret)=>{
     console.log("I AM THE PRIVACY POLICY")
     console.log(ret)
+    store.commit('setMixedSetting', ret)
     return ret
   })
+}
+
+export function updatePublished(state, payload){
+  client.updatePublished(payload.setting.id, payload.published).then(()=>{
+    payload.setting.published = payload.published
+    state.commit('editMixedSetting', payload.setting)
+  })
+}
+export function saveTranslationProd(state, id){
+  client.deleteSettingTranslationProd(id).then(()=>{
+    console.log("deleted previous translations")
+    client.saveSettingTranslationProd(id)
+   })
+}
+export function deleteTranslationProd(state, id){
+  console.log("in delete transl prod")
+  client.deleteSettingTranslationProd(id)
 }
