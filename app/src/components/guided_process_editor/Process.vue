@@ -44,7 +44,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <IconWithTooltip
-            :icon="'img:statics/icons/graph.png'"
+            :icon="'img:statics/icons/Icon - Preview 1.svg'"
             :tooltip="$t('help.preview_process')"
             @click.native="viewer()"
             :data-cy="'manageprocess'.concat(theProcess.id )"
@@ -54,7 +54,7 @@
           <IconWithTooltip
             :icon="'img:statics/icons/Icon - Delete.svg'"
             :tooltip="$t('help.delete_process')"
-            @click.native="remove_process($event)"
+            @click.native="deleting = true"
             :data-cy="'deleteprocess'.concat(theProcess.id )"
           />
         </q-item-section>
@@ -130,6 +130,38 @@
         </q-page-container>
       </q-layout>
     </q-dialog>
+    <q-dialog v-model="deleting">   
+        <q-card class="q-pa-md" style="padding-top:0px;width: 700px; max-width: 80vw;">
+          <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">{{$t('input_labels.delete_confirm')}} </p>
+          <p class="delete_text"> {{this.Title}}</p>
+          </div>
+          <div style="text-align:center;">
+          <q-btn
+            class="go_back"
+            :label="$t('button.cancel')"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deleting = false"
+            style="margin-right:10px"
+          />
+            <q-btn
+            class="delete"
+            :label="$t('help.delete_process')"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="remove_process($event)"
+          />
+          
+          </div>
+                
+        </q-card>
+    </q-dialog>
+
   </q-item>
 </template>
 
@@ -143,7 +175,8 @@ export default {
   mixins: [editEntityMixin],
   data () {
     return {
-      alert:false
+      alert:false,
+      deleting:false
     }
   },
   computed:{
@@ -199,6 +232,7 @@ export default {
       let target = event.currentTarget.id
       console.log(this.Link)
       this.$emit('remove', this.Link)
+      this.deleting = false
     },
     editProcess () {
       console.log("prima di mandare i process")
@@ -252,5 +286,29 @@ export default {
 }
 .pad{
   padding-bottom:5px
+}
+.delete_desc{
+  font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 25px;
+color: #0D0D0D;
+}
+.delete_text{
+  font-weight: normal;
+font-size: 18px;
+line-height: 25px;
+color: #0D0D0D;
+}
+.go_back{
+  background: #FFFFFF;
+border: 1px solid #C71F40;
+box-sizing: border-box;
+border-radius: 5px;
+}
+.delete{
+  background: #9E1F63;
+border-radius: 5px;
+color: white;
 }
 </style>
