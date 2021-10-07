@@ -105,7 +105,15 @@
     "events": "Courses & events",
     "events_desc": "View and edit courses and events",
     "login": "Login",
-    "logout": "Logout"
+    "logout": "Logout",
+    "situation_description":"This is a longer description of the item",
+    "migrant_description":"This is a longer description of the item",
+    "cso_description":"This is a longer description of the item",
+    "process_description":"This is a longer description of the item",
+    "information_centre_description":"This is a longer description of the item",
+    "usage_description":"This is a longer description of the item",
+    "glossary_description":"This is a longer description of the item",
+    "setting_description":"This is a longer description of the item"
   },
   "button": {
     "validate_and_publish": "Validate and publish",
