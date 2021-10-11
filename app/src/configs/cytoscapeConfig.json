@@ -3,11 +3,11 @@
     {
       "selector": "node",
       "style": {
-        "background-image": "/statics/icons/Step1.png",
+        "background-image": "/statics/icons/Step1.svg",
         "background-fit": "contain",
         "border-opacity": 0,
-        "width": "80px",
-        "height": "80px",
+        "width": "100px",
+        "height": "100px",
         "background-opacity": 0,
         "text-valign": "bottom",
         "label": "data(title)"
@@ -31,7 +31,7 @@
       "selector": ".eh-handle",
       "style": {
         "background-color": "red",
-        "background-image": "/statics/icons/red.png",
+        "background-image": "/statics/icons/drag.svg",
         "width": 30,
         "height": 30,
         "shape": "ellipse",

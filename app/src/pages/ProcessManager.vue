@@ -4,11 +4,13 @@
       Loading...
     </div>
     <div v-else>
+      
+    <div id="content" >
       <div id="top-div">
         {{ $t('input_labels.guided_processes') }}
       </div>
-      <div class="container">
-        <div class="center">
+
+        <div class="center container">
           <div
             id="div-1"
             class="col-10"
@@ -44,13 +46,11 @@
               to="guided_process_editor/edit"
             />
           </div>
-        </div>
-        <div>
-          <div class="" style="text-align:right">
+<div class="" style="text-align:right">
             <UploadButton entity="process" />
           </div>
-          <q-list id="list">
-            <q-item>
+        </div>
+        <q-item class="container-labels">
               <q-item-section class="col-4 flex flex-left">
                 {{ $t('input_labels.name') }}
               </q-item-section>
@@ -79,7 +79,14 @@
                 {{ $t('input_labels.delete') }}
               </q-item-section>
             </q-item>
-            <hr id="hr">
+                        <hr id="hr">
+
+                </div>
+        <div  id="term-defs" class="container-labels">
+
+          <q-list id="list">
+            
+           
             <Process
               v-for="process in filteredProcesses"
               :key="process.id"
@@ -94,9 +101,9 @@
               @remove="deletingProcess"
               @publish="isPublished"
             />
+ 
           </q-list>
         </div>
-      </div>
     </div>
   </div>
 </template>
@@ -331,8 +338,14 @@ export default {
 .container {
   padding-top: 50px;
   padding-right: 80px;
-  padding-bottom: 50px;
+  padding-bottom: 0px;
   padding-left: 80px;
+}
+.container-labels {
+  padding-top: 0px;
+  padding-right: 96px;
+  padding-bottom: 0px;
+  padding-left: 96px;
 }
 #top-div{
   font-style: normal;
@@ -385,6 +398,15 @@ export default {
   margin-left:20px
 }
 #hr{
-  margin-bottom:60px
+  margin-left:96px;
+  margin-right:96px
 }
+#content {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;       
+  }
+
 </style>
