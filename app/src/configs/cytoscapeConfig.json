@@ -3,7 +3,7 @@
     {
       "selector": "node",
       "style": {
-        "background-image": "/statics/icons/Step.png",
+        "background-image": "/statics/icons/Step1.png",
         "background-fit": "contain",
         "border-opacity": 0,
         "width": "80px",
@@ -31,10 +31,11 @@
       "selector": ".eh-handle",
       "style": {
         "background-color": "red",
-        "width": 15,
-        "height": 15,
+        "background-image": "/statics/icons/red.png",
+        "width": 30,
+        "height": 30,
         "shape": "ellipse",
-        "overlay-opacity": 0.5,
+        "overlay-opacity": 0,
         "border-width": 12,
         "border-opacity": 0
       }

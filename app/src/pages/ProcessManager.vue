@@ -46,7 +46,7 @@
           </div>
         </div>
         <div>
-          <div class="center">
+          <div class="" style="text-align:right">
             <UploadButton entity="process" />
           </div>
           <q-list id="list">
@@ -367,11 +367,11 @@ export default {
 #button{
   width:150px; 
   margin-bottom:15px;
-  border-radius:2px
+  border-radius:5px
 }
 #list{
   display:inline-block; 
-  width:90%; 
+  width:100%; 
   padding-top:20px
 }
 #item{

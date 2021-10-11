@@ -1,9 +1,61 @@
   <template>
   <div>
     <div class="title">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
+    <div class="container row" style="padding-bottom:0px">
+      <div class="col-4" style="padding-right:10px" >
+      <div class="row" style="margin-top:10px">
+      <div class="col left">
+        <q-btn
+        :data-cy="'back_to_process'"
+          class="delete-button-2"
+          no-caps
+          unelevated
+          :label="$t('button.cancel')"
+          @click="cancelStep"
+        />
+      </div>
+      <div class="col center">
+        <q-btn
+        :data-cy="'addstep'"
+          color="secondary"
+          unelevated
+          :label="$t('button.add_step')"
+          class="button-3"
+          no-caps
+          size="15px"
+          @click="addingNode"
+        />
+      </div>
+      <div class="col right">
+        <q-btn
+        :data-cy="'savegraph'"
+          class="button-2"
+          color="accent"
+          unelevated
+          :label="$t('button.save_graph')"
+          no-caps
+          size="15px"
+          @click="savingGraph"
+        />
+
+      </div>
+        </div>
+      </div>
+      <div  class="col-8 explanation" >
+      <div>
+         {{$t('help.add_step_explain')}}
+         <br>
+         {{$t('help.click_step_graph')}}
+         <br>
+         {{$t('help.add_edge_explain')}}
+       </div>
+      </div>
+    </div>
     <div class="container row">
       
-      <q-card class="col-4" >
+      <div class="col-4" style="padding-right:10px;">
+
+        <q-card style=" height:728px">
         <q-card-section>
           <cytoscape
             ref="cyRef"
@@ -24,9 +76,11 @@
           </cytoscape>
         </q-card-section>
       </q-card>
+      </div>
        <div class="col-8"     
        v-if="this.editing_steplink"      
       >
+       
         <q-card
           
           class="div-2"
@@ -105,20 +159,9 @@
               />
             </div>
           </div>
-            <div class="row">
-              <div class="q-pa-md col-4 left">
+          <div   style="text-align:center">
                 <q-btn
-                  color="accent"
-                  no-caps
-                  :data-cy="'savestep'"
-                  unelevated
-                  :label="$t('button.save')"
-                  type="submit"
-                  class="button"
-                />
-              </div>
-              <div class="q-pa-md col-4 left">
-                <q-btn
+                  style="margin-right:15px"
                   class="delete-button"
                   no-caps
                   unelevated
@@ -127,17 +170,24 @@
                   type="reset"
                   @click="cancelEditStep()"
                 />
-              </div>
-              <div class="q-pa-md col-4 left">
                 <q-btn
+                  style="margin-right:15px"
                   :data-cy="'deletestep'"
                   class="delete-button"
                   no-caps
                   unelevated
-                  :label="$t('button.delete')"
+                  :label="$t('button.delete_steplink')"
                   @click="deleteElementSteplink()"
                 />
-              </div>
+                <q-btn
+                  color="accent"
+                  no-caps
+                  :data-cy="'savestep'"
+                  unelevated
+                  :label="$t('button.save_steplink')"
+                  type="submit"
+                  class="button"
+                />
             </div>
             </div>
           </div>
@@ -146,6 +196,7 @@
        </div>
       <div v-else-if="this.editing" class="col-8"           
       >
+      
         <q-card
           
           class="div-2"
@@ -214,10 +265,9 @@
                     />
 
                   </div>
-
+                <div class="row">
                <div
-                    id="location"
-                style="width:100%"
+                class="q-pa-sm col-6"
                   >
                   <HelpLabel
                     :fieldLabel="$t('input_labels.link')"
@@ -239,8 +289,7 @@
                     />
                   </div>
               <div
-                id="location"
-                style="width:100%"
+                class="q-pa-sm col-6"
               >
                   <HelpLabel
                     :fieldLabel="$t('input_labels.step_location')"
@@ -275,7 +324,9 @@
                   </div>
                 </div>
               </div>
-              <div id="location" style="width:100%">
+                </div>
+                <div class="row">
+              <div class="q-pa-sm col-6">
                 <HelpLabel
           :fieldLabel="$t('input_labels.icon')"
           :helpLabel ="$t('help.doc_type_icon')"
@@ -317,8 +368,7 @@
       </q-select>
               </div>
               <div
-                id="location"
-                style="width:100%"
+              class="q-pa-sm col-6"
               >
               <HelpLabel
                     :fieldLabel="$t('input_labels.step_cost')"
@@ -339,8 +389,9 @@
                   :label="$t('input_labels.step_cost')"
                 />
               </div>
+                </div>
 
-              <div class="row width-2">
+              <div class="row width-2" style="text-align:center">
                 <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
                     <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.required_documents')}}</q-tooltip>
                 <q-btn
@@ -359,11 +410,11 @@
                 class="row width-3"
                 v-if="stepdocadd"
               >
-                <div class="col-6">
+                <div class="col-8">
                   <q-select
                     data-cy="step_document_list"
-                    filled
                     dense
+                    outlined
                     clearable
                     v-model="step_doc_shell.idDocument"
                     emit-value
@@ -373,7 +424,7 @@
                     :label="$t('input_labels.required_documents')"
                   />
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                   <q-input
                     data-cy="doc_cost"
                     class="input"
@@ -385,7 +436,7 @@
                     v-model="step_doc_shell.cost"
                   />
                 </div>
-                <div class="col-3">
+                <div class="col-2">
                   <q-btn
                     data-cy="save_step_document"
                     id="save-step-document"
@@ -399,9 +450,9 @@
               </div>
 
               <div
-                v-if="step_shell.documents != null "
+                v-if="step_shell.documents.length>0 "
                 class="row "
-                style="width:100%"
+                style="width:100%;"
               >
 
                 <div class="col-9 flex flex-left labels">
@@ -421,6 +472,7 @@
                   :stepdoc="stepdoc"
                   :docs_type="t_docs"
                   @deleteDoc="deleteDoc"
+                  style="padding-top:20px"
                 />
               </q-list>
             </div>
@@ -460,20 +512,9 @@
               />
             </div>
           </div>
-            <div class="row">
-              <div class="q-pa-md col-4 left">
+            <div   style="text-align:center">
                 <q-btn
-                  color="accent"
-                  no-caps
-                  :data-cy="'savestep'"
-                  unelevated
-                  :label="$t('button.save')"
-                  type="submit"
-                  class="button"
-                />
-              </div>
-              <div class="q-pa-md col-4 left">
-                <q-btn
+                  style="margin-right:15px"
                   class="delete-button"
                   no-caps
                   unelevated
@@ -482,59 +523,41 @@
                   type="reset"
                   @click="cancelEditStep()"
                 />
-              </div>
-              <div class="q-pa-md col-4 left">
                 <q-btn
+                  style="margin-right:15px"
                   :data-cy="'deletestep'"
                   class="delete-button"
                   no-caps
                   unelevated
-                  :label="$t('button.delete')"
+                  :label="$t('button.delete_step')"
                   @click="deleteElement()"
                 />
-              </div>
+                <q-btn
+                  color="accent"
+                  no-caps
+                  :data-cy="'savestep'"
+                  unelevated
+                  :label="$t('button.save_step')"
+                  type="submit"
+                  class="button"
+                />
             </div>
           </div>
         </form>
         </q-card>
       </div>
+
+            
+      <q-card 
+      v-else  class="col-8"
+      style="padding-left:10px"
+      >
+              <q-card-section>
+              </q-card-section>
+      </q-card>
     </div>
     <div class="row div-6">
-      <div class="col right">
-        <q-btn
-        :data-cy="'back_to_process'"
-          class="delete-button-2"
-          no-caps
-          unelevated
-          :label="$t('button.back')"
-          @click="cancelStep"
-        />
-      </div>
-      <div class="col center">
-        <q-btn
-        :data-cy="'addstep'"
-          color="secondary"
-          unelevated
-          :label="$t('button.add_step')"
-          class="button-3"
-          no-caps
-          size="15px"
-          @click="addingNode"
-        />
-      </div>
-      <div class="col left">
-        <q-btn
-        :data-cy="'savegraph'"
-          class="button-2"
-          color="accent"
-          unelevated
-          :label="$t('button.save_graph')"
-          no-caps
-          size="15px"
-          @click="savingGraph"
-        />
 
-      </div>
 
     </div>
   </div>
@@ -1236,7 +1259,7 @@ export default {
   font-weight: 600;
 }
 .container {
-  padding-top: 50px;
+  padding-top: 20px;
   padding-right: 80px;
   padding-bottom: 50px;
   padding-left: 80px;
@@ -1257,7 +1280,7 @@ export default {
   color: black;
   border: 1px solid #c71f40;
   max-width: 150px;
-  border-radius: 2px;
+border-radius: 5px;
 }
 .delete-button-2 {
   background-color: white;
@@ -1268,7 +1291,7 @@ export default {
 }
 .button {
   max-width: 150px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 .button-2 {
   border-radius: 5px;
@@ -1361,6 +1384,12 @@ export default {
 }
 .no-pad {
   padding-bottom: 0px;
+}
+.explanation{
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #000000;
 }
 </style>
 

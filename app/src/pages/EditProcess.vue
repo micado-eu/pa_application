@@ -14,18 +14,20 @@
     </div>
 
     <div id="div-1">
-      <q-card class="container">
-        <div class="form-help">
-          {{ $t("help.form") }} {{ this.$defaultLangString }}
-        </div>
+
         <form
           @submit.prevent.stop="onSubmit"
           @reset.prevent.stop="onReset"
           class=""
         >
+              <q-card class="container">
+        <div class="form-help">
+          {{ $t("help.form") }} {{ this.$defaultLangString }}
+        </div>
           <div
             class=" q-pa-xsm "
             id="div-2"
+            style="padding-bottom:0px"
           >
             <HelpLabel
               :field-label="$t('input_labels.process_name')"
@@ -92,7 +94,8 @@
           v-model="edit_process.processTopics"
           />-->
           <div
-            class=" q-pa-xsm row div-6"
+            class="  row div-6"
+            style="padding-top:0px"
           >
             <HelpLabel
               :field-label="$t('input_labels.generated_docs')"
@@ -102,9 +105,9 @@
             />
             <q-select
               data-cy="add_produced_doc"
-              filled
-              :hint="$t('input_labels.required')"
               dense
+              outlined
+              style="padding-right:0px"
               clearable
               :readonly="edit_process.published == true"
               v-model="edit_process.producedDoc"
@@ -131,6 +134,7 @@
                 :field-label="$t('input_labels.topic_tags')"
                 :help-label="$t('help.topic_tags')"
                 class="tag"
+                style="padding-left:16px"
               />
             </div> 
           </div>
@@ -139,9 +143,35 @@
             id="div-7"
           >
             <div class="col-6 div-8">
-              <q-select
+              <treeselect
+                :multiple="true"
+                :options="this.tree_options_users"
+                :flat="true"
+                placeholder="Try selecting some options."
+                v-model="edit_process.applicableUsers"
+                @select="addUserTag($event)"
+                @deselect="removeUserTag($event)"
+                @clear="clearAllUsers()"
+              >
+               <!-- <div
+                  slot="value-label"
+                  slot-scope="{ node }"
+                  :class="{unpublished: !node.raw.published}"
+                >
+                  {{ node.label }}
+                </div>-->
+                <label
+                  slot="option-label"
+                  slot-scope="{node}"
+                  :class="{unpublished: !node.raw.published}"
+                >
+                  {{ node.label }}
+                </label>
+              </treeselect>
+              <!--<q-select
                 filled
                 dense
+                color="white"
                 :readonly="edit_process.published == true"
                 data-cy="add_user"
                 clearable
@@ -154,7 +184,7 @@
                 map-options
                 :options="this.u_tags"
                 class="select"
-              />
+              />-->
               <!--  <q-chip
               v-for="tag in selected_u_tags"
               dense
@@ -162,7 +192,7 @@
             >{{tag}}</q-chip>-->
             </div>
 
-            <div class="col-6 div-9">
+            <div class="col-6 div-9" >
               <treeselect
                 :multiple="true"
                 :options="this.tree_options"
@@ -174,13 +204,13 @@
                 @deselect="removeTopicTag($event)"
                 @clear="clearAllTopics()"
               >
-                <div
+               <!-- <div
                   slot="value-label"
                   slot-scope="{ node }"
                   :class="{unpublished: !node.raw.published}"
                 >
                   {{ node.label }}
-                </div>
+                </div>-->
                 <label
                   slot="option-label"
                   slot-scope="{node}"
@@ -254,19 +284,20 @@
               :selected_process_comments="selected_process_comments"
             />
           </div>
-          <div id="div-10">
-            <div class="q-pa-md q-gutter-md col-4 div-11">
+          
+                </q-card>
+            <div class="container div-11">
               <q-btn
                 :data-cy="'back_to_process'.concat(theprocessid)"
                 class="delete-button"
                 no-caps
                 rounded
-                :label="$t('button.back')"
+                :label="$t('button.cancel')"
                 unelevated
-                style=""
+                style="margin-right:15px"
                 to="/guided_process_editor"
               />
-              <q-btn
+             <!-- <q-btn
                 :data-cy="'manageprocess'.concat(theprocessid)"
                 color="secondary"
                 no-caps
@@ -276,7 +307,7 @@
                 :disable="this.disabled || edit_process.published"
                 class="button"
                 @click="manageProcess()"
-              />
+              />-->
 
               <q-btn
                 :data-cy="'saveprocess'.concat(theprocessid)"
@@ -290,9 +321,8 @@
                 type="submit"
               />
             </div>
-          </div>
+
         </form>
-      </q-card>
     </div>
   </div>
 </template>
@@ -322,7 +352,8 @@ export default {
         process_comments: 'comments/process_comments',
         steplinks: 'steplinks/steplinks',
         comments: 'comments/comments',
-        tree_options:'topic/tree_options'
+        tree_options:'topic/tree_options',
+        tree_options_users:'user_type/tree_options'
       }, actions: {
         saveProcess: 'flows/saveProcess',
         fetchFlows: 'flows/fetchFlows',
@@ -463,17 +494,19 @@ export default {
     addUserTag (value) {
       console.log(value)
 
-      var the_user = this.user.filter((a_user) => {
+      /*var the_user = this.user.filter((a_user) => {
         return a_user.id == value.value
       })[0]
       var the_user_transl = the_user.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].userType
-      this.selected_u_tags.push(the_user_transl)
+      this.selected_u_tags.push(the_user_transl)*/
+            console.log(value)
+      this.selected_u_tags.push(value.label)
 
     },
     removeUserTag (value) {
       console.log(value)
-      var idx = this.selected_u_tags.indexOf(value)
-      this.selected_u_tags.splice(value.index, 1)
+      var idx = this.selected_u_tags.findIndex(item => item.id == value.id)
+      this.selected_u_tags.splice(idx, 1)
     },
     clearAllUsers () {
       this.selected_u_tags = []
@@ -869,7 +902,7 @@ export default {
 }
 .div-6 {
   padding-top: 20px;
-  padding-left: 166px;
+  padding-left: 150px;
   padding-right: 150px;
 }
 #div-7 {
@@ -877,7 +910,6 @@ export default {
   padding-right: 150px;
 }
 .div-8 {
-  padding-left: 16px;
   padding-top: 15px;
 }
 .select {
@@ -904,7 +936,8 @@ export default {
   padding-left: 150px;
 }
 .div-11 {
-  display: inline-block;
+  text-align: center;
+  padding-top:10px
 }
 .left{
   text-align: left;
@@ -922,5 +955,10 @@ export default {
 }
 .unpublished{
   color:red
+}
+.vue-treeselect__multi-value-label{
+  padding-right: 5 px;
+  user-select: none;
+  white-space: normal;
 }
 </style>

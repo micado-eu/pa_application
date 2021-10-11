@@ -77,7 +77,10 @@
     "board": "if the board does not already exist, it will be automatically created",
     "category": "if the category does not already exist, it will be automatically created",
     "chart_description": "Describe your Chart",
-    "preview_process":"Preview process"
+    "preview_process":"Preview process",
+    "add_step_explain":"Click 'Add Step' to add one or more steps to your process",
+    "click_step_graph":"Clic on each step to enter details",
+    "add_edge_explain":"Draw lines between steps to link them"
   },
   "menu": {
     "title": "My Tools",
@@ -126,6 +129,10 @@
     "save": "Save",
     "reset": "Reset",
     "save_plan": "Save plan",
+    "save_step":" Save step",
+    "delete_step":"Delete step",
+    "save_steplink":" Save step link",
+    "delete_steplink":"Delete step link",
     "save_changes": "Save changes",
     "cancel": "Cancel",
     "upload": "Upload",
