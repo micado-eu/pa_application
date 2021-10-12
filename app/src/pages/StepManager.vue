@@ -450,7 +450,7 @@
               </div>
 
               <div
-                v-if="step_shell.documents.length>0 "
+                v-if="step_shell.documents "
                 class="row "
                 style="width:100%;"
               >
