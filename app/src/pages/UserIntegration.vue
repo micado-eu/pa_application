@@ -2,32 +2,37 @@
   <div>
     <div v-if="loading">{{ $t("input_labels.loading") }}</div>
     <div v-else id="first-div">
+                  <div id="content" class="q-pa-md row" style="padding-top:60px">
+        <div class="col-11" style="text-align:center">
+        <q-btn
+          size="15px"
+          style="margin-right: 10px; width:200px;border-radius: 5px;"
+          :label="$t('button.add_plan')"
+          no-caps
+          dense
+          unelevated
+          @click="addInterventionPlan"
+          color="info"
+        />
+        </div>
+        <div class="col-1" style="text-align:right">
+        <q-btn
+          size="15px"
+          padding="xs"
+          :icon="'img:statics/icons/Icon - Migrant ManagementWhite.svg'"
+          no-caps
+          style="border-radius: 5px;"
+          unelevated
+          to="/migrant"
+          color="accent"
+        />
+        </div>
+      </div>
       <div class="q-pa-md col" id="second-div">
         <div class="row container">
           <h3 class="col-6 header">{{ the_user.umUserName }}</h3>
 
-          <span class="col-6 top-span">
-            <q-btn
-              class="add-button"
-              :label="$t('button.back')"
-              no-caps
-              size="15px"
-              unelevated
-              to="/migrant"
-              color="accent"
-            />
-            <q-btn
-              class="add-button"
-              unelevated
-              color="info"
-              :data-cy="'interventionplan'.concat(theuserid)"
-              rounded
-              :label="$t('button.add_plan')"
-              no-caps
-              size="15px"
-              @click="addInterventionPlan"
-            />
-          </span>
+          
           <div class="row">
             <q-item>
               <q-item-section
@@ -79,6 +84,7 @@
               <span id="second-span">
                 <q-btn
                   id="button"
+                  style="margin-right:10px;"
                   icon-right="add"
                   color="secondary"
                   no-caps
@@ -91,6 +97,16 @@
                     button_id = intervention_plan.id;
                     addIntervention();
                   "
+                />
+                 <q-btn
+                  size="15px"
+                  padding="xs"
+                  :icon="'img:statics/icons/Icon - Delete.svg'"
+                  no-caps
+                  style="border-radius: 5px;"
+                  unelevated
+                  @click="deletePlan(intervention_plan.id)"
+                  color="white"
                 />
               </span>
             </h4>
@@ -132,16 +148,6 @@
             :showAddForm="button_id != intervention_plan.id"
           >
           </AddIntervention>
-          <q-btn
-            id="button"
-            icon-right="add"
-            color="secondary"
-            no-caps
-            :data-cy="'delete_olan'.concat(intervention_plan.id)"
-            :label="$t('button.delete')"
-            :disable="hideAdd"
-            @click="deletePlan(intervention_plan.id)"
-          />
           <q-dialog v-model="ask_validation" persistent>
             <q-card style="min-width: 350px">
               <q-card-section>
@@ -192,10 +198,10 @@
 </template>
 
 <script>
-import IntegrationPlan from "components/IntegrationPlan";
-import AddIntervention from "components/AddIntervention";
-import editEntityMixin from "../mixin/editEntityMixin";
-import storeMappingMixin from "../mixin/storeMappingMixin";
+import IntegrationPlan from "components/IntegrationPlan"
+import AddIntervention from "components/AddIntervention"
+import editEntityMixin from "../mixin/editEntityMixin"
+import storeMappingMixin from "../mixin/storeMappingMixin"
 
 export default {
   name: "PageIndex",
@@ -211,7 +217,7 @@ export default {
         validator: "user/pausers",
         documents: "documents/my_documents",
         completion_documents: "documents/completion_documents",
-        tenants: "tenant/tenants",
+        tenants: "tenant/tenants"
       },
       actions: {
         saveIntervention: "intervention_plan/saveIntervention",
@@ -227,9 +233,9 @@ export default {
         fetchDocumentType: "document_type/fetchDocumentType",
         editInterventionByValidation:"intervention/editInterventionByValidation",
         fetchValidator: "user/fetchPAUser",
-        saveDoc: "documents/saveDocumentIntervention",
-      },
-    }),
+        saveDoc: "documents/saveDocumentIntervention"
+      }
+    })
   ],
   data() {
     return {
@@ -245,7 +251,7 @@ export default {
         "Renewal of residence permit for working reasons",
         "How to get driver licence recognized",
         "How to get access to public funded housing",
-        "How to enroll children to school",
+        "How to enroll children to school"
       ],
       validationFile: null,
       validatingIntervention: null,
@@ -264,7 +270,7 @@ export default {
         uploadedByMe: true,
         expirationDate: null,
         documentTypeId: "",
-        shareable: true,
+        shareable: true
       },
       id: this.$route.params.id,
       edit_action: {
@@ -273,7 +279,7 @@ export default {
         description: "",
         linked_processes_id: [],
         validated: false,
-        category: "",
+        category: ""
       },
       intervention_shell: {
         id: -1,
@@ -286,69 +292,69 @@ export default {
         validatingUserId: Number(this.theuserid),
         validatingUserTenant: Number(this.$migrant_tenant),
         assignmentDate: null,
-        validationRequestDate: null,
+        validationRequestDate: null
       },
       t_docs: [],
 
       selected_plan: null,
       validation: null,
       types: [],
-      the_pic: null,
-    };
+      the_pic: null
+    }
   },
   components: {
     IntegrationPlan,
-    AddIntervention,
+    AddIntervention
   },
   computed: {
     filteredplans() {
       return this.intervention_plans.filter((filt) => {
-        return filt.user_id.includes(this.id);
-      });
+        return filt.user_id.includes(this.id)
+      })
     },
 
     filteredUsers() {
       return this.users.filter((filt) => {
-        return filt.id == this.id;
-      });
-    },
+        return filt.id == this.id
+      })
+    }
   },
   methods: {
     findDoc(intervention) {
-      console.log("fetching doc");
-      console.log(this.$store.state.documents.completion_documents);
-      console.log(this.completion_documents);
-      this.the_pic = null;
+      console.log("fetching doc")
+      console.log(this.$store.state.documents.completion_documents)
+      console.log(this.completion_documents)
+      this.the_pic = null
       //console.log(id)
-      var the_doc = null;
+      var the_doc = null
       var intervention_doc = this.completion_documents.filter((doc) => {
-        return doc.idIntervention == intervention.id;
-      })[0];
+        return doc.idIntervention == intervention.id
+      })[0]
       if (intervention_doc != null) {
-        console.log("inside intervention doc different from null");
+        console.log("inside intervention doc different from null")
         the_doc = this.documents.filter((document) => {
-          console.log(document.id);
-          console.log(intervention_doc.idDocument);
-          return document.id == intervention_doc.idDocument;
-        })[0];
-        console.log("i am the doc completed");
-        console.log(the_doc);
+          console.log(document.id)
+          console.log(intervention_doc.idDocument)
+          return document.id == intervention_doc.idDocument
+        })[0]
+        console.log("i am the doc completed")
+        console.log(the_doc)
         if (the_doc != null) {
-          console.log("inside if");
-          this.the_pic = the_doc.pictures[0].picture;
+          console.log("inside if")
+          this.the_pic = the_doc.pictures[0].picture
         } else {
-          console.log("inside if");
+          console.log("inside if")
 
-          this.the_pic = null;
+          this.the_pic = null
         }
       }
     },
     addInterventionPlan() {
-      console.log(this.user);
+      console.log(this.user)
       this.$router.push({
         name: "addinterventionplan",
-        params: { theuser: this.the_user, theuserid: this.the_user.umId },
-      });
+        params: { theuser: this.the_user, theuserid: this.the_user.umId }
+      })
     },
     deletePlan(id) {
       this.$q.notify({
@@ -359,44 +365,44 @@ export default {
             label: this.$t("button.delete"),
             color: "red",
             handler: () => {
-              console.log("inside deleting plan");
-              console.log(id);
-              this.deleteInterventionPlan(id);
-            },
+              console.log("inside deleting plan")
+              console.log(id)
+              this.deleteInterventionPlan(id)
+            }
           },
           {
             label: this.$t("button.back"),
             color: "accent",
             handler: () => {
-              console.log("not deleting");
-            },
-          },
-        ],
-      });
+              console.log("not deleting")
+            }
+          }
+        ]
+      })
     },
 
     getTitle(id) {
-      console.log(id);
+      console.log(id)
       var temp_title = this.intervention_types.filter((int) => {
-        return int.id == id;
-      })[0];
-      console.log(temp_title);
+        return int.id == id
+      })[0]
+      console.log(temp_title)
       var lang = temp_title.translations.filter((transl) => {
-        return transl.lang == this.activeLanguage;
-      })[0].interventionTitle;
-      return lang;
+        return transl.lang == this.activeLanguage
+      })[0].interventionTitle
+      return lang
     },
     getDescription(id) {
-      console.log(id);
+      console.log(id)
       var temp_title = this.intervention_types.filter((int) => {
-        return int.id == id;
-      })[0];
-      console.log(temp_title);
+        return int.id == id
+      })[0]
+      console.log(temp_title)
       var lang = temp_title.translations.filter((transl) => {
-        return transl.lang == this.activeLanguage;
-      })[0].description;
-      console.log(lang);
-      return lang;
+        return transl.lang == this.activeLanguage
+      })[0].description
+      console.log(lang)
+      return lang
     },
     createShell(id_plan) {
       this.intervention_shell = {
@@ -410,133 +416,133 @@ export default {
         validatingUserId: null,
         validatingUserTenant: null,
         assignmentDate: null,
-        validationRequestDate: null,
-      };
+        validationRequestDate: null
+      }
     },
 
     mergeIntervention(intervention) {
-      console.log("I am intervention");
-      console.log(intervention);
-      this.intervention_shell.id = intervention.id;
-      this.intervention_shell.listId = intervention.listId;
+      console.log("I am intervention")
+      console.log(intervention)
+      this.intervention_shell.id = intervention.id
+      this.intervention_shell.listId = intervention.listId
       this.intervention_shell.interventionType = JSON.parse(
         JSON.stringify(intervention.interventionType)
-      );
-      this.intervention_shell.validationDate = intervention.validationDate;
-      this.intervention_shell.completed = intervention.completed;
-      this.intervention_shell.validatingUserId = intervention.validatingUserId;
+      )
+      this.intervention_shell.validationDate = intervention.validationDate
+      this.intervention_shell.completed = intervention.completed
+      this.intervention_shell.validatingUserId = intervention.validatingUserId
       this.intervention_shell.validatingUserTenant =
-        intervention.validatingUserTenant;
-      this.intervention_shell.assignmentDate = intervention.assignmentDate;
+        intervention.validatingUserTenant
+      this.intervention_shell.assignmentDate = intervention.assignmentDate
       this.intervention_shell.validationRequestDate =
-        intervention.validationRequestDate;
-      this.intervention_shell.title = intervention.title;
-      this.intervention_shell.description = intervention.description;
-      console.log("merged intervention");
-      console.log(this.intervention_shell);
+        intervention.validationRequestDate
+      this.intervention_shell.title = intervention.title
+      this.intervention_shell.description = intervention.description
+      console.log("merged intervention")
+      console.log(this.intervention_shell)
     },
     deleteIntervention(value) {
-      console.log("in delete");
-      console.log(value);
+      console.log("in delete")
+      console.log(value)
       var editing = this.intervention_plans.filter((filt) => {
-        return filt.id == value.listId;
-      });
-      this.selected_plan = JSON.parse(JSON.stringify(editing[0]));
+        return filt.id == value.listId
+      })
+      this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
       this.deletingIntervention({
         intervention_id: value.id,
-        plan_id: this.selected_plan.id,
-      });
+        plan_id: this.selected_plan.id
+      })
     },
     savingIntervention(value) {
-      console.log(this.isNew);
-      var targetId = event.currentTarget.id;
+      console.log(this.isNew)
+      var targetId = event.currentTarget.id
       var editing = this.intervention_plans.filter((filt) => {
-        return filt.id == value.listId;
-      });
+        return filt.id == value.listId
+      })
       if (this.isNew) {
-        console.log("this is the new intervention");
-        console.log(value);
+        console.log("this is the new intervention")
+        console.log(value)
 
-        this.selected_plan = JSON.parse(JSON.stringify(editing[0]));
-        console.log(this.selected_plan);
+        this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+        console.log(this.selected_plan)
         if (!this.selected_plan.interventions) {
-          this.selected_plan.interventions = [];
+          this.selected_plan.interventions = []
         }
-        this.selected_plan.interventions.push(this.intervention_shell);
+        this.selected_plan.interventions.push(this.intervention_shell)
         var payload = {
           intervention: this.intervention_shell,
-          plan: this.selected_plan,
-        };
+          plan: this.selected_plan
+        }
         //this.saveIntervention(payload)
         this.$store.dispatch("intervention_plan/saveIntervention", {
           intervention: this.intervention_shell,
-          plan: this.selected_plan,
-        });
-        this.isNew = false;
-        this.hideAdd = false;
-        this.button_id = null;
-        console.log(this.isNew);
+          plan: this.selected_plan
+        })
+        this.isNew = false
+        this.hideAdd = false
+        this.button_id = null
+        console.log(this.isNew)
       } else {
-        this.selected_plan = JSON.parse(JSON.stringify(editing[0]));
+        this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
         var index = this.selected_plan.interventions.findIndex(
           (item) => item.id == this.intervention_shell.id
-        );
+        )
         this.selected_plan.interventions.splice(
           index,
           1,
           this.intervention_shell
-        );
+        )
         var payload = {
           intervention: this.intervention_shell,
-          plan: this.selected_plan,
-        };
+          plan: this.selected_plan
+        }
         //this.editIntervention(payload)
         this.$store.dispatch("intervention_plan/editIntervention", {
           intervention: this.intervention_shell,
-          plan: this.selected_plan,
-        });
-        this.hideForm = true;
-        this.hideAdd = false;
+          plan: this.selected_plan
+        })
+        this.hideForm = true
+        this.hideAdd = false
       }
     },
 
     addIntervention() {
-      this.createShell(this.button_id);
-      console.log("adding interventions");
-      console.log(this.isNew);
-      this.isNew = true;
-      this.hideAdd = true;
+      this.createShell(this.button_id)
+      console.log("adding interventions")
+      console.log(this.isNew)
+      this.isNew = true
+      this.hideAdd = true
     },
 
     openValidateDialog(event) {
-      console.log(event);
-      this.validatingIntervention = event;
-      console.log(this.validatingIntervention);
+      console.log(event)
+      this.validatingIntervention = event
+      console.log(this.validatingIntervention)
 
-      console.log(this.$store.state.auth.user.umid);
-      this.validatingUser = Number(this.theuserid);
-      this.ask_validation = true;
+      console.log(this.$store.state.auth.user.umid)
+      this.validatingUser = Number(this.theuserid)
+      this.ask_validation = true
     },
     validateTask() {
-      console.log("user id: " + this.validatingUser);
-      let current_data = new Date().toISOString();
+      console.log("user id: " + this.validatingUser)
+      let current_data = new Date().toISOString()
 
       // before validate the intervention and in the then check the file
-      this.validatingIntervention.completed = true;
-      this.validatingIntervention.validationDate = current_data;
+      this.validatingIntervention.completed = true
+      this.validatingIntervention.validationDate = current_data
       // TODO change with the real user ID
-      this.validatingIntervention.validatingUserId = this.$store.state.auth.user.umid;
-      console.log(this.validatingIntervention);
+      this.validatingIntervention.validatingUserId = this.$store.state.auth.user.umid
+      console.log(this.validatingIntervention)
       this.editInterventionByValidation({
         intervention: this.validatingIntervention,
-        plan: this.validatingIntervention.listId,
+        plan: this.validatingIntervention.listId
       }).then(() => {
         if (this.validationFile) {
-          console.log("we have to upload a file to the user");
-          console.log(this.validationFile);
-          let reader = new FileReader();
+          console.log("we have to upload a file to the user")
+          console.log(this.validationFile)
+          let reader = new FileReader()
           // Convert the file to base64 text
-          reader.readAsDataURL(this.validationFile);
+          reader.readAsDataURL(this.validationFile)
           // on reader load somthing...
           reader.onload = () => {
             // Make a fileInfo Object
@@ -545,42 +551,42 @@ export default {
               type: this.validationFile.type,
               size: Math.round(this.validationFile.size / 1000) + " kB",
               base64: reader.result,
-              file: this.validationFile,
-            };
-            this.doc_shell.userId = this.validatingUser;
-            this.doc_shell.userTenant = Number(this.$migrant_tenant);
-            this.doc_shell.documentTypeId = this.validatingDocType;
-            this.doc_shell.validated = true;
-            this.doc_shell.validationDate = current_data;
-            this.doc_shell.uploadedByMe = false;
-            this.doc_shell.validatedByTenant = Number(this.$pa_tenant);
+              file: this.validationFile
+            }
+            this.doc_shell.userId = this.validatingUser
+            this.doc_shell.userTenant = Number(this.$migrant_tenant)
+            this.doc_shell.documentTypeId = this.validatingDocType
+            this.doc_shell.validated = true
+            this.doc_shell.validationDate = current_data
+            this.doc_shell.uploadedByMe = false
+            this.doc_shell.validatedByTenant = Number(this.$pa_tenant)
             // TODO substitute with proper value (now using the 17 as id of tenant 3)
-            this.doc_shell.validatedByUser = this.$store.state.auth.user.umid;
+            this.doc_shell.validatedByUser = this.$store.state.auth.user.umid
             this.doc_shell.pictures.push({
               id: -1,
               picture: fileInfo.base64,
               docId: -1,
-              order: null,
-            });
+              order: null
+            })
             // now we can send
-            console.log("I am validating intervention and its id");
-            console.log(this.validatingIntervention);
-            console.log(this.validatingIntervention.id);
+            console.log("I am validating intervention and its id")
+            console.log(this.validatingIntervention)
+            console.log(this.validatingIntervention.id)
             this.saveDoc({
               document: this.doc_shell,
-              id_intervention: this.validatingIntervention.id,
+              id_intervention: this.validatingIntervention.id
             }).then(() => {
               // still have to write the completed_intervention_document table to associate the new doc with the intervention
 
-              this.createDocShell();
-              this.validationFile = null;
-              this.validatingIntervention = null;
-              this.validatingUser = null;
-              this.validatingDocType = null;
-            });
-          };
+              this.createDocShell()
+              this.validationFile = null
+              this.validatingIntervention = null
+              this.validatingUser = null
+              this.validatingDocType = null
+            })
+          }
         }
-      });
+      })
     },
     createDocShell() {
       this.doc_shell = {
@@ -596,119 +602,119 @@ export default {
         uploadedByMe: true,
         expirationDate: null,
         documentTypeId: "",
-        shareable: true,
-      };
+        shareable: true
+      }
     },
     validateIntervention(value) {
-      console.log("in validation page");
-      console.log(value);
-      this.mergeIntervention(value);
-      this.intervention_shell.completed = JSON.parse(JSON.stringify(true));
+      console.log("in validation page")
+      console.log(value)
+      this.mergeIntervention(value)
+      this.intervention_shell.completed = JSON.parse(JSON.stringify(true))
       var editing = this.intervention_plans.filter((filt) => {
-        return filt.id == value.listId;
-      });
-      this.selected_plan = JSON.parse(JSON.stringify(editing[0]));
-      console.log("i am selected plan interventions");
-      console.log(this.selected_plan.interventions);
+        return filt.id == value.listId
+      })
+      this.selected_plan = JSON.parse(JSON.stringify(editing[0]))
+      console.log("i am selected plan interventions")
+      console.log(this.selected_plan.interventions)
       var index = this.selected_plan.interventions.findIndex(
         (item) => item.id == this.intervention_shell.id
-      );
+      )
       this.selected_plan.interventions.splice(
         index,
         1,
         this.intervention_shell
-      );
+      )
       var payload = {
         intervention: this.intervention_shell,
-        plan: this.selected_plan,
-      };
-      this.editIntervention(payload);
+        plan: this.selected_plan
+      }
+      this.editIntervention(payload)
       //this.$store.dispatch('intervention_plan/editIntervention', { intervention: this.intervention_shell, plan: this.selected_plan })
     },
 
     editIntervention(value) {
-      this.mergeIntervention(value);
-      this.button_id = null;
-      this.isNew = false;
-      this.hideAdd = true;
-      this.hideForm = false;
-      this.$forceUpdate();
-      console.log(this.intervention_shell);
+      this.mergeIntervention(value)
+      this.button_id = null
+      this.isNew = false
+      this.hideAdd = true
+      this.hideForm = false
+      this.$forceUpdate()
+      console.log(this.intervention_shell)
     },
 
     cancelIntervention() {
-      console.log("going back");
-      this.button_id = null;
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
-    },
+      console.log("going back")
+      this.button_id = null
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
+    }
   },
   created() {
-    var promise = [];
-    promise.push(this.fetchTenants());
-    promise.push(this.fetchCompletionDocuments());
+    var promise = []
+    promise.push(this.fetchTenants())
+    promise.push(this.fetchCompletionDocuments())
     /*.then(completion_docs =>{
       console.log("I am the completion documents")
       console.log(completion_docs)
     })*/
-    promise.push(this.fetchDocuments(this.theuserid));
+    promise.push(this.fetchDocuments(this.theuserid))
     /*.then(docs =>{
       console.log("I am the docs of this user")
       console.log(docs)
     })*/
-    promise.push(this.fetchInterventionPlan(this.theuserid));
+    promise.push(this.fetchInterventionPlan(this.theuserid))
     /*.then(intervention_plans => {
         console.log("these are the returned plans")
         console.log(intervention_plans)
         this.loading = false
       })*/
     Promise.all(promise).then((promise_return) => {
-      console.log(this.intervention_plans);
-      console.log(this.completion_docs);
-      console.log(promise_return);
-      console.log("returned all promises");
+      console.log(this.intervention_plans)
+      console.log(this.completion_docs)
+      console.log(promise_return)
+      console.log("returned all promises")
       this.fetchIntegrationType().then((integration_types) => {
-        console.log("got integration types");
-        console.log(integration_types);
+        console.log("got integration types")
+        console.log(integration_types)
         integration_types.forEach((ut) => {
           var the_integration_types = {
             label: ut.translations.filter(
               this.filterTranslationModel(this.activeLanguage)
             )[0].interventionTitle,
-            value: ut.id,
-          };
-          this.types.push(the_integration_types);
-        });
+            value: ut.id
+          }
+          this.types.push(the_integration_types)
+        })
         this.fetchDocumentType().then((document_types) => {
-          console.log(document_types);
-          console.log("DOCUMENT TYPES FETCHED");
+          console.log(document_types)
+          console.log("DOCUMENT TYPES FETCHED")
           document_types.forEach((document_type) => {
             var the_doc = {
               label: document_type.translations.filter(
                 this.filterTranslationModel(this.activeLanguage)
               )[0].document,
-              value: document_type.id,
-            };
-            this.t_docs.push(the_doc);
-          });
-          this.loading = false;
-          console.log("I AM T DOCS");
-          console.log(this.t_docs);
-        });
-      });
+              value: document_type.id
+            }
+            this.t_docs.push(the_doc)
+          })
+          this.loading = false
+          console.log("I AM T DOCS")
+          console.log(this.t_docs)
+        })
+      })
 
-      var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant };
+      var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
       this.fetchSpecificUser(payload).then((users) => {
-        this.the_user = users;
-        console.log("return from fetch specific user");
-        console.log(users);
-      });
-    });
-    console.log(this.completion_docs);
-    console.log("FINISHED CREATED");
-  },
-};
+        this.the_user = users
+        console.log("return from fetch specific user")
+        console.log(users)
+      })
+    })
+    console.log(this.completion_docs)
+    console.log("FINISHED CREATED")
+  }
+}
 </script>
 <style scoped>
 #first-div {
@@ -761,7 +767,7 @@ export default {
 
 #button {
   margin-top: 0px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 .header {
   margin-bottom: 0px;
@@ -786,4 +792,11 @@ export default {
 .icon {
   color: #ffd02c;
 }
+#content {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;       
+  }
 </style>

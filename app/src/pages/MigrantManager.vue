@@ -1,10 +1,14 @@
   <template>
-  <div class="container">
-
+  <div class="">
+<div id="content">
+  <div id="top-div">
+        {{ $t('input_labels.migrant_manager') }}
+      </div>
     <div class="center">
       <div
         id="div-1"
-        class="col"
+        class=" q-pa-md col"
+        style="padding-top:30px"
       >
         <q-input
           class="input"
@@ -22,7 +26,7 @@
       </div>
     </div>
     <div>
-      <q-item class="row labels">
+      <q-item class="row labels container-labels">
 
         <q-item-section class="col-8 flex flex-left" >
           &nbsp;
@@ -41,8 +45,9 @@
       </q-item>
 
     </div>
-    <hr style="width:100%;border: 0.999px solid #424244;">
-    <div class="center">
+    <hr id="hr">
+</div>
+    <div class="center container">
       <q-list id="list">
         <User
           v-for="user in filteredUsers"
@@ -98,7 +103,7 @@ export default {
           }
         })
       }
-    },
+    }
     
   },
   methods: {
@@ -131,9 +136,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .container {
-  padding-top: 50px;
+  padding-top: 00px;
   padding-right: 80px;
-  padding-bottom: 50px;
+  padding-bottom: 00px;
   padding-left: 80px;
 }
 .center {
@@ -165,5 +170,34 @@ export default {
   padding-right: 0px;
   padding-bottom: 0px;
   text-align: right;
+}
+#content {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;       
+  }
+  #top-div{
+  font-style: normal;
+  height:72px;
+  text-align: center; 
+  padding-top:15px;
+  font-weight: bold;
+  font-size: 30px;
+  line-height: 41px;
+  color:white; 
+  background-color:#FF7C44
+}
+.container-labels {
+  padding-top: 0px;
+  padding-right: 96px;
+  padding-bottom: 0px;
+  padding-left: 96px;
+}
+#hr{
+  margin-left:50px;
+  margin-right:50px;
+  border: 0.999px solid #424244;
 }
 </style>

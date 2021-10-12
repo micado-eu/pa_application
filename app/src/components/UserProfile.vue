@@ -1,8 +1,28 @@
 <template>
 <div>
    <div class="row container">
-     <h3 class="header">{{this.umUserName}}</h3>
-    <q-card class="my-card" flat >
+     <div class="col">
+     <div class="header">{{this.umUserName}}</div>
+    <span class="span-1">{{$t('profile.username')}}: </span><span class="span-2">{{this.umUserName}}</span> <br>
+      <span class="span-1">{{$t('profile.legal_name')}}: </span><span class="span-2">{{this.fullname}}</span><br>
+      <span class="span-1">{{$t('profile.age')}}: </span><span class="span-2">{{this.dateOfBirth}}</span><br>
+      <span class="span-1">{{$t('profile.nationality')}}: </span><span class="span-2">{{this.nationality}}</span><br>
+      <span class="span-1">{{$t('profile.gender')}}: </span><span class="span-2">{{this.gender}}</span><br>
+     </div>
+     <div class="col image-container">
+       <img
+          v-if="userPicture == null"
+          class="col-6 image"
+          src="~assets/UserProfile.png"
+        />
+        <img
+          v-else
+          
+          class="col-6 image"
+          :src="userPicture"
+        />
+     </div>
+    <!--<q-card class="my-card" flat >
       <q-card-section horizontal>
         <q-card-section class="section">
          <div>
@@ -38,7 +58,7 @@
         />
     </div>
       </q-card-section>
-    </q-card>
+    </q-card>-->
    </div>
    </div>
 </template>
@@ -56,7 +76,7 @@ export default {
       this.$router.push({ name: 'addinterventionplan', params: { theuser: this.user, theuserid: this.user.umId } })
     }
   }
-};
+}
 </script>
 
 <style scoped>
@@ -65,10 +85,11 @@ export default {
 }
 .header{
   margin-bottom:30px;
-  padding-left:12px;
+  padding-left:0px;
   width:65%; 
-  font-size:25pt; 
-  font-weight:600
+font-size: 33px;
+line-height: 45px;
+font-weight: 600;
 }
 .top-span{
   text-align:right; 
@@ -103,6 +124,9 @@ font-size:20pt
   width:50%;
 }
 .image{
-border-radius:10px
+border-radius:10px;
+width: 50%;
+max-width: 200px;
+height: auto;
 }
 </style>

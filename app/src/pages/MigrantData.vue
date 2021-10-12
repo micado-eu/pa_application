@@ -2,7 +2,33 @@
   <div>
     <span v-if="loading">Loading...</span>
     <div v-if="!loading" class="q-pa-md first-div">
-      <div class="q-pa-md col" id="second-div">
+            <div class="row">
+        <div class="col-11" style="text-align:center">
+        <q-btn
+          size="15px"
+          style="margin-right: 10px; width:200px;border-radius: 5px;"
+          :label="$t('button.add_document')"
+          no-caps
+          dense
+          unelevated
+          @click="openValidateDialog"
+          color="secondary"
+        />
+        </div>
+        <div class="col-1" style="text-align:right">
+        <q-btn
+          size="15px"
+          padding="xs"
+          :icon="'img:statics/icons/Icon - Migrant ManagementWhite.svg'"
+          no-caps
+          style="border-radius: 5px;"
+          unelevated
+          to="/migrant"
+          color="accent"
+        />
+        </div>
+      </div>
+      <div class="q-pa-md col container-labels" id="second-div" style="padding-top:50px">
         <UserProfile
           :umUserName="the_user.umUserName"
           :fullname="legalName"
@@ -13,25 +39,7 @@
         >
         </UserProfile>
       </div>
-      <div style="text-align: center">
-        <q-btn
-          size="15px"
-          style="margin-right: 10px"
-          :label="$t('button.add_document')"
-          no-caps
-          unelevated
-          @click="openValidateDialog"
-          color="info"
-        />
-        <q-btn
-          size="15px"
-          :label="$t('button.back')"
-          no-caps
-          unelevated
-          to="/migrant"
-          color="accent"
-        />
-      </div>
+
       <q-dialog v-model="upload_doc" persistent>
         <q-card style="min-width: 350px">
           <q-card-section>
@@ -75,21 +83,21 @@
           </q-card-actions>
         </q-card>
       </q-dialog>
-      <hr />
-      <div class="title">{{ $t("consent.title") }}</div>
-      <div v-if="userConsents == null">
+      <hr class="hr"/>
+      <div class="title container-labels">{{ $t("consent.title") }}</div>
+      <div class="container-labels" v-if="userConsents == null">
         {{ $t("input_labels.no_consent") }}
       </div>
-      <div v-else v-for="consent in userConsents" :key="consent.label">
+      <div class="container-labels" v-else v-for="consent in userConsents" :key="consent.label">
         <q-toggle
           v-model="consent.val"
-          color="green"
+          color="secondary"
           :label="consent.label"
           disable
         />
       </div>
-      <hr />
-      <q-list style="width: 100%; margin: 0 auto">
+      <hr class="hr" />
+      <q-list class="container-labels" style="width: 100%; margin: 0 auto">
         <Document
           v-for="document in documents"
           :Title="setTitle(document)"
@@ -105,11 +113,11 @@
 </template>
 
 <script>
-import UserProfile from "../components/UserProfile";
-import Document from "../components/DocumentWalletItem";
-import editEntityMixin from "../mixin/editEntityMixin";
-import ConsentPanel from "../components/ConsentPanel";
-import storeMappingMixin from "../mixin/storeMappingMixin";
+import UserProfile from "../components/UserProfile"
+import Document from "../components/DocumentWalletItem"
+import editEntityMixin from "../mixin/editEntityMixin"
+import ConsentPanel from "../components/ConsentPanel"
+import storeMappingMixin from "../mixin/storeMappingMixin"
 
 export default {
   name: "MigrantData",
@@ -120,7 +128,7 @@ export default {
       getters: {
         documents: "documents/my_documents",
         document_types: "document_type/document_types",
-        users: "user/users",
+        users: "user/users"
       },
       actions: {
         fetchSpecificUser: "user/fetchSpecificUser",
@@ -128,14 +136,14 @@ export default {
         fetchDocumentType: "document_type/fetchDocumentType",
         fetchReceipt: "consent/fetchReceipt",
         fetchDocumentType: "document_type/fetchDocumentType",
-        saveDoc: "documents/saveDocument",
-      },
-    }),
+        saveDoc: "documents/saveDocument"
+      }
+    })
   ],
   components: {
     UserProfile,
     Document,
-    ConsentPanel,
+    ConsentPanel
   },
   data() {
     return {
@@ -159,11 +167,11 @@ export default {
         uploadedByMe: true,
         expirationDate: null,
         documentTypeId: "",
-        shareable: true,
+        shareable: true
       },
       validationFile: null,
-      validatingDocType: null,
-    };
+      validatingDocType: null
+    }
   },
   computed: {
     username() {
@@ -173,59 +181,59 @@ export default {
     },
     picture() {
       if (this.the_user.userPicture) {
-        return this.the_user.userPicture.picture;
+        return this.the_user.userPicture.picture
       } else {
-        return null;
+        return null
       }
     },
     legalName() {
-      var name = "";
-      var surname = "";
+      var name = ""
+      var surname = ""
       var name_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "givenName";
-      });
+        return attr.umAttrName == "givenName"
+      })
       if (name_arr.length > 0) {
-        name = name_arr[0].umAttrValue;
+        name = name_arr[0].umAttrValue
       }
       var surname_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "sn";
-      });
+        return attr.umAttrName == "sn"
+      })
       if (name_arr.length > 0) {
-        surname = surname_arr[0].umAttrValue;
+        surname = surname_arr[0].umAttrValue
       }
-      var fullname = name + " " + surname;
-      return fullname;
+      var fullname = name + " " + surname
+      return fullname
     },
     dateOfBirth() {
-      var dob = "";
+      var dob = ""
       var dob_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "dateOfBirth";
-      });
+        return attr.umAttrName == "dateOfBirth"
+      })
       if (dob_arr.length > 0) {
-        dob = dob_arr[0].umAttrValue;
+        dob = dob_arr[0].umAttrValue
       }
-      return dob;
+      return dob
     },
     nationality() {
-      var country = "";
+      var country = ""
       var country_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "country";
-      });
+        return attr.umAttrName == "country"
+      })
       if (country_arr.length > 0) {
-        country = country_arr[0].umAttrValue;
+        country = country_arr[0].umAttrValue
       }
-      return country;
+      return country
     },
     gender() {
-      var gender = "";
+      var gender = ""
       var gender_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "gender";
-      });
+        return attr.umAttrName == "gender"
+      })
       if (gender_arr.length > 0) {
-        gender = gender_arr[0].umAttrValue;
+        gender = gender_arr[0].umAttrValue
       }
-      return gender;
-    },
+      return gender
+    }
   },
   methods: {
     createDocShell() {
@@ -242,24 +250,24 @@ export default {
         uploadedByMe: true,
         expirationDate: null,
         documentTypeId: "",
-        shareable: true,
-      };
+        shareable: true
+      }
     },
     openValidateDialog(event) {
-      console.log(event);
-      console.log(this.$store.state.auth.user.umid);
-      this.forUser = Number(this.theuserid);
-      this.upload_doc = true;
+      console.log(event)
+      console.log(this.$store.state.auth.user.umid)
+      this.forUser = Number(this.theuserid)
+      this.upload_doc = true
     },
     validateTask() {
-      let current_data = new Date().toISOString();
+      let current_data = new Date().toISOString()
       // before validate the intervention and in the then check the file
       if (this.validationFile) {
-        console.log("we have to upload a file to the user");
-        console.log(this.validationFile);
-        let reader = new FileReader();
+        console.log("we have to upload a file to the user")
+        console.log(this.validationFile)
+        let reader = new FileReader()
         // Convert the file to base64 text
-        reader.readAsDataURL(this.validationFile);
+        reader.readAsDataURL(this.validationFile)
         // on reader load somthing...
         reader.onload = () => {
           // Make a fileInfo Object
@@ -268,87 +276,87 @@ export default {
             type: this.validationFile.type,
             size: Math.round(this.validationFile.size / 1000) + " kB",
             base64: reader.result,
-            file: this.validationFile,
-          };
-          this.doc_shell.userId = this.forUser;
-          this.doc_shell.userTenant = Number(this.$migrant_tenant);
-          this.doc_shell.documentTypeId = this.validatingDocType;
-          this.doc_shell.validated = true;
-          this.doc_shell.validationDate = current_data;
-          this.doc_shell.uploadedByMe = false;
-          this.doc_shell.validatedByTenant = Number(this.$pa_tenant);
+            file: this.validationFile
+          }
+          this.doc_shell.userId = this.forUser
+          this.doc_shell.userTenant = Number(this.$migrant_tenant)
+          this.doc_shell.documentTypeId = this.validatingDocType
+          this.doc_shell.validated = true
+          this.doc_shell.validationDate = current_data
+          this.doc_shell.uploadedByMe = false
+          this.doc_shell.validatedByTenant = Number(this.$pa_tenant)
           // TODO substitute with proper value (now using the 17 as id of tenant 3)
-          this.doc_shell.validatedByUser = this.$store.state.auth.user.umid;
+          this.doc_shell.validatedByUser = this.$store.state.auth.user.umid
           this.doc_shell.pictures.push({
             id: -1,
             picture: fileInfo.base64,
             docId: -1,
-            order: null,
-          });
+            order: null
+          })
           // now we can send
-          console.log("I am validating intervention and its id");
+          console.log("I am validating intervention and its id")
           this.saveDoc({
-            document: this.doc_shell,
+            document: this.doc_shell
           }).then(() => {
             // still have to write the completed_intervention_document table to associate the new doc with the intervention
 
-            this.createDocShell();
-            this.validationFile = null;
-            this.forUser = null;
-            this.validatingDocType = null;
-          });
-        };
+            this.createDocShell()
+            this.validationFile = null
+            this.forUser = null
+            this.validatingDocType = null
+          })
+        }
       }
     },
     setTitle(document) {
       const the_doc_type = this.document_types.filter(
         (a_doc_type) => a_doc_type.id == document.documentTypeId
-      );
+      )
       if (the_doc_type.length === 1) {
         const the_transl = the_doc_type[0].translations.filter(
           (transl) =>
             transl.lang === this.activeLanguage || transl.lang === "en"
-        );
+        )
         if (the_transl.length > 0) {
-          return the_transl[0].document;
+          return the_transl[0].document
         }
-        return "";
+        return ""
       }
-    },
+    }
   },
   created() {
-    const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant };
-    var promises = [];
-    promises.push(this.fetchDocuments(this.theuserid));
-    promises.push(this.fetchDocumentType());
+    const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    var promises = []
+    promises.push(this.fetchDocuments(this.theuserid))
+    promises.push(this.fetchDocumentType())
 
     Promise.all(promises).then((results) => {
-      console.log("I am result of promise all");
-      console.log(results);
+      console.log("I am result of promise all")
+      console.log(results)
       results[1].forEach((document_type) => {
         var the_doc = {
           label: document_type.translations.filter(
             this.filterTranslationModel(this.activeLanguage)
           )[0].document,
-          value: document_type.id,
-        };
-        this.t_docs.push(the_doc);
-      });
-      console.log(this.t_docs);
+          value: document_type.id
+        }
+        this.t_docs.push(the_doc)
+      })
+      console.log(this.t_docs)
 
       this.fetchSpecificUser(payload).then((users) => {
-        console.log("fetchSpecificUser - page");
-        console.log(users);
-        this.the_user = users;
-        console.log("return from fetch specific user");
-        console.log(users);
+        console.log("fetchSpecificUser - page")
+        console.log(users)
+        this.the_user = users
+        console.log("return from fetch specific user")
+        console.log(users)
         if (this.the_user.userConsent) {
           this.userConsents = Object.entries(
             JSON.parse(this.the_user.userConsent.consent)
-          ).map(([key, value]) => ({ label: key, val: value }));
+          ).map(([key, value]) => ({ label: key, val: value }))
         }
-        console.log("CONSENTS");
-        console.log(this.userConsents);
+        console.log("CONSENTS")
+        console.log(this.userConsents)
         /*const temp = this.users.filter((filt) => filt.umId == this.theuserid)
             this.the_user = temp[0]*/
         /*this.fetchReceipt({
@@ -358,9 +366,9 @@ export default {
           console.log(receipt);
           this.theReceipt = receipt;
         });*/
-      });
-      this.loading = false;
-    });
+      })
+      this.loading = false
+    })
     /* const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
     this.fetchSpecificUser(payload)
       .then((users) => {
@@ -399,8 +407,8 @@ export default {
         console.log('we are the docs')
         console.log(document_types)
       })*/
-  },
-};
+  }
+}
 </script>
 <style scoped>
 .first-div {
@@ -418,5 +426,15 @@ export default {
   font-weight: normal;
   font-size: 30px;
   line-height: 41px;
+}
+.container-labels {
+  padding-top: 0px;
+  padding-right: 96px;
+  padding-bottom: 0px;
+  padding-left: 96px;
+}
+.hr{
+  margin-left:96px;
+  margin-right:96px
 }
 </style>

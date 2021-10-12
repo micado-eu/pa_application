@@ -166,10 +166,10 @@ export default {
   mixins: [editEntityMixin,
   storeMappingMixin({
     getters: {
-      intervention_categories: 'integration_category/intervention_categories',
+      intervention_categories: 'integration_category/intervention_categories'
     }, actions: {
       fetchIntegrationType: 'integration_type/fetchIntegrationType',
-      saveInterventionPlan: 'intervention_plan/saveInterventionPlan',
+      saveInterventionPlan: 'intervention_plan/saveInterventionPlan'
     }
   })
   ],
@@ -212,7 +212,7 @@ export default {
         validationRequestDate:null 
       },
      types:[]
-    };
+    }
   },
   methods: {
     onSubmitPlan () {
@@ -314,8 +314,8 @@ export default {
       })[0]
       this.mergeIntervention(value)
       //this.action = JSON.parse(JSON.stringify(editing[0]))
-      this.isNew = false;
-      this.hideForm = false;
+      this.isNew = false
+      this.hideForm = false
       this.hideAdd = true
     },
     deleteAction(event) {
@@ -346,20 +346,20 @@ export default {
       this.plan_shell.interventions.splice(index, 1, this.intervention_shell)
       this.$store.commit('intervention/editIntervention', this.intervention_shell)
       }
-      this.hideForm = true;
+      this.hideForm = true
      this.hideAdd = false
      
     },
     newAction() {
       this.createInterventionShell()
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
     },
     cancelAction() {
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
     }
   },
   created() {
@@ -375,7 +375,7 @@ export default {
       })
       
   }
-};
+}
 </script>
 <style scoped>
 .my-card{
@@ -412,6 +412,7 @@ export default {
   margin-top:10px;
   margin-right:10px;
   font-weight:600;
+  border-radius: 5px;
 }
 .form-delete-button{
   background-color: white;
