@@ -419,7 +419,7 @@ export default {
   color: black;
   border: 1px solid #C71f40;
   margin-top:15px;
-  border-radius:2px;
+  border-radius:5px;
   margin-right:10px;
   margin-bottom:10px;
   width:80px;
@@ -427,7 +427,7 @@ export default {
 }
 .form-save-button {
   margin-top:15px;
-  border-radius:2px;
+  border-radius:5px;
   margin-right:10px;
   margin-bottom:10px;
   width:140px;

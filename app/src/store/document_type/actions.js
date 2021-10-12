@@ -28,7 +28,7 @@ export  function saveDocumentType (state, doc_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions saveDocumentType:")
   console.log(doc_element)
-  let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable', 'model']));
+  let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable', 'model']))
   console.log(savingDoc)
   var promiseValidators =[]
   var promiseDoc = []
@@ -120,6 +120,7 @@ export  function saveDocumentType (state, doc_element) {
             else {
               console.log("this is if there are no hotspots")
               state.commit('saveDocumentType',doc_element)
+              return doc_element
             }
               
                 
@@ -131,6 +132,7 @@ export  function saveDocumentType (state, doc_element) {
         else{
           console.log("This is if there are no pictures")
           state.commit('saveDocumentType',doc_element)
+          return doc_element
         }        
         })
       })
@@ -391,7 +393,7 @@ var promiseSpotsTransl =[]
 
 async function asyncForEach (array, callback) {
   for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
+    await callback(array[index], index, array)
   }
 }
 

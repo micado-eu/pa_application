@@ -208,6 +208,8 @@
     "duration_of_new":"Select for how long content will be labeled as new "
   },
   "input_labels": {
+    "add_doc_type":"Add a new document type",
+    "new_doc_typ_add":"Adding new document to available document types",
     "parent_topic": "Parent topic",
     "validator": "To be validated by",
     "category_placeholder": "Enter category title here",

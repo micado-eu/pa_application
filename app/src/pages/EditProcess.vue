@@ -94,7 +94,7 @@
           v-model="edit_process.processTopics"
           />-->
           <div
-            class="  row div-6"
+            class="   div-6"
             style="padding-top:0px"
           >
             <HelpLabel
@@ -103,6 +103,8 @@
               class="tag"
               style="padding-bottom:15px"
             />
+            <div class="row">
+              <div class="col-11">
             <q-select
               data-cy="add_produced_doc"
               dense
@@ -120,6 +122,11 @@
               :options="this.docOptions"
               class="select"
             />
+              </div>
+              <div class="col-1">
+            <NewDocumentProcess @new_doc="updateDocList"/>
+              </div>
+            </div>
           </div>
           <div class=" q-pa-xsm row div-6">
             <div class="col-6 tag">
@@ -336,6 +343,7 @@ import storeMappingMixin from '../mixin/storeMappingMixin'
 import translatedButtonMixin from '../mixin/translatedButtonMixin'
 import CommentList from 'components/CommentList'
 import HelpLabel from 'components/HelpLabel'
+import NewDocumentProcess from 'components/NewDocumentProcess'
 
 
 export default {
@@ -378,7 +386,7 @@ export default {
     })],
   props: ["theprocessid"],
   components: {
-    GlossaryEditor,CommentList,HelpLabel,Treeselect
+    GlossaryEditor,CommentList,HelpLabel,Treeselect,NewDocumentProcess
   },
   data () {
     return {
@@ -417,6 +425,19 @@ export default {
 
   },
   methods: {
+    updateDocList(value){
+      this.fetchDocumentType()
+      .then(docs => {
+        this.docOptions = []
+        console.log(docs)
+        docs.forEach(ut => {
+          var doc = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: ut.id }
+          this.docOptions.push(doc)
+        })
+        console.log(this.docOptions)
+      })
+
+    },
     makeTranslatable(value) {
       console.log(value)
       if (value) {
@@ -795,7 +816,7 @@ export default {
       .then(docs => {
         console.log(docs)
         var published_docs= docs.filter((top)=>{return top.published == true})
-        published_docs.forEach(ut => {
+        docs.forEach(ut => {
           var doc = { label: ut.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].document, value: ut.id }
           this.docOptions.push(doc)
         })
