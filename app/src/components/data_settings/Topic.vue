@@ -538,10 +538,19 @@ export default {
       this.hideAdd = false
     },
     editingTopic(topic) {
+      if(topic.published){
+      this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+      })
+      }
+      else{
       this.isNew = false
       this.hideForm = false
       this.mergeTopic(topic)
       this.publishedOrig = topic.published
+      }
+
     },
 
     showTopicLabel(workingTopic) {

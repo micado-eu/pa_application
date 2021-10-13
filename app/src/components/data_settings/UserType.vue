@@ -431,6 +431,13 @@ export default {
       this.hideAdd = true
     },
     editingUserType(user_type) {
+      if(user_type.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+      })
+      }
+      else{
       this.isNew = false
       this.hideForm = false
       //this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
@@ -441,6 +448,8 @@ export default {
           this.filterTranslationModel(this.activeLanguage)
         )[0]
       )
+      }
+
     },
     showUserTypeLabel(workingTopic) {
       return workingTopic.translations.filter(

@@ -1,4 +1,4 @@
-{
+{ 
   "application_title": "MICADO app",
   "help": {
     "form": "Please fill the form in the default language:",
@@ -502,7 +502,7 @@
     "change_pass":"The new password and the confirmation password do not match",
     "change_pic":"Do you really want to change picture?",
     "no_results": "No results",
-    "published_step":"You can't make changes to steps if the process is published"
+    "published_edit":"You can't edit published content. In order to edit you have to unpublish first."
   },
   "text_editor": {
     "word_count": "Word count"

@@ -813,10 +813,19 @@ export default {
       console.log(this.int_doc_shell)
     },
     editingDoc (doc) {
+      if(doc.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+    })
+      }
+      else{
       this.isNew = false
       this.hideForm = false
       this.mergeDoc(doc)
       this.publishedOrig = doc.published
+      }
+
     },
     deletingDoc (doc) {
       //we will need to filter through the hotspots and send those to because they need to be deleted and we can't delete 

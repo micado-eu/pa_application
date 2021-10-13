@@ -235,14 +235,22 @@ export default {
       this.deleting = false
     },
     editProcess () {
+    if(this.theProcess.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+    })
+    }
+    else{
       console.log("prima di mandare i process")
       console.log(this.theProcess)
       this.$router.push({ name: 'editprocess', params: { theprocessid: this.theProcess.id } })
+    }
     },
     manageProcess () {
       if(this.theProcess.published){
         this.$q.notify({
-        message: this.$t('warning.published_step'),
+        message: this.$t('warning.published_edit'),
         color: 'red'
       })
       }

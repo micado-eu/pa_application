@@ -249,12 +249,12 @@
 </template>
 
 <script>
-import FileUploader from "components/FileUploader";
-import GlossaryEditor from "components/GlossaryEditor";
-import editEntityMixin from "../../mixin/editEntityMixin";
-import storeMappingMixin from "../../mixin/storeMappingMixin";
-import translatedButtonMixin from "../../mixin/translatedButtonMixin";
-import HelpLabel from "../HelpLabel";
+import FileUploader from "components/FileUploader"
+import GlossaryEditor from "components/GlossaryEditor"
+import editEntityMixin from "../../mixin/editEntityMixin"
+import storeMappingMixin from "../../mixin/storeMappingMixin"
+import translatedButtonMixin from "../../mixin/translatedButtonMixin"
+import HelpLabel from "../HelpLabel"
 
 export default {
   name: "InterventionType",
@@ -266,7 +266,7 @@ export default {
         intervention_types: "integration_type/intervention_types",
         intervention_categories:
           "integration_category/intervention_categories_published",
-        tenants: "tenant/tenants",
+        tenants: "tenant/tenants"
       },
       actions: {
         deleteIntegrationTypeElement:
@@ -281,9 +281,9 @@ export default {
         fetchTenants: "tenant/fetchTenants",
         updatePublished: "integration_type/updatePublished",
         saveTranslationProd: "integration_type/saveTranslationProd",
-        deleteTranslationProd: "integration_type/deleteTranslationProd",
-      },
-    }),
+        deleteTranslationProd: "integration_type/deleteTranslationProd"
+      }
+    })
   ],
   data() {
     return {
@@ -293,84 +293,84 @@ export default {
       isNew: false,
       options: [],
       validatorsOptions: [],
-      publishedOrig: false,
-    };
+      publishedOrig: false
+    }
   },
   components: {
     GlossaryEditor,
-    HelpLabel,
+    HelpLabel
   },
   methods: {
     makeTranslatable(value) {
-      console.log(value);
+      console.log(value)
       if (value) {
         this.int_type_shell.translations.filter(
           (top) => top.translated == false
-        )[0].translationState = 1;
+        )[0].translationState = 1
       } else {
         this.int_type_shell.translations.filter(
           (top) => top.translated == false
-        )[0].translationState = 0;
+        )[0].translationState = 0
       }
     },
     getTranslationState(id) {
       var cate = this.intervention_types.filter((cat) => {
-        return cat.id == id;
-      })[0];
+        return cat.id == id
+      })[0]
       var state = cate.translations.filter((transl) => {
-        return transl.lang == this.$defaultLang;
-      })[0].translationState;
+        return transl.lang == this.$defaultLang
+      })[0].translationState
       if (state == 0) {
-        return this.$i18n.t("translation_states.editing");
+        return this.$i18n.t("translation_states.editing")
       } else if (state == 1) {
-        return this.$i18n.t("translation_states.translatable");
+        return this.$i18n.t("translation_states.translatable")
       } else if (state == 2) {
-        return this.$i18n.t("translation_states.translating");
+        return this.$i18n.t("translation_states.translating")
       } else {
-        return this.$i18n.t("translation_states.translated");
+        return this.$i18n.t("translation_states.translated")
       }
     },
     onSubmit() {
-      console.log(this.$refs.validators);
-      console.log(this.$refs.validators.hasError);
-      this.$refs.category_type.validate();
-      this.$refs.validators.validate();
-      this.$refs.type_title.validate();
+      console.log(this.$refs.validators)
+      console.log(this.$refs.validators.hasError)
+      this.$refs.category_type.validate()
+      this.$refs.validators.validate()
+      this.$refs.type_title.validate()
       if (
         this.$refs.type_title.hasError ||
         this.$refs.validators.hasError ||
         this.$refs.category_type.hasError
       ) {
-        this.formHasError = true;
+        this.formHasError = true
         this.$q.notify({
           color: "negative",
-          message: this.$t("warning.req_fields"),
-        });
-        return false;
+          message: this.$t("warning.req_fields")
+        })
+        return false
       } else {
-        console.log("in else of submit");
-        this.savingIntegrationType();
-        this.onReset();
+        console.log("in else of submit")
+        this.savingIntegrationType()
+        this.onReset()
       }
     },
     onReset() {
-      this.$refs.type_title.validate();
-      this.$refs.category_type.validate();
-      this.$refs.validators.validate();
+      this.$refs.type_title.validate()
+      this.$refs.category_type.validate()
+      this.$refs.validators.validate()
 
-      this.$refs.type_title.resetValidation();
-      this.$refs.category_type.resetValidation();
-      this.$refs.validators.resetValidation();
+      this.$refs.type_title.resetValidation()
+      this.$refs.category_type.resetValidation()
+      this.$refs.validators.resetValidation()
     },
     isPublished(event, value) {
-      console.log("event ");
-      console.log(event);
-      console.log("user id");
-      console.log(value);
+      console.log("event ")
+      console.log(event)
+      console.log("user id")
+      console.log(value)
       var publishing_type_temp = this.intervention_types.filter((type) => {
-        return type.id == value;
-      })[0];
-      var publishing_type = JSON.parse(JSON.stringify(publishing_type_temp));
+        return type.id == value
+      })[0]
+      var publishing_type = JSON.parse(JSON.stringify(publishing_type_temp))
       if (event == true) {
         this.$q.notify({
           type: "warning",
@@ -383,23 +383,23 @@ export default {
               handler: () => {
                 this.updatePublished({
                   type: publishing_type,
-                  published: event,
-                });
-                this.saveTranslationProd(value);
-                this.cancelIntegrationType();
-              },
+                  published: event
+                })
+                this.saveTranslationProd(value)
+                this.cancelIntegrationType()
+              }
             },
             {
               label: this.$t("lists.no"),
               color: "red",
               handler: () => {
                 this.intervention_types.filter((topic) => {
-                  return topic.id == value;
-                })[0].published = false;
-              },
-            },
-          ],
-        });
+                  return topic.id == value
+                })[0].published = false
+              }
+            }
+          ]
+        })
       } else {
         this.$q.notify({
           type: "warning",
@@ -412,22 +412,22 @@ export default {
               handler: () => {
                 this.updatePublished({
                   type: publishing_type,
-                  published: event,
-                });
-                this.deleteTranslationProd(value);
-              },
+                  published: event
+                })
+                this.deleteTranslationProd(value)
+              }
             },
             {
               label: this.$t("lists.no"),
               color: "red",
               handler: () => {
                 this.intervention_types.filter((topic) => {
-                  return topic.id == value;
-                })[0].published = true;
-              },
-            },
-          ],
-        });
+                  return topic.id == value
+                })[0].published = true
+              }
+            }
+          ]
+        })
       }
     },
     deletingIntegrationType(index) {
@@ -440,19 +440,19 @@ export default {
             label: this.$t("button.delete"),
             color: "red",
             handler: () => {
-              console.log(index);
-              this.deleteIntegrationTypeElement(index);
-            },
+              console.log(index)
+              this.deleteIntegrationTypeElement(index)
+            }
           },
           {
             label: this.$t("button.back"),
             color: "accent",
             handler: () => {
-              console.log("not deleting");
-            },
-          },
-        ],
-      });
+              console.log("not deleting")
+            }
+          }
+        ]
+      })
     },
     savingIntegrationType() {
       if (this.isNew) {
@@ -466,18 +466,18 @@ export default {
           translationDate: null,
           translationState: this.int_type_shell.translations[0]
             .translationState,
-          translated: true,
-        });
+          translated: true
+        })
         //}
         this.int_type_shell.translations.forEach((transl) => {
-          transl.translationDate = new Date().toISOString();
-        });
+          transl.translationDate = new Date().toISOString()
+        })
         this.saveIntegrationTypeElement(this.int_type_shell).then((int_cat) => {
-          console.log("saved");
-        });
+          console.log("saved")
+        })
       } else {
         if (this.int_type_shell.translations[0].translationState == 1) {
-          console.log(this.int_type_shell);
+          console.log(this.int_type_shell)
           this.int_type_shell.translations.push({
             id: this.int_type_shell.id,
             lang: this.activeLanguage,
@@ -486,44 +486,52 @@ export default {
             description: this.int_type_shell.translations[0].description,
             translationDate: null,
             translationState: 1,
-            translated: true,
-          });
+            translated: true
+          })
         }
         // we are updating the exsisting
         this.editIntegrationTypeElement(this.int_type_shell).then((int_cat) => {
-          console.log("updated");
-        });
+          console.log("updated")
+        })
       }
-      this.hideForm = true;
-      this.hideAdd = false;
-      this.createShell();
+      this.hideForm = true
+      this.hideAdd = false
+      this.createShell()
     },
     newIntegrationType() {
-      this.createShell();
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
+      this.createShell()
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
     },
     cancelIntegrationType() {
-      this.onReset();
-      console.log(this.normalizedOptions);
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
-      this.createShell();
+      this.onReset()
+      console.log(this.normalizedOptions)
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
+      this.createShell()
     },
     editIntegrationType(integration_type) {
-      this.isNew = false;
-      this.hideForm = false;
-      this.hideAdd = true;
+      if(integration_type.published){
+                 this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+      })
+      }
+      else{
+              this.isNew = false
+      this.hideForm = false
+      this.hideAdd = true
       // this.int_type_shell = JSON.parse(JSON.stringify(integration_type));
-      this.mergeType(integration_type);
-      this.publishedOrig = integration_type.published;
+      this.mergeType(integration_type)
+      this.publishedOrig = integration_type.published
+      }
     },
     showTypeLabel(workingType) {
       return workingType.translations.filter(
         this.filterTranslationModel(this.activeLanguage)
-      )[0].interventionTitle;
+      )[0].interventionTitle
     },
     createShell() {
       this.int_type_shell = {
@@ -531,8 +539,8 @@ export default {
         translations: [],
         categoryType: null,
         interventionTypeValidators: [],
-        published: false,
-      };
+        published: false
+      }
       this.int_type_shell.translations.push({
         id: -1,
         lang: this.activeLanguage,
@@ -540,65 +548,65 @@ export default {
         description: "",
         translationDate: null,
         translationState: 0,
-        translated: false,
-      });
+        translated: false
+      })
     },
     mergeType(intervention_type) {
-      console.log("MERGING");
-      console.log(process);
-      this.int_type_shell.id = intervention_type.id;
-      this.int_type_shell.link = intervention_type.link;
-      this.int_type_shell.published = intervention_type.published;
+      console.log("MERGING")
+      console.log(process)
+      this.int_type_shell.id = intervention_type.id
+      this.int_type_shell.link = intervention_type.link
+      this.int_type_shell.published = intervention_type.published
       // this.int_type_shell.published = intervention_type.published
       // this.int_type_shell.publicationDate = intervention_type.publicationDate
-      this.int_type_shell.categoryType = intervention_type.categoryType;
+      this.int_type_shell.categoryType = intervention_type.categoryType
       //      this.int_type_shell.interventionTypeValidators = intervention_type.interventionTypeValidators
       //     const validators = []
       if (intervention_type.interventionTypeValidators) {
         intervention_type.interventionTypeValidators.forEach((v) => {
-          this.int_type_shell.interventionTypeValidators.push(v.tenantId);
-        });
+          this.int_type_shell.interventionTypeValidators.push(v.tenantId)
+        })
         //      console.log('validators')
         //     console.log(validators)
         //     this.int_type_shell.interventionTypeValidators = [3]
-        console.log(this.int_type_shell.interventionTypeValidators);
+        console.log(this.int_type_shell.interventionTypeValidators)
       }
       this.int_type_shell.interventionProcess =
-        intervention_type.interventionProcess;
+        intervention_type.interventionProcess
       this.int_type_shell.translations = [
         intervention_type.translations.filter((top) => {
-          return top.lang == this.activeLanguage && top.translated == false;
-        })[0],
-      ];
-      console.log("checking the merge");
+          return top.lang == this.activeLanguage && top.translated == false
+        })[0]
+      ]
+      console.log("checking the merge")
 
-      console.log(this.int_type_shell);
-    },
+      console.log(this.int_type_shell)
+    }
   },
 
   created() {
-    this.createShell();
-    this.loading = true;
-    console.log(this.$store);
+    this.createShell()
+    this.loading = true
+    console.log(this.$store)
     this.fetchIntegrationType().then((processes) => {
-      this.loading = false;
-    });
+      this.loading = false
+    })
     this.fetchIntegrationCategory().then((processes) => {
       this.intervention_categories.forEach((cat) => {
         const translation = cat.translations.filter(
           (transl) => transl.lang == this.activeLanguage
-        )[0];
-        this.options.push({ value: translation.id, label: translation.title });
-      });
-      this.loading = false;
-    });
+        )[0]
+        this.options.push({ value: translation.id, label: translation.title })
+      })
+      this.loading = false
+    })
     this.fetchTenants().then((tenants) => {
       this.tenants.forEach((tenant) => {
-        this.validatorsOptions.push({ value: tenant.id, label: tenant.name });
-      });
-    });
-  },
-};
+        this.validatorsOptions.push({ value: tenant.id, label: tenant.name })
+      })
+    })
+  }
+}
 </script>
 <style scoped>
 .delete-button {
