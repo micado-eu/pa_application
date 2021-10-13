@@ -79,7 +79,7 @@
     "chart_description": "Describe your Chart",
     "preview_process":"Preview process",
     "add_step_explain":"Click 'Add Step' to add one or more steps to your process",
-    "click_step_graph":"Clic on each step to enter details",
+    "click_step_graph":"Click on each step to enter details",
     "add_edge_explain":"Draw lines between steps to link them"
   },
   "menu": {

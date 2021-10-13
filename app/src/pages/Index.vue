@@ -42,7 +42,7 @@ export default {
   data () {
     return {
       buildDate: new Date(this.$envconfig.appBuildDate),
-            navs: [
+      navs: [
         {
           label: "menu.situation",
           icon: "img:statics/icons/Icon - Migration Situation Monitor.svg",
