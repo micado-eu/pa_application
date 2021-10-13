@@ -176,7 +176,8 @@
     "return_main": "return to main page",
     "view_model": "View model",
     "view_pics": "View details",
-    "add_language":"Add language"
+    "add_language":"Add language",
+    "new_doc_process":"Add new document type"
   },
   "data_settings": {
     "manage_languages": "Manage languages in the platform",
