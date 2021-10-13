@@ -156,7 +156,6 @@
                         :data="hotspot_data"
                         :options="pic_options"
                         :pictures="doc.pictures"
-                        :isInWallet="checkWallet(doc.id)"
                         @showdoc="showDocument(doc.id)"
                         @transition="changeHotspot"
                         @clean="clean"
@@ -193,7 +192,7 @@
               class="image"
               v-for="tag in full_process.processTopics"
               :src="topics.filter(topic => topic.id == tag.idTopic)[0].icon"
-              :key="'topic'.concat(tag)"
+              :key="'topic'.concat(tag.idTopic)"
             >
             </q-img>
           </div>
