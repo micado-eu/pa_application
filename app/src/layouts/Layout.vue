@@ -208,7 +208,7 @@ export default {
     isLoggedIn () {
       console.log("called isloggedin")
       return this.$auth.loggedIn() && this.check(["Application/micado_migrant_manager","Application/micado_superadmin","Application/micado_admin"])
-    },
+    }
    /* userpic_computer(){
        if(this.$store.state.auth.user != null){
          console.log(this.pic)
@@ -228,10 +228,10 @@ export default {
   }
   },
   mounted(){
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.innerHTML = "window._mfq = window._mfq || [];(function () {var mf = document.createElement(\"script\"); mf.type = \"text/javascript\"; mf.defer = true;      mf.src = \"//cdn.mouseflow.com/projects/" + this.$envconfig.paMouseflow + ".js\";      document.getElementsByTagName(\"head\")[0].appendChild(mf);    })();";
-    document.getElementsByTagName('head')[0].appendChild(script);
+    var script = document.createElement("script")
+    script.type = "text/javascript"
+    script.innerHTML = "window._mfq = window._mfq || [];(function () {var mf = document.createElement(\"script\"); mf.type = \"text/javascript\"; mf.defer = true;      mf.src = \"//cdn.mouseflow.com/projects/" + this.$envconfig.paMouseflow + ".js\";      document.getElementsByTagName(\"head\")[0].appendChild(mf);    })();"
+    document.getElementsByTagName('head')[0].appendChild(script)
 
   },
   data () {
@@ -251,8 +251,8 @@ export default {
         },
         {
           label: 'menu.situation',
-          icon: 'img:statics/icons/Icon - Migration Situation Monitor.png',
-          active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).png',
+          icon: 'img:statics/icons/Icon - Migration Situation MonitorWhite.svg',
+          active_icon: 'img:statics/icons/Icon - Migration Situation Monitor (selected).svg',
           to: '/situation/main',
           auth: ["Application/micado_superadmin", "Application/micado_admin"],
           feature: "FEAT_DEFAULT",
