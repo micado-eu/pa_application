@@ -5,7 +5,7 @@
     <div class="row">
     <div class="col-8 username ">{{ this.Username }}</div>
     <q-item-section class="col-1 flex flex-center top">
-      <IconWithTooltip style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
+      <IconWithTooltip  v-if="features.includes('FEAT_TASKS')" style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
          </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
       <IconWithTooltip style="float:right" :icon="'img:statics/icons/Icon - Data.svg'" :tooltip="$t('help.migrant_data')" @click.native="migrantData()" :data-cy="'userdata'.concat(theUser.umId)"/>
@@ -33,12 +33,22 @@
 
 <script>
 import IconWithTooltip from '../IconWithTooltip'
+import storeMappingMixin from '../../mixin/storeMappingMixin'
+
 export default {
   name: 'Process',
   props: ["Username",  "Age", "Nationality", "Gender", "Path", "theUser"], 
   data() {
-    return {};
+    return {}
   },
+  mixins: [
+    storeMappingMixin({
+      getters: {
+        features: "features/featureFlags"
+      },
+      actions: {
+      }
+    })],
   components:{
     IconWithTooltip
   },

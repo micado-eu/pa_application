@@ -104,7 +104,7 @@
               style="padding-bottom:15px"
             />
             <div class="row">
-              <div class="col-11">
+              <div class="col-9">
             <q-select
               data-cy="add_produced_doc"
               dense
@@ -123,7 +123,7 @@
               class="select"
             />
               </div>
-              <div class="col-1">
+              <div class="col-3">
             <NewDocumentProcess @new_doc="updateDocList"/>
               </div>
             </div>
@@ -868,11 +868,11 @@ export default {
   color: black;
   border: 1px solid #c71f40;
   width: 150px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 .button {
   width: 150px;
-  border-radius: 2px;
+  border-radius: 5px;
 }
 .banner {
   font-style: normal;

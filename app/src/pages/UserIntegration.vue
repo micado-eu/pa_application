@@ -170,19 +170,44 @@
                 <q-file
                   v-model="validationFile"
                   accept=".jpg, .pdf, image/*"
-                  label="Choose an optional file for validate"
+                  :label="$t('input_labels.optional_file_validation')"
                 />
               </q-card-section>
 
               <q-card-actions align="right" class="text-primary">
                 <q-btn
                   :data-cy="'cancel'"
-                  label="Cancel"
+                  :label="$t('button.cancel')"
                   color="accent"
                   v-close-popup
                 />
                 <q-btn
-                  label="Add document"
+                  :label="$t('button.validate')"
+                  color="accent"
+                  :data-cy="'validatetask'"
+                  @click="validateTask()"
+                  v-close-popup
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+          <q-dialog v-model="ask_validation_no_doc" persistent>
+            <q-card style="min-width: 350px">
+              <q-card-section>
+                <div class="text-h6">
+                  {{ $t("input_labels.validate_intervention") }}
+                </div>
+              </q-card-section>
+
+              <q-card-actions align="right" class="text-primary">
+                <q-btn
+                  :data-cy="'cancel'"
+                  :label="$t('button.cancel')"
+                  color="accent"
+                  v-close-popup
+                />
+                <q-btn
+                  :label="$t('button.validate')"
                   color="accent"
                   :data-cy="'validatetask'"
                   @click="validateTask()"
@@ -217,7 +242,8 @@ export default {
         validator: "user/pausers",
         documents: "documents/my_documents",
         completion_documents: "documents/completion_documents",
-        tenants: "tenant/tenants"
+        tenants: "tenant/tenants",
+        features: "features/featureFlags"
       },
       actions: {
         saveIntervention: "intervention_plan/saveIntervention",
@@ -246,6 +272,7 @@ export default {
       button_id: null,
       hideAdd: false,
       ask_validation: false,
+      ask_validation_no_doc: false,
       processes_list: [
         "How to certify education degree",
         "Renewal of residence permit for working reasons",
@@ -521,7 +548,12 @@ export default {
 
       console.log(this.$store.state.auth.user.umid)
       this.validatingUser = Number(this.theuserid)
-      this.ask_validation = true
+      if(this.features.includes('FEAT_DOCUMENTS')){
+        this.ask_validation = true
+      }
+      else{
+        this.ask_validation_no_doc = true
+      }
     },
     validateTask() {
       console.log("user id: " + this.validatingUser)
@@ -578,14 +610,15 @@ export default {
             }).then(() => {
               // still have to write the completed_intervention_document table to associate the new doc with the intervention
 
+
+            })
+          }
+        }
               this.createDocShell()
               this.validationFile = null
               this.validatingIntervention = null
               this.validatingUser = null
               this.validatingDocType = null
-            })
-          }
-        }
       })
     },
     createDocShell() {

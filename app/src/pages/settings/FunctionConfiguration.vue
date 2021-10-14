@@ -3,6 +3,82 @@
 <div v-if="loading"> load </div>
   <div v-else class="q-pa-md">
     <h5>{{$t('data_settings.settings')}}</h5>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.survey_local')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+              dense
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              :readonly="!edit_survey_local"
+              v-model="surveyLocal"
+              />
+        <q-btn
+          v-if="!edit_survey_local"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_survey_local = true"
+        />
+          <q-btn
+          v-if="edit_survey_local"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('helpdesk_pa')"
+        />
+          <q-btn
+          v-if="edit_survey_local"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('survey_local',newSurveyLocal, surveyLocal )"
+        />
+
+      </q-card-section>
+    </q-card>
+    <q-card>
+      <q-card-section>
+        <div class="text-h6">{{$t('data_settings.survey_en')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <q-input
+              dense
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              :readonly="!edit_survey_en"
+              v-model="surveyEn"
+              />
+        <q-btn
+          v-if="!edit_survey_en"
+          color="accent"
+          glossy
+          :label="$t('button.edit')"
+          @click="edit_survey_en = true"
+        />
+          <q-btn
+          v-if="edit_survey_en"
+          color="accent"
+          glossy
+          :label="$t('button.cancel')"
+          @click="cancelSetting('helpdesk_pa')"
+        />
+          <q-btn
+          v-if="edit_survey_en"
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('survey_en',newSurveyEn, surveyEn )"
+        />
+
+      </q-card-section>
+    </q-card>
     <q-card class="my-card">
       <q-card-section>
         <div class="text-h6">{{$t('data_settings.feature_settings')}}</div>
@@ -12,6 +88,7 @@
           v-for="afeature in workingFeatures"
           :feature="afeature"
           :key="afeature.id"
+          @input="manageFeatures"
         />
         <q-btn
           color="accent"
@@ -485,6 +562,10 @@ export default {
       helpdeskMigrantOrig: null,
       durationOfNew: null,
       durationOfNewOrig: null,
+      surveyLocal:null,
+      surveyLocalOrig:null,
+      surveyEn:null,
+      surveyEnOrig:null,
       isNew: true,
       newFathers: true,
       newPolicy: true,
@@ -492,6 +573,8 @@ export default {
       newHelpdeskNgo: true,
       newHelpdeskMigrant: true,
       newDurationOfNew: true,
+      newSurveyLocal:true,
+      newSurveyEn:true,
       t_tags: [],
       edit_fathers: false,
       fathers: [],
@@ -501,6 +584,8 @@ export default {
       edit_helpdesk_ngo: false,
       edit_helpdesk_migrant: false,
       edit_duration_of_new: false,
+      edit_survey_local:false,
+      edit_survey_en:false,
       loading:true,
       tabs:'guides'
     }
@@ -538,6 +623,32 @@ export default {
   },
   computed: {},
   methods: {
+    manageFeatures(value){
+    /*  if(value.flagKey == "FEAT_MIGRANT_LOGIN" && value.enabled == false){
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_DOCUMENTS"
+        })[0].enabled = false
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_ASSISTANT"
+        })[0].enabled = false
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_TASKS"
+        })[0].enabled = false
+      }
+      else if (value.flagKey == "FEAT_MIGRANT_LOGIN" && value.enabled == true){
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_DOCUMENTS"
+        })[0].enabled = true
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_ASSISTANT"
+        })[0].enabled = true
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_TASKS"
+        })[0].enabled = true
+      }
+      console.log(value)
+      console.log(this.workingFeatures)*/
+    },
     isPublishedSetting(event, value) {
       console.log("event ")
       console.log(event)
@@ -796,6 +907,14 @@ export default {
         case "duration_of_new":
           this.durationOfNewOrig = JSON.parse(JSON.stringify(item))
           this.edit_duration_of_new = false
+          break
+        case "survey_local":
+          this.surveyLocalOrig = JSON.parse(JSON.stringify(item))
+          this.edit_survey_local = false
+          break
+        case "survey_en":
+          this.surveyEnOrig = JSON.parse(JSON.stringify(item))
+          this.edit_survey_en = false
           break
         default:
           console.log("non of those")

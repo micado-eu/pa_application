@@ -1,12 +1,16 @@
 <template>
 <div>
+<div style="text-align:right">
 <q-btn
-  style="margin-right:10px;"
-  icon-right="add"
+  style="width:210px;border-radius: 5px;"
+  :label="$t('button.new_doc_process')"
   color="secondary"
   no-caps
+  unelevated
+  padding="sm"
   @click="layout = true"
 />
+</div>
 <q-dialog v-model="layout" full-width>
        <q-layout view="Lhh lpR fff" container class="bg-white">
   <q-header class="bg-accent">

@@ -263,7 +263,7 @@ export default {
           icon: 'img:statics/icons/Icon - Migrant Management.png',
           active_icon: 'img:statics/icons/Icon - Migrant Management (selected).png',
           to: '/migrant',
-          feature: "FEAT_DEFAULT",
+          feature: "FEAT_MIGRANT_LOGIN",
           auth: "Application/micado_migrant_manager",
           description: 'menu.migrant_desc'
         },

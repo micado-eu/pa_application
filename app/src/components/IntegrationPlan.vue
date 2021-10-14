@@ -25,15 +25,15 @@
             </div>
           </q-item-section>
         </template>
-          <q-card-section  v-if="intervention.completed">
+          <q-card-section  v-if="intervention.completed" style="min-height:100px">
             <div class="row" style="text-align:center">
-              <div class="col">
+              <div v-if="features.includes('FEAT_DOCUMENTS')" class="col">
                 <a :href="completionDoc" download="doc.png">
               <img alt="Completion document" class="image" :src="completionDoc" />
               </a>
               </div>
-              <div class="col " style="  position: relative;">
-            <q-icon class="absolute-center" name="check" size="100px" color="green" />
+              <div class="col " >
+            <q-icon  name="check" size="100px" color="green" />
             </div>
             </div>
           </q-card-section>
@@ -148,6 +148,8 @@
 
 <script>
 import HelpLabel from './HelpLabel'
+import storeMappingMixin from "../mixin/storeMappingMixin"
+
 
 export default {
   name: "InterventionPlan",
@@ -156,6 +158,14 @@ export default {
      readMoreActivated:false
     }
   },
+   mixins: [
+    storeMappingMixin({
+      getters: {
+        features: "features/featureFlags"
+      },
+      actions: {
+      }
+    })],
   components: {},
   props:["title","description", "the_intervention_plan", "model", "intervention", "the_processes_list", "hideForm", "intervention_categories", "completionDoc", "tenants"],
   computed: {
