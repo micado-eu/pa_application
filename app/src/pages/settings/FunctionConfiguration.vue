@@ -12,6 +12,7 @@
           v-for="afeature in workingFeatures"
           :feature="afeature"
           :key="afeature.id"
+          @input="manageFeatures"
         />
         <q-btn
           color="accent"
@@ -538,6 +539,32 @@ export default {
   },
   computed: {},
   methods: {
+    manageFeatures(value){
+    /*  if(value.flagKey == "FEAT_MIGRANT_LOGIN" && value.enabled == false){
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_DOCUMENTS"
+        })[0].enabled = false
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_ASSISTANT"
+        })[0].enabled = false
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_TASKS"
+        })[0].enabled = false
+      }
+      else if (value.flagKey == "FEAT_MIGRANT_LOGIN" && value.enabled == true){
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_DOCUMENTS"
+        })[0].enabled = true
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_ASSISTANT"
+        })[0].enabled = true
+        this.workingFeatures.filter((filt)=>{
+          return filt.flagKey == "FEAT_TASKS"
+        })[0].enabled = true
+      }
+      console.log(value)
+      console.log(this.workingFeatures)*/
+    },
     isPublishedSetting(event, value) {
       console.log("event ")
       console.log(event)

@@ -33,8 +33,8 @@
           <!--{{$t('input_labels.name')}}-->
         </q-item-section>
 
-            <q-item-section class="col-1 flex flex-center top">
-              {{$t('button.integration')}}
+            <q-item-section  class="col-1 flex flex-center top">
+              <p v-if="features.includes('FEAT_TASKS')" style="margin-bottom:0px"> {{$t('button.integration')}}</p>
             </q-item-section>
            <q-item-section class="col-1 flex flex-center top">
               {{$t('button.migrant_data')}}
@@ -82,7 +82,8 @@ export default {
   mixins: [
     storeMappingMixin({
       getters: {
-        users: 'user/users'
+        users: 'user/users',
+        features: "features/featureFlags"
       },
       actions: {
         fetchUser: 'user/fetchUser'

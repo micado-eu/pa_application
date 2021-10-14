@@ -316,7 +316,8 @@
     "language_abbr":"Language tag",
     "lang_editor":"Language editor",
     "delete_confirm":"Are you sure you want to delete",
-    "migrant_manager":"Migrant Account management"
+    "migrant_manager":"Migrant Account management",
+    "optional_file_validation":"Choose an optional file for validation"
   },
   "profile": {
     "username": "Username",

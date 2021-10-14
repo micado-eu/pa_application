@@ -5,6 +5,7 @@
             <div class="row">
         <div class="col-11" style="text-align:center">
         <q-btn
+          v-if="features.includes('FEAT_DOCUMENTS')"
           size="15px"
           style="margin-right: 10px; width:200px;border-radius: 5px;"
           :label="$t('button.add_document')"
@@ -97,7 +98,7 @@
         />
       </div>
       <hr class="hr" />
-      <q-list class="container-labels" style="width: 100%; margin: 0 auto">
+      <q-list v-if="features.includes('FEAT_DOCUMENTS')" class="container-labels" style="width: 100%; margin: 0 auto">
         <Document
           v-for="document in documents"
           :Title="setTitle(document)"
@@ -128,7 +129,8 @@ export default {
       getters: {
         documents: "documents/my_documents",
         document_types: "document_type/document_types",
-        users: "user/users"
+        users: "user/users",
+        features: "features/featureFlags"
       },
       actions: {
         fetchSpecificUser: "user/fetchSpecificUser",
@@ -367,6 +369,8 @@ export default {
           this.theReceipt = receipt;
         });*/
       })
+      console.log(this.features)
+      console.log(this.features.includes('FEAT_DOCUMENTS'))
       this.loading = false
     })
     /* const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
