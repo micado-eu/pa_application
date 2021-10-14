@@ -206,7 +206,9 @@
     "helpdesk_pa":"Helpdesk message for the PA application",
     "helpdesk_ngo":"Helpdesk message for the NGO application",
     "helpdesk_migrant":"Helpdesk mail or phone number for the Migrant application",
-    "duration_of_new":"Select for how long content will be labeled as new "
+    "duration_of_new":"Select for how long content will be labeled as new ",
+    "survey_local":"Link for the survey in your local language",
+    "survey_en":"Link for the survey in English"
   },
   "input_labels": {
     "add_doc_type":"Add a new document type",
