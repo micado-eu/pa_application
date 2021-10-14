@@ -7,8 +7,6 @@
       pagetitle="glossary.edit"
       v-on:save="editGlossaryItemAndReturn($event)"
       :elem="elem"
-      :on_publish="onPublish"
-      :on_unpublish="onUnpublish"
     />
   </div>
 </template>
@@ -30,68 +28,8 @@ export default {
     ...mapActions('glossary', [
       'fetchGlossary',
       'editGlossaryItem',
-      'editGlossaryItemTranslation',
-      'deleteProdTranslations',
-      'addNewGlossaryItemTranslationProd',
-      'updatePublished'
+      'editGlossaryItemTranslation'
     ]),
-    onPublish(id) {
-      let glossaryElem = this.glossaryElemById(id)
-      let promises = []
-      for (let i = 0; i < glossaryElem.translations.length; i += 1) {
-        const translation = Object.assign({}, glossaryElem.translations[i])
-        delete translation.translationState
-        delete translation.published
-        promises.push(
-          this.addNewGlossaryItemTranslationProd(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving glossary production translation ${translation.lang}: ${err}`
-            })
-          })
-        )
-      }
-      promises.push(
-        this.updatePublished({ id, published: true }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while updating published state: ${err}`
-          })
-        })
-      )
-      return Promise.all(promises)
-    },
-    onUnpublish(id) {
-      let glossaryElem = this.glossaryElemById(id)
-      let promises = []
-      for (let i = 0; i < glossaryElem.translations.length; i += 1) {
-        const translation = Object.assign({}, glossaryElem.translations[i])
-        translation.translationState = 0
-        promises.push(
-          this.editGlossaryItemTranslation(translation).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving event translation ${dataWithId.lang}: ${err}`
-            })
-          })
-        )
-      }
-      promises.push(
-        this.deleteProdTranslations(id).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while deleting glossary production translations: ${err}`
-          })
-        }),
-        this.updatePublished({ id, published: false }).catch((err) => {
-          this.$q.notify({
-            type: 'negative',
-            message: `Error while updating published state: ${err}`
-          })
-        })
-      )
-      return Promise.all(promises)
-    },
     editGlossaryItemAndReturn(data) {
       const router = this.$router
       const id = parseInt(this.$route.params.id, 10)

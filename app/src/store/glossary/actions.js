@@ -56,7 +56,7 @@ export function deleteProdTranslations(state, id) {
   return client.deleteProdTranslations(id)
 }
 
-export function addNewGlossaryItemTranslationProd(state, data) {
+export function saveGlossaryTranslationProd(state, id) {
   return client
-    .addNewGlossaryItemTranslationProd(data)
+    .saveGlossaryTranslationProd(id)
 }

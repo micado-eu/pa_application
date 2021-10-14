@@ -43,12 +43,9 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-  addNewInformationItemTranslationProd(translation) {
-    if (!translation.translationDate) {
-      translation.translationDate = new Date().toISOString()
-    }
+  saveInformationTranslationProd(id) {
     return axiosInstance
-      .post(`/backend/1.0.0/information/${translation.id}/information-translation-prods`, translation)
+      .get(`/backend/1.0.0/information/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },

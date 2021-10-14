@@ -43,12 +43,9 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-  addNewEventItemTranslationProd(translation) {
-    if (!translation.translationDate) {
-      translation.translationDate = new Date().toISOString()
-    }
+  saveEventTranslationProd(id) {
     return axiosInstance
-      .post(`/backend/1.0.0/events/${translation.id}/event-translation-prods`, translation)
+      .get(`/backend/1.0.0/events/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
