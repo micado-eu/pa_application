@@ -1007,6 +1007,16 @@ export default {
         this.durationOfNewOrig = Number(setting.value)
         this.newDurationOfNew = false
       }
+      if (setting.key == "survey_local") {
+        this.surveyLocal = setting.value
+        this.surveyLocalOrig =setting.value
+        this.newSurveyLocal = false
+      }
+      if (setting.key == "survey_en") {
+        this.surveyEn = setting.value
+        this.surveyEnOrig = setting.value
+        this.newSurveyEn = false
+      }
     })
     this.fetchMixedSettings().then((settings) => {
       if (settings.length > 0) {
