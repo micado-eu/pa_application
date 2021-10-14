@@ -233,7 +233,7 @@
           >
             <!-- items -->
             <q-item
-              v-for="item in filteredElements"
+              v-for="(item, index) in filteredElements"
               :key="item.id"
               :id="item.id"
               clickable
@@ -300,6 +300,27 @@
                     v-if="is_event"
                   >
                     {{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}
+                  </span>
+                </div>
+                <div
+                  style="display: inline"
+                >
+                  <span>
+                    {{ $t("input_labels.available_transl") }}:
+                  </span>
+                  <span 
+                    v-if="item.availableTranslations.length > 0"
+                  >
+                    <q-chip
+                      v-for="availableLang in item.availableTranslations"
+                      :key="availableLang"
+                      >{{ availableLang }}
+                    </q-chip>
+                  </span>
+                  <span 
+                    v-else
+                  >
+                    <span>{{ $t("input_labels.no_available_transl") }}</span>
                   </span>
                 </div>
                 <glossary-editor-viewer
@@ -370,7 +391,8 @@
                 <q-toggle
                   v-model="item.published"
                   color="accent"
-                  disable
+                  @input="showWarningPublish($event, item.id, index)"
+                  :disable="!item.translationState"
                 />
               </q-item-section>
               <q-item-section
@@ -484,6 +506,12 @@ export default {
     },
     entity: {
       type: String
+    },
+    on_publish: {
+      type: Function
+    },
+    on_unpublish: {
+      type: Function
     }
   },
   data() {
@@ -622,7 +650,7 @@ export default {
       }
     },
     compare(a, b) {
-      return a.title.localeCompare(b.title, this.$userLang, { sensitivity: 'base' })
+      return a.title.localeCompare(b.title, this.lang, { sensitivity: 'base' })
     },
     compareTranslationDates(a, b) {
       return new Date(b.translationDate) - new Date(a.translationDate)
@@ -662,13 +690,54 @@ export default {
         message: `Error while uploading: ${err}`
       })
     },
+    showWarningPublish(event, id, idx) {
+      if (event == true) {
+        this.$q.notify({
+          type: 'warning',
+          timeout: 0,
+          message: this.$t("lists.publish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                this.on_publish(id).then(() => console.log("published"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+                this.filteredElements[idx].published = false
+              }
+            }
+          ]
+        })
+
+      }
+      else {
+        this.$q.notify({
+          type: 'warning',
+          message: this.$t("lists.unpublish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                this.on_unpublish(id).then(() => console.log("unpublished"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+                this.filteredElements[idx].published = true
+              }
+            }
+          ]
+        })
+
+      }
+    },
     async initializeList() {
       let creatorPromises = []
       let creatorPromisesIds = []
       this.translatedElements = this.elements.map((e) => {
         let translation
         if (e.translations) {
-          const idx = e.translations.findIndex((t) => t.lang === this.lang)
+          const idx = e.translations.findIndex((t) => (t.lang === this.lang) && !t.translated)
           if (idx !== -1) {
             translation = { ...e.translations[idx] }
             translation.id = e.id // In case of errors we still have the id
@@ -705,9 +774,9 @@ export default {
             }
             if (this.is_event) {
               const startDate = new Date(e.startDate)
-              translation.startDate = startDate.toLocaleString(this.$userLang)
+              translation.startDate = startDate.toLocaleString(this.lang)
               const finishDate = new Date(e.endDate)
-              translation.endDate = finishDate.toLocaleString(this.$userLang)
+              translation.endDate = finishDate.toLocaleString(this.lang)
               translation.location = e.location
               translation.cost = e.cost
             }
@@ -718,6 +787,9 @@ export default {
             }
             translation.published = e.published
             this.showExtraInfo[e.id] = false
+            translation.availableTranslations = e.translations
+              .filter((t) => t.translated && (new Date(t.translationDate) >= new Date(translation.translationDate)))
+              .map((t) => t.lang)
             return translation
           } else return undefined
         }
@@ -845,7 +917,7 @@ export default {
   },
   created() {
     this.loading = true
-    this.lang = this.$i18n.locale
+    this.lang = this.$defaultLang
     const langs = { defaultLang: this.$defaultLang, userLang: this.$userLang }
     Promise.all([
       this.fetchGlossaryTemp(langs),

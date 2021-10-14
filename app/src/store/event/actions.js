@@ -103,11 +103,9 @@ export function deleteProdTranslations(state, id) {
   return client.deleteProdTranslations(id)
 }
 
-export function addNewEventItemTranslationProd(state, data) {
-  data.event = data.title
-  delete data.title
+export function saveEventTranslationProd(state, id) {
   return client
-    .addNewEventItemTranslationProd(data)
+    .saveEventTranslationProd(id)
 }
 
 export function deleteCategory(state, data) {

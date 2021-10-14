@@ -99,7 +99,6 @@ export default {
       let md = this.converter.makeMarkdown(cleanHTML)
       md = this.cleanSpaces(md)
       md = await this.markReferences(md, defaultLang, userLang, isAllFetched, fakeEntities, fakeEntitiesObj)
-      console.log(md)
       return md
     },
     markdownToHTML(markdown) {
@@ -124,7 +123,6 @@ export default {
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
       for (const [key, value] of Object.entries(entities)) {
-        console.log("here")
         // Remove elements with repeated titles from previous entities (ignoring case)
         const filteredTerms = value.filter((elem) => {
           for (const marked of markedTitles) {

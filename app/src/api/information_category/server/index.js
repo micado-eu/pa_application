@@ -17,7 +17,7 @@ export default {
 
   updateInformationCategoryTranslation(translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: { eq: translation.translated }
     }
     translation.translationDate =  new Date().toISOString()
     return axiosInstance
@@ -40,11 +40,9 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
-  saveInformationCategoryTranslationProd(translation, id) {
-    translation.id = id
-    translation.translationDate = new Date().toISOString()
+  saveInformationCategoryTranslationProd(id) {
     return axiosInstance
-      .post(`/backend/1.0.0/information-categories/${id}/information-category-translation-prods`, translation)
+      .get(`/backend/1.0.0/information-categories/to-production?id=${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },

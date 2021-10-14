@@ -11,16 +11,18 @@ export function editCategoryTypeElement(state, information_category) {
   return client
     .updateInformationCategory({
       id: information_category.id,
-      link_integration_plan: information_category.link_integration_plan,
-      published: information_category.published
+      link_integration_plan: information_category.link_integration_plan
     }).then((update_return) => {
       // cycle in the translations and update each
-      information_category.translations.forEach((aTranslation) => {
+      information_category.translations.forEach((aTranslation, idx) => {
         aTranslation.informationCategory = aTranslation.category
         delete aTranslation.category
-        client.updateInformationCategoryTranslation(aTranslation)
+        client.updateInformationCategoryTranslation(aTranslation).then(() => {
+          if (idx === information_category.translations.length - 1) {
+            fetchInformationCategory(state)
+          }
+        })
       })
-      fetchInformationCategory(state)
     })
 }
 export function saveInformationCategory(state, information_category) {
@@ -39,6 +41,7 @@ export function saveInformationCategory(state, information_category) {
           }
         })
       }, category_return.id)
+      return category_return
     })
 }
 
@@ -62,10 +65,8 @@ export function deleteProdTranslations(state, id) {
   return client.deleteProdTranslations(id)
 }
 
-export function saveInformationCategoryTranslationProd(state, data) {
-  data.informationCategory = data.category
-  delete data.category
-  return client.saveInformationCategoryTranslationProd(data, data.id)
+export function saveInformationCategoryTranslationProd(state, id) {
+  return client.saveInformationCategoryTranslationProd(id)
 } 
 
 export function updateInformationCategoryTranslation(state, data) {

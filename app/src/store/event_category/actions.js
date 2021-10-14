@@ -11,16 +11,18 @@ export function editCategoryTypeElement(state, event_category) {
   return client
     .updateEventCategory({
       id: event_category.id,
-      link_integration_plan: event_category.link_integration_plan,
-      published: event_category.published
+      link_integration_plan: event_category.link_integration_plan
     }).then((update_return) => {
       // cycle in the translations and update each
-      event_category.translations.forEach((aTranslation) => {
+      event_category.translations.forEach((aTranslation, idx) => {
         aTranslation.eventCategory = aTranslation.category
         delete aTranslation.category
-        client.updateEventCategoryTranslation(aTranslation)
+        client.updateEventCategoryTranslation(aTranslation).then(() => {
+          if (idx === event_category.translations.length - 1) {
+            fetchEventCategory(state)
+          }
+        })
       })
-      fetchEventCategory(state)
     })
 }
 export function saveEventCategory(state, event_category) {
@@ -39,6 +41,7 @@ export function saveEventCategory(state, event_category) {
           }
         })
       }, category_return.id)
+      return category_return
     })
 }
 
@@ -62,10 +65,8 @@ export function deleteProdTranslations(state, id) {
   return client.deleteProdTranslations(id)
 }
 
-export function saveEventCategoryTranslationProd(state, data) {
-  data.eventCategory = data.category
-  delete data.category
-  return client.saveEventCategoryTranslationProd(data, data.id)
+export function saveEventCategoryTranslationProd(state, id) {
+  return client.saveEventCategoryTranslationProd(id)
 }
 
 export function updateEventCategoryTranslation(state, data) {

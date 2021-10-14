@@ -1,5 +1,5 @@
 <template>
-  <div :id="$options.name">
+  <div :id="$options.name" v-if="!loading">
     <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t("events.categories_title")}}</div>
     <span v-if="errorMessage">{{$t(errorMessage)}}</span>
     <upload-button
@@ -16,10 +16,36 @@
       <q-item
         clickable
         v-ripple
-        v-for="a_event_category in eventCategories"
+        v-for="(a_event_category, index) in eventCategories"
         :key="a_event_category.id"
       >
-        <q-item-section class="category-title">{{showCategoryLabel(a_event_category)}}</q-item-section>
+        <q-item-section>
+          <span class="category-title">{{showCategoryLabel(a_event_category)}}</span>
+          <br/>
+          <div
+            style="display: inline"
+            v-if="availableTranslations[a_event_category.id]"
+          >
+            <span>
+              {{ $t("input_labels.available_transl") }}:
+            </span>
+            <span 
+              v-if="availableTranslations[a_event_category.id].length > 0"
+            >
+              <q-chip
+                v-for="availableLang in availableTranslations[a_event_category.id]"
+                :key="availableLang"
+                >{{ availableLang }}
+              </q-chip>
+            </span>
+            <span 
+              v-else
+            >
+              <span>{{ $t("input_labels.no_available_transl") }}</span>
+            </span>
+          </div>
+        </q-item-section>
+        <q-item-section side>{{getTranslationStateText(a_event_category.translations.filter(translationFilter)[0].translationState)}}</q-item-section>
         <q-item-section
           side
           class="icon_btn_section"
@@ -27,7 +53,8 @@
           <q-toggle
             v-model="a_event_category.published"
             color="accent"
-            disable
+            @input="showWarningPublish($event, a_event_category.id, index)"
+            :disable="!a_event_category.translations.filter(translationFilter)[0].translationState"
           />
         </q-item-section>
         <q-item-section
@@ -78,63 +105,31 @@
         />
       </q-card-section>
       <q-card-section :hidden="hideForm">
-        <q-tabs
-          v-model="langTab"
-          dense
-          class="text-grey"
-          active-color="black"
-          indicator-color="black"
-          align="justify"
-          narrow-indicator
-        >
-          <q-tab
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-            :label="language.name"
+        <q-input
+          v-model="int_cat_shell.translations[0].category"
+          :label="$t('input_labels.title')"
+          class="q-mb-md"
+          :readonly="int_cat_shell.published || (originalTranslationState !== 0)"
+        />
+        <div>
+          <help-label
+            :fieldLabel="$t('translation_states.translatable')"
+            :helpLabel="$t('help.is_published')"
+          ></help-label>
+          <q-toggle
+            v-model="add_translatable"
+            color="accent"
+            :disable="int_cat_shell.published || (originalTranslationState !== 0)"
+            @input="changeTranslatable($event, int_cat_shell)"
+          ></q-toggle>
+          <br>
+          <q-checkbox
+            color="accent"
+            v-model="linkable"
+            :label="$t('input_labels.event_checkbox')"
+            :readonly="int_cat_shell.published || (originalTranslationState !== 0)"
           />
-        </q-tabs>
-        <q-tab-panels
-          v-model="langTab"
-          animated
-        >
-          <q-tab-panel
-            v-for="language in languages"
-            :key="language.lang"
-            :name="language.name"
-          >
-            <q-input
-              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].category"
-              :label="$t('input_labels.event')"
-              class="q-mb-md"
-            />
-            <translate-state-button
-              v-model="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState"
-              :isForDefaultLanguage="language.lang===activeLanguage"
-              :objectId="int_cat_shell.id"
-              :readonly="!(language.lang===activeLanguage)"
-              @micado-change="(id) => {changeTranslationState(int_cat_shell, id.state)}"
-            />
-            <div>
-              <help-label
-                :fieldLabel="$t('input_labels.is_published')"
-                :helpLabel="$t('help.is_published')"
-              ></help-label>
-              <q-toggle
-                v-model="add_published"
-                color="accent"
-                :disable="int_cat_shell.translations.filter(filterTranslationModel(language.lang))[0].translationState < 2"
-                @input="showWarningPublish($event, int_cat_shell.id)"
-              ></q-toggle>
-              <br>
-              <q-checkbox
-                color="accent"
-                v-model="linkable"
-                :label="$t('input_labels.event_checkbox')"
-              />
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
+        </div>
         <div align="center">
           <q-btn
             no-caps
@@ -153,15 +148,16 @@
             style="width:70px;border-radius:2px"
             :label="$t('button.save')"
             @click="saveNewEventCategory()"
+            :disable="int_cat_shell.published || (originalTranslationState !== 0)"
           />
         </div>
       </q-card-section>
     </q-card>
   </div>
+  <div v-else>Loading...</div>
 </template>
 
 <script>
-import editEntityMixin from '../../mixin/editEntityMixin'
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
@@ -170,7 +166,6 @@ import UploadButton from 'components/UploadButton'
 export default {
   name: 'EventCategory',
   mixins: [
-    editEntityMixin,
     translatedButtonMixin
   ],
   data() {
@@ -182,7 +177,10 @@ export default {
       linkable: false,
       errorMessage: '',
       disabledDelete: [],
-      add_published: false
+      add_translatable: false,
+      availableTranslations: {},
+      originalTranslationState: 0,
+      loading: false
     }
   },
   components: {
@@ -221,16 +219,20 @@ export default {
     },
     showCategoryLabel(workingCat) {
       if (workingCat.translations) {
-        return workingCat.translations.filter(this.filterTranslationModel(this.activeLanguage))[0].category
+        return workingCat.translations.filter(this.translationFilter)[0].category
       }
     },
     saveNewEventCategory() {
-      const content = { link_integration_plan: this.linkable, published: this.add_published, ...this.int_cat_shell }
+      const content = { link_integration_plan: this.linkable, ...this.int_cat_shell }
       if (this.isNew) {
+        content.translations[1] = Object.assign({}, content.translations[0])
+        content.translations[1].translated = true
         // we are adding a new instance
         this.saveEventCategory(
           content
-        ).catch((err) => {
+        ).then((ec) => {
+          this.availableTranslations[ec.id] = [this.$defaultLang]
+        }).catch((err) => {
           this.$q.notify({
             type: 'negative',
             message: `Error while saving event category: ${err}`
@@ -240,7 +242,9 @@ export default {
         // we are updating the exsisting
         this.editCategoryTypeElement(
           content
-        ).catch((err) => {
+        ).then(() => {
+          this.availableTranslations[content.id] = [this.$defaultLang]
+        }).catch((err) => {
           this.$q.notify({
             type: 'negative',
             message: `Error while saving event category: ${err}`
@@ -248,12 +252,16 @@ export default {
         })
       }
       // Cleanup
+      this.originalTranslationState = 0
       this.linkable = false
-      this.add_published = false
+      this.add_translatable = false
       this.hideForm = true
       this.createShell()
     },
     newEventCategory() {
+      this.originalTranslationState = 0
+      this.linkable = false
+      this.add_translatable = false
       this.isNew = true
       this.hideForm = false
       this.hideAdd = true
@@ -262,113 +270,132 @@ export default {
       this.isNew = false
       this.hideForm = true
       this.hideAdd = false
-      this.add_published = false
       this.linkable = false
+      this.add_translatable = false
     },
     editEventCategory(event_category) {
       this.isNew = false
       this.hideForm = false
       this.linkable = event_category.link_integration_plan
-      this.add_published = event_category.published
+      this.add_translatable = !event_category.translations.filter(this.translationFilter)[0].translationState
+      this.originalTranslationState = event_category.translations.filter(this.translationFilter)[0].translationState
       // this.int_cat_shell = JSON.parse(JSON.stringify(event_category));
       this.mergeCategory(event_category)
     },
     createShell() {
       this.int_cat_shell = { id: -1, translations: [] }
-      this.languages.forEach((l) => {
-        this.int_cat_shell.translations.push({
-          id: -1, lang: l.lang, category: '', translationDate: null, translationState: 0
-        })
+      this.int_cat_shell.translations.push({
+        id: -1, lang: this.$defaultLang, translated: false, category: '', translationDate: null, translationState: 0
       })
     },
     mergeCategory(category) {
       this.int_cat_shell.id = category.id
-      category.translations.forEach((tr) => {
-        //    this.int_topic_shell.translations.filter(function(sh){return sh.lang == tr.lang})
-
-        for (let i = 0; i < this.int_cat_shell.translations.length; i++) {
-          if (this.int_cat_shell.translations[i].lang == tr.lang) {
-            this.int_cat_shell.translations.splice(i, 1)
-            this.int_cat_shell.translations.push(JSON.parse(JSON.stringify(tr)))
-            break
-          }
-        }
-      })
+      const defaultTranslations = category.translations.filter(t => t.lang === this.$defaultLang)
+      this.int_cat_shell.translations[0] = Object.assign({}, defaultTranslations.filter(t => !t.translated)[0])
+      if (this.int_cat_shell.translations[0].translationState === 1) {
+        this.int_cat_shell.translations[1] = Object.assign({}, defaultTranslations.filter(t => t.translated)[0])
+      }
+      this.add_translatable = this.int_cat_shell.translations[0].translationState === 1
+      this.linkable = category.link_integration_plan
     },
-    updatePublishedCat(value, id) {
-      let eventElem = this.eventCategoryById(id)
-      if (eventElem.published && !value) {
-        // If published goes from true to false, all the content gets deleted from the translation prod table
-        let promises = []
-        if (this.disabledDelete.includes(id)) {
-          this.errorMessage = 'events.categories_error'
-        } else {
-          for (let i = 0; i < eventElem.translations.length; i += 1) {
-            const translation = Object.assign({}, eventElem.translations[i])
-            translation.translationState = 0
-            promises.push(
-              this.updateEventCategoryTranslation(translation).catch((err) => {
-                this.$q.notify({
-                  type: 'negative',
-                  message: `Error while saving event translation ${dataWithId.lang}: ${err}`
-                })
-              })
-            )
-          }
-          Promise.all(promises).then(() => this.deleteProdTranslations(id))
-            .then(() => {
-              return this.updatePublished({ id, published: value })
-            }).then(() => {
-              // Cleanup
-              this.linkable = false
-              this.add_published = false
-              this.hideForm = true
-              this.initialize()
-            })
-            .catch((err) => {
-              this.$q.notify({
-                type: 'negative',
-                message: `Error while updating published state: ${err}`
-              })
-            })
-        }
-      } else if (!eventElem.published && value) {
-        // If published goes from false to true, all the content with the state "translated" must be copied into the prod table
-        let promises = []
-        for (let i = 0; i < eventElem.translations.length; i += 1) {
-          const translation = Object.assign({}, eventElem.translations[i])
-          if (translation.translationState > 2 || translation.lang === this.$defaultLang) {
-            delete translation.translationState
-            delete translation.published
-            promises.push(
-              this.saveEventCategoryTranslationProd(translation).catch((err) => {
-                this.$q.notify({
-                  type: 'negative',
-                  message: `Error while saving event category production translation ${translation.lang}: ${err}`
-                })
-              })
-            )
-          }
-        }
-        Promise.all(promises)
-          .then(() => this.updatePublished({ id, published: value }))
-          .then(() => {
-            // Cleanup
-            this.linkable = false
-            this.add_published = false
-            this.hideForm = true
-            this.initialize()
-          }).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while updating published state: ${err}`
-            })
-          })
+    showWarningPublish(event, id, idx) {
+      if (event == true) {
+        this.$q.notify({
+          type: 'warning',
+          timeout: 0,
+          message: this.$t("lists.publish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                Promise.all([
+                  this.saveEventCategoryTranslationProd(id).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while saving event category production translation: ${err}`
+                    })
+                  }),
+                  this.updatePublished({ id, published: true }).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while updating published state: ${err}`
+                    })
+                  })
+                ]).then(() => console.log("published"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+               this.eventCategoryById(id).published = false
+              }
+            }
+          ]
+        })
+
+      }
+      else {
+        this.$q.notify({
+          type: 'warning',
+          message: this.$t("lists.unpublish_warning"),
+          actions: [
+            {
+              label: this.$t("lists.yes"), color: 'accent', handler: () => {
+                let ecElem = this.eventCategoryById(id)
+                let promises = []
+                const translation = Object.assign({}, ecElem.translations.filter(t => !t.translated)[0])
+                translation.translationState = 0
+                promises.push(
+                  this.updateEventCategoryTranslation(translation).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while saving event translation: ${err}`
+                    })
+                  })
+                )
+                promises.push(
+                  this.deleteProdTranslations(id).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while deleting event production translations: ${err}`
+                    })
+                  }),
+                  this.updatePublished({ id, published: false }).catch((err) => {
+                    this.$q.notify({
+                      type: 'negative',
+                      message: `Error while updating published state: ${err}`
+                    })
+                  })
+                )
+                Promise.all(promises).then(() => console.log("unpublished"))
+              }
+            },
+            {
+              label: this.$t("lists.no"), color: 'red', handler: () => {
+                this.eventCategoryById(id).published = true
+              }
+            }
+          ]
+        })
+
       }
     },
+    translationFilter(translation) {
+      return !translation.translated && (translation.lang === this.$defaultLang)
+    },
+    getTranslationStateText(translationStateNumber) {
+      switch (translationStateNumber) {
+        case 0: return this.$t("translation_states.editing")
+        case 1: return this.$t("translation_states.translatable")
+        case 2: return this.$t("translation_states.translating")
+        case 3: return this.$t("translation_states.translated")
+        default: return this.$t("translation_states.unknown")
+      }
+    },
+    changeTranslatable(event, int_cat_shell) {
+      int_cat_shell.translations[0].translationState = event ? 1 : 0
+    },
     initialize() {
-      this.createShell()
       this.loading = true
+      this.createShell()
       this.fetchEventCategory()
         .then((processes) => {
           this.fetchEvent().then(() => {
@@ -377,8 +404,15 @@ export default {
                 this.disabledDelete.push(inf.category)
               }
             }
+            for (const ec of this.eventCategories) {
+              const translation = ec.translations.filter(this.translationFilter)[0]
+              this.availableTranslations[ec.id] = ec.translations
+                .filter((t) => t.translated && (new Date(t.translationDate) >= new Date(translation.translationDate)))
+                .map((t) => t.lang)
+            }
             this.loading = false
           }).catch((err) => {
+            console.error(err)
             this.$q.notify({
               type: 'negative',
               message: `Error while fetching events: ${err}`
@@ -396,48 +430,6 @@ export default {
         type: 'negative',
         message: `Error while uploading: ${error}`
       })
-    },
-    showWarningPublish(event, id) {
-      if (event == true) {
-        this.$q.notify({
-          type: 'warning',
-          timeout:0,
-          message: 'Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?',
-          actions: [
-            {
-              label: 'Yes', color: 'accent', handler: () => {
-                this.updatePublishedCat(event, id)
-              }
-            },
-            {
-              label: 'No', color: 'red', handler: () => {
-                this.add_published = false
-              }
-            }
-          ]
-        })
-
-      }
-      else {
-        this.$q.notify({
-          type: 'warning',
-          timeout:0,
-          message: 'Warning: Unpublishing the process will delete all existing translations. Proceed?',
-          actions: [
-            {
-              label: 'Yes', color: 'accent', handler: () => {
-                this.updatePublishedCat(event, id)
-              }
-            },
-            {
-              label: 'No', color: 'red', handler: () => {
-                this.add_published = true
-              }
-            }
-          ]
-        })
-
-      }
     }
   },
   // store.commit('increment', 10)

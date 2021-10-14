@@ -309,6 +309,7 @@
     "validate_intervention":"Validate intervention",
     "days":"Days",
     "available_transl":"Available translations",
+    "no_available_transl":"No available translations",
     "emitter":"Emitter",
     "language_name":"Language name",
     "language_iso":"ISO code",
