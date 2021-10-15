@@ -6,7 +6,7 @@
       class="edit-element-component q-pa-xl q-ma-xl"
       v-else
     >
-      <div class="center-edit q-ma-xl">
+      <div class="center-edit q-mx-xl">
         <div
           class="warning-error-row row"
           v-if="errorDateTimeEmpty"
@@ -17,15 +17,15 @@
           </span>
           <span class="col"></span>
         </div>
-        <div>
-          <span class="q-my-xl label-edit">
+        <div class="q-mb-md">
+          <span class="label-edit">
             <help-label
               :fieldLabel="$t('input_labels.title') + ' *'"
               :helpLabel="$t('help.element_title')"
             ></help-label>
           </span>
           <q-input
-            class="title_input q-mb-xl"
+            class="title_input"
             data-cy="title_input"
             outlined
             v-model="internalTitle"
@@ -36,15 +36,15 @@
             :readonly="published || translatable"
           />
         </div>
-        <div>
-          <span class="q-my-xl label-edit">
+        <div class="q-my-md">
+          <span class="q-my-md label-edit">
             <help-label
               :fieldLabel="$t('input_labels.description')"
               :helpLabel="$t('help.element_description')"
             ></help-label>
           </span>
           <glossary-editor
-            class="desc-editor q-mb-xl"
+            class="desc-editor"
             data-cy="description_input"
             v-model="internalDescription"
             :maxCharLimit="description_max_length"
@@ -56,9 +56,9 @@
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
-            class="q-my-xl tag_list col"
+            class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_category')"
                 :helpLabel="$t('help.element_category')"
@@ -77,15 +77,15 @@
           </div>
           <div
             v-if="is_event"
-            class="q-my-xl q-ml-lg tag_list col"
+            class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.location')"
                 :helpLabel="$t('help.location')"
               ></help-label>
             </span>
-            <div class="row q-mb-xl">
+            <div class="row">
               <q-input
                 class="title_input col"
                 data-cy="location_input"
@@ -114,8 +114,8 @@
           class="row tag_category_selectors"
           v-if="is_event"
         >
-          <div class="q-my-xl q-mr-lg tag_list col">
-            <span class="q-my-lg label-edit">
+          <div class="q-my-md q-mr-lg tag_list col">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.start_date') + ' *'"
                 :helpLabel="$t('help.element_start_date')"
@@ -130,8 +130,8 @@
               inline
             ></date-time-selector>
           </div>
-          <div class="q-my-xl tag_list col">
-            <span class="q-my-lg label-edit">
+          <div class="q-my-md tag_list col">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.finish_date') + ' *'"
                 :helpLabel="$t('help.element_end_date')"
@@ -150,9 +150,9 @@
         <div class="row tag_category_selectors">
           <div
             v-if="topics_enabled"
-            class="q-my-xl tag_list col"
+            class="q-my-md tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_topic')"
                 :helpLabel="$t('help.element_topic')"
@@ -185,9 +185,9 @@
           </div>
           <div
             v-if="user_types_enabled"
-            class="q-my-xl q-ml-lg tag_list col"
+            class="q-my-md q-ml-lg tag_list col"
           >
-            <span class="q-my-lg label-edit">
+            <span class="q-my-md label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.select_user_type')"
                 :helpLabel="$t('help.element_user_type')"
@@ -262,28 +262,29 @@
             color="accent"
           ></q-toggle>
         </div>
-        <div class="row q-my-xl">
-          <q-btn
-            unelevated
-            no-caps
-            :label="$t('button.cancel')"
-            class="q-mr-lg edit-element-button cancel-btn"
-            @click="goBack()"
-          />
-          <q-btn
-            unelevated
-            no-caps
-            color="accent"
-            data-cy="save_button"
-            :label="$t('button.save')"
-            @click="callSaveFn()"
-            class="row edit-element-button"
-            :disable="published || (translatable && (originalTranslationState === 1))"
-            :loading="saving"
-          />
-        </div>
       </div>
-
+    </div>
+    <div v-if="!loading" class="q-mb-xl" style="text-align: center">
+      <div style="display: inline-block">
+        <q-btn
+          unelevated
+          no-caps
+          :label="$t('button.cancel')"
+          class="q-mr-lg edit-element-button cancel-btn"
+          @click="goBack()"
+        />
+        <q-btn
+          unelevated
+          no-caps
+          color="accent"
+          data-cy="save_button"
+          :label="$t('button.save')"
+          @click="callSaveFn()"
+          class="edit-element-button"
+          :disable="published || (translatable && (originalTranslationState === 1))"
+          :loading="saving"
+        />
+      </div>
     </div>
   </div>
 </template>
