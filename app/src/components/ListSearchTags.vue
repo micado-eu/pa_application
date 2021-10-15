@@ -13,6 +13,12 @@
         >
           <q-item style="max-width: 100%">
             <q-item-section>
+              <q-item-label class="general-filter-title">{{$t("filters.title")}}</q-item-label>
+            </q-item-section>
+          </q-item>
+          <q-separator />
+          <q-item style="max-width: 100%">
+            <q-item-section>
               <a
                 href="javascript:void(0)"
                 @click="clearFilters()"
@@ -25,6 +31,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="topics_enabled"
           >
             <template v-slot:header>
@@ -37,6 +44,7 @@
             <q-item
               v-for="topic in filterTopics"
               :key="topic.id"
+              dense
             >
               <q-checkbox
                 color="accent"
@@ -72,6 +80,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="categories_enabled"
           >
             <template v-slot:header>
@@ -84,6 +93,7 @@
             <q-item
               v-for="category in filterCategories"
               :key="category.id"
+              dense
             >
               <q-radio
                 color="accent"
@@ -107,6 +117,7 @@
           <q-separator />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="user_types_enabled"
           >
             <template v-slot:header>
@@ -119,6 +130,7 @@
             <q-item
               v-for="userType in filterUserTypes"
               :key="userType.id"
+              dense
             >
               <q-checkbox
                 color="accent"
@@ -154,6 +166,7 @@
           <q-separator v-if="is_event" />
           <q-expansion-item
             expand-separator
+            default-opened
             v-if="is_event"
           >
             <template v-slot:header>
@@ -172,15 +185,16 @@
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
-        <div class="q-mr-md row">
+        <div class="row">
           <q-input
             color="accent"
             v-model="search"
             debounce="500"
             filled
             outlined
+            dense
             :label='$t("input_labels.search")'
-            class="search-bar col"
+            :class="categories_enabled ? 'search-bar col-7' : 'search-bar col-9'"
           >
             <template v-slot:append>
               <q-icon name="search" />
@@ -188,37 +202,46 @@
           </q-input>
           <q-btn
             no-caps
+            unelevated
             :label='$t("button.categories")'
-            class="cat-btn q-ml-md"
+            class="cat-btn q-ml-md col"
             :to="categories_url"
             v-if="categories_enabled"
           />
           <q-btn
             no-caps
+            unelevated
             :label='$t(add_label)'
-            class="add-btn q-ml-md"
+            class="add-btn q-ml-md col"
             data-cy="add_element"
             :to="new_url"
           />
         </div>
-        <div class="row">
+        <div class="center q-mr-xl">
           <upload-button
             :entity="entity"
             :creator="getCurrentUser()"
             @uploadSuccess="batchUploadSuccess($event)"
             @uploadError="batchUploadError($event)"
+            class="q-mr-sm"
           ></upload-button>
         </div>
         <div class="column-header">
           <!-- column title -->
           <q-list>
-            <q-item class="row flex">
-              <q-item-section class="col-7 flex flex-left"></q-item-section>
-              <q-item-section class="col-3 flex flex-center">
-                {{$t("lists.translation_state")}}
+            <q-item class="flex row">
+              <q-item-section class="flex flex-left col-7"></q-item-section>
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.published")}}</div>
               </q-item-section>
-              <q-item-section class="col-1 flex flex-left">
-                {{$t("lists.published")}}
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.translation_state")}}</div>
+              </q-item-section>
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.edit")}}</div>
+              </q-item-section>
+              <q-item-section class="flex col-1">
+                <div style="text-align:center">{{$t("lists.delete")}}</div>
               </q-item-section>
             </q-item>
           </q-list>
@@ -303,6 +326,7 @@
                   </span>
                 </div>
                 <div
+                  class="q-mb-sm"
                   style="display: inline"
                 >
                   <span>
@@ -384,9 +408,6 @@
                   </template>
                 </glossary-editor-viewer>
               </q-item-section>
-              <q-item-section class="col-3 flex flex-center q-mt-md">
-                {{getTranslationStateText(item.translationState)}}
-              </q-item-section>
               <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-toggle
                   v-model="item.published"
@@ -395,25 +416,26 @@
                   :disable="!item.translationState"
                 />
               </q-item-section>
-              <q-item-section
-                :style="{ visibility: hovered === item.id ? 'visible' : 'hidden' }"
-                class="col-shrink q-mt-md"
-              >
+              <q-item-section class="col-1 flex flex-center q-mt-md">
+                <div style="text-align:center">{{getTranslationStateText(item.translationState)}}</div>
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-btn
-                  round
+                  unelevated
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
                   :to="edit_url_fn(item.id)"
                   :data-cy="'edit_button' + item.id"
                 />
-                <br>
+              </q-item-section>
+              <q-item-section class="col-1 flex flex-center  q-mt-md">
                 <q-btn
-                  round
-                  class="item-btn"
-                  icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
-                  @click="delete_fn(item)"
-                  :data-cy="'delete_button' + item.id"
-                />
+                    unelevated
+                    class="item-btn"
+                    icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
+                    @click="delete_fn(item)"
+                    :data-cy="'delete_button' + item.id"
+                  />
               </q-item-section>
             </q-item>
           </q-list>
@@ -936,7 +958,7 @@ $btn_secondary: #cdd0d2;
   background-color: #0b91ce;
   color: white;
   border-radius: 5px;
-  margin-right: 85px;
+  margin-right: 108px;
   margin-top: 65px;
   margin-bottom: 25px;
 }
@@ -955,9 +977,6 @@ $btn_secondary: #cdd0d2;
   font-weight: 600;
   font-family: "Nunito";
   font-size: 20px;
-}
-.item-btn {
-  background-color: white;
 }
 .tag_btn {
   background-color: $primary;
@@ -981,15 +1000,20 @@ $btn_secondary: #cdd0d2;
   font-weight: 600;
   font-size: 15px;
 }
+.general-filter-title {
+  font-family: "Nunito Sans";
+  font-weight: 700;
+  font-size: 20px;
+}
 .filter-title {
   font-family: "Nunito Sans";
-  font-weight: 600;
-  font-size: 20px;
+  font-weight: bold;
+  font-size: 15px;
 }
 .clear_all {
   font-family: "Nunito";
   font-weight: 600;
-  font-size: 16px;
+  font-size: 12px;
 }
 .show_more {
   font-family: "Nunito";
@@ -1026,6 +1050,7 @@ $btn_secondary: #cdd0d2;
   margin-top: 65px;
   margin-bottom: 25px;
   max-width: 75%;
+  max-height: 40px;
 }
 .filter-list {
   margin-top: 65px;

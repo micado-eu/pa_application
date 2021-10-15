@@ -162,7 +162,7 @@
     "add_glossary": "Add Term",
     "add_event": "Add Event",
     "add_information": "Add Information",
-    "categories": "Categories",
+    "categories": "Add Categories",
     "remove": "Remove",
     "migrant_data": "Data",
     "hide": "Hide",
@@ -390,7 +390,7 @@
     "empty_error": "Empty tags are not allowed."
   },
   "filters": {
-    "title": "Filter",
+    "title": "Filter by",
     "clear_all": "Clear all filters",
     "tags_title": "Tags",
     "category_title": "Category",
@@ -414,7 +414,9 @@
     "publish_warning": "Warning: Publishing the process will make it visible on the migrant app and no changes will be possible before unpublishing. Proceed?",
     "unpublish_warning": "Warning: Unpublishing the process mark all existing translations as untranslated and might need to be translated again. Proceed?",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "edit": "Edit",
+    "delete": "Delete"
   },
   "upload_modal": {
     "upload_label": "Upload",
