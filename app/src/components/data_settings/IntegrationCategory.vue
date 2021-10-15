@@ -1,14 +1,14 @@
 <template>
   <div :id="$options.name" class="q-pa-md">
     <div class="row wrap justify-start items-start content-center">
-      <div class="col">
+      <div class="col-4">
         <router-link :to="'#' + $options.name">
           <h5 @click="onClickTitle()">
             {{ $t("data_settings.intervention_categories") }}
           </h5>
         </router-link>
       </div>
-      <div class="full-height col">
+      <div class="full-height col-8">
         <div class="row justify-end items-center">
           <UploadButton entity="intervention_category" />
           <q-btn
@@ -18,6 +18,7 @@
             :label="$t('button.add_category')"
             @click="newIntegrationCategory()"
             :disable="hideAdd"
+            style="margin-top:10px"
             class="add-button"
           />
         </div>

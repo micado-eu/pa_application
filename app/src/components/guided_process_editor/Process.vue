@@ -87,10 +87,11 @@
           {{ $t('input_labels.available_transl') }}:
         </p>
         <q-chip
+          style="background-color:#C4C4C4" text-color="white"
           v-for=" lang in theProcess.translations.filter(lang => {return lang.process.length>1 && lang.translated == true})"
           :key="lang.lang"
         >
-          {{ lang.lang }}
+          {{ lang.lang.toUpperCase() }}
         </q-chip>
       </div>
       <hr class="hr">
