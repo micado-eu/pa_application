@@ -240,8 +240,9 @@
               return lang.userType.length > 1 && lang.translated == true;
             })"
             :key="lang.lang"
+            style="background-color:#C4C4C4" text-color="white"
           >
-            {{ lang.lang }}
+            {{ lang.lang.toUpperCase() }}
           </q-chip>
         </div>
         <hr style="margin-bottom: 0px">

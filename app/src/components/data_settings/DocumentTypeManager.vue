@@ -75,6 +75,9 @@
             )[0].lang"
             ref="editor"
           />
+
+          <div class="row">
+          <q-card-section class=" col section" style="padding-right:10px">
           <HelpLabel
           :fieldLabel="$t('input_labels.issuer')"
           :helpLabel ="$t('help.issuer')"
@@ -90,40 +93,9 @@
               v-model="int_doc_shell.issuer"
               :label="$t('input_labels.issuer')"
             />
-            <div class="q-gutter-sm row">
-               <HelpLabel
-          :fieldLabel="$t('input_labels.validable')"
-          :helpLabel ="$t('help.validable')"
-          class="col-1.5 field"
-          style="padding-top:10px"
-          /> 
-              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
-            </div>
-            <HelpLabel
-            v-if="int_doc_shell.validable" 
-          :fieldLabel="$t('input_labels.validators')"
-          :helpLabel ="$t('help.validators')"
-          class="field"
-          /> 
-              <q-select
-              v-if="int_doc_shell.validable"
-              multiple
-              :readonly="int_doc_shell.published"
-              filled
-              dense
-              clearable
-              v-model="int_doc_shell.validators"
-              @input="addValidators($event)"
-              @remove="removeValidator($event)"
-              @clear="clearValidators()"
-              emit-value
-              map-options
-              :options="this.validatorList"
-              :label="$t('input_labels.validators')"
-              class="select"
-          />
-       
-          <q-card-section class="section">
+          </q-card-section>
+
+          <q-card-section class=" col section">
             <HelpLabel
           :fieldLabel="$t('input_labels.icon')"
           :helpLabel ="$t('help.doc_type_icon')"
@@ -224,8 +196,9 @@
             </q-item-section>
             </q-card>-->
           </q-card-section>
-          
-        <q-card-section class="section">
+          </div>
+          <div class="row">
+        <q-card-section class="col section" style="padding-right:10px">
           <HelpLabel
           :fieldLabel="$t('input_labels.doc_pics')"
           :helpLabel ="$t('help.doc_pics')"
@@ -286,7 +259,7 @@
             </div>
           </q-card>
         </q-card-section>
-        <q-card-section class="section">
+        <q-card-section class=" col section">
            <HelpLabel
           :fieldLabel="$t('input_labels.upload_model')"
           :helpLabel ="$t('help.upload_model')"
@@ -325,16 +298,28 @@
         </q-item-section>
       </q-item>
         </q-card-section>
-        
-       <div class="row">
-        <div class="col-2" style="min-width:200px; ">
+        </div>
+
+            <div class="q-gutter-sm row">
+              <div class="col" style="justify-content:center">
+                <div class="row">
+          <HelpLabel
+          :fieldLabel="$t('input_labels.validable')"
+          :helpLabel ="$t('help.validable')"
+          style="padding-top:10px"
+          /> 
+              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
+                </div>
+            </div>
+        <div class="col">
+        <div class="row" style="padding-top:9px">
           <HelpLabel
             :fieldLabel="$t('translation_states.translatable')"
             :helpLabel ="$t('help.is_published')"
-            style="padding-left:17px"
+            style="padding-top:0px"
           />
-        </div>
-        <div class="col" style="padding-top:2px">
+
+
           <!--<q-toggle
             v-model="int_doc_shell.published"
             color="accent"
@@ -348,10 +333,39 @@
                 )[0].translationState == 1
               "
               color="accent"
+              style=""
               @input="makeTranslatable($event)"
             />
         </div>
       </div>
+
+            </div>
+    <q-card-section v-if="int_doc_shell.validable" class="section" >
+            <HelpLabel
+            
+          :fieldLabel="$t('input_labels.validators')"
+          :helpLabel ="$t('help.validators')"
+          class="field"
+          /> 
+          
+              <q-select
+              v-if="int_doc_shell.validable"
+              multiple
+              :readonly="int_doc_shell.published"
+              filled
+              dense
+              clearable
+              v-model="int_doc_shell.validators"
+              @input="addValidators($event)"
+              @remove="removeValidator($event)"
+              @clear="clearValidators()"
+              emit-value
+              map-options
+              :options="this.validatorList"
+              :label="$t('input_labels.validators')"
+              class="select"
+          />
+    </q-card-section>
       
 
       <hr id="hr">
@@ -450,7 +464,7 @@
       </q-item>
               <div class="row pad">
               <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">{{$t('input_labels.available_transl')}}:</p>
-               <q-chip v-for=" lang in translationAvailable(document_type)" :key="lang.lang">{{lang.lang}}</q-chip>
+               <q-chip  style="background-color:#C4C4C4" text-color="white" v-for=" lang in translationAvailable(document_type)" :key="lang.lang">{{lang.lang.toUpperCase()}}</q-chip>
             </div>
             <hr style="margin-bottom:0px">
     </div>
@@ -1317,7 +1331,7 @@ h5 {
   font-size: 16px;
   font-weight: 600;
   padding-left: 0px;
-  padding-right: 0px;
+  padding-right:0px;
 }
 
 .span {
