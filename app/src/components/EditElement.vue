@@ -53,6 +53,43 @@
           >
           </glossary-editor>
         </div>
+                <div
+          class="row tag_category_selectors"
+          v-if="is_event"
+        >
+          <div class="q-my-md q-mr-lg tag_list col">
+            <span class="q-my-md label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.start_date') + ' *'"
+                :helpLabel="$t('help.element_start_date')"
+              ></help-label>
+            </span>
+            <date-time-selector
+              :date="startDate"
+              :time="startTime"
+              @inputDate="startDate = $event"
+              @inputTime="startTime = $event"
+              :readonly="published || translatable"
+              inline
+            ></date-time-selector>
+          </div>
+          <div class="q-my-md tag_list col">
+            <span class="q-my-md label-edit">
+              <help-label
+                :fieldLabel="$t('input_labels.finish_date') + ' *'"
+                :helpLabel="$t('help.element_end_date')"
+              ></help-label>
+            </span>
+            <date-time-selector
+              :date="finishDate"
+              :time="finishTime"
+              @inputDate="finishDate = $event"
+              @inputTime="finishTime = $event"
+              :readonly="published || translatable"
+              inline
+            ></date-time-selector>
+          </div>
+        </div>
         <div class="row tag_category_selectors">
           <div
             v-if="categories_enabled"
@@ -108,43 +145,6 @@
                 </q-tooltip>
               </a>
             </div>
-          </div>
-        </div>
-        <div
-          class="row tag_category_selectors"
-          v-if="is_event"
-        >
-          <div class="q-my-md q-mr-lg tag_list col">
-            <span class="q-my-md label-edit">
-              <help-label
-                :fieldLabel="$t('input_labels.start_date') + ' *'"
-                :helpLabel="$t('help.element_start_date')"
-              ></help-label>
-            </span>
-            <date-time-selector
-              :date="startDate"
-              :time="startTime"
-              @inputDate="startDate = $event"
-              @inputTime="startTime = $event"
-              :readonly="published || translatable"
-              inline
-            ></date-time-selector>
-          </div>
-          <div class="q-my-md tag_list col">
-            <span class="q-my-md label-edit">
-              <help-label
-                :fieldLabel="$t('input_labels.finish_date') + ' *'"
-                :helpLabel="$t('help.element_end_date')"
-              ></help-label>
-            </span>
-            <date-time-selector
-              :date="finishDate"
-              :time="finishTime"
-              @inputDate="finishDate = $event"
-              @inputTime="finishTime = $event"
-              :readonly="published || translatable"
-              inline
-            ></date-time-selector>
           </div>
         </div>
         <div class="row tag_category_selectors">
@@ -231,7 +231,7 @@
             </span>
             <div class="row">
               <q-input
-                class="q-mr-md col-8"
+                class="q-mr-md col-6"
                 outlined
                 v-model="cost"
                 bg-color="grey-3"
@@ -240,27 +240,30 @@
                 :rules="[ val => val.length <= 50 || $t('error_messages.max_char_limit') + 50]"
                 :readonly="published || costIsFree || translatable"
               />
-              <q-checkbox
-                color="accent"
-                v-model="costIsFree"
-                :readonly="published || translatable"
-                :label="$t('input_labels.event_free')"
-              />
+              <div
+                style="display: flex; align-items: center"
+              >
+                <q-checkbox
+                  color="accent"
+                  v-model="costIsFree"
+                  :readonly="published || translatable"
+                  :label="$t('input_labels.event_free')"
+                />
+              </div>
             </div>
           </div>
-          <div class="col"></div>
-        </div>
-        <div class="row">
-          <span class="label-edit">
-            <help-label
-              :fieldLabel="$t('translation_states.translatable')"
-              :helpLabel="$t('help.is_published')"
-            ></help-label>
-          </span>
-          <q-toggle
-            v-model="translatable"
-            color="accent"
-          ></q-toggle>
+          <div class="col row">
+            <div class="label-edit col-3" style="display: flex; align-items: center">
+              <help-label
+                :fieldLabel="$t('translation_states.translatable')"
+                :helpLabel="$t('help.is_published')"
+              ></help-label>
+            </div>
+            <q-toggle class="col" style="display: flex; align-items: center"
+              v-model="translatable"
+              color="accent"
+            ></q-toggle>
+          </div>
         </div>
       </div>
     </div>
