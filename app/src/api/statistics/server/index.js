@@ -3,7 +3,7 @@ import { error_handler, isJSON } from '../../../helper/utility'
 import * as xml2js from 'xml2js'
 
 //set timeout in ms for api requests
-const timeout = 350
+const timeout = 1000
 
 const unhcrAPI = {
   Spain: {
@@ -46,22 +46,19 @@ const unhcrAPI = {
   }
 }
 const hamburgAPI = [
-  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_ausserhalb_HH?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuzuege',
-  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuwanderung',
-  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_Auszuege_oerU?SERVICE=WFS&VERSION=2.0.0&REQUEST=GetFeature&typename=mic:Zuzuege_Auszuege_oerU',
-  // 'https://qs-geodienste.hamburg.de/HH_WFS_empfaengerzahlen?Service=WFS&Version=1.1.0&Request=GetCapabilities',
-  'https://qs-geodienste.hamburg.de/HH_WFS_empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg'
+  // 'https://qs-geodienste.hamburg.de/HH_WFS_empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg',
+  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_ausserhalb_HH?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege&REQUEST=',
+  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_Auszuege_oerU?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege_Auszuege_oerU&REQUEST=',
+  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuwanderung&REQUEST='
 ]
 
 export default {
   fetchStatistics() {
     return Promise.all([
       fetchLocalCharts(),
-      fetchXML(hamburgAPI[0]),
-      fetchXML(hamburgAPI[1]),
-      fetchXML(hamburgAPI[2]),
-      fetchXML(hamburgAPI[3]),
-      // fetchXML(hamburgAPI[4]),
+      fetchXMLfull(hamburgAPI[0],'BAR'),
+      fetchXMLfull(hamburgAPI[1],'BAR'),
+      fetchXMLfull(hamburgAPI[2],'LINE'),
       fetchJSON(unhcrAPI.Spain.sea.link),
       fetchJSON(unhcrAPI.Spain.land.link),
       fetchJSON(unhcrAPI.Greece.sea.link),
@@ -70,22 +67,10 @@ export default {
       fetchJSON(unhcrAPI.Spain.nationalities.link),
       fetchJSON(unhcrAPI.Greece.nationalities.link),
       fetchJSON(unhcrAPI.Italy.nationalities.link)
-    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, hamburg3,/* hamburg4,*/ Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
-      if (hamburg0 !== null) {
-        localCharts.push(...parseHamburg(hamburg0))
-      }
-      if (hamburg1 !== null) {
-        localCharts.push(...parseHamburg(hamburg1))
-      }
-      if (hamburg2 !== null) {
-        localCharts.push(...parseHamburg(hamburg2))
-      }
-      if (hamburg3 !== null) {
-        localCharts.push(...parseHamburg(hamburg3))
-      }
-      // if (Spain_sea !== null) {
-      //   localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
-      // }
+    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
+      localCharts.push(...(hamburg0))
+      localCharts.push(...(hamburg1))
+      localCharts.push(...(hamburg2))
       localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
       localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
       localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
@@ -175,6 +160,7 @@ function parseUnhcrPie(data,title) {
   }
 }
 
+
 function parseHamburg(json) {
   if (json !== null) {
 
@@ -257,17 +243,68 @@ function parseHamburg(json) {
 // }
 
 function fetchJSON(url) {
-  // const controller = new AbortController()
-  // setTimeout(() => 
-  // controller.abort(), timeout)
-  // return fetch(url, { signal: controller.signal })
-  //   .then((response) => response.json())
-  //   .then(response => {return response})
-  //   .catch(function () {return null})
-  // return fetch(url, { signal: controller.signal })
   return fetch(url)
   .then((response) => response.json())
 }
+
+function fetchXMLfull(url,type){
+  let output = []
+  let metadata = {
+    valid: false,
+    board: 'Hamburg WFS',
+    type: type,
+    xistime: true,
+    format: 'API',
+    url: '',
+    x: 'Datum',
+    y: 'Wert'
+  }
+
+  return (fetch(url+ 'Getcapabilities')
+  .then(response => response)
+  .then(data => data.text())
+  .then(data => {
+    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: true, explicitRoot: false, explicitArray: false, preserveChildrenOrder: true})
+    .then(data=>{
+      metadata.category = data["ows:ServiceIdentification"]["ows:Title"]
+      metadata.description = data['ows:ServiceIdentification']['ows:Abstract']
+      metadata.provider = data['ows:ServiceProvider']['ows:ProviderName']  
+    })
+    .then(
+      function() {
+        return fetch(url+ 'GetFeature')
+        .then(features => features.text())
+        .then(features => {
+          xml2js.parseStringPromise(features, {ignoreAttrs: true, explicitArray: false, explicitRoot: false})
+          .then(features=>{
+            let wfs_title = Object.keys(features['wfs:member'])[0]
+            let data = features['wfs:member'][wfs_title]
+            Object.keys(data).forEach(key => {
+              let chartdata = {...metadata}
+              chartdata.id=key
+              chartdata.title=key.split(":")[1].replaceAll("_"," ")
+              const content = (data[key]['mic:zeitreihe']['mic:zeitreihen-element'])
+              for (let [i, c] of content.entries()) {
+                  if (c["mic:datum"] != undefined && c["mic:wert"] != undefined) {
+                    c[metadata.x] = c["mic:datum"]
+                    c[metadata.y] = c["mic:wert"]
+                  } else {
+                    content.splice(i, 1)
+                  }
+              }
+              chartdata.content=JSON.stringify(content)
+              output.push(chartdata)
+
+            })
+          })  
+        })
+      }
+      )
+  })
+  ).then(function() {
+    return output})
+}
+
 
 function fetchXML(url) {
   let valid = false
