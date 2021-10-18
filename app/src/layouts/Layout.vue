@@ -296,8 +296,8 @@ export default {
         },
         {
           label: 'menu.events',
-          icon: 'img:statics/icons/Icon - Events (30x30).png',
-          active_icon: 'img:statics/icons/Icon - Events (selected) (30x30).png',
+          icon: 'img:statics/icons/Icon - Events (30x30).svg',
+          active_icon: 'img:statics/icons/Icon - Events (30x30) (selected).svg',
           to: '/events',
           feature: "FEAT_EVENTS",
           auth: ["Application/micado_superadmin", "Application/micado_admin"],
