@@ -1,17 +1,34 @@
 <template>
   <div :id="$options.name" v-if="!loading">
-    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t("information_centre.categories_title")}}</div>
     <span v-if="errorMessage">{{$t(errorMessage)}}</span>
-    <upload-button
-      entity="information_category"
-      class="q-mt-xl q-mx-xl q-mb-md"
-      @uploadSuccess="initialize()"
-      @uploadError="printBatchError($event)"
-    ></upload-button>
+    <div class="justify-center row q-py-md">
+      <div class="col-11 justify-center items-center row">
+        <q-btn
+          class="add-btn col-shrink q-px-lg"
+          no-caps
+          :label="$t('button.add_category')"
+          @click="newInformationCategory()"
+        />
+        <upload-button
+          entity="information_category"
+          class="col"
+          @uploadSuccess="initialize()"
+          @uploadError="printBatchError($event)"
+        ></upload-button>
+      </div>
+      <div class="col-shrink row justify-center items-center">
+        <q-btn
+          class="go-back-btn"
+          icon="img:statics/icons/Icon - Information Centre.png"
+          @click="$router.go(-1)"
+        >
+        </q-btn>
+      </div>
+    </div>
+    <hr>
     <q-list
-      bordered
       separator
-      class="q-pa-sm q-mx-xl q-mb-xl element-list"
+      class="element-list"
     >
       <q-item
         clickable
@@ -85,74 +102,86 @@
         </q-item-section>
       </q-item>
     </q-list>
-    <q-card
-      flat
-      class="my-card"
+    <q-dialog 
+      v-model="hideForm"
+      class="dialog-full"
     >
-      <q-card-section align="center">
-        <q-btn
-          no-caps
-          class="q-mr-sm go-back-btn"
-          outline
-          :label="$t('button.go_back')"
-          @click="$router.go(-1)"
-        />
-        <q-btn
-          no-caps
-          class="add-btn"
-          :label="$t('button.add_category')"
-          @click="newInformationCategory()"
-        />
-      </q-card-section>
-      <q-card-section :hidden="hideForm">
-        <q-input
-          v-model="int_cat_shell.translations[0].category"
-          :label="$t('input_labels.title')"
-          class="q-mb-md"
-          :readonly="int_cat_shell.published || (originalTranslationState !== 0)"
-        />
-        <div>
-          <help-label
-            :fieldLabel="$t('translation_states.translatable')"
-            :helpLabel="$t('help.is_published')"
-          ></help-label>
-          <q-toggle
-            v-model="add_translatable"
-            color="accent"
-            :disable="int_cat_shell.published || (originalTranslationState !== 0)"
-            @input="changeTranslatable($event, int_cat_shell)"
-          ></q-toggle>
-          <br>
-          <q-checkbox
-            color="accent"
-            v-model="linkable"
-            :label="$t('input_labels.event_checkbox')"
-            :readonly="int_cat_shell.published || (originalTranslationState !== 0)"
-          />
+      <div class="dialog-container">
+        <div class="row justify-end">
+          <q-btn class="col-shrink" icon="close" size="md" color="purple-8" flat round dense v-close-popup></q-btn>
         </div>
-        <div align="center">
+        <q-card
+          flat
+          class="dialog-card"
+        >
+          <q-card-section>
+            <div class="q-mb-md">
+              <help-label
+                class="q-mb-sm"
+                :fieldLabel="$t('input_labels.category') + ' *'"
+                :helpLabel="$t('help.information_category')"
+              ></help-label>
+              <q-input
+                outlined
+                bg-color="grey-3"
+                v-model="int_cat_shell.translations[0].category"
+                class=""
+                :readonly="int_cat_shell.published || (originalTranslationState !== 0)"
+              />
+            </div>
+            <div class="row items-center q-mb-md">
+              <help-label
+                class="col-9 items-center"
+                :fieldLabel="$t('input_labels.event_checkbox')"
+                :helpLabel="$t('help.linkable_integration_plan')"
+              ></help-label>
+              <q-checkbox
+                class="q-pt-sm"
+                color="accent"
+                v-model="linkable"
+                :disable="int_cat_shell.published || (originalTranslationState !== 0)"
+              />
+            </div>
+            <div class="row items-center">
+              <help-label
+                class="col-4 items-center"
+                :fieldLabel="$t('translation_states.translatable')"
+                :helpLabel="$t('help.is_published')"
+              ></help-label>
+              <q-toggle
+                v-model="add_translatable"
+                class="col items-center q-pt-sm"
+                color="accent"
+                :disable="int_cat_shell.published || (originalTranslationState !== 0)"
+                @input="changeTranslatable($event, int_cat_shell)"
+              ></q-toggle>
+            </div>
+          </q-card-section>
+        </q-card>
+        <div 
+          align="center"
+          class="btn-dialog-div"
+        >
           <q-btn
             no-caps
-            class="button q-mr-sm"
+            class="cancel-btn q-mr-lg q-px-md"
             unelevated
             rounded
-            style="width:70px;border-radius:2px"
             :label="$t('button.cancel')"
             @click="cancelInformationCategory()"
           />
           <q-btn
             no-caps
-            class="add-btn"
+            class="save-btn q-px-md"
             unelevated
             rounded
-            style="width:70px;border-radius:2px"
             :label="$t('button.save')"
             @click="saveNewInformationCategory()"
             :disable="int_cat_shell.published || (originalTranslationState !== 0)"
           />
         </div>
-      </q-card-section>
-    </q-card>
+      </div>
+    </q-dialog>
   </div>
   <div v-else>Loading...</div>
 </template>
@@ -161,7 +190,7 @@
 import HelpLabel from '../HelpLabel'
 import { mapActions, mapGetters } from 'vuex'
 import translatedButtonMixin from '../../mixin/translatedButtonMixin'
-import UploadButton from 'components/UploadButton'
+import UploadButtonInversed from 'components/UploadButtonInversed'
 
 export default {
   name: 'InformationCategory',
@@ -171,7 +200,7 @@ export default {
   data() {
     return {
       int_cat_shell: { id: -1, translations: [] },
-      hideForm: true,
+      hideForm: false,
       hideAdd: false,
       isNew: false,
       linkable: false,
@@ -185,7 +214,7 @@ export default {
   },
   components: {
     'help-label': HelpLabel,
-    'upload-button': UploadButton
+    'upload-button': UploadButtonInversed
   },
   computed: {
     ...mapGetters('information_category', ['informationCategories', 'informationCategoryById']),
@@ -256,7 +285,7 @@ export default {
       this.originalTranslationState = 0
       this.linkable = false
       this.add_translatable = false
-      this.hideForm = true
+      this.hideForm = false
       this.createShell()
     },
     newInformationCategory() {
@@ -264,19 +293,19 @@ export default {
       this.linkable = false
       this.add_translatable = false
       this.isNew = true
-      this.hideForm = false
+      this.hideForm = true
       this.hideAdd = true
     },
     cancelInformationCategory() {
       this.isNew = false
-      this.hideForm = true
+      this.hideForm = false
       this.hideAdd = false
       this.linkable = false
       this.add_translatable = false
     },
     editInformationCategory(information_category) {
       this.isNew = false
-      this.hideForm = false
+      this.hideForm = true
       this.linkable = information_category.link_integration_plan
       this.add_translatable = !information_category.translations.filter(this.translationFilter)[0].translationState
       this.originalTranslationState = information_category.translations.filter(this.translationFilter)[0].translationState
@@ -440,18 +469,17 @@ export default {
 }
 </script>
 <style scoped>
-a {
-  text-decoration: none;
-  color: #000000;
-}
-.button {
+.cancel-btn {
   background-color: white;
   color: black;
+  font-weight: bold;
+  font-size: 16px;
   border: 1px solid #c71f40;
 }
 .element-list {
-  overflow-y: scroll;
-  max-height: 75vh;
+  padding-left: 245px;
+  padding-right: 245px;
+  padding-top: 75px;
 }
 .category-title {
   font-weight: 600;
@@ -461,7 +489,35 @@ a {
   color: white;
   background-color: #0b91ce;
 }
+.save-btn {
+  color: white;
+  background-color: #0F3A5D;
+  font-size: 16px;
+  font-weight: bold;
+  border: 1px solid #0F3A5D;
+}
 .go-back-btn {
-  color: #9e1f63;
+  color: white;
+  background-color: #0F3A5D;
+}
+.dialog-container {
+  background-color: white;
+  width: 800px;
+  max-width: 85vw;
+}
+.dialog-card {
+  border: 1px solid #DADADA;
+  border-radius: 5px;
+  margin-left: 125px;
+  margin-right: 125px;
+  margin-top: 84px;
+  padding-right: 75px;
+  padding-left: 75px;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+.btn-dialog-div {
+  margin-top: 30px;
+  margin-bottom: 136px;
 }
 </style>

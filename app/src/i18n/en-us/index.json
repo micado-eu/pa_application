@@ -80,7 +80,10 @@
     "preview_process":"Preview process",
     "add_step_explain":"Click 'Add Step' to add one or more steps to your process",
     "click_step_graph":"Click on each step to enter details",
-    "add_edge_explain":"Draw lines between steps to link them"
+    "add_edge_explain":"Draw lines between steps to link them",
+    "linkable_integration_plan": "Check if this category should be able able to be linked to an integration plan",
+    "event_category": "Write the name of the event category",
+    "information_category": "Write the name of the information category"
   },
   "menu": {
     "title": "My Tools",
@@ -267,7 +270,7 @@
     "guided_processes": "Guided processes",
     "manage_steps": "Manage steps",
     "start_date": "Select start date",
-    "finish_date": "Select end date.",
+    "finish_date": "Select end date",
     "not_translated": "&ltNot translated&gt",
     "select_topic": "Select topic",
     "select_user_type": "Select user type",
