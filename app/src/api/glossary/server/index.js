@@ -58,7 +58,7 @@ export default {
   },
   editGlossaryItemTranslation(translation) {
     const whereClause = {
-      id: { eq: translation.id }, lang: { eq: translation.lang }
+      id: { eq: translation.id }, lang: { eq: translation.lang }, translated: { eq: translation.translated }
     }
     if (!translation.translationDate) {
       translation.translationDate = new Date().toISOString()
