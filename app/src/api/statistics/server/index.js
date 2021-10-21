@@ -3,7 +3,7 @@ import { error_handler, isJSON } from '../../../helper/utility'
 import * as xml2js from 'xml2js'
 
 //set timeout in ms for api requests
-const timeout = 1000
+const timeout = 10000
 
 const unhcrAPI = {
   Spain: {
@@ -68,17 +68,41 @@ export default {
       fetchJSON(unhcrAPI.Greece.nationalities.link),
       fetchJSON(unhcrAPI.Italy.nationalities.link)
     ]).then(([localCharts, hamburg0, hamburg1, hamburg2, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
-      localCharts.push(...(hamburg0))
-      localCharts.push(...(hamburg1))
-      localCharts.push(...(hamburg2))
-      localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
-      localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
-      localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
-      localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
-      localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
+      if (hamburg0 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg0)))
+      }
+      if (hamburg1 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg1)))
+      }
+      if (hamburg2 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg2)))
+      }
+      // localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
+      if (Spain_sea !== null) {
+        localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
+      }
+      if (Spain_land !== null) {
+        localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
+      }
+      if (Greece_sea !== null) {
+        localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
+      }
+      if (Greece_land !== null) {
+        localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
+      }
+      if (Italy_sea !== null) {
+        localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
+      }
+      if (Spain_nat !== null) {
+        localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
+      }
+      if (Greece_nat !== null) {
+        localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
+      }
+      if (Italy_nat !== null) {
+        localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
+      }
+
       return {
         charts: localCharts
       }
@@ -160,6 +184,9 @@ function parseUnhcrPie(data,title) {
   }
 }
 
+function parseHamburgFull(json){
+  return json
+}
 
 function parseHamburg(json) {
   if (json !== null) {
@@ -243,11 +270,27 @@ function parseHamburg(json) {
 // }
 
 function fetchJSON(url) {
-  return fetch(url)
-  .then((response) => response.json())
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
+
+  return fetch(url, { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response.json()
+    } 
+    else 
+    {
+      return null
+    }
+  }))
+  .catch(e => {return null})
 }
 
 function fetchXMLfull(url,type){
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
   let output = []
   let metadata = {
     valid: false,
@@ -260,7 +303,16 @@ function fetchXMLfull(url,type){
     y: 'Wert'
   }
 
-  return (fetch(url+ 'Getcapabilities')
+  return (fetch(url+ 'Getcapabilities', { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response
+    } 
+    else 
+    {
+      return null
+    }
+  }))
   .then(response => response)
   .then(data => data.text())
   .then(data => {
@@ -272,7 +324,16 @@ function fetchXMLfull(url,type){
     })
     .then(
       function() {
-        return fetch(url+ 'GetFeature')
+        return fetch(url+ 'GetFeature', { signal: controller.signal })
+        .then((response => {
+          if (response.status === 200) {
+            return response
+          } 
+          else 
+          {
+            return null
+          }
+        }))      
         .then(features => features.text())
         .then(features => {
           xml2js.parseStringPromise(features, {ignoreAttrs: true, explicitArray: false, explicitRoot: false})
@@ -298,11 +359,13 @@ function fetchXMLfull(url,type){
             })
           })  
         })
+        .catch(e => {return null})
       }
       )
   })
   ).then(function() {
     return output})
+    .catch(e => {return null})
 }
 
 
