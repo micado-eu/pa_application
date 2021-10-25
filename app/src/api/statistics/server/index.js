@@ -3,7 +3,7 @@ import { error_handler, isJSON } from '../../../helper/utility'
 import * as xml2js from 'xml2js'
 
 //set timeout in ms for api requests
-const timeout = 1000
+const timeout = 10000
 
 const unhcrAPI = {
   Spain: {
@@ -49,7 +49,8 @@ const hamburgAPI = [
   // 'https://qs-geodienste.hamburg.de/HH_WFS_empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg',
   'https://geodienste.hamburg.de/HH_WFS_Zuzuege_ausserhalb_HH?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege&REQUEST=',
   'https://geodienste.hamburg.de/HH_WFS_Zuzuege_Auszuege_oerU?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege_Auszuege_oerU&REQUEST=',
-  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuwanderung&REQUEST='
+  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuwanderung&REQUEST=',
+  'https://qs-geodienste.hamburg.de/HH_WFS_Empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg&REQUEST='
 ]
 
 export default {
@@ -59,6 +60,7 @@ export default {
       fetchXMLfull(hamburgAPI[0],'BAR'),
       fetchXMLfull(hamburgAPI[1],'BAR'),
       fetchXMLfull(hamburgAPI[2],'LINE'),
+      fetchXMLfull2(hamburgAPI[3],'LINE'),
       fetchJSON(unhcrAPI.Spain.sea.link),
       fetchJSON(unhcrAPI.Spain.land.link),
       fetchJSON(unhcrAPI.Greece.sea.link),
@@ -67,18 +69,45 @@ export default {
       fetchJSON(unhcrAPI.Spain.nationalities.link),
       fetchJSON(unhcrAPI.Greece.nationalities.link),
       fetchJSON(unhcrAPI.Italy.nationalities.link)
-    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
-      localCharts.push(...(hamburg0))
-      localCharts.push(...(hamburg1))
-      localCharts.push(...(hamburg2))
-      localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
-      localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
-      localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
-      localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
-      localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
-      localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
+    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, hamburg3, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
+      if (hamburg0 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg0)))
+      }
+      if (hamburg1 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg1)))
+      }
+      if (hamburg2 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg2)))
+      }
+      if (hamburg3 !==null) {
+        localCharts.push(...(parseHamburgFull(hamburg3)))
+      }
+      // localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
+      if (Spain_sea !== null) {
+        localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
+      }
+      if (Spain_land !== null) {
+        localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
+      }
+      if (Greece_sea !== null) {
+        localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
+      }
+      if (Greece_land !== null) {
+        localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
+      }
+      if (Italy_sea !== null) {
+        localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
+      }
+      if (Spain_nat !== null) {
+        localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
+      }
+      if (Greece_nat !== null) {
+        localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
+      }
+      if (Italy_nat !== null) {
+        localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
+      }
+
       return {
         charts: localCharts
       }
@@ -160,6 +189,9 @@ function parseUnhcrPie(data,title) {
   }
 }
 
+function parseHamburgFull(json){
+  return json
+}
 
 function parseHamburg(json) {
   if (json !== null) {
@@ -243,15 +275,31 @@ function parseHamburg(json) {
 // }
 
 function fetchJSON(url) {
-  return fetch(url)
-  .then((response) => response.json())
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
+
+  return fetch(url, { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response.json()
+    } 
+    else 
+    {
+      return null
+    }
+  }))
+  .catch(e => {return null})
 }
 
 function fetchXMLfull(url,type){
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
   let output = []
   let metadata = {
     valid: false,
-    board: 'Hamburg WFS',
+    board: 'Hamburg',
     type: type,
     xistime: true,
     format: 'API',
@@ -260,7 +308,16 @@ function fetchXMLfull(url,type){
     y: 'Wert'
   }
 
-  return (fetch(url+ 'Getcapabilities')
+  return (fetch(url+ 'Getcapabilities', { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response
+    } 
+    else 
+    {
+      return null
+    }
+  }))
   .then(response => response)
   .then(data => data.text())
   .then(data => {
@@ -272,7 +329,16 @@ function fetchXMLfull(url,type){
     })
     .then(
       function() {
-        return fetch(url+ 'GetFeature')
+        return fetch(url+ 'GetFeature', { signal: controller.signal })
+        .then((response => {
+          if (response.status === 200) {
+            return response
+          } 
+          else 
+          {
+            return null
+          }
+        }))      
         .then(features => features.text())
         .then(features => {
           xml2js.parseStringPromise(features, {ignoreAttrs: true, explicitArray: false, explicitRoot: false})
@@ -298,13 +364,96 @@ function fetchXMLfull(url,type){
             })
           })  
         })
+        .catch(e => {return null})
       }
       )
   })
   ).then(function() {
     return output})
+    .catch(e => {return null})
 }
 
+function fetchXMLfull2(url,type){
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
+  let output = []
+  let metadata = {
+    valid: false,
+    board: 'Hamburg',
+    type: type,
+    xistime: true,
+    format: 'API',
+    url: '',
+    x: 'Datum',
+    y: 'Wert'
+  }
+
+  return (fetch(url+ 'Getcapabilities', { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response
+    } 
+    else 
+    {
+      return null
+    }
+  }))
+  .then(response => response)
+  .then(data => data.text())
+  .then(data => {
+    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: true, explicitRoot: false, explicitArray: false, preserveChildrenOrder: true})
+    .then(data=>{
+      metadata.category = data["ows:ServiceIdentification"]["ows:Title"]
+      metadata.description = data['ows:ServiceIdentification']['ows:Abstract']
+      metadata.provider = data['ows:ServiceProvider']['ows:ProviderName']
+    })
+    .then(
+      function() {
+        return fetch(url+ 'GetFeature', { signal: controller.signal })
+        .then((response => {
+          if (response.status === 200) {
+            return response
+          } 
+          else 
+          {
+            return null
+          }
+        }))      
+        .then(features => features.text())
+        .then(features => {
+          xml2js.parseStringPromise(features, {ignoreAttrs: true, explicitArray: false, explicitRoot: false})
+          .then(features=>{
+            features['gml:featureMember'].forEach((d) => {
+              let dataset = d[Object.keys(d)[0]]
+              let chartdata = {...metadata}
+              chartdata.title = dataset['de.hh.up:information']
+              Object.keys(dataset).forEach(key => {
+                if (['de.hh.up:leistungen_gesamt_asylblg','de.hh.up:leistungen_p2_asylblg','de.hh.up:leistungen_p3_asylblg'].includes(key)) {
+                  const content = dataset[key]['de.hh.up:values']
+                  for (let [i,c] of content.entries()) {
+                    if (c["de.hh.up:key"] != undefined && c["de.hh.up:value"] != undefined) {
+                      c[metadata.x] = c["de.hh.up:key"]
+                      c[metadata.y] = c["de.hh.up:value"]
+                    } else {
+                      content.splice(i, 1)
+                    }
+                  }
+                  chartdata.content=JSON.stringify(content)
+                  output.push(chartdata)
+                }
+              })
+            })
+          })  
+        })
+        .catch(e => {return null})
+      }
+      )
+  })
+  ).then(function() {
+    return output})
+    .catch(e => {return null})
+}
 
 function fetchXML(url) {
   let valid = false

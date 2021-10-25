@@ -750,6 +750,12 @@ export default {
         }
         this.t_settings_edit.push({key:key, is_setting_edit:false})
     },
+    addSettingsFromScratch(key){
+          this.t_settings.push(JSON.parse(JSON.stringify(this.createPolicyShell(key))))
+          this.t_settings_orig.push(JSON.parse(JSON.stringify(this.createPolicyShell(key))))
+          this.t_settings_new.push({key:key, is_setting_new:true})
+          this.t_settings_edit.push({key:key, is_setting_edit:false})
+    },
     createPolicyShell(key) {
      var shell = {
         id: -1,
@@ -1019,6 +1025,8 @@ export default {
       }
     })
     this.fetchMixedSettings().then((settings) => {
+      console.log("I AM MIXED SETTINGS")
+      console.log(settings)
       if (settings.length > 0) {
         this.checkExists(settings,'policy')
         this.checkExists(settings,'info')
@@ -1027,6 +1035,7 @@ export default {
         this.checkExists(settings,'plan')
         this.checkExists(settings,'guides')
         console.log(this.t_settings)
+        console.log(this.t_settings_edit)
 
        /* var exist_policy = settings.filter((set)=>{
           return set.key == policy
@@ -1050,6 +1059,16 @@ export default {
         })*/
 
       }
+      else{
+        this.addSettingsFromScratch('policy')
+        this.addSettingsFromScratch('info')
+        this.addSettingsFromScratch('doc')
+        this.addSettingsFromScratch('event')
+        this.addSettingsFromScratch('plan')
+        this.addSettingsFromScratch('guides')
+      }
+      this.loading = false
+
     })
     this.fetchTopic().then((topics) => {
       console.log(topics)
@@ -1065,7 +1084,6 @@ export default {
         }
         this.t_tags.push(the_topic)
       })
-      this.loading = false
     })
     /*
     this.fetchFeatures()
