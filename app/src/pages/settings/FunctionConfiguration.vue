@@ -5,6 +5,21 @@
     <h5>{{$t('data_settings.settings')}}</h5>
     <q-card>
       <q-card-section>
+        <div class="text-h6">{{$t('data_settings.survey_settings')}}</div>
+      </q-card-section>
+      <q-card-section>
+           <div><span>{{$t('data_settings.ex_survey')}}</span><q-toggle v-model="internalSurvey" color="green" label=""/><span>{{$t('data_settings.in_survey')}}</span></div>
+          <q-btn
+          color="accent"
+          glossy
+          :label="$t('button.save')"
+          @click="saveSingleSetting('internal_survey',newInternalSurvey, internalSurvey )"
+        />
+
+      </q-card-section>
+    </q-card>
+    <q-card>
+      <q-card-section>
         <div class="text-h6">{{$t('data_settings.survey_local')}}</div>
       </q-card-section>
       <q-card-section>
@@ -253,7 +268,7 @@
         >
             <q-card>
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.privacy')}}</div>
+        <div class="text-h6">{{$t('data_settings.content')}}</div>
       </q-card-section>
               <GlossaryEditor
                 data-cy="description_input"
@@ -587,7 +602,9 @@ export default {
       edit_survey_local:false,
       edit_survey_en:false,
       loading:true,
-      tabs:'guides'
+      tabs:'guides', 
+      internalSurvey:false,
+      newInternalSurvey:true
     }
   },
   mixins: [
@@ -1022,6 +1039,14 @@ export default {
         this.surveyEn = setting.value
         this.surveyEnOrig = setting.value
         this.newSurveyEn = false
+      }
+      if (setting.key == "internal_survey") {
+        console.log("IN INTERNAL SRVEY")
+        var isTrue = (setting.value === 'true')
+        this.internalSurvey = isTrue
+        //this.internalSurveyOrig = setting.value
+        this.newInternalSurvey = false
+        console.log(this.internalSurvey)
       }
     })
     this.fetchMixedSettings().then((settings) => {
