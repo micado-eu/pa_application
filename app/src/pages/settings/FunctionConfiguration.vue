@@ -185,7 +185,7 @@
         <div class="setting_title">
             <HelpLabel
               :fieldLabel="$t('data_settings.pa_email')"
-              :helpLabel="$t('help.pa_email')"
+              :helpLabel="$t('help.pa_email_setting')"
             />
 </div>
       </q-card-section>

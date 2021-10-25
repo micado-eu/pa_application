@@ -49,11 +49,11 @@ export function saveSetting(store, data) {
 export function savePolicy(store, data) {
   client.savePolicy(data).then((res) => {
     console.log(res)
-    var savingId= res.id
+    data.id= res.id
     data.translations.forEach((transl)=>{
-      client.savePolicyTranslations(transl, savingId)
+      client.savePolicyTranslations(transl, data.id)
     })
-    store.commit('setNewSetting', data)
+    store.commit('saveMixedSetting', data)
     return res
 
 })
@@ -66,7 +66,7 @@ export function updatePolicy (store, data) {
       data.translations.forEach((transl)=>{
         client.updatePolicyTranslations(transl)
       })
-      //store.commit('setSetting', data)
+      store.commit('editMixedSetting', data)
       console.log(store.state.settings)
 
       return res
