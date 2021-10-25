@@ -220,9 +220,11 @@
         </div>
         <div
           class="row"
-          v-if="is_event"
         >
-          <div class="col">
+          <div 
+            class="col" 
+            v-if="is_event"
+          >
             <span class="label-edit">
               <help-label
                 :fieldLabel="$t('input_labels.event_cost')"
