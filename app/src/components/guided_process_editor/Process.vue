@@ -36,7 +36,7 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <IconWithTooltip
-            :icon="'img:statics/icons/Icon - Manage processes.svg'"
+            :icon="'img:statics/icons/Icon - Manage processes (guided process page).svg'"
             :tooltip="$t('help.manage_process')"
             @click.native="manageProcess()"
             :data-cy="'manageprocess'.concat(theProcess.id )"

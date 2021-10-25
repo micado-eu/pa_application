@@ -1,11 +1,17 @@
 <template>
-  <div class="col q-gutter-md">
+  <div >
    <!-- <h5>{{$t("data_settings.language")}}</h5>-->
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h4">{{$t('data_settings.manage_languages')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.manage_languages')"
+              :helpLabel="$t('help.manage_languages')"
+            />
+            </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section >
         <q-btn
           v-for="language in languages"
           :key="language.isoCode"
@@ -21,14 +27,20 @@
         ></q-btn>
       </q-card-section>
     </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h4">{{$t('data_settings.default_language')}}</div>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.default_language')"
+              :helpLabel="$t('help.default_language')"
+            />
+         </div>
       </q-card-section>
-      <q-card-section>
-
+      <q-card-section class="row">
+        <div class="col">
         <q-select
           filled
+          dense
           v-model="def_lang"
           :options="langOptions"
           option-value="lang"
@@ -37,13 +49,18 @@
           emit-value
           map-options
           @input="updateDefLang"
-          style="min-width: 250px; max-width: 300px"
+          style=""
         />
+        </div>
+        <div class="col" style="text-align:right">
         <q-btn
           :label="$t('data_settings.set_default_language')"
           @click="saveDefLang"
+          no-caps
+          class="button"
         ></q-btn>
 
+        </div>
       </q-card-section>
 
     </q-card>
@@ -54,6 +71,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex"
 import weblateClient from 'api-weblate-client'
+import HelpLabel from "components/HelpLabel"
+
 
 export default {
   name: "LanguageSettings",
@@ -70,6 +89,9 @@ export default {
         return lan.active == true
       })
     }
+  },
+  components:{
+    HelpLabel
   },
   methods: {
     ...mapActions("language", ["fetchLanguages", "setLanguageActive", "setLanguageDefault"]),
@@ -114,5 +136,20 @@ export default {
 <style lang="scss" scoped>
 .language_btn {
   border-radius: 2px;
+}
+.setting_title{
+  font-family: Nunito;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 25px;
+color: #000000;
+}
+.button{
+  background: #0F3A5D;
+border-radius: 5px;
+color:white;
+margin-right: 30px;
+width: 150px;
 }
 </style>
