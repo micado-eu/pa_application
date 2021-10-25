@@ -32,34 +32,22 @@ export default {
     ]),
     editGlossaryItemAndReturn(data) {
       const router = this.$router
-      const id = parseInt(this.$route.params.id, 10)
-      const glossaryData = {
-        id,
-        published: data[0].published
-      }
-      this.editGlossaryItem(glossaryData).then(() => {
-        for (let i = 0; i < data.length; i += 1) {
-          const translation = data[i]
-          delete translation.published
-          delete translation.creator
-          const dataWithId = Object.assign(translation, { id: parseInt(this.$route.params.id) })
-          this.editGlossaryItemTranslation(dataWithId).then(() => {
-            if (i === data.length - 1) {
-              router.push({ path: '/glossary' })
-            }
-          }).catch((err) => {
-            this.$q.notify({
-              type: 'negative',
-              message: `Error while saving glossary term translation ${dataWithId.lang}: ${err}`
-            })
+      for (let i = 0; i < data.length; i += 1) {
+        const translation = data[i]
+        delete translation.published
+        delete translation.creator
+        const dataWithId = Object.assign(translation, { id: parseInt(this.$route.params.id) })
+        this.editGlossaryItemTranslation(dataWithId).then(() => {
+          if (i === data.length - 1) {
+            router.push({ path: '/glossary' })
+          }
+        }).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while saving glossary term translation ${dataWithId.lang}: ${err}`
           })
-        }
-      }).catch((err) => {
-        this.$q.notify({
-          type: 'negative',
-          message: `Error while saving glossary element: ${err}`
         })
-      })
+      }
     }
   },
   computed: {

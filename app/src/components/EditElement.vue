@@ -440,7 +440,7 @@ export default {
       this.savedTranslations[0] = translation0
       console.log(this.elem)
       console.log(this.originalTranslationState)
-      if (!this.elem || (this.originalTranslationState === 1)) {
+      if (!this.elem || (this.originalTranslationState === 1) || this.translatable) {
         const translation1 = {
           title: this.internalTitle,
           description,
