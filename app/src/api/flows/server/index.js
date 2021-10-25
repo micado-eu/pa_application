@@ -218,9 +218,9 @@ export default {
       .then(response => response.data)
       .catch(error_handler)
   },
-  updatePublished(id, is_published){
+  updatePublished(id, is_published, publishedDate){
     return axiosInstance
-    .patch('/backend/1.0.0/processes?[where][id]='+ id, {published: is_published})
+    .patch('/backend/1.0.0/processes?[where][id]='+ id, {published: is_published, publishedDate:publishedDate})
     .then(response => response.data)
     .catch(error_handler)
 
