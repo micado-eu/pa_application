@@ -49,8 +49,10 @@ export function saveSetting(store, data) {
 export function savePolicy(store, data) {
   client.savePolicy(data).then((res) => {
     console.log(res)
-    data.id= res.id
+    data.id = res.id
+    console.log(data)
     data.translations.forEach((transl)=>{
+      transl.id = data.id
       client.savePolicyTranslations(transl, data.id)
     })
     store.commit('saveMixedSetting', data)
