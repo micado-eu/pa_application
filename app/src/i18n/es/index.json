@@ -1,6 +1,13 @@
 {
     "application_title": "MICADO app",
     "help": {
+        "add_edge_explain": "Dibuja lineas entre los pasos para enlazarlos",
+        "add_step_explain": "Haz clic en 'Añadir Paso' para añadir uno o más pasos a tu proceso",
+        "click_step_graph": "Haz clic en cada paso para introducir los detalles",
+        "event_category": "Escribe el nombre de la categoría de evento",
+        "information_category": "Escribe el nombre de la categoría de información",
+        "linkable_integration_plan": "Marca esta casilla si esta categoría debería ser capaz de ser enlazada con un plan de integración",
+        "preview_process": "Vista previa del proceso",
         "form": "Complete el formulario en el idioma predeterminado:",
         "process_name": "Escriba el nombre del proceso",
         "process_description": "Describa su proceso",
@@ -79,6 +86,14 @@
         "enter_chart_title": "Introduzca el título del gráfico aquí"
     },
     "menu": {
+        "cso_description": "Esta es una descripción larga del objeto",
+        "glossary_description": "Esta es una descripción larga del objeto",
+        "information_centre_description": "Esta es una descripción larga del objeto",
+        "process_description": "Esta es una descripción larga del objeto",
+        "migrant_description": "Esta es una descripción larga del objeto",
+        "setting_description": "Esta es una descripción larga del objeto",
+        "situation_description": "Esta es una descripción larga del objeto",
+        "usage_description": "Esta es una descripción larga del objeto",
         "title": "Mis herramientas",
         "home": "Inicio",
         "home_desc": "",
@@ -140,7 +155,7 @@
         "add_glossary": "Añadir Término",
         "add_event": "Añadir Evento",
         "add_information": "Añadir Información",
-        "categories": "Categorías",
+        "categories": "Añadir Categorías",
         "remove": "Eliminar",
         "migrant_data": "Datos",
         "hide": "Esconder",
@@ -158,9 +173,27 @@
         "download_template": "Descargar plantilla",
         "return_main": "volver a la página principal",
         "print": "imprimir",
-        "add_topic": "Añadir Tema"
+        "add_topic": "Añadir Tema",
+        "add_language": "Añadir idioma",
+        "delete_step": "Borrar paso",
+        "delete_steplink": "Borrar enlace del paso",
+        "new_doc_process": "Añadir nuevo tipo de documento",
+        "save_step": " Guardar paso",
+        "save_steplink": " Guardar enlace del paso",
+        "view_model": "Ver modelo",
+        "view_pics": "Ver detalles"
     },
     "data_settings": {
+        "content": "Descripciones de las funcionalidades de la app de migrantes",
+        "duration_of_new": "Selecciona cuánto tiempo el contenido será marcado como nuevo ",
+        "ex_survey": "Encuesta externa",
+        "helpdesk_migrant": "Correo o número de teléfono del servicio de asistencia para la aplicación de migrantes",
+        "helpdesk_ngo": "Mensaje del servicio de asistencia para la aplicación de ONG",
+        "helpdesk_pa": "Mensaje del servicio de asistencia para la aplicación de AP",
+        "in_survey": "Encuesta interna",
+        "survey_en": "Enlace a la encuesta en inglés",
+        "survey_local": "Enlace a la encuesta en tu idioma local",
+        "survey_settings": "Tipo de encuesta",
         "manage_languages": "Gestionar idiomas en la plataforma",
         "manage_translations": "Gestionar traducciones",
         "send_to_translation": "Enviar a la plataforma de traducción",
@@ -186,6 +219,24 @@
         "surveymanagement": "Gestionar formularios"
     },
     "input_labels": {
+        "add_doc_type": "Añadir un nuevo tipo de documento",
+        "available_transl": "Traducciones disponibles",
+        "click_step": "Haz clic en un paso para ver los detalles",
+        "days": "Días",
+        "delete_confirm": "Estás seguro de querer borrarlo",
+        "emitter": "Emisor",
+        "lang_editor": "Editor de idiomas",
+        "language_abbr": "Etiqueta del idioma",
+        "language_iso": "Código ISO",
+        "language_name": "Nombre del idioma",
+        "loading": "Cargando...",
+        "migrant_manager": "Gestor de cuentas de migrante",
+        "new_doc_typ_add": "Añadiendo nuevo documento a los tipos de documento disponibles",
+        "preview": "Vista previa",
+        "preview_migrant": "Vista previa del proceso en la aplicación de migrantes",
+        "validate_intervention": "Intervención validable",
+        "no_available_transl": "No hay traducciones disponibles",
+        "optional_file_validation": "Elige un fichero opcional para validación",
         "validator": "Para ser validado por",
         "category_placeholder": "Introduzca el título de la categoría aquí",
         "publication_date": "Fecha de publicación",
@@ -230,7 +281,7 @@
         "guided_processes": "Procesos guiados",
         "manage_steps": "Gestionar pasos",
         "start_date": "Seleccionar fecha de inicio",
-        "finish_date": "Seleccione la fecha de finalización.",
+        "finish_date": "Seleccione la fecha de finalización",
         "not_translated": "&ltNo traducido&gt",
         "select_topic": "Seleccionar tema",
         "select_user_type": "Seleccionar tipo de usuario",
@@ -311,7 +362,7 @@
         "empty_error": "No se permiten etiquetas vacías."
     },
     "filters": {
-        "title": "Filtrar",
+        "title": "Filtrar por",
         "clear_all": "Borrar todos los filtros",
         "tags_title": "Etiquetas",
         "category_title": "Categorías",
@@ -321,6 +372,8 @@
         "date_title": "Fecha"
     },
     "lists": {
+        "delete": "Borrar",
+        "edit": "Editar",
         "published": "Publicado",
         "category": "Categoría",
         "topics": "Temas",
@@ -392,6 +445,7 @@
         "add_chart_title": "Error"
     },
     "warning": {
+        "published_edit": "No puedes editar contenido publicado. Para poder editarlo tendrás que despublicarlo primero.",
         "topic": "Advertencia: Eliminar un tema también lo eliminará de los procesos guiados existentes. ¿Continuar?",
         "user_type": "Advertencia: Eliminar un tipo de usuario también lo eliminará de los procesos guiados existentes. ¿Continuar?",
         "intervention_type": "Advertencia: Eliminar un tipo de intervención también eliminará todas las intervenciones del mismo tipo. ¿Continuar?",
@@ -481,6 +535,10 @@
         "add_chart_title": "Éxito"
     },
     "migration_monitor": {
+        "chart_data_provider_description": "Introduzca el proveedor de datos aquí",
+        "timescale_checkbox": "datos relacionados con una secuencia de tiempo",
+        "timescale_help": "Marca esta casilla si usas una escala temporal en tu eje de categoría (p. ej. años, meses), déjala vacía si usas una escala nominal o de otro tipo (p. ej. países, ciudades)",
+        "timescale_title": "Datos de la escala de tiempo",
         "mean_value": "Valor medio:",
         "maximum_value": "Valor máximo:",
         "minimum_value": "Valor mínimo:",
