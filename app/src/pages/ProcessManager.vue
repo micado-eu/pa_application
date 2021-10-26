@@ -247,6 +247,7 @@ export default {
       console.log(publishing_steps)
       console.log("i am links to publish")
       console.log(this.related_links)
+      var publication_date = new Date().toISOString()
       var publishing_links = this.steplinks.filter((links)=>{
         return links.idProcess == event.process_id 
       })
@@ -257,7 +258,7 @@ export default {
         message: this.$t('warning.publish_process'),
         actions: [
           { label: this.$t('lists.yes'), color: 'accent', handler: () => { 
-            this.updatePublished({process:publishing_process, published:event.isPublished})
+            this.updatePublished({process:publishing_process, published:event.isPublished, publishedDate: publication_date})
             this.saveTranslationProd(event.process_id)
             this.saveStepTranslationProd(publishing_steps)
             this.saveSteplinkTranslationProd(publishing_links)

@@ -3,26 +3,42 @@
 <div v-if="loading"> load </div>
   <div v-else class="q-pa-md">
     <h5>{{$t('data_settings.settings')}}</h5>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.survey_settings')}}</div>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.survey_settings')"
+              :helpLabel="$t('help.survey_settings')"
+            />
+          
+          </div>
       </q-card-section>
-      <q-card-section>
-           <div><span>{{$t('data_settings.ex_survey')}}</span><q-toggle v-model="internalSurvey" color="green" label=""/><span>{{$t('data_settings.in_survey')}}</span></div>
+      <q-separator />
+      <q-card-section class="row">
+           <div class="col"><span>{{$t('data_settings.ex_survey')}}</span><q-toggle v-model="internalSurvey" color="green" label=""/><span>{{$t('data_settings.in_survey')}}</span></div>
+          <div class="col" style="text-align:right">
           <q-btn
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('internal_survey',newInternalSurvey, internalSurvey )"
         />
+        </div>
 
       </q-card-section>
     </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.survey_local')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.survey_local')"
+              :helpLabel="$t('help.survey_local')"
+            />
+            </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
            <q-input
               dense
               bg-color="grey-3"
@@ -32,35 +48,44 @@
               :readonly="!edit_survey_local"
               v-model="surveyLocal"
               />
+        </div>
+        <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_survey_local"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_survey_local = true"
         />
           <q-btn
           v-if="edit_survey_local"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
-          @click="cancelSetting('helpdesk_pa')"
+          @click="cancelSetting('survey_local')"
         />
           <q-btn
           v-if="edit_survey_local"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('survey_local',newSurveyLocal, surveyLocal )"
         />
-
+        </div>
       </q-card-section>
     </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.survey_en')}}</div>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.survey_en')"
+              :helpLabel="$t('help.survey_en')"
+            />
+       </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+                <div class="col">
            <q-input
               dense
               bg-color="grey-3"
@@ -70,34 +95,42 @@
               :readonly="!edit_survey_en"
               v-model="surveyEn"
               />
+                </div>
+                <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_survey_en"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_survey_en = true"
         />
           <q-btn
           v-if="edit_survey_en"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
-          @click="cancelSetting('helpdesk_pa')"
+          @click="cancelSetting('survey_en')"
         />
           <q-btn
           v-if="edit_survey_en"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('survey_en',newSurveyEn, surveyEn )"
         />
-
+                </div>
       </q-card-section>
     </q-card>
-    <q-card class="my-card">
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.feature_settings')}}</div>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.feature_settings')"
+              :helpLabel="$t('help.feature_settings')"
+            />
+            </div>
       </q-card-section>
+            <q-separator />
       <q-card-section>
         <FeaturesElement
           v-for="afeature in workingFeatures"
@@ -105,40 +138,60 @@
           :key="afeature.id"
           @input="manageFeatures"
         />
+        <div style="text-align:right">
         <q-btn
-          color="accent"
-          glossy
-          label="Save"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
           @click="saveFeatures"
         />
+        </div>
       </q-card-section>
     </q-card>
         <ActiveLanguageSelector />
+    <LanguageManager :languages="languages" />
 
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.pa_logo')}}</div>
+        <div class="setting_title">
+                    <HelpLabel
+              :fieldLabel="$t('data_settings.pa_logo')"
+              :helpLabel="$t('help.pa_logo')"
+            />
+            </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
         <croppa
           v-model="myCroppa"
           :width="150"
           :height="150"
           :quality="1"
         ></croppa>
+        </div>
+        <div class="col" style=" display: flex;align-items: center;justify-content: right">
         <q-btn
-          color="accent"
-          glossy
-          label="Save"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
           @click="saveLogo"
         />
+        </div>
       </q-card-section>
     </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.pa_email')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.pa_email')"
+              :helpLabel="$t('help.pa_email_setting')"
+            />
+</div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
            <q-input
       dense
       bg-color="grey-3"
@@ -148,35 +201,44 @@
       :readonly="!editing"
       v-model="email"
               />
+        </div>
+        <div class="col" style="text-align:right">
         <q-btn
           v-if="!editing"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="editing = true"
         />
           <q-btn
           v-if="editing"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelMail"
         />
           <q-btn
           v-if="editing"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveMail"
         />
-
+        </div>
       </q-card-section>
     </q-card>
     
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.privacy')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.privacy')"
+              :helpLabel="$t('help.privacy')"
+            />
+         </div>
       </q-card-section>
+            <q-separator />
+            <div class="q-pa-md">
               <GlossaryEditor
                 data-cy="description_input"
                 class="desc-editor "
@@ -186,6 +248,7 @@
 
                 ref="editor"
               /> 
+            </div>
               <div class="row"> 
           <div class="col-2" style="min-width: 200px">
             <HelpLabel
@@ -227,28 +290,26 @@
             />
           </div>
           </div>
-        <div style="padding-left:16px;padding-right:16px">
-        <hr id="hr-2">
-         </div>
-         <div style="padding-left:16px;padding-right:16px">
+
+         <div  class="q-pa-md" style="text-align:right">
         <q-btn
           v-if="!(t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit)"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit = true"
         />
           <q-btn
           v-if="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelPolicy('policy')"
         />
           <q-btn
           v-if="t_settings_edit.filter((top)=> top.key == 'policy')[0].is_setting_edit"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="savePolicy('policy')"
         />
@@ -258,7 +319,7 @@
     </q-card>
       <q-tab-panels
         v-model="tabs"
-        class="bg-grey-2 inset-shadow "
+        class=" "
         animated
       >
         <q-tab-panel
@@ -266,10 +327,33 @@
           :key="setting.key"
           :name="setting.key"
         >
-            <q-card>
+            <q-card bordered >
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.content')}}</div>
+        <div class="setting_title">
+              <HelpLabel
+              :fieldLabel="$t('data_settings.content')"
+              :helpLabel="$t('help.content')"
+            />
+          </div>
       </q-card-section>
+            <q-separator />
+            <q-tabs
+        v-model="tabs"
+        dense
+        class="bg-grey-2"
+        active-color="accent"
+        indicator-color="accent"
+        align="justify"
+        narrow-indicator
+      >
+        <q-tab
+          v-for="setting in t_settings.filter((top) => top.key != 'policy')"
+          :key="setting.key"
+          :name="setting.key"
+          :label="setting.key"
+        />
+      </q-tabs>
+          <div class="q-pa-md">
               <GlossaryEditor
                 data-cy="description_input"
                 class="desc-editor "
@@ -279,6 +363,7 @@
 
                 ref="editor"
               /> 
+          </div>
               <div class="row"> 
           <div class="col-2" style="min-width: 200px">
             <HelpLabel
@@ -320,28 +405,26 @@
             />
           </div>
           </div>
-          <div style="padding-left:16px;padding-right:16px">
-        <hr id="hr-2">
-         </div>
-         <div style="padding-left:16px;padding-right:16px">
+
+         <div class="q-pa-md" style="text-align:right">
         <q-btn
           v-if="!(t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit)"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit = true"
         />
           <q-btn
           v-if="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelPolicy(setting.key)"
         />
           <q-btn
           v-if="t_settings_edit.filter((top)=> top.key == setting.key)[0].is_setting_edit"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="savePolicy(setting.key)"
         />
@@ -350,109 +433,115 @@
 
     </q-card>
         </q-tab-panel>
-              </q-tab-panels>
-               <q-separator />
-      <q-tabs
-        v-model="tabs"
-        dense
-        class="bg-grey-2"
-        active-color="accent"
-        indicator-color="accent"
-        align="justify"
-        narrow-indicator
-      >
-        <q-tab
-          v-for="setting in t_settings.filter((top) => top.key != 'policy')"
-          :key="setting.key"
-          :name="setting.key"
-          :label="setting.key"
-        />
-      </q-tabs>
-    <q-card>
+              </q-tab-panels>      
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.helpdesk_pa')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.helpdesk_pa')"
+              :helpLabel="$t('help.helpdesk_pa')"
+            />
+          </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
            <q-input
               dense
               bg-color="grey-3"
               standout
               outlined
               counter
-              type="textarea"
               :readonly="!edit_helpdesk_pa"
               v-model="helpdeskPa"
               />
+        </div>
+       <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_helpdesk_pa"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_helpdesk_pa = true"
         />
           <q-btn
           v-if="edit_helpdesk_pa"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelSetting('helpdesk_pa')"
         />
           <q-btn
           v-if="edit_helpdesk_pa"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('helpdesk_pa',newHelpdeskPa, helpdeskPa )"
         />
-
+       </div>
       </q-card-section>
     </q-card>
      </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.helpdesk_ngo')}}</div>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.helpdesk_ngo')"
+              :helpLabel="$t('help.helpdesk_ngo')"
+            />
+          </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
            <q-input
       dense
       bg-color="grey-3"
       standout
       outlined
       counter
-      type="textarea"
       :readonly="!edit_helpdesk_ngo"
       v-model="helpdeskNgo"
               />
+        </div>
+        <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_helpdesk_ngo"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_helpdesk_ngo = true"
         />
           <q-btn
           v-if="edit_helpdesk_ngo"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelSetting('helpdesk_ngo')"
         />
           <q-btn
           v-if="edit_helpdesk_ngo"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('helpdesk_ngo',newHelpdeskNgo, helpdeskNgo )"
         />
-
+        </div>
       </q-card-section>
     </q-card>
      </q-card>
-    <q-card>
+    <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.helpdesk_migrant')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.helpdesk_migrant')"
+              :helpLabel="$t('help.helpdesk_migrant')"
+            />
+          </div>
       </q-card-section>
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
            <q-input
       dense
       bg-color="grey-3"
@@ -462,35 +551,44 @@
       :readonly="!edit_helpdesk_migrant"
       v-model="helpdeskMigrant"
               />
+        </div>
+              <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_helpdesk_migrant"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_helpdesk_migrant = true"
         />
           <q-btn
           v-if="edit_helpdesk_migrant"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelSetting('helpdesk_migrant')"
         />
           <q-btn
           v-if="edit_helpdesk_migrant"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('helpdesk_migrant',newHelpdeskMigrant, helpdeskMigrant )"
         />
-
+              </div>
       </q-card-section>
     </q-card>
-     <q-card>
+     <q-card bordered class="q-ma-md">
       <q-card-section>
-        <div class="text-h6">{{$t('data_settings.duration_of_new')}}</div>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.duration_of_new')"
+              :helpLabel="$t('help.duration_of_new')"
+            />
+          </div>
       </q-card-section> 
-      <q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+        <div class="col">
         <div class="row">
            <q-input
               type="number"
@@ -505,31 +603,32 @@
               />
               <p class="col-10 duration">{{$t('input_labels.days')}}</p>
         </div>
+        </div>
+        <div class="col" style="text-align:right">
         <q-btn
           v-if="!edit_duration_of_new"
-          color="accent"
-          glossy
+          class="button_edit"
+          no-caps
           :label="$t('button.edit')"
           @click="edit_duration_of_new = true"
         />
           <q-btn
           v-if="edit_duration_of_new"
-          color="accent"
-          glossy
+          class="button_cancel"
+          no-caps
           :label="$t('button.cancel')"
           @click="cancelSetting('duration_of_new')"
         />
           <q-btn
           v-if="edit_duration_of_new"
-          color="accent"
-          glossy
+          class="button"
+          no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('duration_of_new',newDurationOfNew, durationOfNew )"
         />
-
+        </div>
       </q-card-section>
     </q-card>
-    <LanguageManager :languages="languages" />
   </div>
   </div>
 </template>
@@ -892,6 +991,18 @@ export default {
           )
           this.edit_duration_of_new = false
           break
+        case "survey_local":
+          this.surveyLocal = JSON.parse(
+            JSON.stringify(this.surveyLocalOrig)
+          )
+          this.edit_survey_local = false
+          break
+        case "survey_en":
+          this.surveyEn = JSON.parse(
+            JSON.stringify(this.surveyEnOrig)
+          )
+          this.edit_survey_en = false
+          break
         default:
           console.log("non of those")
       }
@@ -1126,5 +1237,38 @@ export default {
   padding-top:5px;
   padding-left:10px;
   font-size: 20px;
+}
+.setting_title{
+  font-family: Nunito;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 25px;
+color: #000000;
+}
+.button{
+  background: #0F3A5D;
+border-radius: 5px;
+color:white;
+margin-right: 30px;
+width: 150px;
+
+}
+.button_edit{
+  background: #FF7C44;
+border-radius: 5px;
+color:white;
+margin-right: 30px;
+width: 150px;
+
+}
+.button_cancel{
+margin-right: 30px;
+width: 150px;
+
+border: 1px solid #C71F40;
+box-sizing: border-box;
+border-radius: 5px;
+
 }
 </style>

@@ -446,7 +446,7 @@ async function asyncForEach (array, callback) {
 }
 
 export function updatePublished(state, payload){
-  client.updatePublished(payload.process.id, payload.published).then(()=>{
+  client.updatePublished(payload.process.id, payload.published, payload.publishedDate).then(()=>{
     state.commit('editProcess', payload.process)
   })
 }

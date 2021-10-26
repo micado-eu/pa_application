@@ -3,7 +3,7 @@
     <q-toggle
       v-model="feature.enabled"
       :label="showFeaturesLabel()"
-      color="green"
+      color="secondary"
       v-on:input="emitInput"
     />
   </div>

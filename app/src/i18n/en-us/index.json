@@ -83,7 +83,23 @@
     "add_edge_explain":"Draw lines between steps to link them",
     "linkable_integration_plan": "Check if this category should be able able to be linked to an integration plan",
     "event_category": "Write the name of the event category",
-    "information_category": "Write the name of the information category"
+    "information_category": "Write the name of the information category",
+    "survey_settings":"",
+    "survey_local":"",
+    "survey_en":"",
+    "feature_settings":"",
+    "pa_logo":"",
+    "pa_email_setting":"",
+    "privacy":"",
+    "content":"",
+    "helpdesk_pa":"",
+    "helpdesk_ngo":"",
+    "helpdesk_migrant":"",
+    "duration_of_new":"",
+    "lang_editor":"",
+    "default_language":"",
+    "manage_languages":""
+
   },
   "menu": {
     "title": "My Tools",

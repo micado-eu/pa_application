@@ -1,14 +1,17 @@
 <template>
-  <q-card>
+  <q-card bordered class="q-ma-md">
     <q-card-section>
-      <div class="text-h6">{{ $t("input_labels.lang_editor") }}</div>
+      <div class="setting_title">
+                  <HelpLabel
+              :fieldLabel="$t('input_labels.lang_editor')"
+              :helpLabel="$t('help.lang_editor')"
+            />
+        </div>
     </q-card-section>
-    <q-card-section style="text-align: center">
+    <q-separator />
+    <q-card-section >
       <q-btn
-        id="button"
-        color="secondary"
-        unelevated
-        rounded
+        class="button"
         :label="$t('button.add_language')"
         no-caps
         :disable="hideAdd"
@@ -151,25 +154,26 @@
 </template>
 
 <script>
-import IconWithTooltip from "components/IconWithTooltip";
-import HelpLabel from "components/HelpLabel";
-import storeMappingMixin from "../mixin/storeMappingMixin";
+import IconWithTooltip from "components/IconWithTooltip"
+import HelpLabel from "components/HelpLabel"
+import storeMappingMixin from "../mixin/storeMappingMixin"
+
 
 export default {
   name: "LanguageManager",
   props: ["languages"],
   components: {
     IconWithTooltip,
-    HelpLabel,
+    HelpLabel
   },
   mixins: [
     storeMappingMixin({
       getters: {},
       actions: {
         saveLanguage: "language/saveLanguage",
-        updateLanguage: "language/updateLanguage",
-      },
-    }),
+        updateLanguage: "language/updateLanguage"
+      }
+    })
   ],
   data() {
     return {
@@ -180,63 +184,63 @@ export default {
         active: false,
         isDefault: false,
         voiceString: "",
-        voiceActive: false,
+        voiceActive: false
       },
       hideForm: true,
       hideAdd: false,
-      isNew: false,
-    };
+      isNew: false
+    }
   },
   methods: {
     onSubmit() {
-      console.log(this.$refs.name);
-      console.log(this.$refs.iso);
-      console.log(this.$refs.tag);
-      this.$refs.name.validate();
-      this.$refs.iso.validate();
-      this.$refs.tag.validate();
+      console.log(this.$refs.name)
+      console.log(this.$refs.iso)
+      console.log(this.$refs.tag)
+      this.$refs.name.validate()
+      this.$refs.iso.validate()
+      this.$refs.tag.validate()
       if (
         this.$refs.name.hasError ||
         this.$refs.iso.hasError ||
         this.$refs.tag.hasError
       ) {
-        this.formHasError = true;
+        this.formHasError = true
         this.$q.notify({
           color: "negative",
-          message: this.$t("warning.req_fields"),
-        });
-        return false;
+          message: this.$t("warning.req_fields")
+        })
+        return false
       } else {
-        console.log("in else of submit");
-        this.savingLanguage();
-        this.onReset();
+        console.log("in else of submit")
+        this.savingLanguage()
+        this.onReset()
       }
     },
     onReset() {
-      this.$refs.name.resetValidation();
-      this.$refs.iso.resetValidation();
-      this.$refs.tag.resetValidation();
+      this.$refs.name.resetValidation()
+      this.$refs.iso.resetValidation()
+      this.$refs.tag.resetValidation()
     },
     savingLanguage() {
       if (this.isNew) {
         // we are adding a new instance
         this.saveLanguage(this.language_shell).then((int_cat) => {
-          console.log("saved");
-        });
+          console.log("saved")
+        })
       } else {
         // we are updating the exsisting
         this.updateLanguage(this.language_shell).then((int_cat) => {
-          console.log("updated");
-        });
+          console.log("updated")
+        })
       }
-      this.hideAdd = false;
-      this.hideForm = true;
-      this.createShell();
+      this.hideAdd = false
+      this.hideForm = true
+      this.createShell()
     },
     cancelLang() {
-      this.isNew = false;
-      this.hideForm = true;
-      this.hideAdd = false;
+      this.isNew = false
+      this.hideForm = true
+      this.hideAdd = false
     },
     createShell() {
       this.language_shell = {
@@ -246,32 +250,45 @@ export default {
         active: false,
         isDefault: false,
         voiceString: "",
-        voiceActive: false,
-      };
+        voiceActive: false
+      }
     },
     editingLang(lang) {
-      this.isNew = false;
-      this.hideForm = false;
-      this.mergeLang(lang);
+      this.isNew = false
+      this.hideForm = false
+      this.mergeLang(lang)
     },
     mergeLang(lang) {
-      console.log(lang);
-      this.language_shell.lang = lang.lang;
-      this.language_shell.isoCode = lang.isoCode;
-      this.language_shell.name = lang.name;
-      this.language_shell.active = lang.active;
-      this.language_shell.isDefault = lang.isDefault;
-      this.language_shell.voiceString = lang.voiceString;
-      this.language_shell.voiceActive = lang.voiceActive;
+      console.log(lang)
+      this.language_shell.lang = lang.lang
+      this.language_shell.isoCode = lang.isoCode
+      this.language_shell.name = lang.name
+      this.language_shell.active = lang.active
+      this.language_shell.isDefault = lang.isDefault
+      this.language_shell.voiceString = lang.voiceString
+      this.language_shell.voiceActive = lang.voiceActive
     },
     newLang() {
-      this.createShell();
-      this.isNew = true;
-      this.hideForm = false;
-      this.hideAdd = true;
-    },
-  },
-};
+      this.createShell()
+      this.isNew = true
+      this.hideForm = false
+      this.hideAdd = true
+    }
+  }
+}
 </script>
 <style scoped>
+.setting_title{
+  font-family: Nunito;
+font-style: normal;
+font-weight: bold;
+font-size: 18px;
+line-height: 25px;
+color: #000000;
+}
+.button{
+  background: #0B91CE;
+border-radius: 5px;
+color: white;
+}
 </style>

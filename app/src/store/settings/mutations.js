@@ -27,6 +27,9 @@ export function setLastRefreshn (state, last_refresh) {
 export function setMixedSetting(state, settings){
   state.mixed_settings = settings
 }
+export function saveMixedSetting(state, settings){
+  state.mixed_settings.push(settings)
+}
 
 export function editMixedSetting(state, setting) {
   console.log("update the state")
