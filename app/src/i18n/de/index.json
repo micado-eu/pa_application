@@ -1,7 +1,7 @@
 {
     "menu": {
         "title": "Meine Werkzeuge",
-        "home": "Start",
+        "home": "Home",
         "usage": "MICADO-Nutzungsübersicht",
         "situation": "Migration in Zahlen",
         "setting": "App settings",
@@ -27,7 +27,15 @@
         "login": "Anmelden",
         "events": "Kurse & Veranstaltungen",
         "events_desc": "Kurse und Veranstaltungen bearbeiten",
-        "home_desc": " "
+        "home_desc": " ",
+        "setting_description": "Das ist eine längere Beschreibung des Eintrags",
+        "glossary_description": "Das ist eine längere Beschreibung des Eintrags",
+        "usage_description": "Das ist eine längere Beschreibung des Eintrags",
+        "information_centre_description": "Das ist eine längere Beschreibung des Eintrags",
+        "process_description": "Das ist eine längere Beschreibung des Eintrags",
+        "cso_description": "Das ist eine längere Beschreibung des Eintrags",
+        "migrant_description": "Das ist eine längere Beschreibung des Eintrags",
+        "situation_description": "Das ist eine längere Beschreibung des Eintrags"
     },
     "application_title": "MICADO App",
     "help": {
@@ -106,7 +114,14 @@
         "chart_description": "Diagramm beschreiben",
         "category": "Wenn die Kategorie noch nicht existiert, wird diese automatisch erstellt",
         "board": "Wenn die Gruppe noch nicht existiert, wird diese autmatisch erstellt",
-        "enter_chart_title": "Diagrammtitel wählen"
+        "enter_chart_title": "Diagrammtitel wählen",
+        "information_category": "Namen der Veranstaltungskategorie definieren",
+        "event_category": "Namen der Veranstaltungskategorie definieren",
+        "linkable_integration_plan": "Auswählen, ob die Kategorie zu einem persönlichen Integrationsplan hinzugefügt werden kann",
+        "add_edge_explain": "Linie zwischen den Schritten ziehen, um diese miteinander zu verbinden",
+        "click_step_graph": "An Schitt klicken, um Details hinzufügen",
+        "add_step_explain": "Auf \"Schritt hinzufügen\" klicken, um einen oder mehrere Schritte zur Anleitung hinzuzufügen",
+        "preview_process": "Vorschau der Anleitung"
     },
     "internal_reference": {
         "more_info_1": "Mehr Information für",
@@ -205,7 +220,25 @@
         "choose_json": "JSON auswählen",
         "choose_csv": "CSV auswählen",
         "standard": "Standard",
-        "data_format": "Datenformat"
+        "data_format": "Datenformat",
+        "optional_file_validation": "Optionale Datei zur Validierung auswählen",
+        "migrant_manager": "Integrationsmanagement",
+        "language_abbr": "Sprachtag",
+        "delete_confirm": "Sind Sie sicher, dass Sie dies löschen wollen",
+        "lang_editor": "Spracheneditor",
+        "language_iso": "ISO-Code",
+        "language_name": "Name der Sprache",
+        "days": "Tage",
+        "new_doc_typ_add": "Ein neues Dokument zu vorhandenen Dokumententypen hinzufügen",
+        "add_doc_type": "Einen neuen Dokumententyp hinzufügen",
+        "no_available_transl": "Keine verfügbaren Übersetzungen",
+        "available_transl": "Verfügbare Übersetzungen",
+        "emitter": "Sender",
+        "loading": "wird geladen...",
+        "preview_migrant": "Vorschau der Anleitung innerhalb der App für Migrantinnen und Migranten",
+        "preview": "Vorschau",
+        "click_step": "Für Details auf einen Schritt klicken",
+        "validate_intervention": "Intervention validieren"
     },
     "lists": {
         "category": "Kategorie",
@@ -222,7 +255,9 @@
         "unpublish_warning": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, wird der Übersetzungsstatus auf \"nicht übersetzt\" gesetzt und der Übersetzungsprozess muss wiederholt werden. Fortsetzen?",
         "yes": "Ja",
         "no": "Nein",
-        "publish_warning": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?"
+        "publish_warning": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "delete": "Entfernen",
+        "edit": "Bearbeiten"
     },
     "glossary": {
         "list_title": "Glossar",
@@ -274,7 +309,17 @@
         "language": "Sprache",
         "document_types": "Dokumententypen",
         "survey": "Umfrage",
-        "surveymanagement": "Umfragen verwalten"
+        "surveymanagement": "Umfragen verwalten",
+        "survey_local": "Link zur Umfrage in der lokalen Sprache",
+        "helpdesk_pa": "Nachricht an Betreiber-Helpdesk (App der Verwaltenden Behörde)",
+        "helpdesk_ngo": "Nachricht an Betreiber-Helpdesk (ZGO App)",
+        "content": "Beschreibung der Funktionalitäten der App für Migrantinnen und Migranten",
+        "in_survey": "Interne Umfrage",
+        "ex_survey": "Externe Umfrage",
+        "survey_settings": "Art der Umfrage",
+        "survey_en": "Link zur Umfrage in Englisch",
+        "duration_of_new": "Auswählen wie lange neue Inhalte als 'neu' gekennzeichnet werden sollen ",
+        "helpdesk_migrant": "Helpdesk Email oder Telefonnummer für die App für Migrantinnen und Migranten"
     },
     "information_centre": {
         "categories_error": "Wenn die Kategorie einem Eintrag zugewiesen wurde, kann diese nicht entfernt oder die Veröffentlichung zurückgezogen werden",
@@ -403,7 +448,8 @@
         "unpublish_intervention_type": "Achtung: Das Löschen eines Interventionstypen wird alle vorhandenen Übersetzungen entfernen. Fortsetzen?",
         "publish_intervention_type": "Achtung! Wenn der Interventionstyp veröffentlicht wird, wird dieser in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
         "unpublish_process": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, verschwindet der Eintrag aus MICADO mobile. Fortsetzen?",
-        "publish_process": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?"
+        "publish_process": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
+        "published_edit": "Sie können veröffentlichte Inhalte nicht bearbeiten. Sie müssen zuerst die Veröffentlichung rückgängig machen, um Inhalte zu bearbeiten."
     },
     "translation_states": {
         "editing": "In Bearbeitung",
@@ -463,7 +509,15 @@
         "print": "drucken",
         "download_template": "Vorlage herunterladen",
         "batch_upload": "Gebündelt hochladen",
-        "add_topic": "Themenfeld hinzufügen"
+        "add_topic": "Themenfeld hinzufügen",
+        "new_doc_process": "Neuen Dokumententyp hinzufügen",
+        "add_language": "Sprache hinzufügen",
+        "view_pics": "Details anzeigen",
+        "view_model": "Muster anzeigen",
+        "delete_steplink": "Verknüpfung der Schritte entfernen",
+        "save_steplink": " Verknüpfung der Schritte speichern",
+        "delete_step": "Schritt entfernen",
+        "save_step": " Schritt speichern"
     },
     "new_survey": {
         "title": "Umfragetitel",
@@ -489,7 +543,11 @@
         "print_categories": "Kategorien zum Drucken auswählen",
         "add_chart": "Neues Diagramm anlegen",
         "manage_charts": "Diagramme verwalten",
-        "title": "Lagebild Flüchtlinge"
+        "title": "Lagebild Flüchtlinge",
+        "timescale_help": "Diese Box auswählen, wenn die Kategorienachse sich auf ein zeitliches Intervall bezieht (z.B. Jahre, Monate), leer lassen, wenn die Daten sich auf eine Nominal- oder andere Skala (e.g. Länder, Städte) beziehen",
+        "timescale_checkbox": "Daten sind mit einer Zeitskala verknüpft",
+        "timescale_title": "X-Achse bezieht sich auf Zeitintervall",
+        "chart_data_provider_description": "Hier Datenlieferant eintragen"
     },
     "success_messages": {
         "add_chart_description": "Upload erfolgreich abgeschlossen! Bitte zur enstsprechenden Gruppe gehen, um das neue Diagramm zu betrachten.",
