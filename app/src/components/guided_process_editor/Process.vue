@@ -1,7 +1,7 @@
 <template>
-  <q-item class="item">
+  <q-item class="item" style="padding-left:0px; padding-right:0px">
     <div class="width">
-      <div class="row">
+      <div class="row" >
         <div
           class="col-4 flex flex-left title"
           style="padding-top:10px"
