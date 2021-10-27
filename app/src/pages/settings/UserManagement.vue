@@ -18,7 +18,7 @@
     </div>
     <q-card class="q-pa-xl div-2" :hidden="hideForm">
       <q-card-section>
-        <div class="text-h6">Migrant application configuration</div>
+        <!--<div class="text-h6">Migrant application configuration</div>-->
       </q-card-section>
       <q-card-section>
         <form
@@ -234,9 +234,9 @@
 </template>
 
 <script>
-import storeMappingMixin from "../../mixin/storeMappingMixin";
-import PaUser from "../../components/pa_user_management/PaUser";
-import HelpLabel from "components/HelpLabel";
+import storeMappingMixin from "../../mixin/storeMappingMixin"
+import PaUser from "../../components/pa_user_management/PaUser"
+import HelpLabel from "components/HelpLabel"
 
 export default {
   name: "UserManagement",
@@ -256,91 +256,91 @@ export default {
         external_id: "",
         admin: false,
         migrant_tenant: false,
-        roles: [],
+        roles: []
       },
       is_new: true,
-      workingFeatures: [],
-    };
+      workingFeatures: []
+    }
   },
   mixins: [
     storeMappingMixin({
       getters: {
         pausers: "user/pausers",
-        token: "auth/token",
+        token: "auth/token"
       },
       actions: {
         fetchPAUser: "user/fetchPAUser",
         savePAUser: "user/savePAUser",
         fetchUserGroup: "user/fetchUserGroup",
-        editUserDataByAdmin: "user/editUserDataByAdmin",
-      },
-    }),
+        editUserDataByAdmin: "user/editUserDataByAdmin"
+      }
+    })
   ],
   components: {
     PaUser,
-    HelpLabel,
+    HelpLabel
   },
   computed: {
     completepausers() {
-      return this.pausers;
-    },
+      return this.pausers
+    }
   },
   methods: {
     findAttribute(user_mask, editing_user, umAttribute, userAttribute) {
-      console.log(umAttribute);
+      console.log(umAttribute)
       var arr = editing_user.attributes.filter((attr) => {
-        return attr.umAttrName == String(umAttribute);
-      });
+        return attr.umAttrName == String(umAttribute)
+      })
       if (arr.length > 0) {
-        console.log("inside if");
-        user_mask[userAttribute] = arr[0].umAttrValue;
-        console.log(user_mask[userAttribute]);
+        console.log("inside if")
+        user_mask[userAttribute] = arr[0].umAttrValue
+        console.log(user_mask[userAttribute])
       }
     },
     editPAUser(value) {
-      this.is_new = false;
+      this.is_new = false
       var editing_user = this.pausers.filter((user) => {
-        return user.umId == value;
-      })[0];
-      console.log(editing_user);
-      this.findAttribute(this.new_user, editing_user, "uid", "username");
-      this.findAttribute(this.new_user, editing_user, "scimId", "userid");
-      this.findAttribute(this.new_user, editing_user, "givenName", "givenName");
-      this.findAttribute(this.new_user, editing_user, "sn", "familyName");
-      this.findAttribute(this.new_user, editing_user, "workEmail", "email");
-      var working_token = this.token.token.access_token;
+        return user.umId == value
+      })[0]
+      console.log(editing_user)
+      this.findAttribute(this.new_user, editing_user, "uid", "username")
+      this.findAttribute(this.new_user, editing_user, "scimId", "userid")
+      this.findAttribute(this.new_user, editing_user, "givenName", "givenName")
+      this.findAttribute(this.new_user, editing_user, "sn", "familyName")
+      this.findAttribute(this.new_user, editing_user, "workEmail", "email")
+      var working_token = this.token.token.access_token
       this.fetchUserGroup({
         user: this.new_user.username,
-        token: working_token,
+        token: working_token
       }).then((userg) => {
-        console.log(userg);
+        console.log(userg)
         if (userg.Resources) {
           userg.Resources.forEach((role) => {
             this.new_user.roles.push(
               role.displayName.replace("Application/", "")
-            );
-          });
+            )
+          })
 
           this.new_user.roles.forEach((role) => {
             if (role == "micado_admin") {
-              this.new_user.admin = true;
+              this.new_user.admin = true
             }
             if (role == "micado_migrant_manager") {
-              this.new_user.migrant_tenant = true;
+              this.new_user.migrant_tenant = true
             }
-          });
+          })
         }
-        this.new_user.roles = [];
-        this.hideAdd = true;
-        this.hideForm = false;
-      });
+        this.new_user.roles = []
+        this.hideAdd = true
+        this.hideForm = false
+      })
     },
     onSubmit() {
       if (this.is_new) {
-        this.$refs.username.validate();
-        this.$refs.password.validate();
-        this.$refs.givenName.validate();
-        this.$refs.familyName.validate();
+        this.$refs.username.validate()
+        this.$refs.password.validate()
+        this.$refs.givenName.validate()
+        this.$refs.familyName.validate()
 
         if (
           this.$refs.username.hasError ||
@@ -348,48 +348,48 @@ export default {
           this.$refs.familyName.hasError ||
           this.$refs.givenName.hasError
         ) {
-          this.formHasError = true;
+          this.formHasError = true
           this.$q.notify({
             color: "negative",
-            message: "You need to fill in the required fields first",
-          });
-          return false;
+            message: "You need to fill in the required fields first"
+          })
+          return false
         } else {
-          console.log("in else of submit");
-          console.log(this.new_user);
-          this.saveUser();
+          console.log("in else of submit")
+          console.log(this.new_user)
+          this.saveUser()
         }
       } else {
-        this.$refs.username.validate();
-        this.$refs.givenName.validate();
-        this.$refs.familyName.validate();
+        this.$refs.username.validate()
+        this.$refs.givenName.validate()
+        this.$refs.familyName.validate()
 
         if (
           this.$refs.username.hasError ||
           this.$refs.familyName.hasError ||
           this.$refs.givenName.hasError
         ) {
-          this.formHasError = true;
+          this.formHasError = true
           this.$q.notify({
             color: "negative",
-            message: "You need to fill in the required fields first",
-          });
-          return false;
+            message: "You need to fill in the required fields first"
+          })
+          return false
         } else {
-          console.log("in else of submit");
-          console.log(this.new_user);
-          this.saveUser();
+          console.log("in else of submit")
+          console.log(this.new_user)
+          this.saveUser()
         }
       }
     },
     onReset() {
-      console.log(this.$refs);
-      this.hideForm = true;
-      this.hideAdd = false;
-      this.$refs.username.resetValidation();
-      this.$refs.password.resetValidation();
-      this.$refs.givenName.resetValidation();
-      this.$refs.familyName.resetValidation();
+      console.log(this.$refs)
+      this.hideForm = true
+      this.hideAdd = false
+      this.$refs.username.resetValidation()
+      this.$refs.password.resetValidation()
+      this.$refs.givenName.resetValidation()
+      this.$refs.familyName.resetValidation()
       this.new_user = {
         username: "",
         password: "",
@@ -399,38 +399,38 @@ export default {
         external_id: "",
         admin: false,
         migrant_tenant: false,
-        roles: [],
-      };
+        roles: []
+      }
     },
     newUser() {
-      this.$refs.username.resetValidation();
-      this.$refs.password.resetValidation();
-      this.$refs.givenName.resetValidation();
-      this.$refs.familyName.resetValidation();
+      this.$refs.username.resetValidation()
+      this.$refs.password.resetValidation()
+      this.$refs.givenName.resetValidation()
+      this.$refs.familyName.resetValidation()
 
-      this.is_new = true;
-      this.hideAdd = true;
-      this.hideForm = false;
+      this.is_new = true
+      this.hideAdd = true
+      this.hideForm = false
     },
     saveUser() {
-      console.log(this.new_user);
-      this.new_user.roles.push("pa_sp");
+      console.log(this.new_user)
+      this.new_user.roles.push("pa_sp")
       if (this.new_user.admin == true) {
-        this.new_user.roles.push("micado_admin");
+        this.new_user.roles.push("micado_admin")
       }
       if (this.new_user.migrant_tenant == true) {
-        this.new_user.roles.push("micado_migrant_manager");
+        this.new_user.roles.push("micado_migrant_manager")
       }
-      console.log(this.new_user);
+      console.log(this.new_user)
 
-      var working_roles = JSON.stringify(this.new_user.roles);
-      var working_token = this.token.token.access_token;
-      console.log(working_token);
+      var working_roles = JSON.stringify(this.new_user.roles)
+      var working_token = this.token.token.access_token
+      console.log(working_token)
       console.log({
         tenant: this.$envconfig.paTenantDomain,
         token: working_token,
-        roles: working_roles,
-      });
+        roles: working_roles
+      })
       if (this.is_new) {
         var working_user = JSON.parse(
           JSON.stringify(this.new_user, [
@@ -438,15 +438,15 @@ export default {
             "password",
             "givenName",
             "familyName",
-            "email",
+            "email"
           ])
-        );
+        )
         this.savePAUser({
           user: working_user,
           tenant: this.$envconfig.paTenantDomain,
           token: working_token,
-          roles: working_roles,
-        });
+          roles: working_roles
+        })
       } else {
         var working_user = JSON.parse(
           JSON.stringify(this.new_user, [
@@ -456,19 +456,19 @@ export default {
             "givenName",
             "familyName",
             "email",
-            "roles",
+            "roles"
           ])
-        );
-        console.log(working_user);
+        )
+        console.log(working_user)
         this.editUserDataByAdmin({
           user: JSON.stringify(working_user),
           tenant: this.$envconfig.paTenantDomain,
-          token: working_token,
-        });
+          token: working_token
+        })
       }
 
-      this.hideForm = true;
-      this.hideAdd = false;
+      this.hideForm = true
+      this.hideAdd = false
     },
     cancelUser() {
       //    this.isNew = false
@@ -479,16 +479,16 @@ export default {
       //   this.order = 0
     },
     saveFeatures() {
-      console.log(this.workingFeatures);
-      this.updateAllFeatures(this.workingFeatures);
-      console.log("posted");
-      this.workingFeatures = JSON.parse(JSON.stringify(this.features));
-    },
+      console.log(this.workingFeatures)
+      this.updateAllFeatures(this.workingFeatures)
+      console.log("posted")
+      this.workingFeatures = JSON.parse(JSON.stringify(this.features))
+    }
   },
   async created() {
-    console.log("created");
-    await this.fetchPAUser(this.$pa_tenant);
-    console.log(this.pausers);
+    console.log("created")
+    await this.fetchPAUser(this.$pa_tenant)
+    console.log(this.pausers)
     //    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     /*
     this.fetchFeatures()
@@ -498,8 +498,8 @@ export default {
         console.log(this.features)
       });
       */
-  },
-};
+  }
+}
 </script>
 <style scoped>
 h5 {

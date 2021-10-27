@@ -1,6 +1,6 @@
 <template>
   <q-page padding>
-    <div v-if="this.loading">Loading...</div>
+    <div v-if="this.loading">{{$t('input_labels.loading')}}</div>
     <div v-else>
           <div class="q-pa-md header" style="padding-top:40px">{{$t('pa_profile.personal_profile')}}</div>
 

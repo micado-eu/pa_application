@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span v-if="loading">Loading...</span>
+    <span v-if="loading">{{$t('input_labels.loading')}}</span>
     <div v-if="!loading" class="q-pa-md first-div">
             <div class="row">
         <div class="col-11" style="text-align:center">
