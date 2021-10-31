@@ -33,7 +33,7 @@
         "tags": "Tags",
         "select_category": "Selecteer de categorie",
         "type": "Type",
-        "required_documents": "Welke documenten zijn nodig?",
+        "required_documents": "Vereiste documenten",
         "manage": "Beheren",
         "process_description": "Beschrijving van het stappenplan",
         "process_name": "Naam van het stappenplan",
@@ -48,7 +48,7 @@
         "doc_pics": "Afbeeldingen van document",
         "doc_cost": "Prijs van het document",
         "doc": "Document",
-        "cost": "Prijs",
+        "cost": "Kost",
         "validators": "Goedkeurders",
         "start_date": "Selecteer de startdatum",
         "finish_date": "Selecteer de einddatum",
@@ -58,7 +58,7 @@
         "generated_docs": "Tot welk document leidt dit stappenplan?",
         "issuer": "Uitgever van het document",
         "doc_type": "Documenttype",
-        "comments": "Opmerkingen",
+        "comments": "Reacties",
         "todo": "To do",
         "validated": "Goedgekeurd",
         "validation_requested": "Goedkeuring aanvragen",
@@ -91,7 +91,25 @@
         "choose_json": "Kies JSON",
         "choose_csv": "Kies CSV",
         "standard": "Standaard",
-        "data_format": "Soort data"
+        "data_format": "Soort data",
+        "optional_file_validation": "Kies een extra document voor goedkeuring",
+        "migrant_manager": "Beheer van de migrantenaccounts",
+        "delete_confirm": "Wil je dit zeker verwijderen?",
+        "lang_editor": "Taal-editor",
+        "language_abbr": "Taal tag",
+        "language_iso": "ISO code",
+        "language_name": "Taal",
+        "emitter": "Zender",
+        "no_available_transl": "Niet beschikbare vertalingen",
+        "available_transl": "Beschikbare vertalingen",
+        "days": "Dagen",
+        "validate_intervention": "Keur goed",
+        "loading": "Aan het laden...",
+        "preview_migrant": "Voorbeeld van het stappenplan op de app voor migranten",
+        "preview": "Voorbeeld",
+        "click_step": "Klik op een bovenstaande stap voor details",
+        "new_doc_typ_add": "Nieuw document toevoegen aan beschikbare soorten documenten",
+        "add_doc_type": "Voeg een nieuw type document toe"
     },
     "data_settings": {
         "language": "Taal",
@@ -116,7 +134,17 @@
         "pa_email": "Feedback mailen naar de 'Public Administration'",
         "privacy": "Privacy policy",
         "data_management": "Data beheren",
-        "surveymanagement": "Beheer de vragenlijsten"
+        "surveymanagement": "Beheer de vragenlijsten",
+        "content": "Beschrijving van de functies in de app voor migranten",
+        "in_survey": "Interne vragenlijst",
+        "ex_survey": "Externe vragenlijst",
+        "survey_settings": "Soort vragenlijst",
+        "survey_en": "Link voor de vragenlijst in Engels",
+        "survey_local": "Link voor de vragenlijst in jouw lokale taal",
+        "duration_of_new": "Duid aan hoe lang de inhoud wordt aangeduid als nieuw ",
+        "helpdesk_migrant": "Helpdesk e-mail of telefoonnummer voor de app voor migranten",
+        "helpdesk_ngo": "Dit is een helpdesk bericht voor de app voor organisaties",
+        "helpdesk_pa": "Dit is een helpdesk bericht voor de app voor administratie"
     },
     "profile": {
         "legal_name": "Wettelijke naam",
@@ -217,7 +245,14 @@
         "chart_description": "Beschrijf jouw grafiek",
         "category": "Als de categorie nog niet bestaat, zal deze automatisch aangemaakt worden",
         "board": "Als het bord nog niet bestaat, zal het automatisch aangemaakt worden",
-        "enter_chart_title": "Vul de titel van de grafiek hier in"
+        "enter_chart_title": "Vul de titel van de grafiek hier in",
+        "information_category": "Schrijf de naam van de categorie van informatie",
+        "event_category": "Schrijf de naam van de categorie van het event",
+        "linkable_integration_plan": "Controleer of deze categorie mogelijks aan een integratieplan gekoppeld moet worden",
+        "add_edge_explain": "Teken een lijn tussen de stappen om ze aan elkaar te linken",
+        "click_step_graph": "Klik op elke stap om de details te zien",
+        "add_step_explain": "Klik op \"voeg een stap toe\" om een of meerdere stappen aan het stappenplan toe te voegen",
+        "preview_process": "Voorbeeld"
     },
     "information_centre": {
         "categories_error": "Een categorie waar nog items aan toegewezen zijn kan niet verwijderd of verborgen worden.",
@@ -244,8 +279,10 @@
         "translation_state": "Status van de vertaling",
         "no": "Neen",
         "yes": "Ja",
-        "unpublish_warning": "Opgelet: de publicatieknop uitschakelen betekent dat je mogelijk de vertalingen zal moeten aanpassen. Verdergaan?",
-        "publish_warning": "Opgelet: Als je deze inhoud publiceert wordt het zichtbaar op de app voor nieuwkomers. Je kan dan niets aan de inhoud wijzigen tenzij je de publicatie terug uitschakelt. Verdergaan?"
+        "unpublish_warning": "Waarschuwing: De publicatie van het stappenplan ongedaan maken zorgt ervoor dat alle bestaande vertaling als niet vertaald worden beschouwd en moeten misschien opnieuw vertaald worden. Verdergaan?",
+        "publish_warning": "Waarschuwing: het stappenplan publiceren maakt het zichtbaar op de app voor migranten en je kan niets veranderen tenzij je de publicatie ongedaan maakt. Verdergaan?",
+        "delete": "Verwijder",
+        "edit": "Bewerk"
     },
     "menu": {
         "home_desc": " ",
@@ -273,7 +310,15 @@
         "migrant_desc": "Bekijk en beheer accounts",
         "data": "Data instellingen",
         "glossary_desc": "Bekijk en bewerk items in de woordenlijst",
-        "events_desc": "Bekijk en bewerk de cursussen en evenementen"
+        "events_desc": "Bekijk en bewerk de cursussen en evenementen",
+        "setting_description": "Dit is een langere beschrijving van het item",
+        "glossary_description": "Dit is een langere beschrijving van het item",
+        "usage_description": "Dit is een langere beschrijving van het item",
+        "information_centre_description": "Dit is een langere beschrijving van het item",
+        "process_description": "Dit is een langere beschrijving van het item",
+        "cso_description": "Dit is een langere beschrijving van het item",
+        "migrant_description": "Dit is een langere beschrijving van het item",
+        "situation_description": "Dit is een langere beschrijving van het item"
     },
     "button": {
         "validate_and_publish": "Goedkeuren en publiceren",
@@ -322,11 +367,19 @@
         "situation_manage_charts": "Grafieken beheren",
         "add_link": "Link toevoegen",
         "add_survey": "Vragenlijst toevoegen",
-        "batch_upload": "Uploaden in bulk",
+        "batch_upload": "Upload in bulk",
         "download_template": "Download het sjabloon",
         "return_main": "Ga terug naar de hoofdpagina",
         "print": "print",
-        "add_topic": "Voeg een thema toe"
+        "add_topic": "Voeg een thema toe",
+        "new_doc_process": "Voeg een nieuw type document toe",
+        "add_language": "Voeg een taal toe",
+        "view_pics": "Bekijk details",
+        "view_model": "Bekijk het model",
+        "delete_steplink": "Verwijder de link voor deze stap",
+        "save_steplink": " Bewaar de link voor deze stap",
+        "delete_step": "Verwijder de stap",
+        "save_step": " Bewaar de stap"
     },
     "error_messages": {
         "in_translation": "Deze inhoud moet nog vertaald worden. De gewijzigde inhoud zal niet opgeslagen worden.",
@@ -445,7 +498,8 @@
         "unpublish_doc_type": "Opgelet: als je de publicatie van dit document ongedaan maakt, verwijder je ook de gepubliceerde vertalingen voor de nieuwkomer en alle stappenplannen die ermee verbonden zijn. Ga je verder?",
         "unpublish_process": "Opgelet: als je de publicatie van het stappenplan ongedaan maakt, is het niet meer zichtbaar in de app voor nieuwkomers. Ga je verder?",
         "publish_process": "Opgelet: als je het stappenplan publiceert, wordt het zichtbaar in de applicatie voor nieuwkomers. Vanaf dat moment kan je niets meer wijzigen tot je de publicatie ongedaan maakt. Ga je verder?",
-        "no_results": "Geen resultaten"
+        "no_results": "Geen resultaten",
+        "published_edit": "Je can gepubliceerde inhoud niet bewerken. Om te bewerken moet je eerst de publicatie ongedaan maken."
     },
     "text_editor": {
         "word_count": "Aantal woorden"
@@ -492,6 +546,10 @@
         "print_categories": "Selecteer categorieën om te printen",
         "add_chart": "Voeg een nieuwe grafiek toe",
         "manage_charts": "Beheer de grafieken",
-        "title": "MICADO Migratie in cijfers"
+        "title": "MICADO Migratie in cijfers",
+        "timescale_help": "duid dit vakje aan als je tijdsgegevens gebruikt op je categorie-as (vb jaren, maanden), laat het leeg als je nominale of een andere soort gegevens gebruikt (vb landen, steden)",
+        "timescale_checkbox": "Gegevens met betrekking tot een tijdreeks",
+        "timescale_title": "Tijdgegevens",
+        "chart_data_provider_description": "Voeg de gegevensverstrekker toe"
     }
 }
