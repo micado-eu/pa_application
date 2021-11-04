@@ -175,13 +175,11 @@
             {{ $t("input_labels.available_transl") }}:
           </p>
           <q-chip
-            v-for="lang in a_integration_category.translations.filter(
-              (lang) => {
-                return lang.title.length > 1 && lang.translated == true;
-              }
-            )"
+            v-for="lang in translationAvailable(a_integration_category)"
+            style="background-color:#C4C4C4" 
+            text-color="white"
             :key="lang.lang"
-            >{{ lang.lang }}</q-chip
+            >{{ lang.lang.toUpperCase() }}</q-chip
           >
         </div>
         <hr style="margin-bottom: 0px" />

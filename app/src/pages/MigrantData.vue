@@ -1,9 +1,9 @@
 <template>
   <div>
-    <span v-if="loading">Loading...</span>
+    <span v-if="loading">{{$t('input_labels.loading')}}</span>
     <div v-if="!loading" class="q-pa-md first-div">
-            <div class="row">
-        <div class="col-11" style="text-align:center">
+    <div  class="row content" style="padding-top:60px">
+        <div  class="col-11" style="text-align:center">
         <q-btn
           v-if="features.includes('FEAT_DOCUMENTS')"
           size="15px"
@@ -441,4 +441,11 @@ export default {
   margin-left:96px;
   margin-right:96px
 }
+.content {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background-color: white;       
+  }
 </style>

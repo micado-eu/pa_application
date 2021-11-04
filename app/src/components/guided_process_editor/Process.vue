@@ -1,7 +1,7 @@
 <template>
-  <q-item class="item">
+  <q-item class="item" style="padding-left:0px; padding-right:0px">
     <div class="width">
-      <div class="row">
+      <div class="row" >
         <div
           class="col-4 flex flex-left title"
           style="padding-top:10px"
@@ -87,9 +87,10 @@
           {{ $t('input_labels.available_transl') }}:
         </p>
         <q-chip
-          style="background-color:#C4C4C4" text-color="white"
-          v-for=" lang in theProcess.translations.filter(lang => {return lang.process.length>1 && lang.translated == true})"
-          :key="lang.lang"
+          v-for="lang in translationAvailable(theProcess)"
+            style="background-color:#C4C4C4" 
+            text-color="white"
+            :key="lang.lang"
         >
           {{ lang.lang.toUpperCase() }}
         </q-chip>

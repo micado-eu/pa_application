@@ -1,7 +1,7 @@
 <template>
   <div>
     <div v-if="loading">
-      Loading...
+      {{$t('input_labels.loading')}}
     </div>
     <div v-else>
       
