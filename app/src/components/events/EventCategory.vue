@@ -433,9 +433,8 @@ export default {
               }
             }
             for (const ec of this.eventCategories) {
-              const translation = ec.translations.filter(this.translationFilter)[0]
               this.availableTranslations[ec.id] = ec.translations
-                .filter((t) => t.translated && (new Date(t.translationDate) >= new Date(translation.translationDate)))
+                .filter((t) => t.translated)
                 .map((t) => t.lang)
             }
             this.loading = false
