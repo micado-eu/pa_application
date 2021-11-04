@@ -240,10 +240,9 @@
             {{ $t("input_labels.available_transl") }}:
           </p>
           <q-chip
-          style="background-color:#C4C4C4" text-color="white"
-            v-for="lang in a_topic.translations.filter((lang) => {
-              return lang.topic.length > 1 && lang.translated == true;
-            })"
+            v-for="lang in translationAvailable(a_topic)"
+            style="background-color:#C4C4C4" 
+            text-color="white"
             :key="lang.lang"
             >{{ lang.lang.toUpperCase() }}</q-chip
           >
