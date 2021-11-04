@@ -112,9 +112,9 @@
                       standout
                       outlined
                       counter
-                      maxlength="50"
+                      :maxlength="$envconfig.titleLimit"
                       @blur="updateField()"
-                      :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
+                      :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
                       val=> !!val || 'Field is required']"
                                           :readonly="!(
                       (steplink_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)                    )"
@@ -228,9 +228,9 @@
                       standout
                       outlined
                       counter
-                      maxlength="50"
+                      :maxlength="$envconfig.titleLimit"
                       @blur="updateField()"
-                      :rules="[ val => val.length <= 50 || 'Please use maximum 50 characters',
+                      :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
                       val=> !!val || 'Field is required']"
                       :readonly="!(
                       (step_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)
@@ -308,8 +308,8 @@
                   outlined
                   @blur="updateField()"
                   counter
-                  maxlength="50"
-                  :rules="[ val => val.length <= 50 ]"
+                  :maxlength="$envconfig.titleLimit"
+                  :rules="[ val => val.length <= $envconfig.titleLimit ]"
                   v-model="step_shell.location"
                   :label="$t('input_labels.step_location')"
                 />
@@ -383,8 +383,8 @@
                   standout
                   outlined
                   @blur="updateField()"
-                  maxlength="50"
-                  :rules="[ val => val.length <= 50 || 'Please use maximum 5 characters']"
+                  :maxlength="$envconfig.titleLimit"
+                  :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 5 characters']"
                   v-model="step_shell.cost"
                   :label="$t('input_labels.step_cost')"
                 />

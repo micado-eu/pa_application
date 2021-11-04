@@ -42,13 +42,13 @@
               standout
               ref="process_name"
               outlined
-              maxlength="50"
+              :maxlength="$envconfig.titleLimit"
               counter
               :readonly="!(
                 (edit_process.translations.filter((top) => top.translated == false)[0].translationState == 0) && (edit_process.published == false)
               )"
               :rules="[ 
-                val => val.length <= 50 || 'Please use maximum 50 characters',
+                val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
                 val => !!val || 'Field is required'
               ]"
               :hint="$t('input_labels.required')"

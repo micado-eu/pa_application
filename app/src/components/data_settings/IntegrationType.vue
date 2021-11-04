@@ -29,9 +29,9 @@
           counter
           ref="type_title"
           :hint="$t('input_labels.required')"
-          maxlength="100"
+          :maxlength="$envconfig.titleLimit"
           :rules="[
-            (val) => val.length <= 100 || 'Please use maximum 100 characters',
+            (val) => val.length <= $envconfig.titleLimit || 'Please use maximum 100 characters',
             (val) => !!val || 'Field is required',
           ]"
           outlined
