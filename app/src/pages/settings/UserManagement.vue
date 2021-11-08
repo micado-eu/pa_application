@@ -311,7 +311,8 @@ export default {
       var working_token = this.token.token.access_token
       this.fetchUserGroup({
         user: this.new_user.username,
-        token: working_token
+        token: working_token,
+        tenant:this.$envconfig.paTenantDomain
       }).then((userg) => {
         console.log(userg)
         if (userg.Resources) {
