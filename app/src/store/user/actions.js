@@ -108,7 +108,7 @@ export function fetchUserGroup (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload)
   return client
-    .fetchUserGroup(payload.user, payload.token)
+    .fetchUserGroup(payload.user, payload.token, payload.tenant)
 }
 export function getUserPic(state, userid){
   return client.fetchUserPic(userid).then((ret)=>{
