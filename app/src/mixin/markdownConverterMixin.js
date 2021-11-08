@@ -122,7 +122,6 @@ export default {
       }
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
-      console.log(entities)
       // Regexes used for checking if we are inside a reference later
       const fullCheckRegex = /@\[([^,]+),(\d+)\][\(（]([^\)）]+)[\)）]/gi
       const partialCheckRegex = /@\[([^,]+),(\d+)\][\(（]/gi
