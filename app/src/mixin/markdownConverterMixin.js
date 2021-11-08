@@ -6,7 +6,7 @@ import referenceExtension from "./markdownExtensions/referenceExtension.js"
 export default {
   data() {
     return {
-      converter: new Converter({ extensions: [referenceExtension], simpleLineBreaks: true})
+      converter: new Converter({ extensions: [referenceExtension], simpleLineBreaks: true })
     }
   },
   methods: {
@@ -93,7 +93,7 @@ export default {
       }
       return result
     },
-    async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities=false, fakeEntitiesObj) {
+    async HTMLToMarkdown(html, defaultLang = 'en', userLang = 'en', isAllFetched = false, fakeEntities = false, fakeEntitiesObj) {
       let cleanHTML = this.removeMentionTags(html)
       cleanHTML = this.moveSpaces(cleanHTML)
       let md = this.converter.makeMarkdown(cleanHTML)
@@ -107,7 +107,7 @@ export default {
       html = this.moveSpaces(html)
       return html
     },
-    async markReferencesAux(md, lang, fakeEntities=false, fakeEntitiesObj) {
+    async markReferencesAux(md, lang, fakeEntities = false, fakeEntitiesObj) {
       let result = md
       let entities
       if (!fakeEntities) {
@@ -122,6 +122,10 @@ export default {
       }
       let markedTitles = [] // Avoids marking twice if an element has already been marked with the same title from another entity
       const stringComparator = new Intl.Collator(lang, { sensitivity: 'accent' })
+      console.log(entities)
+      // Regexes used for checking if we are inside a reference later
+      const fullCheckRegex = /@\[([^,]+),(\d+)\][\(（]([^\)）]+)[\)）]/gi
+      const partialCheckRegex = /@\[([^,]+),(\d+)\][\(（]/gi
       for (const [key, value] of Object.entries(entities)) {
         // Remove elements with repeated titles from previous entities (ignoring case)
         const filteredTerms = value.filter((elem) => {
@@ -145,7 +149,16 @@ export default {
             for (let i = 0; i < splitted.length; i = i + 1) {
               const isTitle = !stringComparator.compare(splitted[i], title)
               if (isTitle) {
-                splitted[i] = prefixTag + "(" + splitted[i] + ")"
+                if (i > 0) {
+                  // Check that we are not inside a reference already
+                  const partialCheck = partialCheckRegex.test(splitted[i - 1])
+                  const fullCheck = fullCheckRegex.test(splitted[i - 1])
+                  if (!partialCheck || fullCheck) {
+                    splitted[i] = prefixTag + "(" + splitted[i] + ")"
+                  }
+                } else {
+                  splitted[i] = prefixTag + "(" + splitted[i] + ")"
+                }
               }
             }
             result = splitted.join("")

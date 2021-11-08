@@ -7,11 +7,11 @@ export function setFlows (state, flows) {
 }
 
 export function setFlowsProd (state, flows) {
-  state.flowsProd = flows
+  state.flowsProd = flows.filter(t => t.translated)
 }
 
 export function setFlowsTemp (state, flows) {
-  state.flowsTemp = flows
+  state.flowsTemp = flows.filter(t => !t.translated)
 }
 
 export function setFlowsDocs (state, flowsDocs) {
