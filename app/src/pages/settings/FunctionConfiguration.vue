@@ -74,7 +74,7 @@
         </div>
       </q-card-section>
     </q-card>
-    <q-card bordered class="q-ma-md">
+   <!-- <q-card bordered class="q-ma-md">
       <q-card-section>
         <div class="setting_title">
           <HelpLabel
@@ -117,6 +117,100 @@
           no-caps
           :label="$t('button.save')"
           @click="saveSingleSetting('survey_en',newSurveyEn, surveyEn )"
+        />
+                </div>
+      </q-card-section>
+    </q-card>-->
+    <q-card bordered class="q-ma-md">
+      <q-card-section>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.survey_pa')"
+              :helpLabel="$t('help.survey_pa')"
+            />
+       </div>
+      </q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+                <div class="col">
+           <q-input
+              dense
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              :readonly="!edit_survey_pa"
+              v-model="surveyPa"
+              />
+                </div>
+                <div class="col" style="text-align:right">
+        <q-btn
+          v-if="!edit_survey_pa"
+          class="button_edit"
+          no-caps
+          :label="$t('button.edit')"
+          @click="edit_survey_pa = true"
+        />
+          <q-btn
+          v-if="edit_survey_pa"
+          class="button_cancel"
+          no-caps
+          :label="$t('button.cancel')"
+          @click="cancelSetting('survey_pa')"
+        />
+          <q-btn
+          v-if="edit_survey_pa"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
+          @click="saveSingleSetting('survey_pa',newSurveyPa, surveyPa )"
+        />
+                </div>
+      </q-card-section>
+    </q-card>
+    <q-card bordered class="q-ma-md">
+      <q-card-section>
+        <div class="setting_title">
+          <HelpLabel
+              :fieldLabel="$t('data_settings.survey_cso')"
+              :helpLabel="$t('help.survey_cso')"
+            />
+       </div>
+      </q-card-section>
+            <q-separator />
+      <q-card-section class="row">
+                <div class="col">
+           <q-input
+              dense
+              bg-color="grey-3"
+              standout
+              outlined
+              counter
+              :readonly="!edit_survey_cso"
+              v-model="surveyCso"
+              />
+                </div>
+                <div class="col" style="text-align:right">
+        <q-btn
+          v-if="!edit_survey_cso"
+          class="button_edit"
+          no-caps
+          :label="$t('button.edit')"
+          @click="edit_survey_cso = true"
+        />
+          <q-btn
+          v-if="edit_survey_cso"
+          class="button_cancel"
+          no-caps
+          :label="$t('button.cancel')"
+          @click="cancelSetting('survey_cso')"
+        />
+          <q-btn
+          v-if="edit_survey_cso"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
+          @click="saveSingleSetting('survey_cso',newSurveyCso, surveyCso )"
         />
                 </div>
       </q-card-section>
@@ -680,6 +774,10 @@ export default {
       surveyLocalOrig:null,
       surveyEn:null,
       surveyEnOrig:null,
+      surveyPa:null,
+      surveyPaOrig:null,
+      surveyCso:null,
+      surveyCsoOrig:null,
       isNew: true,
       newFathers: true,
       newPolicy: true,
@@ -689,6 +787,8 @@ export default {
       newDurationOfNew: true,
       newSurveyLocal:true,
       newSurveyEn:true,
+      newSurveyPa:true,
+      newSurveyCso:true,
       t_tags: [],
       edit_fathers: false,
       fathers: [],
@@ -700,6 +800,8 @@ export default {
       edit_duration_of_new: false,
       edit_survey_local:false,
       edit_survey_en:false,
+      edit_survey_pa:false,
+      edit_survey_cso:false,
       loading:true,
       tabs:'guides', 
       internalSurvey:false,
@@ -1003,6 +1105,18 @@ export default {
           )
           this.edit_survey_en = false
           break
+                case "survey_pa":
+          this.surveyPa = JSON.parse(
+            JSON.stringify(this.surveyPaOrig)
+          )
+          this.edit_survey_pa = false
+          break
+                  case "survey_cso":
+          this.surveyCso = JSON.parse(
+            JSON.stringify(this.surveyCsoOrig)
+          )
+          this.edit_survey_cso = false
+          break
         default:
           console.log("non of those")
       }
@@ -1049,6 +1163,14 @@ export default {
         case "survey_en":
           this.surveyEnOrig = JSON.parse(JSON.stringify(item))
           this.edit_survey_en = false
+          break
+        case "survey_pa":
+          this.surveyPaOrig = JSON.parse(JSON.stringify(item))
+          this.edit_survey_pa = false
+          break
+        case "survey_cso":
+          this.surveyCsoOrig = JSON.parse(JSON.stringify(item))
+          this.edit_survey_cso = false
           break
         default:
           console.log("non of those")
@@ -1150,6 +1272,16 @@ export default {
         this.surveyEn = setting.value
         this.surveyEnOrig = setting.value
         this.newSurveyEn = false
+      }
+      if (setting.key == "survey_pa") {
+        this.surveyEn = setting.value
+        this.surveyEnOrig = setting.value
+        this.newSurveyEn = false
+      }
+      if (setting.key == "survey_cso") {
+        this.surveyCso = setting.value
+        this.surveyCsoOrig = setting.value
+        this.newSurveyCso = false
       }
       if (setting.key == "internal_survey") {
         console.log("IN INTERNAL SRVEY")
