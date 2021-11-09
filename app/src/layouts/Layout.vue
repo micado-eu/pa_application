@@ -145,7 +145,7 @@
         <q-card-section v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" style="max-height: 50vh" >
         <div v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" >{{$t('data_settings.survey_pa')}}</div><br>
         <a v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" :href="this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value">
-        {{this.settings.filter((set)=>{return set.key == 'survey_local'})[0].value}}<br>
+        {{this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value}}<br>
         </a>
         </q-card-section>
 

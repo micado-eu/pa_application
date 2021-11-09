@@ -1274,9 +1274,9 @@ export default {
         this.newSurveyEn = false
       }
       if (setting.key == "survey_pa") {
-        this.surveyEn = setting.value
-        this.surveyEnOrig = setting.value
-        this.newSurveyEn = false
+        this.surveyPa = setting.value
+        this.surveyPaOrig = setting.value
+        this.newSurveyPa = false
       }
       if (setting.key == "survey_cso") {
         this.surveyCso = setting.value
