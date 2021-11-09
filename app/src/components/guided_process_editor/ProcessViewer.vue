@@ -81,7 +81,7 @@
                   style="text-align: center; padding-top: 10px"
                 >
                   <a
-                    :href="'//' + flowData.url"
+                    :href="flowData.url"
                     target="_blank"
                     style="text-decoration: none"
                   >
