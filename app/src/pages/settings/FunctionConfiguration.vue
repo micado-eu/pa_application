@@ -1143,34 +1143,42 @@ export default {
         case "helpdesk_pa":
           this.helpdeskPaOrig = JSON.parse(JSON.stringify(item))
           this.edit_helpdesk_pa = false
+          this.newHelpdeskPa = false
           break
         case "helpdesk_ngo":
           this.helpdeskNgoOrig = JSON.parse(JSON.stringify(item))
           this.edit_helpdesk_ngo = false
+          this.newHelpdeskNgo = false
           break
         case "helpdesk_migrant":
           this.helpdeskMigrantOrig = JSON.parse(JSON.stringify(item))
           this.edit_helpdesk_migrant = false
+          this.newHelpdeskMigrant = false
           break
         case "duration_of_new":
           this.durationOfNewOrig = JSON.parse(JSON.stringify(item))
           this.edit_duration_of_new = false
+          this.newDurationOfNew = false
           break
         case "survey_local":
           this.surveyLocalOrig = JSON.parse(JSON.stringify(item))
           this.edit_survey_local = false
+          this.newSurveyLocal = false
           break
         case "survey_en":
           this.surveyEnOrig = JSON.parse(JSON.stringify(item))
           this.edit_survey_en = false
+          this.newSurveyEn = false
           break
         case "survey_pa":
           this.surveyPaOrig = JSON.parse(JSON.stringify(item))
           this.edit_survey_pa = false
+          this.newSurveyPa = false
           break
         case "survey_cso":
           this.surveyCsoOrig = JSON.parse(JSON.stringify(item))
           this.edit_survey_cso = false
+          this.newSurveyCso = false
           break
         default:
           console.log("non of those")
