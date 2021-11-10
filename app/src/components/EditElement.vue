@@ -572,7 +572,6 @@ export default {
       } else {
         this.saving = true
         this.saveContent().then(() => {
-          console.log(this.savedTranslations)
           this.save_item_fn(
             this.savedTranslations
           )
