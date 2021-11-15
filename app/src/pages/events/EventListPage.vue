@@ -130,7 +130,6 @@ export default {
       let eventElem = this.eventElemById(id)
       let promises = []
       const translation = Object.assign({}, eventElem.translations.filter(t => !t.translated)[0])
-      translation.translationState = 0
       promises.push(
         this.editEventItemTranslation(translation).catch((err) => {
           this.$q.notify({

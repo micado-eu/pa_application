@@ -89,7 +89,6 @@ export default {
       let infoElem = this.informationElemById(id)
       let promises = []
       const translation = Object.assign({}, infoElem.translations.filter(t => !t.translated)[0])
-      translation.translationState = 0
       promises.push(
         this.editInformationItemTranslation(translation).catch((err) => {
           this.$q.notify({

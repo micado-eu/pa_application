@@ -91,7 +91,6 @@ export default {
       let glossaryElem = this.glossaryElemById(id)
       let promises = []
       const translation = Object.assign({}, glossaryElem.translations.filter(t => !t.translated)[0])
-      translation.translationState = 0
       promises.push(
         this.editGlossaryItemTranslation(translation).catch((err) => {
           this.$q.notify({
