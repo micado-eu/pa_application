@@ -813,9 +813,16 @@ export default {
     
     mergeStepLink (idStepLink) {
       console.log("MERGING")
+      console.log(this.steplink_shell)
+      console.log(this.steplinks)
       var steplink = this.steplinks.filter(step => { return step.id == idStepLink })[0]
-      this.steplink_shell = JSON.parse(JSON.stringify(steplink))
-      this.steplink_shell.is_new = false
+      console.log(steplink)
+      //this.steplink_shell = JSON.parse(JSON.stringify(steplink))
+      this.steplink_shell.id = JSON.parse(JSON.stringify(steplink.id))
+      this.steplink_shell.fromStep = JSON.parse(JSON.stringify(steplink.fromStep))
+      this.steplink_shell.toStep = JSON.parse(JSON.stringify(steplink.toStep))
+      this.steplink_shell.idProcess = JSON.parse(JSON.stringify(steplink.idProcess))
+      //this.steplink_shell.is_new = false
       this.steplink_shell.translations = [
         steplink.translations.filter((top) => {
           return top.lang == this.$defaultLang && top.translated == false
@@ -864,6 +871,8 @@ export default {
       else{
         console.log("I am editing a steplink")
         console.log(node.data)
+        this.generateStepLink(node.data.id, node.data.source, node.data.target, node.data.is_new)
+        console.log(this.steplink_shell)
         if (node.data.is_new) {
           console.log("NEW EDGE")
           this.mergeStepLink(node.data.id)
@@ -886,6 +895,7 @@ export default {
     saveStep () {
       // In edit_step we have the instance of step that we are working on
       console.log("saving the step")
+      console.log(this.step_shell)
       if ( this.step_shell.is_new) {
         this.step_shell.translations.push({
           id: this.step_shell.id,
@@ -1154,7 +1164,12 @@ export default {
       let postData = { steps: this.steps, steplinks: this.steplinks }
       console.log(JSON.stringify(postData))
       this.saveGraph(postData)
+            this.$q.loading.show({
+      })
+      this.timer = setTimeout(() => {
+          this.$q.loading.hide()
       this.$router.push('/guided_process_editor')
+        }, 1000)  
     },
     // this is used only for edges that get removed as a removal of a node that has edges
     removeElement (event, element, cy) {
