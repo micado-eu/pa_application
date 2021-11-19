@@ -721,7 +721,13 @@ export default {
           actions: [
             {
               label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                this.on_publish(id).then(() => console.log("published"))
+                const notif = this.$q.notify({message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false})
+                this.on_publish(id).then(() => {
+                  console.log("published")
+                }).finally(() => {
+                  notif({message: "", spinner: false, icon: 'done', timeout: 2500})
+                  this.$nextTick()
+                })
               }
             },
             {
@@ -736,11 +742,18 @@ export default {
       else {
         this.$q.notify({
           type: 'warning',
+          timeout: 0,
+          group: false,
           message: this.$t("lists.unpublish_warning"),
           actions: [
             {
               label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                this.on_unpublish(id).then(() => console.log("unpublished"))
+                const notif = this.$q.notify({message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false})
+                this.on_unpublish(id).then(() => {
+                  console.log("unpublished")
+                }).finally(() => {
+                  notif({message: "", spinner: false, icon: 'done', timeout: 2500})
+                })
               }
             },
             {
