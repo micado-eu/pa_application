@@ -815,6 +815,7 @@ export default {
       console.log("MERGING")
       var steplink = this.steplinks.filter(step => { return step.id == idStepLink })[0]
       this.steplink_shell = JSON.parse(JSON.stringify(steplink))
+      this.steplink_shell.is_new = false
       this.steplink_shell.translations = [
         steplink.translations.filter((top) => {
           return top.lang == this.$defaultLang && top.translated == false
@@ -934,8 +935,13 @@ export default {
     },
         saveStepLink () {
       // In edit_step we have the instance of step that we are working on
+      console.log("IN SAVING STEPLINK")
+      //const index = this.steplink_shell.translations.findIndex(item => item.lang === this.activeLanguage && item.translated == true)
+      //console.log(index)
+      console.log(this.steplink_shell)
       if ( this.steplink_shell.is_new) {
-        this.steplink_shell.translations.push({
+        console.log("---------------PUSHING SECOND TRANSLATION-----------------")
+                var weblate_link = {
           id: this.steplink_shell.id,
           lang: this.activeLanguage,
           description: this.steplink_shell.translations[0].description,
@@ -943,7 +949,9 @@ export default {
           translationState: this.steplink_shell.translations[0]
             .translationState,
           translated: true
-        })
+        }
+        //this.steplink_shell.translations.splice(index, 1, weblate_link)
+          this.steplink_shell.translations.push(weblate_link)
         //}
         this.steplink_shell.translations.forEach((transl) => {
           transl.translationDate = new Date().toISOString()
@@ -951,15 +959,21 @@ export default {
       }
       else{
         if (this.steplink_shell.translations[0].translationState == 1) {
-          this.steplink_shell.translations.push({
+          var weblate_link = {
             id: this.steplink_shell.id,
             lang: this.activeLanguage,
             description: this.steplink_shell.translations[0].description,
             translationDate: null,
             translationState: 1,
             translated: true
-          })
+          }
+          //this.steplink_shell.translations.splice(index, 1, weblate_link)
+                    this.steplink_shell.translations.push(weblate_link)
+
         }
+        //this.steplink_shell.translations.splice(index, 1, weblate_link)
+        console.log("--------in editing steplink----------")
+        console.log(this.steplink_shell)
         this.steplink_shell.translations.forEach((transl) => {
           transl.translationDate = new Date().toISOString()
         })
@@ -1042,14 +1056,23 @@ export default {
     },
 
     generateStepLink (id_edge, fromStep_edge, toStep_edge, is_new) {
+      console.log("GENERATING LINK")
       this.steplink_shell = { id: id_edge, is_new: is_new, to_delete: false, is_edited: false, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
      this.steplink_shell.translations.push({
         id: id_edge,
         lang: this.activeLanguage,
         description: "",
-        translationDate: null,
-        translationState: 0,
+        translationDate: new Date().toISOString(),
+        translationState: 1,
         translated: false
+      })
+      this.steplink_shell.translations.push({
+        id: id_edge,
+        lang: this.activeLanguage,
+        description: "",
+        translationDate: new Date().toISOString(),
+        translationState: 1,
+        translated: true
       })
       return this.steplink_shell
 
