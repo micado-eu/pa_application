@@ -192,7 +192,7 @@
         "helpdesk_pa": "Mensaje del servicio de asistencia para la aplicación de AP",
         "in_survey": "Encuesta interna",
         "survey_en": "Enlace a la encuesta en inglés",
-        "survey_local": "Enlace a la encuesta en tu idioma local",
+        "survey_local": "Enlace a la encuesta externa para los migrantes",
         "survey_settings": "Tipo de encuesta",
         "manage_languages": "Gestionar idiomas en la plataforma",
         "manage_translations": "Gestionar traducciones",
@@ -216,7 +216,9 @@
         "father_topics": "Principales temas que deben figurar en la aplicación de migrantes",
         "privacy": "Política de Privacidad",
         "survey": "Encuesta",
-        "surveymanagement": "Gestionar formularios"
+        "surveymanagement": "Gestionar formularios",
+        "survey_pa":"Enlace a la encuesta externa para las AP",
+        "survey_cso":"Enlace a la encuesta externa para las OSC"
     },
     "input_labels": {
         "add_doc_type": "Añadir un nuevo tipo de documento",
@@ -387,7 +389,7 @@
         "cost": "Coste",
         "no": "No",
         "yes": "Sí",
-        "unpublish_warning": "Advertencia: Despublicar el proceso marca todas las traducciones existentes como no traducidas y puede que sea necesario traducirlas otra vez. ¿Proceder?",
+        "unpublish_warning": "Advertencia: Despublicar el proceso lo ocultará en la app de migrantes. ¿Proceder?",
         "publish_warning": "Advertencia: Publicar el proceso lo hará visible en la app de migrantes y no será posible realizar cambios antes de despublicar. ¿Proceder?"
     },
     "upload_modal": {
