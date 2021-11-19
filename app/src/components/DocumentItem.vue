@@ -3,7 +3,7 @@
   <q-item style="padding-left:0px;width:100%" :key="this.theDoc.id">
     <q-item-section class="">
       <q-item-label class="doc-name">{{this.theDoc.text}}</q-item-label>
-      <q-item-label class="doc-fields" style="padding-top:10px" caption>{{$t('desc_labels.emitter')}}:{{this.theDoc.emitter}}</q-item-label>
+      <q-item-label class="doc-fields" style="padding-top:10px" caption>{{$t('input_labels.emitter')}}:{{this.theDoc.emitter}}</q-item-label>
       <q-item-label class="doc-fields" style="padding-top:6px" caption>{{$t('events.cost')}}: {{this.theDoc.price}}</q-item-label>
 
     </q-item-section>
