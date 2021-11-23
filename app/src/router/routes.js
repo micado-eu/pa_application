@@ -45,7 +45,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '', name:"home", component: () => import('pages/Index.vue') },
       {
         path: '/data_settings',
         component: DataSettings,
