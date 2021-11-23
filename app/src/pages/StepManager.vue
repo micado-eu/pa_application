@@ -813,8 +813,16 @@ export default {
     
     mergeStepLink (idStepLink) {
       console.log("MERGING")
+      console.log(this.steplink_shell)
+      console.log(this.steplinks)
       var steplink = this.steplinks.filter(step => { return step.id == idStepLink })[0]
-      this.steplink_shell = JSON.parse(JSON.stringify(steplink))
+      console.log(steplink)
+      //this.steplink_shell = JSON.parse(JSON.stringify(steplink))
+      this.steplink_shell.id = JSON.parse(JSON.stringify(steplink.id))
+      this.steplink_shell.fromStep = JSON.parse(JSON.stringify(steplink.fromStep))
+      this.steplink_shell.toStep = JSON.parse(JSON.stringify(steplink.toStep))
+      this.steplink_shell.idProcess = JSON.parse(JSON.stringify(steplink.idProcess))
+      //this.steplink_shell.is_new = false
       this.steplink_shell.translations = [
         steplink.translations.filter((top) => {
           return top.lang == this.$defaultLang && top.translated == false
@@ -863,6 +871,8 @@ export default {
       else{
         console.log("I am editing a steplink")
         console.log(node.data)
+        this.generateStepLink(node.data.id, node.data.source, node.data.target, node.data.is_new)
+        console.log(this.steplink_shell)
         if (node.data.is_new) {
           console.log("NEW EDGE")
           this.mergeStepLink(node.data.id)
@@ -885,6 +895,7 @@ export default {
     saveStep () {
       // In edit_step we have the instance of step that we are working on
       console.log("saving the step")
+      console.log(this.step_shell)
       if ( this.step_shell.is_new) {
         this.step_shell.translations.push({
           id: this.step_shell.id,
@@ -934,8 +945,13 @@ export default {
     },
         saveStepLink () {
       // In edit_step we have the instance of step that we are working on
+      console.log("IN SAVING STEPLINK")
+      //const index = this.steplink_shell.translations.findIndex(item => item.lang === this.activeLanguage && item.translated == true)
+      //console.log(index)
+      console.log(this.steplink_shell)
       if ( this.steplink_shell.is_new) {
-        this.steplink_shell.translations.push({
+        console.log("---------------PUSHING SECOND TRANSLATION-----------------")
+                var weblate_link = {
           id: this.steplink_shell.id,
           lang: this.activeLanguage,
           description: this.steplink_shell.translations[0].description,
@@ -943,7 +959,9 @@ export default {
           translationState: this.steplink_shell.translations[0]
             .translationState,
           translated: true
-        })
+        }
+        //this.steplink_shell.translations.splice(index, 1, weblate_link)
+          this.steplink_shell.translations.push(weblate_link)
         //}
         this.steplink_shell.translations.forEach((transl) => {
           transl.translationDate = new Date().toISOString()
@@ -951,15 +969,21 @@ export default {
       }
       else{
         if (this.steplink_shell.translations[0].translationState == 1) {
-          this.steplink_shell.translations.push({
+          var weblate_link = {
             id: this.steplink_shell.id,
             lang: this.activeLanguage,
             description: this.steplink_shell.translations[0].description,
             translationDate: null,
             translationState: 1,
             translated: true
-          })
+          }
+          //this.steplink_shell.translations.splice(index, 1, weblate_link)
+                    this.steplink_shell.translations.push(weblate_link)
+
         }
+        //this.steplink_shell.translations.splice(index, 1, weblate_link)
+        console.log("--------in editing steplink----------")
+        console.log(this.steplink_shell)
         this.steplink_shell.translations.forEach((transl) => {
           transl.translationDate = new Date().toISOString()
         })
@@ -1042,14 +1066,23 @@ export default {
     },
 
     generateStepLink (id_edge, fromStep_edge, toStep_edge, is_new) {
+      console.log("GENERATING LINK")
       this.steplink_shell = { id: id_edge, is_new: is_new, to_delete: false, is_edited: false, fromStep: fromStep_edge, toStep: toStep_edge, is_edited: false, idProcess: Number(this.processId), translations: [] }
      this.steplink_shell.translations.push({
         id: id_edge,
         lang: this.activeLanguage,
         description: "",
-        translationDate: null,
-        translationState: 0,
+        translationDate: new Date().toISOString(),
+        translationState: 1,
         translated: false
+      })
+      this.steplink_shell.translations.push({
+        id: id_edge,
+        lang: this.activeLanguage,
+        description: "",
+        translationDate: new Date().toISOString(),
+        translationState: 1,
+        translated: true
       })
       return this.steplink_shell
 
@@ -1131,7 +1164,12 @@ export default {
       let postData = { steps: this.steps, steplinks: this.steplinks }
       console.log(JSON.stringify(postData))
       this.saveGraph(postData)
+            this.$q.loading.show({
+      })
+      this.timer = setTimeout(() => {
+          this.$q.loading.hide()
       this.$router.push('/guided_process_editor')
+        }, 1000)  
     },
     // this is used only for edges that get removed as a removal of a node that has edges
     removeElement (event, element, cy) {
