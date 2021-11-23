@@ -36,3 +36,7 @@ export function editMixedSetting(state, setting) {
   const index = state.mixed_settings.findIndex(item => item.id === setting.id)
   if (index !== -1) state.mixed_settings.splice(index, 1, setting)
 }
+
+export function setMixedSettingMigrant(state, settings){
+  state.mixed_settings_migrant = settings
+}

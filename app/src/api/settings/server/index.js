@@ -99,5 +99,14 @@ export default {
           .delete('/backend/1.0.0/t-settings/' + id + '/t-settings-translation-prods')
           .then(response => response.data)
           .catch(error_handler)
-      }
+      },
+      fetchMixedSettingsMigrant (defaultLang, userLang) {
+        return axiosInstance
+            .get('/backend/1.0.0/t-settings-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+            .then((response) => {
+                console.log(response.data)
+                return response.data
+            })
+            .catch(error_handler)
+    }
 }

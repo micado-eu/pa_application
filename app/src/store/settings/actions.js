@@ -82,6 +82,14 @@ export function fetchMixedSettings(store, data){
     return ret
   })
 }
+export function fetchMixedSettingsMigrant(store, data){
+  return client.fetchMixedSettingsMigrant(data.defaultLang, data.userLang).then((ret)=>{
+    console.log("I AM THE PRIVACY POLICY")
+    console.log(ret)
+    store.commit('setMixedSettingMigrant', ret)
+    return ret
+  })
+}
 
 export function updatePublished(state, payload){
   client.updatePublished(payload.setting.id, payload.published).then(()=>{

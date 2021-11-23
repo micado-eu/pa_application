@@ -1,6 +1,6 @@
 <template>
 <div>
-<div v-if="loading"> load </div>
+<div v-if="loading"> {{$t('input_labels.loading')}} </div>
   <div v-else class="q-pa-md">
     <h5>{{$t('data_settings.settings')}}</h5>
     <q-card bordered class="q-ma-md">
@@ -411,6 +411,186 @@
 
 
     </q-card>
+    <q-card bordered class="q-ma-md">
+      <q-card-section>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.privacy_pa')"
+              :helpLabel="$t('help.privacy_pa')"
+            />
+         </div>
+      </q-card-section>
+            <q-separator />
+            <div class="q-pa-md">
+              <GlossaryEditor
+                data-cy="description_input"
+                class="desc-editor "
+                style="width:100%; text-align:left"
+                :readonly="!(t_settings_edit.filter((top)=> top.key == 'policy_pa')[0].is_setting_edit)"
+                v-model="t_settings.filter((top) => top.key == 'policy_pa')[0].translations.filter((transl) => transl.translated ==false)[0].value"
+
+                ref="editor"
+              /> 
+            </div>
+              <div class="row"> 
+          <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('translation_states.translatable')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              :value="
+                t_settings.filter((top) => top.key == 'policy_pa')[0].translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              :disable="
+                t_settings_edit.filter((top) => top.key == 'policy_pa')[0].is_setting_edit == false
+              "
+              color="accent"
+              @input="makeTranslatablePolicy($event,'policy_pa')"
+            />
+          </div>
+                    <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              v-model="t_settings.filter((top) => top.key == 'policy_pa')[0].published"
+              color="accent"
+              :disable="
+                t_settings.filter((top) => top.key == 'policy_pa')[0].translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1 || t_settings_new.filter((top) => top.key == 'policy_pa')[0].is_setting_new == true
+              "
+              @input="isPublishedSetting($event, 'policy_pa')"
+            />
+          </div>
+          </div>
+
+         <div  class="q-pa-md" style="text-align:right">
+        <q-btn
+          v-if="!(t_settings_edit.filter((top)=> top.key == 'policy_pa')[0].is_setting_edit)"
+          class="button_edit"
+          no-caps
+          :label="$t('button.edit')"
+          @click="t_settings_edit.filter((top)=> top.key == 'policy_pa')[0].is_setting_edit = true"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy_pa')[0].is_setting_edit"
+          class="button_cancel"
+          no-caps
+          :label="$t('button.cancel')"
+          @click="cancelPolicy('policy_pa')"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy_pa')[0].is_setting_edit"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
+          @click="savePolicy('policy_pa')"
+        />
+         </div>
+
+
+    </q-card>
+    <q-card bordered class="q-ma-md">
+      <q-card-section>
+        <div class="setting_title">
+            <HelpLabel
+              :fieldLabel="$t('data_settings.privacy_cso')"
+              :helpLabel="$t('help.privacy_cso')"
+            />
+         </div>
+      </q-card-section>
+            <q-separator />
+            <div class="q-pa-md">
+              <GlossaryEditor
+                data-cy="description_input"
+                class="desc-editor "
+                style="width:100%; text-align:left"
+                :readonly="!(t_settings_edit.filter((top)=> top.key == 'policy_cso')[0].is_setting_edit)"
+                v-model="t_settings.filter((top) => top.key == 'policy_cso')[0].translations.filter((transl) => transl.translated ==false)[0].value"
+
+                ref="editor"
+              /> 
+            </div>
+              <div class="row"> 
+          <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('translation_states.translatable')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              :value="
+                t_settings.filter((top) => top.key == 'policy_cso')[0].translations.filter(
+                  (top) => top.translated == false
+                )[0].translationState == 1
+              "
+              :disable="
+                t_settings_edit.filter((top) => top.key == 'policy_cso')[0].is_setting_edit == false
+              "
+              color="accent"
+              @input="makeTranslatablePolicy($event,'policy_cso')"
+            />
+          </div>
+                    <div class="col-2" style="min-width: 200px">
+            <HelpLabel
+              :fieldLabel="$t('input_labels.is_published')"
+              :helpLabel="$t('help.is_published')"
+              style="padding-left: 17px"
+            />
+          </div>
+          <div class="col-2" style="padding-top: 2px">
+            <q-toggle
+              v-model="t_settings.filter((top) => top.key == 'policy')[0].published"
+              color="accent"
+              :disable="
+                t_settings.filter((top) => top.key == 'policy_cso')[0].translations.filter((top) => top.translated == false)[0]
+                  .translationState != 1 || t_settings_new.filter((top) => top.key == 'policy_cso')[0].is_setting_new == true
+              "
+              @input="isPublishedSetting($event, 'policy_cso')"
+            />
+          </div>
+          </div>
+
+         <div  class="q-pa-md" style="text-align:right">
+        <q-btn
+          v-if="!(t_settings_edit.filter((top)=> top.key == 'policy_cso')[0].is_setting_edit)"
+          class="button_edit"
+          no-caps
+          :label="$t('button.edit')"
+          @click="t_settings_edit.filter((top)=> top.key == 'policy_cso')[0].is_setting_edit = true"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy_cso')[0].is_setting_edit"
+          class="button_cancel"
+          no-caps
+          :label="$t('button.cancel')"
+          @click="cancelPolicy('policy_cso')"
+        />
+          <q-btn
+          v-if="t_settings_edit.filter((top)=> top.key == 'policy_cso')[0].is_setting_edit"
+          class="button"
+          no-caps
+          :label="$t('button.save')"
+          @click="savePolicy('policy_cso')"
+        />
+         </div>
+
+
+    </q-card>
+
+
       <q-tab-panels
         v-model="tabs"
         class=" "
@@ -441,7 +621,7 @@
         narrow-indicator
       >
         <q-tab
-          v-for="setting in t_settings.filter((top) => top.key != 'policy')"
+          v-for="setting in t_settings.filter((top) => top.key != 'policy' && top.key != 'policy_pa' && top.key != 'policy_cso')"
           :key="setting.key"
           :name="setting.key"
           :label="setting.key"
@@ -756,12 +936,16 @@ export default {
       email: null,
       emailOrig: null,
       policy: null,
+      policy_pa: null,
+      policy_cso: null,
       guides:null,
       event:null,
       info:null,
       doc:null,
       plan:null,
       policyOrig: null,
+      policyPaOrig: null,
+      policyCsoOrig: null,
       helpdeskPa: null,
       helpdeskPaOrig: null,
       helpdeskNgo: null,
@@ -781,6 +965,8 @@ export default {
       isNew: true,
       newFathers: true,
       newPolicy: true,
+      newPolicyPa: true,
+      newPolicyCso: true,
       newHelpdeskPa: true,
       newHelpdeskNgo: true,
       newHelpdeskMigrant: true,
@@ -794,6 +980,8 @@ export default {
       fathers: [],
       fathersOrig: [],
       editing_policy: false,
+      editing_policy_pa: false,
+      editing_policy_cso: false,
       edit_helpdesk_pa: false,
       edit_helpdesk_ngo: false,
       edit_helpdesk_migrant: false,
@@ -1305,6 +1493,8 @@ export default {
       console.log(settings)
       if (settings.length > 0) {
         this.checkExists(settings,'policy')
+        this.checkExists(settings,'policy_pa')
+        this.checkExists(settings,'policy_cso')
         this.checkExists(settings,'info')
         this.checkExists(settings,'doc')
         this.checkExists(settings,'event')
@@ -1337,6 +1527,8 @@ export default {
       }
       else{
         this.addSettingsFromScratch('policy')
+        this.addSettingsFromScratch('policy_pa')
+        this.addSettingsFromScratch('policy_cso')
         this.addSettingsFromScratch('info')
         this.addSettingsFromScratch('doc')
         this.addSettingsFromScratch('event')

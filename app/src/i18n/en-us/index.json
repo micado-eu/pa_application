@@ -222,7 +222,7 @@
     "father_topics": "Main topics to be shown on migrant application",
     "translations": "Translations",
     "surveymanagement": "Manage surveys",
-    "privacy": "Privacy Policy",
+    "privacy": "Privacy policy for the migrant app",
     "helpdesk_pa":"Helpdesk message for the PA application",
     "helpdesk_ngo":"Helpdesk message for the NGO application",
     "helpdesk_migrant":"Helpdesk mail or phone number for the Migrant application",
@@ -234,7 +234,10 @@
     "survey_settings":"Type of survey",
     "ex_survey":"External survey",
     "in_survey":"Internal survey",
-    "content":"Migrant app features' descriptions"
+    "content":"Migrant app features' descriptions",
+    "privacy_policy":"Privacy policy",
+    "privacy_pa":"Privacy policy for the PA app",
+    "privacy_cso":"Privacy policy for the CSO app"
   },
   "input_labels": {
     "add_doc_type":"Add a new document type",
