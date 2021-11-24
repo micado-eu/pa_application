@@ -86,6 +86,15 @@
           >
             <q-item-section>{{ $t('data_settings.profile_settings') }}</q-item-section>
           </q-item>
+           <q-item
+            :data-cy="'data_settings.privacy_policy'.replace('.', '_')"
+            clickable
+            to="/data_settings/privacy"
+            class="situation-menu-item"
+            active-class="my-menu-link"
+          >
+            <q-item-section>{{ $t('data_settings.privacy_policy') }}</q-item-section>
+          </q-item>
         </q-list>
       </q-scroll-area>
     </q-drawer>

@@ -37,6 +37,7 @@ import ActiveLanguageSelector from '../components/settings/ActiveLanguageSelecto
 import SurveyCreator from '../components/SurveyCreator'
 import TranslationManager from '../components/settings/TranslationManager'
 import ProfileSettings from '../pages/ProfileSettings'
+import Privacy from '../pages/Privacy'
 import TestMarkdownConverter from '../pages/TestMarkdownConverter'
 
 const routes = [
@@ -44,7 +45,7 @@ const routes = [
     path: '/',
     component: () => import('layouts/Layout.vue'),
     children: [
-      { path: '', component: () => import('pages/Index.vue') },
+      { path: '', name:"home", component: () => import('pages/Index.vue') },
       {
         path: '/data_settings',
         component: DataSettings,
@@ -58,6 +59,7 @@ const routes = [
           { path: 'survey', meta: { auth: ["Application/micado_superadmin"] }, component: SurveyCreator },
           { path: 'usermgmt', meta: { auth: ["Application/micado_superadmin"] }, component: UserManagement },
           { path: 'profile_settings', name:'profile', meta: { auth: ["Application/micado_migrant_manager", "Application/micado_admin", "Application/micado_superadmin"] }, component: ProfileSettings },
+          { path: 'privacy', name:'privacy', meta: { auth: ["Application/micado_migrant_manager", "Application/micado_admin", "Application/micado_superadmin"] }, component: Privacy },
           { path: 'language', meta: { auth: ["Application/micado_admin"] }, component: TranslationManager }
         ]
       },

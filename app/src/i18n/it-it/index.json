@@ -231,9 +231,12 @@
         "translations": "Traduzioni",
         "pa_email": "Email per commenti alla Pubblica Amministrazione",
         "father_topics": "Argomenti principali da essere mostrati sull'app del migrante",
-        "privacy": "Informativa sulla privacy",
+        "privacy": "Informativa sulla privacy per l'app migranti",
         "survey": "Sondaggio",
-        "surveymanagement": "Gestisci i sondaggi"
+        "surveymanagement": "Gestisci i sondaggi",
+        "privacy_policy":"Informativa sulla privacy",
+        "privacy_pa":"Informativa sulla privacy per l'app PA",
+        "privacy_cso":"Informativa sulla privacy per l'app ETS"
     },
     "input_labels": {
         "available_transl":"Traduzioni disponibili",
