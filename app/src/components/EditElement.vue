@@ -642,10 +642,10 @@ export default {
           const startDate = new Date(this.elem.startDate)
           // Format used by QDate and QTime
           this.startDate = `${startDate.getFullYear()}-${startDate.getMonth() + 1}-${startDate.getDate()}`
-          this.startTime = `${startDate.getHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${startDate.getMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+          this.startTime = `${startDate.getHours().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}:${startDate.getMinutes().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}`
           const finishDate = new Date(this.elem.endDate)
           this.finishDate = `${finishDate.getFullYear()}-${finishDate.getMonth() + 1}-${finishDate.getDate()}`
-          this.finishTime = `${finishDate.getHours().toLocaleString(undefined, { minimumIntegerDigits: 2 })}:${finishDate.getMinutes().toLocaleString(undefined, { minimumIntegerDigits: 2 })}`
+          this.finishTime = `${finishDate.getHours().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}:${finishDate.getMinutes().toLocaleString(this.$defaultLang, { minimumIntegerDigits: 2 })}`
           this.location = this.elem.location
           if (this.elem.cost) {
             this.cost = this.elem.cost
