@@ -92,7 +92,7 @@
         "process_description": "Las guías pasos a paso orientan a los migrantes sobre cómo llevar a cabo procedimientos u obtener documentos. Puede usarlas para facilitar instrucciones más sencillas y paso a paso de procedimientos que de otra forma resultan complejos. Por ejemplo ¿Cómo obtener la tarjeta sanitaria? O ¿Cómo obtener el certificado digital? En cada paso puede incluir, coste, documentos necesarios y localización. Una vez publicados son visibles y públicas en la página de MICADO para migrantes. Las CSOs pueden escribir comentarios visibles para los migrantes.",
         "migrant_description": "Cuando un migrante crea una cuenta personal aparecerá en esta lista. Aquí puede ver los documentos y datos si esa persona ha elegido compartirlos con la Administración.",
         "setting_description": "Aquí el administrador de la autoridad pública puede gestionar todos los ajustes de la App para migrantes. También puede enviar desde aquí el contendio a la plataforma de traducción.",
-        "situation_description": "Aquí encontrrará estadísticas de migración en Madrid. Puede elegir diferentes variables e impirmir los datos seleccionados.",
+        "situation_description": "Aquí encontrará estadísticas de migración en Madrid. Puede elegir diferentes variables e imprimir los datos seleccionados.",
         "usage_description": "Aquí puede encontrar estadísticas del uso de la app para migrantes",
         "title": "Mis herramientas",
         "home": "Inicio",
@@ -214,11 +214,14 @@
         "profile_settings": "Configuración del perfil",
         "translations": "Traducciones",
         "father_topics": "Principales temas que deben figurar en la aplicación de migrantes",
-        "privacy": "Política de Privacidad",
+        "privacy": "Política de Privacidad para la app de migrantes",
         "survey": "Encuesta",
         "surveymanagement": "Gestionar formularios",
         "survey_pa":"Enlace a la encuesta externa para las AP",
-        "survey_cso":"Enlace a la encuesta externa para las OSC"
+        "survey_cso":"Enlace a la encuesta externa para las OSC",
+        "privacy_policy":"Política de privacidad",
+        "privacy_pa":"Política de privacidad para la app de AP",
+        "privacy_cso":"Política de privacidad para la app de OSC"
     },
     "input_labels": {
         "add_doc_type": "Añadir un nuevo tipo de documento",
