@@ -259,7 +259,6 @@
               v-for="(item, index) in filteredElements"
               :key="item.id"
               :id="item.id"
-              clickable
               class="row"
               @mouseover="hovered = item.id"
               @mouseleave="hovered = -1"
