@@ -14,7 +14,7 @@
   },
   "dependencies": {
     "@bit/micado.shared.translatestatebutton": "0.0.2",
-    "@quasar/extras": "^1.9.5",
+    "@quasar/extras": "^1.12.3",
     "@riophae/vue-treeselect": "^0.4.0",
     "@uppy/core": "^1.6.0",
     "@uppy/dashboard": "^1.5.0",
@@ -35,7 +35,7 @@
     "ol": "^6.3.1",
     "performant-array-to-tree": "^1.8.1",
     "qs": "^6.9.4",
-    "quasar": "^1.14.0",
+    "quasar": "^1.17.1",
     "showdown": "^1.9.1",
     "survey-creator": "^1.8.41",
     "survey-vue": "^1.8.43",
@@ -61,8 +61,8 @@
   },
   "devDependencies": {
     "@quasar/app": "^1.9.6",
-    "@quasar/quasar-app-extension-testing": "^1.0.0",
-    "@quasar/quasar-app-extension-testing-e2e-cypress": "^2.0.1",
+    "@quasar/quasar-app-extension-testing": "^1.0.5",
+    "@quasar/quasar-app-extension-testing-e2e-cypress": "^2.0.4",
     "eslint": "^7.8.1",
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-cypress": "^2.11.1",

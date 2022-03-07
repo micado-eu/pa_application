@@ -89,6 +89,9 @@ const routes = [
         path: '/guided_process_editor/edit/', meta: { auth: ["Application/micado_admin"] }, component: () => import('pages/EditProcess.vue'), props: true, name: process
       },
       {
+        path: '/guided_process_editor/import/', meta: { auth: ["Application/micado_admin"] }, component: () => import('pages/ImportProcess.vue'), props: true, name: process
+      },
+      {
         path: '/guided_process_editor/edit/:theprocessid', meta: { auth: ["Application/micado_admin"] }, name: 'editprocess', component: () => import('pages/EditProcess.vue'), props: (route) => ({ ...route.params })
       },
       {
