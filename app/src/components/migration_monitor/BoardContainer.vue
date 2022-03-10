@@ -7,7 +7,7 @@
       :content-style="{
         position: 'sticky',
         top:'50px',
-        background:'#DCE4E8',
+        background:'var(--q-color-primary)',
         maxHeight:'100vh',
         }"
       class="situation-drawer"
@@ -115,5 +115,12 @@ export default {
 }
 .q-page-container {
   margin-top: 50px;
+}
+
+</style>
+
+<style>
+.q-router-link--active {
+  background: var(--q-color-accent);
 }
 </style>

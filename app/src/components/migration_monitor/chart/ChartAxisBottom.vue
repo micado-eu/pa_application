@@ -20,6 +20,11 @@ export default {
     this.svgAxisX = select(this.$el)
       .append('g')
       .call(this.axisX.tickSize(2))
+      // .selectAll("text")
+      // .attr("dx","-.5em")
+      // .attr("text-anchor","end")
+      // .attr("transform", "rotate(-65)");
+
     //   .attr("stroke", "white");
     // // use post-selection to change axis color
     // this.svgAxisX.select("path").style('stroke','white');

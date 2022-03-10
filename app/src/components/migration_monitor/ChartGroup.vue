@@ -12,8 +12,8 @@
           @click="printPNG()"
         /> -->
       </div>
-      <div class="row">
-        <div v-for="(d,i) in graph_data" :key="i" class="col-6">
+      <div class="row chartcontainer">
+        <div v-for="(d,i) in graph_data" :key="i" class="col-6 chartdiv">
           <Chart :graph-data="d" @chart-clicked="sendData" />
         </div>
       </div>
@@ -88,6 +88,20 @@ export default {
   border-radius: 5px;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 }
+
+.chartcontainer {
+  display: flex;
+  align-items: stretch;
+  justify-content: left;
+}
+
+.chartdiv {
+  margin-left: 5px;
+  margin-right: 5px;
+  flex-basis: 45%;
+  min-width: 500px;
+}
+
 h1 {
   font-size:2rem;
   margin: 0 auto;
@@ -115,7 +129,7 @@ h6 {
   color: #ff7c44;
 }
 .row {
-  width: 90%;
+  width: 100%;
   margin: auto;
 }
 p {
@@ -128,6 +142,11 @@ p {
   height:42px;
 }
 #header{
-  background-color: #F1F8FC;
+  background-color: var(--q-color-primary);
+  color: var(--q-color-dark);
+  font-weight: bold;
+  text-align: center;
+  /* padding-top: 2em;
+  padding-bottom: 2em; */
 }
 </style>

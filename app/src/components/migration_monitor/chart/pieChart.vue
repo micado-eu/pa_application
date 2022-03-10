@@ -1,38 +1,47 @@
 <template>
   <svg :width="width" :height="height" :id="'c_'+graphid">
     <g v-if="sizeSet" :transform="`translate( ${ width/2 },${ height/2})`">
-      <g v-for="(d,i) in pie(content)" :key="i" :id="'g_'+i" class="arcgroup">
-        <path
+      <g :id="'labelgroup_'+graphid" class="labelgroup">
+      </g>
+      <g :id="'piegroup_'+graphid"/>
+      <g v-for="(d,i) in pie(content)" 
+      :key="i" 
+      :id="'g_'+i" 
+      class="arcgroup"
+      :hide="d.data[valAxis]/numtotal > 0.05 ? 'visible':'hidden'"
+      >        
+      <path
           :d="pathArc(d)" 
-          :fill="interpolateViridis(color(d.data[catAxis]))" 
+          :fill="interpolateViridis(color(d.data[catAxis]))"
+          :outerrad="drawLabel(d)" 
           @mouseover="onMouseOver"
           @mouseleave="onMouseLeave"  
           :id="'a_'+i"
         />
-        <defs>
-            <filter x="0" y="0" width="1" height="1" id="solid">
-      <feFlood flood-color="white" flood-opacity="0.8" result="bg" />
-      <feMerge>
-        <feMergeNode in="bg"/>
-        <feMergeNode in="SourceGraphic"/>
-      </feMerge>
-    </filter>
-        </defs>
-        <text 
-          class="label"
-          filter="url(#solid)"
-          :id="'l_'+i"
-          :ref="d.data[catAxis]+'_label'" 
-          :key="d.data[catAxis]+'_label'" 
-          :transform="drawLabel(d)" text-anchor="middle" 
-          font-size="12">{{d.data[catAxis]}} - {{d.data[valAxis].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}
-        </text>
+
+        <g 
+            :class="d.data[valAxis]/numtotal > 0.05 ? 'newlabeldiv':'newlabeldiv invisible'"
+            :id="'l_'+i"
+            >
+
+          <rect
+          class="labelBG"
+          fill="white"
+          >
+          </rect>
+          <text
+          class="newlabel"
+          >
+          {{d.data[catAxis]}} - {{d.data[valAxis].toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,')}}
+          </text>
+        </g>
       </g>
     </g>
   </svg>
 </template>
 <script>
-import { arc, pie, interpolateViridis, scaleBand, select } from "d3"
+import { arc, pie, interpolateViridis, scaleBand, select, create } from "d3"
+import { defaultStandardCss } from 'survey-vue'
 
 export default {
   name: "pieChart",
@@ -49,7 +58,8 @@ export default {
       radius: "100",
       width: "100%",
       height: "85%",
-      sizeSet: false
+      sizeSet: false,
+      numtotal: null
     }
   },
   computed: {
@@ -69,16 +79,16 @@ export default {
     },
     labelArc: function() {
       return arc()
-        .outerRadius(1.2 * this.radius)
-        .innerRadius(1.2 * this.radius)
+        .outerRadius(1 * this.radius)
+        .innerRadius(1 * this.radius)
     },
     color: function() {
       return scaleBand()
         .domain(this.content.map(d => d[this.catAxis]))
         .range([0, 1])
     },
-    drawLabel: function() {
-      return d => "translate(" + this.labelArc.centroid(d) + ")"
+    drawLabel: function(d) {
+      return d => [this.pathArc.centroid(d)]
     },
     interpolateViridis: function() {
       return interpolateViridis
@@ -91,39 +101,86 @@ export default {
       this.height = client.height
     },
     onMouseOver(event) {
-      let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
-      let currid = currgraph.select("#g_"+event.target.id.split("_")[1])
-      currgraph.selectAll("path").classed("inactive",true)
-      currgraph.selectAll("text").classed("inactive",true)
-      currid.select("path").classed("inactive",false)
-      currid.select("text").classed("inactive",false)
-      currid.raise()
+      let currGraphId = event.target.parentNode.parentNode.parentNode.parentNode.id.split("_")[1]
+      let currArcId = event.target.parentNode.id.split("_")[1]
+      let currGraph = select('#c_'+currGraphId)
+      let currArc = currGraph.select('#g_'+currArcId)
+      currGraph.selectAll(".arcgroup").classed("inactive",true)
+      currArc.classed('inactive',false)
+      currArc.select('#l_'+currArcId).classed('invisible',false).raise()
     },
     onMouseLeave(event) {
-      let currgraph = select("#"+event.target.parentNode.parentNode.parentNode.id)
-      currgraph.selectAll("path").classed("inactive",false)
-      currgraph.selectAll("text").classed("inactive",false)
-      currgraph.selectAll("text").raise()
+      let currGraphId = event.target.parentNode.parentNode.parentNode.parentNode.id.split("_")[1]
+      let currArcId = event.target.parentNode.id.split("_")[1]
+      let currGraph = select('#c_'+currGraphId)
+      let currArc = currGraph.select('#g_'+currArcId)
+      currArc.selectAll('foreignObject').raise()
+      currGraph.selectAll(".arcgroup").classed("inactive",false)
+      let hidden = currArc.attr('hide')
+      if (hidden === 'hidden') {
+        currGraph.select("#l_"+currArcId).classed("invisible",true)
+        }
     }
   },
   mounted: function() {
     // window.resize event listener
     this.updateGraph()
-    this.sizeSet = true
+    this.sizeSet = true 
+    this.numtotal = Object.values((this.content)).reduce((total,obj) => obj[this.valAxis] + total, 0)
+  },
+  updated: function () {
+    
+    let arcs = select('#c_'+this.graphid).selectAll('.arcgroup')
+    let arcdiv = select('#c_'+this.graphid).select('#piegroup_'+this.graphid)
+    arcs.each(function() { arcdiv.append(() => this)})  
+
+    let labels = select('#c_'+this.graphid).selectAll('.label')
+    let defs = select('#c_'+this.graphid).selectAll('defs')
+    let labeldiv = select('#c_'+this.graphid).select('#labelgroup_'+this.graphid)
+    defs.each(function() { labeldiv.append(() => this)})
+    labels.each(function() { labeldiv.append(() => this)})
+    labeldiv.raise()  
+
+    let newlabeldiv = select('#c_'+this.graphid).selectAll('.newlabeldiv')
+
+    function transformlabel(d){
+      let outerrad = select(d.parentNode).select('path').attr('outerrad').split(',')
+      let x = outerrad[0]*1.35
+      let y = outerrad[1]*1.35
+      let textsize = {height: select(d).select('text').node().getBoundingClientRect().height, width: select(d).select('text').node().getBoundingClientRect().width}
+      if ( y > 0 ) {
+          y = y*1 + textsize.height/2
+      }
+      if ( x < 0 ) {
+          x = x - textsize.width
+      }
+      return {label:[x,y],rect:{pos:[x-textsize.width*0.05,y-textsize.height/1.25],size:[textsize.height*1.1,textsize.width*1.1]}}
+    }
+
+    newlabeldiv.each(function(d,i){
+      select(this).select('text').attr('font-size','0.8em').attr('transform','translate('+transformlabel(this).label+')').raise()
+      select(this).select('rect').attr('transform','translate('+transformlabel(this).rect.pos+')')
+      select(this).select('rect').attr('width',transformlabel(this).rect.size[1]).attr('height',transformlabel(this).rect.size[0])
+      })
   }
 }
 </script>
 <style scoped>
+
 div {
   background: white;
 }
+.chart {
+  position: relative;
+}
+
 path {
   stroke: white;
   stroke-width: 2px;
   opacity: 1;
 }
 .label {
-  opacity: 0.75;
+  opacity: 1;
   pointer-events: none;
 }
 .inactive {
@@ -134,13 +191,26 @@ path:hover{
   opacity: 1;
   transition-duration: 0.25s;
 }
-.textbg {
-  position: absolute;
+.labelBG {
+  fill-opacity: 0.7;
 }
 .invisible {
-  display: none;
+  opacity: 0;
 }
 svg{
   overflow: visible;
 }
+
+.newlabel {
+  width: fit-content;
+  padding: 10px;
+  max-width: 70px;
+}
+
+.newlabeldiv {
+  overflow: visible;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
 </style>

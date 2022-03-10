@@ -177,8 +177,7 @@ h6 {
   padding: 0;
 }
 .chart {
-  display: block;
-  margin: auto;
+  margin: 0;
 }
 .line-chart {
   height: 200px;

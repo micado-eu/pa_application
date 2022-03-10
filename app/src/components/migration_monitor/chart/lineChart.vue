@@ -3,8 +3,8 @@
     <!-- Axis label Value (Y-Axis) -->
     <text
       v-if="sizeSet"
-      :x="-margin.top - height / 2"
-      :y="margin.left / 2"
+      :x="-height/2"
+      :y="margin.left/2"
       text-anchor="middle"
       transform="rotate(-90)"
     >
