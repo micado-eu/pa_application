@@ -1,130 +1,267 @@
 <template>
   <q-page padding>
-    <div v-if="this.loading">{{$t('input_labels.loading')}}</div>
+    <div v-if="this.loading">
+      {{ $t('input_labels.loading') }}
+    </div>
     <div v-else>
-          <div class="q-pa-md header" style="padding-top:40px">{{$t('pa_profile.personal_profile')}}</div>
+      <div
+        class="q-pa-md header"
+        style="padding-top:40px"
+      >
+        {{ $t('pa_profile.personal_profile') }}
+      </div>
 
       <q-card class="q-pa-md">
-     <div style="text-align:center">
-        <img 
-        v-if="this.the_user.picture == null"
-        alt="User Profile"
-        src="~assets/user-placeholder.png" 
-        class="image"
-            />
-        <img
-          v-else
-          width="250px"
-          height="250px"
-          class="col-6 image"
-          :src="this.the_user.picture"
-        />
-      </div>
-      <div style="text-align:center; margin-bottom:20px; margin-top:20px">
-      <q-btn class="button" color="info" unelevated no-caps rounded text-color="white" :label="$t('pa_profile.change_pic')" @click="picture_select = !picture_select; modifyPic()" />
-      </div>
-      <div v-if="picture_select" class=" q-px-lg center" style="padding-bottom:10px">
-     <div class="q-px-lg " >
-         <q-file
-            @input="getFilesPics($event)"
-            bg-color="grey-3"
-            dense
-            :label="$t('input_labels.upload_doc_pics')"
-            standout
-            outlined
-            accept=".jpg, image/*"
-            @rejected="onRejected"
+        <div style="text-align:center">
+          <img 
+            v-if="this.the_user.picture == null"
+            alt="User Profile"
+            src="~assets/user-placeholder.png" 
+            class="image"
+          >
+          <img
+            v-else
+            width="250px"
+            height="250px"
+            class="col-6 image"
+            :src="this.the_user.picture"
+          >
+        </div>
+        <div style="text-align:center; margin-bottom:20px; margin-top:20px">
+          <q-btn
+            class="button"
+            label-color="info"
+            unelevated
+            no-caps
+            rounded
+            text-color="white"
+            :label="$t('pa_profile.change_pic')"
+            @click="picture_select = !picture_select; modifyPic()"
           />
-      
-      </div>
-    </div>
-    <div class=" row q-px-lg center" >
-      
-      <div class="col q-px-lg  input-top">
-        <q-input :readonly="!editing"  dense :label="$t('pa_profile.username')"  bg-color="grey-1"   standout outlined v-model="the_user.username" >
-        
-        </q-input>
-      </div>
-     <div class="col  q-px-lg input" >
-        <q-input  dense :readonly="!editing" bg-color="grey-1" standout outlined :label="$t('pa_profile.phone_number')" v-model="the_user.phoneNumber"  >
-          
-        </q-input>
-    </div>
-    </div>
-<div class=" row q-px-lg " >
-      <div class="col  q-px-lg input" >
-        <q-input  dense :readonly="!editing" :label="$t('pa_profile.legal_name')"  bg-color="grey-1" standout outlined v-model="the_user.legalname"  >
-         
-        </q-input>
-      </div>
+        </div>
+        <div
+          v-if="picture_select"
+          class=" q-px-lg center"
+          style="padding-bottom:10px"
+        >
+          <div class="q-px-lg ">
+            <q-file
+              @input="getFilesPics($event)"
+              bg-color="grey-3"
+              dense
+              :label="$t('input_labels.upload_doc_pics')"
+              standout
+              outlined
+              accept=".jpg, image/*"
+              @rejected="onRejected"
+            />
+          </div>
+        </div>
+        <div class=" row q-px-lg center">
+          <div class="col q-px-lg  input-top">
+            <q-input
+              :readonly="!editing"
+              label-color="black"
+              dense
+              :label="$t('pa_profile.username')"
+              bg-color="grey-1"
+              standout
+              outlined
+              v-model="the_user.username"
+            />
+          </div>
+          <div class="col  q-px-lg input">
+            <q-input
+              dense
+              :readonly="!editing"
+              label-color="black"
+              bg-color="grey-1"
+              standout
+              outlined
+              :label="$t('pa_profile.phone_number')"
+              v-model="the_user.phoneNumber"
+            />
+          </div>
+        </div>
+        <div class=" row q-px-lg ">
+          <div class="col  q-px-lg input">
+            <q-input
+              dense
+              :readonly="!editing"
+              label-color="black"
+              :label="$t('pa_profile.legal_name')"
+              bg-color="grey-1"
+              standout
+              outlined
+              v-model="the_user.legalname"
+            />
+          </div>
 
-      <div class="col  q-px-lg input" >
-        <q-input  dense :readonly="!editing" bg-color="grey-1" :label="$t('pa_profile.mail')" standout outlined v-model="the_user.email"  >
-        </q-input>
-      </div>
-    </div>
-    <div class=" q-pa-xsm " >
-      <div v-if="!editing" class="col-8 input" style="text-align:center" >
-        <q-btn class="button-edit"  unelevated no-caps rounded text-color="black" :label="$t('button.edit')" @click="editing=true" />
-      </div>
-      <div v-else class="col-8 input" style="text-align:center">
-        <q-btn class="button-cancel"  unelevated no-caps rounded text-color="black" :label="$t('button.cancel')" @click="cancelUser()" />
-        <q-btn class="button" color="accent" unelevated no-caps rounded text-color="white" :label="$t('button.save')" @click="editUser()" />
-      </div>
-    </div>
-      </q-card>
-      <div class="q-pa-md header" style="padding-top:40px">{{$t('pa_profile.password')}}</div>
-      <q-card>
-        <div class="q-py-lg" style="text-align:center">
-      <q-btn class="button-edit" unelevated no-caps rounded text-color="black" :label="$t('button.change_pass')" @click="change_pass=true" />
+          <div class="col  q-px-lg input">
+            <q-input
+              dense
+              :readonly="!editing"
+              label-color="black"
+              bg-color="grey-1"
+              :label="$t('pa_profile.mail')"
+              standout
+              outlined
+              v-model="the_user.email"
+            />
+          </div>
+        </div>
+        <div class=" q-pa-xsm ">
+          <div
+            v-if="!editing"
+            class="col-8 input"
+            style="text-align:center"
+          >
+            <q-btn
+              class="button-edit"
+              unelevated
+              no-caps
+              rounded
+              text-color="black"
+              :label="$t('button.edit')"
+              @click="editing=true"
+            />
+          </div>
+          <div
+            v-else
+            class="col-8 input"
+            style="text-align:center"
+          >
+            <q-btn
+              class="button-cancel"
+              unelevated
+              no-caps
+              rounded
+              text-color="black"
+              :label="$t('button.cancel')"
+              @click="cancelUser()"
+            />
+            <q-btn
+              class="button"
+              color="accent"
+              unelevated
+              no-caps
+              rounded
+              text-color="white"
+              :label="$t('button.save')"
+              @click="editUser()"
+            />
+          </div>
         </div>
       </q-card>
-          <q-dialog v-model="change_pass">
-<q-card class="q-pa-xl" style="width: 700px; max-width: 80vw;">
-
-    <div class=" q-pa-sm " >
-      <q-input dense style=""   outlined bg-color="grey-1" v-model="password.old_password" filled :type="isPwd0 ? 'password' : 'text'" :label="$t('pa_profile.old_pass')">
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd0? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd0 = !isPwd0"
-          />
-        </template>
-      </q-input>
-          
+      <div
+        class="q-pa-md header"
+        style="padding-top:40px"
+      >
+        {{ $t('pa_profile.password') }}
       </div>
+      <q-card>
+        <div
+          class="q-py-lg"
+          style="text-align:center"
+        >
+          <q-btn
+            class="button-edit"
+            unelevated
+            no-caps
+            rounded
+            text-color="black"
+            :label="$t('button.change_pass')"
+            @click="change_pass=true"
+          />
+        </div>
+      </q-card>
+      <q-dialog v-model="change_pass">
+        <q-card
+          class="q-pa-xl"
+          style="width: 700px; max-width: 80vw;"
+        >
+          <div class=" q-pa-sm ">
+            <q-input
+              dense
+              style=""
+              outlined
+              bg-color="grey-1"
+              v-model="password.old_password"
+              filled
+              :type="isPwd0 ? 'password' : 'text'"
+              :label="$t('pa_profile.old_pass')"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd0? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd0 = !isPwd0"
+                />
+              </template>
+            </q-input>
+          </div>
     
-    <div class="  q-pa-sm " >
-      <q-input dense   outlined bg-color="grey-1" v-model="password.new_password" filled :type="isPwd1 ? 'password' : 'text'" :label="$t('pa_profile.new_pass')">
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd1? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd1 = !isPwd1"
-          />
-        </template>
-      </q-input>
-           
+          <div class="  q-pa-sm ">
+            <q-input
+              dense
+              outlined
+              bg-color="grey-1"
+              v-model="password.new_password"
+              filled
+              :type="isPwd1 ? 'password' : 'text'"
+              :label="$t('pa_profile.new_pass')"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd1? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd1 = !isPwd1"
+                />
+              </template>
+            </q-input>
+          </div>
+          <div class=" q-pa-sm ">
+            <q-input
+              dense
+              outlined
+              bg-color="grey-1"
+              v-model="password.confirm_password"
+              filled
+              :type="isPwd2? 'password' : 'text'"
+              :label="$t('pa_profile.confirm_pass')"
+            >
+              <template v-slot:append>
+                <q-icon
+                  :name="isPwd2 ? 'visibility_off' : 'visibility'"
+                  class="cursor-pointer"
+                  @click="isPwd2 = !isPwd2"
+                />
+              </template>
+            </q-input>
+          </div>
+          <div style="text-align:center; padding-top:10px">
+            <q-btn
+              class="go_back"
+              no-caps
+              rounded
+              text-color="black"
+              :label="$t('button.cancel')"
+              @click="cancelPass()"
+            />
+            <q-btn
+              class="button"
+              color="accent"
+              unelevated
+              no-caps
+              rounded
+              text-color="white"
+              :label="$t('button.change_pass')"
+              @click="editPass()"
+            />
+          </div>
+        </q-card>
+      </q-dialog>
     </div>
-    <div class=" q-pa-sm " >
-      <q-input dense   outlined bg-color="grey-1" v-model="password.confirm_password" filled :type="isPwd2? 'password' : 'text'" :label="$t('pa_profile.confirm_pass')">
-        <template v-slot:append>
-          <q-icon
-            :name="isPwd2 ? 'visibility_off' : 'visibility'"
-            class="cursor-pointer"
-            @click="isPwd2 = !isPwd2"
-          />
-        </template>
-      </q-input>
-    </div>
-    <div style="text-align:center; padding-top:10px" >
-        <q-btn class="go_back"  no-caps rounded text-color="black"  :label="$t('button.cancel')" @click="cancelPass()" />
-        <q-btn class="button" color="accent" unelevated no-caps rounded text-color="white" :label="$t('button.change_pass')" @click="editPass()" />
-      </div>
-</q-card>
-    </q-dialog>
-  </div>
   </q-page>
 </template>
 
