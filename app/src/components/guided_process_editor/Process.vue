@@ -1,7 +1,10 @@
 <template>
-  <q-item class="item" style="padding-left:0px; padding-right:0px">
+  <q-item
+    class="item"
+    style="padding-left:0px; padding-right:0px"
+  >
     <div class="width">
-      <div class="row" >
+      <div class="row">
         <div
           class="col-4 flex flex-left title"
           style="padding-top:10px"
@@ -28,14 +31,6 @@
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
           <IconWithTooltip
-            :icon="'img:statics/icons/Edit.png'"
-            :tooltip="$t('help.edit_process')"
-            @click.native="editProcess()"
-            :data-cy="'editprocess'.concat(theProcess.id )"
-          />
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
-          <IconWithTooltip
             :icon="'img:statics/icons/Icon - Manage processes (guided process page).svg'"
             :tooltip="$t('help.manage_process')"
             @click.native="manageProcess()"
@@ -50,12 +45,28 @@
             :data-cy="'manageprocess'.concat(theProcess.id )"
           />
         </q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
+
+        <!-- <q-item-section class="col-1 flex flex-center top">
           <IconWithTooltip
             :icon="'img:statics/icons/Icon - Delete.svg'"
             :tooltip="$t('help.delete_process')"
             @click.native="deleting = true"
             :data-cy="'deleteprocess'.concat(theProcess.id )"
+          />
+        </q-item-section>-->
+        <q-item-section class="col-1 flex flex-center top">
+          <IconWithTooltip
+            :icon="'img:statics/icons/Icon - Download.svg'"
+            :tooltip="$t('help.export')"
+            @click.native="exportProcess()"
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
+          <IconWithTooltip
+            :icon="'img:statics/icons/Edit.png'"
+            :tooltip="$t('help.edit_process')"
+            @click.native="editing=true"
+            :data-cy="'editprocess'.concat(theProcess.id )"
           />
         </q-item-section>
       </div>
@@ -88,9 +99,9 @@
         </p>
         <q-chip
           v-for="lang in translationAvailable(theProcess)"
-            style="background-color:#C4C4C4" 
-            text-color="white"
-            :key="lang.lang"
+          style="background-color:#C4C4C4" 
+          text-color="white"
+          :key="lang.lang"
         >
           {{ lang.lang.toUpperCase() }}
         </q-chip>
@@ -133,12 +144,19 @@
       </q-layout>
     </q-dialog>
     <q-dialog v-model="deleting">   
-        <q-card class="q-pa-md" style="padding-top:0px;width: 700px; max-width: 80vw;">
-          <div style="padding-top:30px; text-align:center">
-          <p class="delete_desc">{{$t('input_labels.delete_confirm')}} </p>
-          <p class="delete_text"> {{this.Title}}</p>
-          </div>
-          <div style="text-align:center;">
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.delete_confirm') }}
+          </p>
+          <p class="delete_text">
+            {{ this.Title }}
+          </p>
+        </div>
+        <div style="text-align:center;">
           <q-btn
             class="go_back"
             :label="$t('button.cancel')"
@@ -149,7 +167,7 @@
             @click="deleting = false"
             style="margin-right:10px"
           />
-            <q-btn
+          <q-btn
             class="delete"
             :label="$t('help.delete_process')"
             rounded
@@ -158,12 +176,47 @@
             size="15px"
             @click="remove_process($event)"
           />
-          
-          </div>
-                
-        </q-card>
+        </div>
+      </q-card>
     </q-dialog>
-
+    <q-dialog v-model="editing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.edit_or_delete') }}
+          </p>
+          <p class="delete_text">
+            {{ this.Title }}?
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.edit')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="editProcess()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('help.delete_process')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deleting = true; editing= false"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </q-item>
 </template>
 
@@ -178,7 +231,8 @@ export default {
   data () {
     return {
       alert:false,
-      deleting:false
+      deleting:false,
+      editing:false
     }
   },
   computed:{
@@ -262,6 +316,10 @@ export default {
       console.log(this.theProcess)
       this.$router.push({ name: 'editstep', params: { processId: this.theProcess.id } })
       }
+    },
+    exportProcess(){
+      console.log("Exporting process")
+      this.$emit('export', this.theProcess.id)
     }
   }
 }
@@ -315,6 +373,22 @@ color: #0D0D0D;
 border: 1px solid #C71F40;
 box-sizing: border-box;
 border-radius: 5px;
+}
+.edit_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #FF7C44;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
+}
+.delete_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #9E1F63;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
 }
 .delete{
   background: #9E1F63;

@@ -1,5 +1,8 @@
 <template>
-  <q-page v-if="!isLoggedIn" class="col center">
+  <q-page
+    v-if="!isLoggedIn"
+    class="col center"
+  >
     <div class="col">
       <img
         alt="Micado logo"
@@ -8,26 +11,34 @@
       <div>
         PA Application
       </div>
-      <div class="h6">Build: {{buildDate}}</div>
+      <div class="h6">
+        Build: {{ buildDate }}
+      </div>
     </div>
-
   </q-page>
   <q-page v-else>
-    <div class="nav-container row" >
-    <div
-    v-for="nav in navs"
-    :key="nav.label"
-    class="navs"
-    @click="selected_info = nav.label">
-  <div style="text-align:center">
-   <q-icon :name="nav.icon" class="top-icon"/>
-   <p>{{$t(nav.label)}}</p>
-  </div>
-  <HelpDialog 
-  :nav="nav"
-  :selected_info="isOpen(nav.label)"
-  @hiding="reset"/>
-    </div>
+    <div class="nav-container row">
+      <div
+        v-for="nav in navs"
+        :key="nav.label"
+        class="navs"
+        @click="selected_info = nav.label"
+      >
+        <div style="text-align:center">
+          <q-icon
+            :name="nav.icon"
+            class="top-icon"
+          />
+          <p class="label_text">
+            {{ $t(nav.label) }}
+          </p>
+        </div>
+        <HelpDialog 
+          :nav="nav"
+          :selected_info="isOpen(nav.label)"
+          @hiding="reset"
+        />
+      </div>
     </div>
   </q-page>
 </template>
@@ -136,7 +147,12 @@ border-radius: 10px;
 .top-icon{
   width:54px;
   height:54px;
-  margin-top:100px;
+  margin-top:90px;
+}
+.label_text{
+font-size: 16px;
+font-weight: 700;
+color: #0F3A5D ;
 }
 
 </style>
