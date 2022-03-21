@@ -9,6 +9,8 @@
       :delete_fn="deleteItem"
       icon_name="document"
       add_label="button.add_event"
+      import_label="button.import_events"
+      import_url="events/import"
       title="events.list_title"
       categories_enabled
       categories_url="/events/categories"

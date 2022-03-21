@@ -1,6 +1,21 @@
 <template>
   <div>
-    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(title)}}</div>
+    <div
+      class=" q-pa-md image "
+      style="text-align:center"
+    >
+      <div
+        class=" top-div"
+        style=""
+      >
+        {{ $t(title) }}
+        <q-icon
+          name="img:statics/Ebene_2.svg"
+          class="top-icon"
+        />
+      </div>
+    </div>
+    <hr style="border: 1px solid #0F3A5D">
     <span v-if="loading">Loading...</span>
     <div
       class="row"
@@ -185,7 +200,7 @@
         </q-list>
       </div>
       <div class="q-mx-sm col-10">
-        <div class="row">
+        <div class="row search-row">
           <q-input
             color="accent"
             v-model="search"
@@ -193,7 +208,7 @@
             filled
             outlined
             dense
-            :label='$t("input_labels.search")'
+            :placeholder='$t("input_labels.search")'
             :class="categories_enabled ? 'search-bar col-7' : 'search-bar col-9'"
           >
             <template v-slot:append>
@@ -203,18 +218,25 @@
           <q-btn
             no-caps
             unelevated
-            :label='$t("button.categories")'
-            class="cat-btn q-ml-md col"
-            :to="categories_url"
-            v-if="categories_enabled"
-          />
-          <q-btn
-            no-caps
-            unelevated
             :label='$t(add_label)'
             class="add-btn q-ml-md col"
             data-cy="add_element"
             :to="new_url"
+          />
+          <q-btn
+            no-caps
+            unelevated
+            :label='$t(import_label)'
+            class="add-btn q-ml-md col"
+            :to="import_url"
+          />
+          <q-btn
+            no-caps
+            unelevated
+            :label='$t("button.categories")'
+            class="add-btn q-ml-md col"
+            :to="categories_url"
+            v-if="categories_enabled"
           />
         </div>
         <div class="center q-mr-xl">
@@ -238,20 +260,18 @@
                 <div style="text-align:center">{{$t("lists.translation_state")}}</div>
               </q-item-section>
               <q-item-section class="flex col-1">
-                <div style="text-align:center">{{$t("lists.edit")}}</div>
+                <div style="text-align:center">{{$t("input_labels.export")}}</div>
               </q-item-section>
               <q-item-section class="flex col-1">
-                <div style="text-align:center">{{$t("lists.delete")}}</div>
+                <div style="text-align:center">{{$t("lists.edit")}}</div>
               </q-item-section>
             </q-item>
           </q-list>
         </div>
-        <div class="row q-mb-sm">
-          <q-separator style="max-width: 91.7%; background-color: black" />
-        </div>
         <div class="row">
+          <q-separator style="width: 91.7%; background-color: #424244" />
           <q-list
-            class="col-11 element-list"
+            class="q-mt-md col-11 element-list"
             separator
           >
             <!-- items -->
@@ -268,15 +288,12 @@
                   {{ item.title }}
                 </q-item-label>
                 <div
-                  class="q-my-sm"
-                  style="display: inline"
+                  class="q-mt-sm data-row"
                 >
                   <span
                     class="q-mr-md tags_text"
                     v-if="topics_enabled && item.topics.length > 0"
-                  >
-                    {{$t("lists.topics")}}:
-                    <q-img
+                  >{{$t("lists.topics")}}: <q-img
                       v-for="(topic, index) in item.topics"
                       :key="topic.id"
                       :src="topic.icon"
@@ -286,17 +303,12 @@
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.topics.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
                     >
-                      <q-tooltip :key="'topic_tooltip'.concat(topic.id)">
-                        {{topicTransl(topic)}}
-                      </q-tooltip>
+                      <q-tooltip :key="'topic_tooltip'.concat(topic.id)">{{topicTransl(topic)}}</q-tooltip>
                     </q-img>
-                  </span>
-                  <span
+                  </span><span
                     v-if="user_types_enabled && item.userTypes.length > 0"
                     class="q-mr-md tags_text"
-                  >
-                    {{$t("lists.user_types")}}:
-                    <q-img
+                  >{{$t("lists.user_types")}}: <q-img
                       v-for="(userType, index) in item.userTypes"
                       :key="userType.id"
                       :src="userType.icon"
@@ -305,44 +317,33 @@
                       :alt="userTypeTransl(userType)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    >
-                      <q-tooltip :key="'userType_tooltip'.concat(userType.id)">
-                        {{userTypeTransl(userType)}}
-                      </q-tooltip>
+                    ><q-tooltip :key="'userType_tooltip'.concat(userType.id)">{{userTypeTransl(userType)}}</q-tooltip>
                     </q-img>
                   </span>
                   <span
                     class="q-mr-md tags_text"
                     v-if="categories_enabled && item.category"
-                  >
-                    {{$t("lists.category")}}: {{item.category.category}}
-                  </span>
+                  >{{$t("lists.category")}}: {{item.category.category}}</span>
                   <span
                     class="tags_text"
                     v-if="is_event"
-                  >
-                    {{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}
-                  </span>
+                  >{{$t("lists.cost")}}: {{item.cost ? item.cost : $t("lists.cost_free")}}</span>
                 </div>
                 <div
-                  class="q-mb-sm"
+                  class="q-mb-xl"
                   style="display: inline"
                 >
                   <span>
                     {{ $t("input_labels.available_transl") }}:
                   </span>
-                  <span 
-                    v-if="item.availableTranslations.length > 0"
-                  >
+                  <span v-if="item.availableTranslations.length > 0">
                     <q-chip
                       v-for="availableLang in item.availableTranslations"
                       :key="availableLang"
-                      >{{ availableLang }}
+                    >{{ availableLang }}
                     </q-chip>
                   </span>
-                  <span 
-                    v-else
-                  >
+                  <span v-else>
                     <span>{{ $t("input_labels.no_available_transl") }}</span>
                   </span>
                 </div>
@@ -418,6 +419,15 @@
               <q-item-section class="col-1 flex flex-center q-mt-md">
                 <div style="text-align:center">{{getTranslationStateText(item.translationState)}}</div>
               </q-item-section>
+              <q-item-section class="col-1 flex flex-center  q-mt-md">
+                <q-btn
+                  unelevated
+                  class="item-btn"
+                  icon='img:statics/icons/Icon - Download.svg'
+                  @click="delete_fn(item)"
+                  :data-cy="'delete_button' + item.id"
+                />
+              </q-item-section>
               <q-item-section class="col-1 flex flex-center q-mt-md">
                 <q-btn
                   unelevated
@@ -426,15 +436,6 @@
                   :to="edit_url_fn(item.id)"
                   :data-cy="'edit_button' + item.id"
                 />
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center  q-mt-md">
-                <q-btn
-                    unelevated
-                    class="item-btn"
-                    icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
-                    @click="delete_fn(item)"
-                    :data-cy="'delete_button' + item.id"
-                  />
               </q-item-section>
             </q-item>
           </q-list>
@@ -500,6 +501,14 @@ export default {
     add_label: {
       type: String,
       default: 'Add'
+    },
+    import_label: {
+      type: String,
+      default: 'Import'
+    },
+    import_url: {
+      type: String,
+      default: '/'
     },
     categories_enabled: {
       type: Boolean,
@@ -720,11 +729,11 @@ export default {
           actions: [
             {
               label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                const notif = this.$q.notify({message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false})
+                const notif = this.$q.notify({ message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false })
                 this.on_publish(id).then(() => {
                   console.log("published")
                 }).finally(() => {
-                  notif({message: "", spinner: false, icon: 'done', timeout: 2500})
+                  notif({ message: "", spinner: false, icon: 'done', timeout: 2500 })
                   this.$nextTick()
                 })
               }
@@ -747,11 +756,11 @@ export default {
           actions: [
             {
               label: this.$t("lists.yes"), color: 'accent', handler: () => {
-                const notif = this.$q.notify({message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false})
+                const notif = this.$q.notify({ message: this.$t("input_labels.loading"), spinner: true, timeout: 0, group: false })
                 this.on_unpublish(id).then(() => {
                   console.log("unpublished")
                 }).finally(() => {
-                  notif({message: "", spinner: false, icon: 'done', timeout: 2500})
+                  notif({ message: "", spinner: false, icon: 'done', timeout: 2500 })
                 })
               }
             },
@@ -831,7 +840,7 @@ export default {
       Promise.all(creatorPromises).then(results => {
         let creatorCache = {}
         if (results.length > 0) {
-          creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, {[creator.umId]: creator}, {}))
+          creatorCache = results.reduce((curCache, creator) => Object.assign(curCache, { [creator.umId]: creator }, {}))
         }
         this.translatedElements = this.translatedElements.filter((e) => e !== undefined)
         this.translatedElements.forEach(e => e.creator = creatorCache[e.creator])
@@ -967,10 +976,9 @@ export default {
 $accent_list: #ff7c44;
 $btn_secondary: #cdd0d2;
 .add-btn {
-  background-color: #0b91ce;
+  background-color: #0f3a5d;
   color: white;
   border-radius: 5px;
-  margin-right: 108px;
   margin-top: 65px;
   margin-bottom: 25px;
 }
@@ -986,7 +994,7 @@ $btn_secondary: #cdd0d2;
   border-radius: 2px;
 }
 .title-label {
-  font-weight: 600;
+  font-weight: 700;
   font-family: "Nunito";
   font-size: 20px;
 }
@@ -1060,6 +1068,10 @@ $btn_secondary: #cdd0d2;
   max-width: 100%;
   font-size: 15px;
 }
+.search-row {
+  margin-right: 115px;
+
+}
 .search-bar {
   border-radius: 5px;
   margin-top: 65px;
@@ -1072,5 +1084,24 @@ $btn_secondary: #cdd0d2;
 }
 .column-header {
   max-width: 91.6667%;
+}
+.data-row {
+  height: 30px;
+}
+.top-icon {
+  width: 360px;
+  height: 100%;
+}
+.top-div {
+  font-style: normal;
+  padding-top: 15px;
+  padding-left: 30px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color: #0f3a5d;
+}
+.image {
+  background-image: url("../statics/BG Pattern.svg");
 }
 </style>

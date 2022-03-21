@@ -9,6 +9,8 @@
       :delete_fn="deleteItem"
       icon_name="document"
       add_label="button.add_information"
+      import_label="button.import_information"
+      import_url="information/import"
       title="information_centre.list_title"
       categories_enabled
       categories_url="/information/categories"

@@ -9,6 +9,8 @@
       :delete_fn="deleteItem"
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
       add_label="button.add_glossary"
+      import_label="button.import_glossary"
+      import_url="glossary/import"
       title="glossary.list_title"
       alphabetical_sorting
       entity="glossary"

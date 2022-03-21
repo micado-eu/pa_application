@@ -140,6 +140,9 @@
   },
   "button": {
     "import_process":"Import process",
+    "import_glossary":"Import Terms",
+    "import_information":"Import Information",
+    "import_events":"Import Events",
     "validate_and_publish": "Validate and publish",
     "change_pass": "Change Password",
     "add_document": "Add Document",
