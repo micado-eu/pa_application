@@ -1,7 +1,7 @@
 <template>
   <div :id="$options.name" v-if="!loading">
     <span v-if="errorMessage">{{$t(errorMessage)}}</span>
-    <div class="justify-center row q-py-md">
+    <div class="justify-center row category-header image">
       <div class="col-11 justify-center items-center row">
         <q-btn
           class="add-btn col-shrink q-px-lg"
@@ -18,8 +18,9 @@
       </div>
       <div class="col-shrink row justify-center items-center">
         <q-btn
+          no-caps
           class="go-back-btn"
-          icon="img:statics/icons/Icon - Information Centre.png"
+          :label="$t('button.go_back')"
           @click="$router.go(-1)"
         >
         </q-btn>
@@ -486,7 +487,9 @@ export default {
 }
 .add-btn {
   color: white;
-  background-color: #0b91ce;
+  background-color: #0F3A5D;
+  font-weight: bold;
+  font-size: 20px;
 }
 .save-btn {
   color: white;
@@ -496,8 +499,10 @@ export default {
   border: 1px solid #0F3A5D;
 }
 .go-back-btn {
-  color: white;
-  background-color: #0F3A5D;
+  border: 1px solid #0F3A5D;
+  color: #0F3A5D;
+  font-weight: bold;
+  font-size: 20px;
 }
 .dialog-container {
   background-color: white;
@@ -518,5 +523,11 @@ export default {
 .btn-dialog-div {
   margin-top: 30px;
   margin-bottom: 136px;
+}
+.image {
+  background-image: url("../../statics/BG Pattern.svg");
+}
+.category-header {
+  height: 130px;
 }
 </style>

@@ -1,6 +1,17 @@
 <template>
   <div>
-    <div style="font-style: normal;height:72px;text-align: center; padding-top:15px;font-weight: bold;font-size: 30px;line-height: 41px;color:white; background-color:#FF7C44">{{$t(pagetitle)}}</div>
+    <div
+      class="image "
+      style="text-align:center"
+    >
+      <div
+        class="top-div"
+        style=""
+      >
+        {{ $t(pagetitle) }}
+      </div>
+    </div>
+    <hr style="border: 1px solid #0F3A5D">
     <span v-if="loading">Loading...</span>
     <div
       class="edit-element-component q-pa-xl q-ma-xl"
@@ -724,6 +735,8 @@ $title_font_size: 16px;
 .title_input {
   font-size: $title_font_size;
   max-width: 100%;
+  font-weight: 400;
+  font-family: "Nunito Sans";
 }
 .add_tag_btn {
   background-color: #0b91ce;
@@ -752,6 +765,17 @@ $title_font_size: 16px;
   font-weight: 700;
   font-family: Nunito;
   font-size: 16px;
+}
+
+.top-div {
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color: #0f3a5d;
+  padding: 35px 0;
+}
+.image {
+  background-image: url("../statics/BG Pattern.svg");
 }
 </style>
 <style>
