@@ -21,6 +21,109 @@
       class="row"
       v-if=!loading
     >
+      <!-- Edit dialog -->
+      <q-dialog
+        v-model="showEdit"
+        class="dialog-full"
+      >
+        <div class="dialog-container">
+          <div class="row justify-end">
+            <q-btn
+              class="col-shrink"
+              icon="close"
+              size="md"
+              color="purple-8"
+              flat
+              round
+              dense
+              v-close-popup
+            ></q-btn>
+          </div>
+          <q-card
+            flat
+            class="dialog-card"
+          >
+            <q-card-section>
+              <div class="dialog-center dialog-title">{{ $t('input_labels.edit_or_delete')}}:</div>
+              <div class="dialog-center dialog-select-title q-mb-xl">{{ dialogSelected }}</div>
+              <div class="dialog-center q-mb-xl">
+                <q-btn
+                  class="btn-full edit-btn-full q-mr-xl"
+                  no-caps
+                  unelevated
+                  icon="img:statics/icons/Icon - edit - orange (600x600).png"
+                  :to="edit_url_fn(dialogSelectedItem.id)"
+                ><span class="q-mx-lg">{{ $t('input_labels.edit') }}</span></q-btn>
+                <q-btn
+                  class="btn-full delete-btn-full"
+                  no-caps
+                  unelevated
+                  icon="img:statics/icons/Icon - Delete - magenta (600x600).png"
+                  @click="showDelete = true"
+                ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn>
+              </div>
+            </q-card-section>
+          </q-card>
+        </div>
+      </q-dialog>
+      <!-- Delete dialog -->
+      <q-dialog
+        v-model="showDelete"
+        class="dialog-full"
+      >
+        <div class="dialog-container">
+          <div class="row justify-end">
+            <q-btn
+              class="col-shrink"
+              icon="close"
+              size="md"
+              color="purple-8"
+              flat
+              round
+              dense
+              v-close-popup
+            ></q-btn>
+          </div>
+          <q-card-section>
+              <div class="dialog-center dialog-title">{{ $t('input_labels.delete_confirm')}}:</div>
+              <div class="dialog-center dialog-select-title q-mb-xl">{{ dialogSelected }}</div>
+              <div class="dialog-center q-mb-xl">
+                <q-btn
+                  class="btn-full cancel-btn-full q-mr-xl"
+                  no-caps
+                  unelevated
+                  @click="showDelete = false; showEdit = false"
+                ><span class="q-mx-lg">{{ $t('button.cancel') }}</span></q-btn>
+                <q-btn
+                  class="delete-btn"
+                  no-caps
+                  unelevated
+                  @click="delete_fn(dialogSelectedItem)"
+                ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn>
+              </div>
+            </q-card-section>
+        </div>
+      </q-dialog>
+      <!-- Export dialog -->
+      <q-dialog
+        v-model="showExport"
+        class="dialog-full"
+      >
+        <div class="dialog-container">
+          <div class="row justify-end">
+            <q-btn
+              class="col-shrink"
+              icon="close"
+              size="md"
+              color="purple-8"
+              flat
+              round
+              dense
+              v-close-popup
+            ></q-btn>
+          </div>
+        </div>
+      </q-dialog>
       <div class="col q-ml-md filter-list">
         <q-list
           bordered
@@ -287,9 +390,7 @@
                 <q-item-label class="title-label">
                   {{ item.title }}
                 </q-item-label>
-                <div
-                  class="q-mt-sm data-row"
-                >
+                <div class="q-mt-sm data-row">
                   <span
                     class="q-mr-md tags_text"
                     v-if="topics_enabled && item.topics.length > 0"
@@ -317,7 +418,8 @@
                       :alt="userTypeTransl(userType)"
                       :img-style="{'max-width': '24px', 'max-height': '24px'}"
                       :class="index !== (item.userTypes.length - 1) ? 'filter-icon q-mr-xs' : 'filter-icon'"
-                    ><q-tooltip :key="'userType_tooltip'.concat(userType.id)">{{userTypeTransl(userType)}}</q-tooltip>
+                    >
+                      <q-tooltip :key="'userType_tooltip'.concat(userType.id)">{{userTypeTransl(userType)}}</q-tooltip>
                     </q-img>
                   </span>
                   <span
@@ -423,8 +525,8 @@
                 <q-btn
                   unelevated
                   class="item-btn"
-                  icon='img:statics/icons/Icon - Download.svg'
-                  @click="delete_fn(item)"
+                  icon='img:statics/icons/Icon - Export.svg'
+                  @click="showExport = true"
                   :data-cy="'delete_button' + item.id"
                 />
               </q-item-section>
@@ -433,7 +535,7 @@
                   unelevated
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
-                  :to="edit_url_fn(item.id)"
+                  @click="showEdit = true; dialogSelected = item.title; dialogSelectedItem = item"
                   :data-cy="'edit_button' + item.id"
                 />
               </q-item-section>
@@ -570,7 +672,12 @@ export default {
       lastIndexTopics: 3,
       lastIndexUserTypes: 3,
       loading: true,
-      showExtraInfo: []
+      showExtraInfo: [],
+      showEdit: false,
+      showDelete: false,
+      showExport: false,
+      dialogSelected: "",
+      dialogSelectedItem: {id: -1}
     }
   },
   components: {
@@ -1070,7 +1177,6 @@ $btn_secondary: #cdd0d2;
 }
 .search-row {
   margin-right: 115px;
-
 }
 .search-bar {
   border-radius: 5px;
@@ -1103,5 +1209,45 @@ $btn_secondary: #cdd0d2;
 }
 .image {
   background-image: url("../statics/BG Pattern.svg");
+}
+.dialog-container {
+  background-color: white;
+  width: 800px;
+  max-width: 85vw;
+}
+.dialog-center {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+.dialog-title {
+  font-weight: 700;
+  font-size: 18px;
+}
+.dialog-select-title {
+  font-weight: 400;
+  font-size: 18px;
+}
+.btn-full {
+  background-color: white;
+  color: black;
+  font-weight: bold;
+  font-size: 16px;
+}
+.edit-btn-full {
+  border: 1px solid #ff7c44;
+}
+.delete-btn-full {
+  border: 1px solid #9e1f63;
+}
+.cancel-btn-full {
+  border: 1px solid #c71f40;
+}
+.delete-btn {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #9e1f63;
 }
 </style>
