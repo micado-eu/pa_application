@@ -9,6 +9,10 @@
       :delete_fn="deleteItem"
       icon_name="img:statics/icons/MICADO PA APP Icon - Glossary Page (white).png"
       add_label="button.add_glossary"
+      import_label="button.import_glossary"
+      :import_fn="importTerm"
+      :export_fn="exportData"
+      header_img="img:statics/glossary_header.svg"
       title="glossary.list_title"
       alphabetical_sorting
       entity="glossary"
@@ -42,7 +46,9 @@ export default {
       'editGlossaryItemTranslation',
       'deleteProdTranslations',
       'saveGlossaryTranslationProd',
-      'updatePublished'
+      'updatePublished',
+      'importData',
+      'exportData'
     ]),
     getEditRoute(id) {
       return `glossary/${id}/edit`
@@ -57,6 +63,17 @@ export default {
           this.$q.notify({
             type: 'negative',
             message: `Error while deleting glossary term: ${err}`
+          })
+        })
+    },
+    importTerm(file) {
+      console.log(file)
+      this.importData(file).then(() => 
+          this.updateContent()
+      ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while importing term: ${err}`
           })
         })
     },

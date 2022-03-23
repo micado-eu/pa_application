@@ -1,109 +1,142 @@
 <template>
   <div>
     <div v-if="loading">
-      {{$t('input_labels.loading')}}
+      {{ $t('input_labels.loading') }}
     </div>
     <div v-else>
-      
-    <div id="content" >
-      <div id="top-div">
-        {{ $t('input_labels.guided_processes') }}
-      </div>
+      <div id="content">
+        <div
+          class=" q-pa-md image "
+          style="text-align:center"
+        >
+          <div
+            class=" top-div"
+            style=""
+          >
+            {{ $t('input_labels.guided_processes') }}
+            <q-icon
+              name="img:statics/Ebene_2.svg"
+              class="top-icon"
+            />
+          </div>
+        </div>
+        <hr style="border: 1px solid #0F3A5D">
+
 
         <div class="center container">
-          <div
-            id="div-1"
-            class="col-10"
-          >
-            <q-input
-              id="input"
-              dense
-              items-center
-              filled
-              v-model="search"
-              :label="$t('input_labels.search')"
+          <div class=" row">
+            <div
+              class="col-8"
             >
-              <template v-slot:append>
-                <q-avatar>
-                  <q-icon name="search" />
-                </q-avatar>
-              </template>
-            </q-input>
+              <q-input
+                id="input"
+                dense
+                items-center
+                filled
+                v-model="search"
+                :label="$t('input_labels.search')"
+              >
+                <template v-slot:append>
+                  <q-avatar>
+                    <q-icon name="search" />
+                  </q-avatar>
+                </template>
+              </q-input>
+            </div>
+            <div
+              class="col-2"
+              style="text-align:center"
+            >
+              <q-btn
+                class="button"
+                color="accent"
+                unelevated
+                rounded
+                :label="$t('button.add_process')"
+                no-caps
+                size="15px"
+                to="guided_process_editor/edit"
+              />
+            </div>
+            <div
+              class="col-2"
+              style="text-align:left"
+            >
+              <q-btn
+                class="button"
+                color="accent"
+                unelevated
+                rounded
+                :label="$t('button.import_process')"
+                no-caps
+                size="15px"
+                @click="$router.push('guided_process_editor/import')"
+              />
+            </div>
           </div>
-          <div
-            id="div-2"
-            class="col-2"
-          >
-            <q-btn
-              :data-cy="'addprocess'"
-              id="button"
-              color="secondary"
-              unelevated
-              rounded
-              :label="$t('button.add_process')"
-              no-caps
-              size="15px"
-              to="guided_process_editor/edit"
-            />
-          </div>
-<div class="" style="text-align:right">
-            <UploadButton entity="process" />
-          </div>
+        </div>
+        <div
+          class=""
+          style="text-align:right"
+        >
+          <UploadButton entity="process" />
         </div>
         <q-item class="container-labels">
-              <q-item-section class="col-4 flex flex-left">
-                {{ $t('input_labels.name') }}
-              </q-item-section>
-              <q-item-section
-                class="col-1 flex flex-center top"
-                style="margin-left:0px"
-              >
-                {{ $t('input_labels.is_published') }}
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.transl_state') }}
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.comments') }}
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.edit') }}
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.manage') }}
-              </q-item-section> 
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.preview') }}
-              </q-item-section>
-              <q-item-section class="col-1 flex flex-center top">
-                {{ $t('input_labels.delete') }}
-              </q-item-section>
-            </q-item>
-                        <hr id="hr">
-
-                </div>
-        <div  id="term-defs" class="container-labels">
-
-          <q-list id="list">
-            
-           
-            <Process
-              v-for="process in filteredProcesses"
-              :key="process.id"
-              :title="showProcessLabel(process)"
-              :topics="process.processTopics"
-              :users="process.applicableUsers"
-              :process-topics="topics"
-              :process-users="users"
-              :link="process.id"
-              :the-process="process"
-              path="guided_process_editor"
-              @remove="deletingProcess"
-              @publish="isPublished"
-            />
- 
-          </q-list>
-        </div>
+          <q-item-section class="col-4 flex flex-left">
+            {{ $t('input_labels.name') }}
+          </q-item-section>
+          <q-item-section
+            class="col-1 flex flex-center top"
+            style="margin-left:0px"
+          >
+            {{ $t('input_labels.is_published') }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.transl_state') }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.comments') }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.manage') }}
+          </q-item-section> 
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.preview') }}
+          </q-item-section>
+          <!--<q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.delete') }}
+          </q-item-section>-->
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.export') }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.edit') }}
+          </q-item-section>
+        </q-item>
+        <hr id="hr">
+      </div>
+      <div
+        id="term-defs"
+        class="container-labels"
+      >
+        <q-list id="list">
+          <Process
+            v-for="process in filteredProcesses"
+            :key="process.id"
+            :title="showProcessLabel(process)"
+            :topics="process.processTopics"
+            :users="process.applicableUsers"
+            :process-topics="topics"
+            :process-users="users"
+            :link="process.id"
+            :the-process="process"
+            path="guided_process_editor"
+            @remove="deletingProcess"
+            @publish="isPublished"
+            @export="exportProcess"
+          />
+        </q-list>
+      </div>
     </div>
   </div>
 </template>
@@ -132,6 +165,7 @@ export default {
       users: 'user_type/user'
     }, actions: {
       deleteProcess: 'flows/deleteProcess',
+      exportingProcess: 'flows/exportProcess',
       fetchFlows: 'flows/fetchFlows',
       fetchSteplinks: 'steplinks/fetchSteplinks',
       fetchSteps: 'steps/fetchSteps',
@@ -198,6 +232,21 @@ export default {
         this.deleteStepTranslationProd(publishing_steps)
       }
      }*/
+     exportProcess(value){
+       console.log(value)
+       this.exportingProcess(value).then((process)=>{
+         var filename = process.process[0].translations.filter((transl)=>{
+           return transl.lang == this.$userLang
+         })[0].process
+         var element = document.createElement('a')
+        element.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(process,null, 4)))
+        element.setAttribute('download', filename + '.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+       })
+     },
     deletingProcess (value) {
       console.log(value)
       var deletedProcess = this.processes.filter((filt) => {
@@ -378,10 +427,10 @@ export default {
   width:100%;
   font-size:18px
 }
-#button{
-  width:150px; 
+.button{
   margin-bottom:15px;
-  border-radius:5px
+  border-radius:5px;
+
 }
 #list{
   display:inline-block; 
@@ -409,5 +458,20 @@ export default {
   z-index: 999;
   background-color: white;       
   }
-
+.top-icon{
+width:360px;
+  height:100%
+}
+.top-div{
+  font-style: normal;
+  padding-top:15px;
+  padding-left:30px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 54px;
+  color:#0F3A5D; 
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
+}
 </style>

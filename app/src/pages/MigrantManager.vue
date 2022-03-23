@@ -1,63 +1,78 @@
-  <template>
+<template>
   <div class="">
-<div id="content">
-  <div id="top-div">
-        {{ $t('input_labels.migrant_manager') }}
-      </div>
-    <div class="center">
+    <div id="content">
       <div
-        id="div-1"
-        class=" q-pa-md col"
-        style="padding-top:30px"
+        class=" q-pa-md image"
+        style="text-align:center"
       >
-        <q-input
-          class="input"
-          items-center
-          filled
-          v-model="search"
-          :label="$t('input_labels.search')"
+        <div
+          class=" top-div"
+          style=""
         >
-          <template v-slot:append>
-            <q-avatar>
-              <q-icon name="search" />
-            </q-avatar>
-          </template>
-        </q-input>
+          {{ $t('input_labels.migrant_manager') }}
+          <q-icon
+            name="img:statics/MICADO APP - Graphics -migrant account management.svg"
+            class="top-icon"
+          />
+        </div>
       </div>
-    </div>
-    <div>
-      <q-item class="row labels container-labels">
-
-        <q-item-section class="col-8 flex flex-left" >
+      <hr style="border: 1px solid #0F3A5D">
+      <div class="center">
+        <div
+          class=" q-pa-md col div-1"
+          style="padding-top:30px"
+        >
+          <q-input
+            class="input"
+            dense
+            items-center
+            filled
+            v-model="search"
+            :label="$t('input_labels.search')"
+          >
+            <template v-slot:append>
+              <q-avatar>
+                <q-icon name="search" />
+              </q-avatar>
+            </template>
+          </q-input>
+        </div>
+      </div>
+      <div>
+        <q-item class="row labels container-labels">
+          <q-item-section class="col-8 flex flex-left">
           &nbsp;
           <!--{{$t('input_labels.name')}}-->
-        </q-item-section>
+          </q-item-section>
 
-            <q-item-section  class="col-1 flex flex-center top">
-              <p v-if="features.includes('FEAT_TASKS')" style="margin-bottom:0px"> {{$t('button.integration')}}</p>
-            </q-item-section>
-           <q-item-section class="col-1 flex flex-center top">
-              {{$t('button.migrant_data')}}
-           </q-item-section>
-            <q-item-section class="col-1 flex flex-center top">
-              {{$t('input_labels.delete')}}
-            </q-item-section>
-      </q-item>
-
+          <q-item-section class="col-1 flex flex-center top">
+            <p
+              v-if="features.includes('FEAT_TASKS')"
+              style="margin-bottom:0px"
+            >
+              {{ $t('button.integration') }}
+            </p>
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('button.migrant_data') }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.delete') }}
+          </q-item-section>
+        </q-item>
+      </div>
+      <hr id="hr">
     </div>
-    <hr id="hr">
-</div>
     <div class="center container">
       <q-list id="list">
         <User
           v-for="user in filteredUsers"
           :key="user.id"
-          :Username="user.umUserName"
-          :theUser="user"
-          :Path="user.id"
+          :username="user.umUserName"
+          :the-user="user"
+          :path="user.id"
           @remove="deleteUser"
-        >
-        </User>
+        />
       </q-list>
     </div>
   </div>
@@ -145,7 +160,7 @@ export default {
 .center {
   text-align: center;
 }
-#div-1 {
+.div-1 {
   display: inline-block;
   padding-right: 20px;
   padding-left: 20px;
@@ -179,16 +194,15 @@ export default {
   z-index: 999;
   background-color: white;       
   }
-  #top-div{
+  
+.top-div{
   font-style: normal;
-  height:72px;
-  text-align: center; 
   padding-top:15px;
+  padding-left:30px;
   font-weight: bold;
-  font-size: 30px;
-  line-height: 41px;
-  color:white; 
-  background-color:#FF7C44
+  font-size: 40px;
+  line-height: 54px;
+  color:#0F3A5D; 
 }
 .container-labels {
   padding-top: 0px;
@@ -200,5 +214,12 @@ export default {
   margin-left:50px;
   margin-right:50px;
   border: 0.999px solid #424244;
+}
+.top-icon{
+width:360px;
+  height:100%
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
 }
 </style>

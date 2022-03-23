@@ -1,6 +1,6 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <q-header
+    <!--<q-header
       elevated
       class="bg-accent"
     >
@@ -23,7 +23,7 @@
           :label="$t('data_settings.survey')"
           @click="generateSurvey"
         />-->
-        <q-btn
+    <!--<q-btn
           no-caps
           v-if="survey_visible"
           style="background-color:white; color:#0B91CE"
@@ -33,7 +33,7 @@
         <div>Micado v0.1</div>
 
       </q-toolbar>
-    </q-header>
+    </q-header>-->
 
     <q-footer>
       <q-tabs>
@@ -48,13 +48,32 @@
     </q-footer>
 
     <q-drawer
-      v-model="leftDrawerOpen"
+      
+      :mini="leftDrawerOpen"
+
       show-if-above
       :breakpoint="767"
       bordered
       content-class="bg-accent text-white"
     >
-      <div class="column flex-center q-gutter-y-md" style="padding-top:10px">
+      <q-item class="shadow-box shadow-10">
+        <q-item-section avatar>
+          <q-icon
+            name="menu"
+            @click="leftDrawerOpen = !leftDrawerOpen"
+          />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="app_label">
+            {{ $t("application_title") }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+      
+      <div
+        class="column flex-center q-gutter-y-md"
+        style="padding-top:10px"
+      >
         <UserButton />
         <!--<q-btn
           round
@@ -67,6 +86,7 @@
           </q-avatar>
         </q-btn>-->
       </div>
+      <hr class="separator">
 
       <q-item
         clickable
@@ -93,12 +113,40 @@
           <q-item-label>{{ $t('menu.logout') }}</q-item-label>
         </q-item-section>
       </q-item>
+      <hr class="separator">
+
+      <div style="text-align:center">
+        <!--<q-item
+          clickable
+          @click="openSurvey"
+          v-if="survey_visible"
+          style="background-color:white; color:#0B91CE; width:90%; border-radius:2px"
+        >
+          <q-item-section avatar>
+            <q-icon :name="'img:statics/icons/Icon - Survey.svg'" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ $t('data_settings.survey') }}</q-item-label>
+          </q-item-section>
+        </q-item>-->
+        <q-btn
+          no-caps
+          :icon="'img:statics/icons/Icon - Survey.svg'"
+          v-if="survey_visible"
+          style="background-color:white; color:#0B91CE; width:90%"
+          :label="$t('data_settings.survey')"
+          @click="openSurvey"
+        />
+      </div>
+      <hr class="separator">
 
       <q-list
         dark
         v-if="isLoggedIn"
       >
-        <q-item-label header>{{ $t('menu.title') }}</q-item-label>
+        <q-item-label header>
+          {{ $t('menu.title') }}
+        </q-item-label>
         <q-item
           :disable="nav.auth != undefined ? !check(nav.auth) : false"
           :data-cy="nav.label.replace('.', '_')"
@@ -121,50 +169,77 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label>{{ $t( nav.label) }}</q-item-label>
-            <q-item-label caption>{{ $t(nav.description) }}</q-item-label>
+            <q-item-label style="font-weight:500">
+              {{ $t( nav.label) }}
+            </q-item-label>
+            <q-item-label caption>
+              {{ $t(nav.description) }}
+            </q-item-label>
           </q-item-section>
         </q-item>
-        <br />
+        <br>
         <div class="row justify-center full-height full-width text-center">
           <img
+            style="max-width:161px"
             alt="Powered by Micado"
-            src="~assets/Powered by micado - white.svg"
-          />
+            src="~assets/MICADO Logo - powered by.svg"
+          >
+        </div>
+      </q-list>
+      <q-list
+        dark
+        v-else
+      >
+        <div class="row justify-center full-height full-width text-center">
+          <img
+            style="max-width:161px"
+            alt="Powered by Micado"
+            src="~assets/MICADO Logo - powered by.svg"
+          >
         </div>
       </q-list>
     </q-drawer>
     <q-dialog v-model="alert">
       <q-card>
         <q-card-section>
-          <div class="text-h6">{{$t('data_settings.survey')}}</div>
+          <div class="text-h6">
+            {{ $t('data_settings.survey') }}
+          </div>
         </q-card-section>
 
         <q-separator />
 
-        <q-card-section v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" style="max-height: 50vh" >
-        <div v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" >{{$t('data_settings.survey_pa')}}</div><br>
-        <a v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0" :href="this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value">
-        {{this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value}}<br>
-        </a>
+        <q-card-section
+          v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0"
+          style="max-height: 50vh"
+        >
+          <div v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0">
+            {{ $t('data_settings.survey_pa') }}
+          </div><br>
+          <a
+            v-if=" settings.filter((set)=>{return set.key == 'survey_pa'}).length >0"
+            :href="this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value"
+          >
+            {{ this.settings.filter((set)=>{return set.key == 'survey_pa'})[0].value }}<br>
+          </a>
         </q-card-section>
-
-        
       </q-card>
     </q-dialog>
-    <q-dialog v-model="alert_int" full-width >
-       <q-layout
+    <q-dialog
+      v-model="alert_int"
+      full-width
+    >
+      <q-layout
         view="Lhh lpR fff"
         container
         class="bg-white"
       >
-      <q-header
+        <q-header
           
           class="bg-accent"
         >
           <q-toolbar>
-
-            <q-toolbar-title> {{$t('data_settings.survey')}}</q-toolbar-title>
+            <q-toolbar-title> {{ $t('data_settings.survey') }}</q-toolbar-title>
             <q-btn
               round
               dense
@@ -178,19 +253,18 @@
         </q-header>
         <q-page-container>
           <q-page class="q-pa-sm">
+            <div id="surveyContainer">
+              <survey :survey="survey" />
+            </div>
 
-          <div id="surveyContainer">
-            <survey :survey="survey"></survey>
-          </div>
-
-        <q-card-actions align="right">
-          <q-btn
-            flat
-            label="OK"
-            color="primary"
-            v-close-popup
-          />
-        </q-card-actions>
+            <q-card-actions align="right">
+              <q-btn
+                flat
+                label="OK"
+                color="primary"
+                v-close-popup
+              />
+            </q-card-actions>
           </q-page>
         </q-page-container>
       </q-layout>
@@ -494,5 +568,14 @@ export default {
   body {
     font-family: "Nunito", sans-serif;
   }
+}
+.app_label{
+  font-size: 21px;
+  font-weight: 600;
+  font-style: normal;
+}
+.separator{
+  margin-left: 0px;
+  margin-right: 0px;
 }
 </style>

@@ -1,34 +1,54 @@
 <template>
-<div>
-<div class="item" style="margin-right:0px">
-        
-    <div class="row">
-    <div class="col-8 username ">{{ this.Username }}</div>
-    <q-item-section class="col-1 flex flex-center top">
-      <IconWithTooltip  v-if="features.includes('FEAT_TASKS')" style="float:right"  :icon="'img:statics/icons/Icon - Integration.svg'" :tooltip="$t('help.integration')" @click.native="interventionPlan()" :data-cy="'interventionplan'.concat(theUser.umId)"/>
-         </q-item-section>
-          <q-item-section class="col-1 flex flex-center top">
-      <IconWithTooltip style="float:right" :icon="'img:statics/icons/Icon - Data.svg'" :tooltip="$t('help.migrant_data')" @click.native="migrantData()" :data-cy="'userdata'.concat(theUser.umId)"/>
-          </q-item-section>
-         <q-item-section class="col-1 flex flex-center top">
-      <IconWithTooltip  style="float:right" :icon="'img:statics/icons/Icon - Delete.svg'" :tooltip="$t('help.delete_user')" @click.native="remove_user($event)" :data-cy="'deleteuser'.concat(theUser.umId)"/>
-         </q-item-section>
-    </div>
-    <div class="row width">
-       <div class=" q-pa-md  col-8 container" >
-        <span class="span">{{this.dateOfBirth}}</span>
-        <span class="span">|</span>
-        <span class="span">{{this.nationality}}</span>
-        <span class="span">|</span>
-        <span class="span">{{this.gender}}</span>
+  <div>
+    <div
+      class="item"
+      style="margin-right:0px"
+    >
+      <div class="row">
+        <div class="col-8 username ">
+          {{ this.Username }}
+        </div>
+        <q-item-section class="col-1 flex flex-center top">
+          <IconWithTooltip
+            v-if="features.includes('FEAT_TASKS')"
+            style="float:right"
+            :icon="'img:statics/icons/Icon - Integration.svg'"
+            :tooltip="$t('help.integration')"
+            @click.native="interventionPlan()"
+            :data-cy="'interventionplan'.concat(theUser.umId)"
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
+          <IconWithTooltip
+            style="float:right"
+            :icon="'img:statics/icons/Icon - Data.svg'"
+            :tooltip="$t('help.migrant_data')"
+            @click.native="migrantData()"
+            :data-cy="'userdata'.concat(theUser.umId)"
+          />
+        </q-item-section>
+        <q-item-section class="col-1 flex flex-center top">
+          <IconWithTooltip
+            style="float:right"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            :tooltip="$t('help.delete_user')"
+            @click.native="remove_user($event)"
+            :data-cy="'deleteuser'.concat(theUser.umId)"
+          />
+        </q-item-section>
       </div>
-
+      <div class="row width">
+        <div class=" q-pa-md  col-8 container">
+          <span class="span">{{ this.dateOfBirth }}</span>
+          <span class="span">|</span>
+          <span class="span">{{ this.nationality }}</span>
+          <span class="span">|</span>
+          <span class="span">{{ this.gender }}</span>
+        </div>
+      </div>
     </div>
-    
-    
+    <hr class="hr">
   </div>
-  <hr class="hr">
-</div>
 </template>
 
 <script>
@@ -111,6 +131,7 @@ export default {
 .username{
  font-size:20px; 
  text-align:left; 
+ font-weight: 600;
  font-size:18px;
  padding-bottom:0px; 
  padding-left:0px
@@ -125,7 +146,8 @@ export default {
   padding-left:0px
 }
 .span{
-  padding-right:5px
+  padding-right:5px;
+  font-size: 15px;
 }
 .button-container{
   padding-top:0px; 

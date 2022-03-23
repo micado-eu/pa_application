@@ -1,9 +1,14 @@
 <template>
   <div>
-    <span v-if="loading">{{$t('input_labels.loading')}}</span>
-    <div v-if="!loading" class="q-pa-md first-div">
-    <div  class="row content" style="padding-top:60px">
-        <div  class="col-11" style="text-align:center">
+    <span v-if="loading">{{ $t('input_labels.loading') }}</span>
+    <div
+      v-if="!loading"
+      class="q-pa-md first-div"
+    >
+      <div
+        class="content image"
+        style="padding-top:60px;text-align:center"
+      >
         <q-btn
           v-if="features.includes('FEAT_DOCUMENTS')"
           size="15px"
@@ -15,101 +20,122 @@
           @click="openValidateDialog"
           color="secondary"
         />
-        </div>
-        <div class="col-1" style="text-align:right">
         <q-btn
-          size="15px"
-          padding="xs"
-          :icon="'img:statics/icons/Icon - Migrant ManagementWhite.svg'"
+          class="go_back"
+          :label="$t('button.go_back')"
           no-caps
+          dense
           style="border-radius: 5px;"
           unelevated
           to="/migrant"
-          color="accent"
-        />
-        </div>
-      </div>
-      <div class="q-pa-md col container-labels" id="second-div" style="padding-top:50px">
-        <UserProfile
-          :umUserName="the_user.umUserName"
-          :fullname="legalName"
-          :dateOfBirth="dateOfBirth"
-          :nationality="nationality"
-          :gender="gender"
-          :userPicture="picture"
-        >
-        </UserProfile>
-      </div>
-
-      <q-dialog v-model="upload_doc" persistent>
-        <q-card style="min-width: 350px">
-          <q-card-section>
-            <div class="text-h6">
-              {{ $t("button.add_document") }}
-            </div>
-          </q-card-section>
-
-          <q-card-section class="q-pt-none">
-            <q-select
-              filled
-              dense
-              clearable
-              emit-value
-              map-options
-              v-model="validatingDocType"
-              :options="t_docs"
-              :label="$t('input_labels.doc_type')"
-            />
-            <q-file
-              v-model="validationFile"
-              accept=".jpg, .pdf, image/*"
-              label="Choose an optional file for validate"
-            />
-          </q-card-section>
-
-          <q-card-actions align="right" class="text-primary">
-            <q-btn
-              :data-cy="'cancel'"
-              label="Cancel"
-              color="accent"
-              v-close-popup
-            />
-            <q-btn
-              label="Add document"
-              color="accent"
-              :data-cy="'validatetask'"
-              @click="validateTask()"
-              v-close-popup
-            />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
-      <hr class="hr"/>
-      <div class="title container-labels">{{ $t("consent.title") }}</div>
-      <div class="container-labels" v-if="userConsents == null">
-        {{ $t("input_labels.no_consent") }}
-      </div>
-      <div class="container-labels" v-else v-for="consent in userConsents" :key="consent.label">
-        <q-toggle
-          v-model="consent.val"
-          color="secondary"
-          :label="consent.label"
-          disable
         />
       </div>
-      <hr class="hr" />
-      <q-list v-if="features.includes('FEAT_DOCUMENTS')" class="container-labels" style="width: 100%; margin: 0 auto">
-        <Document
-          v-for="document in documents"
-          :Title="setTitle(document)"
-          :Image="document.pictures[0].picture"
-          :theDocument="document"
-          :Link="document.id"
-          :key="document.id"
-        >
-        </Document>
-      </q-list>
     </div>
+    <hr style="border: 1px solid #0F3A5D">
+
+    <div
+      class="q-pa-md col container-labels"
+      id="second-div"
+      style="padding-top:50px"
+    >
+      <UserProfile
+        :um-user-name="the_user.umUserName"
+        :fullname="legalName"
+        :date-of-birth="dateOfBirth"
+        :nationality="nationality"
+        :gender="gender"
+        :user-picture="picture"
+      />
+    </div>
+
+    <q-dialog
+      v-model="upload_doc"
+      persistent
+    >
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">
+            {{ $t("button.add_document") }}
+          </div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-select
+            filled
+            dense
+            clearable
+            emit-value
+            map-options
+            v-model="validatingDocType"
+            :options="t_docs"
+            :label="$t('input_labels.doc_type')"
+          />
+          <q-file
+            v-model="validationFile"
+            accept=".jpg, .pdf, image/*"
+            label="Choose an optional file for validate"
+          />
+        </q-card-section>
+
+        <q-card-actions
+          align="right"
+          class="text-primary"
+        >
+          <q-btn
+            :data-cy="'cancel'"
+            label="Cancel"
+            color="accent"
+            v-close-popup
+          />
+          <q-btn
+            label="Add document"
+            color="accent"
+            :data-cy="'validatetask'"
+            @click="validateTask()"
+            v-close-popup
+          />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <hr class="hr">
+    <div class="title container-labels">
+      {{ $t("consent.title") }}
+    </div>
+    <div
+      class="container-labels"
+      v-if="userConsents == null"
+    >
+      {{ $t("input_labels.no_consent") }}
+    </div>
+    <div
+      class="container-labels"
+      v-else
+      v-for="consent in userConsents"
+      :key="consent.label"
+    >
+      <q-toggle
+        v-model="consent.val"
+        color="secondary"
+        :label="consent.label"
+        disable
+      />
+    </div>
+    <hr class="hr">
+    <q-list
+      v-if="features.includes('FEAT_DOCUMENTS')"
+      class="container-labels"
+      style="width: 100%; margin: 0 auto"
+    >
+      <Document
+        v-for="document in documents"
+        :title="setTitle(document)"
+        :image="document.pictures[0].picture"
+        :the-document="document"
+        :link="document.id"
+        :key="document.id"
+      />
+    </q-list>
+  </div>
   </div>
 </template>
 
@@ -448,4 +474,14 @@ export default {
   z-index: 999;
   background-color: white;       
   }
+.go_back{
+  width:110px;
+  border: 1px solid #0F3A5D;
+box-sizing: border-box;
+border-radius: 5px;
+ background: #FFFFFF;
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
+}
 </style>

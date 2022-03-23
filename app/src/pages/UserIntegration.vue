@@ -1,36 +1,49 @@
 <template>
   <div>
-    <div v-if="loading">{{ $t("input_labels.loading") }}</div>
-    <div v-else id="first-div">
-                  <div id="content" class="q-pa-md row" style="padding-top:60px">
-        <div class="col-11" style="text-align:center">
-        <q-btn
-          size="15px"
-          style="margin-right: 10px; width:200px;border-radius: 5px;"
-          :label="$t('button.add_plan')"
-          no-caps
-          dense
-          unelevated
-          @click="addInterventionPlan"
-          color="info"
-        />
-        </div>
-        <div class="col-1" style="text-align:right">
-        <q-btn
-          size="15px"
-          padding="xs"
-          :icon="'img:statics/icons/Icon - Migrant ManagementWhite.svg'"
-          no-caps
-          style="border-radius: 5px;"
-          unelevated
-          to="/migrant"
-          color="accent"
-        />
+    <div v-if="loading">
+      {{ $t("input_labels.loading") }}
+    </div>
+    <div v-else>
+      <div
+        id="first-div"
+      >
+        <div
+          id="content "
+          class="q-pa-md image"
+          style="padding-top:60px;text-align:center"
+        >
+          <q-btn
+            size="15px"
+            style="margin-right: 10px; width:200px;border-radius: 5px;"
+            :label="$t('button.add_plan')"
+            no-caps
+            dense
+            unelevated
+            @click="addInterventionPlan"
+            color="accent"
+          />
+
+          <q-btn
+            class="go_back"
+            :label="$t('button.go_back')"
+            no-caps
+            dense
+            style="border-radius: 5px;"
+            unelevated
+            to="/migrant"
+          />
         </div>
       </div>
-      <div class="q-pa-md col" id="second-div">
+      <hr style="border: 1px solid #0F3A5D">
+
+      <div
+        class="q-pa-md col"
+        id="second-div"
+      >
         <div class="row container">
-          <h3 class="col-6 header">{{ the_user.umUserName }}</h3>
+          <h3 class="col-6 header">
+            {{ the_user.umUserName }}
+          </h3>
 
           
           <div class="row">
@@ -39,7 +52,10 @@
                 avatar
                 style="padding-right: 0px; margin-right: -30px"
               >
-                <q-icon class="icon" name="panorama_fish_eye" />
+                <q-icon
+                  class="icon"
+                  name="panorama_fish_eye"
+                />
               </q-item-section>
               <q-item-section>{{ $t("input_labels.todo") }}</q-item-section>
             </q-item>
@@ -48,22 +64,32 @@
                 avatar
                 style="padding-right: 0px; margin-right: -30px"
               >
-                <q-icon class="icon" name="circle" />
+                <q-icon
+                  class="icon"
+                  name="circle"
+                />
               </q-item-section>
-              <q-item-section>{{
-                $t("input_labels.validation_requested")
-              }}</q-item-section>
+              <q-item-section>
+                {{
+                  $t("input_labels.validation_requested")
+                }}
+              </q-item-section>
             </q-item>
             <q-item>
               <q-item-section
                 avatar
                 style="padding-right: 0px; margin-right: -30px"
               >
-                <q-icon color="green" name="circle" />
+                <q-icon
+                  color="green"
+                  name="circle"
+                />
               </q-item-section>
-              <q-item-section>{{
-                $t("input_labels.validated")
-              }}</q-item-section>
+              <q-item-section>
+                {{
+                  $t("input_labels.validated")
+                }}
+              </q-item-section>
             </q-item>
           </div>
         </div>
@@ -76,7 +102,10 @@
           v-for="intervention_plan in intervention_plans"
           :key="intervention_plan.id"
         >
-          <q-list bordered class="rounded-borders list">
+          <q-list
+            bordered
+            class="rounded-borders list"
+          >
             <h4 id="header">
               <span id="first-span">
                 {{ intervention_plan.title }}
@@ -98,7 +127,7 @@
                     addIntervention();
                   "
                 />
-                 <q-btn
+                <q-btn
                   size="15px"
                   padding="xs"
                   :icon="'img:statics/icons/Icon - Delete.svg'"
@@ -119,9 +148,9 @@
               :intervention="intervention"
               :the_processes_list="processes_list"
               :model="intervention_shell"
-              :hideForm="hideForm"
+              :hide-form="hideForm"
               :tenants="tenants"
-              :completionDoc="the_pic"
+              :completion-doc="the_pic"
               :intervention_categories="types"
               @fetchPic="findDoc"
               @editIntervention="editIntervention"
@@ -129,12 +158,11 @@
               @saveIntervention="savingIntervention"
               @validated="openValidateDialog"
               @deleteIntervention="deleteIntervention"
-            >
-            </IntegrationPlan>
+            />
           </q-list>
           <AddIntervention
             ref="add"
-            :hideAdd="hideAdd"
+            :hide-add="hideAdd"
             :model="intervention_shell"
             :the_intervention_plan="intervention_plan"
             :the_processes_list="processes_list"
@@ -145,10 +173,12 @@
             @saveIntervention="savingIntervention"
             @cancelIntervention="cancelIntervention"
             :intervention_categories="types"
-            :showAddForm="button_id != intervention_plan.id"
+            :show-add-form="button_id != intervention_plan.id"
+          />
+          <q-dialog
+            v-model="ask_validation"
+            persistent
           >
-          </AddIntervention>
-          <q-dialog v-model="ask_validation" persistent>
             <q-card style="min-width: 350px">
               <q-card-section>
                 <div class="text-h6">
@@ -174,7 +204,10 @@
                 />
               </q-card-section>
 
-              <q-card-actions align="right" class="text-primary">
+              <q-card-actions
+                align="right"
+                class="text-primary"
+              >
                 <q-btn
                   :data-cy="'cancel'"
                   :label="$t('button.cancel')"
@@ -191,7 +224,10 @@
               </q-card-actions>
             </q-card>
           </q-dialog>
-          <q-dialog v-model="ask_validation_no_doc" persistent>
+          <q-dialog
+            v-model="ask_validation_no_doc"
+            persistent
+          >
             <q-card style="min-width: 350px">
               <q-card-section>
                 <div class="text-h6">
@@ -199,7 +235,10 @@
                 </div>
               </q-card-section>
 
-              <q-card-actions align="right" class="text-primary">
+              <q-card-actions
+                align="right"
+                class="text-primary"
+              >
                 <q-btn
                   :data-cy="'cancel'"
                   :label="$t('button.cancel')"
@@ -219,6 +258,7 @@
         </div>
       </div>
     </div>
+  </div>
   </div>
 </template>
 
@@ -832,4 +872,14 @@ export default {
   z-index: 999;
   background-color: white;       
   }
+.go_back{
+  width:110px;
+  border: 1px solid #0F3A5D;
+box-sizing: border-box;
+border-radius: 5px;
+ background: #FFFFFF;
+}
+.image{
+  background-image: url("../statics/BG Pattern.svg");
+}
 </style>

@@ -12,18 +12,18 @@
     >
       {{ $t('input_labels.add_new_process') }}
     </div>
+    <hr style="border: 1px solid #0F3A5D">
 
     <div id="div-1">
-
-        <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class=""
-        >
-              <q-card class="container">
-        <div class="form-help">
-          {{ $t("help.form") }} {{ this.$defaultLangString }}
-        </div>
+      <form
+        @submit.prevent.stop="onSubmit"
+        @reset.prevent.stop="onReset"
+        class=""
+      >
+        <q-card class="container">
+          <div class="form-help">
+            {{ $t("help.form") }} {{ this.$defaultLangString }}
+          </div>
           <div
             class=" q-pa-xsm "
             id="div-2"
@@ -105,26 +105,26 @@
             />
             <div class="row">
               <div class="col-9">
-            <q-select
-              data-cy="add_produced_doc"
-              dense
-              outlined
-              style="padding-right:0px"
-              clearable
-              :readonly="edit_process.published == true"
-              v-model="edit_process.producedDoc"
-              @add="addDoc($event)"
-              @remove="removeDoc($event)"
-              @clear="clearAllDocs()"
-              multiple
-              emit-value
-              map-options
-              :options="this.docOptions"
-              class="select"
-            />
+                <q-select
+                  data-cy="add_produced_doc"
+                  dense
+                  outlined
+                  style="padding-right:0px"
+                  clearable
+                  :readonly="edit_process.published == true"
+                  v-model="edit_process.producedDoc"
+                  @add="addDoc($event)"
+                  @remove="removeDoc($event)"
+                  @clear="clearAllDocs()"
+                  multiple
+                  emit-value
+                  map-options
+                  :options="this.docOptions"
+                  class="select"
+                />
               </div>
               <div class="col-3">
-            <NewDocumentProcess @new_doc="updateDocList"/>
+                <NewDocumentProcess @new_doc="updateDocList" />
               </div>
             </div>
           </div>
@@ -160,7 +160,7 @@
                 @deselect="removeUserTag($event)"
                 @clear="clearAllUsers()"
               >
-               <!-- <div
+                <!-- <div
                   slot="value-label"
                   slot-scope="{ node }"
                   :class="{unpublished: !node.raw.published}"
@@ -199,7 +199,7 @@
             >{{tag}}</q-chip>-->
             </div>
 
-            <div class="col-6 div-9" >
+            <div class="col-6 div-9">
               <treeselect
                 :multiple="true"
                 :options="this.tree_options"
@@ -211,7 +211,7 @@
                 @deselect="removeTopicTag($event)"
                 @clear="clearAllTopics()"
               >
-               <!-- <div
+                <!-- <div
                   slot="value-label"
                   slot-scope="{ node }"
                   :class="{unpublished: !node.raw.published}"
@@ -291,20 +291,19 @@
               :selected_process_comments="selected_process_comments"
             />
           </div>
-          
-                </q-card>
-            <div class="container div-11">
-              <q-btn
-                :data-cy="'back_to_process'.concat(theprocessid)"
-                class="delete-button"
-                no-caps
-                rounded
-                :label="$t('button.cancel')"
-                unelevated
-                style="margin-right:15px"
-                to="/guided_process_editor"
-              />
-             <!-- <q-btn
+        </q-card>
+        <div class="container div-11">
+          <q-btn
+            :data-cy="'back_to_process'.concat(theprocessid)"
+            class="delete-button"
+            no-caps
+            rounded
+            :label="$t('button.cancel')"
+            unelevated
+            style="margin-right:15px"
+            to="/guided_process_editor"
+          />
+          <!-- <q-btn
                 :data-cy="'manageprocess'.concat(theprocessid)"
                 color="secondary"
                 no-caps
@@ -316,20 +315,19 @@
                 @click="manageProcess()"
               />-->
 
-              <q-btn
-                :data-cy="'saveprocess'.concat(theprocessid)"
-                color="accent"
-                no-caps
-                rounded
-                :disable="edit_process.published"
-                :label="$t('button.save')"
-                unelevated
-                class="button"
-                type="submit"
-              />
-            </div>
-
-        </form>
+          <q-btn
+            :data-cy="'saveprocess'.concat(theprocessid)"
+            color="accent"
+            no-caps
+            rounded
+            :disable="edit_process.published"
+            :label="$t('button.save')"
+            unelevated
+            class="button"
+            type="submit"
+          />
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -880,10 +878,10 @@ export default {
   text-align: center;
   padding-top: 15px;
   font-weight: bold;
-  font-size: 30px;
+  font-size: 40px;
   line-height: 41px;
-  color: white;
-  background-color: #ff7c44;
+  color:#0F3A5D; 
+  background-image: url("../statics/BG Pattern.svg");
 }
 .container {
   display: inline-block;

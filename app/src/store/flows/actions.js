@@ -307,6 +307,14 @@ export function editProcess (state, payload) {
   })
 }
 
+export function exportProcess(state, id){
+  return client
+    .exportProcess(id)
+    .then(flows => {
+      return flows
+    })
+}
+
 
 
 /*export function editProcess (state, payload) {
