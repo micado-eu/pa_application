@@ -54,65 +54,11 @@ const hamburgAPI = [
 ]
 
 export default {
-  fetchStatistics() {
-    return Promise.all([
-      fetchLocalCharts(),
-      fetchXMLfull(hamburgAPI[0],'BAR'),
-      fetchXMLfull(hamburgAPI[1],'BAR'),
-      fetchXMLfull(hamburgAPI[2],'LINE'),
-      fetchXMLfull2(hamburgAPI[3],'LINE'),
-      fetchJSON(unhcrAPI.Spain.sea.link),
-      fetchJSON(unhcrAPI.Spain.land.link),
-      fetchJSON(unhcrAPI.Greece.sea.link),
-      fetchJSON(unhcrAPI.Greece.land.link),
-      fetchJSON(unhcrAPI.Italy.sea.link),
-      fetchJSON(unhcrAPI.Spain.nationalities.link),
-      fetchJSON(unhcrAPI.Greece.nationalities.link),
-      fetchJSON(unhcrAPI.Italy.nationalities.link)
-    ]).then(([localCharts, hamburg0, hamburg1, hamburg2, hamburg3, Spain_sea, Spain_land, Greece_sea, Greece_land, Italy_sea, Spain_nat, Greece_nat, Italy_nat]) => {
-      if (hamburg0 !==null) {
-        localCharts.push(...(parseHamburgFull(hamburg0)))
-      }
-      if (hamburg1 !==null) {
-        localCharts.push(...(parseHamburgFull(hamburg1)))
-      }
-      if (hamburg2 !==null) {
-        localCharts.push(...(parseHamburgFull(hamburg2)))
-      }
-      if (hamburg3 !==null) {
-        localCharts.push(...(parseHamburgFull(hamburg3)))
-      }
-      // localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
-      if (Spain_sea !== null) {
-        localCharts.push(parseUnhcrBar(Spain_sea,"Arrival by sea"))
-      }
-      if (Spain_land !== null) {
-        localCharts.push(parseUnhcrBar(Spain_land,"Arrival by land"))
-      }
-      if (Greece_sea !== null) {
-        localCharts.push(parseUnhcrBar(Greece_sea,"Arrival by sea"))
-      }
-      if (Greece_land !== null) {
-        localCharts.push(parseUnhcrBar(Greece_land,"Arrival by land"))
-      }
-      if (Italy_sea !== null) {
-        localCharts.push(parseUnhcrBar(Italy_sea,"Arrival by sea"))
-      }
-      if (Spain_nat !== null) {
-        localCharts.push(parseUnhcrPie(Spain_nat,"Most common nationalities"))
-      }
-      if (Greece_nat !== null) {
-        localCharts.push(parseUnhcrPie(Greece_nat,"Most common nationalities"))
-      }
-      if (Italy_nat !== null) {
-        localCharts.push(parseUnhcrPie(Italy_nat,"Most common nationalities"))
-      }
-
-      return {
-        charts: localCharts
-      }
-    })
-      .catch(error_handler)
+  fetchStatistics(){
+    return fetchLocalCharts()
+    .then((localCharts)=>{
+      return {charts: localCharts}
+      })
   },
   addChart(chart) {
     switch (chart.format) {
@@ -145,10 +91,417 @@ export default {
 }
 
 function fetchLocalCharts() {
+  var charts = []
+  var apicharts = []
+  
+
   return axiosInstance
     .get('/backend/1.0.0/charts')
-    .then((response) => response.data)
+    .then((response) => {
+      var fetched = response.data
+      return fetched.forEach(chartdata => {
+         switch (chartdata.format) {
+          case "csv":
+            charts.push(
+              chartdata
+          )
+
+          case "api":
+            if (chartdata.function !== null) {
+              apicharts.push(chartdata)
+            }
+          default:
+            console.log(chartdata)
+        }
+      })
+    })
+    .then(function() {
+      var promises = []
+      apicharts.forEach((chartdata)=>{
+        console.warn(chartdata)
+        switch (chartdata.function) {
+          case "wfsHamburg":
+            promises.push(wfsHamburg(chartdata))
+        }
+      })
+      return Promise.all(promises).then((chartgroups)=>{
+        chartgroups.forEach((chartgroup)=>{
+          chartgroup.forEach((chart)=>{
+            charts.push(
+              {
+              "id": chart.id,
+              "title": chart.title,
+              "content": chart.content,
+              "description": chart.description,
+              "category": chart.category,
+              "format": "api",
+              "type": chart.type,
+              "xistime": true,
+              "x": chart.x,
+              "y": chart.y,
+              "board": chart.board,
+              "provider": chart.provider,
+              "updated": chart.updated
+          })
+          })
+        })
+      })
+    })
+    .then(function() {
+      return charts})
     .catch(error_handler)
+}
+
+function apiUNHCR(options){
+  
+}
+
+function wfsHamburg(options) {
+  //var options= {}
+  var metadata = []
+  var charts = {}
+  var servicetitle
+  var servicedescr
+  options.typenames=[]
+  var output = []
+
+  return  GetCapabilities(options.link)
+     .then(()=>DescrFeaturetpyes(options.link))
+     .then(()=>GetFeature(options.link))
+     .then(()=>GetMetadata(metadata))
+     .then(()=>PrepareData(charts))
+     .then( function() {
+        return output
+      })
+    .catch(error_handler)
+
+
+
+
+  function GetCapabilities(baseurl) {
+    return (fetch(baseurl+'?REQUEST=GetCapabilities&SERVICE=WFS')
+    .then((response => {
+    if (response.status === 200) {
+        return response
+    } 
+    else 
+    {
+      output = null  
+      return null
+    }
+    }))
+    .then(response => response)
+    .then(data => data.text())
+    .then(data => {
+    xml2js.parseStringPromise(data, {trim: true, explicitArray: false, mergeAttrs: true, explicitRoot: false})
+    .then(data => {
+        let featuretypelist = data.FeatureTypeList.FeatureType
+        servicetitle = data["ows:ServiceIdentification"]["ows:Title"]
+        servicedescr = data["ows:ServiceIdentification"]["ows:Abstract"]
+        if (featuretypelist.length !== undefined){
+          featuretypelist.forEach(feature => {
+            options.typenames.push(feature.Title)
+            metadata.push(feature.MetadataURL)
+          })
+
+        }
+        else {
+          options.typenames.push(featuretypelist.Title)
+          metadata.push(featuretypelist.MetadataURL)
+        }
+    })
+        .catch(error_handler)
+
+    }
+    )
+    )
+  }
+
+  function DescrFeaturetpyes (url){
+    var descrfurl = url+'?REQUEST=DescribeFeatureType&SERVICE=WFS&VERSION=2.0.0&typename='+options.typenames.join(',')
+    return (fetch(descrfurl)
+    .then((response => {
+    if (response.status === 200) {
+        return response
+    } 
+    else 
+    {
+        return null
+    }
+    }))
+    .then(response => response)
+    .then(data => data.text())
+    .then(data => {
+    // xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: false, explicitRoot: true, explicitArray: false})
+    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: false, explicitRoot: true, explicitArray: false})
+    .then(data => {
+
+        data=data["schema"]
+
+        //Type 1
+        if (data["complexType"] !== undefined ){            
+          let typenames_short = []
+          let containerindexes = []
+          let metadataindexes = []
+          let chartindexes = []
+          data["complexType"].forEach(types => {
+            if (types.complexContent !== undefined){
+              
+              types.complexContent.extension.sequence.element.forEach(el => {
+                if (el.type == "de.hh.up:complex"){
+                  typenames_short.push(types.name)
+                    chartindexes.push(el.name)
+                }
+              })
+            }
+            else if (types.name === "complex") {
+              containerindexes.push(types.sequence.element[1].ref)
+              metadataindexes.push(types.sequence.element[0].ref)
+            }
+          })
+          
+          //add Data to output
+          chartindexes.forEach( index => {
+            charts[index]={
+              typename_short: typenames_short[chartindexes.indexOf(index)],
+              containerindex: containerindexes[0],
+              metadataindex: metadataindexes[0],
+              category: servicetitle,
+              descr: servicedescr,
+              schema: 1
+            }
+          })
+          //read out data for keyindex and valueindex
+          let keyindexes = []
+          let valueindexes = []
+          let typenames = []
+          let prefixes = []
+          let valuelabelindexes = []
+          typenames_short = []
+          data["element"].forEach(elements => {
+              if (elements.name === "values") {
+                keyindexes.push(elements.complexType.sequence.element[0].name)
+                valueindexes.push(elements.complexType.sequence.element[1].name)
+              } else if (elements.name === "metadata") {
+                valuelabelindexes.push(elements.complexType.sequence.element[2].name)
+              }
+              else if (options.typenames.includes(elements.type)) {
+                typenames.push(elements.type)
+                typenames_short.push(elements.name)
+                prefixes.push(elements.type.split(":")[0])
+              }
+
+          })
+
+          Object.keys(charts).forEach(key => {
+            charts[key]["typename"]=typenames[typenames_short.indexOf(charts[key]["typename_short"])]
+            charts[key]["keyindex"]=keyindexes[typenames_short.indexOf(charts[key]["typename_short"])]
+            charts[key]["valueindex"]=valueindexes[typenames_short.indexOf(charts[key]["typename_short"])]
+            charts[key]["prefix"]=prefixes[typenames_short.indexOf(charts[key]["typename_short"])]
+            charts[key]["valuelabelindex"]=valuelabelindexes[typenames_short.indexOf(charts[key]["typename_short"])]
+          })
+        } 
+        //Type 2
+        else {
+            let typenames_short = []
+            let chartindexes = []
+            let dataindexes = []
+            let containerindexes = []
+            let keyindexes = []
+            let valueindexes= []
+            let prefixes = []
+
+          data["element"].forEach(element => {
+
+            if (element.substitutionGroup == "gml:AbstractFeature" & element.abstract != "true"){
+              typenames_short.push(element.name)
+              element.complexType.complexContent.extension.sequence.element.forEach(chartdata => {
+                chartindexes.push(chartdata.name)
+                dataindexes.push(chartdata.complexType.sequence.element.ref)
+              })
+
+            }
+          })
+
+          dataindexes.forEach(element => {
+            element = element.split(":")[1]
+            data["element"].filter(obj => {return obj.name === element}).forEach(entry => {
+              let containerindex = entry.complexType.sequence.element.ref
+              prefixes.push(containerindex.split(":")[0])
+              containerindexes.push(containerindex)
+              data["element"].filter(obj => {return obj.name === containerindex.split(":")[1]}).forEach(contindex => {
+                keyindexes.push(contindex.complexType.sequence.element[0]["name"])
+                valueindexes.push(contindex.complexType.sequence.element[1]["name"])
+              })
+            })
+
+          })
+          chartindexes.forEach( index => {
+            charts[index] = {
+              typename_short: typenames_short[chartindexes.indexOf(index)],
+              dataindex: dataindexes[chartindexes.indexOf(index)],
+              containerindex: containerindexes[chartindexes.indexOf(index)],
+              keyindex: keyindexes[chartindexes.indexOf(index)],
+              valueindex: valueindexes[chartindexes.indexOf(index)],
+              keylabel: keyindexes[chartindexes.indexOf(index)],
+              valuelabel: valueindexes[chartindexes.indexOf(index)],
+              title: index,
+              category: servicetitle,
+              descr: servicedescr,
+              prefix: prefixes[chartindexes.indexOf(index)],
+              schema: 2
+            }
+          })
+        }
+    })
+    }
+    )
+    )    
+  }  
+
+  function GetFeature (url){
+    function trimKey(input){
+      return input.split(":")[1]
+    }
+
+    return (fetch(url+'?REQUEST=GetFeature&SERVICE=WFS&VERSION=2.0.0&typename='+options.typenames.join(','))
+    .then((response => {
+    if (response.status === 200) {
+        return response
+    } 
+    else 
+    {
+        return null
+    }
+    }))
+    .then(response => response)
+    .then(data => data.text())
+    .then(data => {
+    xml2js.parseStringPromise(data, {mergeAttrs: false, ignoreAttrs: true, explicitRoot: false, explicitArray: true})
+    .then(data => {
+        data = data["wfs:member"]
+        data.forEach(typename => {
+          Object.keys(typename).forEach(element => {
+            typename[element].forEach(el => {
+              Object.keys(el).forEach(chartindex => {
+
+
+                  if (Object.keys(charts).includes(trimKey(chartindex))) {
+                  let chartdata = charts[trimKey(chartindex)]
+
+                  if (Object.keys(el).includes(chartdata.prefix+":information")) {
+                      chartdata.title = el[chartdata.prefix+":information"][0]
+                  }
+                  let content = []
+                  let databatch
+
+                  if (chartdata.schema === 1) {
+                    databatch = el[chartindex][0][charts[trimKey(chartindex)]["containerindex"]]
+                    let metadata = el[chartindex][0][charts[trimKey(chartindex)]["metadataindex"]]
+                    chartdata["valuelabel"]="Value"
+                    chartdata["keylabel"]="Key"
+                    chartdata["valuelabel"]=metadata[0][chartdata["prefix"]+":"+chartdata["valuelabelindex"]][0]
+
+                  } else if (chartdata.schema === 2) {
+                    databatch = el[chartindex][0][charts[trimKey(chartindex)]["dataindex"]][0][charts[trimKey(chartindex)]["containerindex"]]
+                  }
+
+                  databatch.forEach(dataset => {
+                    if (Object.keys(dataset).length == 2) {
+                      content.push({
+                      [chartdata["keylabel"]]: dataset[chartdata["prefix"]+":"+chartdata["keyindex"]][0],
+                      [chartdata["valuelabel"]]: dataset[chartdata["prefix"]+":"+chartdata["valueindex"]][0]
+                    })
+
+                    }
+
+                  })
+
+                  chartdata["data"]=content
+
+                }
+              })
+            })
+          })
+        })
+
+        Object.keys(charts).forEach(key => {
+          if (typeof charts[key]["data"] === "undefined") {
+            delete charts[key]
+          }
+        })
+    })
+    }
+    )
+    )
+  }
+
+  function GetMetadata(metad){
+    var output={}
+    metad=metad[0]["xlink:href"]
+    metad=new URL(metad)
+
+    if (metad.protocol !== "https:") {
+      metad.protocol = "https:"
+    }
+
+    // console.dir(metad.toString())
+    return (fetch(metad)
+    .then((response => {
+    if (response.status === 200) {
+        return response
+    } 
+    else 
+    {
+        return null
+    }
+    }))
+    .then(response => response)
+    .then(data => data.text())
+    .then(data => {
+
+    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: true, explicitRoot: false, explicitArray: false})
+    .then(data => {
+        data=data["gmd:MD_Metadata"]
+        output.updated=data["gmd:dateStamp"]["gco:Date"]
+        output.provider=data["gmd:contact"]["gmd:CI_ResponsibleParty"]["gmd:organisationName"]["gco:CharacterString"]
+        output.title=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:citation"]["gmd:CI_Citation"]["gmd:title"]["gco:CharacterString"]
+        output.descr=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]
+        Object.keys(charts).forEach(chart => {
+          charts[chart]["updated"]=data["gmd:dateStamp"]["gco:Date"]
+          charts[chart].provider=data["gmd:contact"]["gmd:CI_ResponsibleParty"]["gmd:organisationName"]["gco:CharacterString"]
+          charts[chart].category=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:citation"]["gmd:CI_Citation"]["gmd:title"]["gco:CharacterString"]
+          charts[chart].descr=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]
+          charts[chart].board=options.board
+        })
+    })
+    }
+    )
+    )    
+  } 
+  
+  function PrepareData(input) {
+    let counter = 0
+    Object.keys(input).forEach(key=> {
+      let chartdata = input[key]
+      output.push({
+        id: "a"+options.id+counter,
+        board: options.board,
+        type: options.type,
+        category: chartdata.category,
+        content: JSON.stringify(chartdata.data),
+        description: chartdata.descr,
+        format: "API",
+        x: chartdata.keylabel,
+        y: chartdata.valuelabel,
+        updated: chartdata.updated,
+        provider: chartdata.provider,
+        title: chartdata.title        
+      })
+      counter=counter+1
+    })
+  }
+
 }
 
 function parseUnhcrBar(data,title) {
@@ -291,6 +644,7 @@ function fetchJSON(url) {
   }))
   .catch(e => {return null})
 }
+
 
 function fetchXMLfull(url,type){
   const controller = new AbortController()
