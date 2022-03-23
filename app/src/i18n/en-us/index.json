@@ -98,8 +98,10 @@
     "duration_of_new":"",
     "lang_editor":"",
     "default_language":"",
-    "manage_languages":""
-
+    "manage_languages":"",
+    "delimiter":"Select the delimiter character in your CSV file. Insert custom character if not listed.",
+    "index_column":"Select the index column of your chart (x-axis)",
+    "value_column":"Select the value column of your chart (y-axis)"
   },
   "menu": {
     "title": "My Tools",
@@ -349,7 +351,8 @@
     "lang_editor":"Language editor",
     "delete_confirm":"Are you sure you want to delete",
     "migrant_manager":"Migrant Account management",
-    "optional_file_validation":"Choose an optional file for validation"
+    "optional_file_validation":"Choose an optional file for validation",
+    "delimiter":"Delimiter"
   },
   "profile": {
     "username": "Username",
@@ -572,6 +575,9 @@
     "chart_data_provider_description": "Insert data provider here",
     "timescale_title": "Timescale data",
     "timescale_checkbox": "data related to a time sequence",
-    "timescale_help":"Tick this box if you use a time-scale on your category axis (e.g. years, months), leave it empty if you use a nominal or other scale (e.g. countries, cities)"
+    "timescale_help":"Tick this box if you use a time-scale on your category axis (e.g. years, months), leave it empty if you use a nominal or other scale (e.g. countries, cities)",
+    "headerrow":"first row in dataset contains header values",
+    "index_label_description":"select label of index axis",
+    "value_label_description":"select label of value axis"
   }
 }
