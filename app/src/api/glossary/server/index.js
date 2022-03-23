@@ -93,5 +93,34 @@ export default {
     .patch('/backend/1.0.0/glossaries?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
     .catch(error_handler)
+  },
+  import(file) {
+    let formData = new FormData()
+    formData.append('file', file)
+    let postHeaders = axiosInstance.defaults.headers
+    postHeaders['Content-Type'] = 'multipart/form-data'
+    return axiosInstance.post('/backend/1.0.0/glossaries/import',
+      formData,
+      {
+        headers: postHeaders
+      }
+    )
+    .then((response) => response.data)
+    .catch(error_handler)
+  },
+  export(id) {
+    return axiosInstance.get('/backend/1.0.0/glossaries/export?id=' + id)
+    .then((response) => {
+      const blob = new Blob([response.data], { type: "text/csv;charset=utf-8" })
+      const blobUrl = URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.setAttribute("href", blobUrl)
+      link.setAttribute("download", `glossary-${id}.csv`)
+      document.body.appendChild(link) // Required for FF
+
+      link.click()
+      URL.revokeObjectURL(blobUrl) // Required for FF
+    })
+    .catch(error_handler)
   }
 }

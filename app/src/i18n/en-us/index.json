@@ -245,6 +245,7 @@
   },
   "input_labels": {
     "export":"Export",
+    "want_to_export":"Do you want to export",
     "edit_or_delete":"Do you want to edit or delete",
     "add_doc_type":"Add a new document type",
     "new_doc_typ_add":"Adding new document to available document types",

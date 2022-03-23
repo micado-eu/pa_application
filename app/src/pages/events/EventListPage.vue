@@ -10,7 +10,9 @@
       icon_name="document"
       add_label="button.add_event"
       import_label="button.import_events"
-      import_url="events/import"
+      :import_fn="importEvent"
+      :export_fn="exportData"
+      header_img="img:statics/events_header.svg"
       title="events.list_title"
       categories_enabled
       categories_url="/events/categories"
@@ -54,7 +56,9 @@ export default {
       'saveEventTranslationProd',
       'updatePublished',
       'editEventItemTranslation',
-      'deleteProdTranslations'
+      'deleteProdTranslations',
+      'importData',
+      'exportData'
     ]),
     ...mapActions('event_category', ['fetchEventCategory']),
     getEditRoute (id) {
@@ -69,6 +73,16 @@ export default {
           this.$q.notify({
             type: 'negative',
             message: `Error while deleting event: ${err}`
+          })
+        })
+    },
+    importEvent(file) {
+      this.importData(file).then(() => 
+          this.updateContent()
+      ).catch((err) => {
+          this.$q.notify({
+            type: 'negative',
+            message: `Error while importing event: ${err}`
           })
         })
     },

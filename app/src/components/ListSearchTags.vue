@@ -1,7 +1,7 @@
 <template>
   <div>
     <div
-      class=" q-pa-md image "
+      class="image "
       style="text-align:center"
     >
       <div
@@ -10,8 +10,8 @@
       >
         {{ $t(title) }}
         <q-icon
-          name="img:statics/Ebene_2.svg"
-          class="top-icon"
+          :name="header_img"
+          class="q-ml-xl top-icon"
         />
       </div>
     </div>
@@ -85,23 +85,23 @@
             ></q-btn>
           </div>
           <q-card-section>
-              <div class="dialog-center dialog-title">{{ $t('input_labels.delete_confirm')}}:</div>
-              <div class="dialog-center dialog-select-title q-mb-xl">{{ dialogSelected }}</div>
-              <div class="dialog-center q-mb-xl">
-                <q-btn
-                  class="btn-full cancel-btn-full q-mr-xl"
-                  no-caps
-                  unelevated
-                  @click="showDelete = false; showEdit = false"
-                ><span class="q-mx-lg">{{ $t('button.cancel') }}</span></q-btn>
-                <q-btn
-                  class="delete-btn"
-                  no-caps
-                  unelevated
-                  @click="delete_fn(dialogSelectedItem)"
-                ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn>
-              </div>
-            </q-card-section>
+            <div class="dialog-center dialog-title">{{ $t('input_labels.delete_confirm')}}:</div>
+            <div class="dialog-center dialog-select-title q-mb-xl">{{ dialogSelected }}</div>
+            <div class="dialog-center q-mb-xl">
+              <q-btn
+                class="btn-full cancel-btn-full q-mr-xl"
+                no-caps
+                unelevated
+                @click="showDelete = false; showEdit = false"
+              ><span class="q-mx-lg">{{ $t('button.cancel') }}</span></q-btn>
+              <q-btn
+                class="delete-btn"
+                no-caps
+                unelevated
+                @click="delete_fn(dialogSelectedItem)"
+              ><span class="q-mx-lg">{{ $t('input_labels.delete') }}</span></q-btn>
+            </div>
+          </q-card-section>
         </div>
       </q-dialog>
       <!-- Export dialog -->
@@ -122,6 +122,24 @@
               v-close-popup
             ></q-btn>
           </div>
+          <q-card-section>
+            <div class="dialog-center dialog-title">{{ $t('input_labels.want_to_export')}}:</div>
+            <div class="dialog-center dialog-select-title q-mb-xl">{{ dialogSelected }}</div>
+            <div class="dialog-center q-mb-xl">
+              <q-btn
+                class="btn-full cancel-btn-full q-mr-xl"
+                no-caps
+                unelevated
+                @click="showExport = false"
+              ><span class="q-mx-lg">{{ $t('button.cancel') }}</span></q-btn>
+              <q-btn
+                class="export-btn"
+                no-caps
+                unelevated
+                @click="exportData(dialogSelectedItem.id)"
+              ><span class="q-mx-lg">{{ $t('input_labels.export') }}</span></q-btn>
+            </div>
+          </q-card-section>
         </div>
       </q-dialog>
       <div class="col q-ml-md filter-list">
@@ -326,12 +344,20 @@
             data-cy="add_element"
             :to="new_url"
           />
+          <input
+            id="import-input"
+            type="file"
+            name="name"
+            style="display: none;"
+            accept=".csv"
+            @change="importFile($event)"
+          />
           <q-btn
             no-caps
             unelevated
             :label='$t(import_label)'
             class="add-btn q-ml-md col"
-            :to="import_url"
+            @click="callImportFile()"
           />
           <q-btn
             no-caps
@@ -526,7 +552,7 @@
                   unelevated
                   class="item-btn"
                   icon='img:statics/icons/Icon - Export.svg'
-                  @click="showExport = true"
+                  @click="dialogSelected = item.title; dialogSelectedItem = item; showExport = true"
                   :data-cy="'delete_button' + item.id"
                 />
               </q-item-section>
@@ -535,7 +561,7 @@
                   unelevated
                   class="item-btn"
                   icon="img:statics/icons/Icon - edit - orange (600x600).png"
-                  @click="showEdit = true; dialogSelected = item.title; dialogSelectedItem = item"
+                  @click=" dialogSelected = item.title; dialogSelectedItem = item; showEdit = true"
                   :data-cy="'edit_button' + item.id"
                 />
               </q-item-section>
@@ -596,6 +622,9 @@ export default {
       type: String,
       default: ''
     },
+    header_img: {
+      type: Function
+    },
     icon_name: {
       type: String,
       default: ''
@@ -608,9 +637,11 @@ export default {
       type: String,
       default: 'Import'
     },
-    import_url: {
-      type: String,
-      default: '/'
+    import_fn: {
+      type: Function
+    },
+    export_fn: {
+      type: Function
     },
     categories_enabled: {
       type: Boolean,
@@ -677,7 +708,7 @@ export default {
       showDelete: false,
       showExport: false,
       dialogSelected: "",
-      dialogSelectedItem: {id: -1}
+      dialogSelectedItem: { id: -1 }
     }
   },
   components: {
@@ -691,6 +722,16 @@ export default {
     ...mapActions('flows', ['fetchFlowsTemp']),
     ...mapActions('event', ['fetchEventTemp']),
     ...mapActions('user', ['fetchSpecificUser']),
+    callImportFile() {
+      document.getElementById('import-input').click()
+    },
+    importFile(event) {
+      this.import_fn(event.target.files[0])
+    },
+    exportData(id) {
+      this.showExport = false
+      this.export_fn(id)
+    },
     getCurrentUser() {
       if (this.loggedUser) {
         return this.loggedUser?.umid
@@ -1195,8 +1236,8 @@ $btn_secondary: #cdd0d2;
   height: 30px;
 }
 .top-icon {
+  height: 200px;
   width: 360px;
-  height: 100%;
 }
 .top-div {
   font-style: normal;
@@ -1249,5 +1290,11 @@ $btn_secondary: #cdd0d2;
   font-weight: bold;
   font-size: 16px;
   background-color: #9e1f63;
+}
+.export-btn {
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #0f3a5d;
 }
 </style>

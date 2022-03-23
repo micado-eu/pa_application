@@ -60,3 +60,11 @@ export function saveGlossaryTranslationProd(state, id) {
   return client
     .saveGlossaryTranslationProd(id)
 }
+
+export function importData(state, file) {
+  return client.import(file)
+}
+
+export function exportData(state, id) {
+  return client.export(id)
+}
