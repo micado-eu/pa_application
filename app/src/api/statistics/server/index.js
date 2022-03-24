@@ -45,13 +45,6 @@ const unhcrAPI = {
     }
   }
 }
-const hamburgAPI = [
-  // 'https://qs-geodienste.hamburg.de/HH_WFS_empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&REQUEST=GetFeature&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg',
-  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_ausserhalb_HH?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege&REQUEST=',
-  'https://geodienste.hamburg.de/HH_WFS_Zuzuege_Auszuege_oerU?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuzuege_Auszuege_oerU&REQUEST=',
-  'https://geodienste.hamburg.de/HH_WFS_Zuwanderung?SERVICE=WFS&VERSION=2.0.0&typename=mic:Zuwanderung&REQUEST=',
-  'https://qs-geodienste.hamburg.de/HH_WFS_Empfaengerzahlen?SERVICE=WFS&VERSION=1.1.0&typename=de.hh.up:anzahl_personen_mit_leistungen_asylblg_gesamt,de.hh.up:anzahl_personen_mit_leistungen_paragr2_asylblg,de.hh.up:anzahl_personen_mit_leistungen_paragr3_asylblg&REQUEST='
-]
 
 export default {
   fetchStatistics(){
@@ -105,46 +98,61 @@ function fetchLocalCharts() {
             charts.push(
               chartdata
           )
+          break
 
           case "api":
             if (chartdata.function !== null) {
               apicharts.push(chartdata)
             }
+          break
           default:
-            console.log(chartdata)
+           break
         }
       })
     })
     .then(function() {
       var promises = []
       apicharts.forEach((chartdata)=>{
-        console.warn(chartdata)
-        switch (chartdata.function) {
+        switch(chartdata.function) {
           case "wfsHamburg":
             promises.push(wfsHamburg(chartdata))
+            break
+          case "apiUNHCR":
+            promises.push(apiUNHCR(chartdata))
+            break
+          case "UNHCRukr":
+            promises.push(UNHCRukr(chartdata))
+            break
+          default:
+            break
         }
       })
       return Promise.all(promises).then((chartgroups)=>{
-        chartgroups.forEach((chartgroup)=>{
-          chartgroup.forEach((chart)=>{
-            charts.push(
-              {
-              "id": chart.id,
-              "title": chart.title,
-              "content": chart.content,
-              "description": chart.description,
-              "category": chart.category,
-              "format": "api",
-              "type": chart.type,
-              "xistime": true,
-              "x": chart.x,
-              "y": chart.y,
-              "board": chart.board,
-              "provider": chart.provider,
-              "updated": chart.updated
+        if (chartgroups !== null) {
+          chartgroups.forEach((chartgroup)=>{
+            if (chartgroup !== null) {
+            chartgroup.forEach((chart)=>{
+              charts.push(
+                {
+                "id": chart.id,
+                "title": chart.title,
+                "content": chart.content,
+                "description": chart.description,
+                "category": chart.category,
+                "format": "api",
+                "type": chart.type,
+                "xistime": true,
+                "x": chart.x,
+                "y": chart.y,
+                "board": chart.board,
+                "provider": chart.provider,
+                "updated": chart.updated,
+                "xistime":chart.xistime
+            })
+            })
+            }
           })
-          })
-        })
+        }
       })
     })
     .then(function() {
@@ -153,11 +161,191 @@ function fetchLocalCharts() {
 }
 
 function apiUNHCR(options){
-  
+  var output = []
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
+
+  return fetch(options.link, { signal: controller.signal })
+  .then((response => {
+    if (response.ok) {
+      return response.json()
+    } else if(response.status === 404) {
+      return Promise.reject('error 404')
+    } else {
+      return Promise.reject('some other error: ' + response.status)
+    }
+  }))
+  .then(response => {
+    switch(options.type){
+      case "BAR":
+        for (let i = 0; i < response.data.timeseries.length; i++) {
+          const d = response.data.timeseries[i]
+          d.date = `${d.year}.${d.month}`
+        }
+        output.push({
+          board: options.board,
+          id: options.id,
+          category: response.data.geoMasterId.name,
+          content: JSON.stringify(response.data.timeseries),
+          description: response.situation_view_description,
+          format: 'API',
+          title: response.situation_view_name,
+          type: 'BAR',
+          x: 'date',
+          y: 'individuals',
+          xistime: true,
+          provider: 'UNHCR'
+        })
+        break
+      case "LINE":
+        for (let i = 0; i < response.data.timeseries.length; i++) {
+          const d = response.data.timeseries[i]
+          d.date = `${d.year}.${d.month}`
+        }
+        output.push({
+          board: options.board,
+          id: options.id,
+          category: response.data.geoMasterId.name,
+          content: JSON.stringify(response.data.timeseries),
+          description: response.situation_view_description,
+          format: 'API',
+          title: response.situation_view_name,
+          type: 'LINE',
+          x: 'date',
+          y: 'individuals',
+          xistime: true,
+          provider: 'UNHCR'
+        })
+          break  
+      case "PIE":
+        output.push(
+          {
+            board: options.board,
+            category: response.data[0].geomaster_name,
+            content: JSON.stringify(response.data),
+            description: response.situation_view_description,
+            format: 'API',
+            title: response.situation_view_name,
+            type: 'PIE',
+            provider: 'UNHCR',
+            x: 'pop_origin_name',
+            y: 'individuals',
+            xistime: false
+          }
+        )
+        break
+    }
+  })
+  .then(function(){return output})
+  .catch(function() {
+    return null}
+    )
 }
 
+function UNHCRukr(options){
+  var output = []
+  const controller = new AbortController()
+  setTimeout(() => 
+  controller.abort(), timeout)
+
+  return fetch(options.link, { signal: controller.signal })
+  .then((response => {
+    if (response.status === 200) {
+      return response.json()
+    } 
+    else 
+    {
+      return null
+    }
+  }))
+  .then(response => {
+    switch(options.type){
+      case "BAR":
+        switch(options.xistime){
+          case false:
+            output.push(
+              {
+                board: options.board,
+                category: options.category,
+                content: JSON.stringify(response.data).replaceAll("geomaster_name","country"),
+                description: response.situation_view_description,
+                format: 'API',
+                title: options.title,
+                type: 'BAR',
+                provider: 'UNHCR',
+                x: 'country',
+                y: 'individuals',
+                xistime: options.xistime
+              }
+            )
+            break
+          case true:
+            for (let i = 0; i < response.data.timeseries.length; i++) {
+              const d = response.data.timeseries[i]
+              d.date = `${d.year}.${d.month}`
+            }
+            output.push(
+              {
+                board: options.board,
+                category: options.category,
+                content: JSON.stringify(response.data.timeseries),
+                description: response.situation_view_description,
+                format: 'API',
+                title: options.title,
+                type: 'BAR',
+                provider: 'UNHCR',
+                x: 'date',
+                y: 'individuals',
+                xistime: options.xistime
+              }
+            )
+            break
+        }
+
+        break
+      case "LINE":
+        output.push({
+          board: options.board,
+          id: options.id,
+          category: options.category,
+          content: JSON.stringify(response.data.timeseries).replaceAll("data_date","Date"),
+          description: response.situation_view_description,
+          format: 'API',
+          title: options.title,
+          type: 'LINE',
+          x: 'Date',
+          y: 'individuals',
+          xistime: true,
+          provider: 'UNHCR'
+        })
+          break  
+      case "PIE":
+        output.push(
+          {
+            board: options.board,
+            category: options.category,
+            content: JSON.stringify(response.data),
+            description: response.situation_view_description,
+            format: 'API',
+            title: options.title,
+            type: 'PIE',
+            provider: 'UNHCR',
+            x: 'geomaster_name',
+            y: 'individuals',
+            xistime: options.xistime
+          }
+        )
+        break
+    }
+  })
+  .then(function(){
+    return output})
+  .catch(e => {return null})
+}
+
+
 function wfsHamburg(options) {
-  //var options= {}
   var metadata = []
   var charts = {}
   var servicetitle
@@ -173,7 +361,10 @@ function wfsHamburg(options) {
      .then( function() {
         return output
       })
-    .catch(error_handler)
+    .catch(function() {
+      return null}
+      )
+  
 
 
 
@@ -445,7 +636,6 @@ function wfsHamburg(options) {
       metad.protocol = "https:"
     }
 
-    // console.dir(metad.toString())
     return (fetch(metad)
     .then((response => {
     if (response.status === 200) {
@@ -496,7 +686,8 @@ function wfsHamburg(options) {
         y: chartdata.valuelabel,
         updated: chartdata.updated,
         provider: chartdata.provider,
-        title: chartdata.title        
+        title: chartdata.title,
+        xistime: true        
       })
       counter=counter+1
     })
