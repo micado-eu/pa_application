@@ -419,6 +419,7 @@ function wfsHamburg(options) {
               metadataindex: metadataindexes[0],
               category: servicetitle,
               descr: servicedescr,
+              title: index,
               schema: 1
             }
           })

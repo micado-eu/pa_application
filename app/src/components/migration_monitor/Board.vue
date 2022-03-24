@@ -1,8 +1,10 @@
 <template>
   <div class="board">
-    <div class="q-pa-md row justify-between headrow">
-      <div class="boardtitle">{{ board }}</div>
-      <div class="row justify-between">
+    <div
+      class="banner row justify-between"
+    >
+      {{ board }}
+      <div class="settings row justify-between">
         <q-select
           class="col-10 printList"
           outlined
@@ -16,22 +18,24 @@
           no-caps
           class="q-ml-md"
           :label="$t('button.print')"
-          color="info"
+          color="accent"
+          background="white"
           size="md"
           v-close-popup
           @click="printPNG()"
         />
-      </div>
-      <q-btn
+        <q-btn
         class="q-ml-md q-mr-md"
-        icon="home"
+          :label="$t('button.go_back')"
         color="white"
         text-color="black"
         size="md"
         to="/situation/main"
         :title="$t('button.return_main')"
       />
+      </div>
     </div>
+    <hr style="border: 1px solid #0F3A5D">
     <div class="charts">
       <ChartGroup
         v-for="(c, i) in categories"
@@ -138,6 +142,21 @@ export default {
 </script>
 
 <style scoped>
+.banner {
+  font-style: normal;
+  min-height: 72px;
+  text-align: center;
+  padding-top: 15px;
+  padding-left: 20px;
+  padding-right: 10px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 41px;
+  color: var(--q-color-accent);
+  background-image: url("/statics/BG Pattern.svg");
+  align-items: center;
+}
+
 #printbtn {
   position: fixed;
   right: 5rem;
@@ -156,18 +175,13 @@ p {
   font-size: 24px;
 }
 
-.boardtitle {
-  font-size: 24px;
-  font-weight: bold;
-  color: white;
-  margin-top: auto;
-  margin-bottom: auto;
+.q-btn {
+  height: 3em;
 }
 
-.headrow {
-  background-color: var(--q-color-info);
+.settings {
+  align-items: center;
 }
-
 
 </style>
 
@@ -178,7 +192,7 @@ p {
 }
 
 .q-field__label {
-  color: white;
+  color: black;
 }
 
 .printPrep {

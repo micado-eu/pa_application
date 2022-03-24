@@ -117,10 +117,20 @@ export default {
   margin-top: 50px;
 }
 
+.situation-menu-expansion-item {
+  color: var(--q-color-secondary);
+  font-weight: bolder;
+}
+
+.situation-menu-item {
+  font-weight: lighter;
+}
+
+
 </style>
 
 <style>
 .q-router-link--active {
-  background: var(--q-color-accent);
+  background: var(--q-color-secondary);
 }
 </style>
