@@ -17,6 +17,11 @@ export default {
     switch (chart.format) {
       default:
         break
+      case 'file':
+        console.warn("dispatch")
+        console.warn(chart.content)
+        chart.content = chart.content
+        break
       case 'csv':
         chart.content = csvToJSON(chart.content)
         // chart.content = csvToJSON(chart.content).replace(/\n|\r/g, "")
@@ -54,7 +59,19 @@ function fetchLocalCharts() {
       var fetched = response.data
       return fetched.forEach(chartdata => {
          switch (chartdata.format) {
+          case "file":
+            charts.push(
+              chartdata
+            )
+              break
+
           case "csv":
+            charts.push(
+              chartdata
+          )
+          break
+
+          case "json":
             charts.push(
               chartdata
           )

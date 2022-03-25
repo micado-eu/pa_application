@@ -359,7 +359,8 @@
     "delete_confirm":"Are you sure you want to delete",
     "migrant_manager":"Migrant Account management",
     "optional_file_validation":"Choose an optional file for validation",
-    "delimiter":"Delimiter"
+    "delimiter":"Delimiter",
+    "label":"Label"
   },
   "profile": {
     "username": "Username",
@@ -571,9 +572,9 @@
     "add_chart": "Add new chart",
     "print_categories": "Select categories to print",
     "chart_title": "Title:",
-    "chart_description": "Description:",
-    "chart_data_provider": "Data provider:",
-    "updated_time": "Updated time:",
+    "chart_description": "Description",
+    "chart_data_provider": "Data provider",
+    "updated_time": "Updated time",
     "Statistics": "Statistics:",
     "to": "to",
     "minimum_value": "Minimum Value:",
@@ -585,6 +586,8 @@
     "timescale_help":"Tick this box if you use a time-scale on your category axis (e.g. years, months), leave it empty if you use a nominal or other scale (e.g. countries, cities)",
     "headerrow":"first row in dataset contains header values",
     "index_label_description":"select label of index axis",
-    "value_label_description":"select label of value axis"
+    "value_label_description":"select label of value axis",
+    "chart_settings":"Chart Settings",
+    "chart_preview":"Preview"
   }
 }

@@ -1,53 +1,16 @@
 <template>
   <div :id="$options.name" class="q-pa-md">
     <div style="text-align: center; padding-top: 30px" class="main">
-      <div class="q-pa-lg edit-element-component">
+      <div 
+      class="edit-element-component"
+      v:on >
         <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t("input_labels.data_format")}}</p>
+        class="section row"
+        id="fileupload">
+          <div class="col-2">
+            <p class="label">{{$t('input_labels.upload_file')}}</p>
           </div>
-          <div class="col-12 q-pl-xl">
-            <q-select
-              v-model="data_format"
-              filled
-              :options="formats"
-              :label="$t('input_labels.standard')"
-              @input="onChangeFileType"
-              :rules="[(val) => !!val || $t('warning.req_fields')]"
-            />
-          </div>
-        </div>
-        <div
-          v-if="data_format === 'csv'"
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t('input_labels.choose_csv')}}</p>
-          </div>
-          <div class="col-12 q-pl-xl">
-            <q-file
-              v-model="filename"
-              @input="getFiles"
-              dense
-              filled
-              :rules="[(val) => !!val || $t('warning.req_fields')]"
-            ></q-file>
-          </div>
-        </div>
-
-        <div
-          v-if="data_format === 'JSON'"
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t('input_labels.choose_json')}}</p>
-          </div>
-          <div class="col-12 q-pl-xl">
+          <div class="col-10">
             <q-file
               v-model="filename"
               @input="getFiles"
@@ -58,32 +21,29 @@
           </div>
         </div>
         <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t('input_labels.chart_title')}}</p>
-          </div>
-          <div class="col-12 q-pl-xl">
+        class="section col"
+        id="metadata">
+        <p class="sectiontitle">
+          {{$t("migration_monitor.chart_settings")}}
+        </p>
+        <div class="row tag_list">
+          <div
+            class="s50 q-py-md">
+            <p class="label">{{$t("migration_monitor.chart_title")}}</p>
             <q-input
-              dense
+              class=""
               filled
               v-model="title"
               :rules="[(val) => !!val || $t('warning.req_fields')]"
               :placeholder="$t('help.enter_chart_title')"
             />
           </div>
-        </div>
-        <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t('input_labels.chart_type')}}</p>
-          </div>
-          <div class="col-12 q-pl-xl">
+          <div
+          class="s50 q-py-md">
+            <p class="label">{{$t("input_labels.chart_type")}}</p>
             <q-select
               filled
+              class="row q-px-sm"
               v-model="type"
               :options="types"
               label
@@ -91,19 +51,24 @@
             />
           </div>
         </div>
-        <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-6 q-pl-xl q-mr-l">
-            <p class="label">{{$t('input_labels.board')}}</p>
+          <div
+          class="row tag_list">
+            <p class="label row">{{$t("migration_monitor.chart_description")}}</p>
           </div>
-          <div class="col-6 q-pl-xl">
-            <p class="label">{{$t('input_labels.category')}}</p>
-          </div>
-          <div class="col-6 q-pl-xl">
-            <q-select
+          <q-input
+            class="row col-12"
+            type="textarea"
+            filled
+            v-model="description"
+            :placeholder="$t('help.chart_description')"
+          />
+          <div class="row tag_list">
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.board")}}</p>
+              <q-select
               filled
+              class=""
               :value="board"
               use-input
               hide-selected
@@ -113,7 +78,6 @@
               @filter="filterBoards"
               @input-value="setBoard"
               :hint="$t('help.board')"
-              style="width: 250px; padding-bottom: 32px"
               :rules="[(val) => !!val || $t('warning.req_fields')]"
             >
               <template v-slot:no-option>
@@ -124,9 +88,11 @@
                 </q-item>
               </template>
             </q-select>
-          </div>
-          <div class="col-6 q-pl-xl" style="margin: auto; display: block">
-            <q-select
+            </div>
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.category")}}</p>
+              <q-select
               filled
               :value="category"
               use-input
@@ -137,7 +103,6 @@
               @filter="filterCats"
               @input-value="setCategory"
               :hint="$t('help.category')"
-              style="width: 250px; padding-bottom: 32px"
               :rules="[(val) => !!val || $t('warning.req_fields')]"
             >
               <template v-slot:no-option>
@@ -148,142 +113,192 @@
                 </q-item>
               </template>
             </q-select>
-          </div>
-        </div>
+            </div>
+            </div>   
 
-        <div
-          class="q-pa-xsm q-mt-md row"
-          style="text-align: center; padding-right: 45px"
-        >
-          <div class="col-6 q-pl-xl q-mr-l">
-            <p class="label">{{$t('input_labels.x_axis')}}</p>
-          </div>
-          <div class="col-6 q-pl-xl">
-            <p class="label">{{$t('input_labels.y_axis')}}</p>
-          </div>
-          <div class="col-6 q-pl-xl">
-            <q-input
-              dense
-              filled
-              v-model="x"
-              :rules="[(val) => !!val || $t('warning.req_fields')]"
-            />
-          </div>
-          <div class="col-6 q-pl-xl" style="margin: auto; display: block">
-            <q-input
-              dense
-              filled
-              v-model="y"
-              :rules="[(val) => !!val || $t('warning.req_fields')]"
-            />
-          </div>
-        </div>
-
-        <div
-          class="q-mt-md row"
-          style="padding-bottom: 15px; padding-right: 45px"
-        >
-          <div class="col-12 q-pl-xl">
-            <p class="label">{{$t('input_labels.chart_description')}}</p>
-          </div>
-          <div class="col-12 q-pl-xl">
-            <q-input
-              type="textarea"
-              filled
-              v-model="description"
-              :placeholder="$t('help.chart_description')"
-            />
-          </div>
-        </div>
-        <div
-          class="q-mt-md row"
-          style="padding-bottom: 15px; padding-right: 45px"
-        >
-        <div class="col-12 q-pl-xl">
-          <p class="label">{{$t('migration_monitor.chart_data_provider')}}</p>
-        </div>
-          <div class="col-12 q-pl-xl">
-            <q-input
-              filled
-              v-model="provider"
-              :placeholder="$t('migration_monitor.chart_data_provider_description')"
-            />
-          </div>
-        </div>
-        <div class="col-12 q-pl-xl">
-          <p class="label">{{$t('migration_monitor.updated_time')}}</p>
-        </div>
-
-        <div
-        class="q-pl-xl"
-        style="padding-right: 45px"
-        >
-          <q-input
-            dense
-            data-cy="title_input"
-            bg-color="grey-3"
-            v-model="updated"
-          >
-            <template v-slot:prepend>
-              <q-icon
-                style="padding-left: 5px"
-                name="event"
-                class="cursor-pointer"
-                data-cy="date_icon"
+            <div class="row tag_list">
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("migration_monitor.chart_data_provider")}}</p>
+              <q-input
+                filled
+                v-model="provider"
+                :placeholder="$t('migration_monitor.chart_data_provider_description')"
+              />
+            </div>
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("migration_monitor.updated_time")}}</p>
+              <q-input
+                data-cy="title_input"
+                bg-color="grey-3"
+                v-model="updated"
               >
-                <q-popup-proxy
-                  transition-show="scale"
-                  transition-hide="scale"
-                >
-                  <q-date
-                    v-model="updated"
-                    mask="YYYY-MM-DD"
-                    color="accent"
+                <template v-slot:prepend>
+                  <q-icon
+                    style="padding-left: 5px"
+                    name="event"
+                    class="cursor-pointer"
+                    data-cy="date_icon"
                   >
-                    <div class="row items-center justify-end">
-                      <q-btn
-                        v-close-popup
-                        :label="$t('date_selector.close')"
+                    <q-popup-proxy
+                      transition-show="scale"
+                      transition-hide="scale"
+                    >
+                      <q-date
+                        v-model="updated"
+                        mask="YYYY-MM-DD"
                         color="accent"
-                        flat
-                        data-cy="close_date_menu"
-                      />
-                    </div>
-                  </q-date>
-                </q-popup-proxy>
-              </q-icon>
-            </template>
-          </q-input>
-        </div>
+                      >
+                        <div class="row items-center justify-end">
+                          <q-btn
+                            v-close-popup
+                            :label="$t('date_selector.close')"
+                            color="accent"
+                            flat
+                            data-cy="close_date_menu"
+                          />
+                        </div>
+                      </q-date>
+                    </q-popup-proxy>
+                  </q-icon>
+                </template>
+              </q-input>
+            </div>            
+          </div>
+          <div class="row tag_list">
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.x_axis")}}</p>
+              <q-select
+                filled
+                class="q-mb-md"
+                :value="headers[keyindex]"
+                use-input
+                hide-selected
+                fill-input
+                input-debounce="0"
+                :options="headers"
+                @input-value="setKeyIndex"
+                :hint="$t('help.index_column')"
+                :rules="[(val) => !!val || $t('warning.req_fields')]"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    {{$t('warning.no_results')}}
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
 
-        <div
-          class="q-mt-md row"
-          style="padding-bottom: 15px; padding-right: 45px"
-        >
-          <span class="q-pl-xl">
-            <help-label
-              :fieldLabel="$t('migration_monitor.timescale_title')"
-              :helpLabel="$t('migration_monitor.timescale_help')"
-            ></help-label>
-          </span>
-
-
-        <div class="col-12 q-pl-xl "
-        style="text-align: left; padding-right: 45px"
-        >
-                <q-checkbox
+              <p class="label">{{$t("input_labels.label")}}</p>
+              <q-input
+                bg-color="grey-3"
+                filled
+                v-model="x"
+                use-input
+                fill-input
+                @input="setXaxis"
+                :value="headers[keyindex]"
+                :hint="$t('migration_monitor.index_label_description')"
+            />
+            </div>
+            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.y_axis")}}</p>
+              <q-select
+                  filled
+                  :value="headers[valueindex]"
+                  class="q-mb-md"
+                  use-input
+                  hide-selected
+                  fill-input
+                  input-debounce="0"
+                  :options="headers"
+                  @input-value="setValueIndex"
+                  :hint="$t('help.value_column')"
+                  :rules="[(val) => !!val || $t('warning.req_fields')]"
+            >
+              <template v-slot:no-option>
+                <q-item>
+                  <q-item-section class="text-grey">
+                    {{$t('warning.no_results')}}
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+              <p class="label">{{$t("input_labels.label")}}</p>
+              <q-input
+                filled
+                v-model="y"
+                use-input
+                fill-input
+                @input="setYaxis"
+                :value="headers[valueindex]"
+                :hint="$t('migration_monitor.value_label_description')"
+            />
+            </div>
+          </div>
+          <div
+          class="row tag_list">
+            <div
+              v-if="data_format==='CSV'" 
+              class="s50 q-py-md">
+                <p 
+                class="label">{{$t("input_labels.delimiter")}}</p>
+                <q-select
+                filled
+                use-input
+                hide-selected
+                fill-input
+                :value="delimiter"
+                v-model="delimiter"
+                map-options
+                input-debounce="0"
+                :options="delimiterOpts"
+                :option-value="'value'"
+                :option-label="'label'"
+                @input="setDelimiter"
+                :hint="$t('help.delimiter')"
+                :rules="[(val) => !!val || $t('warning.req_fields')]"
+                >
+                </q-select>
+            </div>
+            <div class="s50 q-py-md">
+              <q-checkbox
+                color="accent"
+                v-if="data_format === 'CSV'"
+                v-model="headerrow"
+                :label="$t('migration_monitor.headerrow')"
+                 @input="generatePreview"
+              />
+              <q-checkbox
                 color="accent"
                 v-model="xistime"
                 :label="$t('migration_monitor.timescale_checkbox')"
-        />
+              />
+            </div>
+          </div>
+          <div
+          class="row col-12">
+          </div>
         </div>
-      </div>
-
-
-      </div>
-
-
-      <div class="row">
+        <div
+        class="section"
+        id="preview">
+        <p class="sectiontitle">
+          {{$t("migration_monitor.chart_preview")}}        
+          </p>
+          <table
+          id="previewtable"
+          >
+          </table>
+        </div>
+        <div
+        class="section"
+        id="filesave">
+              <div class="row">
         <div class="q-pa-md col-6" style="text-align: right">
           <q-btn
             class="delete-button"
@@ -306,7 +321,8 @@
           />
         </div>
       </div>
-    </div>
+        </div>
+      </div>
     <q-dialog v-model="succeed">
       <q-card>
         <q-card-section>
@@ -351,7 +367,8 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-  </div>
+      </div>
+    </div>
 </template>
 
 <script>
@@ -368,21 +385,28 @@ export default {
       y: "",
       url: "",
       xistime: false,
-      data_format: "JSON",
-      formats: ["JSON", "csv"],
+      data_format: "",
+      delimiter: null,
+      formats: ["JSON", "CSV"],
       category: "",
       type: "",
       types: ["BAR", "LINE", "PIE"],
       board: "",
-      provider: "",
-      updated: "",
+      provider: null,
+      updated: null,
       content: null,
       filename: null,
       succeed: false,
       fail: false,
       empty:false,
+      rawdata: "",
       boardOpts: [],
-      catOpts: []
+      catOpts: [],
+      delimiterOpts: [{value:";", label:"semicolon (;)"},{value:",", label:"comma (,)"},{value:"|",label:"pipe (|)"}],
+      headers: [],
+      headerrow: true,
+      keyindex: 0,
+      valueindex: 1
     }
   },
     components: {
@@ -399,6 +423,91 @@ export default {
     }
   },
   methods: {
+    generatePreview(){
+          this.content = []
+
+          function addrow (val1,val2,type){
+            let row = document.createElement('tr')
+            let cell1 = document.createElement(type)
+            cell1.innerText=val1
+            let cell2 = document.createElement(type)
+            cell2.innerText=val2
+            row.appendChild(cell1)
+            row.appendChild(cell2)
+            return row
+          }
+
+          var previewtable = document.getElementById('previewtable')
+          previewtable.innerHTML=''
+
+          if (this.data_format==="CSV"){
+
+            let splitregex = new RegExp(this.delimiter.value+'(?=(?:(?:[^"]*"){2})*[^"]*$)')
+
+
+            var allTextLines = this.rawdata.split(/\r\n|\n/)
+
+            var headertype = 'td'
+            var headerrow = 0
+            this.headers=[]
+
+            let trimregex = /(^\"+|\"+$)/mg
+
+            //   /,(?=(?:(?:[^"]*"){2})*[^"]*$)/
+
+            previewtable.appendChild(addrow(this.x,this.y,'th'))
+
+            if (this.headerrow===true) {
+              headertype='th'
+              headerrow=1
+              // this.headers=
+              allTextLines[0].split(splitregex).forEach(obj =>
+                this.headers.push(obj.replace(trimregex,""))
+              )
+              // previewtable.appendChild(addrow(this.x,this.headers[this.valueindex],headertype))
+            } else {
+              for (var i=0; i<allTextLines[0].split(splitregex).length; i++) this.headers.push('column '+ i)
+            }
+
+
+            for (var i=headerrow; i<allTextLines.length-1; i++) {
+              previewtable.appendChild(
+                addrow(
+                  allTextLines[i].split(splitregex)[this.keyindex].replace(trimregex,""),
+                  allTextLines[i].split(splitregex)[this.valueindex].replace(trimregex,""), 'td')
+                )
+                this.content.push(
+                  {[this.x]:allTextLines[i].split(splitregex)[this.keyindex].replace(trimregex,""),
+                  [this.y]:allTextLines[i].split(splitregex)[this.valueindex].replace(trimregex,"")}
+                )               
+            }            
+          } else if (this.data_format==="JSON"){
+            this.headers=[]
+            let dataobj = JSON.parse(this.rawdata)
+            dataobj.forEach( obj =>
+              Object.keys(obj).forEach( key => 
+                {if(this.headers.indexOf(key) === -1) this.headers.push(key)}
+                //  if(this.headers.indexOf(key) === -1) {this.headers.push(key)}
+              )  
+            )
+            previewtable.appendChild(addrow(this.x,this.y,'th'))
+            dataobj.forEach( obj =>
+              {
+                previewtable.appendChild(addrow(
+                obj[this.headers[this.keyindex]],obj[this.headers[this.valueindex]], 'td')
+              )
+                this.content.push(
+                  {[this.x]:obj[this.headers[this.keyindex]],
+                  [this.y]:obj[this.headers[this.valueindex]]}
+                )
+              }
+            )
+
+          }
+
+          this.content = JSON.stringify(this.content)
+          
+    },
     filterBoards(val, update, abort) {
       update(() => {
         const needle = val.toLocaleLowerCase()
@@ -409,6 +518,32 @@ export default {
     },
     setBoard(val) {
       this.board = val
+    },
+    setDelimiter(val) {
+      this.delimiter=val
+      // this.delimiter = this.delimiterOpts[val]
+      this.generatePreview()
+    },
+    getDelimiterOpts() {
+      return Object.keys(this.delimiterOpts)
+    },
+    setKeyIndex(val){
+      this.keyindex=this.headers.indexOf(val)
+      this.x=val
+      this.generatePreview()
+    },
+    setXaxis(val) {
+      this.x=val
+      this.generatePreview()
+    },
+    setYaxis(val) {
+      this.y=val
+      this.generatePreview()
+    },
+    setValueIndex(val){
+      this.valueindex=this.headers.indexOf(val)
+      this.y=val
+      this.generatePreview()
     },
     filterCats(val, update, abort) {
       update(() => {
@@ -421,7 +556,7 @@ export default {
     setCategory(val) {
       this.category = val
     },
-    addChart: function () {
+        addChart: function () {
       var update_date = new Date(this.updated)
       var update_transformed = new Date(update_date.getTime()-update_date.getTimezoneOffset()*-60000)
 
@@ -438,20 +573,19 @@ export default {
         return
       }
       const data = {
-        title: this.title,
-        content: this.content,
-        description: this.description,
-        category: this.category,
-        format: this.data_format,
-        type: this.type,
-        provider: this.provider,
-        updated: update_transformed,
-        xistime: this.xistime,
-        x: this.x,
-        y: this.y,
-        board: this.board
+          "title": this.title,
+          "content": this.content,
+          "description": this.description,
+          "category": this.category,
+          "format": "file",
+          "type": this.type,
+          "provider": this.provider,
+          "updated": this.updated,
+          "xistime": this.xistime,
+          "x": this.x,
+          "y": this.y,
+          "board": this.board
       }
-
       this.$q.loading.show({ delay: 400 })
       this.$store
         .dispatch("statistics/addChart", data)
@@ -459,6 +593,7 @@ export default {
           this.$q.loading.hide()
           this.succeed = true
         })
+        .then(()=>{this.reset()})
         .catch((err) => {
           this.$q.loading.hide()
           this.fail = true
@@ -471,13 +606,22 @@ export default {
       this.y = ""
       this.url = ""
       this.xistime = false
-      this.data_format = "JSON"
+      this.data_format = ""
       this.category = ""
       this.type = ""
-      this.provider = ""
-      this.updated = ""
+      this.provider = null
+      this.updated = null
       this.board = ""
       this.content = null
+      this.headerrow = true
+      this.filename = null
+      this.delimiter = null
+      this.rawdata = ""
+      this.headers = []
+      this.headerrow = true
+      this.keyindex = 0
+      this.valueindex = 1
+      this.generatePreview()
     },
     onChangeFileType: function (e) {
       this.filename = null
@@ -492,6 +636,21 @@ export default {
         reader.readAsText(file)
         reader.onload = () => {
           // Make a fileInfo Object
+          const mime_csv = ["text/plain","text/x-csv","application/vnd.ms-excel","application/csv","application/x-csv","text/csv","text/comma-separated-values","text/x-comma-separated-values","text/tab-separated-values"]
+          const mime_json = ["application/json"]
+          
+          if (mime_csv.includes(file.type)){
+            this.data_format="CSV"
+            this.delimiter=this.delimiterOpts[1]
+          } else if (mime_json.includes(file.type)) {
+            this.data_format="JSON"
+          } else {
+            alert("Filetype not supported, please select a CSV or a JSON-file")
+            this.filename=""
+          }
+
+          this.rawdata=reader.result
+
           let fileInfo = {
             name: file.name,
             type: file.type,
@@ -500,6 +659,7 @@ export default {
             file: file
           }
           this.content = fileInfo.result
+          this.generatePreview()
         }
       } else {
         this.content = null
@@ -532,4 +692,60 @@ $btn_secondary: #cdd0d2;
 .text-primary {
   color: none;
 }
+.section {
+  margin-bottom: 2em;
+  padding: 2em;
+}
+
+.sectiontitle {
+  font-weight: bolder;
+  text-align: left;
+  font-size: 18px;
+  color: var(--q-color-secondary)
+}
+
+.s50 {
+  width: 50%;
+  min-width: 100px;
+  text-align: left;
+}
+
+.s50:first-child{
+  padding-right: 1em;
+}
+
+.s50:last-child{
+  padding-left: 1em;
+}
+
+.tag_list {
+  flex-direction: row;
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+</style>
+<style>
+#previewtable {
+  width: 50%;
+  border-collapse: collapse;
+}
+
+td {
+  border: 1pt rgb(235, 235, 235) solid;
+}
+th {
+  border: 1pt rgb(235, 235, 235) solid;
+}
+
+tr:nth-child(even) {
+  background-color: var(--q-color-primary);
+}
+
+td, th {
+  padding: 8px
+}
+
 </style>
