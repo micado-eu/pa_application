@@ -5,19 +5,53 @@
       class="edit-element-component"
       v:on >
         <div
-        class="section row"
+        class="section col"
         id="fileupload">
-          <div class="col-2">
-            <p class="label">{{$t('input_labels.upload_file')}}</p>
-          </div>
-          <div class="col-10">
+          <p class="sectiontitle">
+          {{$t('input_labels.data_source')}}
+          </p>
+          <div
+          class="row tag_list">
+            <div 
+            class="s50 q-py-md">
+            <p class="label">{{$t('input_labels.file_source')}}</p>
+            <q-select
+              filled
+              v-model="source"
+              :options="sources"
+              :hint="$t('help.file_source')"
+              label
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
+            />
+            </div>
+          <div 
+          class="s50 q-py-md">
+            <p 
+            v-if="source==='File'"
+            class="label">{{$t('input_labels.upload_file')}}</p>
             <q-file
+              v-if="source==='File'"
               v-model="filename"
               @input="getFiles"
-              dense
+              :hint="$t('help.upload_file')"
               filled
               :rules="[(val) => !!val || $t('warning.req_fields')]"
-            ></q-file>
+            >
+              <template v-slot:prepend>
+                <q-icon name="cloud_upload" />
+              </template>
+            </q-file>
+            <p 
+            v-if="source==='API'"
+            class="label">{{$t('input_labels.add_api')}}</p>
+            <q-input
+              v-if="source==='API'"
+              :hint="$t('help.api_link')"
+              filled
+              v-model="link"
+              :rules="[(val) => !!val || $t('warning.req_fields')]"
+            />
+          </div>
           </div>
         </div>
         <div
@@ -45,6 +79,7 @@
               filled
               class="row q-px-sm"
               v-model="type"
+              :hint="$t('help.chart_type')"
               :options="types"
               label
               :rules="[(val) => !!val || $t('warning.req_fields')]"
@@ -166,7 +201,9 @@
               </q-input>
             </div>            
           </div>
-          <div class="row tag_list">
+          <div 
+          v-if="source==='File'"
+          class="row tag_list">
             <div
               class="s50 q-py-md">
               <p class="label">{{$t("input_labels.x_axis")}}</p>
@@ -240,6 +277,36 @@
             />
             </div>
           </div>
+          <div 
+          v-if="source==='API'"
+          class="row tag_list">
+              <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.x_axis")}}</p>
+              <q-input
+                filled
+                v-model="x"
+                use-input
+                fill-input
+                @input="setXaxis"
+                :value="headers[keyindex]"
+                :hint="$t('migration_monitor.index_label_description')"
+              />
+              </div>
+                            <div
+              class="s50 q-py-md">
+              <p class="label">{{$t("input_labels.y_axis")}}</p>
+              <q-input
+                filled
+                v-model="y"
+                use-input
+                fill-input
+                @input="setYaxis"
+                :value="headers[valueindex]"
+                :hint="$t('migration_monitor.index_label_description')"
+              />
+              </div>
+          </div>
           <div
           class="row tag_list">
             <div
@@ -265,7 +332,21 @@
                 >
                 </q-select>
             </div>
-            <div class="s50 q-py-md">
+            <div
+              v-if="source==='API'" 
+              class="s50 q-py-md">
+            <p class="label">{{$t("input_labels.transformation_function")}}</p>
+              <q-input
+                filled
+                v-model="func"
+                use-input
+                fill-input
+                :hint="$t('help.transformation_function')"
+              />
+            </div>
+            <div 
+            class="s50 q-py-md"
+            v-if="source==='File'" >
               <q-checkbox
                 color="accent"
                 v-if="data_format === 'CSV'"
@@ -273,6 +354,16 @@
                 :label="$t('migration_monitor.headerrow')"
                  @input="generatePreview"
               />
+              <q-checkbox
+                color="accent"
+                v-model="xistime"
+                :label="$t('migration_monitor.timescale_checkbox')"
+              />
+
+            </div>
+            <div 
+            class="s50 q-py-md centered"
+            v-if="source==='API'" >
               <q-checkbox
                 color="accent"
                 v-model="xistime"
@@ -286,7 +377,8 @@
         </div>
         <div
         class="section"
-        id="preview">
+        id="preview"
+        v-if="source === 'File'">
         <p class="sectiontitle">
           {{$t("migration_monitor.chart_preview")}}        
           </p>
@@ -373,25 +465,26 @@
 
 <script>
 import HelpLabel from 'components/HelpLabel'
+import { SurveyTriggerRunExpression } from 'survey-vue'
 
 export default {
   name: "AddNewChart",
 
   data() {
     return {
-      title: "",
-      description: "",
-      x: "",
-      y: "",
-      url: "",
+      title: null,
+      description: null,
+      x: null,
+      y: null,
+      url: null,
       xistime: false,
       data_format: "",
       delimiter: null,
       formats: ["JSON", "CSV"],
-      category: "",
-      type: "",
+      category: null,
+      type: null,
       types: ["BAR", "LINE", "PIE"],
-      board: "",
+      board: null,
       provider: null,
       updated: null,
       content: null,
@@ -399,14 +492,19 @@ export default {
       succeed: false,
       fail: false,
       empty:false,
-      rawdata: "",
+      rawdata: null,
       boardOpts: [],
       catOpts: [],
       delimiterOpts: [{value:";", label:"semicolon (;)"},{value:",", label:"comma (,)"},{value:"|",label:"pipe (|)"}],
       headers: [],
       headerrow: true,
       keyindex: 0,
-      valueindex: 1
+      valueindex: 1,
+      source: null,
+      sources:  ["File","API"],
+      link: null,
+      func: null,
+      notRequired: false
     }
   },
     components: {
@@ -423,6 +521,9 @@ export default {
     }
   },
   methods: {
+    titleRule(){
+        v => !!v || 'Name is required'
+    },
     generatePreview(){
           this.content = []
 
@@ -557,71 +658,105 @@ export default {
       this.category = val
     },
         addChart: function () {
+
       var update_date = new Date(this.updated)
       var update_transformed = new Date(update_date.getTime()-update_date.getTimezoneOffset()*-60000)
 
+      if (this.source === "API"){
+        this.data_format = "api"
+        this.content = JSON.stringify([0])
+        this.title = "-"
+      }
+      
       if (
-        !this.title.length ||
-        !this.content.length ||
-        !this.data_format.length ||
-        !this.type.length ||
-        !this.x.length ||
-        !this.y.length ||
-        !this.board.length
+        this.source === "File" &
+        (this.title === null ||
+        this.content === null ||
+        this.data_format === null ||
+        this.type === null ||
+        this.x === null ||
+        this.y === null ||
+        this.board === null ||
+        this.category === null)
       ) {
         this.empty = true
         return
       }
+      if (
+        this.source === "API" & 
+        (
+        this.board === null ||
+        this.type === null ||
+        this.link === null ||
+        this.func === null)
+        ) {
+          this.empty = true
+          return
+        }
+      
+      var output = {}
+
       const data = {
           "title": this.title,
           "content": this.content,
           "description": this.description,
           "category": this.category,
-          "format": "file",
+          "format": "api",
           "type": this.type,
           "provider": this.provider,
           "updated": this.updated,
           "xistime": this.xistime,
           "x": this.x,
           "y": this.y,
-          "board": this.board
+          "board": this.board,
+          "function": this.func,
+          "link": this.link
       }
+
+      Object.keys(data).forEach(key=>{
+        if (data[key] !== null) {
+          output[key] = data[key]
+        }
+      })
+
       this.$q.loading.show({ delay: 400 })
       this.$store
-        .dispatch("statistics/addChart", data)
+        .dispatch("statistics/addChart", output)
         .then((res) => {
           this.$q.loading.hide()
           this.succeed = true
         })
-        .then(()=>{this.reset()})
         .catch((err) => {
           this.$q.loading.hide()
           this.fail = true
         })
+        .then(()=>{this.reset()})
+
     },
     reset: function () {
-      this.title = ""
-      this.description = ""
-      this.x = ""
-      this.y = ""
-      this.url = ""
+      this.title = null
+      this.description = null
+      this.x = null
+      this.y = null
+      this.url = null
       this.xistime = false
-      this.data_format = ""
-      this.category = ""
-      this.type = ""
+      this.data_format = null
+      this.category = null
+      this.type = null
       this.provider = null
       this.updated = null
-      this.board = ""
+      this.board = null
       this.content = null
       this.headerrow = true
       this.filename = null
       this.delimiter = null
-      this.rawdata = ""
+      this.rawdata = null
       this.headers = []
       this.headerrow = true
       this.keyindex = 0
       this.valueindex = 1
-      this.generatePreview()
+      this.generatePreview(),
+      this.func = null
     },
     onChangeFileType: function (e) {
       this.filename = null
@@ -670,6 +805,9 @@ export default {
 </script>
 <style lang="scss" scoped>
 $btn_secondary: #cdd0d2;
+.centered {
+  align-self: center;
+}
 .edit-element-component {
   border: 1px solid $btn_secondary;
   border-radius: 10px;
@@ -693,7 +831,6 @@ $btn_secondary: #cdd0d2;
   color: none;
 }
 .section {
-  margin-bottom: 2em;
   padding: 2em;
 }
 

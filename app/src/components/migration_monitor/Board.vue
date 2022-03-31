@@ -25,13 +25,14 @@
           @click="printPNG()"
         />
         <q-btn
-        class="q-ml-md q-mr-md"
           :label="$t('button.go_back')"
-        color="white"
-        text-color="black"
-        size="md"
-        to="/situation/main"
-        :title="$t('button.return_main')"
+          class="q-ml-md q-mr-md"
+          color="white"
+          outline
+          text-color="accent"
+          size="md"
+          to="/situation/main"
+          :title="$t('button.return_main')"
       />
       </div>
     </div>
@@ -155,6 +156,11 @@ export default {
   color: var(--q-color-accent);
   background-image: url("/statics/BG Pattern.svg");
   align-items: center;
+}
+
+.q-btn {
+  text-transform: none;
+  font-weight: bold;
 }
 
 #printbtn {

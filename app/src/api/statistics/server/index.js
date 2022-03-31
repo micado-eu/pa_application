@@ -18,8 +18,7 @@ export default {
       default:
         break
       case 'file':
-        console.warn("dispatch")
-        console.warn(chart.content)
+        console.log(chart.content)
         chart.content = chart.content
         break
       case 'csv':
@@ -30,6 +29,7 @@ export default {
         chart.content = chart.content.replace(/(\r\n|\n|\r)/gm, '').replace(/\s/g, '')
         break
       case 'API':
+        chart.content = chart.content
         break
     }
     if (isJSON(chart.content)) {
@@ -60,18 +60,21 @@ function fetchLocalCharts() {
       return fetched.forEach(chartdata => {
          switch (chartdata.format) {
           case "file":
+            chartdata["dbid"]=chartdata.id
             charts.push(
               chartdata
             )
               break
 
           case "csv":
+            chartdata["dbid"]=chartdata.id
             charts.push(
               chartdata
           )
           break
 
           case "json":
+            chartdata["dbid"]=chartdata.id
             charts.push(
               chartdata
           )
@@ -109,9 +112,20 @@ function fetchLocalCharts() {
           chartgroups.forEach((chartgroup)=>{
             if (chartgroup !== null) {
             chartgroup.forEach((chart)=>{
+              let id
+              let dbid
+              if (chart.localid === undefined) {
+                id = chart.id
+                dbid = chart.id
+              } else {
+                id = chart.localid
+                dbid = chart.dbid
+              }
+
               charts.push(
                 {
-                "id": chart.id,
+                "id": id,
+                "dbid": dbid,
                 "title": chart.title,
                 "content": chart.content,
                 "description": chart.description,
@@ -198,6 +212,7 @@ function apiUNHCR(options){
       case "PIE":
         output.push(
           {
+            id: options.id,
             board: options.board,
             category: response.data[0].geomaster_name,
             content: JSON.stringify(response.data),
@@ -243,6 +258,7 @@ function UNHCRukr(options){
           case false:
             output.push(
               {
+                id: options.id,
                 board: options.board,
                 category: options.category,
                 content: JSON.stringify(response.data).replaceAll("geomaster_name","country"),
@@ -264,6 +280,7 @@ function UNHCRukr(options){
             }
             output.push(
               {
+                id: options.id,
                 board: options.board,
                 category: options.category,
                 content: JSON.stringify(response.data.timeseries),
@@ -300,6 +317,7 @@ function UNHCRukr(options){
       case "PIE":
         output.push(
           {
+            id: options.id,
             board: options.board,
             category: options.category,
             content: JSON.stringify(response.data),
@@ -653,7 +671,8 @@ function wfsHamburg(options) {
     Object.keys(input).forEach(key=> {
       let chartdata = input[key]
       output.push({
-        id: "a"+options.id+counter,
+        localid: "a"+options.id+counter,
+        dbid: options.id,
         board: options.board,
         type: options.type,
         category: chartdata.category,

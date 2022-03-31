@@ -74,8 +74,8 @@
     "link_name": "Choose a name for the step link",
     "event_cost": "Price of the event. Mark the checkbox if the event is free.",
     "enter_chart_title": "Enter chart title here",
-    "board": "if the board does not already exist, it will be automatically created",
-    "category": "if the category does not already exist, it will be automatically created",
+    "board": "If the board does not already exist, it will be automatically created",
+    "category": "If the category does not already exist, it will be automatically created",
     "chart_description": "Describe your Chart",
     "preview_process":"Preview process",
     "add_step_explain":"Click 'Add Step' to add one or more steps to your process",
@@ -99,9 +99,14 @@
     "lang_editor":"",
     "default_language":"",
     "manage_languages":"",
-    "delimiter":"Select the delimiter character in your CSV file. Insert custom character if not listed.",
+    "delimiter":"Select the delimiter character in your CSV file",
     "index_column":"Select the index column of your chart (x-axis)",
-    "value_column":"Select the value column of your chart (y-axis)"
+    "value_column":"Select the value column of your chart (y-axis)",
+    "file_source":"Select the source of your chart: upload data (File) or query external data (API)",
+    "upload_file":"Upload a CSV or JSON-file",
+    "api_link":"Provide the link to an external data source. Please note, if metadata is queried from the external source, not all fields are mandatory, except 'Link', 'Board' and 'Transformation function'",
+    "chart_type":"Select BAR for bar chart, LINE for line chart and PIE for pie chart",
+    "transformation_function":"Choose the function the queried data should be transformed into the correct format. Please contact a system administrator if unsure"
   },
   "menu": {
     "title": "My Tools",
@@ -360,7 +365,13 @@
     "migrant_manager":"Migrant Account management",
     "optional_file_validation":"Choose an optional file for validation",
     "delimiter":"Delimiter",
-    "label":"Label"
+    "label":"Label",
+    "id":"Id",
+    "delete_irreversible": "Please be reminded that this is process is irreversible.",
+    "add_api":"Add API Link",
+    "file_source":"Select data source",
+    "data_source":"Data source",
+    "transformation_function":"Transformation function"
   },
   "profile": {
     "username": "Username",
@@ -571,7 +582,7 @@
     "manage_charts": "Manage Charts",
     "add_chart": "Add new chart",
     "print_categories": "Select categories to print",
-    "chart_title": "Title:",
+    "chart_title": "Title",
     "chart_description": "Description",
     "chart_data_provider": "Data provider",
     "updated_time": "Updated time",
@@ -585,8 +596,8 @@
     "timescale_checkbox": "data related to a time sequence",
     "timescale_help":"Tick this box if you use a time-scale on your category axis (e.g. years, months), leave it empty if you use a nominal or other scale (e.g. countries, cities)",
     "headerrow":"first row in dataset contains header values",
-    "index_label_description":"select label of index axis",
-    "value_label_description":"select label of value axis",
+    "index_label_description":"Select label of index axis",
+    "value_label_description":"Select label of value axis",
     "chart_settings":"Chart Settings",
     "chart_preview":"Preview"
   }
