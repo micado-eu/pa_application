@@ -27,10 +27,10 @@
           <div 
           class="s50 q-py-md">
             <p 
-            v-if="source==='File'"
+            v-if="source==='file'"
             class="label">{{$t('input_labels.upload_file')}}</p>
             <q-file
-              v-if="source==='File'"
+              v-if="source==='file'"
               v-model="filename"
               @input="getFiles"
               :hint="$t('help.upload_file')"
@@ -42,10 +42,10 @@
               </template>
             </q-file>
             <p 
-            v-if="source==='API'"
+            v-if="source==='api'"
             class="label">{{$t('input_labels.add_api')}}</p>
             <q-input
-              v-if="source==='API'"
+              v-if="source==='api'"
               :hint="$t('help.api_link')"
               filled
               v-model="link"
@@ -202,7 +202,7 @@
             </div>            
           </div>
           <div 
-          v-if="source==='File'"
+          v-if="source==='file'"
           class="row tag_list">
             <div
               class="s50 q-py-md">
@@ -278,7 +278,7 @@
             </div>
           </div>
           <div 
-          v-if="source==='API'"
+          v-if="source==='api'"
           class="row tag_list">
               <div
               class="s50 q-py-md">
@@ -310,7 +310,7 @@
           <div
           class="row tag_list">
             <div
-              v-if="data_format==='CSV'" 
+              v-if="data_format==='csv'" 
               class="s50 q-py-md">
                 <p 
                 class="label">{{$t("input_labels.delimiter")}}</p>
@@ -333,7 +333,7 @@
                 </q-select>
             </div>
             <div
-              v-if="source==='API'" 
+              v-if="source==='api'" 
               class="s50 q-py-md">
             <p class="label">{{$t("input_labels.transformation_function")}}</p>
               <q-input
@@ -346,10 +346,10 @@
             </div>
             <div 
             class="s50 q-py-md"
-            v-if="source==='File'" >
+            v-if="source==='file'" >
               <q-checkbox
                 color="accent"
-                v-if="data_format === 'CSV'"
+                v-if="data_format === 'csv'"
                 v-model="headerrow"
                 :label="$t('migration_monitor.headerrow')"
                  @input="generatePreview"
@@ -363,7 +363,7 @@
             </div>
             <div 
             class="s50 q-py-md centered"
-            v-if="source==='API'" >
+            v-if="source==='api'" >
               <q-checkbox
                 color="accent"
                 v-model="xistime"
@@ -378,7 +378,7 @@
         <div
         class="section"
         id="preview"
-        v-if="source === 'File'">
+        v-if="source === 'file'">
         <p class="sectiontitle">
           {{$t("migration_monitor.chart_preview")}}        
           </p>
@@ -480,7 +480,7 @@ export default {
       xistime: false,
       data_format: "",
       delimiter: null,
-      formats: ["JSON", "CSV"],
+      formats: ["json", "csv"],
       category: null,
       type: null,
       types: ["BAR", "LINE", "PIE"],
@@ -501,7 +501,7 @@ export default {
       keyindex: 0,
       valueindex: 1,
       source: null,
-      sources:  ["File","API"],
+      sources:  ["file","api"],
       link: null,
       func: null,
       notRequired: false
@@ -541,7 +541,7 @@ export default {
           var previewtable = document.getElementById('previewtable')
           previewtable.innerHTML=''
 
-          if (this.data_format==="CSV"){
+          if (this.data_format==="csv"){
 
             let splitregex = new RegExp(this.delimiter.value+'(?=(?:(?:[^"]*"){2})*[^"]*$)')
 
@@ -582,7 +582,7 @@ export default {
                   [this.y]:allTextLines[i].split(splitregex)[this.valueindex].replace(trimregex,"")}
                 )               
             }            
-          } else if (this.data_format==="JSON"){
+          } else if (this.data_format==="json"){
             this.headers=[]
             let dataobj = JSON.parse(this.rawdata)
             dataobj.forEach( obj =>
@@ -662,14 +662,14 @@ export default {
       var update_date = new Date(this.updated)
       var update_transformed = new Date(update_date.getTime()-update_date.getTimezoneOffset()*-60000)
 
-      if (this.source === "API"){
+      if (this.source === "api"){
         this.data_format = "api"
         this.content = JSON.stringify([0])
         this.title = "-"
       }
       
       if (
-        this.source === "File" &
+        this.source === "file" &
         (this.title === null ||
         this.content === null ||
         this.data_format === null ||
@@ -683,7 +683,7 @@ export default {
         return
       }
       if (
-        this.source === "API" & 
+        this.source === "api" & 
         (
         this.board === null ||
         this.type === null ||
@@ -701,7 +701,7 @@ export default {
           "content": this.content,
           "description": this.description,
           "category": this.category,
-          "format": "api",
+          "format": this.source,
           "type": this.type,
           "provider": this.provider,
           "updated": this.updated,
@@ -775,10 +775,10 @@ export default {
           const mime_json = ["application/json"]
           
           if (mime_csv.includes(file.type)){
-            this.data_format="CSV"
+            this.data_format="csv"
             this.delimiter=this.delimiterOpts[1]
           } else if (mime_json.includes(file.type)) {
-            this.data_format="JSON"
+            this.data_format="csv"
           } else {
             alert("Filetype not supported, please select a CSV or a JSON-file")
             this.filename=""
