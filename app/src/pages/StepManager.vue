@@ -1,279 +1,290 @@
-  <template>
+<template>
   <div>
-    <div class="title">{{$t('input_labels.manage_steps')}} - {{ this.title }}</div>
-    <div class="container row" style="padding-bottom:0px">
-      <div class="col-4" style="padding-right:10px" >
-      <div class="row" style="margin-top:10px">
-      <div class="col left">
-        <q-btn
-        :data-cy="'back_to_process'"
-          class="delete-button-2"
-          no-caps
-          unelevated
-          :label="$t('button.cancel')"
-          @click="cancelStep"
-        />
-      </div>
-      <div class="col center">
-        <q-btn
-        :data-cy="'addstep'"
-          color="secondary"
-          unelevated
-          :label="$t('button.add_step')"
-          class="button-3"
-          no-caps
-          size="15px"
-          @click="addingNode"
-        />
-      </div>
-      <div class="col right">
-        <q-btn
-        :data-cy="'savegraph'"
-          class="button-2"
-          color="accent"
-          unelevated
-          :label="$t('button.save_graph')"
-          no-caps
-          size="15px"
-          @click="savingGraph"
-        />
-
-      </div>
+    <div class="banner">
+      {{ $t('input_labels.manage_steps') }} - {{ this.title }}
+    </div>
+    <hr style="border: 1px solid #0F3A5D">
+    <div
+      class="container row"
+      style="padding-bottom:0px"
+    >
+      <div
+        class="col-4"
+        style="padding-right:10px"
+      >
+        <div
+          class="row"
+          style="margin-top:10px"
+        >
+          <div class="col left">
+            <q-btn
+              :data-cy="'back_to_process'"
+              class="delete-button-2"
+              no-caps
+              unelevated
+              :label="$t('button.cancel')"
+              @click="cancelStep"
+            />
+          </div>
+          <div class="col center">
+            <q-btn
+              :data-cy="'addstep'"
+              color="secondary"
+              unelevated
+              :label="$t('button.add_step')"
+              class="button-3"
+              no-caps
+              size="15px"
+              @click="addingNode"
+            />
+          </div>
+          <div class="col right">
+            <q-btn
+              :data-cy="'savegraph'"
+              class="button-2"
+              color="accent"
+              unelevated
+              :label="$t('button.save_graph')"
+              no-caps
+              size="15px"
+              @click="savingGraph"
+            />
+          </div>
         </div>
       </div>
-      <div  class="col-8 explanation" >
-      <div>
-         {{$t('help.add_step_explain')}}
-         <br>
-         {{$t('help.click_step_graph')}}
-         <br>
-         {{$t('help.add_edge_explain')}}
-       </div>
+      <div class="col-8 explanation">
+        <div>
+          {{ $t('help.add_step_explain') }}
+          <br>
+          {{ $t('help.click_step_graph') }}
+          <br>
+          {{ $t('help.add_edge_explain') }}
+        </div>
       </div>
     </div>
     <div class="container row">
-      
-      <div class="col-4" style="padding-right:10px;">
-
-        <q-card style=" height:728px">
-        <q-card-section>
-          <cytoscape
-            ref="cyRef"
-            :config="configcy"
-            :preConfig="preConfig"
-            :afterCreated="afterCreated"
-          >
-            <cy-element
-              v-for="def in elements"
-              :key="`${def.data.id}`"
-              :definition="def"
-              v-on:tap="editStep($event, def)"
-              v-on:click="editStep($event, def)"
-              v-on:remove="removeElement($event,def)"
-              v-on:ehcomplete="addingEdge"
-            />
-
-          </cytoscape>
-        </q-card-section>
-      </q-card>
-      </div>
-       <div class="col-8"     
-       v-if="this.editing_steplink"      
+      <div
+        class="col-4"
+        style="padding-right:10px;"
       >
-       
+        <q-card style=" height:728px">
+          <q-card-section>
+            <cytoscape
+              ref="cyRef"
+              :config="configcy"
+              :pre-config="preConfig"
+              :after-created="afterCreated"
+            >
+              <cy-element
+                v-for="def in elements"
+                :key="`${def.data.id}`"
+                :definition="def"
+                @tap="editStep($event, def)"
+                @click="editStep($event, def)"
+                @remove="removeElement($event,def)"
+                @ehcomplete="addingEdge"
+              />
+            </cytoscape>
+          </q-card-section>
+        </q-card>
+      </div>
+      <div
+        class="col-8"     
+        v-if="this.editing_steplink"      
+      >
         <q-card
           
           class="div-2"
         >
-        <form
-          @submit.prevent.stop="onSubmitLink"
-          @reset.prevent.stop="onResetLink"
-          class=""
-        >
-          <div class=" q-pa-lg ">
-            <div class=" q-pa-xsm  ">
-                  <div
-                    class=" q-pa-xsm "
-                    id="div-2"
-                  >
+          <form
+            @submit.prevent.stop="onSubmitLink"
+            @reset.prevent.stop="onResetLink"
+            class=""
+          >
+            <div class=" q-pa-lg ">
+              <div class=" q-pa-xsm  ">
+                <div
+                  class=" q-pa-xsm "
+                  id="div-2"
+                >
                   <HelpLabel
-                    :fieldLabel="$t('input_labels.link_name')"
-                    :helpLabel ="$t('help.link_name')"
+                    :field-label="$t('input_labels.link_name')"
+                    :help-label="$t('help.link_name')"
                     class="labels"
                   />
                     
 
-                    <q-input
-                      dense
-                      data-cy="title_input"
-                      ref="title_link_input"
-                      bg-color="grey-3"
-                      :hint="$t('input_labels.required')"
-                      standout
-                      outlined
-                      counter
-                      :maxlength="$envconfig.titleLimit"
-                      @blur="updateField()"
-                      :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
-                      val=> !!val || 'Field is required']"
-                                          :readonly="!(
-                      (steplink_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)                    )"
+                  <q-input
+                    dense
+                    data-cy="title_input"
+                    ref="title_link_input"
+                    bg-color="grey-3"
+                    :hint="$t('input_labels.required')"
+                    standout
+                    outlined
+                    counter
+                    :maxlength="$envconfig.titleLimit"
+                    @blur="updateField()"
+                    :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
+                              val=> !!val || 'Field is required']"
+                    :readonly="!(
+                      (steplink_shell.translations.filter((top) => top.translated == false)[0].translationState == 0) )"
                     v-model="steplink_shell.translations.filter(
                       (top) => top.translated == false
                     )[0].description"
-                      :label="$t('input_labels.link_name')"
+                    :label="$t('input_labels.link_name')"
+                  />
+                </div>
+                <div
+                  class=" q-pa-xsm row div-6"
+                  style="padding-bottom:20px"
+                >
+                  <div
+                    class="col-3"
+                    style="min-width:180px; "
+                  >
+                    <HelpLabel
+                      :field-label="$t('translation_states.translatable')"
+                      :help-label="$t('help.is_published')"
+                      class="tag"
                     />
                   </div>
-                           <div
-            class=" q-pa-xsm row div-6"
-            style="padding-bottom:20px"
-          >
-            <div
-              class="col-3"
-              style="min-width:180px; "
-            >
-              <HelpLabel
-                :field-label="$t('translation_states.translatable')"
-                :help-label="$t('help.is_published')"
-                class="tag"
-              />
-            </div>
-            <div
-              class="col"
-              style="padding-top:2px; text-align:left"
-            >
-              <!-- <q-toggle
+                  <div
+                    class="col"
+                    style="padding-top:2px; text-align:left"
+                  >
+                    <!-- <q-toggle
                 v-model="edit_process.published"
                 :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
                 @input="isPublished($event, edit_process.id)"
                 color="accent"
               />-->
-              <q-toggle
-                :value="
-                  steplink_shell.translations.filter(
-                    (top) => top.translated == false
-                  )[0].translationState == 1
-                "
-                color="accent"
-                @input="makeTranslatableSteplink($event)"
-              />
+                    <q-toggle
+                      :value="
+                        steplink_shell.translations.filter(
+                          (top) => top.translated == false
+                        )[0].translationState == 1
+                      "
+                      color="accent"
+                      @input="makeTranslatableSteplink($event)"
+                    />
+                  </div>
+                </div>
+                <div style="text-align:center">
+                  <q-btn
+                    style="margin-right:15px"
+                    class="delete-button"
+                    no-caps
+                    unelevated
+                    :data-cy="'back_to_graph'"
+                    :label="$t('button.back')"
+                    type="reset"
+                    @click="cancelEditStep()"
+                  />
+                  <q-btn
+                    style="margin-right:15px"
+                    :data-cy="'deletestep'"
+                    class="delete-button"
+                    no-caps
+                    unelevated
+                    :label="$t('button.delete_steplink')"
+                    @click="deleteElementSteplink()"
+                  />
+                  <q-btn
+                    color="accent"
+                    no-caps
+                    :data-cy="'savestep'"
+                    unelevated
+                    :label="$t('button.save_steplink')"
+                    type="submit"
+                    class="button"
+                  />
+                </div>
+              </div>
             </div>
-          </div>
-          <div   style="text-align:center">
-                <q-btn
-                  style="margin-right:15px"
-                  class="delete-button"
-                  no-caps
-                  unelevated
-                  :data-cy="'back_to_graph'"
-                  :label="$t('button.back')"
-                  type="reset"
-                  @click="cancelEditStep()"
-                />
-                <q-btn
-                  style="margin-right:15px"
-                  :data-cy="'deletestep'"
-                  class="delete-button"
-                  no-caps
-                  unelevated
-                  :label="$t('button.delete_steplink')"
-                  @click="deleteElementSteplink()"
-                />
-                <q-btn
-                  color="accent"
-                  no-caps
-                  :data-cy="'savestep'"
-                  unelevated
-                  :label="$t('button.save_steplink')"
-                  type="submit"
-                  class="button"
-                />
-            </div>
-            </div>
-          </div>
-              </form>
+          </form>
         </q-card>
-       </div>
-      <div v-else-if="this.editing" class="col-8"           
+      </div>
+      <div
+        v-else-if="this.editing"
+        class="col-8"
       >
-      
         <q-card
           
           class="div-2"
         >
-        <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class=""
-        >
-          <div class=" q-pa-lg ">
-            <div class=" q-pa-xsm  ">
-                 <div
-                    class=" q-pa-xsm "
-                    id="div-2"
-                  >
+          <form
+            @submit.prevent.stop="onSubmit"
+            @reset.prevent.stop="onReset"
+            class=""
+          >
+            <div class=" q-pa-lg ">
+              <div class=" q-pa-xsm  ">
+                <div
+                  class=" q-pa-xsm "
+                  id="div-2"
+                >
                   <HelpLabel
-                    :fieldLabel="$t('input_labels.step_name')"
-                    :helpLabel ="$t('help.step_name')"
+                    :field-label="$t('input_labels.step_name')"
+                    :help-label="$t('help.step_name')"
                     class="labels"
                   />
                     
 
-                    <q-input
-                      dense
-                      data-cy="title_input"
-                      ref="title_input"
-                      bg-color="grey-3"
-                      :hint="$t('input_labels.required')"
-                      standout
-                      outlined
-                      counter
-                      :maxlength="$envconfig.titleLimit"
-                      @blur="updateField()"
-                      :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
-                      val=> !!val || 'Field is required']"
-                      :readonly="!(
+                  <q-input
+                    dense
+                    data-cy="title_input"
+                    ref="title_input"
+                    bg-color="grey-3"
+                    :hint="$t('input_labels.required')"
+                    standout
+                    outlined
+                    counter
+                    :maxlength="$envconfig.titleLimit"
+                    @blur="updateField()"
+                    :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 50 characters',
+                              val=> !!val || 'Field is required']"
+                    :readonly="!(
                       (step_shell.translations.filter((top) => top.translated == false)[0].translationState == 0)
                     )"
                     v-model="step_shell.translations.filter(
                       (top) => top.translated == false
                     )[0].step"
-                      :label="$t('input_labels.step_name')"
-                    />
-                  </div>
+                    :label="$t('input_labels.step_name')"
+                  />
+                </div>
 
-                  <div
-                    id="div-4"
-                    class="q-pa-xsm"
-                  >
-                   <HelpLabel
-                    :fieldLabel="$t('input_labels.step_description')"
-                    :helpLabel ="$t('help.step_description')"
+                <div
+                  id="div-4"
+                  class="q-pa-xsm"
+                >
+                  <HelpLabel
+                    :field-label="$t('input_labels.step_description')"
+                    :help-label="$t('help.step_description')"
                     class="labels"
                   />
                    
-                    <GlossaryEditor
-                      data-cy="description_input"
-                      class="desc-editor"
-                      v-model="step_shell.translations.filter(
+                  <GlossaryEditor
+                    data-cy="description_input"
+                    class="desc-editor"
+                    v-model="step_shell.translations.filter(
                       (top) => top.translated == false
                     )[0].description"
                     :lang="step_shell.translations.filter(
                       (top) => top.translated == false
                     )[0].lang"
-                      ref="editor"
-                    />
-
-                  </div>
-                <div class="row">
-               <div
-                class="q-pa-sm col-6"
-                  >
-                  <HelpLabel
-                    :fieldLabel="$t('input_labels.link')"
-                    :helpLabel ="$t('help.link')"
-                    class="labels"
+                    ref="editor"
                   />
+                </div>
+                <div class="row">
+                  <div
+                    class="q-pa-sm col-6"
+                  >
+                    <HelpLabel
+                      :field-label="$t('input_labels.link')"
+                      :help-label="$t('help.link')"
+                      class="labels"
+                    />
                     
 
                     <q-input
@@ -288,231 +299,256 @@
                       :label="$t('input_labels.link')"
                     />
                   </div>
-              <div
-                class="q-pa-sm col-6"
-              >
-                  <HelpLabel
-                    :fieldLabel="$t('input_labels.step_location')"
-                    :helpLabel ="$t('help.step_location')"
-                    class="labels"
-                  />
-                <div class="row">
-                  <div class="col-11">
-                <q-input
-                  data-cy="location_input"
-                  dense
-                  :hint="$t('input_labels.required')"
-                  class="no-pad"
-                  bg-color="grey-3"
-                  standout
-                  outlined
-                  @blur="updateField()"
-                  counter
-                  :maxlength="$envconfig.titleLimit"
-                  :rules="[ val => val.length <= $envconfig.titleLimit ]"
-                  v-model="step_shell.location"
-                  :label="$t('input_labels.step_location')"
-                />
-                  </div>
-                  <div class="col-1" style="text-align:center">
-                <a  :href="gmap_location(step_shell.location)" target="_blank">
-                <q-icon size="40px" class="icon" name="img:statics/icons/location.svg" />
-                <q-tooltip>
-                        {{$t('help.location_maps')}}
-                </q-tooltip>
-                </a>
+                  <div
+                    class="q-pa-sm col-6"
+                  >
+                    <HelpLabel
+                      :field-label="$t('input_labels.step_location')"
+                      :help-label="$t('help.step_location')"
+                      class="labels"
+                    />
+                    <div class="row">
+                      <div class="col-11">
+                        <q-input
+                          data-cy="location_input"
+                          dense
+                          :hint="$t('input_labels.required')"
+                          class="no-pad"
+                          bg-color="grey-3"
+                          standout
+                          outlined
+                          @blur="updateField()"
+                          counter
+                          :maxlength="$envconfig.titleLimit"
+                          :rules="[ val => val.length <= $envconfig.titleLimit ]"
+                          v-model="step_shell.location"
+                          :label="$t('input_labels.step_location')"
+                        />
+                      </div>
+                      <div
+                        class="col-1"
+                        style="text-align:center"
+                      >
+                        <a
+                          :href="gmap_location(step_shell.location)"
+                          target="_blank"
+                        >
+                          <q-icon
+                            size="40px"
+                            class="icon"
+                            name="img:statics/icons/location.svg"
+                          />
+                          <q-tooltip>
+                            {{ $t('help.location_maps') }}
+                          </q-tooltip>
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-                </div>
                 <div class="row">
-              <div class="q-pa-sm col-6">
-                <HelpLabel
-          :fieldLabel="$t('input_labels.icon')"
-          :helpLabel ="$t('help.doc_type_icon')"
-          class="field"
-          style="padding-top:10px"
-          /> 
-    <q-select
-        dense
-        filled
-        v-model="step_shell.stepIcon"
-        :options="this.step_icons"
-        :readonly="step_shell.published"
-        color="teal"
-        @input="addIcon($event)"
-        @remove="removeIcon($event)"
-        clearable
-      >
-      <template v-slot:selected>
-          <q-chip
-            v-if="step_shell.stepIcon"
-            square  
-          >
-          <q-avatar>
-          <img :src="step_icons.filter(icon => {return icon.label == step_shell.stepIcon})[0].value ">
-        </q-avatar>
-          </q-chip>
-          <q-badge v-else></q-badge>
-        </template>
-        <template v-slot:option="scope">
-          <q-item
-            v-bind="scope.itemProps"
-            v-on="scope.itemEvents"
-          >
-            <q-item-section>
-              <q-img style="max-width:24px; max-heigth:24px" :src="scope.opt.value" />
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-              </div>
-              <div
-              class="q-pa-sm col-6"
-              >
-              <HelpLabel
-                    :fieldLabel="$t('input_labels.step_cost')"
-                    :helpLabel ="$t('help.step_cost')"
-                    class="labels"
-                  />
-                <q-input
-                  data-cy="cost_input"
-                  dense
-                  class="no-pad"
-                  bg-color="grey-3"
-                  standout
-                  outlined
-                  @blur="updateField()"
-                  :maxlength="$envconfig.titleLimit"
-                  :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 5 characters']"
-                  v-model="step_shell.cost"
-                  :label="$t('input_labels.step_cost')"
-                />
-              </div>
+                  <div class="q-pa-sm col-6">
+                    <HelpLabel
+                      :field-label="$t('input_labels.icon')"
+                      :help-label="$t('help.doc_type_icon')"
+                      class="field"
+                      style="padding-top:10px"
+                    /> 
+                    <q-select
+                      dense
+                      filled
+                      v-model="step_shell.stepIcon"
+                      :options="this.step_icons"
+                      :readonly="step_shell.published"
+                      color="teal"
+                      @input="addIcon($event)"
+                      @remove="removeIcon($event)"
+                      clearable
+                    >
+                      <template v-slot:selected>
+                        <q-chip
+                          v-if="step_shell.stepIcon"
+                          square  
+                        >
+                          <q-avatar>
+                            <img :src="step_icons.filter(icon => {return icon.label == step_shell.stepIcon})[0].value ">
+                          </q-avatar>
+                        </q-chip>
+                        <q-badge v-else />
+                      </template>
+                      <template v-slot:option="scope">
+                        <q-item
+                          v-bind="scope.itemProps"
+                          v-on="scope.itemEvents"
+                        >
+                          <q-item-section>
+                            <q-img
+                              style="max-width:24px; max-heigth:24px"
+                              :src="scope.opt.value"
+                            />
+                          </q-item-section>
+                        </q-item>
+                      </template>
+                    </q-select>
+                  </div>
+                  <div
+                    class="q-pa-sm col-6"
+                  >
+                    <HelpLabel
+                      :field-label="$t('input_labels.step_cost')"
+                      :help-label="$t('help.step_cost')"
+                      class="labels"
+                    />
+                    <q-input
+                      data-cy="cost_input"
+                      dense
+                      class="no-pad"
+                      bg-color="grey-3"
+                      standout
+                      outlined
+                      @blur="updateField()"
+                      :maxlength="$envconfig.titleLimit"
+                      :rules="[ val => val.length <= $envconfig.titleLimit || 'Please use maximum 5 characters']"
+                      v-model="step_shell.cost"
+                      :label="$t('input_labels.step_cost')"
+                    />
+                  </div>
                 </div>
 
-              <div class="row width-2" style="text-align:center">
-                <q-icon class="q-mr-xs" size="24px" name="img:statics/icons/Help.png" />
-                    <q-tooltip content-class="bg-grey-8" anchor="top left" self="bottom left" :offset="[0, 8]">{{$t('help.required_documents')}}</q-tooltip>
-                <q-btn
-                  data-cy="add_step_document"
-                  class="add-step-document"
-                  color="accent"
-                  no-caps
-                  unelevated
-                  :label="$t('button.add_document')"
-                  @click="addStepDocument()"
-                />
-                
-              </div>
-
-              <div
-                class="row width-3"
-                v-if="stepdocadd"
-              >
-                <div class="col-8">
-                  <q-select
-                    data-cy="step_document_list"
-                    dense
-                    outlined
-                    clearable
-                    v-model="step_doc_shell.idDocument"
-                    emit-value
-                    map-options
-                    id="select"
-                    :options="filtered_t_docs"
-                    :label="$t('input_labels.required_documents')"
+                <div
+                  class="row width-2"
+                  style="text-align:center"
+                >
+                  <q-icon
+                    class="q-mr-xs"
+                    size="24px"
+                    name="img:statics/icons/Help.png"
                   />
-                </div>
-                <div class="col-2">
-                  <q-input
-                    data-cy="doc_cost"
-                    class="input"
-                    :label="$t('input_labels.doc_cost')"
-                    dense
-                    bg-color="grey-3"
-                    standout
-                    outlined
-                    v-model="step_doc_shell.cost"
-                  />
-                </div>
-                <div class="col-2">
+                  <q-tooltip
+                    content-class="bg-grey-8"
+                    anchor="top left"
+                    self="bottom left"
+                    :offset="[0, 8]"
+                  >
+                    {{ $t('help.required_documents') }}
+                  </q-tooltip>
                   <q-btn
-                    data-cy="save_step_document"
-                    id="save-step-document"
+                    data-cy="add_step_document"
+                    class="add-step-document"
                     color="accent"
                     no-caps
                     unelevated
-                    :label="$t('button.save_document')"
-                    @click="saveStepDocument()"
+                    :label="$t('button.add_document')"
+                    @click="addStepDocument()"
                   />
                 </div>
-              </div>
 
+                <div
+                  class="row width-3"
+                  v-if="stepdocadd"
+                >
+                  <div class="col-8">
+                    <q-select
+                      data-cy="step_document_list"
+                      dense
+                      outlined
+                      clearable
+                      v-model="step_doc_shell.idDocument"
+                      emit-value
+                      map-options
+                      id="select"
+                      :options="filtered_t_docs"
+                      :label="$t('input_labels.required_documents')"
+                    />
+                  </div>
+                  <div class="col-2">
+                    <q-input
+                      data-cy="doc_cost"
+                      class="input"
+                      :label="$t('input_labels.doc_cost')"
+                      dense
+                      bg-color="grey-3"
+                      standout
+                      outlined
+                      v-model="step_doc_shell.cost"
+                    />
+                  </div>
+                  <div class="col-2">
+                    <q-btn
+                      data-cy="save_step_document"
+                      id="save-step-document"
+                      color="accent"
+                      no-caps
+                      unelevated
+                      :label="$t('button.save_document')"
+                      @click="saveStepDocument()"
+                    />
+                  </div>
+                </div>
+
+                <div
+                  v-if="step_shell.documents "
+                  class="row "
+                  style="width:100%;"
+                >
+                  <div class="col-9 flex flex-left labels">
+                    {{ $t('input_labels.doc') }}
+                  </div>
+                  <div class="col-2 flex flex-center labels ">
+                    {{ $t('input_labels.cost') }}
+                  </div>
+                  <div class="col-1 flex flex-center labels">
+                    {{ $t('input_labels.delete') }}
+                  </div>
+                </div>
+                <q-list id="list">
+                  <StepDocumentElement
+                    v-for="stepdoc in step_shell.documents"
+                    :key="stepdoc.id"
+                    :stepdoc="stepdoc"
+                    :docs_type="t_docs"
+                    @deleteDoc="deleteDoc"
+                    style="padding-top:20px"
+                  />
+                </q-list>
+              </div>
+              <hr>
               <div
-                v-if="step_shell.documents "
-                class="row "
-                style="width:100%;"
+                class=" q-pa-xsm row div-6"
+                style="padding-bottom:20px"
               >
-
-                <div class="col-9 flex flex-left labels">
-                  {{$t('input_labels.doc')}}
+                <div
+                  class="col-3"
+                  style="min-width:180px; "
+                >
+                  <HelpLabel
+                    :field-label="$t('translation_states.translatable')"
+                    :help-label="$t('help.is_published')"
+                    class="tag"
+                  />
                 </div>
-                <div class="col-2 flex flex-center labels ">
-                  {{$t('input_labels.cost')}}
-                </div>
-                <div class="col-1 flex flex-center labels">
-                  {{$t('input_labels.delete')}}
-                </div>
-              </div>
-              <q-list id="list">
-                <StepDocumentElement
-                  v-for="stepdoc in step_shell.documents"
-                  :key="stepdoc.id"
-                  :stepdoc="stepdoc"
-                  :docs_type="t_docs"
-                  @deleteDoc="deleteDoc"
-                  style="padding-top:20px"
-                />
-              </q-list>
-            </div>
-            <hr>
-                           <div
-            class=" q-pa-xsm row div-6"
-            style="padding-bottom:20px"
-          >
-            <div
-              class="col-3"
-              style="min-width:180px; "
-            >
-              <HelpLabel
-                :field-label="$t('translation_states.translatable')"
-                :help-label="$t('help.is_published')"
-                class="tag"
-              />
-            </div>
-            <div
-              class="col"
-              style="padding-top:2px; text-align:left"
-            >
-              <!-- <q-toggle
+                <div
+                  class="col"
+                  style="padding-top:2px; text-align:left"
+                >
+                  <!-- <q-toggle
                 v-model="edit_process.published"
                 :disable="edit_process.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
                 @input="isPublished($event, edit_process.id)"
                 color="accent"
               />-->
-              <q-toggle
-                :value="
-                  step_shell.translations.filter(
-                    (top) => top.translated == false
-                  )[0].translationState == 1
-                "
-                color="accent"
-                @input="makeTranslatableStep($event)"
-              />
-            </div>
-          </div>
-            <div   style="text-align:center">
+                  <q-toggle
+                    :value="
+                      step_shell.translations.filter(
+                        (top) => top.translated == false
+                      )[0].translationState == 1
+                    "
+                    color="accent"
+                    @input="makeTranslatableStep($event)"
+                  />
+                </div>
+              </div>
+              <div style="text-align:center">
                 <q-btn
                   style="margin-right:15px"
                   class="delete-button"
@@ -541,25 +577,22 @@
                   type="submit"
                   class="button"
                 />
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
         </q-card>
       </div>
 
             
       <q-card 
-      v-else  class="col-8"
-      style="padding-left:10px"
+        v-else
+        class="col-8"
+        style="padding-left:10px"
       >
-              <q-card-section>
-              </q-card-section>
+        <q-card-section />
       </q-card>
     </div>
-    <div class="row div-6">
-
-
-    </div>
+    <div class="row div-6" />
   </div>
   </div>
 </template>
@@ -1428,6 +1461,17 @@ border-radius: 5px;
   font-size: 16px;
   line-height: 22px;
   color: #000000;
+}
+.banner {
+  font-style: normal;
+  height: 72px;
+  text-align: center;
+  padding-top: 15px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 41px;
+  color:#0F3A5D; 
+  background-image: url("../statics/BG Pattern.svg");
 }
 </style>
 

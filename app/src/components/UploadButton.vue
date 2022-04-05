@@ -68,4 +68,8 @@ border-radius: 5px;
   text-align:right;
   width:150px
 }
+a:link {
+  color: #0B91CE;
+  background-color: transparent;
+}
 </style>

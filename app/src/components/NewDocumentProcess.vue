@@ -1,325 +1,348 @@
 <template>
-<div>
-<div style="text-align:right">
-<q-btn
-  style="width:210px;border-radius: 5px;"
-  :label="$t('button.new_doc_process')"
-  color="secondary"
-  no-caps
-  unelevated
-  padding="sm"
-  @click="layout = true"
-/>
-</div>
-<q-dialog v-model="layout" full-width>
-       <q-layout view="Lhh lpR fff" container class="bg-white">
-  <q-header class="bg-accent">
+  <div>
+    <div style="text-align:right">
+      <q-btn
+        style="width:210px;border-radius: 5px;"
+        :label="$t('button.new_doc_process')"
+        color="accent"
+        no-caps
+        unelevated
+        padding="sm"
+        @click="layout = true"
+      />
+    </div>
+    <q-dialog
+      v-model="layout"
+      full-width
+    >
+      <q-layout
+        view="Lhh lpR fff"
+        container
+        class="bg-white"
+      >
+        <q-header class="bg-accent">
           <q-toolbar>
-            <q-toolbar-title>{{$t('input_labels.add_doc_type')}}</q-toolbar-title>
-            <q-btn flat v-close-popup round dense icon="close" />
+            <q-toolbar-title>{{ $t('input_labels.add_doc_type') }}</q-toolbar-title>
+            <q-btn
+              flat
+              v-close-popup
+              round
+              dense
+              icon="close"
+            />
           </q-toolbar>
         </q-header>
 
         <q-page-container>
           <q-page padding>
-  <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class=""
-        >
-          <HelpLabel
-          :fieldLabel="$t('input_labels.doc_type')"
-          :helpLabel ="$t('help.doc_type')"
-          class="div-3"
-          />
+            <form
+              @submit.prevent.stop="onSubmit"
+              @reset.prevent.stop="onReset"
+              class=""
+            >
+              <HelpLabel
+                :field-label="$t('input_labels.doc_type')"
+                :help-label="$t('help.doc_type')"
+                class="div-3"
+              />
          
-          <q-input
-            outlined
-            filled
-            dense
-            ref="doc_type_dialog"
-            :hint="$t('input_labels.required')"
-            counter
-            :maxlength="$envconfig.titleLimit"
-            :rules="[ 
-            val => val.length <= $envconfig.titleLimit || 'Please use maximum 25 characters',
-            val => !!val || 'Field is required'
-            ]"
-            v-model="int_doc_shell.translations.filter(
-              (top) => top.translated == false
-            )[0].document"
-            :label="$t('input_labels.doc_type_placeholder')"
-         />
-      <HelpLabel
-          :fieldLabel="$t('input_labels.description')"
-          :helpLabel ="$t('help.doc_type_description')"
-          class="div-3"
-          />
-          
-          <GlossaryEditor
-            class="desc-editor"
-            :readonly="!(
-              int_doc_shell.translations.filter(
-                (top) => top.translated == false
-              )[0].translationState == 0 &&
-              int_doc_shell.published == false
-            )"
-            v-model="int_doc_shell.translations.filter(
-              (top) => top.translated == false
-            )[0].description"
-            :lang="int_doc_shell.translations.filter(
-              (top) => top.translated == false
-            )[0].lang"
-            ref="editor"
-          />
-          <HelpLabel
-          :fieldLabel="$t('input_labels.issuer')"
-          :helpLabel ="$t('help.issuer')"
-          class="div-3"
-          style="padding-top:10px"
-          />
-            <q-input
-              outlined
-              :readonly="int_doc_shell.published"
-              filled
-              dense
-              maxlength="20"
-              v-model="int_doc_shell.issuer"
-              :label="$t('input_labels.issuer')"
-            />
-            <div class="q-gutter-sm row">
-               <HelpLabel
-          :fieldLabel="$t('input_labels.validable')"
-          :helpLabel ="$t('help.validable')"
-          class="col-1.5 field"
-          style="padding-top:10px"
-          /> 
-              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
-            </div>
-            <HelpLabel
-            v-if="int_doc_shell.validable" 
-          :fieldLabel="$t('input_labels.validators')"
-          :helpLabel ="$t('help.validators')"
-          class="field"
-          /> 
-              <q-select
-              v-if="int_doc_shell.validable"
-              multiple
-              :readonly="int_doc_shell.published"
-              filled
-              dense
-              clearable
-              v-model="int_doc_shell.validators"
-              @input="addValidators($event)"
-              @remove="removeValidator($event)"
-              @clear="clearValidators()"
-              emit-value
-              map-options
-              :options="this.validatorList"
-              :label="$t('input_labels.validators')"
-              class="select"
-          />
-       
-          <q-card-section class="section">
-            <HelpLabel
-          :fieldLabel="$t('input_labels.icon')"
-          :helpLabel ="$t('help.doc_type_icon')"
-          class="field"
-          style="padding-top:10px"
-          /> 
-    <q-select
-        dense
-        filled
-        v-model="int_doc_shell.icon"
-        :options="this.document_types_icons"
-        :label="$t('input_labels.icon')"
-        :rules="[ 
-                val => val != null|| 'Field is required'
+              <q-input
+                outlined
+                filled
+                dense
+                ref="doc_type_dialog"
+                :hint="$t('input_labels.required')"
+                counter
+                :maxlength="$envconfig.titleLimit"
+                :rules="[ 
+                  val => val.length <= $envconfig.titleLimit || 'Please use maximum 25 characters',
+                  val => !!val || 'Field is required'
                 ]"
-        :readonly="int_doc_shell.published"
-        ref="icon_dialog"
-        color="teal"
-        @input="addIcon($event)"
-        @remove="removeIcon($event)"
-        clearable
-      >
-      <template v-slot:selected>
-          <q-chip
-            v-if="int_doc_shell.icon"
-            square  
-          >
-          <q-avatar>
-          <img :src="int_doc_shell.icon">
-        </q-avatar>
-          </q-chip>
-          <q-badge v-else></q-badge>
-        </template>
-        <template v-slot:option="scope">
-          <q-item
-            v-bind="scope.itemProps"
-            v-on="scope.itemEvents"
-          >
-            <q-item-section>
-              <q-img style="max-width:24px; max-heigth:24px" :src="scope.opt.value" />
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-
-          </q-card-section>
-          
-        <q-card-section class="section">
-          <HelpLabel
-          :fieldLabel="$t('input_labels.doc_pics')"
-          :helpLabel ="$t('help.doc_pics')"
-          class="field"
-          /> 
-          
-          <q-file
-            @input="getFilesPics($event)"
-            bg-color="grey-3"
-            dense
-            :label="$t('input_labels.upload_doc_pics')"
-            standout
-            :disable="int_doc_shell.published"
-            outlined
-            accept=".jpg, image/*"
-            @rejected="onRejected"
-          >
-
-          </q-file>
-          <q-card class="pictures-card">
-            <div class="row">
-              <q-item-section
-                class="col-4 pictures-section"
-                v-for="image in uploaded_images"
-                :key="image"
-              >
-                <q-img
-                  :src="image"
-                  spinner-color="white"
-                  class="image"
-                  @click="addHotspot(image)"
-                />
-
-                <span class="span">
-                  <q-btn
-                    no-caps
-                    rounded
-                    class="negative-button"
-                    filled
-                    color="accent"
-                    @click="removePicture(image)"
-                    :label="$t('button.remove')"
-                  />
-                </span>
-              </q-item-section>
-              <q-dialog
-                v-model="hotimage"
-                @hide="hotspotConfig.data = []"
-              >
-                <q-card>
-                  <v-hotspot
-                     :init-options="hotspotConfig"
-                    @save-data="saveHotspot"
-                  />
-
-                </q-card>
-              </q-dialog>
-            </div>
-          </q-card>
-        </q-card-section>
-        <q-card-section class="section">
-           <HelpLabel
-          :fieldLabel="$t('input_labels.upload_model')"
-          :helpLabel ="$t('help.upload_model')"
-          class="field"
-          /> 
-          
-          <q-file
-            @input="getFilesModel($event)"
-            bg-color="grey-3"
-            dense
-            :disable="int_doc_shell.published"
-            :label="$t('input_labels.upload_model')"
-            standout
-            outlined
-            accept=".pdf"
-            @rejected="onRejected"
-          >
-
-          </q-file>
-          <q-item v-if="int_doc_shell.model" class="col-6">
-        <q-item-section avatar>
-          <q-icon  name="note_add"/>
-        </q-item-section>
-        <q-item-section>{{this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document}} model</q-item-section>
-        <q-item-section>
-           <q-btn
-        no-caps
-        dense
-        class="delete-button"
-        :data-cy="'cancelmodel'"
-        unelevated
-        rounded
-        :label="$t('button.remove')"
-        @click="cancelModel()"
-      />
-        </q-item-section>
-      </q-item>
-        </q-card-section>
-        
-       <div class="row">
-        <div class="col-2" style="min-width:200px; ">
-          <HelpLabel
-            :fieldLabel="$t('translation_states.translatable')"
-            :helpLabel ="$t('help.is_published')"
-            style="padding-left:17px"
-          />
-        </div>
-        <div class="col" style="padding-top:2px">
-
-          <q-toggle
-              :value="
-                int_doc_shell.translations.filter(
+                v-model="int_doc_shell.translations.filter(
                   (top) => top.translated == false
-                )[0].translationState == 1
-              "
-              color="accent"
-              @input="makeTranslatable($event)"
-            />
-        </div>
-      </div>
+                )[0].document"
+                :label="$t('input_labels.doc_type_placeholder')"
+              />
+              <HelpLabel
+                :field-label="$t('input_labels.description')"
+                :help-label="$t('help.doc_type_description')"
+                class="div-3"
+              />
+          
+              <GlossaryEditor
+                class="desc-editor"
+                :readonly="!(
+                  int_doc_shell.translations.filter(
+                    (top) => top.translated == false
+                  )[0].translationState == 0 &&
+                  int_doc_shell.published == false
+                )"
+                v-model="int_doc_shell.translations.filter(
+                  (top) => top.translated == false
+                )[0].description"
+                :lang="int_doc_shell.translations.filter(
+                  (top) => top.translated == false
+                )[0].lang"
+                ref="editor"
+              />
+              <HelpLabel
+                :field-label="$t('input_labels.issuer')"
+                :help-label="$t('help.issuer')"
+                class="div-3"
+                style="padding-top:10px"
+              />
+              <q-input
+                outlined
+                :readonly="int_doc_shell.published"
+                filled
+                dense
+                maxlength="20"
+                v-model="int_doc_shell.issuer"
+                :label="$t('input_labels.issuer')"
+              />
+              <div class="q-gutter-sm row">
+                <HelpLabel
+                  :field-label="$t('input_labels.validable')"
+                  :help-label="$t('help.validable')"
+                  class="col-1.5 field"
+                  style="padding-top:10px"
+                /> 
+                <q-checkbox
+                  :disable="int_doc_shell.published"
+                  class=" col-1 div-3"
+                  color="accent"
+                  style="padding-top:10px"
+                  v-model="int_doc_shell.validable"
+                />
+              </div>
+              <HelpLabel
+                v-if="int_doc_shell.validable" 
+                :field-label="$t('input_labels.validators')"
+                :help-label="$t('help.validators')"
+                class="field"
+              /> 
+              <q-select
+                v-if="int_doc_shell.validable"
+                multiple
+                :readonly="int_doc_shell.published"
+                filled
+                dense
+                clearable
+                v-model="int_doc_shell.validators"
+                @input="addValidators($event)"
+                @remove="removeValidator($event)"
+                @clear="clearValidators()"
+                emit-value
+                map-options
+                :options="this.validatorList"
+                :label="$t('input_labels.validators')"
+                class="select"
+              />
+       
+              <q-card-section class="section">
+                <HelpLabel
+                  :field-label="$t('input_labels.icon')"
+                  :help-label="$t('help.doc_type_icon')"
+                  class="field"
+                  style="padding-top:10px"
+                /> 
+                <q-select
+                  dense
+                  filled
+                  v-model="int_doc_shell.icon"
+                  :options="this.document_types_icons"
+                  :label="$t('input_labels.icon')"
+                  :rules="[ 
+                    val => val != null|| 'Field is required'
+                  ]"
+                  :readonly="int_doc_shell.published"
+                  ref="icon_dialog"
+                  color="teal"
+                  @input="addIcon($event)"
+                  @remove="removeIcon($event)"
+                  clearable
+                >
+                  <template v-slot:selected>
+                    <q-chip
+                      v-if="int_doc_shell.icon"
+                      square  
+                    >
+                      <q-avatar>
+                        <img :src="int_doc_shell.icon">
+                      </q-avatar>
+                    </q-chip>
+                    <q-badge v-else />
+                  </template>
+                  <template v-slot:option="scope">
+                    <q-item
+                      v-bind="scope.itemProps"
+                      v-on="scope.itemEvents"
+                    >
+                      <q-item-section>
+                        <q-img
+                          style="max-width:24px; max-heigth:24px"
+                          :src="scope.opt.value"
+                        />
+                      </q-item-section>
+                    </q-item>
+                  </template>
+                </q-select>
+              </q-card-section>
+          
+              <q-card-section class="section">
+                <HelpLabel
+                  :field-label="$t('input_labels.doc_pics')"
+                  :help-label="$t('help.doc_pics')"
+                  class="field"
+                /> 
+          
+                <q-file
+                  @input="getFilesPics($event)"
+                  bg-color="grey-3"
+                  dense
+                  :label="$t('input_labels.upload_doc_pics')"
+                  standout
+                  :disable="int_doc_shell.published"
+                  outlined
+                  accept=".jpg, image/*"
+                  @rejected="onRejected"
+                />
+                <q-card class="pictures-card">
+                  <div class="row">
+                    <q-item-section
+                      class="col-4 pictures-section"
+                      v-for="image in uploaded_images"
+                      :key="image"
+                    >
+                      <q-img
+                        :src="image"
+                        spinner-color="white"
+                        class="image"
+                        @click="addHotspot(image)"
+                      />
+
+                      <span class="span">
+                        <q-btn
+                          no-caps
+                          rounded
+                          class="negative-button"
+                          filled
+                          color="accent"
+                          @click="removePicture(image)"
+                          :label="$t('button.remove')"
+                        />
+                      </span>
+                    </q-item-section>
+                    <q-dialog
+                      v-model="hotimage"
+                      @hide="hotspotConfig.data = []"
+                    >
+                      <q-card>
+                        <v-hotspot
+                          :init-options="hotspotConfig"
+                          @save-data="saveHotspot"
+                        />
+                      </q-card>
+                    </q-dialog>
+                  </div>
+                </q-card>
+              </q-card-section>
+              <q-card-section class="section">
+                <HelpLabel
+                  :field-label="$t('input_labels.upload_model')"
+                  :help-label="$t('help.upload_model')"
+                  class="field"
+                /> 
+          
+                <q-file
+                  @input="getFilesModel($event)"
+                  bg-color="grey-3"
+                  dense
+                  :disable="int_doc_shell.published"
+                  :label="$t('input_labels.upload_model')"
+                  standout
+                  outlined
+                  accept=".pdf"
+                  @rejected="onRejected"
+                />
+                <q-item
+                  v-if="int_doc_shell.model"
+                  class="col-6"
+                >
+                  <q-item-section avatar>
+                    <q-icon name="note_add" />
+                  </q-item-section>
+                  <q-item-section>{{ this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document }} model</q-item-section>
+                  <q-item-section>
+                    <q-btn
+                      no-caps
+                      dense
+                      class="delete-button"
+                      :data-cy="'cancelmodel'"
+                      unelevated
+                      rounded
+                      :label="$t('button.remove')"
+                      @click="cancelModel()"
+                    />
+                  </q-item-section>
+                </q-item>
+              </q-card-section>
+        
+              <div class="row">
+                <div
+                  class="col-2"
+                  style="min-width:200px; "
+                >
+                  <HelpLabel
+                    :field-label="$t('translation_states.translatable')"
+                    :help-label="$t('help.is_published')"
+                    style="padding-left:17px"
+                  />
+                </div>
+                <div
+                  class="col"
+                  style="padding-top:2px"
+                >
+                  <q-toggle
+                    :value="
+                      int_doc_shell.translations.filter(
+                        (top) => top.translated == false
+                      )[0].translationState == 1
+                    "
+                    color="accent"
+                    @input="makeTranslatable($event)"
+                  />
+                </div>
+              </div>
       
 
-      <hr id="hr">
-      <q-btn
-        no-caps
-        class="delete-button"
-        :data-cy="'canceldoc'"
-        unelevated
-        rounded
-        :label="$t('button.cancel')"
-        @click="cancelDoc()"
-      />
-      <q-btn
-        no-caps
-        :disable="int_doc_shell.published"
-        :data-cy="'savedoc'"
-        color="accent"
-        unelevated
-        rounded
-        :label="$t('button.save')"
-        class="button"
-        type="submit"
-        
-      />
-    </form>
+              <hr id="hr">
+              <q-btn
+                no-caps
+                class="delete-button"
+                :data-cy="'canceldoc'"
+                unelevated
+                rounded
+                :label="$t('button.cancel')"
+                @click="cancelDoc()"
+              />
+              <q-btn
+                no-caps
+                :disable="int_doc_shell.published"
+                :data-cy="'savedoc'"
+                color="accent"
+                unelevated
+                rounded
+                :label="$t('button.save')"
+                class="button"
+                type="submit"
+              />
+            </form>
           </q-page>
         </q-page-container>
       </q-layout>
     </q-dialog>
-</div>
+  </div>
 </template>
 
 <script>

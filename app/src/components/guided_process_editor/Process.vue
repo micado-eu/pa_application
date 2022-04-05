@@ -334,7 +334,8 @@ export default {
 }
 .title{
   text-align:left; 
-  font-size:18px
+  font-size:18px;
+  font-weight: 600;
 }
 .margin{
   margin-left:30px;
