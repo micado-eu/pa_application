@@ -483,7 +483,8 @@ export default {
       this.alert_int = false
     },
     toLogin () {
-      this.$auth.login()
+      //this.$auth.login()
+      this.$keycloak.login()
     },
     openSurvey(){
       var surveyType = this.settings.filter((set)=>{
@@ -534,6 +535,7 @@ export default {
     },
     toLogout () {
       this.$auth.logout()
+      this.$keycloak.logoutFn()
     },
     changeIcon (key) {
       console.log('selected key')

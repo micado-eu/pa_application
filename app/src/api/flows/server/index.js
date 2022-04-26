@@ -5,13 +5,13 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchFlows () {
     return axiosInstance
-      .get('/backend/1.0.0/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments&filter[include][4][relation]=producedDoc')
+      .get('/processes?filter[include][0][relation]=translations&filter[include][1][relation]=processTopics&filter[include][2][relation]=applicableUsers&filter[include][3][relation]=comments&filter[include][4][relation]=producedDoc')
       .then(response => { return response.data })
       .catch(error_handler)
   },
   fetchFlowsProd (defaultLang, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+      .get('/processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
       .then((response) => {
         return response.data
       })
@@ -19,7 +19,7 @@ export default {
   },
   fetchFlowsTemp (defaultLang, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/temp-processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+      .get('/temp-processes-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
       .then((response) => {
         return response.data
       })
@@ -32,99 +32,99 @@ export default {
 
   deleteProcessTranslations (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-translations')
+      .delete('/processes/' + id + '/process-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessTranslationsProd (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-translation-prods')
+      .delete('/processes/' + id + '/process-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
 
   deleteProcess (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id)
+      .delete('/processes/' + id)
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessTopic (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-topics')
+      .delete('/processes/' + id + '/process-topics')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessUser (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-users')
+      .delete('/processes/' + id + '/process-users')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessProducedDocs (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-produced-documents')
+      .delete('/processes/' + id + '/process-produced-documents')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStepLink(id) {
     return axiosInstance
-      .delete('/backend/1.0.0/step-links/' + id )
+      .delete('/step-links/' + id )
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStepLinkTranslation(id){
     return axiosInstance
-      .delete('/backend/1.0.0/step-links/' + id + '/step-link-translations')
+      .delete('/step-links/' + id + '/step-link-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStepLinkTranslationProd(id){
     return axiosInstance
-      .delete('/backend/1.0.0/step-links/' + id + '/step-link-translation-prods')
+      .delete('/step-links/' + id + '/step-link-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStepDocument(id){
     return axiosInstance
-      .delete('/backend/1.0.0/steps/' + id + '/step-documents')
+      .delete('/steps/' + id + '/step-documents')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStep(id){
     return axiosInstance
-      .delete('/backend/1.0.0/steps/' + id )
+      .delete('/steps/' + id )
       .then(response => response.data)
       .catch(error_handler)
   },
   
   deleteProcessStepTranslation(id){
     return axiosInstance
-      .delete('/backend/1.0.0/steps/' + id + '/step-translations')
+      .delete('/steps/' + id + '/step-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessStepTranslationProd(id){
     return axiosInstance
-      .delete('/backend/1.0.0/steps/' + id + '/step-translation-prods')
+      .delete('/steps/' + id + '/step-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessCommentTranslation (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/comments/' + id + '/comments-translations')
+      .delete('/comments/' + id + '/comments-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessComment (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-comments')
+      .delete('/processes/' + id + '/process-comments')
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteComments (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/comments/' + id)
+      .delete('/comments/' + id)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -134,7 +134,7 @@ export default {
     // create fake id here
 
     return axiosInstance
-      .post('/backend/1.0.0/processes', process)
+      .post('/processes', process)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -143,7 +143,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-translations', savingTranslation)
+      .post('/processes/' + id + '/process-translations', savingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -152,7 +152,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-topics', savingTranslation)
+      .post('/processes/' + id + '/process-topics', savingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -161,7 +161,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-users', savingTranslation)
+      .post('/processes/' + id + '/process-users', savingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -170,7 +170,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/processes/' + id + '/process-produced-documents', savingTranslation)
+      .post('/processes/' + id + '/process-produced-documents', savingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -182,7 +182,7 @@ export default {
       updatingProcess= JSON.parse(JSON.stringify(process, ['id', 'link', 'published']))
 
     return axiosInstance
-      .patch('/backend/1.0.0/processes?where=' + JSON.stringify(whereClause), updatingProcess)
+      .patch('/processes?where=' + JSON.stringify(whereClause), updatingProcess)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -194,7 +194,7 @@ export default {
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
-      .patch('/backend/1.0.0/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/processes/' + translation.id + '/process-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -204,7 +204,7 @@ export default {
     }
 
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-topics?where=' + JSON.stringify(whereClause))
+      .delete('/processes/' + id + '/process-topics?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -214,13 +214,13 @@ export default {
     }
 
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
+      .delete('/processes/' + id + '/process-users?where=' + JSON.stringify(whereClause))
       .then(response => response.data)
       .catch(error_handler)
   },
   updatePublished(id, is_published, publishedDate){
     return axiosInstance
-    .patch('/backend/1.0.0/processes?[where][id]='+ id, {published: is_published, publishedDate:publishedDate})
+    .patch('/processes?[where][id]='+ id, {published: is_published, publishedDate:publishedDate})
     .then(response => response.data)
     .catch(error_handler)
 
@@ -228,7 +228,7 @@ export default {
   saveProcessTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .get('/backend/1.0.0/processes/to-production?id='+ id)
+      .get('/processes/to-production?id='+ id)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -239,33 +239,33 @@ export default {
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'process', 'description'])) : translation
 
     return axiosInstance
-      .patch('/backend/1.0.0/processes/' + translation.id + '/process-translation-prods?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/processes/' + translation.id + '/process-translation-prods?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .delete('/backend/1.0.0/processes/' + id + '/process-translation-prods')
+      .delete('/processes/' + id + '/process-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
   fetchProcessTranslated (id) {
 
     return axiosInstance
-      .get('/backend/1.0.0/processes/' + id + '/process-translations')
+      .get('/processes/' + id + '/process-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   fetchProcessProducedDocuments () {
     return axiosInstance
-      .get('/backend/1.0.0/process-produced-documents')
+      .get('/process-produced-documents')
       .then(response => response.data)
       .catch(error_handler)
   },
   fetchGraph (id, userLang) {
     return axiosInstance
-      .get('backend/1.0.0/mermaid_pa?processid=' + id + '&lang=' + userLang)
+      .get('/mermaid_pa?processid=' + id + '&lang=' + userLang)
       .then((response) => {
         return response.data
       })
@@ -273,7 +273,7 @@ export default {
   },
   exportProcess(id) {
     return axiosInstance
-      .get('backend/1.0.0/processes/to-json?id=' + id)
+      .get('/processes/to-json?id=' + id)
       .then((response) => {
         return response.data
       })

@@ -5,7 +5,7 @@ export default {
   fetchFeaturesFlags () {
     console.log("sono il client di features")
     return axiosInstance
-      .get('/backend/1.0.0/active-features')
+      .get('/active-features')
       .then(response => {
         console.log(response.data)
         return response.data
@@ -15,7 +15,7 @@ export default {
   fetchFeatures () {
     console.log("sono il client di features")
     return axiosInstance
-      .get('/backend/1.0.0/features-flags?filter[include][0][relation]=translations')
+      .get('/features-flags?filter[include][0][relation]=translations')
       .then(
         response => {
           console.log("response from API features client")
@@ -33,6 +33,6 @@ export default {
     console.log("the update is" + JSON.stringify(updatingFeature))
     let condition = { id: { eq: updatingFeature.id } }
     return axiosInstance
-      .patch('/backend/1.0.0/features-flags?where=' + JSON.stringify(condition), updatingFeature)
+      .patch('/features-flags?where=' + JSON.stringify(condition), updatingFeature)
   }
 }

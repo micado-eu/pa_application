@@ -4,7 +4,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
     sendToTranslation (id) {
         return axiosInstance
-            .get('/backend/1.0.0/sendtotranslation')
+            .get('/sendtotranslation')
             .then(response => { return response.data })
             .catch(error_handler)
     }

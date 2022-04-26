@@ -6,7 +6,7 @@ export default {
     console.log('CALLING API!!!!')
     return axiosInstance
       //      .get('/db/v01/intervention_category?lang=eq.en')
-      .get('/backend/1.0.0/intervention-types?filter[include][0][relation]=translations&filter[include][1][relation]=interventionTypeValidators')
+      .get('/intervention-types?filter[include][0][relation]=translations&filter[include][1][relation]=interventionTypeValidators')
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -18,7 +18,7 @@ export default {
     const updatingCategory = JSON.parse(JSON.stringify(integration_type, ['id', 'categoryType', 'published']))
 
     return axiosInstance
-      .patch(`/backend/1.0.0/intervention-types?where=${JSON.stringify(whereClause)}`, updatingCategory)
+      .patch(`/intervention-types?where=${JSON.stringify(whereClause)}`, updatingCategory)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -30,7 +30,7 @@ export default {
     const updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'interventionTitle', 'description', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
-      .patch(`/backend/1.0.0/intervention-types/${translation.id}/intervention-types-translations?where=${JSON.stringify(whereClause)}`, updatingTranslation)
+      .patch(`/intervention-types/${translation.id}/intervention-types-translations?where=${JSON.stringify(whereClause)}`, updatingTranslation)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -38,7 +38,7 @@ export default {
   saveIntegrationType (integration_type) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/intervention-types', integration_type)
+      .post('/intervention-types', integration_type)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -48,27 +48,27 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post(`/backend/1.0.0/intervention-types/${id}/intervention-types-translations`, savingTranslation)
+      .post(`/intervention-types/${id}/intervention-types-translations`, savingTranslation)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteIntegrationTypeTranslations (id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/intervention-types/${id}/intervention-types-translations`)
+      .delete(`/intervention-types/${id}/intervention-types-translations`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteInterventionByType(id){
     return axiosInstance
-    .delete('/backend/1.0.0/intervention-types/' + id + '/individual-intervention-plan-interventions')
+    .delete('/intervention-types/' + id + '/individual-intervention-plan-interventions')
     .then(response => response.data)
-    .catch(error_handler);
+    .catch(error_handler)
   },
   deleteInterventionTypeValidators(id){
     return axiosInstance
-    .delete('/backend/1.0.0/intervention-types/' + id + '/intervention-type-validators?[where][interventionTypeId]='+ id)
+    .delete('/intervention-types/' + id + '/intervention-type-validators?[where][interventionTypeId]='+ id)
     .then(response => response.data)
-    .catch(error_handler);
+    .catch(error_handler)
   },
   saveIntegrationTypeValidators (validator, id) {
     //  translation.id = id
@@ -77,49 +77,49 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post(`/backend/1.0.0/intervention-types/${id}/intervention-type-validators`, savingValidator)
+      .post(`/intervention-types/${id}/intervention-type-validators`, savingValidator)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteIntegrationTypeValidators (id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/intervention-types/${id}/intervention-type-validators`)
+      .delete(`/intervention-types/${id}/intervention-type-validators`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   deleteIntegrationType (id) {
     return axiosInstance
-      .delete(`/backend/1.0.0/intervention-types/${id}`)
+      .delete(`/intervention-types/${id}`)
       .then((response) => response.data)
       .catch(error_handler)
   },
   updatePublished(id, is_published){
     return axiosInstance
-    .patch('/backend/1.0.0/intervention-types?[where][id]='+ id, {published: is_published})
+    .patch('/intervention-types?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
-    .catch(error_handler);
+    .catch(error_handler)
 
   }, 
   saveTypeTranslationProd (id) {
 
     // create fake id here
     return axiosInstance
-      .get('/backend/1.0.0/intervention-types/to-production?id=' + id)
+      .get('/intervention-types/to-production?id=' + id)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   deleteTypeTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .delete('/backend/1.0.0/intervention-types/' + id + '/intervention-types-translation-prods')
+      .delete('/intervention-types/' + id + '/intervention-types-translation-prods')
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
   },
   fetchTypeTranslated (id) {
 
     return axiosInstance
-      .get('/backend/1.0.0/intervention-types/' + id + '/intervention-types-translations')
+      .get('/intervention-types/' + id + '/intervention-types-translations')
       .then(response => response.data)
-      .catch(error_handler);
-  },
+      .catch(error_handler)
+  }
 }

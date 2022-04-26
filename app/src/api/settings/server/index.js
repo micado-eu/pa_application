@@ -5,7 +5,7 @@ import { error_handler } from '../../../helper/utility'
 export default {
     fetchSettings () {
         return axiosInstance
-            .get('/backend/1.0.0/settings')
+            .get('/settings')
             .then((response) => {
                 return response.data
             })
@@ -14,7 +14,7 @@ export default {
     updateSingleSetting (data) {
         console.log(data)
         return axiosInstance
-            .patch('/backend/1.0.0/settings/' + data.key, data)
+            .patch('/settings/' + data.key, data)
             .then((response) => {
                 return response.data
             })
@@ -22,7 +22,7 @@ export default {
     },
     saveSetting(data){
         return axiosInstance
-        .post('/backend/1.0.0/settings/', data)
+        .post('/settings/', data)
         .then((response) => {
             return response.data
         })
@@ -31,7 +31,7 @@ export default {
     savePolicy(data){
         const savinPolicy = JSON.parse(JSON.stringify(data, ['key', 'published']))
         return axiosInstance
-        .post('/backend/1.0.0/t-settings/', savinPolicy)
+        .post('/t-settings/', savinPolicy)
         .then((response) => {
             return response.data
         })
@@ -42,7 +42,7 @@ export default {
         const updatingPolicy = JSON.parse(JSON.stringify(data, ['key', 'published']))
 
         return axiosInstance
-            .patch('/backend/1.0.0/t-settings/' + data.id, updatingPolicy)
+            .patch('/t-settings/' + data.id, updatingPolicy)
             .then((response) => {
                 return response.data
             })
@@ -51,7 +51,7 @@ export default {
     savePolicyTranslations(translation, id){
         const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState', 'translationDate', 'translated']))
         return axiosInstance
-        .post('/backend/1.0.0/t-settings/' + id +'/t-settings-translations', savingTranslation)
+        .post('/t-settings/' + id +'/t-settings-translations', savingTranslation)
         .then((response) => {
             return response.data
         })
@@ -64,7 +64,7 @@ export default {
           const savingTranslation = JSON.parse(JSON.stringify(translation, [ 'lang', 'value', 'translationState', 'translationDate', 'translated']))
 
           return axiosInstance
-            .patch('/backend/1.0.0/t-settings/'+ translation.id + '/t-settings-translations?where='+JSON.stringify(whereClause), savingTranslation)
+            .patch('/t-settings/'+ translation.id + '/t-settings-translations?where='+JSON.stringify(whereClause), savingTranslation)
             .then((response) => {
                 return response.data
             })
@@ -72,7 +72,7 @@ export default {
     },
     fetchMixedSettings () {
         return axiosInstance
-            .get('/backend/1.0.0/t-settings?filter[include][0][relation]=translations')
+            .get('/t-settings?filter[include][0][relation]=translations')
             .then((response) => {
                 return response.data
             })
@@ -80,7 +80,7 @@ export default {
     },
     updatePublished(id, is_published){
         return axiosInstance
-        .patch('/backend/1.0.0/t-settings?[where][id]='+ id, {published: is_published})
+        .patch('/t-settings?[where][id]='+ id, {published: is_published})
         .then(response => response.data)
         .catch(error_handler)
     
@@ -89,20 +89,20 @@ export default {
 
         // create fake id here
         return axiosInstance
-          .get('/backend/1.0.0/t-settings/to-production?id='+ id)
+          .get('/t-settings/to-production?id='+ id)
           .then(response => response.data)
           .catch(error_handler)
       },
       deleteSettingTranslationProd (id) {
         // create fake id here
         return axiosInstance
-          .delete('/backend/1.0.0/t-settings/' + id + '/t-settings-translation-prods')
+          .delete('/t-settings/' + id + '/t-settings-translation-prods')
           .then(response => response.data)
           .catch(error_handler)
       },
       fetchMixedSettingsMigrant (defaultLang, userLang) {
         return axiosInstance
-            .get('/backend/1.0.0/t-settings-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
+            .get('/t-settings-migrant?defaultlang=' + defaultLang + '&currentlang=' + userLang)
             .then((response) => {
                 console.log(response.data)
                 return response.data

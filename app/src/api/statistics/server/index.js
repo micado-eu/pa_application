@@ -34,7 +34,7 @@ export default {
     }
     if (isJSON(chart.content)) {
       return axiosInstance
-        .post('/backend/1.0.0/charts', chart)
+        .post('/charts', chart)
         .then((response) => response.data)
         .catch(error_handler)
     }
@@ -42,7 +42,7 @@ export default {
   },
   deleteChart(id) {
     return axiosInstance
-      .delete('/backend/1.0.0/charts/' + id)
+      .delete('/charts/' + id)
       .then(response => response.data)
       .catch(error_handler)
   }
@@ -54,7 +54,7 @@ function fetchLocalCharts() {
   
 
   return axiosInstance
-    .get('/backend/1.0.0/charts')
+    .get('/charts')
     .then((response) => {
       var fetched = response.data
       return fetched.forEach(chartdata => {

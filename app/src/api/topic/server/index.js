@@ -5,14 +5,14 @@ import { error_handler } from '../../../helper/utility'
 export default {
   fetchTopic () {
     return axiosInstance
-      .get('/backend/1.0.0/topics?filter[include][0][relation]=translations')
+      .get('/topics?filter[include][0][relation]=translations')
       .then(response => response.data)
       .catch(error_handler)
   },
   saveTopic (topic) {
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/topics', topic)
+      .post('/topics', topic)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -22,7 +22,7 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .post('/backend/1.0.0/topics/' + id + '/topic-translations', savingTranslation)
+      .post('/topics/' + id + '/topic-translations', savingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -30,41 +30,41 @@ export default {
 
     // create fake id here
     return axiosInstance
-      .get('/backend/1.0.0/topics/to-production?id='+ id)
+      .get('/topics/to-production?id='+ id)
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteTopicTranslationProd (id) {
     // create fake id here
     return axiosInstance
-      .delete('/backend/1.0.0/topics/' + id + '/topic-translation-prods')
+      .delete('/topics/' + id + '/topic-translation-prods')
       .then(response => response.data)
       .catch(error_handler)
   },
   fetchTopicTranslated (id) {
 
     return axiosInstance
-      .get('/backend/1.0.0/topics/' + id + '/topic-translations')
+      .get('/topics/' + id + '/topic-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
 
   deleteTopicTranslations (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/topics/' + id + '/topic-translations')
+      .delete('/topics/' + id + '/topic-translations')
       .then(response => response.data)
       .catch(error_handler)
   },
 
   deleteTopic (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/topics/' + id)
+      .delete('/topics/' + id)
       .then(response => response.data)
       .catch(error_handler)
   },
   deleteProcessTopic (id) {
     return axiosInstance
-      .delete('/backend/1.0.0/topics/' + id + '/process-topics')
+      .delete('/topics/' + id + '/process-topics')
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -76,7 +76,7 @@ export default {
       updatingTopic = JSON.parse(JSON.stringify(topic, ['id', 'icon', 'published', 'father']))
 
     return axiosInstance
-      .patch('/backend/1.0.0/topics?where=' + JSON.stringify(whereClause), updatingTopic)
+      .patch('/topics?where=' + JSON.stringify(whereClause), updatingTopic)
       .then(response => response.data)
       .catch(error_handler)
   },
@@ -88,13 +88,13 @@ export default {
       updatingTranslation = (translation.translationDate == null) ? JSON.parse(JSON.stringify(translation, ['id', 'lang', 'topic', 'description', 'translationState', 'translationDate', 'translated'])) : translation
 
     return axiosInstance
-      .patch('/backend/1.0.0/topics/' + translation.id + '/topic-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
+      .patch('/topics/' + translation.id + '/topic-translations?where=' + JSON.stringify(whereClause), updatingTranslation)
       .then(response => response.data)
       .catch(error_handler)
   }, 
   updatePublished(id, is_published){
     return axiosInstance
-    .patch('/backend/1.0.0/topics?[where][id]='+ id, {published: is_published})
+    .patch('/topics?[where][id]='+ id, {published: is_published})
     .then(response => response.data)
     .catch(error_handler)
 

@@ -20,13 +20,13 @@ export const check = state => roles => {
   if (user) {
     if (Array.isArray(roles) && roles.length) {
       for (let role of roles) {
-        if ((user.roleNames != null) && user.roleNames.includes(role)) {
+        if ((user.realm_access.roles != null) && user.realm_access.roles.includes(role)) {
           console.log("returning true since it has the role")
           return true
         }
       }
     } else if (roles) {
-      if ((user.roleNames != null) && user.roleNames.includes(roles)) {
+      if ((user.realm_access.roles != null) && user.realm_access.roles.includes(roles)) {
         console.log("returning true since it has the role")
         return true
       }

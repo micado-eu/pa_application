@@ -33,8 +33,9 @@ export default {
     }
   },
   mounted () {
-    this.verifyUser()
+    //this.verifyUser()
     //this.getPic()
+    this.$router.push({name: 'home'})
   },
   methods: {
     getPic(){

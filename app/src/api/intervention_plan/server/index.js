@@ -6,29 +6,29 @@ export default {
     console.log("CALLING API!!!!FETCH")
     
     return axiosInstance
-      .get('/backend/1.0.0/individual-intervention-plans?filter[include][0][relation]=interventions&filter[where][userId]=' + id)
+      .get('/individual-intervention-plans?filter[include][0][relation]=interventions&filter[where][userId]=' + id)
       .then(response => response.data)
-      .catch(error_handler);
+      .catch(error_handler)
     },
     deleteInterventionPlan (id) {
       console.log(id)
       console.log("CALLING API!!!!Delete")
       
       return axiosInstance
-        .delete('/backend/1.0.0/individual-intervention-plans/' + id)
+        .delete('/individual-intervention-plans/' + id)
         .then(response => response.data)
-        .catch(error_handler);
+        .catch(error_handler)
       },
     saveIntervention (id, intervention) {
       console.log(id)
       console.log("CALLING API!!!! INTERVENTION")
       
-      const savingIntervention = JSON.parse(JSON.stringify(intervention, [ 'listId','interventionType','title', 'description','validationDate', 'completed','validatingUserId','validatingUserTenant','assignmentDate', 'validationRequestDate']));
+      const savingIntervention = JSON.parse(JSON.stringify(intervention, [ 'listId','interventionType','title', 'description','validationDate', 'completed','validatingUserId','validatingUserTenant','assignmentDate', 'validationRequestDate']))
      
       return axiosInstance
-        .post('/backend/1.0.0/individual-intervention-plans/' + id + '/individual-intervention-plan-interventions', savingIntervention)
+        .post('/individual-intervention-plans/' + id + '/individual-intervention-plan-interventions', savingIntervention)
         .then(response => response.data)
-        .catch(error_handler);
+        .catch(error_handler)
       },
       editIntervention (id_plan, intervention) {
         console.log(id_plan)
@@ -36,25 +36,25 @@ export default {
           id: { eq: intervention.id }
         },
         
-         editingIntervention = JSON.parse(JSON.stringify(intervention, [ 'id','listId','interventionType', 'title', 'description', 'completed']));
+         editingIntervention = JSON.parse(JSON.stringify(intervention, [ 'id','listId','interventionType', 'title', 'description', 'completed']))
        
         return axiosInstance
-          .patch('/backend/1.0.0/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
+          .patch('/individual-intervention-plans/' + id_plan + '/individual-intervention-plan-interventions?where=' + JSON.stringify(whereClause), editingIntervention)
           .then(response => response.data)
-          .catch(error_handler);
+          .catch(error_handler)
         },
         deleteIntervention(intervention_id){
           return axiosInstance
-          .delete('/backend/1.0.0/individual-intervention-plan-interventions/' + intervention_id)
+          .delete('/individual-intervention-plan-interventions/' + intervention_id)
           .then(response => response.data)
-          .catch(error_handler);
+          .catch(error_handler)
         },
         deleteInterventionByPlan(plan_id){
   
           return axiosInstance
-          .delete('/backend/1.0.0/individual-intervention-plans/' + plan_id + '/individual-intervention-plan-interventions?[where][listId]='+ plan_id)
+          .delete('/individual-intervention-plans/' + plan_id + '/individual-intervention-plan-interventions?[where][listId]='+ plan_id)
           .then(response => response.data)
-          .catch(error_handler);
+          .catch(error_handler)
         },
 
         saveInterventionPlan(intervention_plan) {
@@ -63,9 +63,9 @@ export default {
           console.log("CALLING API!!!!PLAN")
              
           return axiosInstance
-            .post('/backend/1.0.0/individual-intervention-plans' , intervention_plan)
+            .post('/individual-intervention-plans' , intervention_plan)
             .then(response => response.data)
-            .catch(error_handler);
+            .catch(error_handler)
           
         },
     deleteIntegrationCategory(integration_category) {

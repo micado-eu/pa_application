@@ -16,7 +16,7 @@ export default ({ Vue }) => {
   console.log("before axiosinstance")
   // Here we add the apiKey that we got from the HTTP call
   axiosInstance.defaults.baseURL = 'https://' + Vue.prototype.$envconfig.apiUrl
-  axiosInstance.defaults.headers.common['apikey'] = Vue.prototype.$envconfig.apiKey
+  //axiosInstance.defaults.headers.common['apikey'] = Vue.prototype.$envconfig.apiKey
   Vue.prototype.$axios = axiosInstance
 }
 

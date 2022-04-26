@@ -13,7 +13,6 @@
             :label="$t('input_labels.upload_file')"
             accept=".csv"
           />
-
         </q-card-section>
 
         <q-card-actions align="right">
@@ -88,7 +87,7 @@ export default {
 
       //      console.log(formData.getHeaders())
       const self = this
-      this.$axios.post('/backend/1.0.0/files',
+      this.$axios.post('/files',
         formData,
         {
           headers: postHeaders
