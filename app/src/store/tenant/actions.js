@@ -17,22 +17,15 @@ export function saveTenants (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions save tenant:")
   console.log(payload)
-  //  let savingTenant = JSON.parse(JSON.stringify(payload.comment, ['']))
-  //  console.log(savingComment)
-  //  var the_process = payload.process
-  //  console.log(the_process)
-  /*
-    // we need to save first the topic
-    client.saveTenant(savingTenant)
+    client.saveTenant(payload)
       .then(function (tenant_return) {
         console.log("returned cleint from saving tenant")
         console.log(tenant_return)
         // in topic_return we have the ID that we need in the following cycle
-  */
   state.commit('saveTenants', payload)
-  //  }
+    }
 
-  // )
+  )
 }
 
 /*
@@ -116,3 +109,11 @@ async function asyncForEach (array, callback) {
 
 }
 */
+export function addTenants (state, payload) {
+  console.log("in actions add tenant:")
+  console.log(payload)
+  client.addTenant(payload.group_name).then((tenant)=>{
+    client.createNGOUser(payload.username, payload.role, payload.group_name)
+
+  })
+}

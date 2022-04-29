@@ -1,26 +1,28 @@
 <template>
-<div>
-  <q-item class="item">
-    <q-item-section class="col-9 flex flex-left ">{{ this.user.name }}</q-item-section>
+  <div>
+    <q-item class="item">
+      <q-item-section class="col-9 flex flex-left ">
+        {{ this.user.name }}
+      </q-item-section>
         
-        <q-item-section class="col-1 flex flex-center top">
-          <q-icon
+      <q-item-section class="col-1 flex flex-center top">
+        <q-icon
           
-            name="img:statics/icons/Icon - open up.svg"
-            size="md"
-            @click="showData()"
-          />
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top">
-          <q-icon
+          name="img:statics/icons/Icon - open up.svg"
+          size="md"
+          @click="showData()"
+        />
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
+        <q-icon
           
-            name="img:statics/icons/Icon - Delete.svg"
-            @click="remove_user($event)"
-            size="md"
-          />
-        </q-item-section>
+          name="img:statics/icons/Icon - Delete.svg"
+          @click="remove_user($event)"
+          size="md"
+        />
+      </q-item-section>
 
-   <!-- <div>
+      <!-- <div>
 
       <div class="row width">
         <div class="col h6 right">{{ this.user.name }}</div>
@@ -97,24 +99,25 @@
       </q-card>
       <hr class="hr" />
     </div>-->
-
-  </q-item>
-          <q-item v-if="!hideData" style="padding-left:0px">
-        
-        <div class=" q-gutter-sm">
-          <div>
-          <b>{{$t('ngo.fulluser')}}:</b> {{ wso2FullUser}}
+    </q-item>
+    <q-item
+      v-if="!hideData"
+      style="padding-left:0px"
+    >
+      <div class=" q-gutter-sm">
+        <!--<div>
+          <b>{{ $t('ngo.fulluser') }}:</b> {{ wso2FullUser }}
         </div>
         <div>
-          <b>{{$t('ngo.adminMail')}}:</b> {{ wso2Email}}
-        </div>
+          <b>{{ $t('ngo.adminMail') }}:</b> {{ wso2Email }}
+        </div>-->
         <div v-if="user.email!=null && user.email!=undefined">
-          <b>{{$t('ngo.contactMail')}}:</b> {{ user.email}}
+          <b>{{ $t('ngo.contactMail') }}:</b> {{ user.email }}
         </div>
-        <div  v-if="user.address!=null && user.address!=undefined">
-          <b>{{$t('ngo.address')}}:</b> {{ user.address}}
+        <div v-if="user.address!=null && user.address!=undefined">
+          <b>{{ $t('ngo.address') }}:</b> {{ user.address }}
         </div>
-          <!--<q-field
+        <!--<q-field
             :label="$t('ngo.fulluser')"
             stack-label
           >
@@ -161,11 +164,10 @@
               >{{ user.address}}</div>
             </template>
           </q-field>-->
-        </div>
-      </q-item>
-         <hr>
-
-</div>
+      </div>
+    </q-item>
+    <hr>
+  </div>
 </template>
 
 <script>

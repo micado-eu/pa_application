@@ -14,7 +14,19 @@ export default {
       .post('/tenants', tenant)
       .then(response => response.data)
       .catch(error_handler)
-  }
+  },
+  addTenant (name, token) {
+    return axiosInstance
+        .post('/createGroup?name=' +name + '&realm=ngo&token=' + token  )
+        .then(response => { return response.data })
+        .catch(error_handler)
+},
+createNGOUser(username, role, group){
+  return axiosInstance
+      .post('/createKeycloakUserWithRoleAndGroup?username=' +username + '&realm=ngo&role=' + role + '&group=' + group)
+      .then(response => { return response.data })
+      .catch(error_handler)
+}
   /* ,
   saveComment (comment) {
     // create fake id here

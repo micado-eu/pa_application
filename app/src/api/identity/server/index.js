@@ -2,7 +2,7 @@ import { axiosInstance } from 'boot/axios'
 import { error_handler } from '../../../helper/utility'
 
 export default {
-    getTenant (id) {
+    /*getTenant (id) {
         return axiosInstance
             .get('/getTenant')
             .then(response => { return response.data })
@@ -19,5 +19,5 @@ export default {
             .post('/wso2TenantPlusDB?tenant=' + tenantDomain + '&password=' + password + '&email=' + email + '&firstname=' + firstname + '&lastname=' + lastname + '&tenantname=' + tenantname + '&link=' + link + '&address=' + address + '&contactmail=' + contactmail)
             .then(response => { return response.data })
             .catch(error_handler)
-    }
+    }*/
 }

@@ -1,4 +1,4 @@
-  <template>
+<template>
   <div class="container">
     <div class="center">
       <div
@@ -20,9 +20,12 @@
           </template>
         </q-input>
       </div>
-      <div class="col-2" style="display:inline-block">
+      <div
+        class="col-2"
+        style="display:inline-block"
+      >
         <q-btn
-        id="button"
+          id="button"
           :label="$t('ngo.addNgo')"
           color="secondary"
           no-caps
@@ -38,7 +41,6 @@
           @reset.prevent.stop="onReset"
           class="q-gutter-md"
         >
-
           <div class="row">
             <div class=" input-field col-4">
               <q-input
@@ -64,7 +66,6 @@
                 :label="$t('ngo.adminSurname')"
               />
             </div>
-            
           </div>
           <div class="row">
             <div class="input-field col-4">
@@ -100,10 +101,8 @@
                 v-model="new_ngo_address"
                 :label="$t('ngo.address')"
               />
-          </div>
-          <div class="row">
-            
             </div>
+            <div class="row" />
             <div class="input-field col-4">
               <q-input
                 ref="new_ngo_contact_mail"
@@ -129,17 +128,18 @@
                 :label="$t('ngo.link')"
               />
             </div>
-            <div class="col-4">
-            </div>
+            <div class="col-4" />
           </div>
-          <div class="q-pa-md q-gutter-md" style="text-align:center">
+          <div
+            class="q-pa-md q-gutter-md"
+            style="text-align:center"
+          >
             <q-btn
               no-caps
               :label="$t('button.cancel')"
               class="delete-button"
               @click="onReset();hideData=true"
               flat
-              
             />
             <q-btn
               no-caps
@@ -147,7 +147,6 @@
               type="reset"
               flat
               class="delete-button"
-
             />
 
             <q-btn
@@ -158,32 +157,31 @@
               color="accent"
             />
           </div>
-
         </form>
       </q-card-section>
     </q-card>
 
     <div>
       <q-list id="list">
-    <q-item class="no-pad">
-    <q-item-section class="col-9 flex flex-left" >
+        <q-item class="no-pad">
+          <q-item-section class="col-9 flex flex-left">
       &nbsp;
-    </q-item-section>
-    <q-item-section class="col-1 flex flex-center top">
-    {{$t('button.view')}}
-    </q-item-section> 
-    <q-item-section class="col-1 flex flex-center top">
-      {{$t('input_labels.delete')}}
-    </q-item-section>
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('button.view') }}
+          </q-item-section> 
+          <q-item-section class="col-1 flex flex-center top">
+            {{ $t('input_labels.delete') }}
+          </q-item-section>
         </q-item>
         <hr style="border: 0.999px solid #424244;">
         <User
           v-for="user in filteredUsers"
           :key="user.id"
           :user="user"
-          :wso2User="getWso2Tenant(user.id)"
+          :wso2user="getWso2Tenant(user.id)"
           @remove="deleteUser"
-        ></User>
+        />
       </q-list>
     </div>
   </div>
@@ -204,7 +202,8 @@ export default {
         tenants: 'tenant/tenants'
       }, actions: {
         fetchTenants: 'tenant/fetchTenants',
-        saveTenants: 'tenant/saveTenants'
+        saveTenants: 'tenant/saveTenants',
+        addTenants: 'tenant/addTenants'
       }
     })
   ],
@@ -277,15 +276,27 @@ export default {
         return false
       }
       // here we need to call the API for create the tenant
-      identityClient.addTenant(this.new_ngo_tenant, this.new_admin_pwd, this.new_admin_email, this.new_admin_name, this.new_admin_surname, this.new_ngo_name, this.new_ngo_link, this.new_ngo_address, this.new_ngo_contact_mail)
+      /*identityClient.addTenant(this.new_ngo_tenant, this.new_admin_pwd, this.new_admin_email, this.new_admin_name, this.new_admin_surname, this.new_ngo_name, this.new_ngo_link, this.new_ngo_address, this.new_ngo_contact_mail)
         .then((newTenant) => {
           console.log(newTenant)
           //now we can add the data in the DB with the rest of information
 
-          this.saveTenants(newTenant)
-        })
+        })*/
+        //create new group on keycloak 
+        var working_roles= JSON.stringify(["Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager", "Application/micado_ngo_superadmin"])
+        this.addTenants({group_name:this.new_ngo_name, username:this.new_ngo_tenant, role:working_roles})
+        // add group as a tenant to tenant table
+        let savingTenant = {
+          name:this.new_ngo_name,
+          link:this.new_ngo_link,
+          email: this.new_ngo_contact_mail,
+          address: this.new_ngo_address,
+          realm:'ngo' 
+        }
+          this.saveTenants(savingTenant)
+        // create new admin for that tenant/group
 
-
+      this.hideData = true
     },
 
     onReset () {
@@ -321,7 +332,8 @@ export default {
     console.log(this.$store)
 
     this.fetchTenants()
-      .then(users => {
+    console.log(window.accessToken)
+     /* .then(users => {
         console.log("i got tenants from API")
         console.log(users)
         this.loading = false
@@ -338,7 +350,7 @@ export default {
               this.wso2TenantsDetails.push(res.getTenantResponse.return)
             })
         })
-      })
+      })*/
 
 
 
