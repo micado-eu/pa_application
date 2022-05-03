@@ -7,6 +7,10 @@ export function setUser (state, user) {
   state.user = user
 }
 
+export function setKeycloakMigrantUser (state, user) {
+  state.keycloakMigrantUser = user
+}
+
 export function setPAUser (state, pauser) {
   state.pauser = pauser
 }

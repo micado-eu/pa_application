@@ -284,7 +284,7 @@ export default {
         })*/
         //create new group on keycloak 
         var working_roles= JSON.stringify(["Application/micado_ngo_admin", "Application/micado_ngo_migrant_manager", "Application/micado_ngo_superadmin"])
-        this.addTenants({group_name:this.new_ngo_name, username:this.new_ngo_tenant, role:working_roles})
+        this.addTenants({group_name:this.new_ngo_name, username:this.new_ngo_tenant, firstName:this.new_admin_name, lastName:this.new_admin_surname, email: this.new_admin_email, password: this.new_admin_pwd, role:working_roles})
         // add group as a tenant to tenant table
         let savingTenant = {
           name:this.new_ngo_name,

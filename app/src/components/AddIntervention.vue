@@ -1,130 +1,135 @@
 <template>
-  <q-card class="container"  :hidden="showAddForm" >
-     <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class="q-gutter-md"
-        >
-    <div>
-     <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
-      <q-card-section
+  <q-card
+    class="container"
+    :hidden="showAddForm"
+  >
+    <form
+      @submit.prevent.stop="onSubmit"
+      @reset.prevent.stop="onReset"
+      class="q-gutter-md"
+    >
+      <div>
+        <h5 class="title">
+          {{ $t('input_labels.new_intervention') }}
+        </h5>
+        <q-card-section
         
-        class="card"
-      >
-        <div class="div-1">
-          <div class="div-2">
-            <div class=" q-pa-xsm row div-3">
-              <div class=" q-pa-xsm col-3">
-                <HelpLabel
-                :fieldLabel="$t('input_labels.title')"
-                :helpLabel ="$t('help.intervention_title')"
-                class="header"
-                style="padding-top:10px;font-size:16px"
-                />
-              </div>
-              <div class="col-9 div-4">
-                <q-input
-                  :rules="[
-                  val => val.length <= 100 || 'Please use maximum 100 characters',
-                  val => !!val || 'Field is required'
-                  ]"
-                  ref="title_ref"
-                  :hint="$t('input_labels.required')"
-                  maxlength="100"
-                  counter
-                  dense
-                  bg-color="white"
-                  standout
-                  outlined
-                  v-model="model.title"
-                />
-              </div>
-            </div>
-
-            <div class=" q-pa-xsm row div-5">
-              <div class=" q-pa-xsm col-3">
-                 <HelpLabel
-                  :fieldLabel="$t('input_labels.description')"
-                  :helpLabel ="$t('help.intervention_description')"
-                  class="header"
-                  style="padding-top:10px;font-size:16px"
+          class="card"
+        >
+          <div class="div-1">
+            <div class="div-2">
+              <div class=" q-pa-xsm row div-3">
+                <div class=" q-pa-xsm col-3">
+                  <HelpLabel
+                    :field-label="$t('input_labels.title')"
+                    :help-label="$t('help.intervention_title')"
+                    class="header"
+                    style="padding-top:10px;font-size:16px"
                   />
+                </div>
+                <div class="col-9 div-4">
+                  <q-input
+                    :rules="[
+                      val => val.length <= 100 || 'Please use maximum 100 characters',
+                      val => !!val || 'Field is required'
+                    ]"
+                    ref="title_ref"
+                    :hint="$t('input_labels.required')"
+                    maxlength="100"
+                    counter
+                    dense
+                    bg-color="white"
+                    standout
+                    outlined
+                    v-model="model.title"
+                  />
+                </div>
               </div>
-              <div class="col-9 div-4">
-                <q-input
-                  dense
-                  type="textarea"
-                  bg-color="white"
-                  standout
-                  outlined
-                  v-model="model.description"
-                />
+
+              <div class=" q-pa-xsm row div-5">
+                <div class=" q-pa-xsm col-3">
+                  <HelpLabel
+                    :field-label="$t('input_labels.description')"
+                    :help-label="$t('help.intervention_description')"
+                    class="header"
+                    style="padding-top:10px;font-size:16px"
+                  />
+                </div>
+                <div class="col-9 div-4">
+                  <q-input
+                    dense
+                    type="textarea"
+                    bg-color="white"
+                    standout
+                    outlined
+                    v-model="model.description"
+                  />
+                </div>
+              </div>
+
+              <div class=" q-pa-xsm row div-5">
+                <div class=" q-pa-xsm col-3">
+                  <HelpLabel
+                    :field-label="$t('input_labels.type')"
+                    :help-label="$t('help.intervention_assigned_type')"
+                    class="header-2"
+                    style="font-size:16px"
+                  />
+                </div>
+                <div class=" q-pa-md col-9 div-6">
+                  <q-select
+                    :rules="[ 
+                      val => val != null || 'Field is required'
+                    ]"
+                    ref="type_ref"
+                    :hint="$t('input_labels.required')"
+                    filled
+                    dense
+                    clearable
+                    emit-value
+                    map-options
+                    v-model="model.interventionType"
+                    :options="intervention_categories"
+                    bg-color="white"
+                    :label="$t('input_labels.intervention_type')"
+                    class="width"
+                  />
+                </div>
               </div>
             </div>
 
-            <div class=" q-pa-xsm row div-5">
-              <div class=" q-pa-xsm col-3">
-                <HelpLabel
-                :fieldLabel="$t('input_labels.type')"
-                :helpLabel ="$t('help.intervention_assigned_type')"
-                class="header-2"
-                style="font-size:16px"
-                />
-
-              </div>
-              <div class=" q-pa-md col-9 div-6">
-                <q-select
-                  :rules="[ 
-                  val => val != null || 'Field is required'
-                  ]"
-                  ref="type_ref"
-                  :hint="$t('input_labels.required')"
-                  filled
-                  dense
-                  clearable
-                  emit-value
-                  map-options
-                  v-model="model.interventionType"
-                  :options="intervention_categories"
-                  bg-color="white"
-                  :label="$t('input_labels.intervention_type')"
-                  class="width"
-                />
-              </div>
+            <div class="q-gutter-sm" />
+            <div
+              class="center"
+              style="padding-top:30px"
+            >
+              <q-btn
+                :data-cy="'cancelintervention'"
+                class="delete-button"
+                unelevated
+                no-caps
+                :label="$t('button.cancel')"
+                type="reset"
+                @click="cancelIntervention($event)"
+              />
+              <q-btn
+                class="button"
+                :data-cy="'saveintervention'"
+                unelevated
+                no-caps
+                color="accent"
+                :label="$t('button.add_intervention')"
+                :id="the_intervention_plan.id"
+                type="submit"
+              />
             </div>
           </div>
+        </q-card-section>
+        <br>
+      </div>
 
-          <div class="q-gutter-sm">
-
-          </div>
-          <div class="center" style="padding-top:30px">
-            <q-btn
-            :data-cy="'cancelintervention'"
-              class="delete-button"
-              unelevated
-              no-caps
-              :label="$t('button.cancel')"
-              type="reset"
-              @click="cancelIntervention($event)"
-            />
-            <q-btn
-              class="button"
-              :data-cy="'saveintervention'"
-              unelevated
-              no-caps
-              color="accent"
-              :label="$t('button.add_intervention')"
-              :id="the_intervention_plan.id"
-              type="submit"
-            />
-          </div>
-        </div>
-      </q-card-section>
       <br>
-    </div>
-
-    <br>
-     </form>
+    </form>
   </q-card>
 </template>
 

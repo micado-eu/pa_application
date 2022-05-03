@@ -15,7 +15,7 @@
             :icon="'img:statics/icons/Icon - Integration.svg'"
             :tooltip="$t('help.integration')"
             @click.native="interventionPlan()"
-            :data-cy="'interventionplan'.concat(theUser.umId)"
+            :data-cy="'interventionplan'.concat(theUser.id)"
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
@@ -24,7 +24,7 @@
             :icon="'img:statics/icons/Icon - Data.svg'"
             :tooltip="$t('help.migrant_data')"
             @click.native="migrantData()"
-            :data-cy="'userdata'.concat(theUser.umId)"
+            :data-cy="'userdata'.concat(theUser.id)"
           />
         </q-item-section>
         <q-item-section class="col-1 flex flex-center top">
@@ -33,17 +33,17 @@
             :icon="'img:statics/icons/Icon - Delete.svg'"
             :tooltip="$t('help.delete_user')"
             @click.native="remove_user($event)"
-            :data-cy="'deleteuser'.concat(theUser.umId)"
+            :data-cy="'deleteuser'.concat(theUser.id)"
           />
         </q-item-section>
       </div>
       <div class="row width">
         <div class=" q-pa-md  col-8 container">
-          <span class="span">{{ this.dateOfBirth }}</span>
+          <span class="span">{{ this.theUser.firstName }}</span>
           <span class="span">|</span>
-          <span class="span">{{ this.nationality }}</span>
+          <span class="span">{{ this.theUser.lastName }}</span>
           <span class="span">|</span>
-          <span class="span">{{ this.gender }}</span>
+          <span class="span">{{ this.theUser.email }}</span>
         </div>
       </div>
     </div>
@@ -73,7 +73,7 @@ export default {
     IconWithTooltip
   },
   computed: {
-      dateOfBirth () {
+      /*dateOfBirth () {
       var dob=""
       var dob_arr =  this.theUser.attributes.filter((attr)=>{
         return attr.umAttrName == "dateOfBirth"
@@ -102,7 +102,7 @@ export default {
         gender = gender_arr[0].umAttrValue 
       }
       return gender
-    }
+    }*/
   },
   methods: {
     remove_user(event){
@@ -113,10 +113,10 @@ export default {
     },
       interventionPlan(){
       console.log(this.theUser)
-      this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.umId } })
+      this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.id } })
     },
     migrantData(){
-      this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.umId } })
+      this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.id } })
     }
   
   }

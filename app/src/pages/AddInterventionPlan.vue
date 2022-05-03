@@ -1,156 +1,264 @@
 <template>
-<div>
-  <div class="div-2">
-    <form
-          @submit.prevent.stop="onSubmitPlan"
-          @reset.prevent.stop="onResetPlan"
-          class=""
-        >
-  <div id="div-3">
-    {{$t('input_labels.add_intervention_plan')}}
-  </div>
-    <div id="div-4">
-       
-                  <div id="div-5" class=" q-pa-xsm row">
-                    <div   class=" q-pa-xsm col-2">
-                      <HelpLabel
-                      :fieldLabel="$t('input_labels.title')"
-                      :helpLabel ="$t('help.intervention_plan_title')"
-                      class="header-1"
-                      style="padding-top:5px"
-                      />  
-                    </div>
-                    <div id="div-7" class="col-9">
-                      <q-input 
-                      dense 
-                      bg-color="grey-3" 
-                      :rules="[
-                      val => val.length <= 100 || 'Please use maximum 100 characters',
-                      val => !!val || 'Field is required'
-                      ]"
-                      ref="title_plan"
-                      :hint="$t('input_labels.required')" 
-                      counter 
-                      maxlength="100" 
-                      standout 
-                      outlined 
-                      v-model="plan_shell.title" />
-                    </div>
-                  </div>
-    </div>
-    <q-list id="list" bordered separator>
-      <q-item
-      style="padding-left:60px; padding-right:60px"
-        v-for="an_action in plan_shell.interventions"
-        :key="an_action.id"
+  <div>
+    <div class="div-2">
+      <form
+        @submit.prevent.stop="onSubmitPlan"
+        @reset.prevent.stop="onResetPlan"
+        class=""
       >
-        <q-item-section class="col-10" id="item-section-1">{{an_action.title}}</q-item-section>
-          <q-item-section class="col-1 flex flex-center margin">
-              <IconWithTooltip :icon="'img:statics/icons/Edit.png'" :id="an_action.id" :tooltip="$t('help.edit_intervention')" @click.native="editAction($event, an_action)" />
+        <div id="div-3">
+          {{ $t('input_labels.add_intervention_plan') }}
+        </div>
+        <div id="div-4">
+          <div
+            id="div-5"
+            class=" q-pa-xsm row"
+          >
+            <div class=" q-pa-xsm col-2">
+              <HelpLabel
+                :field-label="$t('input_labels.title')"
+                :help-label="$t('help.intervention_plan_title')"
+                class="header-1"
+                style="padding-top:5px"
+              />  
+            </div>
+            <div
+              id="div-7"
+              class="col-9"
+            >
+              <q-input 
+                dense 
+                bg-color="grey-3" 
+                :rules="[
+                  val => val.length <= 100 || 'Please use maximum 100 characters',
+                  val => !!val || 'Field is required'
+                ]"
+                ref="title_plan"
+                :hint="$t('input_labels.required')" 
+                counter 
+                maxlength="100" 
+                standout 
+                outlined 
+                v-model="plan_shell.title"
+              />
+            </div>
+          </div>
+        </div>
+        <q-list
+          id="list"
+          bordered
+          separator
+        >
+          <q-item
+            style="padding-left:60px; padding-right:60px"
+            v-for="an_action in plan_shell.interventions"
+            :key="an_action.id"
+          >
+            <q-item-section
+              class="col-10"
+              id="item-section-1"
+            >
+              {{ an_action.title }}
             </q-item-section>
-            <q-item-section class="col-1 flex flex-center margin" >
-              <IconWithTooltip :icon="'img:statics/icons/Icon - Delete.svg'" :id="an_action.id" :tooltip="$t('help.delete_intervention')" @click.native="deleteAction($event)" />
+            <q-item-section class="col-1 flex flex-center margin">
+              <IconWithTooltip
+                :icon="'img:statics/icons/Edit.png'"
+                :id="an_action.id"
+                :tooltip="$t('help.edit_intervention')"
+                @click.native="editAction($event, an_action)"
+              />
             </q-item-section>
-      </q-item>
-    </q-list>
+            <q-item-section class="col-1 flex flex-center margin">
+              <IconWithTooltip
+                :icon="'img:statics/icons/Icon - Delete.svg'"
+                :id="an_action.id"
+                :tooltip="$t('help.delete_intervention')"
+                @click.native="deleteAction($event)"
+              />
+            </q-item-section>
+          </q-item>
+        </q-list>
     
-     <div id="div-21">
-     <q-btn class="page-button" style="width:110px" :data-cy="'cancelinterventionplan'" color="info"  :disable="hideAdd" unelevated no-caps :label="$t('button.go_back')" @click="goBack" />
-     <q-btn class="page-button" style="width:140px" :data-cy="'addintervention'" color="secondary"  unelevated no-caps :label="$t('button.add_intervention')" @click="newAction()" :disable="hideAdd" />
-     <q-btn class="page-button" style="width:140px" :data-cy="'saveinterventionplan'" color="accent"  :disable="hideAdd" unelevated no-caps :label="$t('button.save_plan')" type="submit" />
-  </div>
-    </form>
-  </div>
-    <div class="div-2" :hidden="hideForm">
-    <q-card class="my-card">
-       <form
+        <div id="div-21">
+          <q-btn
+            class="page-button"
+            style="width:110px"
+            :data-cy="'cancelinterventionplan'"
+            color="info"
+            :disable="hideAdd"
+            unelevated
+            no-caps
+            :label="$t('button.go_back')"
+            @click="goBack"
+          />
+          <q-btn
+            class="page-button"
+            style="width:140px"
+            :data-cy="'addintervention'"
+            color="secondary"
+            unelevated
+            no-caps
+            :label="$t('button.add_intervention')"
+            @click="newAction()"
+            :disable="hideAdd"
+          />
+          <q-btn
+            class="page-button"
+            style="width:140px"
+            :data-cy="'saveinterventionplan'"
+            color="accent"
+            :disable="hideAdd"
+            unelevated
+            no-caps
+            :label="$t('button.save_plan')"
+            type="submit"
+          />
+        </div>
+      </form>
+    </div>
+    <div
+      class="div-2"
+      :hidden="hideForm"
+    >
+      <q-card class="my-card">
+        <form
           @submit.prevent.stop="onSubmitIntervention"
           @reset.prevent.stop="onResetIntervention"
           class=""
         >
-      <q-card-section id="card-section" :hidden="hideForm">
-         <div id="div-9">
-           <h5 class="title"> {{$t('input_labels.new_intervention')}} </h5>
-        <div id="div-10">
-    <div id="div-11" class="q-pa-xsm row">
-      <div id="div-12" class=" q-pa-xsm col-3">
-            <HelpLabel
-                :fieldLabel="$t('input_labels.title')"
-                :helpLabel ="$t('help.intervention_title')"
-                class="header-2"
-                style="padding-top:10px;font-size:16px"
-                />     
+          <q-card-section
+            id="card-section"
+            :hidden="hideForm"
+          >
+            <div id="div-9">
+              <h5 class="title">
+                {{ $t('input_labels.new_intervention') }}
+              </h5>
+              <div id="div-10">
+                <div
+                  id="div-11"
+                  class="q-pa-xsm row"
+                >
+                  <div
+                    id="div-12"
+                    class=" q-pa-xsm col-3"
+                  >
+                    <HelpLabel
+                      :field-label="$t('input_labels.title')"
+                      :help-label="$t('help.intervention_title')"
+                      class="header-2"
+                      style="padding-top:10px;font-size:16px"
+                    />     
+                  </div>
+                  <div
+                    id="div-13"
+                    class="col-9"
+                  >
+                    <q-input 
+                      bg-color="grey-3" 
+                      :hint="$t('input_labels.required')"
+                      ref="title_action"
+                      :rules="[
+                        val => val.length <= 100 || 'Please use maximum 100 characters',
+                        val => !!val || 'Field is required'
+                      ]"
+                      dense
+                      maxlength="100"
+                      counter 
+                      standout
+                      outlined
+                      v-model="intervention_shell.title"
+                    />
+                  </div>
+                </div>
+                <div
+                  id="div-14"
+                  class=" q-pa-xsm row"
+                >
+                  <div class=" q-pa-xsm col-3">
+                    <HelpLabel
+                      :field-label="$t('input_labels.description')"
+                      :help-label="$t('help.intervention_description')"
+                      class="header-2"
+                      style="font-size:16px"
+                    />      
+                  </div>
+                  <div
+                    id="div-15"
+                    class="col-9"
+                  >
+                    <q-input
+                      bg-color="grey-3"
+                      dense
+                      type="textarea"
+                      standout
+                      outlined
+                      v-model="intervention_shell.description"
+                    />
+                  </div>
+                </div>
+                <div
+                  id="div-18"
+                  class=" q-pa-xsm row"
+                >
+                  <div class=" q-pa-xsm col-3">
+                    <HelpLabel
+                      :field-label="$t('input_labels.type')"
+                      :help-label="$t('help.intervention_assigned_type')"
+                      class="header-3"
+                      style="font-size:16px"
+                    />    
+                  </div>
+                  <div
+                    id="div-19"
+                    class=" q-pa-md col-9"
+                  >
+                    <q-select
+                      class="select"
+                      :hint="$t('input_labels.required')"
+                      ref="type_action"
+                      filled
+                      dense
+                      :lazy-rules="true"
+                      :rules="[val => val != null || 'Field is required']"
+                      clearable
+                      emit-value
+                      map-options
+                      v-model="intervention_shell.interventionType"
+                      :options="types"
+                      :label="$t('input_labels.intervention_type')"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="q-gutter-sm" />
+              <div id="div-20">
+                <q-btn
+                  class="form-delete-button"
+                  :data-cy="'cancelintervention'"
+                  unelevated
+                  no-caps
+                  :label="$t('button.cancel')"
+                  type="reset"
+                  @click="cancelAction($event)"
+                />
+                <q-btn
+                  class="form-save-button"
+                  :data-cy="'saveintervention'"
+                  unelevated
+                  no-caps
+                  color="accent"
+                  :label="$t('button.add_intervention')"
+                  :id="plan_shell.id"
+                  type="submit"
+                />
+              </div>
             </div>
-      <div id="div-13" class="col-9">
-        <q-input 
-          bg-color="grey-3" 
-          :hint="$t('input_labels.required')"
-          ref="title_action"
-          :rules="[
-          val => val.length <= 100 || 'Please use maximum 100 characters',
-          val => !!val || 'Field is required'
-          ]"
-          dense
-          maxlength="100"
-          counter 
-          standout
-          outlined
-          v-model="intervention_shell.title" />
-      </div>
+          </q-card-section>
+        </form>
+      </q-card>
     </div>
-    <div id="div-14" class=" q-pa-xsm row">
-      <div class=" q-pa-xsm col-3">
-            <HelpLabel
-                  :fieldLabel="$t('input_labels.description')"
-                  :helpLabel ="$t('help.intervention_description')"
-                  class="header-2"
-                  style="font-size:16px"
-                  />      
-            </div>
-      <div id="div-15" class="col-9">
-        <q-input  bg-color="grey-3" dense  type="textarea"  standout outlined v-model="intervention_shell.description" />
-      </div>
-    </div>
-       <div id="div-18" class=" q-pa-xsm row">
-      <div class=" q-pa-xsm col-3">
-           <HelpLabel
-                :fieldLabel="$t('input_labels.type')"
-                :helpLabel ="$t('help.intervention_assigned_type')"
-                class="header-3"
-                style="font-size:16px"
-                />    
-            </div>
-      <div id="div-19" class=" q-pa-md col-9">
-     <q-select
-        class="select"
-        :hint="$t('input_labels.required')"
-        ref="type_action"
-        filled
-        dense
-        :lazy-rules="true"
-        :rules="[val => val != null || 'Field is required']"
-        clearable
-        emit-value
-        map-options
-        v-model="intervention_shell.interventionType"
-        :options="types"
-        :label="$t('input_labels.intervention_type')"
-      />
-      </div>
-      </div>
-        </div>
-        <div class="q-gutter-sm">
-         </div>
-         <div id="div-20">
-        <q-btn class="form-delete-button" :data-cy="'cancelintervention'" unelevated  no-caps  :label="$t('button.cancel')" type="reset" @click="cancelAction($event)" />
-        <q-btn  class="form-save-button"  :data-cy="'saveintervention'" unelevated no-caps color="accent" :label="$t('button.add_intervention')" :id="plan_shell.id" type="submit" />
-        </div>
-        </div>
-      </q-card-section>
-       </form>
-    </q-card>
   </div>
-</div>
 </template>
 
 <script>
@@ -267,7 +375,7 @@ export default {
       this.plan_shell = {
         id: -1, 
         title:"",
-        userId: Number(this.theuserid),
+        userId: this.theuserid,
         creationDate:'2016-06-22 19:10:25-07',
         endDate:'2016-06-22 19:10:25-07',
         caseManager:"john",

@@ -354,8 +354,11 @@ export default {
     console.log("AUTH IN LAYOUT")
     console.log(this.$auth.loggedIn())
     console.log(this.user)
+    console.log("IN CREATED LAYOUT")
+    console.log(this.$store.state.auth.user)
      if(this.$store.state.auth.user != null){
-      this.getUserPic(this.user.umid).then((user_found)=>{
+       console.log("GETTIN PICTURE")
+      this.getUserPic(this.user.sub).then((user_found)=>{
         console.log("I AM THE PICTURE")
         console.log(user_found)
       })
@@ -525,7 +528,7 @@ export default {
       console.log(this.activeSurvey)
       var formatted_results = {
         idSurvey: this.activeSurvey.id,
-        idUser: this.user.umid,
+        idUser: this.user.sub,
         answer: JSON.stringify(answer),
         answerDate: new Date().toISOString()
       }
@@ -543,7 +546,7 @@ export default {
     }
   },
   created(){
-        this.fetchPASurvey(this.user.umid).then((sr) => {
+        this.fetchPASurvey(this.user.sub).then((sr) => {
       console.log("I AM THE SUrVEY")
       console.log(sr)
       if(sr != null){

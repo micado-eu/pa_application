@@ -42,7 +42,7 @@
       >
         <div class="row container">
           <h3 class="col-6 header">
-            {{ the_user.umUserName }}
+            {{ the_user.username }}
           </h3>
 
           
@@ -289,7 +289,7 @@ export default {
         saveIntervention: "intervention_plan/saveIntervention",
         editIntervention: "intervention_plan/editIntervention",
         fetchInterventionPlan: "intervention_plan/fetchInterventionPlan",
-        fetchSpecificUser: "user/fetchSpecificUser",
+        fetchSpecificUser: "user/fetchSpecificUserMigrant",
         fetchIntegrationType: "integration_type/fetchIntegrationType",
         fetchDocuments: "documents/fetchDocuments",
         fetchCompletionDocuments: "documents/fetchCompletionDocuments",
@@ -420,7 +420,7 @@ export default {
       console.log(this.user)
       this.$router.push({
         name: "addinterventionplan",
-        params: { theuser: this.the_user, theuserid: this.the_user.umId }
+        params: { theuser: this.the_user, theuserid: this.the_user.id }
       })
     },
     deletePlan(id) {
@@ -777,8 +777,8 @@ export default {
         })
       })
 
-      var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
-      this.fetchSpecificUser(payload).then((users) => {
+      //var payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+      this.fetchSpecificUser(this.theuserid).then((users) => {
         this.the_user = users
         console.log("return from fetch specific user")
         console.log(users)

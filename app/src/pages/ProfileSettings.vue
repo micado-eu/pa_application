@@ -30,11 +30,10 @@
         <div style="text-align:center; margin-bottom:20px; margin-top:20px">
           <q-btn
             class="button"
-            label-color="info"
             unelevated
+            color="info"
             no-caps
             rounded
-            text-color="white"
             :label="$t('pa_profile.change_pic')"
             @click="picture_select = !picture_select; modifyPic()"
           />
@@ -277,7 +276,7 @@ export default {
         user: 'user/paUserProfile',
         token: 'auth/token'
       }, actions: {
-        fetchSpecificUser: 'user/fetchPAUseProfile',
+        fetchPAUseProfile: 'user/fetchPAUseProfile',
         saveUserPic:'user/saveUserPic',
         editUserPic:'user/editUserPic',
         editUserData:'user/editUserData',
@@ -346,17 +345,17 @@ export default {
       this.password.confirm_password = null
     },
     editPass(){
-      var user_admin = this.the_user.username + '@' + this.user.tenant.umDomainName
+      /*var user_admin = this.the_user.username + '@' + this.user.tenant.umDomainName
       console.log(user_admin)
       var user_pass = this.password.old_password
       console.log(user_pass)
       var pass_payload = JSON.stringify({password:this.password.new_password})
       console.log(pass_payload)
       var working_tenant= this.user.tenant.umDomainName
-      console.log(working_tenant)
+      console.log(working_tenant)*/
       if(this.password.new_password == this.password.confirm_password){
         console.log("saving new password")
-        this.editUserPassword({admin:user_admin, adminpwd:user_pass, payload:pass_payload, tenant:working_tenant})
+        this.editUserPassword({userid:this.$store.state.auth.user.sub, password: this.password.new_password})
         this.cancelPass()
       }
       else{
@@ -394,7 +393,7 @@ export default {
       .then(()=>{
         var userId = this.$store.state.auth.user.umid
         console.log(userId)
-        this.fetchSpecificUser(userId)
+        this.fetchPAUseProfile(userId)
       })
       this.editing = false
     },
@@ -470,7 +469,7 @@ export default {
         this.user_picture = {
           id: -1,
           picture: fileInfo.base64,
-          userId:this.user.umId,
+          userId:this.user.id,
           tenantId:this.user.umTenantId
         }
         console.log(this.user_picture)
@@ -482,31 +481,17 @@ export default {
     this.$forceUpdate()
   },
   created () {
-    
-    var userId = this.$store.state.auth.user.umid
+     
+    var userId = this.$store.state.auth.user.sub
     console.log(userId)
-    this.fetchSpecificUser(userId).then((user1)=>{
-      console.log(user1)
-      console.log("this is the user in store")
-      console.log(this.user)
-      console.log(this.token)
-      this.the_user.username = this.user.attributes.filter((attr)=>{
-        return attr.umAttrName == "uid"
-      })[0].umAttrValue
-      this.the_user.userid = this.user.attributes.filter((attr)=>{
-        return attr.umAttrName == "scimId"
-      })[0].umAttrValue
-      this.findAttribute('mobile', 'phoneNumber')
-      this.findAttribute('uid', 'username')
-      this.findAttribute('scimId', 'userid')
-      this.findAttribute('givenName', 'givenName')
-      this.findAttribute('sn', 'familyName')
-      this.the_user.legalname = this.the_user.givenName + " " + this.the_user.familyName
-      this.findAttribute('dateOfBirth', 'date_of_birth')
-      this.findAttribute('gender', 'gender')
-      this.findAttribute('country', 'nationality')
-      this.findAttribute('mail', 'email')
-      if(user1.userPicture){
+
+   this.fetchPAUseProfile(userId).then((user)=>{
+     console.log("user arrived")
+     console.log(user)
+     this.the_user.username = this.$store.state.auth.user.preferred_username
+     this.the_user.legalname = this.$store.state.auth.user.name
+     this.the_user.email = this.$store.state.auth.user.email
+      if(user.userPicture){
         this.the_user.picture= this.user.userPicture.picture
         this.the_user.picture_id= this.user.userPicture.id
         this.user_pic_orig =  this.user.userPicture.picture
@@ -515,10 +500,13 @@ export default {
         this.the_user.picture= null
       }
       this.the_user_orig=JSON.parse(JSON.stringify( this.the_user ))
-      this.loading=false
+            this.loading=false
       console.log("after loading")
       console.log(this.the_user)
-    })
+   })
+   /* console.log(user1)
+*/
+
   }
 }
 </script>

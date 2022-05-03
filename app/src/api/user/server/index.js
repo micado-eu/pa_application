@@ -9,6 +9,12 @@ export default {
       .then((response) => response.data)
       .catch(error_handler)
   },
+  fetchKeycloakMigrantUser(){
+      return axiosInstance
+        .get(`/getMigrantUserList`)
+        .then((response) => response.data)
+        .catch(error_handler)
+  },
   fetchPAUser (tenant) {
     console.log(tenant)
     return axiosInstance
@@ -19,7 +25,13 @@ export default {
   fetchSpecificUser (tenant, id) {
     console.log(tenant)
     return axiosInstance
-      .get(`/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture&filter[include][4][relation]=userConsent`)
+      .get(`/users/${id}?filter[include][0][relation]=interventionPlans&filter[include][1][relation]=tenant&filter[include][2][relation]=userPicture&filter[include][3][relation]=userConsent`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchSpecificUserMigrant (id) {
+    return axiosInstance
+      .get(`/users/${id}?filter[include][0][relation]=interventionPlans&filter[include][1][relation]=userPicture&filter[include][2][relation]=userConsent`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -56,15 +68,21 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler)
   },
-  editUserPassword(admin, adminpwd, payload, tenant){
+  editUserPassword(userid, password){
     return axiosInstance
-      .patch('/updateUser?payload=' +payload + '&tenant=' + tenant +'&admin=' + admin + '&adminpwd=' + adminpwd + '&isPswd=1')
+      .put('/updateUserPassword?userid=' +userid + '&realm=pa&password=' + password)
       .then(response => { return response.data })
       .catch(error_handler)
   },
+  fetchKeycloakPaUser(){
+    return axiosInstance
+      .get(`/getPaUserList`)
+      .then((response) => response.data)
+      .catch(error_handler)
+},
   fetchPAUserProfile(id){
     return axiosInstance
-    .get(`/users/${id}?filter[include][0][relation]=attributes&filter[include][1][relation]=interventionPlans&filter[include][2][relation]=tenant&filter[include][3][relation]=userPicture`)
+    .get(`/users/${id}?filter[include][0][relation]=userPicture`)
     .then((response) => response.data)
     .catch(error_handler)
   },

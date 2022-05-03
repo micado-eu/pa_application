@@ -21,11 +21,17 @@ export default {
         .then(response => { return response.data })
         .catch(error_handler)
 },
-createNGOUser(username, role, group){
+createNGOUser(username, firstName, lastName, email, password, role, group){
   return axiosInstance
-      .post('/createKeycloakUserWithRoleAndGroup?username=' +username + '&realm=ngo&role=' + role + '&group=' + group)
+      .post('/createKeycloakUserWithRoleAndGroup?username=' +username +'&firstName=' +firstName + '&lastName=' +lastName + '&email=' + email + '&password=' + password + '&realm=ngo&role=' + role + '&group=' + group)
       .then(response => { return response.data })
       .catch(error_handler)
+},
+createUserDB(user){
+  return axiosInstance
+        .post('/users', user  )
+        .then(response => { return response.data })
+        .catch(error_handler)
 }
   /* ,
   saveComment (comment) {

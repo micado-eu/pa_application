@@ -68,7 +68,7 @@
         <User
           v-for="user in filteredUsers"
           :key="user.id"
-          :username="user.umUserName"
+          :username="user.username"
           :the-user="user"
           :path="user.id"
           @remove="deleteUser"
@@ -97,11 +97,11 @@ export default {
   mixins: [
     storeMappingMixin({
       getters: {
-        users: 'user/users',
+        users: 'user/keycloakMigrantUser',
         features: "features/featureFlags"
       },
       actions: {
-        fetchUser: 'user/fetchUser'
+        fetchUser: 'user/fetchKeycloakMigrantUser'
       }
     })],
   computed: {
@@ -114,7 +114,7 @@ export default {
         return this.users.filter((filt) => {
           //Splits the search field and puts the words in an array
           var searchArray = this.search.split(" ")
-          if (searchArray.every(string => filt.umUserName.toLowerCase().includes(string))) {
+          if (searchArray.every(string => filt.username.toLowerCase().includes(string))) {
             return true
           }
         })
@@ -140,7 +140,7 @@ export default {
   created () {
     this.loading = true
     console.log(this.$store)
-    this.fetchUser(this.$migrant_tenant)
+    this.fetchUser()
       .then(users => {
         console.log(users)
         this.loading = false

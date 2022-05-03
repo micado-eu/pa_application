@@ -113,7 +113,9 @@ export function addTenants (state, payload) {
   console.log("in actions add tenant:")
   console.log(payload)
   client.addTenant(payload.group_name).then((tenant)=>{
-    client.createNGOUser(payload.username, payload.role, payload.group_name)
+    client.createNGOUser(payload.username, payload.firstName, payload.lastName, payload.email, payload.password, payload.role, payload.group_name).then((user)=>{
+      client.createUserDB({id:user[0].id, realm:'ngo', group: payload.group_name})
+    })
 
   })
 }

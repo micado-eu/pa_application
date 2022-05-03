@@ -1,22 +1,21 @@
 <template>
-    <q-avatar
-      clickable
-      @click="toProfile"
+  <q-avatar
+    clickable
+    @click="toProfile"
+    size="42px"
+    data-cy="userButton"
+  >
+    <q-icon
+      v-if="!this.$auth.loggedIn() || !this.pic.length >0"
       size="42px"
-      data-cy="userButton"
+      name="account_circle"
+    />
+    <img
+      v-if="this.$auth.loggedIn() && this.pic.length >0"
+      :src="this.pic[0].picture"
+      alt="Profile"
     >
-      <q-icon
-        v-if="!this.$auth.loggedIn() || !this.pic.length >0"
-        size="42px"
-        name="account_circle"
-      />
-      <img
-        v-if="this.$auth.loggedIn() && this.pic.length >0"
-        :src="this.pic[0].picture"
-        alt="Profile"
-      />
-    </q-avatar>
-    
+  </q-avatar>
 </template>
 
 <script>
@@ -70,6 +69,13 @@ export default {
     }
   },
    created () {
+     if(this.$store.state.auth.user != null){
+       console.log("GETTIN PICTURE")
+      this.getUserPic(this.user.sub).then((user_found)=>{
+        console.log("I AM THE PICTURE")
+        console.log(user_found)
+      })
+     }
     //var userId = this.$store.state.auth.user.umid
   }
 }

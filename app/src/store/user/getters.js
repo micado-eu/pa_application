@@ -8,6 +8,9 @@ export function UserById (state) {
 export function users (state) {
   return state.user
 }
+export function keycloakMigrantUser (state) {
+  return state.keycloakMigrantUser
+}
 export function paUserProfile (state) {
   console.log("aske for pa user profile")
   return state.paUserProfile
