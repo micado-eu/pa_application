@@ -22,10 +22,9 @@ export function fetchKeycloakMigrantUser (state) {
     })
 }
 
-export function fetchPAUser (state, data) {
-  console.log(data)
+export function fetchPAUser (state) {
   return client
-    .fetchPAUser(data)
+    .fetchPAUser()
     .then((pauser) => {
       state.commit('setPAUser', pauser)
       return pauser
@@ -59,6 +58,20 @@ export function fetchSpecificUserMigrant (state, id) {
   return client
     .fetchSpecificUserMigrant(id)
     .then((user) => {
+      console.log('fetchSpecificUser - action')
+      console.log(user)
+      return user
+    })
+}
+
+export function fetchSpecificKeycloakUserMigrant (state, id) {
+  console.log("FETCHING A SINNGLE USER FROM KEYCLOAK")
+  console.log(id)
+  // probably we could use the store and do a get but for now will do
+  return client
+    .fetchSpecificKeycloakUserMigrant(id)
+    .then((user) => {
+      state.commit('setSpecificKeycloakUserMigrant', user)
       console.log('fetchSpecificUser - action')
       console.log(user)
       return user
@@ -104,7 +117,7 @@ export function editUserData (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
   console.log(payload)
   return client
-    .editUserData(payload.user, payload.tenant, payload.token)
+    .editUserData(payload.userid, payload.firstName, payload.lastName, payload.email, payload.phoneNumber)
 }
 export function editUserDataByAdmin (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state

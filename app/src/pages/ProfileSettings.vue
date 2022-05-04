@@ -305,8 +305,8 @@ export default {
         username:"",
         phoneNumber:"",
         legalname:'',
-        givenName:"",
-        familyName:"",
+        firstName:"",
+        lastName:"",
         date_of_birth:null,
         nationality:"",
         gender:"", 
@@ -319,8 +319,8 @@ export default {
         username:"",
         phoneNumber:"",
         legalname:"",
-        givenName:"",
-        familyName:"",
+        firstName:"",
+        lastName:"",
         date_of_birth:null,
         nationality:"",
         gender:"", 
@@ -379,19 +379,19 @@ export default {
     editUser(){
       var idx = this.the_user.legalname.trim().indexOf(" ")
       console.log(idx) 
-      this.the_user.givenName = this.the_user.legalname.substr(0, idx)
-      this.the_user.familyName = this.the_user.legalname.substr(idx +1)
+      this.the_user.firstName = this.the_user.legalname.substr(0, idx)
+      this.the_user.lastName = this.the_user.legalname.substr(idx +1)
       console.log(this.the_user)
       this.the_user_orig=JSON.parse(JSON.stringify( this.the_user ))
-      var working_user = JSON.parse(JSON.stringify(this.the_user, [ 'userid', 'username', 'phoneNumber', 'givenName', 'familyName', 'email']))
+      var working_user = JSON.parse(JSON.stringify(this.the_user, [ 'userid', 'firstName', 'lastName', 'email', 'phoneNumber']))
       console.log(working_user)
-      var working_tenant= this.user.tenant.umDomainName
-      console.log( working_tenant)
-      var working_token = this.token.token.access_token
-      console.log(working_token)
-      this.editUserData({user:JSON.stringify(working_user), tenant:working_tenant, token:working_token})
+      //var working_tenant= this.user.tenant.umDomainName
+      //console.log( working_tenant)
+      //var working_token = this.token.token.access_token
+      //console.log(working_token)
+      this.editUserData(working_user)
       .then(()=>{
-        var userId = this.$store.state.auth.user.umid
+        var userId = this.$store.state.auth.user.sub
         console.log(userId)
         this.fetchPAUseProfile(userId)
       })
@@ -488,9 +488,11 @@ export default {
    this.fetchPAUseProfile(userId).then((user)=>{
      console.log("user arrived")
      console.log(user)
+          this.the_user.userid = this.$store.state.auth.user.sub
      this.the_user.username = this.$store.state.auth.user.preferred_username
      this.the_user.legalname = this.$store.state.auth.user.name
      this.the_user.email = this.$store.state.auth.user.email
+     this.the_user.phoneNumber = this.$store.state.auth.user["phone number"]
       if(user.userPicture){
         this.the_user.picture= this.user.userPicture.picture
         this.the_user.picture_id= this.user.userPicture.id

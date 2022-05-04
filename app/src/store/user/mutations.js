@@ -15,6 +15,10 @@ export function setPAUser (state, pauser) {
   state.pauser = pauser
 }
 
+export function setSpecificKeycloakUserMigrant(state, user){
+  state.keycloakMigrantUser = user
+}
+
 export function setPAUserProfile (state, paUserProfile) {
   console.log("in pa user mutation")
   state.paUserProfile = paUserProfile

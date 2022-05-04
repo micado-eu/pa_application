@@ -39,7 +39,7 @@
       style="padding-top:50px"
     >
       <UserProfile
-        :um-user-name="the_user.umUserName"
+        :um-user-name="the_keycloak_user.username"
         :fullname="legalName"
         :date-of-birth="dateOfBirth"
         :nationality="nationality"
@@ -136,7 +136,6 @@
       />
     </q-list>
   </div>
-  </div>
 </template>
 
 <script>
@@ -148,7 +147,7 @@ import storeMappingMixin from "../mixin/storeMappingMixin"
 
 export default {
   name: "MigrantData",
-  props: ["theuserid"],
+  props: ["theuserid", "theusername"],
   mixins: [
     editEntityMixin,
     storeMappingMixin({
@@ -156,10 +155,12 @@ export default {
         documents: "documents/my_documents",
         document_types: "document_type/document_types",
         users: "user/users",
+        keycloakUser: "user/keycloakMigrantUser",
         features: "features/featureFlags"
       },
       actions: {
-        fetchSpecificUser: "user/fetchSpecificUser",
+        fetchSpecificUser: "user/fetchSpecificUserMigrant",
+        fetchSpecificKeycloakUser: "user/fetchSpecificKeycloakUserMigrant",
         fetchDocuments: "documents/fetchShareableDocuments",
         fetchDocumentType: "document_type/fetchDocumentType",
         fetchReceipt: "consent/fetchReceipt",
@@ -170,11 +171,12 @@ export default {
   ],
   components: {
     UserProfile,
-    Document,
-    ConsentPanel
+    Document
+    
   },
   data() {
     return {
+      the_keycloak_user:null,
       the_user: null,
       theReceipt: null,
       userConsents: null,
@@ -215,38 +217,22 @@ export default {
       }
     },
     legalName() {
-      var name = ""
-      var surname = ""
-      var name_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "givenName"
-      })
-      if (name_arr.length > 0) {
-        name = name_arr[0].umAttrValue
-      }
-      var surname_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "sn"
-      })
-      if (name_arr.length > 0) {
-        surname = surname_arr[0].umAttrValue
-      }
+      var name = this.the_keycloak_user.firstName
+      var surname = this.the_keycloak_user.lastName
       var fullname = name + " " + surname
       return fullname
     },
     dateOfBirth() {
       var dob = ""
-      var dob_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "dateOfBirth"
-      })
+      var dob_arr = this.the_keycloak_user.attributes.birthdate
       if (dob_arr.length > 0) {
-        dob = dob_arr[0].umAttrValue
+        dob = dob_arr[0]
       }
       return dob
     },
     nationality() {
       var country = ""
-      var country_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "country"
-      })
+      var country_arr = this.the_keycloak_user.attributes.nationality
       if (country_arr.length > 0) {
         country = country_arr[0].umAttrValue
       }
@@ -254,9 +240,7 @@ export default {
     },
     gender() {
       var gender = ""
-      var gender_arr = this.the_user.attributes.filter((attr) => {
-        return attr.umAttrName == "gender"
-      })
+      var gender_arr = this.the_keycloak_user.attributes.gender
       if (gender_arr.length > 0) {
         gender = gender_arr[0].umAttrValue
       }
@@ -284,7 +268,7 @@ export default {
     openValidateDialog(event) {
       console.log(event)
       console.log(this.$store.state.auth.user.umid)
-      this.forUser = Number(this.theuserid)
+      this.forUser = this.theuserid
       this.upload_doc = true
     },
     validateTask() {
@@ -353,7 +337,7 @@ export default {
     }
   },
   created() {
-    const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
+    //const payload = { userid: this.theuserid, tenantid: this.$migrant_tenant }
     var promises = []
     promises.push(this.fetchDocuments(this.theuserid))
     promises.push(this.fetchDocumentType())
@@ -371,8 +355,16 @@ export default {
         this.t_docs.push(the_doc)
       })
       console.log(this.t_docs)
+              console.log("I AM USERname")
 
-      this.fetchSpecificUser(payload).then((users) => {
+      console.log(this.theusername)
+      this.fetchSpecificKeycloakUser(this.theusername).then((us)=>{
+        console.log("I AM USER IN")
+                this.the_keycloak_user = us[0]
+                console.log(this.the_keycloak_user)
+
+      })
+      this.fetchSpecificUser(this.theuserid).then((users) => {
         console.log("fetchSpecificUser - page")
         console.log(users)
         this.the_user = users

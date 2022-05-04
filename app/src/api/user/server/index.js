@@ -15,10 +15,9 @@ export default {
         .then((response) => response.data)
         .catch(error_handler)
   },
-  fetchPAUser (tenant) {
-    console.log(tenant)
+  fetchPAUser () {
     return axiosInstance
-      .get(`/users?filter[include][0][relation]=attributes&filter[where][and][0][umUserName][neq]=admin&filter[where][and][1][umTenantId]=${tenant}`)
+      .get(`/getPaUserList`)
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -32,6 +31,12 @@ export default {
   fetchSpecificUserMigrant (id) {
     return axiosInstance
       .get(`/users/${id}?filter[include][0][relation]=interventionPlans&filter[include][1][relation]=userPicture&filter[include][2][relation]=userConsent`)
+      .then((response) => response.data)
+      .catch(error_handler)
+  },
+  fetchSpecificKeycloakUserMigrant (id) {
+    return axiosInstance
+      .get('/getUser?id=' + id + '&realm=migrant')
       .then((response) => response.data)
       .catch(error_handler)
   },
@@ -56,9 +61,9 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler)
   },
-  editUserData(user, tenant, token){
+  editUserData(userid, firstName, lastName, email, phoneNumber){
     return axiosInstance
-      .patch('/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token)
+      .put('/updateUser?userid='+ userid + '&firstName=' + firstName + '&lastName=' + lastName + '&email=' + email +'&phone_number=' + phoneNumber +'&realm=pa')
       .then(response => { return response.data })
       .catch(error_handler)
   },

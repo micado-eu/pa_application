@@ -116,7 +116,7 @@ export default {
       this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.id } })
     },
     migrantData(){
-      this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.id } })
+      this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.id, theusername: this.Username } })
     }
   
   }

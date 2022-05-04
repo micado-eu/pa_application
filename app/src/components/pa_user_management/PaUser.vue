@@ -1,15 +1,17 @@
 <template>
   <div class="row">
-    <q-item class="col" clickable @click="editing">
-      {{this.theUser.umUserName}}
+    <q-item
+      class="col"
+      clickable
+      @click="editing"
+    >
+      {{ this.theUser.username }}
     </q-item>
-    <div class="col">
-    </div>
+    <div class="col" />
   </div>
 </template>
 
 <script>
-import IconWithTooltip from '../IconWithTooltip'
 export default {
   name: 'PaUser',
   props: ["theUser"],
@@ -17,7 +19,6 @@ export default {
     return {}
   },
   components: {
-    IconWithTooltip
   },
 
   methods: {
