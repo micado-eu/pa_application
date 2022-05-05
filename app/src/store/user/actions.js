@@ -135,7 +135,7 @@ export function savePAUser (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload)
   return client
-    .savePAUser(payload.user, payload.roles, payload.tenant, payload.token)
+    .savePAUser(payload.user, payload.roles)
 }
 export function fetchUserGroup (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state

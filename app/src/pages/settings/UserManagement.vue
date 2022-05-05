@@ -16,7 +16,10 @@
         />
       </div>
     </div>
-    <q-card class="q-pa-xl div-2" :hidden="hideForm">
+    <q-card
+      class="q-pa-xl div-2"
+      :hidden="hideForm"
+    >
       <q-card-section>
         <!--<div class="text-h6">Migrant application configuration</div>-->
       </q-card-section>
@@ -26,10 +29,13 @@
           @reset.prevent.stop="onReset"
           class=""
         >
-          <div class="q-pa-xsm" id="div-2">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.username')"
-              :helpLabel="$t('help.pa_username')"
+              :field-label="$t('new_pa_user.username')"
+              :help-label="$t('help.pa_username')"
               class="div-3"
             />
             <q-input
@@ -50,10 +56,14 @@
               v-model="new_user.username"
             />
           </div>
-          <div class="q-pa-xsm" id="div-2" v-show="is_new">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+            v-show="is_new"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.password')"
-              :helpLabel="$t('help.pa_password')"
+              :field-label="$t('new_pa_user.password')"
+              :help-label="$t('help.pa_password')"
               class="div-3"
             />
             <q-input
@@ -82,10 +92,13 @@
               </template>
             </q-input>
           </div>
-          <div class="q-pa-xsm" id="div-2">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.name')"
-              :helpLabel="$t('help.pa_name')"
+              :field-label="$t('new_pa_user.name')"
+              :help-label="$t('help.pa_name')"
               class="div-3"
             />
             <q-input
@@ -105,10 +118,13 @@
               v-model="new_user.givenName"
             />
           </div>
-          <div class="q-pa-xsm" id="div-2">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.surname')"
-              :helpLabel="$t('help.pa_surname')"
+              :field-label="$t('new_pa_user.surname')"
+              :help-label="$t('help.pa_surname')"
               class="div-3"
             />
             <q-input
@@ -126,10 +142,13 @@
               v-model="new_user.familyName"
             />
           </div>
-          <div class="q-pa-xsm" id="div-2">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.email')"
-              :helpLabel="$t('help.pa_email')"
+              :field-label="$t('new_pa_user.email')"
+              :help-label="$t('help.pa_email')"
               class="div-3"
             />
             <q-input
@@ -149,10 +168,13 @@
               v-model="new_user.email"
             />
           </div>
-          <div class="q-pa-xsm" id="div-2">
+          <div
+            class="q-pa-xsm"
+            id="div-2"
+          >
             <HelpLabel
-              :fieldLabel="$t('new_pa_user.external_id')"
-              :helpLabel="$t('help.pa_external_id')"
+              :field-label="$t('new_pa_user.external_id')"
+              :help-label="$t('help.pa_external_id')"
               class="div-3"
             />
             <q-input
@@ -170,8 +192,8 @@
             <div class="col-3">
               <div class="q-gutter-sm row">
                 <HelpLabel
-                  :fieldLabel="$t('new_pa_user.admin')"
-                  :helpLabel="$t('help.pa_admin')"
+                  :field-label="$t('new_pa_user.admin')"
+                  :help-label="$t('help.pa_admin')"
                   class="col-1.5 field"
                   style="padding-top: 10px"
                 />
@@ -185,8 +207,8 @@
             </div>
             <div class="q-gutter-sm row">
               <HelpLabel
-                :fieldLabel="$t('new_pa_user.mig_tenant')"
-                :helpLabel="$t('help.pa_mig_tenant')"
+                :field-label="$t('new_pa_user.mig_tenant')"
+                :help-label="$t('help.pa_mig_tenant')"
                 class="col-1.5 field"
                 style="padding-top: 10px"
               />
@@ -198,7 +220,7 @@
               />
             </div>
           </div>
-          <hr id="hr" />
+          <hr id="hr">
           <q-btn
             no-caps
             class="delete-button"
@@ -222,11 +244,14 @@
         </form>
       </q-card-section>
     </q-card>
-    <q-list bordered separator>
+    <q-list
+      bordered
+      separator
+    >
       <PaUser
         v-for="user in completepausers"
-        :key="user.umId"
-        :theUser="user"
+        :key="user.id"
+        :the-user="user"
         @edit="editPAUser"
       />
     </q-list>
@@ -282,7 +307,9 @@ export default {
   },
   computed: {
     completepausers() {
-      return this.pausers
+      return this.pausers.filter((user)=>{
+        return user.id != this.$store.state.auth.user.sub
+      })
     }
   },
   methods: {
@@ -415,23 +442,17 @@ export default {
     },
     saveUser() {
       console.log(this.new_user)
-      this.new_user.roles.push("pa_sp")
+      
       if (this.new_user.admin == true) {
-        this.new_user.roles.push("micado_admin")
+        this.new_user.roles.push("Application/micado_admin")
       }
       if (this.new_user.migrant_tenant == true) {
-        this.new_user.roles.push("micado_migrant_manager")
+        this.new_user.roles.push("Application/micado_migrant_manager")
       }
       console.log(this.new_user)
 
       var working_roles = JSON.stringify(this.new_user.roles)
-      var working_token = this.token.token.access_token
-      console.log(working_token)
-      console.log({
-        tenant: this.$envconfig.paTenantDomain,
-        token: working_token,
-        roles: working_roles
-      })
+
       if (this.is_new) {
         var working_user = JSON.parse(
           JSON.stringify(this.new_user, [
@@ -444,8 +465,6 @@ export default {
         )
         this.savePAUser({
           user: working_user,
-          tenant: this.$envconfig.paTenantDomain,
-          token: working_token,
           roles: working_roles
         })
       } else {
@@ -488,7 +507,7 @@ export default {
   },
   async created() {
     console.log("created")
-    await this.fetchPAUser(this.$pa_tenant)
+    await this.fetchPAUser()
     console.log(this.pausers)
     //    this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     /*

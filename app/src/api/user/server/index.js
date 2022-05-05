@@ -91,9 +91,9 @@ export default {
     .then((response) => response.data)
     .catch(error_handler)
   },
-  savePAUser(user, roles, tenant, token){
+  savePAUser(user, roles){
     return axiosInstance
-      .post('/wso2UserComplete?username=' + user.username + '&password=' + user.password + '&name=' + user.givenName+ '&surname=' + user.familyName + '&email=' + user.email + '&roles=' + roles + '&tenant=' + tenant + '&authType=Bearer&authToken=' + token)
+      .post('createKeycloakUserWithRole?username=' + user.username + '&firstName=' + user.givenName + '&lastName=' + user.familyName + '&email=' + user.email + '&password=' + user.password + '&role=' + roles + '&realm=pa')
       .then(response => { return response.data })
       .catch(error_handler)
   },
