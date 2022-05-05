@@ -119,11 +119,15 @@ export function editUserData (state, payload) {
   return client
     .editUserData(payload.userid, payload.firstName, payload.lastName, payload.email, payload.phoneNumber)
 }
-export function editUserDataByAdmin (state, payload) {
+
+export function editUserDataWithRoles (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
-  console.log(payload)
+  console.log(payload.user)
   return client
-    .editUserDataByAdmin(payload.user,  payload.tenant, payload.token)
+  .editUserDataByAdmin(payload.user).then((us)=>{
+    console.log("editing roles")
+    client.editUserRoles(payload.user.userid, payload.roles_to_add, payload.roles_to_delete)
+  })
 }
 export function editUserPassword (state, payload) {
   // we need BEFORE to call the API to do the update and if ok we update wuex state
@@ -137,11 +141,10 @@ export function savePAUser (state, payload) {
   return client
     .savePAUser(payload.user, payload.roles)
 }
-export function fetchUserGroup (state, payload) {
+export function fetchUserGroup (state, userid) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
-  console.log(payload)
   return client
-    .fetchUserGroup(payload.user, payload.token, payload.tenant)
+    .fetchUserGroup(userid)
 }
 export function getUserPic(state, userid){
   return client.fetchUserPic(userid).then((ret)=>{

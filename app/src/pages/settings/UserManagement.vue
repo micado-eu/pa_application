@@ -297,7 +297,7 @@ export default {
         fetchPAUser: "user/fetchPAUser",
         savePAUser: "user/savePAUser",
         fetchUserGroup: "user/fetchUserGroup",
-        editUserDataByAdmin: "user/editUserDataByAdmin"
+        editUserDataWithRoles: "user/editUserDataWithRoles"
       }
     })
   ],
@@ -327,33 +327,27 @@ export default {
     editPAUser(value) {
       this.is_new = false
       var editing_user = this.pausers.filter((user) => {
-        return user.umId == value
+        return user.id == value
       })[0]
       console.log(editing_user)
-      this.findAttribute(this.new_user, editing_user, "uid", "username")
-      this.findAttribute(this.new_user, editing_user, "scimId", "userid")
-      this.findAttribute(this.new_user, editing_user, "givenName", "givenName")
-      this.findAttribute(this.new_user, editing_user, "sn", "familyName")
-      this.findAttribute(this.new_user, editing_user, "workEmail", "email")
-      var working_token = this.token.token.access_token
-      this.fetchUserGroup({
-        user: this.new_user.username,
-        token: working_token,
-        tenant:this.$envconfig.paTenantDomain
-      }).then((userg) => {
-        console.log(userg)
-        if (userg.Resources) {
-          userg.Resources.forEach((role) => {
-            this.new_user.roles.push(
-              role.displayName.replace("Application/", "")
-            )
-          })
+      this.new_user.username = editing_user.username
+      this.new_user.userid = editing_user.id
+
+      this.new_user.email = editing_user.email
+
+      this.new_user.givenName = editing_user.firstName
+      this.new_user.familyName = editing_user.lastName
+      this.fetchUserGroup(value).then((roles) => {
+        console.log(roles)
+        
+        if (roles.length > 0) {
+          this.new_user.roles = roles
 
           this.new_user.roles.forEach((role) => {
-            if (role == "micado_admin") {
+            if (role.name == "Application/micado_admin") {
               this.new_user.admin = true
             }
-            if (role == "micado_migrant_manager") {
+            if (role.name == "Application/micado_migrant_manager") {
               this.new_user.migrant_tenant = true
             }
           })
@@ -386,6 +380,7 @@ export default {
           console.log("in else of submit")
           console.log(this.new_user)
           this.saveUser()
+          this.onReset()
         }
       } else {
         this.$refs.username.validate()
@@ -407,6 +402,7 @@ export default {
           console.log("in else of submit")
           console.log(this.new_user)
           this.saveUser()
+          this.onReset()
         }
       }
     },
@@ -450,7 +446,7 @@ export default {
         this.new_user.roles.push("Application/micado_migrant_manager")
       }
       console.log(this.new_user)
-
+      var roles_to_delete = JSON.stringify(["Application/micado_admin", "Application/micado_migrant_manager"])
       var working_roles = JSON.stringify(this.new_user.roles)
 
       if (this.is_new) {
@@ -471,19 +467,16 @@ export default {
         var working_user = JSON.parse(
           JSON.stringify(this.new_user, [
             "userid",
-            "username",
-            "password",
             "givenName",
             "familyName",
-            "email",
-            "roles"
+            "email"
           ])
         )
         console.log(working_user)
-        this.editUserDataByAdmin({
-          user: JSON.stringify(working_user),
-          tenant: this.$envconfig.paTenantDomain,
-          token: working_token
+        this.editUserDataWithRoles({
+          user:working_user,
+          roles_to_add: working_roles, 
+          roles_to_delete: roles_to_delete
         })
       }
 

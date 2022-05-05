@@ -67,9 +67,15 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler)
   },
-  editUserDataByAdmin(user, tenant, token){
+  editUserRoles(userid, roles_to_add, roles_to_delete){
     return axiosInstance
-      .patch('/updateUser?payload=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token + '&isAdmin=1')
+      .post('/updateUserRoles?realm=pa&userid='+ userid + '&roles_to_add=' + roles_to_add + '&roles_to_delete=' + roles_to_delete)
+      .then(response => { return response.data })
+      .catch(error_handler)
+  },
+  editUserDataByAdmin(user){
+    return axiosInstance
+      .put('/updateUser?userid='+ user.userid + '&firstName=' + user.givenName + '&lastName=' + user.familyName + '&email=' + user.email+'&realm=pa')
       .then(response => { return response.data })
       .catch(error_handler)
   },
@@ -97,9 +103,9 @@ export default {
       .then(response => { return response.data })
       .catch(error_handler)
   },
-  fetchUserGroup(user, token, tenant){
+  fetchUserGroup(userid){
     return axiosInstance
-    .get('/wso2UserRoles?user=' +user + '&tenant=' + tenant +'&authType=Bearer&authToken=' + token)
+    .get('/getUserRoles?realm=pa&userid=' +userid)
     .then((response) => response.data)
     .catch(error_handler)
   },

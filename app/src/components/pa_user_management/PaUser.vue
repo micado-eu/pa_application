@@ -23,8 +23,8 @@ export default {
 
   methods: {
     editing(){
-      console.log(this.theUser.umId)
-      this.$emit('edit', this.theUser.umId)
+      console.log(this.theUser.id)
+      this.$emit('edit', this.theUser.id)
     },
     remove_user (event) {
       let target = event.currentTarget.id
@@ -34,7 +34,7 @@ export default {
     },
     interventionPlan () {
       console.log(this.theUser)
-      this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.umId } })
+      this.$router.push({ name: 'interventionplan', params: { theuserid: this.theUser.id } })
     },
     migrantData () {
       this.$router.push({ name: 'migrantdata', params: { theuserid: this.theUser.umId } })
