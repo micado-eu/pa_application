@@ -140,7 +140,7 @@ export function savePAUser (state, payload) {
   console.log(payload)
   return client
     .savePAUser(payload.user, payload.roles).then((user)=>{
-      client.createUserDB({id:user[0].id, realm:'pa', group: null})
+      client.createUserDB({id:user[0].id, realm:'pa', group: ""})
       state.commit('addPaUser', user)
 
     })
