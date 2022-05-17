@@ -139,7 +139,11 @@ export function savePAUser (state, payload) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log(payload)
   return client
-    .savePAUser(payload.user, payload.roles)
+    .savePAUser(payload.user, payload.roles).then((user)=>{
+      client.createUserDB({id:user[0].id, realm:'pa', group: null})
+      state.commit('addPaUser', user)
+
+    })
 }
 export function fetchUserGroup (state, userid) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state

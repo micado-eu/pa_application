@@ -15,6 +15,10 @@ export function setPAUser (state, pauser) {
   state.pauser = pauser
 }
 
+export function addPaUser(state, user){
+  state.pauser.push(user[0])
+}
+
 export function setSpecificKeycloakUserMigrant(state, user){
   state.keycloakMigrantUser = user
 }

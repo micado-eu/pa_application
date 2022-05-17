@@ -114,5 +114,11 @@ export default {
     .get('/user-pictures?filter[where][and][0][userId]=' + id)
     .then((response) => response.data)
     .catch(error_handler)
+  },
+  createUserDB(user){
+    return axiosInstance
+          .post('/users', user  )
+          .then(response => { return response.data })
+          .catch(error_handler)
   }
 }
