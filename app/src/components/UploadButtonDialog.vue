@@ -65,9 +65,14 @@ export default {
         ].indexOf(value) !== -1
       }
     },
-    creator: {
+    username: {
       // Id of the creator of the entity
-      type: Number,
+      type: String,
+      default: null
+    },
+    realm: {
+      // Realm of the creator of the entity
+      type: String,
       default: null
     }
   },
@@ -76,8 +81,9 @@ export default {
       let formData = new FormData()
       formData.append('files', this.files)
       formData.append('entity', this.entity)
-      if (this.creator !== null) {
-        formData.append('creator', this.creator)
+      if (this.username !== null) {
+        formData.append('username', this.username)
+        formData.append('realm', this.realm)
       }
       console.log(formData)
       console.log(this.$axios.defaults.headers)
