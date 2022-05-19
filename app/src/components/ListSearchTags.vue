@@ -722,7 +722,6 @@ export default {
     ...mapActions('information', ['fetchInformationTemp']),
     ...mapActions('flows', ['fetchFlowsTemp']),
     ...mapActions('event', ['fetchEventTemp']),
-    ...mapActions('user', ['fetchSpecificKeycloakUser']),
     callImportFile() {
       document.getElementById('import-input').click()
     },
