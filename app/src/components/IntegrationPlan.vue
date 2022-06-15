@@ -1,149 +1,274 @@
 <template>
-  <div >
-      <q-separator />
-       <q-expansion-item 
-        group="somegroup"
-        :duration="100"
-        :data-cy="'intervention'.concat(intervention.id)"
-        header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px;"
-        @before-show="fetchPic($event, intervention)"
-        @hide ="cancelIntervention($event);"
-        class="width-1"
-      >
+  <div>
+    <q-separator />
+    <q-expansion-item 
+      group="somegroup"
+      :duration="100"
+      :data-cy="'intervention'.concat(intervention.id)"
+      header-style="font-size:18pt; font-weight:600; height:60px; padding-left:30px;"
+      @before-show="fetchPic($event, intervention)"
+      @hide="cancelIntervention($event);"
+      class="width-1"
+    >
       <template v-slot:header>
-          
+        <q-item-section style="font-size:20px">
+          {{ title }}
+        </q-item-section>
 
-          <q-item-section style="font-size:20px">
-            {{title}}
-          </q-item-section>
-
-          <q-item-section side>
-            <div class="row items-center">
-              <q-icon v-if="intervention.completed" name="stop_circle" color="green" size="24px" />
-              <q-icon v-else-if="(!intervention.completed && intervention.validationRequestDate != null)" name="circle" class="icon" size="24px" />
-              <q-icon v-else  name="panorama_fish_eye" class="icon" size="24px" />
-            </div>
-          </q-item-section>
-        </template>
-          <q-card-section  v-if="intervention.completed" style="min-height:100px">
-            <div class="row" style="text-align:center">
-              <div v-if="features.includes('FEAT_DOCUMENTS')" class="col">
-                <a :href="completionDoc" download="doc.png">
-              <img alt="Completion document" class="image" :src="completionDoc" />
-              </a>
-              </div>
-              <div class="col " >
-            <q-icon  name="check" size="100px" color="green" />
-            </div>
-            </div>
-          </q-card-section>
-          <q-card-section v-else class="section" >
-            <div class="div-2">
-              {{$t('input_labels.description')}}:
-              <br>
-            </div>
-            <div class="row">
-              <q-item-section class="col-12 section-2">
-              {{this.description}}
-               <!-- <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{this.intervention.interventionType.slice(0, 200)}}   </span>
+        <q-item-section side>
+          <div class="row items-center">
+            <q-icon
+              v-if="intervention.completed"
+              name="circle"
+              color="green"
+              size="24px"
+            />
+            <q-icon
+              v-else-if="(!intervention.completed && intervention.validationRequestDate != null)"
+              name="circle"
+              class="icon"
+              size="24px"
+            />
+            <q-icon
+              v-else
+              name="panorama_fish_eye"
+              class="icon"
+              size="24px"
+            />
+          </div>
+        </q-item-section>
+      </template>
+      <q-card-section
+        v-if="intervention.completed"
+        style="min-height:100px"
+      >
+        <div
+          class="row"
+          style="text-align:center"
+        >
+          <div
+            v-if="features.includes('FEAT_DOCUMENTS') && completionDoc != null " 
+            class="col"
+          >
+            <a
+              :href="completionDoc"
+              download="doc.png"
+            >
+              <img
+                alt="Completion document"
+                class="image"
+                :src="completionDoc"
+              >
+            </a>
+          </div>
+          <div class="col ">
+            <q-icon
+              name="check"
+              size="100px"
+              color="green"
+            />
+          </div>
+        </div>
+      </q-card-section>
+      <q-card-section
+        v-else
+        class="section"
+      >
+        <div class="div-2">
+          {{ $t('input_labels.description') }}:
+          <br>
+        </div>
+        <div class="row">
+          <q-item-section class="col-12 section-2">
+            {{ this.description }}
+            <!-- <span style="width:540px; font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated">{{this.intervention.interventionType.slice(0, 200)}}   </span>
                 <a class="" style="font-family: 'Nunito Sans', sans-serif;font-weight:300" v-if="!readMoreActivated && intervention.description.length >200" @click="activateReadMore" href="javascript:void(0)">
                   Read more...
                 </a> -->
-                <span class="span" v-if="readMoreActivated" v-html="description"></span>
-              </q-item-section>
-            </div>
-            <div class="row section-3" style="padding-top:40px">
-              <div class="col-2" style="text-align:center;padding-left:15px">
-                <q-btn size="11px" class="edit " no-caps  unelevated rounded  :data-cy="'edit_intervention'.concat(intervention.id)" :disable="intervention.completed" :id="intervention.id" :label="$t('button.edit_action')" @click="editIntervention($event, intervention)"  />
-              </div>
-              <div class="col-2" style="text-align:left; width:120px">
-                <q-btn size="11px" class="delete " no-caps  unelevated rounded  :data-cy="'delete_intervention'.concat(intervention.id)" :disable="intervention.completed" :label="$t('button.delete')" :id="intervention.id" @click="deleteIntervention($event, intervention)" />
-              </div>
-              <div class="col-2" style="text-align:left; width:120px">
-                <q-btn size="11px" class="validate " color="accent" no-caps  unelevated rounded  :data-cy="'validate_intervention'.concat(intervention.id)" :disable="intervention.completed" :label="$t('button.validate')" :id="intervention.id" @click="validateIntervention($event, intervention)" />
-              </div>
-                <div class="col-6" v-if="(!intervention.completed && intervention.validationRequestDate != null)" style="text-align:left; font-weight:bold;padding-top:4px; word-break:break-all">
-                *{{$t('input_labels.validator')}} {{this.theTenant}}
-                </div>
-              </div>
+            <span
+              class="span"
+              v-if="readMoreActivated"
+              v-html="description"
+            />
+          </q-item-section>
+        </div>
+        <div
+          class="row section-3"
+          style="padding-top:40px"
+        >
+          <div
+            class="col-2"
+            style="text-align:center;padding-left:15px"
+          >
+            <q-btn
+              size="11px"
+              class="edit "
+              no-caps
+              unelevated
+              rounded
+              :data-cy="'edit_intervention'.concat(intervention.id)"
+              :disable="intervention.completed"
+              :id="intervention.id"
+              :label="$t('button.edit_action')"
+              @click="editIntervention($event, intervention)"
+            />
+          </div>
+          <div
+            class="col-2"
+            style="text-align:left; width:120px"
+          >
+            <q-btn
+              size="11px"
+              class="delete "
+              no-caps
+              unelevated
+              rounded
+              :data-cy="'delete_intervention'.concat(intervention.id)"
+              :disable="intervention.completed"
+              :label="$t('button.delete')"
+              :id="intervention.id"
+              @click="deleteIntervention($event, intervention)"
+            />
+          </div>
+          <div
+            class="col-2"
+            style="text-align:left; width:120px"
+          >
+            <q-btn
+              size="11px"
+              class="validate "
+              color="accent"
+              no-caps
+              unelevated
+              rounded
+              :data-cy="'validate_intervention'.concat(intervention.id)"
+              :disable="intervention.completed"
+              :label="$t('button.validate')"
+              :id="intervention.id"
+              @click="validateIntervention($event, intervention)"
+            />
+          </div>
+          <div
+            class="col-6"
+            v-if="(!intervention.completed && intervention.validationRequestDate != null)"
+            style="text-align:left; font-weight:bold;padding-top:4px; word-break:break-all"
+          >
+            *{{ $t('input_labels.validator') }} {{ this.theTenant }}
+          </div>
+        </div>
                     
              
-            <div class=" q-gutter-sm  col pad-left">
-              <q-card-section :hidden="hideForm" class="section">
-                <q-separator />
-                <div class="div-3" >
-                  <h5 class="div-4">
-                    {{$t('input_labels.edit')}} {{intervention.title}}
-                  </h5>
-                  <div class="div-5">
-                  <div class=" q-pa-xsm row div-6" >
-                    <div class=" q-pa-xsm col-3">
-                      <HelpLabel
-                      :fieldLabel="$t('input_labels.title')"
-                      :helpLabel ="$t('help.intervention_title')"
+        <div class=" q-gutter-sm  col pad-left">
+          <q-card-section
+            :hidden="hideForm"
+            class="section"
+          >
+            <q-separator />
+            <div class="div-3">
+              <h5 class="div-4">
+                {{ $t('input_labels.edit') }} {{ intervention.title }}
+              </h5>
+              <div class="div-5">
+                <div class=" q-pa-xsm row div-6">
+                  <div class=" q-pa-xsm col-3">
+                    <HelpLabel
+                      :field-label="$t('input_labels.title')"
+                      :help-label="$t('help.intervention_title')"
                       class="header"
                       style="padding-top:10px;font-size:16px"
-                      />
-                    </div>
-                    <div class="col-9 div-7">
-                      <q-input  dense  maxlength="100" counter bg-color="white" standout outlined v-model="model.title" />
-                    </div>
+                    />
                   </div>
+                  <div class="col-9 div-7">
+                    <q-input
+                      dense
+                      maxlength="100"
+                      counter
+                      bg-color="white"
+                      standout
+                      outlined
+                      v-model="model.title"
+                    />
+                  </div>
+                </div>
 
                 <div class=" q-pa-xsm row div-6">
                   <div class=" q-pa-xsm col-3">
-                     <HelpLabel
-                      :fieldLabel="$t('input_labels.description')"
-                      :helpLabel ="$t('help.intervention_description')"
+                    <HelpLabel
+                      :field-label="$t('input_labels.description')"
+                      :help-label="$t('help.intervention_description')"
                       class="header"
                       style="padding-top:10px;font-size:16px"
-                      />
+                    />
                   </div>
-                  <div class="col-9 div-8" >
-                    <q-input  dense  type="textarea" bg-color="white" standout outlined v-model="model.description" />
+                  <div class="col-9 div-8">
+                    <q-input
+                      dense
+                      type="textarea"
+                      bg-color="white"
+                      standout
+                      outlined
+                      v-model="model.description"
+                    />
                   </div>
                 </div>
       
-                <div class=" q-pa-xsm row center" >
+                <div class=" q-pa-xsm row center">
                   <div class=" q-pa-xsm col-3">
-                     <HelpLabel
-                      :fieldLabel="$t('input_labels.type')"
-                      :helpLabel ="$t('help.intervention_assigned_type')"
+                    <HelpLabel
+                      :field-label="$t('input_labels.type')"
+                      :help-label="$t('help.intervention_assigned_type')"
                       class="header-2"
                       style="font-size:16px"
-                      />
+                    />
                   </div>
-                  <div class=" q-pa-md col-9 div-9" >
+                  <div class=" q-pa-md col-9 div-9">
                     <q-select
-                        filled
-                        dense
-                        emit-value
-                        map-options
-                        clearable
-                        bg-coloe="white"
-                        v-model="model.interventionType"
-                        :options="intervention_categories"
-                        bg-color="white"
-                        :label="$t('input_labels.intervention_type')"
-                        class="width-2"                      />
+                      filled
+                      dense
+                      emit-value
+                      map-options
+                      clearable
+                      bg-coloe="white"
+                      v-model="model.interventionType"
+                      :options="intervention_categories"
+                      bg-color="white"
+                      :label="$t('input_labels.intervention_type')"
+                      class="width-2"
+                    />
                   </div>
                 </div>
 
-        <div class="q-gutter-sm">
-         </div>
-        <div class="center" style="padding-top:30px">
-        <q-btn class="delete-button" :data-cy="'cancelintervention'.concat(intervention.id)" unelevated  no-caps  :label="$t('button.cancel')" @click="cancelIntervention($event)" />
-        <q-btn  class="button" :data-cy="'saveintervention'.concat(intervention.id)" unelevated no-caps color="accent" :label="$t('button.save_changes')" :id="the_intervention_plan.id" @click="saveIntervention($event, intervention)" />
-        </div>
-          </div>
-          </div>
-      </q-card-section>
-           </div>
+                <div class="q-gutter-sm" />
+                <div
+                  class="center"
+                  style="padding-top:30px"
+                >
+                  <q-btn
+                    class="delete-button"
+                    :data-cy="'cancelintervention'.concat(intervention.id)"
+                    unelevated
+                    no-caps
+                    :label="$t('button.cancel')"
+                    @click="cancelIntervention($event)"
+                  />
+                  <q-btn
+                    class="button"
+                    :data-cy="'saveintervention'.concat(intervention.id)"
+                    unelevated
+                    no-caps
+                    color="accent"
+                    :label="$t('button.save_changes')"
+                    :id="the_intervention_plan.id"
+                    @click="saveIntervention($event, intervention)"
+                  />
+                </div>
+              </div>
+            </div>
           </q-card-section>
-          
-      </q-expansion-item>
-      
-    </div>
+        </div>
+      </q-card-section>
+    </q-expansion-item>
+  </div>
 </template>
 
 <script>
