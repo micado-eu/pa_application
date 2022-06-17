@@ -1,6 +1,39 @@
 <template>
   <div>
-    <input
+    <div
+      class="banner"
+    >
+      {{ $t('button.import_process') }}
+    </div>
+    <hr style="border: 1px solid #0F3A5D">
+    <q-file
+      filled
+      bottom-slots
+      v-model="model"
+      :label="$t('input_labels.process_file')"
+      counter
+      @input="test"
+    >
+      <template v-slot:prepend>
+        <q-icon
+          name="cloud_upload"
+          @click.stop
+        />
+      </template>
+      <template v-slot:append>
+        <q-icon
+          name="close"
+          @click.stop="model = null"
+          class="cursor-pointer"
+        />
+      </template>
+
+      <template v-slot:hint>
+        {{ $t('help.process_file') }}
+      </template>
+    </q-file>
+
+    <!-- <input
       type="file"
       id="selectFiles"
       value="Import"
@@ -23,138 +56,222 @@
       label="Download Json"
       no-caps
       size="15px"
-    />
+    />-->
     <!--<pre id="result"></pre>-->
     <div v-if="process != null">
-      <div class="title">
-        Process name
-      </div>
-      <div>{{ this.process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].process }}</div>
-      <div class="title">
-        Process description
-      </div>
-      <div>
-        <glossary-editor-viewer
-          :content="process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].description"
-          :key="process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].description"
-        />
-      </div>
-      <div class="title">
-        Process documents
-      </div>
-      <div
-        v-for="doc in this.process.process[0].documents"
-        :key="doc.id"
-      >
-        {{ doc.translations.filter(filterTranslationModel(activeLanguage))[0].document }}
-        <q-btn
-          color="secondary"
-          unelevated
-          rounded
-          label="Associate"
-          @click="associateDocProcess(doc.id)"
-          no-caps
-          size="15px"
-        />
-        <q-btn
-          color="secondary"
-          unelevated
-          rounded
-          label="Create"
-          no-caps
-          @click="createDocProcess(doc.id)"
-          size="15px"
-        />
-        <q-btn
-          color="secondary"
-          unelevated
-          rounded
-          label="Delete"
-          @click="deleteProcessDoc(doc.id)"
-          no-caps
-          size="15px"
-        />                    
-      </div>
-      <q-btn
-        color="secondary"
-        unelevated
-        rounded
-        label="Save process"
-        no-caps
-        @click="saveProcess"
-        size="15px"
-      />  
-      <div v-if="process_saved">             
-        <div class="title">
-          Process steps
-        </div>
-        <q-list
-          bordered
-          class="rounded-borders"
-        >
-          <q-expansion-item
-            expand-separator
-            v-for="doc in process.steps" 
-            icon="perm_identity"
-            :key="doc.id"
+      <div id="div-1">
+        <q-card class="container">
+          <div
+            class=" q-pa-xsm "
+            id="div-2"
+            style="padding-bottom:0px"
           >
-            <template v-slot:header>
-              <q-item-section style="font-size:20px">
-                {{ doc.translations.filter(filterTranslationModel("en"))[0].step }}
-              </q-item-section>
-            </template>
-            <q-card>
-              <q-card-section>
-                {{ doc.translations.filter(filterTranslationModel("en"))[0].description }}
-              </q-card-section>
-              <div class="title">
-                Associated documents
-              </div>
-              <q-card-section
-                v-for="docu in doc.documents"
-                :key="docu.id"
+            <div
+              class="title"
+              style="text-align:left"
+            >
+              {{ $t('input_labels.process_name') }}
+            </div>
+           
+            <div style="text-align:left">
+              {{ this.process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].process }}
+            </div>
+          </div>
+
+          <div
+            id="div-4"
+            class=""
+          >
+            <div
+              class="title"
+              style="text-align:left"
+            >
+              {{ $t('input_labels.process_description') }}
+            </div>
+            
+            <div style="text-align:left">
+              <glossary-editor-viewer
+                :content="process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].description"
+                :key="process.process[0].translations.filter(filterTranslationModel(this.activeLanguage))[0].description"
+              />
+            </div>
+          </div>
+          <div
+            id="div-4"
+            class=""
+          >
+            <div
+              class="title"
+              style="text-align:left"
+            >
+              {{ $t('input_labels.generated_docs') }}
+            </div>
+            
+            <div
+              v-for="doc in this.process.process[0].documents"
+              :key="doc.id"
+              class="row"
+            >
+              <div
+                class="col"
+                style="text-align:left"
               >
-                {{ docu.translations.filter(filterTranslationModel(activeLanguage))[0].document }}
+                {{ doc.translations.filter(filterTranslationModel(activeLanguage))[0].document }}
+              </div>
+              <div
+                class="col"
+                style="display: flex;align-items: center;justify-content: right"
+              >
                 <q-btn
-                  color="secondary"
                   unelevated
                   rounded
-                  @click="associate(doc.id,docu.id)"
-                  label="Associate"
+                  class="associate"
+                  :label="$t('button.associate')"
+                  @click="associateDocProcess(doc.id)"
                   no-caps
                   size="15px"
                 />
                 <q-btn
-                  color="secondary"
                   unelevated
                   rounded
-                  label="Create"
-                  @click="createDoc(doc.id,docu.id)"
+                  class="create"
+                  :label="$t('button.create')"
                   no-caps
+                  @click="createDocProcess(doc.id)"
                   size="15px"
                 />
                 <q-btn
-                  color="secondary"
                   unelevated
                   rounded
-                  label="Delete"
-                  @click="deleteStepDoc(doc.id,docu.id)"
+                  class="delete"
+                  :label="$t('button.delete')"
+                  @click="deleteProcessDoc(doc.id)"
                   no-caps
                   size="15px"
                 />      
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-list>  
+              </div>              
+            </div>
+          </div>
+        </q-card>
+      </div>
+      <div style="text-align:center; padding-top:10px">
         <q-btn
-          color="secondary"
           unelevated
+          class="associate"
           rounded
-          label="Save Steps"
-          @click="saveSteps"
+          :label="$t('button.save_process')"
           no-caps
+          @click="saveProcess"
           size="15px"
-        />               
+        />
+      </div>  
+      <div v-if="true">
+        <div id="div-1">
+          <q-card class="container">
+            <div
+              class=" q-pa-xsm "
+              id="div-2"
+              style="padding-bottom:0px"
+            >
+              <div
+                class="title"
+                style="text-align:left"
+              >
+                {{ $t('input_labels.steps') }}
+              </div>
+              <q-list
+                bordered
+                class="rounded-borders"
+                style="margin-bottom:10px"
+              >
+                <q-expansion-item
+                  expand-separator
+                  v-for="doc in process.steps" 
+                  icon="perm_identity"
+                  :key="doc.id"
+                >
+                  <template v-slot:header>
+                    <q-item-section style="font-size:20px;text-align:left">
+                      {{ doc.translations.filter(filterTranslationModel("en"))[0].step }}
+                    </q-item-section>
+                  </template>
+                  <q-card>
+                    <div
+                      class="title_lower"
+                      style="text-align:left;padding-left:16px"
+                    >
+                      {{ $t('input_labels.step_description') }}
+                    </div>
+                    <q-card-section style="text-align:left">
+                      {{ doc.translations.filter(filterTranslationModel("en"))[0].description }}
+                    </q-card-section>
+                    <div
+                      class="title_lower"
+                      style="text-align:left;padding-left:16px"
+                    >
+                      {{ $t('input_labels.associate_docs') }}
+                    </div>
+                    <q-card-section
+                      v-for="docu in doc.documents"
+                      :key="docu.id"
+                      class="row"
+                    >
+                      <div
+                        class="col"
+                        style="text-align:left"
+                      >
+                        {{ docu.translations.filter(filterTranslationModel(activeLanguage))[0].document }}
+                      </div>
+                      <div
+                        class="col"
+                        style="display: flex;align-items: center;justify-content: right"
+                      >
+                        <q-btn
+                          unelevated
+                          rounded
+                          class="associate"
+                          @click="associate(doc.id,docu.id)"
+                          :label="$t('button.associate')"
+                          no-caps
+                          size="15px"
+                        />
+                        <q-btn
+                          unelevated
+                          rounded
+                          class="create"
+                          :label="$t('button.create')"
+                          @click="createDoc(doc.id,docu.id)"
+                          no-caps
+                          size="15px"
+                        />
+                        <q-btn
+                          unelevated
+                          rounded
+                          class="delete"
+                          :label="$t('button.delete')"
+                          @click="deleteStepDoc(doc.id,docu.id)"
+                          no-caps
+                          size="15px"
+                        />
+                      </div>      
+                    </q-card-section>
+                  </q-card>
+                </q-expansion-item>
+              </q-list>
+            </div>
+          </q-card>
+        </div>
+        <div style="text-align:center;  padding-top:10px">
+          <q-btn
+            class="associate"
+            unelevated
+            rounded
+            :label="$t('button.save_steps')"
+            @click="saveSteps"
+            no-caps
+            size="15px"
+          />               
+        </div>
       </div>
     </div>
     <q-dialog
@@ -164,7 +281,7 @@
       <q-card style="min-width: 350px">
         <q-card-section>
           <div class="text-h6">
-            Select document to associate
+            {{ $t('input_labels.associate_doc_text') }}
           </div>
         </q-card-section>
 
@@ -193,7 +310,7 @@
             @click="cancel"
           />
           <q-btn
-            label="associate"
+            :label="$t('button.associate')"
             color="accent"
             :data-cy="'validatetask'"
             @click="associateDoc"
@@ -209,7 +326,7 @@
       <q-card style="min-width: 350px">
         <q-card-section>
           <div class="text-h6">
-            Select document to associate
+            {{ $t('input_labels.associate_doc_text') }}
           </div>
         </q-card-section>
 
@@ -238,7 +355,7 @@
             @click="cancel"
           />
           <q-btn
-            label="associate"
+            :label="$t('button.associate')"
             color="accent"
             :data-cy="'validatetask'"
             @click="saveAssociatedDocProcess"
@@ -255,6 +372,7 @@ import storeMappingMixin from '../mixin/storeMappingMixin'
 import editEntityMixin from '../mixin/editEntityMixin'
 const GlossaryEditorViewer = () => import("components/GlossaryEditorViewer")
 
+
 export default {
   //name: 'Error404'
   data(){
@@ -266,7 +384,8 @@ export default {
       doc_id:null,
       linked_doc:null,
       t_docs:[],
-      process_saved:false
+      process_saved:false,
+      model:null
     }
   },
   components:{
@@ -287,6 +406,22 @@ GlossaryEditorViewer
     }
   })],
   methods:{
+    test(){
+      console.log(this.model)
+        const fr = new FileReader()
+
+  fr.onload = e => {
+    const result = JSON.parse(e.target.result)
+    const formatted = JSON.stringify(result, null, 2)
+    console.log(formatted)
+    //we assign the formatted json to a data field so we can manipulate it later
+    this.process = JSON.parse(formatted)
+    console.log(this.process.process[0].documents)
+    console.log(this.process.steps)
+    //document.getElementById('result').innerHTML = formatted
+  }
+  fr.readAsText(this.model)
+    },
     deleteStepDoc(step_id, doc_id){
       //We look for the specific step and specific document and delete the document from that step
       var index = this.process.steps.filter((item) => item.id === step_id)[0].documents.findIndex(item => item.id === doc_id)
@@ -515,7 +650,7 @@ GlossaryEditorViewer
   if (files.length <= 0) {
     return false
   }
-
+  console.log(files)
   const fr = new FileReader()
 
   fr.onload = e => {
@@ -566,6 +701,63 @@ GlossaryEditorViewer
 <style scoped>
 .title{
   font-size: 25px;
+  font-weight: bold;
+}
+.banner {
+  font-style: normal;
+  height: 72px;
+  text-align: center;
+  padding-top: 15px;
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 41px;
+  color:#0F3A5D; 
+  background-image: url("../statics/BG Pattern.svg");
+}
+.container {
+  display: inline-block;
+  margin-bottom: 1px;
+  width: 80%;
+}
+#div-1 {
+  text-align: center;
+  padding-top: 40px;
+}
+#div-2 {
+  padding-bottom: 20px;
+  padding-top: 20px;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+#div-4 {
+  padding-bottom: 5px;
+  padding-left: 150px;
+  padding-right: 150px;
+}
+.associate{
+  background: #0F3A5D;
+  border-radius: 5px;
+  color:white;
+  margin-right: 30px;
+  width: 150px;
+}
+.create{
+    background: #FF7C44;
+border-radius: 5px;
+color:white;
+margin-right: 30px;
+width: 150px;
+}
+.delete{
+  margin-right: 30px;
+width: 150px;
+
+border: 1px solid #C71F40;
+box-sizing: border-box;
+border-radius: 5px;
+}
+.title_lower{
+  font-size: 20px;
   font-weight: bold;
 }
 </style>

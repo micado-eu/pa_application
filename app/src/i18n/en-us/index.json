@@ -1,6 +1,7 @@
 { 
   "application_title": "MICADO app",
   "help": {
+    "process_file":"Upload the JSON file you obtained from the Export process",
     "form": "Please fill the form in the default language:",
     "process_name": "Write the name of the process",
     "process_description": "Describe your process",
@@ -146,6 +147,10 @@
     "setting_description":"In the settings, the PA administrator can manage all settings for Micado for Migrants. Here you can also send content to the translation platform."
   },
   "button": {
+    "save_process":"Save process",
+    "save_steps":"Save steps",
+    "create":"Create",
+    "associate":"Associate",
     "import_process":"Import process",
     "import_glossary":"Import Terms",
     "import_information":"Import Information",
@@ -252,6 +257,10 @@
     "privacy_cso":"Privacy policy for the CSO app"
   },
   "input_labels": {
+    "associate_doc_text":"Select document to associate",
+    "steps":"Steps",
+    "associate_docs":"Associated documents",
+    "process_file":"JSON file of the process",
     "export":"Export",
     "want_to_export":"Do you want to export",
     "edit_or_delete":"Do you want to edit or delete",
