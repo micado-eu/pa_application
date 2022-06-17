@@ -199,6 +199,7 @@
         "add_survey": "Aggiungi un sondaggio"
     },
     "data_settings": {
+        "e_translation":"Credenziali per il servizio E-Translation",
         "content": "Descrizione delle feature dell'app migranti",
         "duration_of_new": "Seleziona per quanto tempo il contenuto verrà marcato come nuovo ",
         "ex_survey": "Sondaggio esterno",

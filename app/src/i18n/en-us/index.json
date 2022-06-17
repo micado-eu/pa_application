@@ -211,6 +211,7 @@
     "new_doc_process":"Add new document type"
   },
   "data_settings": {
+    "e_translation":"Credentials for the E-Translation service",
     "manage_languages": "Manage languages in the platform",
     "manage_translations": "Manage translations",
     "send_to_translation": "Send to translation platform",
