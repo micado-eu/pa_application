@@ -148,9 +148,14 @@ export default {
     },
     updateTransformed: function(){
       if (this.graphData.updated){
-            let updateTime = new Date(this.graphData.updated);
-            let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000);
-            return update_transformed.toISOString().split('T')[0];
+            let updateTime = new Date(this.graphData.updated)
+            if (updateTime instanceof Date && !isNaN(updateTime.valueOf())){
+              console.warn(updateTime)
+              let update_transformed = new Date(updateTime.getTime()-updateTime.getTimezoneOffset()*60000)
+              return update_transformed.toISOString().split('T')[0]
+            } else {
+              return this.graphData.updated
+            }
       } else {
         return "";
       }

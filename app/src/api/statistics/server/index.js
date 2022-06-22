@@ -347,12 +347,17 @@ function wfsHamburg(options) {
   var servicedescr
   options.typenames=[]
   var output = []
+  var prefix = null
 
   return  GetCapabilities(options.link)
      .then(()=>DescrFeaturetpyes(options.link))
      .then(()=>GetFeature(options.link))
-     .then(()=>GetMetadata(metadata))
-     .then(()=>PrepareData(charts))
+     .then(()=>{
+      if (metadata.length>0){
+        return GetMetadata(metadata)
+      }
+      })     
+      .then(()=>PrepareData(charts))
      .then( function() {
         return output
       })
@@ -387,13 +392,23 @@ function wfsHamburg(options) {
         if (featuretypelist.length !== undefined){
           featuretypelist.forEach(feature => {
             options.typenames.push(feature.Title)
-            metadata.push(feature.MetadataURL)
-          })
+            if (feature.MetadataURL !== undefined) {
+              metadata.push(feature.MetadataURL)
+            }
+            if (prefix === null) {
+              prefix = feature.Title.split(":")[0]
+            }
+            })
 
         }
         else {
           options.typenames.push(featuretypelist.Title)
-          metadata.push(featuretypelist.MetadataURL)
+          if (featuretypelist.MetadataURL !== undefined) {
+            metadata.push(featuretypelist.MetadataURL)
+          }
+          if (prefix === null) {
+              prefix = featuretypelist.Title.split(":")[0]
+          }        
         }
     })
         .catch(error_handler)
@@ -422,7 +437,8 @@ function wfsHamburg(options) {
     xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: false, explicitRoot: true, explicitArray: false})
     .then(data => {
 
-        data=data["schema"]
+      var dat = data  
+      data=data["schema"]
 
         //Type 1
         if (data["complexType"] !== undefined ){            
@@ -497,31 +513,35 @@ function wfsHamburg(options) {
             let keyindexes = []
             let valueindexes= []
             let prefixes = []
+            var schema = 2
 
           data["element"].forEach(element => {
 
-            if (element.substitutionGroup == "gml:AbstractFeature" & element.abstract != "true"){
+            if (element.substitutionGroup == "gml:AbstractFeature" & element.abstract != "true" & schema == 2){
               typenames_short.push(element.name)
               element.complexType.complexContent.extension.sequence.element.forEach(chartdata => {
-                chartindexes.push(chartdata.name)
-                dataindexes.push(chartdata.complexType.sequence.element.ref)
+                if (Object.keys(chartdata).includes('complexType')) {
+                  dataindexes.push(chartdata.complexType.sequence.element.ref)
+                  chartindexes.push(chartdata.name)
+                } else {
+                  schema = 3
+                }
               })
-
             }
           })
 
-          dataindexes.forEach(element => {
-            element = element.split(":")[1]
-            data["element"].filter(obj => {return obj.name === element}).forEach(entry => {
-              let containerindex = entry.complexType.sequence.element.ref
-              prefixes.push(containerindex.split(":")[0])
-              containerindexes.push(containerindex)
-              data["element"].filter(obj => {return obj.name === containerindex.split(":")[1]}).forEach(contindex => {
-                keyindexes.push(contindex.complexType.sequence.element[0]["name"])
-                valueindexes.push(contindex.complexType.sequence.element[1]["name"])
+          if (schema == 2){
+            dataindexes.forEach(element => {
+              element = element.split(":")[1]
+              data["element"].filter(obj => {return obj.name === element}).forEach(entry => {
+                let containerindex = entry.complexType.sequence.element.ref
+                prefixes.push(containerindex.split(":")[0])
+                containerindexes.push(containerindex)
+                data["element"].filter(obj => {return obj.name === containerindex.split(":")[1]}).forEach(contindex => {
+                  keyindexes.push(contindex.complexType.sequence.element[0]["name"])
+                  valueindexes.push(contindex.complexType.sequence.element[1]["name"])
+                })
               })
-            })
-
           })
           chartindexes.forEach( index => {
             charts[index] = {
@@ -536,9 +556,26 @@ function wfsHamburg(options) {
               category: servicetitle,
               descr: servicedescr,
               prefix: prefixes[chartindexes.indexOf(index)],
-              schema: 2
+              schema: schema
             }
           })
+        } else {
+          data["element"].forEach(element => {
+            typenames_short.push(element.name)
+            charts[element.name] = {
+              keyindex: element.complexType.complexContent.extension.sequence.element[0].name,
+              valueindex: element.complexType.complexContent.extension.sequence.element[1].name,
+              keylabel: element.complexType.complexContent.extension.sequence.element[0].name, //copied
+              valuelabel: element.complexType.complexContent.extension.sequence.element[1].name, //copied
+              title: element.name,
+              category: servicetitle,
+              descr: servicedescr,
+              prefix: prefix,
+              schema: 3,
+              data: []
+            }
+          })
+        }
         }
     })
     }
@@ -568,6 +605,16 @@ function wfsHamburg(options) {
     .then(data => {
         data = data["wfs:member"]
         data.forEach(typename => {
+          if (Object.keys(charts).includes(trimKey(Object.keys(typename)[0]))) {
+            let chartdata = charts[trimKey(Object.keys(typename)[0])]
+            let keyindex = chartdata['prefix']+':'+chartdata['keyindex']
+            let valueindex = chartdata['prefix']+':'+chartdata['valueindex']
+            charts[trimKey(Object.keys(typename)[0])].data.push({
+              [charts[trimKey(Object.keys(typename)[0])]['keylabel']]:typename[Object.keys(typename)[0]][0][keyindex][0],
+              [charts[trimKey(Object.keys(typename)[0])]['valuelabel']]:typename[Object.keys(typename)[0]][0][valueindex][0]
+            })
+          }
+
           Object.keys(typename).forEach(element => {
             typename[element].forEach(el => {
               Object.keys(el).forEach(chartindex => {
@@ -624,7 +671,6 @@ function wfsHamburg(options) {
   }
 
   function GetMetadata(metad){
-    var output={}
     metad=metad[0]["xlink:href"]
     metad=new URL(metad)
 
@@ -646,20 +692,24 @@ function wfsHamburg(options) {
     .then(data => data.text())
     .then(data => {
 
-    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: true, explicitRoot: false, explicitArray: false})
+    xml2js.parseStringPromise(data, {mergeAttrs: true, ignoreAttrs: false, explicitRoot: false, explicitArray: false})
     .then(data => {
         data=data["gmd:MD_Metadata"]
-        output.updated=data["gmd:dateStamp"]["gco:Date"]
-        output.provider=data["gmd:contact"]["gmd:CI_ResponsibleParty"]["gmd:organisationName"]["gco:CharacterString"]
-        output.title=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:citation"]["gmd:CI_Citation"]["gmd:title"]["gco:CharacterString"]
-        output.descr=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]
         Object.keys(charts).forEach(chart => {
-          charts[chart]["updated"]=data["gmd:dateStamp"]["gco:Date"]
+          //charts[chart]["updated"]=data["gmd:dateStamp"]["gco:Date"]
           charts[chart].provider=data["gmd:contact"]["gmd:CI_ResponsibleParty"]["gmd:organisationName"]["gco:CharacterString"]
           charts[chart].category=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:citation"]["gmd:CI_Citation"]["gmd:title"]["gco:CharacterString"]
           charts[chart].descr=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:abstract"]["gco:CharacterString"]
           charts[chart].board=options.board
-        })
+          // let updated = data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:resourceMaintenance"]["gmd:MD_MaintenanceInformation"]["gmd:maintenanceAndUpdateFrequency"]["gmd:MD_MaintenanceFrequencyCode"].codeListValue
+          // console.warn(updated)
+          if (data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:resourceMaintenance"] !== undefined){
+            charts[chart].updated = data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:resourceMaintenance"]["gmd:MD_MaintenanceInformation"]["gmd:maintenanceAndUpdateFrequency"]["gmd:MD_MaintenanceFrequencyCode"].codeListValue
+          } else {
+            charts[chart].updated = 'k.A.'
+          }
+          // charts[chart].updated=data["gmd:identificationInfo"]["gmd:MD_DataIdentification"]["gmd:resourceMaintenance"]["gmd:MD_MaintenanceInformation"]["gmd:maintenanceAndUpdateFrequency"]["gmd:MD_MaintenanceFrequencyCode"].codeListValue
+          })
     })
     }
     )
