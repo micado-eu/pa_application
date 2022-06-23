@@ -95,5 +95,11 @@ export default {
       .get('/user-types/' + id + '/user-types-translations')
       .then(response => response.data)
       .catch(error_handler)
+  },
+  exportUserType (id) {
+    return axiosInstance
+      .get('/user-types/' + id +'?filter[include][0][relation]=translations')
+      .then(response => { return response.data })
+      .catch(error_handler)
   }
 }

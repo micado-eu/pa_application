@@ -149,3 +149,44 @@ export function deleteTranslationProd(state, id){
   console.log("in delete transl prod")
   client.deleteTypeTranslationProd(id)
 }
+
+exportType
+
+export function exportType(state, id){
+  return client.exportType(id)
+}
+
+
+export function importIntegrationTypeElement (state, integration_type_element) {
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log("in actions savec ategory:")
+  console.log(integration_type_element)
+  let savingCategory = JSON.parse(JSON.stringify(integration_type_element, ['']))
+  console.log(savingCategory)
+
+
+  // we need to save first the topic
+  return client.saveIntegrationType(savingCategory)
+    .then(function (type_return) {
+      console.log("returned from saving category")
+      console.log(type_return)
+      // in topic_return we have the ID that we need in the following cycle
+      integration_type_element.translations.forEach(function (transl) {
+        client.saveIntegrationTypeTranslation(transl, type_return.id)
+      }, type_return.id)
+      // here we need only to add the ID to the topic element since there are the tranlsations that in the topic_return are not present
+      console.log("after foreach save translation")
+      integration_type_element.id = type_return.id
+      // now we need to set the id for all translations
+      for (var i = 0; i < integration_type_element.translations.length; i++) {
+        integration_type_element.translations[i].id = type_return.id
+      }
+      // saving the validators
+      let savedValidators = []
+      integration_type_element.interventionTypeValidators = savedValidators
+      state.commit('saveIntegrationTypeElement', integration_type_element)
+    }
+      // here we cycle for all translations to save each one
+
+    )
+}

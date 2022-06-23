@@ -217,5 +217,11 @@ export default {
       .get('/mixed-icons')
       .then((response) => response.data)
       .catch(error_handler)
+  },
+  exportDocumentType (id) {
+    return axiosInstance
+      .get('/document-types/to-json?id='+ id)
+      .then((response) => response.data)
+      .catch(error_handler)
   }
 }
