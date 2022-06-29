@@ -1,6 +1,7 @@
 {
     "application_title": "MICADO app",
     "help": {
+        "process_file":"Upload the JSON file you obtained from the Export process",
         "add_edge_explain": "Dibuja lineas entre los pasos para enlazarlos",
         "add_step_explain": "Haz clic en 'Añadir Paso' para añadir uno o más pasos a tu proceso",
         "click_step_graph": "Haz clic en cada paso para introducir los detalles",
@@ -146,6 +147,12 @@
         "logout": "Cerrar sesión"
     },
     "button": {
+        "import":"Import",
+        "delete_doc":"Delete document",
+        "save_process":"Save process",
+        "save_steps":"Save steps",
+        "create":"Create",
+        "associate":"Associate",
         "add_document": "Agregar documento",
         "integration": "Integración",
         "add": "Añadir",
@@ -212,6 +219,7 @@
         "import_process": "Importar procesos"
     },
     "data_settings": {
+        "e_translation":"Credentials for the E-Translation service",
         "content": "Descripciones de las funcionalidades de la app de migrantes",
         "duration_of_new": "Selecciona cuánto tiempo el contenido será marcado como nuevo ",
         "ex_survey": "Encuesta externa",
@@ -252,6 +260,11 @@
         "privacy_cso":"Política de privacidad para la app de OSC"
     },
     "input_labels": {
+        "import":"Do you want to import this file?",
+        "associate_doc_text":"Select document to associate",
+        "steps":"Steps",
+        "associate_docs":"Associated documents",
+        "process_file":"JSON file of the process",
         "add_doc_type": "Añadir un nuevo tipo de documento",
 		"add_api": "Añadir enlace a API",
 		"data_source": "Fuente de datos",

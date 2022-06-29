@@ -68,11 +68,12 @@ export default async ({ Vue, router, store, app }) => {
           checkLoginIframe: false // otherwise it would reload the window every so seconds
         },
         config: {
-          url: 'https://identity.micadoproject.eu/auth',
+          url: 'https://'+ Vue.prototype.$envconfig.identityUrl +'/auth',
           realm: 'pa',
           clientId: 'pa_app'
         },
         onReady: (keycloak) => {
+          console.log(Vue.prototype.$envconfig.identityUrl)
           console.log('onReady passed')
           console.log(keycloak)
           console.log(store)

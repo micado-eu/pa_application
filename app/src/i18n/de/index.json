@@ -40,6 +40,7 @@
     },
     "application_title": "MICADO App",
     "help": {
+        "process_file":"Upload the JSON file you obtained from the Export process",
         "element_start_date": "Startdatum auswählen",
         "user_type": "Nutzer/-innen-Gruppe einfügen",
         "user_type_description": "Nutzer/-innen-Gruppe beschreiben",
@@ -138,6 +139,11 @@
         "go_to_reference": "Zu Referenz gehen"
     },
     "input_labels": {
+        "import":"Do you want to import this file?",
+        "associate_doc_text":"Select document to associate",
+        "steps":"Steps",
+        "associate_docs":"Associated documents",
+        "process_file":"JSON file of the process",
         "event_cost": "Kosten der Veranstaltung",
         "link_name": "Name für Link im Prozessschritt",
         "transl_state": "Übersetzungsstatus",
@@ -307,6 +313,7 @@
         "username": "Nutzer/-innen-Name"
     },
     "data_settings": {
+        "e_translation":"Credentials for the E-Translation service",
         "translations": "Übersetzungen",
         "topics": "Themenfelder",
         "user_types": "Nutzer/-innen-Gruppen",
@@ -484,6 +491,12 @@
         "unknown": "Unbekannt"
     },
     "button": {
+        "import":"Import",
+        "delete_doc":"Delete document",
+        "save_process":"Save process",
+        "save_steps":"Save steps",
+        "create":"Create",
+        "associate":"Associate",
         "edit_action": "Schritt bearbeiten",
         "situation_about": "Über",
         "add_link": "Link hinzufügen",
