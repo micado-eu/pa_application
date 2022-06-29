@@ -1635,12 +1635,13 @@ export default {
       this.workingFeatures = JSON.parse(JSON.stringify(this.features))
     },
     saveLogo() {
-      console.log(this.myCroppa.generateDataUrl())
-      let setting = { key: "pa_logo", value: this.myCroppa.generateDataUrl() }
-      this.updateSetting(setting).then((result) => {
-        console.log(result)
-        //       window.location.reload()
-      })
+      let pa = this.settings.filter((set)=>{return set.key == 'pa_logo'})
+      if(pa.length > 0){
+      this.saveSingleSetting("pa_logo",false,this.myCroppa.generateDataUrl())
+      }
+      else{      
+      this.saveSingleSetting("pa_logo",true,this.myCroppa.generateDataUrl())
+      }
     }
   },
   created() {

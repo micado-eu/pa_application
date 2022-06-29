@@ -165,7 +165,7 @@
           size="15px"
         />
       </div>  
-      <div v-if="true">
+      <div v-if="process_saved == true">
         <div id="div-1">
           <q-card class="container">
             <div
@@ -192,7 +192,7 @@
                 >
                   <template v-slot:header>
                     <q-item-section style="font-size:20px;text-align:left">
-                      {{ doc.translations.filter(filterTranslationModel("en"))[0].step }}
+                      {{ doc.translations.filter(filterTranslationModel(activeLanguage))[0].step }}
                     </q-item-section>
                   </template>
                   <q-card>
@@ -203,7 +203,7 @@
                       {{ $t('input_labels.step_description') }}
                     </div>
                     <q-card-section style="text-align:left">
-                      {{ doc.translations.filter(filterTranslationModel("en"))[0].description }}
+                      {{ doc.translations.filter(filterTranslationModel(activeLanguage))[0].description }}
                     </q-card-section>
                     <div
                       class="title_lower"
