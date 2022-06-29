@@ -40,6 +40,7 @@
     },
     "application_title": "MICADO App",
     "help": {
+        "process_file":"Upload the JSON file you obtained from the Export process",
         "element_start_date": "Startdatum auswählen",
         "user_type": "Nutzer/-innen-Gruppe einfügen",
         "user_type_description": "Nutzer/-innen-Gruppe beschreiben",
@@ -122,7 +123,15 @@
         "add_edge_explain": "Linie zwischen den Schritten ziehen, um diese miteinander zu verbinden",
         "click_step_graph": "An Schitt klicken, um Details hinzufügen",
         "add_step_explain": "Auf \"Schritt hinzufügen\" klicken, um einen oder mehrere Schritte zur Anleitung hinzuzufügen",
-        "preview_process": "Vorschau der Anleitung"
+        "preview_process": "Vorschau der Anleitung",
+        "transformation_function": "Funktion auswählen, die den abgefragten Datensatz in das richtige Format umwandeln. Bei Fragen Systemadministrator kontaktieren",
+        "chart_type": "BAR für Säulen-, LINE für Linien- und PIE für Tortendiagramm auswählen",
+        "api_link": "Link zur externen Datenquelle bereitstellen. Achtung: falls Metadata aus der Quelle bezogen wird, sind nicht alle Felder verpflichtend, nur \"Link\", \"Gruppe\" und \"Transformationsfunktion\"",
+        "upload_file": "CSV oder JSON hochladen",
+        "file_source": "Dateiquelle auswählen: File hochladen (File) oder externe Daten abfragen (API)",
+        "value_column": "Wertespalte (Y-Achse) für Diagramm auswählen",
+        "index_column": "Indexspalte (X-Achse) für Diagramm auswählen",
+        "delimiter": "Trennzeichen für CSV-Datei auswählen"
     },
     "internal_reference": {
         "more_info_1": "Mehr Information für",
@@ -130,6 +139,11 @@
         "go_to_reference": "Zu Referenz gehen"
     },
     "input_labels": {
+        "import":"Do you want to import this file?",
+        "associate_doc_text":"Select document to associate",
+        "steps":"Steps",
+        "associate_docs":"Associated documents",
+        "process_file":"JSON file of the process",
         "event_cost": "Kosten der Veranstaltung",
         "link_name": "Name für Link im Prozessschritt",
         "transl_state": "Übersetzungsstatus",
@@ -239,7 +253,18 @@
         "preview_migrant": "Vorschau der Anleitung innerhalb der App für Migrantinnen und Migranten",
         "preview": "Vorschau",
         "click_step": "Für Details auf einen Schritt klicken",
-        "validate_intervention": "Intervention validieren"
+        "validate_intervention": "Intervention validieren",
+        "transformation_function": "Transformationsfunktion",
+        "data_source": "Datenquelle",
+        "file_source": "Datenquelle auswählen",
+        "add_api": "API Link hinzufügen",
+        "delete_irreversible": "Bitte beachten, dass die Aktion nicht mehr rückgängig gemacht werden kann.",
+        "id": "Id",
+        "label": "Beschriftung",
+        "delimiter": "Trennzeichen",
+        "edit_or_delete": "Folgenden Eintrag bearbeiten oder löschen",
+        "want_to_export": "Folgenden Eintrag exportieren",
+        "export": "Export"
     },
     "lists": {
         "category": "Kategorie",
@@ -253,7 +278,7 @@
         "start_date": "Startdatum",
         "end_date": "Enddatum",
         "cost_free": "Kostenlos",
-        "unpublish_warning": "Achtung! Wenn die Veröffentlichung zurückgezogen wird, wird der Übersetzungsstatus auf \"nicht übersetzt\" gesetzt und der Übersetzungsprozess muss wiederholt werden. Fortsetzen?",
+        "unpublish_warning": "Achtung: Wenn die Veröffentlichung zurückgezogen wird, wird der Eintrag in der App für Migrantinnen und Migranten nicht mehr angezeigt. Fortsetzen?",
         "yes": "Ja",
         "no": "Nein",
         "publish_warning": "Achtung! Wenn die Anleitung veröffentlicht wird, wird sie in MICADO mobile sichtbar. Änderungen werden gesperrt, solange die Veröffentlichung nicht zurückgezogen wird. Fortsetzen?",
@@ -288,6 +313,7 @@
         "username": "Nutzer/-innen-Name"
     },
     "data_settings": {
+        "e_translation":"Credentials for the E-Translation service",
         "translations": "Übersetzungen",
         "topics": "Themenfelder",
         "user_types": "Nutzer/-innen-Gruppen",
@@ -465,6 +491,12 @@
         "unknown": "Unbekannt"
     },
     "button": {
+        "import":"Import",
+        "delete_doc":"Delete document",
+        "save_process":"Save process",
+        "save_steps":"Save steps",
+        "create":"Create",
+        "associate":"Associate",
         "edit_action": "Schritt bearbeiten",
         "situation_about": "Über",
         "add_link": "Link hinzufügen",
@@ -523,7 +555,11 @@
         "delete_steplink": "Verknüpfung der Schritte entfernen",
         "save_steplink": " Verknüpfung der Schritte speichern",
         "delete_step": "Schritt entfernen",
-        "save_step": " Schritt speichern"
+        "save_step": " Schritt speichern",
+        "import_events": "Kurse und Veranstaltungen importieren",
+        "import_information": "Informaiton importieren",
+        "import_glossary": "Begriffe importieren",
+        "import_process": "Anleitung importieren"
     },
     "new_survey": {
         "title": "Umfragetitel",
@@ -553,7 +589,12 @@
         "timescale_help": "Diese Box auswählen, wenn die Kategorienachse sich auf ein zeitliches Intervall bezieht (z.B. Jahre, Monate), leer lassen, wenn die Daten sich auf eine Nominal- oder andere Skala (e.g. Länder, Städte) beziehen",
         "timescale_checkbox": "Daten sind mit einer Zeitskala verknüpft",
         "timescale_title": "X-Achse bezieht sich auf Zeitintervall",
-        "chart_data_provider_description": "Hier Datenlieferant eintragen"
+        "chart_data_provider_description": "Hier Datenlieferant eintragen",
+        "chart_preview": "Vorschau",
+        "chart_settings": "Diagrammeinstellungen",
+        "value_label_description": "Beschriftung für Werteachse auswählen",
+        "index_label_description": "Beschriftung für Indexachse auswählen",
+        "headerrow": "erste Zeile im Datensatz ist Kopfzeile"
     },
     "success_messages": {
         "add_chart_description": "Upload erfolgreich abgeschlossen! Bitte zur enstsprechenden Gruppe gehen, um das neue Diagramm zu betrachten.",

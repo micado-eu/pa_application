@@ -1,6 +1,7 @@
 {
     "application_title": "MICADO app",
     "help": {
+        "process_file":"Carica il file JSON del processo ottenuto tramite l'esportazione",
         "process_name": "Inserisci il nome del processo",
         "process_description": "Descrivi il processo",
         "generated_docs": "Seleziona il documento generato dal processo. Se il documento non è presente nella lista, scegli 'altro'",
@@ -138,6 +139,12 @@
         "logout": "Esci"
     },
     "button": {
+        "import":"Importa",
+        "delete_doc":"Elimina documento",
+        "save_process":"Salva processo",
+        "save_steps":"Salva passi",
+        "create":"Crea",
+        "associate":"Associa",
         "change_pass": "Cambia Password",
         "add_document": "Aggiungi documento",
         "integration": "Integrazione",
@@ -199,6 +206,7 @@
         "add_survey": "Aggiungi un sondaggio"
     },
     "data_settings": {
+        "e_translation":"Credenziali per il servizio E-Translation",
         "content": "Descrizione delle feature dell'app migranti",
         "duration_of_new": "Seleziona per quanto tempo il contenuto verrà marcato come nuovo ",
         "ex_survey": "Sondaggio esterno",
@@ -239,6 +247,11 @@
         "privacy_cso":"Informativa sulla privacy per l'app ETS"
     },
     "input_labels": {
+        "import":"Vuoi davvero importare questo file?",
+        "associate_doc_text":"Seleziona documento da associare",
+        "steps":"Passi",
+        "associate_docs":"Documenti associati",
+        "process_file":"File JSON del processo",
         "available_transl":"Traduzioni disponibili",
         "add_doc_type": "Aggiungi nuovo documento",
         "chart_description": "Descrizione grafico",

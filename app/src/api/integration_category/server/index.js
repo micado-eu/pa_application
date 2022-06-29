@@ -118,5 +118,11 @@ export default {
         .delete(`/intervention-types/${id}`)
         .then((response) => response.data)
         .catch(error_handler)
+    },
+    exportIntegrationCategory (id) {
+      return axiosInstance
+        .get('/intervention-categories/' + id +'?filter[include][0][relation]=translations')
+        .then(response => { return response.data })
+        .catch(error_handler)
     }
   }

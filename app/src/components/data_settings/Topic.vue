@@ -1,7 +1,9 @@
 <template>
   <div class="q-pa-md">
     <div class="row">
-      <h5 class="col-6">{{ $t("data_settings.topics") }}</h5>
+      <h5 class="col-6">
+        {{ $t("data_settings.topics") }}
+      </h5>
       <div class="col-6 div-1">
         <q-btn
           :data-cy="'addtopic'"
@@ -12,9 +14,30 @@
           :disable="hideAdd"
           class="add-button"
         />
+        <input
+          id="import-input"
+          type="file"
+          name="name"
+          style="display: none;"
+          accept=".json"
+          @change="importFileWindow($event)"
+        >
+        <q-btn
+          class="add-button"
+          color="accent"
+          unelevated
+          rounded
+          :label="$t('button.import')"
+          no-caps
+          size="15px"
+          @click="callImportFile()"
+        />
       </div>
     </div>
-    <q-card class="q-pa-xl div-2" :hidden="hideForm">
+    <q-card
+      class="q-pa-xl div-2"
+      :hidden="hideForm"
+    >
       <form
         @submit.prevent.stop="onSubmit"
         @reset.prevent.stop="onReset"
@@ -22,8 +45,8 @@
       >
         <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
         <HelpLabel
-          :fieldLabel="$t('input_labels.topic')"
-          :helpLabel="$t('help.topic')"
+          :field-label="$t('input_labels.topic')"
+          :help-label="$t('help.topic')"
           class="div-3"
           style="padding-top: 10px"
         />
@@ -66,7 +89,7 @@
                 }"
             />
           </div> -->
-          <HelpLabel
+        <HelpLabel
           :field-label="$t('input_labels.description')"
           :help-label="$t('help.user_type_description')"
           style="padding-top: 10px"
@@ -95,18 +118,17 @@
           ref="editor"
         />
         <FileUploader
-          :Image="topicimage"
+          :image="topicimage"
           :icon="int_topic_shell.icon"
           @upload="getFiles"
           :label="$t('help.topic_icon')"
           :published="int_topic_shell.published"
           style="padding-bottom: 10px"
-        >
-        </FileUploader>
+        />
         <div class="col-2">
           <HelpLabel
-            :fieldLabel="$t('input_labels.parent_topic')"
-            :helpLabel="$t('help.parent_topic')"
+            :field-label="$t('input_labels.parent_topic')"
+            :help-label="$t('help.parent_topic')"
             style="padding-left: 17px"
           />
         </div>
@@ -123,14 +145,20 @@
           class="select"
         />
         <div class="row">
-          <div class="col-2" style="min-width: 200px">
+          <div
+            class="col-2"
+            style="min-width: 200px"
+          >
             <HelpLabel
-              :fieldLabel="$t('translation_states.translatable')"
-              :helpLabel="$t('help.is_published')"
+              :field-label="$t('translation_states.translatable')"
+              :help-label="$t('help.is_published')"
               style="padding-left: 17px"
             />
           </div>
-          <div class="col" style="padding-top: 2px">
+          <div
+            class="col"
+            style="padding-top: 2px"
+          >
             <!-- <q-toggle
             v-model="int_topic_shell.published"
             color="accent"
@@ -148,7 +176,7 @@
             />
           </div>
         </div>
-        <hr id="hr" />
+        <hr id="hr">
         <q-btn
           :data-cy="'canceltopic'"
           no-caps
@@ -189,19 +217,31 @@
         {{ $t("input_labels.edit") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{ $t("input_labels.delete") }}
+        {{ $t("input_labels.export") }}
       </q-item-section>
     </q-item>
 
-    <q-list bordered separator>
-      <div v-for="a_topic in topic" :key="a_topic.id">
+    <q-list
+      bordered
+      separator
+    >
+      <div
+        v-for="a_topic in topic"
+        :key="a_topic.id"
+      >
         <q-item>
           <q-item-section class="col-1 flex flex-left">
-            <q-img :src="a_topic.icon" spinner-color="white" id="image" />
+            <q-img
+              :src="a_topic.icon"
+              spinner-color="white"
+              id="image"
+            />
           </q-item-section>
-          <q-item-section class="col-6 flex flex-left">{{
-            showTopicLabel(a_topic)
-          }}</q-item-section>
+          <q-item-section class="col-6 flex flex-left">
+            {{
+              showTopicLabel(a_topic)
+            }}
+          </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
             <q-toggle
               v-model="a_topic.published"
@@ -223,14 +263,14 @@
               id="icon"
               name="img:statics/icons/Edit.png"
               size="md"
-              @click.stop="editingTopic(a_topic)"
+              @click.stop="editingTopicWindow(a_topic)"
             />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
             <q-icon
               :data-cy="'deletetopic'.concat(a_topic.id)"
-              name="img:statics/icons/Icon - Delete.svg"
-              @click.stop="deletingTopic(a_topic.id)"
+              name="img:statics/icons/Icon - Download.svg"
+              @click.stop="exportFile(a_topic.id)"
               size="md"
             />
           </q-item-section>
@@ -244,13 +284,87 @@
             style="background-color:#C4C4C4" 
             text-color="white"
             :key="lang.lang"
-            >{{ lang.lang.toUpperCase() }}</q-chip
           >
+            {{ lang.lang.toUpperCase() }}
+          </q-chip>
         </div>
-        <hr style="margin-bottom: 0px" />
+        <hr style="margin-bottom: 0px">
       </div>
     </q-list>
-    <q-card class="my-card"> </q-card>
+    <q-card class="my-card" />
+    <q-dialog v-model="editing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.edit_or_delete') }}
+          </p>
+          <p class="delete_text">
+            {{ int_topic_shell.translations.filter(filterTranslationModel(activeLanguage))[0].topic }}?
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.edit')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="editingTopic()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.delete')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deletingTopic(int_topic_shell.id)"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="importing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.import') }}
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.import')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importFile()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.cancel')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importing = false"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -279,12 +393,16 @@ export default {
         fetchTopic: "topic/fetchTopic",
         updatePublished: "topic/updatePublished",
         saveTranslationProd: "topic/saveTranslationProd",
-        deleteTranslationProd: "topic/deleteTranslationProd"
+        deleteTranslationProd: "topic/deleteTranslationProd",
+        exportTopic:'topic/exportTopic'
       }
     })
   ],
   data() {
     return {
+      import_topic:null, 
+      importing:false,
+      editing:false,
       int_topic_shell: { id: -1, translations: [], icon: "" },
       hideForm: true,
       hideAdd: false,
@@ -317,6 +435,53 @@ export default {
   },
 
   methods: {
+         callImportFile() {
+      document.getElementById('import-input').click()
+    },
+    importFileWindow(event) {
+      console.log(event)
+        const files = document.getElementById('import-input').files
+  if (files.length <= 0) {
+    return false
+  }
+          const fr = new FileReader()
+
+  fr.onload = e => {
+    const result = JSON.parse(e.target.result)
+    const formatted = JSON.stringify(result, null, 2)
+    console.log(result)
+    this.import_topic = JSON.parse(formatted)
+    console.log(this.import_topic)
+    //we assign the formatted json to a data field so we can manipulate it later
+    //document.getElementById('result').innerHTML = formatted
+  }
+  console.log(this.import_topic)
+  fr.readAsText(files.item(0))
+        this.importing = true
+
+    },
+    importFile(){
+      this.import_topic.published = false
+      this.import_topic.father = null
+      this.saveTopic(this.import_topic)
+      this.importing = false
+    },
+      exportFile(value){
+       console.log(value)
+       this.exportTopic(value).then((doc)=>{
+        console.log(doc)
+         var filename = doc.translations.filter((transl)=>{
+           return transl.lang == this.$userLang
+         })[0].topic
+         var element = document.createElement('a')
+        element.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(doc,null, 4)))
+        element.setAttribute('download', filename + '.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+       })
+     },
     getTranslationState(id) {
       var cate = this.topic.filter((cat) => {
         return cat.id == id
@@ -367,6 +532,7 @@ export default {
             handler: () => {
               console.log(index)
               this.deleteTopic(index)
+              this.editing = false
             }
           },
           {
@@ -537,7 +703,26 @@ export default {
       this.hideForm = true
       this.hideAdd = false
     },
-    editingTopic(topic) {
+        editingTopic(){
+    if(this.int_topic_shell.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+    })
+      }
+      else{
+        this.hideForm = false
+        this.editing = false
+      }
+    },
+    editingTopicWindow(topic) {
+      this.isNew = false
+      //this.hideForm = false
+      this.mergeTopic(topic)
+      this.publishedOrig = topic.published
+      this.editing = true
+    },
+    /*editingTopic(topic) {
       if(topic.published){
       this.$q.notify({
         message: this.$t('warning.published_edit'),
@@ -551,7 +736,7 @@ export default {
       this.publishedOrig = topic.published
       }
 
-    },
+    },*/
 
     showTopicLabel(workingTopic) {
       return workingTopic.translations.filter(
@@ -659,6 +844,8 @@ h5 {
 }
 .add-button {
   width: 200px;
+  border-radius: 2px;
+  margin-right:10px
 }
 .button {
   width: 100px;
@@ -694,5 +881,21 @@ h5 {
 }
 #icon {
   margin-right: 10px;
+}
+.edit_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #FF7C44;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
+}
+.delete_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #9E1F63;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
 }
 </style>

@@ -602,6 +602,7 @@ export default {
       // before validate the intervention and in the then check the file
       this.validatingIntervention.completed = true
       this.validatingIntervention.validationDate = current_data
+      this.validatingIntervention.validationRequestDate = current_data
       // TODO change with the real user ID
       this.validatingIntervention.validatingUserId = this.$store.state.auth.user.umid
       console.log(this.validatingIntervention)

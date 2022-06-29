@@ -1,8 +1,13 @@
-  <template>
+<template>
   <div class="q-pa-md">
     <div class="row">
-      <h5 class="col-6">{{$t("data_settings.document_types")}}</h5>
-      <div class="col-6 div-1">
+      <h5 class="col-6">
+        {{ $t("data_settings.document_types") }}
+      </h5>
+      <div
+        class="col-6 "
+        style="display: flex;align-items: center;justify-content: right"
+      >
         <q-btn
           color="info"
           no-caps
@@ -12,78 +17,99 @@
           :disable="hideAdd"
           class="add-button"
         />
+        <input
+          id="import-input"
+          type="file"
+          name="name"
+          style="display: none;"
+          accept=".json"
+          @change="importFileWindow($event)"
+        >
+        <q-btn
+          class="add-button"
+          color="accent"
+          unelevated
+          rounded
+          :label="$t('button.import')"
+          no-caps
+          size="15px"
+          @click="callImportFile()"
+        />
       </div>
     </div>
     <q-card
       class="q-pa-xl div-2"
       :hidden="hideForm"
     >
-    <form
-          @submit.prevent.stop="onSubmit"
-          @reset.prevent.stop="onReset"
-          class=""
-        >
-    <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
-          <HelpLabel
-          :fieldLabel="$t('input_labels.doc_type')"
-          :helpLabel ="$t('help.doc_type')"
+      <form
+        @submit.prevent.stop="onSubmit"
+        @reset.prevent.stop="onReset"
+        class=""
+      >
+        <!-- it seems that the following q-input causes a console error saying that he cannot read the property topic of undefined -->
+        <HelpLabel
+          :field-label="$t('input_labels.doc_type')"
+          :help-label="$t('help.doc_type')"
           class="div-3"
-          />
+        />
          
-          <q-input
-            outlined
-            filled
-            dense
-            ref="doc_type"
-            :hint="$t('input_labels.required')"
-            counter
-            :maxlength="$envconfig.titleLimit"
-            :rules="[ 
+        <q-input
+          outlined
+          filled
+          dense
+          ref="doc_type"
+          :hint="$t('input_labels.required')"
+          counter
+          :maxlength="$envconfig.titleLimit"
+          :rules="[ 
             val => val.length <= $envconfig.titleLimit || 'Please use maximum 25 characters',
             val => !!val || 'Field is required'
-            ]"
-            v-model="int_doc_shell.translations.filter(
+          ]"
+          v-model="int_doc_shell.translations.filter(
+            (top) => top.translated == false
+          )[0].document"
+          :readonly="!(
+            int_doc_shell.translations.filter(
               (top) => top.translated == false
-            )[0].document"
-            :readonly="!(
-              int_doc_shell.translations.filter(
-                (top) => top.translated == false
-              )[0].translationState == 0 &&
-              int_doc_shell.published == false
-            )"
-            :label="$t('input_labels.doc_type_placeholder')"
-          />
-           <HelpLabel
-          :fieldLabel="$t('input_labels.description')"
-          :helpLabel ="$t('help.doc_type_description')"
+            )[0].translationState == 0 &&
+            int_doc_shell.published == false
+          )"
+          :label="$t('input_labels.doc_type_placeholder')"
+        />
+        <HelpLabel
+          :field-label="$t('input_labels.description')"
+          :help-label="$t('help.doc_type_description')"
           class="div-3"
-          />
+        />
           
-          <GlossaryEditor
-            class="desc-editor"
-            :readonly="!(
-              int_doc_shell.translations.filter(
-                (top) => top.translated == false
-              )[0].translationState == 0 &&
-              int_doc_shell.published == false
-            )"
-            v-model="int_doc_shell.translations.filter(
+        <GlossaryEditor
+          class="desc-editor"
+          :readonly="!(
+            int_doc_shell.translations.filter(
               (top) => top.translated == false
-            )[0].description"
-            :lang="int_doc_shell.translations.filter(
-              (top) => top.translated == false
-            )[0].lang"
-            ref="editor"
-          />
+            )[0].translationState == 0 &&
+            int_doc_shell.published == false
+          )"
+          v-model="int_doc_shell.translations.filter(
+            (top) => top.translated == false
+          )[0].description"
+          :lang="int_doc_shell.translations.filter(
+            (top) => top.translated == false
+          )[0].lang"
+          ref="editor"
+        />
 
-          <div class="row">
-          <q-card-section class=" col section" style="padding-right:10px">
-          <HelpLabel
-          :fieldLabel="$t('input_labels.issuer')"
-          :helpLabel ="$t('help.issuer')"
-          class="div-3"
-          style="padding-top:10px"
-          />
+        <div class="row">
+          <q-card-section
+            class=" col section"
+            style="padding-right:10px"
+          >
+            <HelpLabel
+              :field-label="$t('input_labels.issuer')"
+              :help-label="$t('help.issuer')"
+              class="div-3"
+              style="padding-top:10px"
+            />
             <q-input
               outlined
               :readonly="int_doc_shell.published"
@@ -97,50 +123,53 @@
 
           <q-card-section class=" col section">
             <HelpLabel
-          :fieldLabel="$t('input_labels.icon')"
-          :helpLabel ="$t('help.doc_type_icon')"
-          class="field"
-          style="padding-top:10px"
-          /> 
-    <q-select
-        dense
-        filled
-        v-model="int_doc_shell.icon"
-        :options="this.document_types_icons"
-        :label="$t('input_labels.icon')"
-        :rules="[ 
+              :field-label="$t('input_labels.icon')"
+              :help-label="$t('help.doc_type_icon')"
+              class="field"
+              style="padding-top:10px"
+            /> 
+            <q-select
+              dense
+              filled
+              v-model="int_doc_shell.icon"
+              :options="this.document_types_icons"
+              :label="$t('input_labels.icon')"
+              :rules="[ 
                 val => val != null|| 'Field is required'
-                ]"
-        :readonly="int_doc_shell.published"
-        ref="icon"
-        color="teal"
-        @input="addIcon($event)"
-        @remove="removeIcon($event)"
-        clearable
-      >
-      <template v-slot:selected>
-          <q-chip
-            v-if="int_doc_shell.icon"
-            square  
-          >
-          <q-avatar>
-          <img :src="int_doc_shell.icon">
-        </q-avatar>
-          </q-chip>
-          <q-badge v-else></q-badge>
-        </template>
-        <template v-slot:option="scope">
-          <q-item
-            v-bind="scope.itemProps"
-            v-on="scope.itemEvents"
-          >
-            <q-item-section>
-              <q-img style="max-width:24px; max-heigth:24px" :src="scope.opt.value" />
-            </q-item-section>
-          </q-item>
-        </template>
-      </q-select>
-             <!-- <q-select
+              ]"
+              :readonly="int_doc_shell.published"
+              ref="icon"
+              color="teal"
+              @input="addIcon($event)"
+              @remove="removeIcon($event)"
+              clearable
+            >
+              <template v-slot:selected>
+                <q-chip
+                  v-if="int_doc_shell.icon"
+                  square  
+                >
+                  <q-avatar>
+                    <img :src="int_doc_shell.icon">
+                  </q-avatar>
+                </q-chip>
+                <q-badge v-else />
+              </template>
+              <template v-slot:option="scope">
+                <q-item
+                  v-bind="scope.itemProps"
+                  v-on="scope.itemEvents"
+                >
+                  <q-item-section>
+                    <q-img
+                      style="max-width:24px; max-heigth:24px"
+                      :src="scope.opt.value"
+                    />
+                  </q-item-section>
+                </q-item>
+              </template>
+            </q-select>
+            <!-- <q-select
             filled
             dense
             :hint="$t('input_labels.required')"
@@ -196,220 +225,234 @@
             </q-item-section>
             </q-card>-->
           </q-card-section>
-          </div>
-          <div class="row">
-        <q-card-section class="col section" style="padding-right:10px">
-          <HelpLabel
-          :fieldLabel="$t('input_labels.doc_pics')"
-          :helpLabel ="$t('help.doc_pics')"
-          class="field"
-          /> 
-          
-          <q-file
-            @input="getFilesPics($event)"
-            bg-color="grey-3"
-            dense
-            :label="$t('input_labels.upload_doc_pics')"
-            standout
-            :disable="int_doc_shell.published"
-            outlined
-            accept=".jpg, image/*"
-            @rejected="onRejected"
+        </div>
+        <div class="row">
+          <q-card-section
+            class="col section"
+            style="padding-right:10px"
           >
-
-          </q-file>
-          <q-card class="pictures-card">
-            <div class="row">
-              <q-item-section
-                class="col-4 pictures-section"
-                v-for="image in uploaded_images"
-                :key="image"
-              >
-                <q-img
-                  :src="image"
-                  spinner-color="white"
-                  class="image"
-                  @click="addHotspot(image)"
-                />
-
-                <span class="span">
-                  <q-btn
-                    no-caps
-                    rounded
-                    class="negative-button"
-                    filled
-                    color="accent"
-                    @click="removePicture(image)"
-                    :label="$t('button.remove')"
+            <HelpLabel
+              :field-label="$t('input_labels.doc_pics')"
+              :help-label="$t('help.doc_pics')"
+              class="field"
+            /> 
+          
+            <q-file
+              @input="getFilesPics($event)"
+              bg-color="grey-3"
+              dense
+              :label="$t('input_labels.upload_doc_pics')"
+              standout
+              :disable="int_doc_shell.published"
+              outlined
+              accept=".jpg, image/*"
+              @rejected="onRejected"
+            />
+            <q-card class="pictures-card">
+              <div class="row">
+                <q-item-section
+                  class="col-4 pictures-section"
+                  v-for="image in uploaded_images"
+                  :key="image"
+                >
+                  <q-img
+                    :src="image"
+                    spinner-color="white"
+                    class="image"
+                    @click="addHotspot(image)"
                   />
-                </span>
+
+                  <span class="span">
+                    <q-btn
+                      no-caps
+                      rounded
+                      class="negative-button"
+                      filled
+                      color="accent"
+                      @click="removePicture(image)"
+                      :label="$t('button.remove')"
+                    />
+                  </span>
+                </q-item-section>
+                <q-dialog
+                  v-model="hotimage"
+                  @hide="hotspotConfig.data = []"
+                >
+                  <q-card>
+                    <v-hotspot
+                      :init-options="hotspotConfig"
+                      @save-data="saveHotspot"
+                    />
+                  </q-card>
+                </q-dialog>
+              </div>
+            </q-card>
+          </q-card-section>
+          <q-card-section class=" col section">
+            <HelpLabel
+              :field-label="$t('input_labels.upload_model')"
+              :help-label="$t('help.upload_model')"
+              class="field"
+            /> 
+          
+            <q-file
+              @input="getFilesModel($event)"
+              bg-color="grey-3"
+              dense
+              :disable="int_doc_shell.published"
+              :label="$t('input_labels.upload_model')"
+              standout
+              outlined
+              accept=".pdf"
+              @rejected="onRejected"
+            />
+            <q-item
+              v-if="int_doc_shell.model"
+              class="col-6"
+            >
+              <q-item-section avatar>
+                <q-icon name="note_add" />
               </q-item-section>
-              <q-dialog
-                v-model="hotimage"
-                @hide="hotspotConfig.data = []"
-              >
-                <q-card>
-                  <v-hotspot
-                     :init-options="hotspotConfig"
-                    @save-data="saveHotspot"
-                  />
-
-                </q-card>
-              </q-dialog>
-            </div>
-          </q-card>
-        </q-card-section>
-        <q-card-section class=" col section">
-           <HelpLabel
-          :fieldLabel="$t('input_labels.upload_model')"
-          :helpLabel ="$t('help.upload_model')"
-          class="field"
-          /> 
-          
-          <q-file
-            @input="getFilesModel($event)"
-            bg-color="grey-3"
-            dense
-            :disable="int_doc_shell.published"
-            :label="$t('input_labels.upload_model')"
-            standout
-            outlined
-            accept=".pdf"
-            @rejected="onRejected"
-          >
-
-          </q-file>
-          <q-item v-if="int_doc_shell.model" class="col-6">
-        <q-item-section avatar>
-          <q-icon  name="note_add"/>
-        </q-item-section>
-        <q-item-section>{{this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document}} model</q-item-section>
-        <q-item-section>
-           <q-btn
-        no-caps
-        dense
-        class="delete-button"
-        :data-cy="'cancelmodel'"
-        unelevated
-        rounded
-        :label="$t('button.remove')"
-        @click="cancelModel()"
-      />
-        </q-item-section>
-      </q-item>
-        </q-card-section>
+              <q-item-section>{{ this.int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].document }} model</q-item-section>
+              <q-item-section>
+                <q-btn
+                  no-caps
+                  dense
+                  class="delete-button"
+                  :data-cy="'cancelmodel'"
+                  unelevated
+                  rounded
+                  :label="$t('button.remove')"
+                  @click="cancelModel()"
+                />
+              </q-item-section>
+            </q-item>
+          </q-card-section>
         </div>
 
-            <div class="q-gutter-sm row">
-              <div class="col" style="justify-content:center">
-                <div class="row">
-          <HelpLabel
-          :fieldLabel="$t('input_labels.validable')"
-          :helpLabel ="$t('help.validable')"
-          style="padding-top:10px"
-          /> 
-              <q-checkbox :disable="int_doc_shell.published" class=" col-1 div-3" color="accent" style="padding-top:10px" v-model="int_doc_shell.validable"  />
-                </div>
+        <div class="q-gutter-sm row">
+          <div
+            class="col"
+            style="justify-content:center"
+          >
+            <div class="row">
+              <HelpLabel
+                :field-label="$t('input_labels.validable')"
+                :help-label="$t('help.validable')"
+                style="padding-top:10px"
+              /> 
+              <q-checkbox
+                :disable="int_doc_shell.published"
+                class=" col-1 div-3"
+                color="accent"
+                style="padding-top:10px"
+                v-model="int_doc_shell.validable"
+              />
             </div>
-        <div class="col">
-        <div class="row" style="padding-top:9px">
-          <HelpLabel
-            :fieldLabel="$t('translation_states.translatable')"
-            :helpLabel ="$t('help.is_published')"
-            style="padding-top:0px"
-          />
+          </div>
+          <div class="col">
+            <div
+              class="row"
+              style="padding-top:9px"
+            >
+              <HelpLabel
+                :field-label="$t('translation_states.translatable')"
+                :help-label="$t('help.is_published')"
+                style="padding-top:0px"
+              />
 
 
-          <!--<q-toggle
+              <!--<q-toggle
             v-model="int_doc_shell.published"
             color="accent"
             :disable="int_doc_shell.translations.filter(filterTranslationModel(this.activeLanguage))[0].translationState < 2"
             @input="isPublished($event, int_doc_shell.id)"
           />-->
-          <q-toggle
-              :value="
-                int_doc_shell.translations.filter(
-                  (top) => top.translated == false
-                )[0].translationState == 1
-              "
-              color="accent"
-              style=""
-              @input="makeTranslatable($event)"
-            />
-        </div>
-      </div>
-
+              <q-toggle
+                :value="
+                  int_doc_shell.translations.filter(
+                    (top) => top.translated == false
+                  )[0].translationState == 1
+                "
+                color="accent"
+                style=""
+                @input="makeTranslatable($event)"
+              />
             </div>
-    <q-card-section v-if="int_doc_shell.validable" class="section" >
-            <HelpLabel
+          </div>
+        </div>
+        <q-card-section
+          v-if="int_doc_shell.validable"
+          class="section"
+        >
+          <HelpLabel
             
-          :fieldLabel="$t('input_labels.validators')"
-          :helpLabel ="$t('help.validators')"
-          class="field"
+            :field-label="$t('input_labels.validators')"
+            :help-label="$t('help.validators')"
+            class="field"
           /> 
           
-              <q-select
-              v-if="int_doc_shell.validable"
-              multiple
-              :readonly="int_doc_shell.published"
-              filled
-              dense
-              clearable
-              v-model="int_doc_shell.validators"
-              @input="addValidators($event)"
-              @remove="removeValidator($event)"
-              @clear="clearValidators()"
-              emit-value
-              map-options
-              :options="this.validatorList"
-              :label="$t('input_labels.validators')"
-              class="select"
+          <q-select
+            v-if="int_doc_shell.validable"
+            multiple
+            :readonly="int_doc_shell.published"
+            filled
+            dense
+            clearable
+            v-model="int_doc_shell.validators"
+            @input="addValidators($event)"
+            @remove="removeValidator($event)"
+            @clear="clearValidators()"
+            emit-value
+            map-options
+            :options="this.validatorList"
+            :label="$t('input_labels.validators')"
+            class="select"
           />
-    </q-card-section>
+        </q-card-section>
       
 
-      <hr id="hr">
-      <q-btn
-        no-caps
-        class="delete-button"
-        :data-cy="'canceldoc'"
-        unelevated
-        rounded
-        :label="$t('button.cancel')"
-        @click="cancelDoc()"
-      />
-      <q-btn
-        no-caps
-        :disable="int_doc_shell.published"
-        :data-cy="'savedoc'"
-        color="accent"
-        unelevated
-        rounded
-        :label="$t('button.save')"
-        class="button"
-        type="submit"
-        
-      />
-    </form>
+        <hr id="hr">
+        <q-btn
+          no-caps
+          class="delete-button"
+          :data-cy="'canceldoc'"
+          unelevated
+          rounded
+          :label="$t('button.cancel')"
+          @click="cancelDoc()"
+        />
+        <q-btn
+          no-caps
+          :disable="int_doc_shell.published"
+          :data-cy="'savedoc'"
+          color="accent"
+          unelevated
+          rounded
+          :label="$t('button.save')"
+          class="button"
+          type="submit"
+        />
+      </form>
     </q-card>
     <q-item>
       <q-item-section class="col-1">
-        {{$t('input_labels.image')}}
+        {{ $t('input_labels.image') }}
       </q-item-section>
       <q-item-section class="col-6 flex flex-left  ">
-        {{$t('input_labels.name')}}
-      </q-item-section>
-      <q-item-section class="col-1 flex flex-center top" >
-        {{$t('input_labels.is_published')}}
-      </q-item-section>
-      <q-item-section class="col-1 flex flex-center top" >
-        {{$t('input_labels.transl_state')}}
+        {{ $t('input_labels.name') }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.edit')}}
+        {{ $t('input_labels.is_published') }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{$t('input_labels.delete')}}
+        {{ $t('input_labels.transl_state') }}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
+        {{ $t('input_labels.edit') }}
+      </q-item-section>
+      <q-item-section class="col-1 flex flex-center top">
+        {{ $t('input_labels.export') }}
       </q-item-section>
     </q-item>
 
@@ -417,61 +460,143 @@
       bordered
       separator
     >
-    <div v-for="document_type in document_types"
-        :key="document_type.id">
-      <q-item        
+      <div
+        v-for="document_type in document_types"
+        :key="document_type.id"
       >
-        <q-item-section class="col-1 ">
-          <q-img
-            :src="document_type.icon"
-            spinner-color="white"
-            id="image"
-          />
-        </q-item-section>
-        <q-item-section class="col-6 flex flex-left ">{{document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document}}</q-item-section>
-        <q-item-section class="col-1 flex flex-center top" >
-           <q-toggle
-            v-model="document_type.published"
-            color="accent"
-            :disable="
+        <q-item>
+          <q-item-section class="col-1 ">
+            <q-img
+              :src="document_type.icon"
+              spinner-color="white"
+              id="image"
+            />
+          </q-item-section>
+          <q-item-section class="col-6 flex flex-left ">
+            {{ document_type.translations.filter(filterTranslationModel(activeLanguage))[0].document }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            <q-toggle
+              v-model="document_type.published"
+              color="accent"
+              :disable="
                 document_type.translations.filter((top) => top.translated == false)[0]
                   .translationState != 1
               "
               @input="isPublished($event, document_type.id)"
-          />
-        </q-item-section>
-        <q-item-section class="col-1 flex flex-center top" >
-               {{getTranslationState(document_type.id)}}
-            </q-item-section>
-        <q-item-section class="col-1 flex flex-center top ">
-          <q-icon
-          :data-cy="'editdoc'.concat(document_type.id)"
-            id="icon"
-            name="img:statics/icons/Edit.png"
-            size="md"
-            @click.stop="editingDoc(document_type)"
-          />
-        </q-item-section>
-        <q-item-section class="col-1  flex flex-center top">
-          <q-icon
-          :data-cy="'deletedoc'.concat(document_type.id)"
-            name="img:statics/icons/Icon - Delete.svg"
-            @click.stop="deletingDoc(document_type)"
-            size="md"
-          />
-        </q-item-section>
-
-      </q-item>
-              <div class="row pad">
-              <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">{{$t('input_labels.available_transl')}}:</p>
-               <q-chip  style="background-color:#C4C4C4" text-color="white" v-for=" lang in translationAvailable(document_type)" :key="lang.lang">{{lang.lang.toUpperCase()}}</q-chip>
-            </div>
-            <hr style="margin-bottom:0px">
-    </div>
+            />
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top">
+            {{ getTranslationState(document_type.id) }}
+          </q-item-section>
+          <q-item-section class="col-1 flex flex-center top ">
+            <q-icon
+              :data-cy="'editdoc'.concat(document_type.id)"
+              id="icon"
+              name="img:statics/icons/Edit.png"
+              size="md"
+              @click.stop="editingDocWindow(document_type)"
+            />
+          </q-item-section>
+          <q-item-section class="col-1  flex flex-center top">
+            <q-icon
+              :data-cy="'deletedoc'.concat(document_type.id)"
+              name="img:statics/icons/Icon - Download.svg"
+              @click.stop="exportDoc(document_type.id)"
+              size="md"
+            />
+          </q-item-section>
+        </q-item>
+        <div class="row pad">
+          <p style="padding-top:8px; margin-bottom:0px;padding-left:20px">
+            {{ $t('input_labels.available_transl') }}:
+          </p>
+          <q-chip
+            style="background-color:#C4C4C4"
+            text-color="white"
+            v-for=" lang in translationAvailable(document_type)"
+            :key="lang.lang"
+          >
+            {{ lang.lang.toUpperCase() }}
+          </q-chip>
+        </div>
+        <hr style="margin-bottom:0px">
+      </div>
     </q-list>
-    <q-card class="my-card">
-
-    </q-card>
+    <q-card class="my-card" />
+    <q-dialog v-model="editing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.edit_or_delete') }}
+          </p>
+          <p class="delete_text">
+            {{ int_doc_shell.translations.filter(filterTranslationModel(activeLanguage))[0].document }}?
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.edit')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="editingDoc()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.delete')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deletingDoc(int_doc_shell)"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="importing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.import') }}
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.import')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importFile()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.cancel')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importing = false"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
   <!--<div :id="$options.name" class="q-pa-md">
     <router-link :to="'#'+$options.name">
@@ -538,6 +663,7 @@ export default {
         document_types_icons:'document_type/document_types_icons'
       }, actions: {
         fetchSteps: 'steps/fetchSteps',
+        exportDocumentType:'document_type/exportDocumentType',
         fetchFlowsDocs:'flows/fetchFlows',
         deleteDocumentType: 'document_type/deleteDocumentType',
         fetchDocumentType: 'document_type/fetchDocumentType',
@@ -554,16 +680,20 @@ export default {
         deleteTranslationProdFlows: 'flows/deleteTranslationProd',
         saveSpotTranslationProd: 'picture_hotspots/saveTranslationProd',
         deleteSpotTranslationProd: 'picture_hotspots/deleteTranslationProd',
-        fetchDocumentTypeIcons:'document_type/fetchDocumentTypeIcons'
+        fetchDocumentTypeIcons:'document_type/fetchDocumentTypeIcons',
+        importDocumentType:'document_type/importDocumentType'
       }
     })],
   components: {
-    ListItem, 'v-hotspot': VueHotspot, GlossaryEditor,HelpLabel
+    'v-hotspot': VueHotspot, GlossaryEditor,HelpLabel
   },
   data () {
     return {
+      import_doc:null,
+      importing:false,
       icons: DocumentTypeIcons,
       deleting_hotspots:[],
+      editing:false,
       hideForm: true,
       hideAdd: false,
       isNew: false,
@@ -595,6 +725,52 @@ export default {
   },
 
   methods: {
+    callImportFile() {
+      document.getElementById('import-input').click()
+    },
+    importFileWindow(event) {
+      console.log(event)
+        const files = document.getElementById('import-input').files
+  if (files.length <= 0) {
+    return false
+  }
+          const fr = new FileReader()
+
+  fr.onload = e => {
+    const result = JSON.parse(e.target.result)
+    const formatted = JSON.stringify(result, null, 2)
+    console.log(result[0])
+    this.import_doc = JSON.parse(formatted)[0]
+    console.log(this.import_doc)
+    //we assign the formatted json to a data field so we can manipulate it later
+    //document.getElementById('result').innerHTML = formatted
+  }
+  console.log(this.import_doc)
+  fr.readAsText(files.item(0))
+        this.importing = true
+
+    },
+    importFile(){
+      this.import_doc.published = false
+      this.importDocumentType(this.import_doc)
+      this.importing = false
+    },
+      exportDoc(value){
+       console.log(value)
+       this.exportDocumentType(value).then((doc)=>{
+        console.log(doc)
+         var filename = doc[0].translations.filter((transl)=>{
+           return transl.lang == this.$userLang
+         })[0].document
+         var element = document.createElement('a')
+        element.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(doc,null, 4)))
+        element.setAttribute('download', filename + '.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+       })
+     },
      makeTranslatable(value) {
       console.log(value)
       if (value) {
@@ -826,20 +1002,24 @@ export default {
       console.log("this is the doc shell")
       console.log(this.int_doc_shell)
     },
-    editingDoc (doc) {
-      if(doc.published){
+    editingDoc(){
+    if(this.int_doc_shell.published){
         this.$q.notify({
         message: this.$t('warning.published_edit'),
         color: 'red'
     })
       }
       else{
+        this.hideForm = false
+        this.editing = false
+      }
+    },
+    editingDocWindow(doc) {
       this.isNew = false
-      this.hideForm = false
+      //this.hideForm = false
       this.mergeDoc(doc)
       this.publishedOrig = doc.published
-      }
-
+      this.editing = true
     },
     deletingDoc (doc) {
       //we will need to filter through the hotspots and send those to because they need to be deleted and we can't delete 
@@ -882,7 +1062,7 @@ export default {
            this.deleting_hotspots = [] } }
         ]
       })
-     
+     this.editing = false
 
 
 
@@ -1298,6 +1478,8 @@ h5 {
 }
 .add-button {
   width: 200px;
+  border-radius: 2px;
+  margin-right:10px
 }
 .button {
   width: 100px;
@@ -1346,5 +1528,21 @@ h5 {
   text-align: center;
   margin-left: 0px;
   margin-bottom: 10px;
+}
+.edit_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #FF7C44;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
+}
+.delete_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #9E1F63;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
 }
 </style>

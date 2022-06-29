@@ -68,11 +68,12 @@ export default async ({ Vue, router, store, app }) => {
           checkLoginIframe: false // otherwise it would reload the window every so seconds
         },
         config: {
-          url: 'https://identity.micadoproject.eu/auth',
+          url: 'https://'+ Vue.prototype.$envconfig.identityUrl +'/auth',
           realm: 'pa',
           clientId: 'pa_app'
         },
         onReady: (keycloak) => {
+          console.log(Vue.prototype.$envconfig.identityUrl)
           console.log('onReady passed')
           console.log(keycloak)
           console.log(store)
@@ -89,10 +90,19 @@ export default async ({ Vue, router, store, app }) => {
             store.commit('auth/setUserKeycloak', JSON.parse(jsonPayload))
             //console.log(store.auth.user)
           }
-          
+          else{
+            store.commit('auth/setUserKeycloak', null)
+          }
+          console.log("before token interceptor")
           tokenInterceptor()
           console.log(Vue)
+
           resolve()
+        },
+        onAuthRefreshError: (keycloak) =>{
+          console.log("refresh token expired")
+          store.commit('auth/setUserKeycloak', null)
+          keycloak.logout()
         },
         onInitError: (error) => {
           console.log('we have an error')

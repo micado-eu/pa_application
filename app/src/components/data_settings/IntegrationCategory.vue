@@ -1,6 +1,9 @@
 <template>
-  <div :id="$options.name" class="q-pa-md">
-    <div class="row wrap justify-start items-start content-center">
+  <div
+    :id="$options.name"
+    class="q-pa-md"
+  >
+    <div class="row ">
       <div class="col-4">
         <router-link :to="'#' + $options.name">
           <h5 @click="onClickTitle()">
@@ -8,32 +11,54 @@
           </h5>
         </router-link>
       </div>
-      <div class="full-height col-8">
-        <div class="row justify-end items-center">
-          <UploadButton entity="intervention_category" />
-          <q-btn
-            color="info"
-            :data-cy="'addcategory'"
-            no-caps
-            :label="$t('button.add_category')"
-            @click="newIntegrationCategory()"
-            :disable="hideAdd"
-            style="margin-top:10px"
-            class="add-button"
-          />
-        </div>
+      <div
+        class="col-8"
+        style="display: flex;align-items: center;justify-content: right"
+      >
+        <q-btn
+          color="info"
+          :data-cy="'addcategory'"
+          no-caps
+          :label="$t('button.add_category')"
+          @click="newIntegrationCategory()"
+          :disable="hideAdd"
+          class="add-button"
+        />
+        <input
+          id="import-input"
+          type="file"
+          name="name"
+          style="display: none;"
+          accept=".json"
+          @change="importFileWindow($event)"
+        >
+        <q-btn
+          class="add-button"
+          color="accent"
+          unelevated
+          rounded
+          :label="$t('button.import')"
+          no-caps
+          size="15px"
+          @click="callImportFile()"
+        />
       </div>
     </div>
+    <UploadButton entity="intervention_category" />
+
     <q-card class="my-card">
       <form
         @submit.prevent.stop="onSubmit"
         @reset.prevent.stop="onReset"
         class=""
       >
-        <q-card-section :hidden="hideForm" class="div-2">
+        <q-card-section
+          :hidden="hideForm"
+          class="div-2"
+        >
           <HelpLabel
-            :fieldLabel="$t('input_labels.intervention_category')"
-            :helpLabel="$t('help.intervention_category')"
+            :field-label="$t('input_labels.intervention_category')"
+            :help-label="$t('help.intervention_category')"
           />
           <q-input
             counter
@@ -64,14 +89,20 @@
             :label="$t('input_labels.category_placeholder')"
           />
           <div class="row">
-            <div class="col-3" style="min-width: 200px">
+            <div
+              class="col-3"
+              style="min-width: 200px"
+            >
               <HelpLabel
-                :fieldLabel="$t('translation_states.translatable')"
-                :helpLabel="$t('help.is_published')"
+                :field-label="$t('translation_states.translatable')"
+                :help-label="$t('help.is_published')"
                 style="padding-left: 17px"
               />
             </div>
-            <div class="col-2" style="padding-top: 2px">
+            <div
+              class="col-2"
+              style="padding-top: 2px"
+            >
               <!-- <q-toggle
             v-model="int_cat_shell.published"
             color="accent"
@@ -89,7 +120,7 @@
               />
             </div>
           </div>
-          <hr id="hr" />
+          <hr id="hr">
           <q-btn
             :data-cy="'savecategory'"
             class="button"
@@ -127,23 +158,28 @@
         {{ $t("input_labels.edit") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{ $t("input_labels.delete") }}
+        {{ $t("input_labels.export") }}
       </q-item-section>
     </q-item>
-    <q-list bordered separator>
+    <q-list
+      bordered
+      separator
+    >
       <div
         v-for="a_integration_category in intervention_categories"
         :key="a_integration_category.id"
       >
         <q-item>
-          <q-item-section class="col-7 flex flex-left">{{
-            showCategoryLabel(a_integration_category)
-          }}</q-item-section>
+          <q-item-section class="col-7 flex flex-left">
+            {{
+              showCategoryLabel(a_integration_category)
+            }}
+          </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
             <q-toggle
               v-model="a_integration_category.published"
               color="accent"
-               :disable="
+              :disable="
                 a_integration_category.translations.filter((top) => top.translated == false)[0]
                   .translationState != 1
               "
@@ -158,14 +194,14 @@
               :data-cy="'editcategory'.concat(a_integration_category.id)"
               name="img:statics/icons/Edit.png"
               size="md"
-              @click.stop="editIntegrationCategory(a_integration_category)"
+              @click.stop="editIntegrationCategoryWindow(a_integration_category)"
             />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
             <q-icon
               :data-cy="'deletecategory'.concat(a_integration_category.id)"
-              name="img:statics/icons/Icon - Delete.svg"
-              @click.stop="deletingIntegrationCategory(a_integration_category)"
+              name="img:statics/icons/Icon - Download.svg"
+              @click.stop="exportFile(a_integration_category.id)"
               size="md"
             />
           </q-item-section>
@@ -179,12 +215,86 @@
             style="background-color:#C4C4C4" 
             text-color="white"
             :key="lang.lang"
-            >{{ lang.lang.toUpperCase() }}</q-chip
           >
+            {{ lang.lang.toUpperCase() }}
+          </q-chip>
         </div>
-        <hr style="margin-bottom: 0px" />
+        <hr style="margin-bottom: 0px">
       </div>
     </q-list>
+    <q-dialog v-model="editing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.edit_or_delete') }}
+          </p>
+          <p class="delete_text">
+            {{ int_cat_shell.translations.filter(filterTranslationModel(activeLanguage))[0].title }}?
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.edit')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="editIntegrationCategory()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.delete')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deletingIntegrationCategory(int_cat_shell)"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="importing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.import') }}
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.import')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importFile()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.cancel')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importing = false"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -214,12 +324,16 @@ export default {
           "integration_category/fetchIntegrationCategory",
         updatePublished: "integration_category/updatePublished",
         saveTranslationProd: "integration_category/saveTranslationProd",
-        deleteTranslationProd: "integration_category/deleteTranslationProd"
+        deleteTranslationProd: "integration_category/deleteTranslationProd",
+        exportIntegrationCategory:'integration_category/exportIntegrationCategory'
       }
     })
   ],
   data() {
     return {
+      import_cat:null, 
+      importing:false,
+      editing:false,
       int_cat_shell: { id: -1, translations: [] },
       hideForm: true,
       hideAdd: false,
@@ -232,6 +346,52 @@ export default {
     HelpLabel
   },
   methods: {
+     callImportFile() {
+      document.getElementById('import-input').click()
+    },
+    importFileWindow(event) {
+      console.log(event)
+        const files = document.getElementById('import-input').files
+  if (files.length <= 0) {
+    return false
+  }
+          const fr = new FileReader()
+
+  fr.onload = e => {
+    const result = JSON.parse(e.target.result)
+    const formatted = JSON.stringify(result, null, 2)
+    console.log(result)
+    this.import_cat = JSON.parse(formatted)
+    console.log(this.import_cat)
+    //we assign the formatted json to a data field so we can manipulate it later
+    //document.getElementById('result').innerHTML = formatted
+  }
+  console.log(this.import_cat)
+  fr.readAsText(files.item(0))
+        this.importing = true
+
+    },
+    importFile(){
+      this.import_cat.published = false
+      this.saveIntegrationCategory(this.import_cat)
+      this.importing = false
+    },
+      exportFile(value){
+       console.log(value)
+       this.exportIntegrationCategory(value).then((doc)=>{
+        console.log(doc)
+         var filename = doc.translations.filter((transl)=>{
+           return transl.lang == this.$userLang
+         })[0].title
+         var element = document.createElement('a')
+        element.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(doc,null, 4)))
+        element.setAttribute('download', filename + '.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+       })
+     },
     makeTranslatable(value) {
       console.log(value)
       if (value) {
@@ -358,6 +518,7 @@ export default {
             handler: () => {
               console.log(category)
               this.deleteIntegrationCategory(category)
+              this.editing = false
             }
           },
           {
@@ -426,7 +587,27 @@ export default {
       this.hideForm = true
       this.hideAdd = false
     },
-    editIntegrationCategory(integration_category) {
+
+    editIntegrationCategory(){
+    if(this.int_cat_shell.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+    })
+      }
+      else{
+        this.hideForm = false
+        this.editing = false
+      }
+    },
+    editIntegrationCategoryWindow(integration_category) {
+      this.isNew = false
+      //this.hideForm = false
+      this.mergeCategory(integration_category)
+      this.publishedOrig = integration_category.published
+      this.editing = true
+    },
+    /*editIntegrationCategory(integration_category) {
       if(integration_category.published){
          this.$q.notify({
         message: this.$t('warning.published_edit'),
@@ -441,7 +622,7 @@ export default {
       this.publishedOrig = integration_category.published
       }
 
-    },
+    },*/
     createShell() {
       this.int_cat_shell = { id: -1, translations: [], published: false }
       this.int_cat_shell.translations.push({
@@ -505,8 +686,10 @@ h5 {
 .div-2 {
   margin-bottom: 100px;
 }
-#add-button {
+.add-button {
   width: 200px;
+  border-radius: 2px;
+  margin-right:10px
 }
 .button {
   width: 100px;
@@ -541,5 +724,21 @@ h5 {
 }
 #icon {
   margin-right: 10px;
+}
+.edit_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #FF7C44;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
+}
+.delete_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #9E1F63;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
 }
 </style>

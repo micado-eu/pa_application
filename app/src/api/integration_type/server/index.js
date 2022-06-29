@@ -121,5 +121,11 @@ export default {
       .get('/intervention-types/' + id + '/intervention-types-translations')
       .then(response => response.data)
       .catch(error_handler)
+  },
+  exportType (id) {
+    return axiosInstance
+      .get('/intervention-types/' + id +'?filter[include][0][relation]=translations')
+      .then(response => { return response.data })
+      .catch(error_handler)
   }
 }

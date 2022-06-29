@@ -36,7 +36,7 @@ export function saveUserType (state, user_type) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions save user type:")
   console.log(user_type)
-  let savingUserType = JSON.parse(JSON.stringify(user_type, ['icon']));
+  let savingUserType = JSON.parse(JSON.stringify(user_type, ['icon']))
   console.log(savingUserType)
 
 
@@ -100,4 +100,10 @@ export function saveTranslationProd(state, id){
 export function deleteTranslationProd(state, id){
   console.log("in delete transl prod")
   client.deleteUserTranslationProd(id)
+}
+
+
+
+export function exportUserType(state, id){
+  return client.exportUserType(id)
 }

@@ -14,6 +14,24 @@
           @click="newUserType()"
           :disable="hideAdd"
         />
+        <input
+          id="import-input"
+          type="file"
+          name="name"
+          style="display: none;"
+          accept=".json"
+          @change="importFileWindow($event)"
+        >
+        <q-btn
+          class="add-button"
+          color="accent"
+          unelevated
+          rounded
+          :label="$t('button.import')"
+          no-caps
+          size="15px"
+          @click="callImportFile()"
+        />
       </div>
     </div>
     <q-card
@@ -175,7 +193,7 @@
         {{ $t("input_labels.edit") }}
       </q-item-section>
       <q-item-section class="col-1 flex flex-center top">
-        {{ $t("input_labels.delete") }}
+        {{ $t("input_labels.export") }}
       </q-item-section>
     </q-item>
     <q-list
@@ -219,14 +237,14 @@
               id="icon"
               name="img:statics/icons/Edit.png"
               size="md"
-              @click.stop="editingUserType(a_user_type)"
+              @click.stop="editingUserTypeWindow(a_user_type)"
             />
           </q-item-section>
           <q-item-section class="col-1 flex flex-center top">
             <q-icon
               :data-cy="'deleteuser'.concat(a_user_type.id)"
-              name="img:statics/icons/Icon - Delete.svg"
-              @click.stop="deletingUserType(a_user_type.id)"
+              name="img:statics/icons/Icon - Download.svg"
+              @click.stop="exportFile(a_user_type.id)"
               size="md"
             />
           </q-item-section>
@@ -236,7 +254,7 @@
             {{ $t("input_labels.available_transl") }}:
           </p>
           <q-chip
-           v-for="lang in translationAvailable(a_user_type)"
+            v-for="lang in translationAvailable(a_user_type)"
             style="background-color:#C4C4C4" 
             text-color="white"
             :key="lang.lang"
@@ -247,6 +265,79 @@
         <hr style="margin-bottom: 0px">
       </div>
     </q-list>
+    <q-dialog v-model="editing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.edit_or_delete') }}
+          </p>
+          <p class="delete_text">
+            {{ int_user_type_shell.translations.filter(filterTranslationModel(activeLanguage))[0].userType }}?
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.edit')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="editingUserType()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.delete')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="deletingUserType(int_user_type_shell.id)"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
+    <q-dialog v-model="importing">   
+      <q-card
+        class="q-pa-md"
+        style="padding-top:0px;width: 700px; max-width: 80vw;"
+      >
+        <div style="padding-top:30px; text-align:center">
+          <p class="delete_desc">
+            {{ $t('input_labels.import') }}
+          </p>
+        </div>
+        <div style="text-align:center;">
+          <q-btn
+            class="edit_button"
+            :label="$t('button.import')"
+            :icon="'img:statics/icons/Edit.png'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importFile()"
+            style="margin-right:10px"
+          />
+          <q-btn
+            class="delete_button"
+            :label="$t('button.cancel')"
+            :icon="'img:statics/icons/Icon - Delete.svg'"
+            rounded
+            unelevated
+            no-caps
+            size="15px"
+            @click="importing = false"
+          />
+        </div>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -274,12 +365,16 @@ export default {
         editUserType: "user_type/editUserType",
         updatePublished: "user_type/updatePublished",
         saveTranslationProd: "user_type/saveTranslationProd",
-        deleteTranslationProd: "user_type/deleteTranslationProd"
+        deleteTranslationProd: "user_type/deleteTranslationProd",
+        exportUserType:'user_type/exportUserType'
       }
     })
   ],
   data() {
     return {
+            import_user:null, 
+      importing:false,
+      editing:false,
       int_user_type_shell: {
         id: -1,
         user_type: null,
@@ -300,6 +395,52 @@ export default {
   },
 
   methods: {
+             callImportFile() {
+      document.getElementById('import-input').click()
+    },
+    importFileWindow(event) {
+      console.log(event)
+        const files = document.getElementById('import-input').files
+  if (files.length <= 0) {
+    return false
+  }
+          const fr = new FileReader()
+
+  fr.onload = e => {
+    const result = JSON.parse(e.target.result)
+    const formatted = JSON.stringify(result, null, 2)
+    console.log(result)
+    this.import_user = JSON.parse(formatted)
+    console.log(this.import_user)
+    //we assign the formatted json to a data field so we can manipulate it later
+    //document.getElementById('result').innerHTML = formatted
+  }
+  console.log(this.import_user)
+  fr.readAsText(files.item(0))
+        this.importing = true
+
+    },
+    importFile(){
+      this.import_user.published = false
+      this.saveUserType(this.import_user)
+      this.importing = false
+    },
+      exportFile(value){
+       console.log(value)
+       this.exportUserType(value).then((doc)=>{
+        console.log(doc)
+         var filename = doc.translations.filter((transl)=>{
+           return transl.lang == this.$userLang
+         })[0].userType
+         var element = document.createElement('a')
+        element.setAttribute('href', "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(doc,null, 4)))
+        element.setAttribute('download', filename + '.json')
+        element.style.display = 'none'
+        document.body.appendChild(element)
+        element.click()
+        document.body.removeChild(element)
+       })
+     },
     makeTranslatable(value) {
       console.log(value)
       if (value) {
@@ -362,6 +503,7 @@ export default {
             handler: () => {
               console.log(index)
               this.deleteUserType(index)
+              this.editing = false
             }
           },
           {
@@ -430,7 +572,26 @@ export default {
       this.hideForm = false
       this.hideAdd = true
     },
-    editingUserType(user_type) {
+            editingUserType(){
+    if(this.int_user_type_shell.published){
+        this.$q.notify({
+        message: this.$t('warning.published_edit'),
+        color: 'red'
+    })
+      }
+      else{
+        this.hideForm = false
+        this.editing = false
+      }
+    },
+   editingUserTypeWindow(user) {
+      this.isNew = false
+      //this.hideForm = false
+      this.mergeUserType(user)
+      this.publishedOrig = user.published
+      this.editing = true
+    },
+    /*editingUserType(user_type) {
       if(user_type.published){
         this.$q.notify({
         message: this.$t('warning.published_edit'),
@@ -450,7 +611,7 @@ export default {
       )
       }
 
-    },
+    },*/
     showUserTypeLabel(workingTopic) {
       return workingTopic.translations.filter(
         this.filterTranslationModel(this.activeLanguage)
@@ -632,6 +793,8 @@ h5 {
 }
 .add-button {
   width: 200px;
+  border-radius: 2px;
+  margin-right:10px
 }
 .button {
   width: 100px;
@@ -669,5 +832,21 @@ h5 {
 }
 #icon {
   margin-right: 10px;
+}
+.edit_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #FF7C44;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
+}
+.delete_button{
+  width:200px;
+ background: #FFFFFF;
+border: 1px solid #9E1F63;
+box-sizing: border-box;
+border-radius: 5px;
+font-weight: 700;
 }
 </style>

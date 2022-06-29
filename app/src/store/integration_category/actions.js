@@ -33,7 +33,7 @@ export function saveIntegrationCategory (state, integration_category) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions savec ategory:")
   console.log(integration_category)
-  let savingCategory= JSON.parse(JSON.stringify(integration_category, ['']));
+  let savingCategory= JSON.parse(JSON.stringify(integration_category, ['']))
   console.log(savingCategory)
 
 
@@ -132,3 +132,8 @@ export function deleteTranslationProd(state, id){
   client.deleteCategoryTranslationProd(id)
 }
 
+
+export function exportIntegrationCategory(state, id){
+  console.log("in delete transl prod")
+  return client.exportIntegrationCategory(id)
+}

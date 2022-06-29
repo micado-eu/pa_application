@@ -40,7 +40,7 @@ export function saveTopic (state, topic_element) {
   // we need BEFORE to call the API to do the save and if ok we update wuex state
   console.log("in actions saveTopic:")
   console.log(topic_element)
-  let savingTopic = JSON.parse(JSON.stringify(topic_element, ['icon', 'published', 'father']));
+  let savingTopic = JSON.parse(JSON.stringify(topic_element, ['icon', 'published', 'father']))
   console.log(savingTopic)
 
 
@@ -113,3 +113,8 @@ export function deleteTopic (state, index) {
 
   commit(delete_document_type, document_type.id)
 } */
+
+export function exportTopic(state, id){
+  console.log("in export")
+  return client.exportTopic(id)
+}

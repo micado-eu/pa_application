@@ -77,10 +77,10 @@ export default function (/* { ssrContext } */) {
 
     // enable strict mode (adds overhead!)
     // for dev mode only
-    strict: process.env.DEV,
-    plugins: [createPersistedState({
+    strict: process.env.DEV
+    /*plugins: [createPersistedState({
       paths: ['auth', 'user.userPic']
-    })]
+    })]*/
   })
 
   return Store

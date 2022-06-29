@@ -98,5 +98,11 @@ export default {
     .then(response => response.data)
     .catch(error_handler)
 
+  },
+  exportTopic (id) {
+    return axiosInstance
+      .get('/topics/' + id +'?filter[include][0][relation]=translations')
+      .then(response => { return response.data })
+      .catch(error_handler)
   }
 }

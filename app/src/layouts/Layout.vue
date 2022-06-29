@@ -35,7 +35,7 @@
       </q-toolbar>
     </q-header>-->
 
-    <q-footer>
+    <!--<q-footer>
       <q-tabs>
         <q-route-tab
           v-for="(nav) in navs"
@@ -45,7 +45,7 @@
           :icon="nav.icon"
         />
       </q-tabs>
-    </q-footer>
+    </q-footer>-->
 
     <q-drawer
       

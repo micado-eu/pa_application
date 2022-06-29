@@ -415,3 +415,59 @@ export function deleteTranslationProd(state, id){
   console.log("in delete transl prod")
   client.deleteDocTypeTranslationProd(id)
 }
+
+export function exportDocumentType(state, id){
+  return client
+    .exportDocumentType(id)
+    .then(flows => {
+      return flows
+    })
+}
+
+export function importDocumentType(state, doc_element){
+  // we need BEFORE to call the API to do the save and if ok we update wuex state
+  console.log("in actions saveDocumentType:")
+  console.log(doc_element)
+  let savingDoc = JSON.parse(JSON.stringify(doc_element, ['icon', 'issuer', 'validable', 'model']))
+  console.log(savingDoc)
+  var promiseDoc = []
+  var promiseTransl =[]
+  var promisePics =[]
+  promiseDoc.push(client.saveDocumentType(savingDoc))
+  Promise.all(promiseDoc).then((docvalue)=>{
+    console.log("i am docvalue")
+    console.log(docvalue)
+    doc_element.id = docvalue[0].id
+    doc_element.translations.forEach((transl)=>{
+      promiseTransl.push(client.saveDocumentTypeTranslation(transl,doc_element.id))
+      console.log(transl)
+    })
+    Promise.all(promiseTransl).then(()=>{
+      if(doc_element.pictures != null){
+        doc_element.pictures.forEach((pic)=>{
+          promisePics.push(client.saveDocumentTypePictures(pic, doc_element.id, pic.order))
+        })
+        Promise.all(promisePics)
+        .then((values)=>{
+          //In order to give object the proper id I make a check on the picture
+          console.log("inside firts promis all")
+          console.log(values)
+        values.forEach((value)=>{
+          doc_element.pictures.forEach((pic)=>{
+            if(value.image == pic.image){
+              pic.id = value.id
+            }
+          })
+          state.commit('saveDocumentType',doc_element)
+
+        })
+        console.log("i am doc element picture")
+        console.log(doc_element.pictures)
+})
+      }
+      else{
+        state.commit('saveDocumentType',doc_element)
+      }
+    })
+  })
+}

@@ -1,5 +1,12 @@
 {
     "input_labels": {
+        "import":"Do you want to import this file?",
+        "associate_doc_text":"Select document to associate",
+        "steps":"Steps",
+        "associate_docs":"Associated documents",
+        "process_file":"JSON file of the process",
+        "export":"Export",
+        "want_to_export":"Do you want to export",
         "upload_doc_pics": "Afbeelding van document uploaden",
         "new_intervention": "Voeg een nieuwe taak toe aan het begeleidingsplan",
         "event_cost": "Prijs van het evenement",
@@ -112,6 +119,7 @@
         "add_doc_type": "Voeg een nieuw type document toe"
     },
     "data_settings": {
+        "e_translation":"Credentials for the E-Translation service",
         "language": "Taal",
         "default_language": "Standaard taal voor het MICADO platform",
         "set_default_language": "Taal instellen",
@@ -172,6 +180,7 @@
         "confirm_pass": "Bevestig het wachtwoord"
     },
     "help": {
+        "process_file":"Upload the JSON file you obtained from the Export process",
         "topic_tags": "Selecteer de thema's die passen bij dit stappenplan. Je kan dit veld leeg laten.",
         "step_name": "Kies de naam van de stap",
         "step_description": "Beschrijf de stap",
@@ -324,6 +333,13 @@
         "events_description": "De fiches voor evenementen zijn infofiches waar je ook de mogelijkheid hebt om een datum en locatie toe te voegen. Je kan het gebruiken om informatie te geven over bepaalde events of lessen die binnenkort georganiseerd worden. Na publicatie is de info zichtbaar voor alle bezoekers van de website Micado voor nieuwkomers. "
     },
     "button": {
+        "import":"Import",
+        "delete_doc":"Delete document",
+        "save_process":"Save process",
+        "save_steps":"Save steps",
+        "create":"Create",
+        "associate":"Associate",
+        "import_process":"Import process",
         "validate_and_publish": "Goedkeuren en publiceren",
         "change_pass": "Wijzig je wachtwoord",
         "add_document": "Voeg een document toe",
