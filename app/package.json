@@ -35,7 +35,7 @@
     "masterportalAPI": "git+https://github.com/citysciencelab/masterportalapi-MICADO.git",
     "ol": "^6.3.1",
     "performant-array-to-tree": "^1.8.1",
-    "qs": "^6.9.4",
+    "qs": "^6.9.7",
     "quasar": "^1.17.1",
     "showdown": "^1.9.1",
     "survey-creator": "^1.8.41",
