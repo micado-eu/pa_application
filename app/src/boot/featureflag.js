@@ -7,15 +7,10 @@ import { featureFlippingDirective, featureFlippingGuard, isEnabled, setEnabledFe
 // https://vuejs.org/v2/guide/custom-directive.html
 // 'my-directive' will be used as 'v-my-directive'
 
-//import client from 'api-features-client'
 
 
 export default async ({ app, router, store, Vue }) => {
   try {
-    //setEnabledFeatures(['FF1', 'FF2', 'FF3'])
-    //setEnabledFeatures(await getFeaturesFromBackend('http://localhost:8081'))
-    //console.log(isEnabled('FF1'))
-    //Vue.directive('feature-flag', featureFlippingDirective)
 
     Vue.directive('feature-flipping', featureFlippingDirective)
     Vue.mixin({ beforeRouteEnter: featureFlippingGuard })

@@ -14,7 +14,6 @@ module.exports = function (ctx) {
       'axios',
       'loadData',
       'featureflag',
-      'countly',
       'keycloak'
     ],
 
