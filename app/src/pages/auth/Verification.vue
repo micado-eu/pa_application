@@ -63,7 +63,6 @@ export default {
 
       console.log(hashes)
       console.log(identity_response)
-      // https://localhost:9443/oidc/logout?id_token_hint=<id_token>&post_logout_redirect_uri=<redirect URI>&state=<state>
       let id_token = JSON.parse(atob(identity_response.id_token.split('.')[1]))
       let access_token = identity_response.access_token
 
@@ -93,29 +92,6 @@ export default {
           this.message = "Welcome " + id_token.given_name + " you have " + (this.$store.getters['auth/check']("Application/micado_superadmin") ? "superadmin" : (this.$store.getters['auth/check']("Application/micado_admin")?"admin":(this.$store.getters['auth/check']("Application/micado_migrant_manager")?"migrant manager":"no rights")))
           console.log(this.message)
         })
-      /*
-            this.$store.commit('auth/setUser', id_token)
-            this.$store.dispatch('auth/setToken', {
-              token: identity_response,
-              rememberMe: false
-            })
-      */
-
-      /*
-            this.token = this.$route.query.token
-      
-            this.$auth.verify(this.token).then((response) => {
-              this.message = this.$i18n.t('auth.verification=.verification_success')
-            })
-              .catch((error) => {
-                if (error.response) {
-                  if (error.response.status === 422) {
-                    this.message = this.$i18n.t('auth.verification.verification_failed')
-                  }
-                }
-                console.error(error)
-              })
-              */
        this.$router.push({name: 'home'})
 
     }
