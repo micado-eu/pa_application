@@ -1,9 +1,9 @@
 {
     "apiKey": "",
     "apiUrl": "api.micado.local",
-    "monitoringUrl": "monitoring.micado.local",
+    "monitoringUrl": "",
     "identityUrl": "identity.micado.local",
-    "identitySPclientId": "",
+    "identitySPclientId": "secret",
     "appBuildDate": "",
     "paUrl": "micado-pa.micado.local",
     "paTenantDomain":"pa.micado.eu",

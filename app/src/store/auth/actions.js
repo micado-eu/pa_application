@@ -21,37 +21,8 @@ export function login (state, data) {
   let t = d.getTime()
   //  let aut_url = "https://identity.micadoproject.eu/oauth2/authorize" + "?client_id=" + "6E6Gps3pfRJbzdrjxBiRYSNUVuoa" + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://migrants.micadoproject.eu/gioppo"
   let aut_url = "https://" + this._vm.$envconfig.identityUrl + "/oauth2/authorize?client_id=" + this._vm.$envconfig.identitySPclientId + "&response_type=id_token token&scope=openid&nonce=" + t + "&redirect_uri=https://" + this._vm.$envconfig.paUrl + "/verification"
-
-  // curl -X POST --basic -u "<client id>:<client secret>" -H "Content-Type: application/x-www-form-urlencoded;charset=UTF-8" -k -d "token=<token to revoke>&token_type_hint=access_token" https://localhost:9443/oauth2/revoke
-
   console.log(aut_url)
   window.location = aut_url
-  /*
-  return new Promise(function (resolve, reject) {
-    axiosInstance
-      .post("https://localhost:9443/api/identity/auth/v1.1/authenticate", data.body, {
-        headers: {
-            'Content-Type': 'application/json',
-        }
-    })
-      .then(response => {
-        console.log("received responsa from ID")
-        console.log(response)
-        // state.commit('setUser', response.data.user.data)
-        const token = response.data.token
-        axiosInstance.defaults.headers.common['Authorization'] =
-          'Bearer ' + token
-        state.dispatch('setToken', {
-          token: token,
-          rememberMe: data.rememberMe
-        })
-        return resolve()
-      })
-      .catch(error => {
-        return reject(error)
-      })
-  })
-*/
 }
 
 export function setToken (state, data) {

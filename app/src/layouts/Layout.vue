@@ -1,51 +1,5 @@
 <template>
   <q-layout view="hHh LpR fFf">
-    <!--<q-header
-      elevated
-      class="bg-accent"
-    >
-      <q-toolbar>
-        <q-btn
-          flat
-          dense
-          round
-          @click="leftDrawerOpen = !leftDrawerOpen"
-          icon="menu"
-          aria-label="Menu"
-          data-cy="menu_button"
-        />
-
-        <q-toolbar-title>{{$t("application_title")}}</q-toolbar-title>
-       <!-- <q-btn
-          v-if="this.$auth.loggedIn() && this.surveyJSON != null"
-          no-caps
-          style="background-color:white; color:#0B91CE"
-          :label="$t('data_settings.survey')"
-          @click="generateSurvey"
-        />-->
-    <!--<q-btn
-          no-caps
-          v-if="survey_visible"
-          style="background-color:white; color:#0B91CE"
-          :label="$t('data_settings.survey')"
-          @click="openSurvey"
-        />
-        <div>Micado v0.1</div>
-
-      </q-toolbar>
-    </q-header>-->
-
-    <!--<q-footer>
-      <q-tabs>
-        <q-route-tab
-          v-for="(nav) in navs"
-          :to="nav.to"
-          :key="nav.label"
-          :label="$t( nav.label )"
-          :icon="nav.icon"
-        />
-      </q-tabs>
-    </q-footer>-->
 
     <q-drawer
       
@@ -75,16 +29,6 @@
         style="padding-top:10px"
       >
         <UserButton />
-        <!--<q-btn
-          round
-          class="q-gutter-y-md"
-          v-if="isLoggedIn"
-        >
-          <q-avatar size="42px">
-            <img v-if="userpic!=null" src="https://cdn.quasar.dev/img/avatar2.jpg">
-            <img v-else :src="this.userpic">
-          </q-avatar>
-        </q-btn>-->
       </div>
       <hr class="separator">
 
@@ -116,19 +60,6 @@
       <hr class="separator">
 
       <div style="text-align:center">
-        <!--<q-item
-          clickable
-          @click="openSurvey"
-          v-if="survey_visible"
-          style="background-color:white; color:#0B91CE; width:90%; border-radius:2px"
-        >
-          <q-item-section avatar>
-            <q-icon :name="'img:statics/icons/Icon - Survey.svg'" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>{{ $t('data_settings.survey') }}</q-item-label>
-          </q-item-section>
-        </q-item>-->
         <q-btn
           no-caps
           :icon="'img:statics/icons/Icon - Survey.svg'"
@@ -365,11 +296,12 @@ export default {
   }
   },
   mounted(){
-    var script = document.createElement("script")
+/*
+var script = document.createElement("script")
     script.type = "text/javascript"
     script.innerHTML = "window._mfq = window._mfq || [];(function () {var mf = document.createElement(\"script\"); mf.type = \"text/javascript\"; mf.defer = true;      mf.src = \"//cdn.mouseflow.com/projects/" + this.$envconfig.paMouseflow + ".js\";      document.getElementsByTagName(\"head\")[0].appendChild(mf);    })();"
     document.getElementsByTagName('head')[0].appendChild(script)
-
+*/
   },
   data () {
     return {

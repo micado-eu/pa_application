@@ -3,7 +3,7 @@
     "apiUrl": "$API_HOSTNAME",
     "monitoringUrl": "$ANALYTIC_HOSTNAME",
     "identityUrl": "$IDENTITY_HOSTNAME",
-    "identitySPclientId": "$IDENTITY_SP_PA_CLIENT_ID",
+    "identitySPclientId": "$PA_REALM_CLIENT_SECRET",
     "appBuildDate": "$APP_BUILD_DATE",
     "paUrl": "$PA_HOSTNAME",
     "paTenantDomain":"$PA_TENANT_DOMAIN",

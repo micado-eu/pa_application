@@ -19,7 +19,6 @@ export default async ({ app, router, store, Vue }) => {
     console.log(Vue)
 
     await store.dispatch('features/fetchFeaturesFlags')
-    //   .then()
     console.log("before enabledfeatures")
     setEnabledFeatures(store.state.features.featuresFlag)
   } catch (err) {
